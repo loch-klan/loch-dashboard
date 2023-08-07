@@ -2,9 +2,10 @@ import React from "react";
 import { Image, Row, Col } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
-import TransactionTable from "./TransactionTable";
+import TransactionTable from "../intelligence/TransactionTable";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import "./_yieldOpportunities.scss";
 
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
@@ -26,10 +27,9 @@ import {
   DEFAULT_PRICE,
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
-  SEARCH_BY_CHAIN_IN,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
-import { searchTransactionApi, getFilters } from "./Api";
+import { searchTransactionApi, getFilters } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -53,7 +53,6 @@ import {
   TransactionHistoryAssetFilter,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
-  TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
   TransactionHistoryPageSearch,
@@ -88,7 +87,7 @@ import {
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
-class TransactionHistoryPage extends BaseReactComponent {
+class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const search = props.location.search;
@@ -159,7 +158,6 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
-      showDust: false,
       // add new wallet
       // userWalletList: localStorage.getItem("addWallet")
       //   ? JSON.parse(localStorage.getItem("addWallet"))
@@ -177,7 +175,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       startTime: "",
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
-      isNetworkSearchUsed: false,
+      isMethodSearchUsed: false,
     };
     this.delayTimer = 0;
   }
@@ -187,8 +185,8 @@ class TransactionHistoryPage extends BaseReactComponent {
   assetSearchIsUsed = () => {
     this.setState({ isAssetSearchUsed: true });
   };
-  networkSearchIsUsed = () => {
-    this.setState({ isNetworkSearchUsed: true });
+  methodSearchIsUsed = () => {
+    this.setState({ isMethodSearchUsed: true });
   };
   upgradeModal = () => {
     this.setState({
@@ -295,6 +293,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
 
+    // console.log("prev", prevPage,"cur", page)
+
     if (!this.props.commonState.transactionHistory) {
       this.props.updateWalletListFlag("transactionHistory", true);
       let tempData = new URLSearchParams();
@@ -309,6 +309,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
+      // console.log("prev", prevPage, "cur", page);
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
@@ -338,6 +339,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
+      // console.log("update");
       const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
@@ -381,22 +383,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
+    // console.log("api respinse", value);
   };
 
-  onValidSubmit = () => {};
-  handleFunction = (badge) => {
-    if (badge && badge.length > 0) {
-      const tempArr = [];
-      if (badge[0].name !== "All") {
-        badge.forEach((resData) => tempArr.push(resData.id));
-      }
-      this.addCondition(
-        SEARCH_BY_CHAIN_IN,
-        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
-      );
-    }
+  onValidSubmit = () => {
+    // console.log("Sbmit")
   };
+
   addCondition = (key, value) => {
+    // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
       TransactionHistoryYearFilter({
@@ -408,11 +403,14 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.updateTimer();
       this.setState({ isTimeSearchUsed: false });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
+      // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
-
+      // console.log("con", value !== "allAssets");
       Promise.all([
         new Promise((resolve) => {
+          // console.log("abc");
           if (value !== "allAssets") {
+            console.log("test");
             this.props.intelligenceState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
@@ -422,6 +420,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           resolve(); // Resolve the promise once the code execution is finished
         }),
       ]).then(() => {
+        // console.log("asset arr", assets, value);
         const tempIsAssetUsed = this.state.isAssetSearchUsed;
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
@@ -432,19 +431,19 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.updateTimer();
         this.setState({ isAssetSearchUsed: false });
       });
-    } else if (key === "SEARCH_BY_CHAIN_IN") {
-      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
-      TransactionHistoryNetworkFilter({
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      const tempIsMethodUsed = this.state.isMethodSearchUsed;
+      TransactionHistoryMethodFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        network_filter: value === "allNetworks" ? "All networks" : value,
-        isSearchUsed: tempIsNetworkUsed,
+        method_filter: value === "allMethod" ? "All method" : value,
+        isSearchUsed: tempIsMethodUsed,
       });
       this.updateTimer();
-      this.setState({ isNetworkSearchUsed: false });
+      this.setState({ isMethodSearchUsed: false });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-
+    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -453,20 +452,21 @@ class TransactionHistoryPage extends BaseReactComponent {
       index !== -1 &&
       value !== "allAssets" &&
       value !== "allMethod" &&
-      value !== "allYear" &&
-      value !== "allNetworks"
+      value !== "allYear"
     ) {
+      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
-      value === "allYear" ||
-      value === "allNetworks"
+      value === "allYear"
     ) {
+      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
+      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -501,6 +501,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
+    // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -621,6 +622,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       .writeText(text)
       .then(() => {
         toast.success("Copied");
+        // console.log("successfully copied");
       })
       .catch(() => {
         console.log("something went wrong");
@@ -635,22 +637,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     return string;
   };
 
-  showDust = () => {
-    this.setState(
-      {
-        showDust: !this.state.showDust,
-      },
-      () => {
-        TransactionHistoryHideDust({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        });
-        this.updateTimer();
-        this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
-      }
-    );
-  };
-
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
@@ -663,7 +649,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       BASE_URL_S3 +
       "home/" +
       slink +
-      "?redirect=intelligence/transaction-history";
+      "?redirect=decentralized-finance/yield-opportunities?p=0";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -672,9 +658,12 @@ class TransactionHistoryPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
+
+    // console.log("share pod", shareLink);
   };
 
   render() {
+    // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
     const { walletList, currency } = this.state;
@@ -683,7 +672,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-
+        // console.log("row",row)
         walletList &&
           walletList?.map((wallet) => {
             if (
@@ -764,7 +753,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           method: row.method,
         };
       });
-
+    // console.log('tableData',tableData);
     const columnList = [
       {
         labelName: (
@@ -774,7 +763,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("time")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Date
+              Asset
             </span>
             <Image
               src={sortByIcon}
@@ -785,9 +774,10 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        // coumnWidth: 90,
-        coumnWidth: 0.16,
+        coumnWidth: 0.14,
         isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
             return moment(rowData.time).format("MM/DD/YY");
@@ -802,7 +792,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("from")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              From
+              Amount
             </span>
             <Image
               src={sortByIcon}
@@ -813,9 +803,10 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        // coumnWidth: 90,
-        coumnWidth: 0.15,
+        coumnWidth: 0.14,
         isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
             return (
@@ -868,6 +859,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -895,6 +887,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={rowData.from.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
+                          // console.log("address", rowData.from.metaData);
                           TransactionHistoryAddress({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -916,6 +909,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -938,6 +932,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -961,6 +956,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
+                      // console.log("address", rowData.from.metaData);
                       TransactionHistoryAddress({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
@@ -986,6 +982,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1018,7 +1015,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("to")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To
+              Value (USD)
             </span>
             <Image
               src={sortByIcon}
@@ -1029,10 +1026,12 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        // coumnWidth: 90,
-        coumnWidth: 0.15,
+        coumnWidth: 0.14,
         isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
+          // console.log('rowData',rowData);
           if (dataKey === "to") {
             return (
               <CustomOverlay
@@ -1234,7 +1233,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("asset")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Asset
+              Project
             </span>
             <Image
               src={sortByIcon}
@@ -1245,8 +1244,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        // coumnWidth: 130,
-        coumnWidth: 0.2,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1276,7 +1274,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("amount")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Amount
+              Network
             </span>
             <Image
               src={sortByIcon}
@@ -1287,11 +1285,11 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "amount",
-        // coumnWidth: 100,
-        coumnWidth: 0.15,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
+            // console.log(value)
             // return rowData.amount.value?.toFixed(2)
             return (
               <CustomOverlay
@@ -1320,9 +1318,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
-              true
-            )} amount (then)`}</span>
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              TVL
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1332,9 +1330,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValueThen",
-        // coumnWidth: 100,
         className: "usd-value",
-        coumnWidth: 0.25,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValueThen") {
@@ -1355,33 +1352,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
-
+            // console.log('valueToday',valueToday);
+            // console.log('valueThen',valueThen);
             return (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
-                <span style={{ padding: "2px" }}></span>(
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
-                )
+                  </span>
+                </div>
               </div>
             );
           }
@@ -1394,9 +1373,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdTransactionFee"
             onClick={() => this.handleTableSort("usdTransaction")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
-              true
-            )} fee (then)`}</span>
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              APY
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1406,17 +1385,18 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdTransactionFee",
-        // coumnWidth: 100,
         className: "usd-value",
-        coumnWidth: 0.25,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
+          // console.log(rowData)
           if (dataKey === "usdTransactionFee") {
             let chain = Object.entries(assetPriceList);
             let valueToday;
             let valueThen;
             chain.find((chain) => {
               if (chain[0] === rowData.usdTransactionFee.id) {
+                // console.log('chain',chain);
                 valueToday =
                   rowData.usdTransactionFee.value *
                     chain[1].quote.USD.price *
@@ -1428,84 +1408,13 @@ class TransactionHistoryPage extends BaseReactComponent {
               }
             });
             return (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
-                <span style={{ padding: "2px" }}></span>(
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
-                )
+                  </span>
+                </div>
               </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="method"
-            onClick={() => this.handleTableSort("method")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Method
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "method",
-        // coumnWidth: 100,
-        coumnWidth: 0.2,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "method") {
-            return (
-              <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
-                  <div className="gainLossContainer">
-                    <div
-                      className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
-                      }`}
-                    >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
-                  </div>
-                )}
-              </>
             );
           }
         },
@@ -1563,9 +1472,12 @@ class TransactionHistoryPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Transaction history"}
+              title={"Yield Opportunities"}
               subTitle={
-                "Sort, filter, and dissect all your transactions from one place"
+                "Yield bearing opportunties personalized for your portfolio"
+              }
+              disclaimer={
+                "Disclaimer: Loch does not endorse any of these projects. Please conduct your own research."
               }
               showpath={true}
               currentPage={"transaction-history"}
@@ -1580,18 +1492,19 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
-                  <Col className="transactionHistoryCol">
+                  <Col md={4}>
                     <CustomDropdown
-                      filtername="All years"
-                      options={this.props.intelligenceState.yearFilter}
-                      action={SEARCH_BY_TIMESTAMP_IN}
+                      filtername="All networks"
+                      options={this.props.intelligenceState.methodFilter}
+                      action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
-                      searchIsUsed={this.timeSearchIsUsed}
+                      searchIsUsed={this.methodSearchIsUsed}
+                      isCaptialised
                     />
                   </Col>
-                  <Col className="transactionHistoryCol">
+                  <Col md={4}>
                     <CustomDropdown
                       filtername="All assets"
                       options={this.props.intelligenceState.assetFilter}
@@ -1602,31 +1515,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       searchIsUsed={this.assetSearchIsUsed}
                     />
                   </Col>
-                  <Col className="transactionHistoryCol">
-                    <CustomDropdown
-                      filtername="All methods"
-                      options={this.props.intelligenceState.methodFilter}
-                      action={SEARCH_BY_METHOD_IN}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
-                      searchIsUsed={this.methodSearchIsUsed}
-                      isCaptialised
-                    />
-                  </Col>
-                  <Col className="transactionHistoryCol">
-                    <CustomDropdown
-                      filtername="All networks"
-                      options={this.props.OnboardingState.coinsList}
-                      action={SEARCH_BY_CHAIN_IN}
-                      handleClick={this.handleFunction}
-                      searchIsUsed={this.networkSearchIsUsed}
-                      isCaptialised
-                      isGreyChain
-                    />
-                  </Col>
+
                   {/* {fillter_tabs} */}
-                  <Col className="transactionHistoryCol">
+                  <Col md={4}>
                     <div className="searchBar">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
@@ -1652,11 +1543,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                 </Row>
               </Form>
             </div>
+            <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 grey-4F4">
+              <div className="yeildOppTitleItems yeildOppTitleLeft">
+                Your Portfolio
+              </div>
+              <div className="yeildOppTitleItems yeildOppTitleRight">
+                Yield Opportunities
+              </div>
+            </div>
             <div className="transaction-history-table">
               {this.state.tableLoading ? (
-                <div className="loadingSizeContainer">
-                  <Loading />
-                </div>
+                <Loading />
               ) : (
                 <>
                   <TransactionTable
@@ -1669,16 +1566,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
                   />
-                  <div className="ShowDust">
-                    <p
-                      onClick={this.showDust}
-                      className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
-                    >
-                      {this.state.showDust
-                        ? "Reveal dust (less than $1)"
-                        : "Hide dust (less than $1)"}
-                    </p>
-                  </div>
                 </>
               )}
             </div>
@@ -1694,7 +1581,6 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
-  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1706,8 +1592,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
 };
 
-TransactionHistoryPage.propTypes = {};
+YieldOpportunitiesPage.propTypes = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TransactionHistoryPage);
+)(YieldOpportunitiesPage);
