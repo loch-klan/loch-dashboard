@@ -14,6 +14,7 @@ import {
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { DisclaimerIcon } from "../../assets/images/icons";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -134,6 +135,61 @@ export default function PageHeader(props) {
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}
+                {props.hoverText ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={props.hoverText}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      style={{ width: "1.6rem", marginTop: "-3px" }}
+                      onMouseEnter={() => {
+                        AssetValueExplainer({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                        if (props.updateTimer) {
+                          props.updateTimer();
+                        }
+                      }}
+                    />
+                  </CustomOverlay>
+                ) : (
+                  ""
+                )}
+              </p>
+            ) : (
+              ""
+            )}
+            {props.disclaimer ? (
+              <p
+                className="inter-display-medium f-s-12 mt-4"
+                style={{ fontWeight: "bold" }}
+              >
+                <Image
+                  src={DisclaimerIcon}
+                  className="info-icon"
+                  style={{
+                    height: "10px",
+                    marginTop: "-3px",
+                    marginRight: "3px",
+                  }}
+                  onMouseEnter={() => {
+                    AssetValueExplainer({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                    if (props.updateTimer) {
+                      props.updateTimer();
+                    }
+                  }}
+                />
+                {props.disclaimer}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
                     position="top"

@@ -133,6 +133,7 @@ class CustomTable extends BaseReactComponent {
                               cellRenderer={({ rowData }) => {
                                 return item.cell(rowData, item.dataKey);
                               }}
+                              headerClassName={item.headerClassName}
                             />
                           );
                         })}

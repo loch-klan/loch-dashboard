@@ -71,13 +71,14 @@ class CustomDropdown extends Component {
       // console.log("transaction", this.props.options);
       this.props.options.map((e, i) =>
         this.state.options.push({
-          label: this.props.isChain ? e.name : e.label,
-          value: this.props.isChain ? e.id : e.value,
+          label:
+            this.props.isChain || this.props.isGreyChain ? e.name : e.label,
+          value: this.props.isChain || this.props.isGreyChain ? e.id : e.value,
           // isSelected: i === 0 && !this.props.isChain ? true : false,
           isSelected: true,
         })
       );
-      if (this.props.isChain) {
+      if (this.props.isChain || this.props.isGreyChain) {
         this.state.options = [
           { label: "All", value: "", isSelected: true },
           ...this.state.options,
@@ -186,15 +187,17 @@ class CustomDropdown extends Component {
         this.state.options = [];
         this.props.options.map((e, i) =>
           this.state.options.push({
-            label: this.props.isChain ? e.name : e.label,
-            value: this.props.isChain ? e.id : e.value,
+            label:
+              this.props.isChain || this.props.isGreyChain ? e.name : e.label,
+            value:
+              this.props.isChain || this.props.isGreyChain ? e.id : e.value,
             // isSelected: i === 0 && !this.props.isChain ? true : false,
             isSelected: true,
           })
         );
 
         // for chain
-        if (this.props.isChain) {
+        if (this.props.isChain || this.props.isGreyChain) {
           this.state.options = [
             { label: "All", value: "", isSelected: true },
             ...this.state.options,
@@ -292,18 +295,17 @@ class CustomDropdown extends Component {
     selected = this.state?.options
       .filter((e) => e?.isSelected === true)
       .map((e) =>
-        this.props.isChain || this.props?.getObj
+        this.props.isChain || this.props.isGreyChain || this.props?.getObj
           ? { name: e.label, id: e.value }
           : e?.value
       );
-
     let count;
     if (isAll) {
       // selected = this.props.isChain
       //   ? [{ name: "All", id: "" }]
       //   : selected?.toString();
       selected =
-        this.props.isChain || this.props?.getObj
+        this.props.isChain || this.props.isGreyChain || this.props?.getObj
           ? [{ name: "All", id: "" }]
           : this.props.isLineChart
           ? []
@@ -390,7 +392,7 @@ class CustomDropdown extends Component {
     // console.log(this.getSelected()?.selected, "apply");
     // console.log(this.props.action, this.getSelected().selected, "apply");
     if (this.getSelected()?.selected?.length !== 0) {
-      this.props.isLineChart || this.props.isChain
+      this.props.isLineChart || this.props.isChain || this.props.isGreyChain
         ? this.props.handleClick(this.getSelected()?.selected)
         : this.props.action
         ? this.props.handleClick(

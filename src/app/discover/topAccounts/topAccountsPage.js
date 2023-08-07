@@ -882,9 +882,11 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <Image
-                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
-                    />
+                    {rowData.netflows && rowData.netflows[type] !== 0 ? (
+                      <Image
+                        src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
                       {(rowData.netflows[type] < 0 ? "-" : "") +
                         numToCurrency(

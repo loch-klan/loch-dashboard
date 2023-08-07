@@ -19,19 +19,21 @@ import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import Coin2 from "../../assets/images/icons/temp-coin1.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
-import { AssetType } from "../../utils/Constant";
+import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   DefiCredit,
   DefiDebt,
+  DefiShare,
   DefiSortByAmount,
   DefiSortByName,
   PageviewDefi,
   TimeSpentDefi,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { toast } from "react-toastify";
 
 class Defi extends Component {
   constructor(props) {
@@ -419,7 +421,24 @@ class Defi extends Component {
 
     this.props.setPageFlagDefault();
   };
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=decentralized-finance";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
 
+    DefiShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  };
   render() {
     const chips = [
       {
@@ -498,6 +517,8 @@ class Defi extends Component {
               // showData={totalWalletAmt}
               // isLoading={isLoading}
               updateTimer={this.updateTimer}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             {/* Balance sheet */}
