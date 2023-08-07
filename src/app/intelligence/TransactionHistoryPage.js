@@ -1580,7 +1580,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
-                  <Col md={3}>
+                  <Col className="transactionHistoryCol">
                     <CustomDropdown
                       filtername="All years"
                       options={this.props.intelligenceState.yearFilter}
@@ -1591,7 +1591,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       searchIsUsed={this.timeSearchIsUsed}
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col className="transactionHistoryCol">
                     <CustomDropdown
                       filtername="All assets"
                       options={this.props.intelligenceState.assetFilter}
@@ -1602,7 +1602,19 @@ class TransactionHistoryPage extends BaseReactComponent {
                       searchIsUsed={this.assetSearchIsUsed}
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col className="transactionHistoryCol">
+                    <CustomDropdown
+                      filtername="All methods"
+                      options={this.props.intelligenceState.methodFilter}
+                      action={SEARCH_BY_METHOD_IN}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                      searchIsUsed={this.methodSearchIsUsed}
+                      isCaptialised
+                    />
+                  </Col>
+                  <Col className="transactionHistoryCol">
                     <CustomDropdown
                       filtername="All networks"
                       options={this.props.OnboardingState.coinsList}
@@ -1614,7 +1626,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </Col>
                   {/* {fillter_tabs} */}
-                  <Col md={3}>
+                  <Col className="transactionHistoryCol">
                     <div className="searchBar">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
@@ -1642,7 +1654,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             </div>
             <div className="transaction-history-table">
               {this.state.tableLoading ? (
-                <Loading />
+                <div className="loadingSizeContainer">
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
