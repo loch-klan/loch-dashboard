@@ -15,15 +15,18 @@ import {
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import { AssetType } from "../../utils/Constant";
+import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   PageviewTopDefi,
   TimeSpentTopDefi,
+  TopDefiShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { toast } from "react-toastify";
+import { Buffer } from "buffer";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -386,7 +389,25 @@ class TopDefi extends Component {
 
     this.props.setPageFlagDefault();
   };
+  handleShare = () => {
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
 
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=decentralized-finance`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopDefiShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  };
   render() {
     return (
       <>
@@ -446,6 +467,8 @@ class TopDefi extends Component {
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             {/* Balance sheet */}
