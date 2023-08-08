@@ -47,6 +47,7 @@ import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
+  getAllCurrencyRatesApi,
   getUser,
   setPageFlagDefault,
 } from "../common/Api";
@@ -253,7 +254,12 @@ class TopAccountPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.state.currency) {
+      this.setState({
+        currency: JSON.parse(localStorage.getItem("currency")),
+      });
+      getAllCurrencyRatesApi();
+    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
