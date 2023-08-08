@@ -175,7 +175,7 @@ const routes = [
     component: topDefi,
   },
   {
-    path: "/decentralized-finance/yield-opportunities",
+    path: "/yield-opportunities",
     name: "Yield Opportunities",
     type: PrivateRoute,
     component: YieldOpportunitiesPage,
