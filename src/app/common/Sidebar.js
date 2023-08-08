@@ -159,20 +159,6 @@ function Sidebar(props) {
 
     localStorage.setItem("isSubmenu", JSON.stringify(obj));
   };
-  const handleDefiSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
-    let obj = {
-      me: true,
-      discover: false,
-      intelligence: currentValue?.intelligence,
-      defi: !currentValue?.defi,
-      topAccount: false,
-      topAccountintelligence: false,
-    };
-    setSubmenu(obj);
-
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
-  };
 
   const handleTopAccountIntelligentSubmenu = () => {
     let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
@@ -249,7 +235,14 @@ function Sidebar(props) {
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
     // Me section
-    if (["/home", "/profile"].includes(activeTab)) {
+    if (
+      [
+        "/home",
+        "/profile",
+        "/decentralized-finance",
+        "/yield-opportunities",
+      ].includes(activeTab)
+    ) {
       let obj = {
         me: true,
         discover: false,
@@ -278,24 +271,6 @@ function Sidebar(props) {
         me: true,
         discover: false,
         intelligence: true,
-        defi: false,
-        topAccount: false,
-        topAccountintelligence: false,
-      };
-      setSubmenu(obj);
-
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
-    } else if (
-      [
-        "/decentralized-finance",
-        "/decentralized-finance/yield-opportunities",
-      ].includes(activeTab)
-    ) {
-      let obj = {
-        me: true,
-        discover: false,
-        intelligence: false,
-        defi: true,
         topAccount: false,
         topAccountintelligence: false,
       };
@@ -303,7 +278,6 @@ function Sidebar(props) {
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
-
     // Discover section
     else if (
       ["/whale-watch", "/watchlist"].includes(activeTab) ||
@@ -973,42 +947,43 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
-                            <Image
-                              src={arrowUp}
-                              className={`arrow-menu ${
-                                isSubmenu?.defi ? "show-submenu" : ""
-                              }`}
-                              onClick={(e) => {
-                                e.preventDefault();
-
-                                handleDefiSubmenu();
-                              }}
-                            />
                           </NavLink>
                         </li>
-                        {isSubmenu?.defi && (
-                          <>
-                            <li className="sub-menu">
-                              <NavLink
-                                exact={true}
-                                onClick={(e) => {
-                                  if (!isWallet) {
-                                    e.preventDefault();
-                                  }
-                                }}
-                                className={`nav-link ${
-                                  activeTab === "/decentralized-finance"
-                                    ? "none"
-                                    : ""
-                                }`}
-                                to="/decentralized-finance/yield-opportunities"
-                                activeclassname="active"
-                              >
-                                Yield Opportunities
-                              </NavLink>
-                            </li>
-                          </>
-                        )}
+
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/yield-opportunities"
+                                  ? DefiIcon
+                                  : DefiIcon
+                              }
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
+                          </NavLink>
+                        </li>
                         <li>
                           <NavLink
                             exact={true}
