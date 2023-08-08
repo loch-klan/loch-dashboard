@@ -36,7 +36,7 @@ function App() {
     };
   }, []);
   useEffect(() => {
-    ReactGA.initialize("401775765");
+    ReactGA.initialize("G-5SGSCTZDGV");
   }, []);
 
   useEffect(() => {
