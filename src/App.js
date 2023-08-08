@@ -5,6 +5,7 @@ import routes from "./routes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
+import ReactGA from "react-ga4";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -33,6 +34,28 @@ function App() {
     return () => {
       window.sessionStorage.removeItem("isRendered");
     };
+  }, []);
+  useEffect(() => {
+    ReactGA.initialize("G-5SGSCTZDGV");
+  }, []);
+
+  useEffect(() => {
+    const baseName = window?.location?.origin;
+    const pathName = window?.location?.pathname;
+    console.log("window.location ", window.location);
+    if (pathName) {
+      if (pathName === "/Prithvir12") {
+        const goTo =
+          baseName +
+          "/welcome/?utm_source=Twitter&utm_medium=Bio&utm_term=Prithvir12";
+        window.location = goTo;
+      } else if (pathName === "/loch_chain") {
+        const goTo =
+          baseName +
+          "/welcome/?utm_source=Twitter&utm_medium=Bio&utm_term=loch_chain";
+        window.location = goTo;
+      }
+    }
   }, []);
 
   return isMobile ? (
