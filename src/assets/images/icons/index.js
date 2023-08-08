@@ -19,3 +19,4 @@ export { default as GreyGlobeIcon } from "./greyGlobe.svg";
 export { default as GreyLochLogoIcon } from "./greyLochLogo.svg";
 export { default as LochLogoIcon } from "./lochLogo.svg";
 export { default as ContributeTrophyIcon } from "./contributeTrophy.svg";
+export { default as TrophyCelebrationGreyIcon } from "./trophyCelebrationGrey.svg";

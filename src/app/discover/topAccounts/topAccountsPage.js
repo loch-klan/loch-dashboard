@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import PageHeader from "../../common/PageHeader";
 import searchIcon from "../../../assets/images/icons/search-icon.svg";
 import GainIcon from "../../../assets/images/icons/GainIcon.svg";
@@ -93,6 +93,8 @@ import {
   GreyGlobeIcon,
   GreyLochLogoIcon,
   LochLogoIcon,
+  TrophyCelebrationGreyIcon,
+  TrophyCelebrationIcon,
 } from "../../../assets/images/icons";
 
 class TopAccountPage extends BaseReactComponent {
@@ -1256,6 +1258,51 @@ class TopAccountPage extends BaseReactComponent {
                 Community Leaderboard
               </div>
             </div>
+            {!this.state.communityLeaderboardSelected ? (
+              <div className="addCommunityTopBar">
+                <img
+                  src={TrophyCelebrationGreyIcon}
+                  className="addCommunityTopBarImage"
+                  alt="addCommunityTopBarImage"
+                />
+                <div className="addCommunityTopBarText">
+                  <h6 className="inter-display-medium text-left f-s-20">
+                    Add an address to the community
+                  </h6>
+                  <p className="inter-display-medium f-s-12 grey-969 text-left mt-2">
+                    Add an address worth at least $1m to the community board to
+                    view the full list
+                  </p>
+                </div>
+
+                <div className="addCommunityTopBarInputTab addCommunityTopAccountsWrapperParent">
+                  <div className="addCommunityTopAccountsWrapperContainer">
+                    <div className="addWalletWrapper">
+                      <div
+                        style={{ backgroundColor: "white" }}
+                        className="awInputWrapper"
+                      >
+                        <div className="awBottomInputWrapper">
+                          <div className="awInputContainer">
+                            <input
+                              className={`inter-display-regular f-s-15 lh-20 awInput`}
+                              placeholder="Paste wallet address or ENS here"
+                              style={{ backgroundColor: "transparent" }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    className="secondary-btn customChanges"
+                    onClick={this.props.btnClick}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+            ) : null}
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <div
