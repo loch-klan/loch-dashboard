@@ -421,7 +421,9 @@ class TopAccountPage extends BaseReactComponent {
             },
           ];
           let time = TimeFilterType.getText(
-            this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+            this.state.timeFIlter === "Time"
+              ? "6 months"
+              : this.state.timeFIlter
           );
           this.addCondition("SEARCH_BY_TIMESTAMP", time);
           TopAccountSortByNetflows({
@@ -613,14 +615,14 @@ class TopAccountPage extends BaseReactComponent {
         return "last week";
       } else if (this.state.timeFIlter === "1 month") {
         return "last month";
-      } else if (this.state.timeFIlter === "6 months") {
-        return "6 months";
+      } else if (this.state.timeFIlter === "5 years") {
+        return "5 years";
       } else if (this.state.timeFIlter === "1 year") {
         return "last year";
       } else if (this.state.timeFIlter === "3 years") {
         return "3 years";
       }
-      return "5 years";
+      return "6 months";
     };
     const columnList = [
       {
@@ -825,7 +827,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "netflows") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             return (
@@ -905,7 +907,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestBought") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -989,7 +991,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestSold") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -1227,7 +1229,7 @@ class TopAccountPage extends BaseReactComponent {
                       title={this.state.timeFIlter}
                       activetab={
                         this.state.timeFIlter === "Time"
-                          ? "5 years"
+                          ? "6 months"
                           : this.state.timeFIlter
                       }
                       showChecked={true}
