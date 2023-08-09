@@ -677,6 +677,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
+    console.log("assetPriceList ", assetPriceList);
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1258,10 +1259,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
                 <Image src={rowData.asset.symbol} className="asset-symbol" />
               </CustomOverlay>
             );
