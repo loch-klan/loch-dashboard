@@ -235,7 +235,14 @@ function Sidebar(props) {
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
     // Me section
-    if (["/home", "/decentralized-finance", "/profile"].includes(activeTab)) {
+    if (
+      [
+        "/home",
+        "/profile",
+        "/decentralized-finance",
+        "/yield-opportunities",
+      ].includes(activeTab)
+    ) {
       let obj = {
         me: true,
         discover: false,
@@ -271,7 +278,6 @@ function Sidebar(props) {
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
-
     // Discover section
     else if (
       ["/whale-watch", "/watchlist"].includes(activeTab) ||
@@ -941,6 +947,41 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
+                          </NavLink>
+                        </li>
+
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/yield-opportunities"
+                                  ? DefiIcon
+                                  : DefiIcon
+                              }
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
                           </NavLink>
                         </li>
                         <li>
