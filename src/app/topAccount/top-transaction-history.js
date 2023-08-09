@@ -153,6 +153,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       isTopAccountPage: true,
       // time spent
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -250,8 +251,26 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.searchTransactionApi(data, this, page);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -1522,6 +1541,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                     location={this.props.location}
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
                   />
                   <div className="ShowDust">
                     <p
