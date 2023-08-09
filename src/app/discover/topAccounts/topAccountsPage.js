@@ -1,12 +1,12 @@
 import React from "react";
-import { Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
+import { Button, Image } from "react-bootstrap";
+import PageHeader from "../../common/PageHeader";
+import searchIcon from "../../../assets/images/icons/search-icon.svg";
+import GainIcon from "../../../assets/images/icons/GainIcon.svg";
+import LossIcon from "../../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
-import { getWatchListByUser } from "../watchlist/redux/WatchListApi";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { getWatchListByUser } from "../../watchlist/redux/WatchListApi";
+import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
 import {
   Method,
   API_LIMIT,
@@ -19,45 +19,48 @@ import {
   SORT_BY_LARGEST_SOLD,
   SORT_BY_NET_FLOW,
   SEARCH_BY_NETWORTH,
-} from "../../utils/Constant";
+} from "../../../utils/Constant";
 import {
   searchTransactionApi,
   getFilters,
   getTransactionAsset,
-} from "../intelligence/Api";
+} from "../../intelligence/Api";
 import {
   FormElement,
   Form,
   CustomTextControl,
   BaseReactComponent,
-} from "../../utils/form";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
+} from "../../../utils/form";
+import sortByIcon from "../../../assets/images/icons/triangle-down.svg";
+import CustomDropdown from "../../../utils/form/CustomDropdown";
 import {
   amountFormat,
   CurrencyType,
   numToCurrency,
-} from "../../utils/ReusableFunctions";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
-import Loading from "../common/Loading";
+} from "../../../utils/ReusableFunctions";
+import {
+  getCurrentUser,
+  resetPreviewAddress,
+} from "../../../utils/ManageToken";
+import Loading from "../../common/Loading";
 import { toast } from "react-toastify";
-import FixAddModal from "../common/FixAddModal";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import FixAddModal from "../../common/FixAddModal";
+import AddWalletModalIcon from "../../../assets/images/icons/wallet-icon.svg";
+import { getAllCoins, getAllParentChains } from "../../onboarding/Api.js";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
   getUser,
   setPageFlagDefault,
-} from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import TransactionTable from "../intelligence/TransactionTable";
-import { getTopAccounts } from "./Api";
-import DropDown from "../common/DropDown";
-import { SORT_BY_NAME } from "../../utils/Constant";
-import WelcomeCard from "../Portfolio/WelcomeCard";
-import { TimeFilterType } from "../../utils/Constant";
+} from "../../common/Api";
+import UpgradeModal from "../../common/upgradeModal";
+import TransactionTable from "../../intelligence/TransactionTable";
+import { getTopAccounts } from "../Api";
+import DropDown from "../../common/DropDown";
+import { SORT_BY_NAME } from "../../../utils/Constant";
+import WelcomeCard from "../../Portfolio/WelcomeCard";
+import { TimeFilterType } from "../../../utils/Constant";
 import {
   TopAccountAddAccountToWatchList,
   TopAccountClickedAccount,
@@ -78,12 +81,23 @@ import {
   TopAccountSortByTag,
   TopAccountTimeFilter,
   TopAccountTimeSpent,
-} from "../../utils/AnalyticsFunctions";
-import CheckboxCustomTable from "../common/customCheckboxTable";
+} from "../../../utils/AnalyticsFunctions";
+import CheckboxCustomTable from "../../common/customCheckboxTable";
 import {
   updateAddToWatchList,
   removeFromWatchList,
-} from "../watchlist/redux/WatchListApi";
+} from "../../watchlist/redux/WatchListApi";
+import AddCommunityTopAccountsModal from "./addCommunityTopAccountsModal";
+import "./_topAccounts.scss";
+import {
+  GlobeIcon,
+  GreyGlobeIcon,
+  GreyLochLogoIcon,
+  LochLogoIcon,
+  TrophyCelebrationGreyIcon,
+  TrophyCelebrationIcon,
+} from "../../../assets/images/icons";
+
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -152,10 +166,24 @@ class TopAccountPage extends BaseReactComponent {
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
       walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
+      addTopAccountsModal: false,
+      communityLeaderboardSelected: false,
     };
     this.delayTimer = 0;
   }
-
+  selectComunityLeaderboard = () => {
+    this.setState({
+      communityLeaderboardSelected: true,
+    });
+  };
+  selectLochTopAccounts = () => {
+    this.setState({
+      communityLeaderboardSelected: false,
+    });
+  };
+  handleAddTopAccounts = () => {
+    this.setState({ addTopAccountsModal: !this.state.addTopAccountsModal });
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -864,9 +892,11 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <Image
-                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
-                    />
+                    {rowData.netflows && rowData.netflows[type] !== 0 ? (
+                      <Image
+                        src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
                       {(rowData.netflows[type] < 0 ? "-" : "") +
                         numToCurrency(
@@ -1150,6 +1180,13 @@ class TopAccountPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.addTopAccountsModal ? (
+              <AddCommunityTopAccountsModal
+                show={this.state.addTopAccountsModal}
+                onHide={this.handleAddTopAccounts}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1184,12 +1221,96 @@ class TopAccountPage extends BaseReactComponent {
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
+              btnText={
+                this.state.communityLeaderboardSelected ? "Add address" : ""
+              }
+              handleBtn={this.handleAddTopAccounts}
               ShareBtn={true}
               handleShare={this.handleShare}
             />
+            <div className="topAccountsLochCommunityContainer">
+              <div
+                className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${
+                  this.state.communityLeaderboardSelected
+                    ? ""
+                    : "topAccountsLochCommunitySelected"
+                }`}
+                onClick={this.selectLochTopAccounts}
+              >
+                <Image
+                  className="topAccountsLochCommunityImage"
+                  src={
+                    this.state.communityLeaderboardSelected
+                      ? GreyLochLogoIcon
+                      : LochLogoIcon
+                  }
+                />
+                Loch’s Top Accounts
+              </div>
+              <div
+                className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${
+                  this.state.communityLeaderboardSelected
+                    ? "topAccountsLochCommunitySelected"
+                    : ""
+                }`}
+                onClick={this.selectComunityLeaderboard}
+              >
+                <Image
+                  className="topAccountsLochCommunityImage"
+                  src={
+                    this.state.communityLeaderboardSelected
+                      ? GlobeIcon
+                      : GreyGlobeIcon
+                  }
+                />
+                Community Leaderboard
+              </div>
+            </div>
+            {!this.state.communityLeaderboardSelected ? (
+              <div className="addCommunityTopBar">
+                <img
+                  src={TrophyCelebrationGreyIcon}
+                  className="addCommunityTopBarImage"
+                  alt="addCommunityTopBarImage"
+                />
+                <div className="addCommunityTopBarText">
+                  <h6 className="inter-display-medium text-left f-s-20">
+                    Add an address to the community
+                  </h6>
+                  <p className="inter-display-medium f-s-12 grey-969 text-left mt-2">
+                    Add an address worth at least $1m to the community board to
+                    view the full list
+                  </p>
+                </div>
 
+                <div className="addCommunityTopBarInputTab addCommunityTopAccountsWrapperParent">
+                  <div className="addCommunityTopAccountsWrapperContainer">
+                    <div className="addWalletWrapper">
+                      <div
+                        style={{ backgroundColor: "white" }}
+                        className="awInputWrapper"
+                      >
+                        <div className="awBottomInputWrapper">
+                          <div className="awInputContainer">
+                            <input
+                              className={`inter-display-regular f-s-15 lh-20 awInput`}
+                              placeholder="Paste wallet address or ENS here"
+                              style={{ backgroundColor: "transparent" }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    className="secondary-btn customChanges"
+                    onClick={this.props.btnClick}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+            ) : null}
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <div
@@ -1331,6 +1452,8 @@ class TopAccountPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    topAccountBlur={this.state.communityLeaderboardSelected}
+                    blurButtonClick={this.handleAddTopAccounts}
                   />
                   {/* <div className="ShowDust">
                   <p

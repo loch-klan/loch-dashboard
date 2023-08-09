@@ -1,14 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
+import {
+  getAllCoins,
+  detectCoin,
+  getAllParentChains,
+} from "../../onboarding/Api";
 
-import { EyeIcon, CloseIcon, CheckIcon } from "../../assets/images/icons";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
-import { CustomCoin } from "../../utils/commonComponent";
-import { CustomButton } from "../../utils/form";
+import {
+  CloseIcon,
+  TrophyIcon,
+  TrophyCelebrationIcon,
+  WarningCircleIcon,
+} from "../../../assets/images/icons";
+import BaseReactComponent from "./../../../utils/form/BaseReactComponent";
+import { CustomCoin } from "../../../utils/commonComponent";
+import { CustomButton } from "../../../utils/form";
+import AddCommunityTopAccountsModalMessagesBox from "./addCommunityTopAccountsModalMessagesBox";
 
-class AddWatchListAddressModal extends BaseReactComponent {
+class AddCommunityTopAccountsModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +39,9 @@ class AddWatchListAddressModal extends BaseReactComponent {
           nameTag: "",
         },
       ],
-      addressesAdded: false,
+      addressAdded: false,
+      addressAlreadyPresent: false,
+      addressNotOneMil: false,
     };
   }
   componentDidMount() {
@@ -202,9 +214,28 @@ class AddWatchListAddressModal extends BaseReactComponent {
     }
     return isDisableFlag;
   };
-  showAddressesAdded = () => {
-    this.setState({ addressesAdded: true });
+  showAddressAdded = () => {
+    this.setState({
+      addressAdded: true,
+      addressAlreadyPresent: false,
+      addressNotOneMil: false,
+    });
   };
+  showAccountAdreadyAdded = () => {
+    this.setState({
+      addressAdded: false,
+      addressAlreadyPresent: true,
+      addressNotOneMil: false,
+    });
+  };
+  showDefaultView = () => {
+    this.setState({
+      addressAdded: false,
+      addressAlreadyPresent: false,
+      addressNotOneMil: false,
+    });
+  };
+
   render() {
     return (
       <Modal
@@ -217,57 +248,61 @@ class AddWatchListAddressModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
       >
-        {this.state.addressesAdded ? (
-          <div className="addWatchListWrapperAdded">
-            <Modal.Header className="addWatchListAddedHeader">
-              <div className="closebtn" onClick={this.hideModal}>
-                <Image src={CloseIcon} />
-              </div>
-            </Modal.Header>
-            <Modal.Body className="addWatchListAddedBody">
-              <div className="addWatchListAddedBodyContent">
-                <Image className="addWatchListAddedBodyIcon" src={CheckIcon} />
-                <div
-                  className="exit-overlay-body"
-                  style={{ padding: "0rem 10.5rem" }}
-                >
-                  <h6 className="inter-display-medium f-s-25">
-                    Added to Watchlist
-                  </h6>
-                  <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                    Your address has been added to the Watchlist
-                  </p>
-                </div>
-                <Button className="primary-btn" onClick={this.hideModal}>
-                  Done
-                </Button>
-              </div>
-            </Modal.Body>
-          </div>
+        {this.state.addressAdded ? (
+          <AddCommunityTopAccountsModalMessagesBox
+            btnClick={this.hideModal}
+            heading="Thanks for your contribution!"
+            descriptionOne="Thanks for adding your address, you may now view the full"
+            descriptionTwo="Loch leaderboard"
+            btnText="View"
+            imageIcon={TrophyCelebrationIcon}
+            bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
+            hideModal={this.hideModal}
+          />
+        ) : null}
+        {this.state.addressAlreadyPresent ? (
+          <AddCommunityTopAccountsModalMessagesBox
+            btnClick={this.showDefaultView}
+            heading="Sorry this address has already been added."
+            descriptionOne="Please try to add another address!"
+            btnText="Add another"
+            imageIcon={WarningCircleIcon}
+            hideModal={this.hideModal}
+          />
+        ) : null}
+        {this.state.addressNotOneMil ? (
+          <AddCommunityTopAccountsModalMessagesBox
+            btnClick={this.showDefaultView}
+            heading="Sorry this address is not worth at least $1m."
+            descriptionOne="Please try to add another address!"
+            btnText="Add another"
+            imageIcon={WarningCircleIcon}
+            hideModal={this.hideModal}
+          />
         ) : null}
         <Modal.Header>
           <div className="api-modal-header">
-            <Image src={EyeIcon} />
+            <Image src={TrophyIcon} />
           </div>
           <div className="closebtn" onClick={this.hideModal}>
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="addWatchListWrapperParent">
+          <div className="addCommunityTopAccountsWrapperParent">
             <div
               className="exit-overlay-body"
               style={{ padding: "0rem 10.5rem" }}
             >
               <h6 className="inter-display-medium f-s-25">
-                Add an address to the Watchlist
+                Contribute to the community
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Keep an eye on an address
+                Add an address to the community board
               </p>
             </div>
 
-            <div className="addWatchListWrapperContainer">
+            <div className="addCommunityTopAccountsWrapperContainer">
               {this.state.walletInput?.map((c, index) => {
                 return (
                   <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
@@ -287,7 +322,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 name={`wallet${index + 1}`}
                                 value={c.address || ""}
                                 className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                placeholder="Paste any wallet address here"
+                                placeholder="Paste wallet address or ENS here"
                                 title={c.address || ""}
                                 onChange={(e) => this.handleOnChange(e)}
                                 onKeyDown={this.handleTabPress}
@@ -437,7 +472,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
             <div className="watchListAddressBtnContainer">
               <Button
                 className="secondary-btn white-bg"
-                onClick={this.hideModal}
+                onClick={this.showAccountAdreadyAdded}
               >
                 Cancel
               </Button>
@@ -451,7 +486,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                   this.state.addButtonVisible ? this.isDisabled() : true
                 }
                 buttonText="Add"
-                handleClick={this.showAddressesAdded}
+                handleClick={this.showAddressAdded}
               />
             </div>
           </div>
@@ -470,9 +505,9 @@ const mapDispatchToProps = {
   detectCoin,
 };
 
-AddWatchListAddressModal.propTypes = {};
+AddCommunityTopAccountsModal.propTypes = {};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddWatchListAddressModal);
+)(AddCommunityTopAccountsModal);
