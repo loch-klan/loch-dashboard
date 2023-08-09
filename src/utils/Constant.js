@@ -415,7 +415,7 @@ export const PodType = {
 export const TimeFilterType = {
   _presentable: {
     "All time": 4000,
-    "1 week": 7,
+    "2 weeks": 14,
     "1 month": 30,
     "6 months": 183,
     "1 year": 365,
