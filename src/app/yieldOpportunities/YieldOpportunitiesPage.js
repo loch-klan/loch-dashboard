@@ -87,6 +87,7 @@ import {
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { DisclaimerIcon } from "../../assets/images/icons";
+import Footer from "../common/footer";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -1563,22 +1564,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
                   />
-                  <p
-                    className="inter-display-medium f-s-12 lh-19"
-                    style={{ fontWeight: "600", marginBottom: "3rem" }}
-                  >
-                    <Image
-                      src={DisclaimerIcon}
-                      className="info-icon"
-                      style={{
-                        height: "12px",
-                        marginTop: "-3px",
-                        marginRight: "3px",
-                      }}
-                    />
-                    Disclaimer: Loch does not endorse any of these projects.
-                    Please conduct your own research.
-                  </p>
+                  <Footer />
                 </>
               )}
             </div>
