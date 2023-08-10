@@ -10,3 +10,8 @@ export { default as CloseIcon } from "./dummyX.svg";
 export { default as DeleteIcon } from "./delete-icon.png";
 export { default as CheckIcon } from "./check.svg";
 export { default as CompassWhiteIcon } from "./compassWhite.svg";
+export { default as ProfileWalletIcon } from "./profileWallet.svg";
+export { default as ProfileProfileIcon } from "./profileProfile.svg";
+export { default as ProfileGlobeIcon } from "./profileGlobe.svg";
+export { default as PencilIcon } from "./pencil.svg";
+export { default as TempIconIcon } from "./tempIcon.svg";

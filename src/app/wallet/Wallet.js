@@ -13,6 +13,7 @@ import {
   SORT_BY_CREATED_ON,
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
+import { ProfileWalletIcon } from "../../assets/images/icons";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import netWorthIcon from "../../assets/images/icons/net-worth.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
@@ -277,7 +278,10 @@ class Wallet extends Component {
         >
           <PageHeader
             title="Wallets"
-            subTitle="Manage all your wallets right here"
+            titleImageUrl={ProfileWalletIcon}
+            titleImageClass="smallerHeadingImages"
+            titleClass="smallerHeading"
+            // subTitle="Manage all your wallets right here"
             btnText={this.props.hidePageHeader ? false : "Add wallet"}
             SecondaryBtn={this.props.hidePageHeader ? false : true}
             handleBtn={this.handleAddModal}
