@@ -52,6 +52,9 @@ function TransactionTable(props) {
             : "No transactions found"
         }
         isLoading={props.isLoading}
+        onPageChange={props.onPageChange}
+        topAccountBlur={props.topAccountBlur}
+        blurButtonClick={props.blurButtonClick}
         // isStickyHead={props?.isStickyHead}
       />
     </div>
