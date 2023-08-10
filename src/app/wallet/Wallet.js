@@ -352,6 +352,8 @@ class Wallet extends Component {
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
+                    tag_name={wallet.tag}
+                    nick_name={wallet.nickname}
                     display_address={wallet.display_address}
                     wallet_amount={wallet.total_value * currency?.rate}
                     wallet_coins={wallet?.chains}
