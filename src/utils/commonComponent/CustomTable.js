@@ -146,20 +146,22 @@ class CustomTable extends BaseReactComponent {
                   )}
                 </AutoSizer>
                 {this.props.topAccountBlur ? (
-                  <div className="topAccountLeaderBoardBlur">
-                    <div className="text-center">
-                      <Image
-                        className="topAccountLeaderBoardBlurLogo"
-                        src={ContributeTrophyIcon}
-                      />
-                      <div className="exit-overlay-body mt-3">
-                        <h6 className="inter-display-medium f-s-25">
-                          Contribute to the community to see more
-                        </h6>
-                        <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center mt-2">
-                          Add an address worth at least $1m to the community
-                          board to view the full list
-                        </p>
+                  <div className="topAccountLeaderBoardBlurContainer">
+                    <div className="topAccountLeaderBoardBlurContainerTwo">
+                      <div className="topAccountLeaderBoardBlur">
+                        <Image
+                          className="topAccountLeaderBoardBlurLogo"
+                          src={ContributeTrophyIcon}
+                        />
+                        <div className="exit-overlay-body">
+                          <h6 className="inter-display-medium f-s-24">
+                            Contribute to the community to see more
+                          </h6>
+                          <p className="inter-display-medium f-s-14 grey-969 mt-2">
+                            Add an address worth at least $1m to the community
+                            board to view the full list
+                          </p>
+                        </div>
                       </div>
                       <Button
                         className="secondary-btn"
