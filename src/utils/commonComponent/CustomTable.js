@@ -150,11 +150,12 @@ class CustomTable extends BaseReactComponent {
                         />
                         <div className="exit-overlay-body">
                           <h6 className="inter-display-medium f-s-24">
-                            Contribute to the community to see more
+                            Contribute to the community to unlock this
+                            listContribute to the community to see more
                           </h6>
                           <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                            Add an address worth at least $1m to the community
-                            board to view the full list
+                            Add a unique address worth at least $1m to view the
+                            full list
                           </p>
                         </div>
                       </div>
