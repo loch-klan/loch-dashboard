@@ -1763,6 +1763,7 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
+                        addWatermark
                       />
                     </div>
                   </Col>
