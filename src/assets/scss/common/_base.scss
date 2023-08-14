@@ -1659,8 +1659,8 @@ form {
 }
 
 .page {
-  padding-left: 13.4rem;
-  padding-right: 13.2rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
   overflow-x: hidden;
   width: 100%;
 }
@@ -1805,6 +1805,14 @@ form {
     }
   }
 
+  .tableWatermark {
+    background: url(../../images/graph-logo.svg) no-repeat center center;
+    background-size: 104px 39px;
+    background-position-y: 48%;
+  }
+  .tableWatermarkMoveUp {
+    background-position-y: 35%;
+  }
   .ReactVirtualized__Table__Grid {
     border-radius: 1.2rem;
 

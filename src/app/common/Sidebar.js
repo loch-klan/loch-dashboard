@@ -81,6 +81,7 @@ import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import DontLoseDataModal from "./DontLoseDataModal";
+import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -236,7 +237,14 @@ function Sidebar(props) {
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
     // Me section
-    if (["/home", "/decentralized-finance", "/profile"].includes(activeTab)) {
+    if (
+      [
+        "/home",
+        "/profile",
+        "/decentralized-finance",
+        "/yield-opportunities",
+      ].includes(activeTab)
+    ) {
       let obj = {
         me: true,
         discover: false,
@@ -272,7 +280,6 @@ function Sidebar(props) {
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
-
     // Discover section
     else if (
       ["/whale-watch", "/watchlist"].includes(activeTab) ||
@@ -944,6 +951,41 @@ function Sidebar(props) {
                             DeFi
                           </NavLink>
                         </li>
+
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/yield-opportunities"
+                                  ? DefiIcon
+                                  : DefiIcon
+                              }
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
+                          </NavLink>
+                        </li>
                         <li>
                           <NavLink
                             exact={true}
@@ -1435,6 +1477,42 @@ function Sidebar(props) {
                 <div className="sidebar-footer">
                   {!isSubmenu.discover && (
                     <ul>
+                      {lochUser ? (
+                        <div
+                          onClick={handleLeave}
+                          className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
+                        >
+                          <div className="sideBarFooterSignInData">
+                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                              <Image
+                                className="sideBarFooterSignInIcon"
+                                src={BlackManIcon}
+                              />
+                            </div>
+                            <div>Signed In</div>
+                          </div>
+                          <span className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13">
+                            <Image
+                              className="sideBarFooterSignedInLeaveIcon"
+                              src={LeaveIcon}
+                            />
+                            <span>Leave</span>
+                          </span>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={handleSigninModal}
+                          className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                        >
+                          <div className="sideBarFooterSignInIconContainer">
+                            <Image
+                              className="sideBarFooterSignInIcon"
+                              src={GreyManIcon}
+                            />
+                          </div>
+                          <div>Sign in now</div>
+                        </div>
+                      )}
                       <li style={{ justifyContent: "space-between" }}>
                         <span
                           onMouseOver={(e) =>
@@ -1451,6 +1529,27 @@ function Sidebar(props) {
                           </Button>
                         </span>
 
+                        {/*                   
+                                <span
+                              // onMouseOver={(e) =>
+                              //   (e.currentTarget.children[0].src = SharePortfolioIcon)
+                              // }
+                              // onMouseLeave={(e) =>
+                              //   (e.currentTarget.children[0].src =
+                              //     SharePortfolioIconWhite)
+                              // }
+                              onClick={handleSigninModal}
+                              style={{ marginRight: "1rem" }}
+                              className="signin"
+                            >
+                              <Image src={SignInIcon} />
+                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                                Sign in
+                              </Button>
+                            </span>
+                          */}
+                      </li>
+                      <li>
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src =
@@ -1468,25 +1567,6 @@ function Sidebar(props) {
                             Share
                           </Button>
                         </span>
-                        {/*                   
-                    <span
-                      // onMouseOver={(e) =>
-                      //   (e.currentTarget.children[0].src = SharePortfolioIcon)
-                      // }
-                      // onMouseLeave={(e) =>
-                      //   (e.currentTarget.children[0].src =
-                      //     SharePortfolioIconWhite)
-                      // }
-                      onClick={handleSigninModal}
-                      style={{ marginRight: "1rem" }}
-                      className="signin"
-                    >
-                      <Image src={SignInIcon} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Sign in
-                      </Button>
-                    </span>
-                   */}
                       </li>
                       {/* <li>
                     <span
@@ -1523,7 +1603,7 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                      <li style={{ justifyContent: "space-between" }}>
+                      {/* <li style={{ justifyContent: "space-between" }}>
                         <span
                           onClick={handleLeave}
                           onMouseOver={(e) =>
@@ -1537,26 +1617,26 @@ function Sidebar(props) {
                           <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                             Leave
                           </Button>
-                        </span>
-                        {/* {!lochUser && activeTab !== "/home" && (
-                    <span
-                      onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = SharePortfolioIcon)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src =
-                          SharePortfolioIconWhite)
-                      }
-                      onClick={handleShareModal}
-                      style={{ marginRight: "1rem" }}
-                    >
-                      <Image src={SharePortfolioIconWhite} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Share
-                      </Button>
-                    </span>
-                  )} */}
-                      </li>
+                        </span> */}
+                      {/* {!lochUser && activeTab !== "/home" && (
+                          <span
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = SharePortfolioIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src =
+                                SharePortfolioIconWhite)
+                            }
+                            onClick={handleShareModal}
+                            style={{ marginRight: "1rem" }}
+                          >
+                            <Image src={SharePortfolioIconWhite} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Share
+                            </Button>
+                          </span>
+                        )} */}
+                      {/* </li> */}
                     </ul>
                   )}
 

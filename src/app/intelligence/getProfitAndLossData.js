@@ -168,10 +168,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
       image: GraphLogoImage,
 
       x: 0,
-      y:
-        parentctx.props.history.location.pathname.substring(1) === "home"
-          ? 41
-          : 22,
+      y: 0,
 
       width: 104,
       height: 39,
