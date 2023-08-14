@@ -16,6 +16,7 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { CoinsIcon } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -26,7 +27,6 @@ import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg
 import SharePortfolioIconWhite from "../../assets/images/icons/SharePortfolioIconWhite.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import StarIcon from "../../assets/images/icons/star-top.svg";
-import TwitterIcon from "../../assets/images/icons/twitter-top.svg";
 import EyeIcon from "../../assets/images/icons/eye.svg";
 import CompassIcon from "../../assets/images/icons/compass.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
@@ -970,11 +970,7 @@ function Sidebar(props) {
                             activeclassname="active"
                           >
                             <Image
-                              src={
-                                activeTab === "/yield-opportunities"
-                                  ? DefiIcon
-                                  : DefiIcon
-                              }
+                              src={CoinsIcon}
                               style={
                                 activeTab === "/yield-opportunities"
                                   ? {
