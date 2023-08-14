@@ -1430,6 +1430,7 @@ class TopAccountPage extends BaseReactComponent {
                     onPageChange={this.onPageChange}
                     topAccountBlur={this.state.communityLeaderboardSelected}
                     blurButtonClick={this.handleAddTopAccounts}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p

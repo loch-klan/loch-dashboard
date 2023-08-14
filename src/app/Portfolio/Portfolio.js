@@ -2310,6 +2310,8 @@ class Portfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                     {/* <div className="m-r-16 profit-chart">

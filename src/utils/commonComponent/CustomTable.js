@@ -108,7 +108,6 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-
               <>
                 <AutoSizer disableHeight>
                   {({ width }) => (
@@ -120,9 +119,13 @@ class CustomTable extends BaseReactComponent {
                       rowCount={tableData.length}
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
-                      gridClassName={
-                      this.props.addWatermark ? "tableWatermark" : ""
-                    }
+                      gridClassName={`${
+                        this.props.addWatermark ? "tableWatermark" : ""
+                      } ${
+                        this.props.addWatermarkMoveUp
+                          ? "tableWatermarkMoveUp"
+                          : ""
+                      }`}
                     >
                       {columnList &&
                         columnList.length > 0 &&
