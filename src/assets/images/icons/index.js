@@ -10,6 +10,7 @@ export { default as AssetChartInflowIcon } from "./assetChartInflow.svg";
 export { default as AssetChartOutflowIcon } from "./assetChartOutflow.svg";
 export { default as BinVectorIcon } from "./binVector.svg";
 export { default as EyeIcon } from "./eyeIcon.svg";
+export { default as CheckGreenIcon } from "./checkGreen.svg";
 export { default as CloseIcon } from "./dummyX.svg";
 export { default as DeleteIcon } from "./delete-icon.png";
 export { default as GreyManIcon } from "./greyMan.svg";

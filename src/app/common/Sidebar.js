@@ -80,6 +80,7 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 
 function Sidebar(props) {
@@ -1806,23 +1807,16 @@ function Sidebar(props) {
       )}
 
       {/* after 15 sec open this */}
+
       {signinPopup ? (
-        <AuthModal
+        <DontLoseDataModal
           show={signinPopup}
           onHide={handleSiginPopup}
           history={history}
-          modalType={"create_account"}
-          iconImage={SignInPopupIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
-          stopUpdate={true}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
 }
