@@ -14,8 +14,6 @@ import {
   START_INDEX,
   SEARCH_BY_ASSETS_IN,
   SEARCH_BY_TEXT,
-  SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
   SORT_BY_TIMESTAMP,
   SORT_BY_FROM_WALLET,
   SORT_BY_TO_WALLET,
@@ -24,34 +22,26 @@ import {
   SORT_BY_USD_VALUE_THEN,
   SORT_BY_TRANSACTION_FEE,
   SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
+  SORT_BY_VALUE,
+  SEARCH_BY_CHAIN_IN,
 } from "../../utils/Constant";
-import { getAllWalletListApi } from "../wallet/Api";
-import { searchTransactionApi, getFilters } from "../intelligence/Api";
+import { searchTransactionApi } from "../intelligence/Api";
+import { getYieldOpportunities } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
-import moment from "moment";
 import {
   FormElement,
   Form,
   CustomTextControl,
   BaseReactComponent,
 } from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  CurrencyType,
-  noExponents,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
+import { noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
-  TransactionHistoryAddress,
   TransactionHistoryAssetFilter,
-  TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
@@ -70,12 +60,8 @@ import {
   TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
-import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { toast } from "react-toastify";
 import FixAddModal from "../common/FixAddModal";
-
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
 import {
@@ -86,7 +72,6 @@ import {
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { DisclaimerIcon } from "../../assets/images/icons";
 import Footer from "../common/footer";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
@@ -106,6 +91,11 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      //YO
+      yieldOpportunitiesList: [],
+      totalPage: 0,
+      //YO
+
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",
@@ -113,7 +103,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      sort: [{ key: SORT_BY_VALUE, value: false }],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
@@ -121,20 +111,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       // methodFilter: [],
       delayTimer: 0,
       condition: cond ? cond : [],
-      tableLoading: true,
+      tableLoading: false,
       tableSortOpt: [
-        {
-          title: "time",
-          up: false,
-        },
-        {
-          title: "from",
-          up: false,
-        },
-        {
-          title: "to",
-          up: false,
-        },
         {
           title: "asset",
           up: false,
@@ -144,19 +122,24 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           up: false,
         },
         {
-          title: "usdThen",
+          title: "usdValue",
+          up: false,
+        },
+
+        {
+          title: "project",
           up: false,
         },
         {
-          title: "usdToday",
+          title: "pool",
           up: false,
         },
         {
-          title: "usdTransaction",
+          title: "tvl",
           up: false,
         },
         {
-          title: "method",
+          title: "apy",
           up: false,
         },
       ],
@@ -212,9 +195,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-    this.props.getFilters(this);
+
     this.props.getAllCoins();
-    // this.props.getCoinRate();
+
     GetAllPlan();
     getUser();
 
@@ -285,27 +268,32 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     data.append("conditions", JSON.stringify(this.state.condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    this.props.getYieldOpportunities(data, page);
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
+    ) {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.data
+          ? this.props.yieldOpportunitiesState.data
+          : [],
+        totalPage: this.props.yieldOpportunitiesState.total_count
+          ? Math.ceil(
+              this.props.yieldOpportunitiesState.total_count / API_LIMIT
+            )
+          : 0,
+        tableLoading: false,
+      });
+    }
+
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
 
-    // console.log("prev", prevPage,"cur", page)
-
-    if (!this.props.commonState.transactionHistory) {
-      this.props.updateWalletListFlag("transactionHistory", true);
-      let tempData = new URLSearchParams();
-      tempData.append("start", 0);
-      tempData.append("conditions", JSON.stringify([]));
-      tempData.append("limit", 50);
-      tempData.append("sorts", JSON.stringify([]));
-      this.props.getAllWalletListApi(tempData, this);
-    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
@@ -358,7 +346,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       });
 
       this.callApi(this.state.currentPage || START_INDEX);
-      this.props.getFilters(this);
     }
   }
 
@@ -393,101 +380,99 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    // console.log("key, value", key, value);
-    if (key === "SEARCH_BY_TIMESTAMP_IN") {
-      const tempIsTimeUsed = this.state.isTimeSearchUsed;
-      TransactionHistoryYearFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        year_filter: value === "allYear" ? "All years" : value,
-        isSearchUsed: tempIsTimeUsed,
-      });
-      this.updateTimer();
-      this.setState({ isTimeSearchUsed: false });
-    } else if (key === "SEARCH_BY_ASSETS_IN") {
-      // console.log("tes", this.props.intelligenceState.assetFilter);
-      let assets = [];
-      // console.log("con", value !== "allAssets");
-      Promise.all([
-        new Promise((resolve) => {
-          // console.log("abc");
-          if (value !== "allAssets") {
-            console.log("test");
-            this.props.intelligenceState?.assetFilter?.map((e) => {
-              if (value?.includes(e.value)) {
-                assets.push(e.label);
-              }
-            });
-          }
-          resolve(); // Resolve the promise once the code execution is finished
-        }),
-      ]).then(() => {
-        // console.log("asset arr", assets, value);
-        const tempIsAssetUsed = this.state.isAssetSearchUsed;
-        TransactionHistoryAssetFilter({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
-          isSearchUsed: tempIsAssetUsed,
-        });
-        this.updateTimer();
-        this.setState({ isAssetSearchUsed: false });
-      });
-    } else if (key === "SEARCH_BY_METHOD_IN") {
-      const tempIsMethodUsed = this.state.isMethodSearchUsed;
-      TransactionHistoryMethodFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        method_filter: value === "allMethod" ? "All method" : value,
-        isSearchUsed: tempIsMethodUsed,
-      });
-      this.updateTimer();
-      this.setState({ isMethodSearchUsed: false });
-    }
-    let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
-    let arr = [...this.state.condition];
-    let search_index = this.state.condition.findIndex(
-      (e) => e.key === SEARCH_BY_TEXT
-    );
-    if (
-      index !== -1 &&
-      value !== "allAssets" &&
-      value !== "allMethod" &&
-      value !== "allYear"
-    ) {
-      // console.log("first if", index);
-      arr[index].value = value;
-    } else if (
-      value === "allAssets" ||
-      value === "allMethod" ||
-      value === "allYear"
-    ) {
-      // console.log("second if", index);
-      if (index !== -1) {
-        arr.splice(index, 1);
-      }
-    } else {
-      // console.log("else", index);
-      let obj = {};
-      obj = {
-        key: key,
-        value: value,
-      };
-      arr.push(obj);
-    }
-    if (search_index !== -1) {
-      if (value === "" && key === SEARCH_BY_TEXT) {
-        arr.splice(search_index, 1);
-      }
-    }
-    // On Filter start from page 0
-    this.props.history.replace({
-      search: `?p=${START_INDEX}`,
-    });
-    this.setState({
-      condition: arr,
-    });
+    //   // console.log("key, value", key, value);
+    //   if (key === "SEARCH_BY_TIMESTAMP_IN") {
+    //     const tempIsTimeUsed = this.state.isTimeSearchUsed;
+    //     TransactionHistoryYearFilter({
+    //       session_id: getCurrentUser().id,
+    //       email_address: getCurrentUser().email,
+    //       year_filter: value === "allYear" ? "All years" : value,
+    //       isSearchUsed: tempIsTimeUsed,
+    //     });
+    //     this.updateTimer();
+    //     this.setState({ isTimeSearchUsed: false });
+    //   } else if (key === "SEARCH_BY_ASSETS_IN") {
+    //     let assets = [];
+    //     Promise.all([
+    //       new Promise((resolve) => {
+    //         // console.log("abc");
+    //         if (value !== "allAssets") {
+    //           console.log("test");
+    //           this.props.intelligenceState?.assetFilter?.map((e) => {
+    //             if (value?.includes(e.value)) {
+    //               assets.push(e.label);
+    //             }
+    //           });
+    //         }
+    //         resolve(); // Resolve the promise once the code execution is finished
+    //       }),
+    //     ]).then(() => {
+    //       // console.log("asset arr", assets, value);
+    //       const tempIsAssetUsed = this.state.isAssetSearchUsed;
+    //       TransactionHistoryAssetFilter({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //         asset_filter: value === "allAssets" ? "All assets" : assets,
+    //         isSearchUsed: tempIsAssetUsed,
+    //       });
+    //       this.updateTimer();
+    //       this.setState({ isAssetSearchUsed: false });
+    //     });
+    //   } else if (key === "SEARCH_BY_METHOD_IN") {
+    //     const tempIsMethodUsed = this.state.isMethodSearchUsed;
+    //     TransactionHistoryMethodFilter({
+    //       session_id: getCurrentUser().id,
+    //       email_address: getCurrentUser().email,
+    //       method_filter: value === "allMethod" ? "All method" : value,
+    //       isSearchUsed: tempIsMethodUsed,
+    //     });
+    //     this.updateTimer();
+    //     this.setState({ isMethodSearchUsed: false });
+    //   }
+    //   let index = this.state.condition.findIndex((e) => e.key === key);
+    //   // console.log("index", index);
+    //   let arr = [...this.state.condition];
+    //   let search_index = this.state.condition.findIndex(
+    //     (e) => e.key === SEARCH_BY_TEXT
+    //   );
+    //   if (
+    //     index !== -1 &&
+    //     value !== "allAssets" &&
+    //     value !== "allMethod" &&
+    //     value !== "allYear"
+    //   ) {
+    //     // console.log("first if", index);
+    //     arr[index].value = value;
+    //   } else if (
+    //     value === "allAssets" ||
+    //     value === "allMethod" ||
+    //     value === "allYear"
+    //   ) {
+    //     // console.log("second if", index);
+    //     if (index !== -1) {
+    //       arr.splice(index, 1);
+    //     }
+    //   } else {
+    //     // console.log("else", index);
+    //     let obj = {};
+    //     obj = {
+    //       key: key,
+    //       value: value,
+    //     };
+    //     arr.push(obj);
+    //   }
+    //   if (search_index !== -1) {
+    //     if (value === "" && key === SEARCH_BY_TEXT) {
+    //       arr.splice(search_index, 1);
+    //     }
+    //   }
+    //   // On Filter start from page 0
+    //   this.props.history.replace({
+    //     search: `?p=${START_INDEX}`,
+    //   });
+    //   this.setState({
+    //     condition: arr,
+    //   });
   };
   onChangeMethod = () => {
     clearTimeout(this.delayTimer);
@@ -503,140 +488,116 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    // console.log(val)
-    let sort = [...this.state.tableSortOpt];
-    let obj = [];
-    sort?.map((el) => {
-      if (el.title === val) {
-        if (val === "time") {
-          obj = [
-            {
-              key: SORT_BY_TIMESTAMP,
-              value: !el.up,
-            },
-          ];
-
-          TransactionHistorySortDate({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "from") {
-          obj = [
-            {
-              key: SORT_BY_FROM_WALLET,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortFrom({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "to") {
-          obj = [
-            {
-              key: SORT_BY_TO_WALLET,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortTo({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "asset") {
-          obj = [
-            {
-              key: SORT_BY_ASSET,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortAsset({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "amount") {
-          obj = [
-            {
-              key: SORT_BY_AMOUNT,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "usdThen") {
-          obj = [
-            {
-              key: SORT_BY_USD_VALUE_THEN,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortUSDAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "usdTransaction") {
-          obj = [
-            {
-              key: SORT_BY_TRANSACTION_FEE,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortUSDFee({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        } else if (val === "method") {
-          obj = [
-            {
-              key: SORT_BY_METHOD,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortMethod({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
-        }
-        el.up = !el.up;
-      } else {
-        el.up = false;
-      }
-    });
-
-    this.setState({
-      sort: obj,
-      tableSortOpt: sort,
-    });
-  };
-
-  copyContent = (text) => {
-    // const text = props.display_address ? props.display_address : props.wallet_account_number
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        toast.success("Copied");
-        // console.log("successfully copied");
-      })
-      .catch(() => {
-        console.log("something went wrong");
-      });
-    // toggleCopied(true)
-  };
-
-  TruncateText = (string) => {
-    if (string?.length > 4) {
-      return string.substring(0, 3) + "..";
-    }
-    return string;
+    // let sort = [...this.state.tableSortOpt];
+    // let obj = [];
+    // sort?.map((el) => {
+    //   if (el.title === val) {
+    //     if (val === "time") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_TIMESTAMP,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortDate({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "from") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_FROM_WALLET,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortFrom({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "to") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_TO_WALLET,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortTo({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "asset") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_ASSET,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortAsset({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "amount") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_AMOUNT,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortAmount({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "usdThen") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_USD_VALUE_THEN,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortUSDAmount({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "usdTransaction") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_TRANSACTION_FEE,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortUSDFee({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     } else if (val === "method") {
+    //       obj = [
+    //         {
+    //           key: SORT_BY_METHOD,
+    //           value: !el.up,
+    //         },
+    //       ];
+    //       TransactionHistorySortMethod({
+    //         session_id: getCurrentUser().id,
+    //         email_address: getCurrentUser().email,
+    //       });
+    //       this.updateTimer();
+    //     }
+    //     el.up = !el.up;
+    //   } else {
+    //     el.up = false;
+    //   }
+    // });
+    // this.setState({
+    //   sort: obj,
+    //   tableSortOpt: sort,
+    // });
   };
 
   handleShare = () => {
@@ -660,109 +621,32 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
-
-    // console.log("share pod", shareLink);
   };
 
   render() {
-    // console.log("value", this.state.methodFilter);
-    const { table, totalPage, totalCount, currentPage, assetPriceList } =
-      this.props.intelligenceState;
-    const { walletList, currency } = this.state;
+    const { yieldOpportunitiesList } = this.state;
     let tableData =
-      table &&
-      table?.map((row) => {
-        let walletFromData = null;
-        let walletToData = null;
-        // console.log("row",row)
-        walletList &&
-          walletList?.map((wallet) => {
-            if (
-              wallet.address?.toLowerCase() ===
-                row.from_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() ===
-                row.from_wallet.address?.toLowerCase()
-            ) {
-              walletFromData = {
-                wallet_metaData: wallet.wallet_metadata,
-                displayAddress: wallet.displayAddress,
-                nickname: wallet?.nickname,
-              };
-            }
-            if (
-              wallet.address?.toLowerCase() ==
-                row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() ==
-                row.to_wallet.address?.toLowerCase()
-            ) {
-              walletToData = {
-                wallet_metaData: wallet.wallet_metadata,
-                displayAddress: wallet.displayAddress,
-                nickname: wallet?.nickname,
-              };
-            }
-          });
-
+      yieldOpportunitiesList &&
+      yieldOpportunitiesList.length > 0 &&
+      yieldOpportunitiesList?.map((row) => {
         return {
-          time: row.timestamp,
-          from: {
-            address: row.from_wallet.address,
-            metaData: walletFromData,
-            wallet_metaData: {
-              symbol: row.from_wallet.wallet_metadata
-                ? row.from_wallet.wallet_metadata.symbol
-                : null,
-              text: row.from_wallet.wallet_metadata
-                ? row.from_wallet.wallet_metadata.name
-                : null,
-            },
-          },
-          to: {
-            address: row.to_wallet.address,
-            // wallet_metaData: row.to_wallet.wallet_metaData,
-            metaData: walletToData,
-            wallet_metaData: {
-              symbol: row.to_wallet.wallet_metadata
-                ? row.to_wallet.wallet_metadata.symbol
-                : null,
-              text: row.to_wallet.wallet_metadata
-                ? row.to_wallet.wallet_metadata.name
-                : null,
-            },
-          },
-          asset: {
-            code: row.asset.code,
-            symbol: row.asset.symbol,
-          },
-          amount: {
-            value: parseFloat(row.asset.value),
-            id: row.asset.id,
-          },
-          usdValueThen: {
-            value: row.asset.value,
-            id: row.asset.id,
-            assetPrice: row.asset_price,
-          },
-          usdValueToday: {
-            value: row.asset.value,
-            id: row.asset.id,
-          },
-          usdTransactionFee: {
-            value: row.transaction_fee,
-            id: row.asset.id,
-          },
-          // method: row.transaction_type
-          method: row.method,
+          asset: row.asset,
+          amount: row.amount,
+          value: row.value,
+          network: row.chain,
+          project: row.project,
+          pool: row.symbol,
+          tvl: row.tvlUsd,
+          apy: row.apy,
         };
       });
-    // console.log('tableData',tableData);
     const columnList = [
       {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="time"
-            onClick={() => this.handleTableSort("time")}
+            id="asset"
+            onClick={() => this.handleTableSort("asset")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Asset
@@ -775,479 +659,11 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             />
           </div>
         ),
-        dataKey: "time",
-        coumnWidth: 0.14,
-        isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
-          if (dataKey === "time") {
-            return moment(rowData.time).format("MM/DD/YY");
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="from"
-            onClick={() => this.handleTableSort("from")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Amount
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "from",
-        coumnWidth: 0.14,
-        isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
-          if (dataKey === "from") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                // text={rowData.from.address}
-                text={
-                  // rowData.from.wallet_metaData?.text
-                  //   ? rowData.from.wallet_metaData?.text +
-                  //     ": " +
-                  //     rowData.from.address
-                  //   : rowData.from.metaData?.displayAddress &&
-                  //     rowData.from.metaData?.displayAddress !==
-                  //       rowData.from.address
-                  //   ? rowData.from.metaData?.displayAddress +
-                  //     ": " +
-                  //     rowData.from.address
-                  //   : rowData.from.metaData?.nickname
-                  //   ? rowData.from.metaData?.nickname +
-                  //     ": " +
-                  //     (rowData.from.wallet_metaData?.text ?
-                  //       (rowData.from.wallet_metaData?.text + ": "):"") +
-                  //     ((rowData.from.metaData?.displayAddress &&
-                  //       rowData.from.metaData?.displayAddress !==
-                  //         rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
-                  //     rowData.from.address
-                  //   : rowData.from.address
-                  (rowData.from.metaData?.nickname
-                    ? rowData.from.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.from.wallet_metaData?.text
-                    ? rowData.from.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.from.metaData?.displayAddress &&
-                  rowData.from.metaData?.displayAddress !== rowData.from.address
-                    ? rowData.from.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.from.address
-                }
-              >
-                {rowData.from.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.from.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                ) : rowData.from.wallet_metaData.symbol ||
-                  rowData.from.wallet_metaData.text ||
-                  rowData.from.metaData?.nickname ? (
-                  rowData.from.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.from.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          // console.log("address", rowData.from.metaData);
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  ) : rowData.from.metaData?.nickname ? (
-                    <span
-                      onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    >
-                      {this.TruncateText(rowData.from.metaData?.nickname)}
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  ) : (
-                    <span
-                      onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    >
-                      {this.TruncateText(rowData.from.wallet_metaData.text)}
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  )
-                ) : rowData.from.metaData?.displayAddress ? (
-                  <span
-                    onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
-                      this.updateTimer();
-                    }}
-                  >
-                    {this.TruncateText(rowData.from.metaData?.displayAddress)}
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                )}
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="to"
-            onClick={() => this.handleTableSort("to")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Value (USD)
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "to",
-        coumnWidth: 0.14,
-        isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
-          // console.log('rowData',rowData);
-          if (dataKey === "to") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  (rowData.to.metaData?.nickname
-                    ? rowData.to.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.to.wallet_metaData?.text
-                    ? rowData.to.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.to.metaData?.displayAddress &&
-                  rowData.to.metaData?.displayAddress !== rowData.to.address
-                    ? rowData.to.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.to.address
-                  // rowData.to.wallet_metaData?.text
-                  //   ? rowData.to.wallet_metaData?.text +
-                  //     ": " +
-                  //     rowData.to.address
-                  //   : rowData.to.metaData?.displayAddress &&
-                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
-                  //   ? rowData.to.metaData?.displayAddress +
-                  //     ": " +
-                  //     rowData.to.address
-                  //   : rowData.to.metaData?.nickname
-                  //   ? (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
-                  //     ": " : "") +
-                  //     (rowData.to.wallet_metaData?.text
-                  //       ? rowData.to.wallet_metaData?.text + ": "
-                  //       : "") +
-                  //     (rowData.to.metaData?.displayAddress &&
-                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
-                  //       ? rowData.to.metaData?.displayAddress + ": "
-                  //       : "") +
-                  //     rowData.to.address
-                  //   : rowData.to.address
-                }
-              >
-                {rowData.to.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.to.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                ) : rowData.to.wallet_metaData.symbol ||
-                  rowData.to.wallet_metaData.text ||
-                  rowData.to.metaData?.nickname ? (
-                  rowData.to.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.to.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  ) : rowData.to.metaData?.nickname ? (
-                    <span
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    >
-                      {this.TruncateText(rowData.to.metaData?.nickname)}
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  ) : (
-                    <span
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    >
-                      {this.TruncateText(rowData.to.wallet_metaData.text)}
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
-                        className="m-l-10 cp copy-icon"
-                        style={{ width: "1rem" }}
-                      />
-                    </span>
-                  )
-                ) : rowData.to.metaData?.displayAddress ? (
-                  <span
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
-                      this.updateTimer();
-                    }}
-                  >
-                    {this.TruncateText(rowData.to.metaData?.displayAddress)}
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
-                    <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
-                  </span>
-                )}
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="asset"
-            onClick={() => this.handleTableSort("asset")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Project
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
         dataKey: "asset",
         coumnWidth: 0.14,
         isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
             return (
@@ -1256,13 +672,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.asset.code}
+                text={rowData.asset ? rowData.asset[0] : ""}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
-                <Image src={rowData.asset.symbol} className="asset-symbol" />
+                <Image src={rowData.asset[1]} className="asset-symbol" />
               </CustomOverlay>
             );
           }
@@ -1276,12 +688,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("amount")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Network
+              Amount
             </span>
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1289,24 +701,61 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         dataKey: "amount",
         coumnWidth: 0.14,
         isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
-            // console.log(value)
-            // return rowData.amount.value?.toFixed(2)
             return (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(noExponents(rowData.amount.value)).toLocaleString(
-                  "en-US"
-                )}
+                text={rowData.amount}
+              >
+                <span>
+                  {Number(noExponents(rowData.amount)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdValue"
+            onClick={() => this.handleTableSort("usdValue")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Value (USD)
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdValue",
+        coumnWidth: 0.14,
+        isCell: true,
+        className: "yeildOppYourPortfolioContainer",
+        headerClassName: "yeildOppYourPortfolioContainer",
+        cell: (rowData, dataKey) => {
+          if (dataKey === "usdValue") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.value}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(noExponents(rowData.amount.value)).toLocaleString(
-                    "en-US"
-                  )}
+                  {Number(rowData.value?.toFixed(2)).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -1317,8 +766,70 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="usdValueThen"
-            onClick={() => this.handleTableSort("usdThen")}
+            id="project"
+            onClick={() => this.handleTableSort("project")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Project
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "project",
+        coumnWidth: 0.14,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "project") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                {rowData.project}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="pool"
+            onClick={() => this.handleTableSort("pool")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Pool
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "pool",
+        coumnWidth: 0.14,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "pool") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                {rowData.pool}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="tvl"
+            onClick={() => this.handleTableSort("tvl")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               TVL
@@ -1331,39 +842,24 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             />
           </div>
         ),
-        dataKey: "usdValueThen",
+        dataKey: "tvl",
         className: "usd-value",
         coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "usdValueThen") {
-            let chain = Object.entries(assetPriceList);
-            let valueThen;
-            let valueToday;
-            chain.find((chain) => {
-              if (chain[0] === rowData.usdValueToday.id) {
-                valueToday =
-                  rowData.usdValueToday.value *
-                    chain[1].quote.USD.price *
-                    currency?.rate || DEFAULT_PRICE;
-              }
-              if (chain[0] === rowData.usdValueThen.id) {
-                valueThen =
-                  rowData.usdValueThen.value *
-                  rowData.usdValueThen.assetPrice *
-                  currency?.rate;
-              }
-            });
-            // console.log('valueToday',valueToday);
-            // console.log('valueThen',valueThen);
+          if (dataKey === "tvl") {
             return (
-              <div className="cost-common-container">
-                <div className="cost-common">
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
-                  </span>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.tvl}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {rowData.tvl}
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },
@@ -1372,56 +868,44 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="usdTransactionFee"
-            onClick={() => this.handleTableSort("usdTransaction")}
+            id="apy"
+            onClick={() => this.handleTableSort("apy")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              APY
+              APY (%)
             </span>
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+                !this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
         ),
-        dataKey: "usdTransactionFee",
+        dataKey: "apy",
         className: "usd-value",
         coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log(rowData)
-          if (dataKey === "usdTransactionFee") {
-            let chain = Object.entries(assetPriceList);
-            let valueToday;
-            let valueThen;
-            chain.find((chain) => {
-              if (chain[0] === rowData.usdTransactionFee.id) {
-                // console.log('chain',chain);
-                valueToday =
-                  rowData.usdTransactionFee.value *
-                    chain[1].quote.USD.price *
-                    currency?.rate || DEFAULT_PRICE;
-                valueThen =
-                  rowData.usdTransactionFee.value *
-                  rowData.usdValueThen.assetPrice *
-                  currency?.rate;
-              }
-            });
+          if (dataKey === "apy") {
             return (
-              <div className="cost-common-container">
-                <div className="cost-common">
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
-                  </span>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.apy}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {Number(noExponents(rowData.apy)).toLocaleString("en-US")}
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },
       },
     ];
+
     return (
       <>
         {/* topbar */}
@@ -1480,8 +964,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               }
               currentPage={"transaction-history"}
               history={this.props.history}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
@@ -1493,15 +975,17 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                   <Col md={4}>
                     <CustomDropdown
                       filtername="All networks"
-                      options={this.props.intelligenceState.methodFilter}
-                      action={SEARCH_BY_METHOD_IN}
+                      options={this.props.OnboardingState.coinsList}
+                      action={SEARCH_BY_CHAIN_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
-                      searchIsUsed={this.methodSearchIsUsed}
+                      searchIsUsed={this.networkSearchIsUsed}
                       isCaptialised
+                      isGreyChain
                     />
                   </Col>
+
                   <Col md={4}>
                     <CustomDropdown
                       filtername="All assets"
@@ -1551,17 +1035,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             </div>
             <div className="transaction-history-table">
               {this.state.tableLoading ? (
-                <Loading />
+                <div className="loadingSizeContainer">
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
                     tableData={tableData}
                     columnList={columnList}
-                    message={"No Transactions Found"}
-                    totalPage={totalPage}
+                    message={"No Yield Opportunities Found"}
+                    totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
-                    page={currentPage}
+                    page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                   />
                   <Footer />
@@ -1578,17 +1064,16 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({
-  // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  yieldOpportunitiesState: state.YieldOpportunitiesState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
-  // getCoinRate,
+  getYieldOpportunities,
   getAllCoins,
-  getFilters,
   setPageFlagDefault,
-  getAllWalletListApi,
   updateWalletListFlag,
 };
 
