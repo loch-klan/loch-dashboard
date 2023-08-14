@@ -53,6 +53,7 @@ function TransactionTable(props) {
         }
         isLoading={props.isLoading}
         addWatermark={props.addWatermark}
+        addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
         topAccountBlur={props.topAccountBlur}
         blurButtonClick={props.blurButtonClick}

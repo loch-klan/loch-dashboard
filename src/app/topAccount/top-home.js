@@ -1848,6 +1848,8 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                   </Col>

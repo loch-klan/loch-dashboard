@@ -1563,6 +1563,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     location={this.props.location}
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
+                    addWatermark
                   />
                   <Footer />
                 </>
