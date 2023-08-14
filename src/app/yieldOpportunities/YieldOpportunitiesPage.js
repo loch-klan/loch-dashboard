@@ -711,10 +711,14 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.amount}
+                text={rowData.amount ? rowData.amount : "-"}
               >
                 <span>
-                  {Number(noExponents(rowData.amount)).toLocaleString("en-US")}
+                  {rowData.amount
+                    ? Number(noExponents(rowData.amount)).toLocaleString(
+                        "en-US"
+                      )
+                    : "-"}
                 </span>
               </CustomOverlay>
             );
@@ -752,10 +756,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.value}
+                text={rowData.value ? rowData.value : "-"}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(rowData.value?.toFixed(2)).toLocaleString("en-US")}
+                  {rowData.value
+                    ? Number(rowData.value?.toFixed(2)).toLocaleString("en-US")
+                    : "-"}
                 </div>
               </CustomOverlay>
             );
@@ -787,7 +793,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           if (dataKey === "project") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                {rowData.project}
+                {rowData.project ? rowData.project : "-"}
               </div>
             );
           }
@@ -818,7 +824,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           if (dataKey === "pool") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                {rowData.pool}
+                {rowData.pool ? rowData.pool : "-"}
               </div>
             );
           }
@@ -857,7 +863,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 text={rowData.tvl}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {rowData.tvl}
+                  {rowData.tvl ? rowData.tvl : "-"}
                 </div>
               </CustomOverlay>
             );
@@ -894,10 +900,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.apy}
+                text={rowData.apy ? rowData.apy : "-"}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(noExponents(rowData.apy)).toLocaleString("en-US")}
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US")
+                    : "-"}
                 </div>
               </CustomOverlay>
             );
