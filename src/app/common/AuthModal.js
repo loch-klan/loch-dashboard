@@ -423,6 +423,14 @@ class AuthModal extends BaseReactComponent {
                 Skip for now
               </p>
             )}
+            {this.props.goToSignUp ? (
+              <p
+                onClick={this.props.goToSignUp}
+                className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"
+              >
+                Don’t have an account yet, click here to Sign up.
+              </p>
+            ) : null}
             <div className="m-b-36 footer">
               <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
                 At Loch, we care intensely about your privacy and pseudonymity.

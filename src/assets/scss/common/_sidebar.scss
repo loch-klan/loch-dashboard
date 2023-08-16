@@ -19,10 +19,7 @@
       }
 
       .sidebar-footer {
-        // padding: 3rem 3rem 0rem;
-        // padding: 3rem 1rem 0rem;
-        padding: 3.4rem 3.4rem 0rem;
-        padding-right: 3.8rem;
+        padding: 2.4rem;
       }
     }
   }
@@ -196,7 +193,6 @@
         justify-content: space-between;
         height: 100%;
         padding-top: 2.5rem;
-
         overflow: auto;
 
         &::-webkit-scrollbar {
@@ -430,7 +426,6 @@
       width: 100%;
       border-top: 0.1rem solid $grey-CAC;
       padding-top: 4rem;
-      padding-left: 1.3rem;
       .sideBarFooterSignInContainer {
         color: $grey-313;
         padding: 1rem;
@@ -447,22 +442,21 @@
         background-color: white;
         &:hover {
           box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
-          color: white;
-          background-color: black;
-          .sideBarFooterSignedInLeaveContainer {
-            svg {
-              fill: white !important;
-              stroke: white !important;
-            }
-            color: white;
+          background-color: rgba(229, 229, 230, 0.5);
+          color: $black-191;
+          .sideBarFooterSignInIconContainer {
+            background-color: white;
           }
         }
 
         .sideBarFooterSignInIconContainer {
+          transition-duration: 300ms;
           margin-right: 0.5rem;
           border: 0.1rem solid $white-E5E;
-          width: 2.5rem;
-          height: 2.5rem;
+          min-width: 2.5rem;
+          min-height: 2.5rem;
+          max-width: 2.5rem;
+          max-height: 2.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -479,6 +473,7 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
+          width: 60%;
         }
         .sideBarFooterSignedInIconContainer {
           background-color: $grey-F2F;

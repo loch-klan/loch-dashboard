@@ -72,6 +72,7 @@ import {
   MenuTopAccountsTH,
   MenuTopAccountsAssetValue,
   MenuTopAccountsNetflow,
+  SignupMenu,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
@@ -98,6 +99,7 @@ function Sidebar(props) {
   const [exportModal, setExportModal] = React.useState(false);
   const [shareModal, setShareModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
+  const [signupModal, setSignupModal] = React.useState(false);
   const [confirmLeave, setConfirmLeave] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [currencyList, setAllCurrencyList] = React.useState([]);
@@ -412,12 +414,15 @@ function Sidebar(props) {
 
   const handleSigninModal = () => {
     setSigninModal(!signinModal);
-    // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
-    //  MenuShare({
-    //    session_id: getCurrentUser().id,
-    //    email_address: getCurrentUser().email,
-    //  });
+
     SigninMenu({
+      session_id: getCurrentUser().id,
+    });
+  };
+  const handleSignUpModal = () => {
+    setSigninModal(false);
+    setSignupModal(!signupModal);
+    SignupMenu({
       session_id: getCurrentUser().id,
     });
   };
@@ -1447,7 +1452,15 @@ function Sidebar(props) {
                                 src={BlackManIcon}
                               />
                             </div>
-                            <div>Signed In</div>
+                            <div className="dotDotText">
+                              {lochUser.first_name
+                                ? `${lochUser.first_name} ${
+                                    lochUser.last_name
+                                      ? lochUser.last_name.slice(0, 1) + "."
+                                      : ""
+                                  }`
+                                : "Signed In"}
+                            </div>
                           </div>
                           <span className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13">
                             <Image
@@ -1468,7 +1481,7 @@ function Sidebar(props) {
                               src={GreyManIcon}
                             />
                           </div>
-                          <div>Sign in now</div>
+                          <div>Sign in / up</div>
                         </div>
                       )}
                       <li style={{ justifyContent: "space-between" }}>
@@ -1526,6 +1539,24 @@ function Sidebar(props) {
                           </Button>
                         </span>
                       </li>
+                      {!lochUser ? (
+                        <li style={{ justifyContent: "space-between" }}>
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                        </li>
+                      ) : null}
                       {/* <li>
                     <span
                       onMouseOver={(e) =>
@@ -1561,21 +1592,6 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                      {/* <li style={{ justifyContent: "space-between" }}>
-                        <span
-                          onClick={handleLeave}
-                          onMouseOver={(e) =>
-                            (e.currentTarget.children[0].src = LeaveBlackIcon)
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.children[0].src = LeaveIcon)
-                          }
-                        >
-                          <Image src={LeaveIcon} />
-                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                            Leave
-                          </Button>
-                        </span> */}
                       {/* {!lochUser && activeTab !== "/home" && (
                           <span
                             onMouseOver={(e) =>
@@ -1759,6 +1775,24 @@ function Sidebar(props) {
           description="Get right back into your account"
           stopUpdate={true}
           tracking="Sign in button"
+          goToSignUp={handleSignUpModal}
+        />
+      ) : (
+        ""
+      )}
+      {signupModal ? (
+        <ExitOverlay
+          show={signupModal}
+          onHide={handleSignUpModal}
+          history={history}
+          modalType={"exitOverlay"}
+          handleRedirection={() => {
+            resetUser();
+            setTimeout(function () {
+              props.history.push("/welcome");
+            }, 3000);
+          }}
+          signup={true}
         />
       ) : (
         ""

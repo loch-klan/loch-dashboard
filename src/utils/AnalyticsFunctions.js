@@ -2615,6 +2615,13 @@ export const SigninMenu = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const SignupMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign up";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //  Menu: Sign in: email added - done
 export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
