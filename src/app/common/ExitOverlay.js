@@ -1730,7 +1730,7 @@ class ExitOverlay extends BaseReactComponent {
               ) : (
                 <div className="exit-overlay-body">
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    Don’t lose your data
+                    {this.props.signup ? "Sign up" : " Don’t lose your data"}
                   </h6>
                   {!this.props?.signup ? (
                     <>
