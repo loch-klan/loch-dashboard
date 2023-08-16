@@ -1,3 +1,132 @@
+.sidebarCustonDontLoseDataModalContainerTwo {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 9rem;
+  pointer-events: none;
+  .sidebarCustonDontLoseDataModalContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    padding-bottom: 4rem;
+    .sidebarCustonDontLoseDataModal {
+      pointer-events: all;
+      cursor: grab;
+      padding: 0;
+
+      .modal-dialog {
+        margin: 0;
+        .modal-content {
+          .sidebarModalBody {
+            padding: 2rem !important;
+          }
+        }
+      }
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .sidebarModalCustom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+        0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+      border-radius: 1.2rem;
+      .custom-form-error {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        color: $red;
+        font-size: 1rem;
+        line-height: 19px;
+        margin-top: 5px;
+        margin-bottom: 1rem;
+      }
+      .modal-content {
+        width: 88rem !important;
+      }
+      .sidebarModalBody {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 3rem !important;
+        .email-section {
+          flex: 1;
+          margin-bottom: 0 !important;
+          padding: 0 2rem;
+
+          .save-btn-section {
+            .save-btn {
+              padding: 0 3rem !important;
+              height: 100%;
+              margin: 0 !important;
+            }
+          }
+          .form-group {
+            flex: 1;
+            .form-control {
+              font-size: 16px !important;
+              min-height: auto !important;
+              height: auto !important;
+              width: 100% !important;
+              padding: 1rem 2rem !important;
+            }
+          }
+        }
+        .closebtnContainer {
+          height: 4.5rem;
+          width: 4.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.4s ease;
+          padding: 0.3rem;
+          .checkbtn {
+            .checkbtnIcon {
+              height: 1.5rem;
+              width: 1.5rem;
+            }
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $light-green-background;
+            border-radius: 5rem;
+            cursor: pointer;
+          }
+          .closebtn {
+            .closebtnIcon {
+              height: 1.8rem;
+              width: 1.8rem;
+            }
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $drop-button-hover;
+            border-radius: 5rem;
+            cursor: pointer;
+          }
+          &:hover {
+            padding: 0rem;
+          }
+        }
+      }
+    }
+  }
+}
 .sidebarModal {
   position: absolute;
   bottom: 0;
@@ -97,6 +226,7 @@
   top: 0;
   background-color: $secondary;
   width: 27.2rem;
+  z-index: 98;
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;

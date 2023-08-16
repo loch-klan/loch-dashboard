@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   Container,
@@ -94,6 +94,7 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -609,6 +610,25 @@ function Sidebar(props) {
   const handleClose = () => {
     setDiscoverPopup(false);
   };
+  const trackPos = (data) => {
+    if (data) {
+      setDragPosition({ x: data.x, y: data.y });
+
+      window.sessionStorage.setItem(
+        "floatingModalPosition",
+        JSON.stringify({ x: data.x, y: data.y })
+      );
+    }
+  };
+  useEffect(() => {
+    let floatingModalPosition = window.sessionStorage.getItem(
+      "floatingModalPosition"
+    );
+    if (floatingModalPosition) {
+      setDragPosition(JSON.parse(floatingModalPosition));
+    }
+  }, []);
+
   return (
     <div className="sidebar-section">
       {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
@@ -1806,6 +1826,8 @@ function Sidebar(props) {
 
       {signinPopup ? (
         <DontLoseDataModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
           show={signinPopup}
           onHide={handleSiginPopup}
           history={history}
