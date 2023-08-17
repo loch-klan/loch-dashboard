@@ -39,6 +39,9 @@ export const GROUP_BY_YEAR = "GROUP_BY_YEAR";
 export const GROUP_BY_DATE = "GROUP_BY_DATE";
 export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 
+// Yield Opportunities
+export const SORT_BY_VALUE = "SORT_BY_VALUE";
+
 // Watch List
 export const SORT_BY_ADDRESS = "SORT_BY_ADDRESS";
 export const SORT_BY_ANALYSED = "SORT_BY_ANALYSED";

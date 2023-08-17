@@ -9,7 +9,7 @@ import {
   CustomTextControl,
 } from "../../utils/form";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import backIcon from "../../assets/images/icons/back-icon.svg";
+import backIcon from "../../assets/images/icons/backIcon.svg";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -54,7 +54,7 @@ class AskEmailModal extends BaseReactComponent {
     data.append("email", this.state.email);
     data.append("signed_up_from", "Email added after metamask connect");
 
-    updateUser(data, this);
+    this.props.updateUser(data, this);
   };
 
   render() {
@@ -174,7 +174,9 @@ class AskEmailModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateUser,
+};
 AskEmailModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AskEmailModal);

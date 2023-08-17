@@ -105,7 +105,13 @@
         flex-direction: column;
         align-items: center;
         padding: 0rem 15.5rem;
-
+        .goToSingUp {
+          transition-duration: 300ms;
+          cursor: pointer;
+          &:hover {
+            color: $primary;
+          }
+        }
         .skip-link {
           &:hover {
             color: $primary;

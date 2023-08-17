@@ -967,7 +967,13 @@ export const VerifyEmail = (data, ctx) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                if (ctx.emailIsVerified) {
+                  setTimeout(() => {
+                    UpdateUserDetails(userdata, ctx);
+                  }, 2000);
+                } else {
+                  UpdateUserDetails(userdata, ctx);
+                }
               } else {
                 // console.log("welcome upgrade signin")
                 let obj = JSON.parse(localStorage.getItem("lochUser"));
@@ -1076,7 +1082,11 @@ export const VerifyEmail = (data, ctx) => {
           }
         );
         if (isOptValid) {
-          toast.success(`Email verified`);
+          if (ctx.emailIsVerified) {
+            ctx.emailIsVerified();
+          } else {
+            toast.success(`Email verified`);
+          }
         }
 
         // console.log("user id ", userId)

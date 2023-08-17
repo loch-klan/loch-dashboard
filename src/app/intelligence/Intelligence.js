@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IntelWelcomeCard from "./IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
@@ -52,6 +51,9 @@ import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { InflowOutflowIcon } from "../../assets/images/icons";
+import InflowOutflowCharSlider from "./InflowOutflowChartSlider";
+import InflowOutflowChart from "./InflowOutflowChart";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -96,8 +98,19 @@ class Intelligence extends Component {
       isGraphLoading: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
@@ -721,7 +734,6 @@ class Intelligence extends Component {
               updateTimer={this.updateTimer}
             />
 
-            <IntelWelcomeCard history={this.props.history} />
             <div className="insights-image m-b-60">
               <PageHeader
                 title="Insights"
@@ -971,6 +983,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
+              <InflowOutflowChart />
               {/* footer */}
               <Footer />
             </div>

@@ -1,3 +1,33 @@
+.inflowOutflowChartAnnotationContainer {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 100%;
+  transform: translateY(50%);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .inflowOutflowChartAnnotation {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    // HOVER PART
+    // &:hover + .inflowOutflowChartAnnotationBox {
+    //   display: block;
+    // }
+  }
+  .inflowOutflowChartAnnotationBox {
+    width: 25rem;
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%) translateX(100%);
+    right: 0;
+    transition-duration: 300ms;
+    display: none;
+  }
+}
 .intelligence-page-section {
   display: flex;
 
@@ -73,7 +103,7 @@
               .lightpurple {
                 background-color: $purple-E3C;
               }
-              .lightgreen{
+              .lightgreen {
                 background-color: #b1ffde;
               }
               .info-detail {
@@ -240,34 +270,31 @@
           flex-direction: column;
           padding: 2rem;
 
-          .RightSection{
+          .RightSection {
             width: 100%;
             margin-top: 2rem;
           }
         }
 
+        .InfoCard {
+          justify-content: center;
 
-        .InfoCard{
-             justify-content: center;
+          .InfoItem {
+            display: flex;
+            align-items: start;
+            justify-content: start;
+            flex-direction: column;
 
-             .InfoItem {
-          display: flex;
-          align-items: start;
-          justify-content: start;
-          flex-direction: column;
+            .title {
+              width: 100%;
+            }
 
-          .title {
-            width: 100%;
-          }
-
-          .description {
-            margin-top: 1rem;
-            width: 100%;
+            .description {
+              margin-top: 1rem;
+              width: 100%;
+            }
           }
         }
-        }
-        
-
       }
     }
     .insights-image {
