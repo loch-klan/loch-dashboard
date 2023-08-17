@@ -664,14 +664,14 @@
         margin-bottom: 2rem;
         border-radius: 0.8rem;
         transition-duration: 300ms;
-        border: 1.5px $white-E5E solid;
+        border: 1.3px $white-E5E solid;
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
         background-color: white;
         &:hover {
-          box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
-          background-color: rgba(229, 229, 230, 0.5);
+          box-shadow: none;
+          background-color: $grey-F2F;
           color: $black-191;
           .sideBarFooterSignInIconContainer {
             background-color: white;
