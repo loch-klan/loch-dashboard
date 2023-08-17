@@ -83,6 +83,7 @@ import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
+import { useSelector } from "react-redux";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -419,8 +420,10 @@ function Sidebar(props) {
       email_address: getCurrentUser().email,
     });
   };
+  useSelector((state) => state.LochUserState);
 
   const handleSigninModal = () => {
+    setSignupModal(false);
     setSigninModal(!signinModal);
 
     SigninMenu({
@@ -1851,6 +1854,7 @@ function Sidebar(props) {
             }, 3000);
           }}
           signup={true}
+          goToSignIn={handleSigninModal}
         />
       ) : (
         ""
