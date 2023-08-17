@@ -361,47 +361,6 @@ export default function WelcomeCard(props) {
             )}
           </div>
         )}
-        {!lochUser && (
-          <div
-            style={{
-              position: "absolute",
-              right: "29rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <span onClick={handleSigninModal} className="signin">
-              {/* <Image src={SignInIcon} /> */}
-              <Button
-                className="inter-display-medium f-s-16 lh-19 navbar-button"
-                style={{
-                  paddingTop: "0rem",
-                  paddingBottom: "0rem",
-                }}
-              >
-                Sign in
-              </Button>
-            </span>
-            {/* <span className="inter-display-medium f-s-16 lh-19 navbar-button">
-              /
-            </span> */}
-            <span
-              onClick={handleSignUpModal}
-              // style={{ position: "absolute", right: "29rem" }}
-              className="signin"
-            >
-              <Button
-                className="inter-display-medium f-s-16 lh-19 navbar-button"
-                style={{
-                  paddingTop: "0rem",
-                  paddingBottom: "0rem",
-                }}
-              >
-                Sign up
-              </Button>
-            </span>
-          </div>
-        )}
       </div>
       {connectModal ? (
         <ConnectModal

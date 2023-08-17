@@ -1,3 +1,230 @@
+.sidebarCustonDontLoseDataModalContainerTwo {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+  .sidebarCustonDontLoseDataModalContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    padding-bottom: 4rem;
+    .sidebarCustonDontLoseDataModal {
+      pointer-events: all;
+      cursor: grab;
+      padding: 0;
+
+      .modal-dialog {
+        margin: 0;
+
+        .modal-content {
+          border-color: white;
+          transition-duration: 300ms;
+          &:active {
+            border-color: rgba(0, 0, 0, 0.2);
+          }
+          .sidebarModalBody {
+            padding: 2rem !important;
+          }
+        }
+      }
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .sidebarModalCustom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+        0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+      border-radius: 1.2rem;
+      .custom-form-error {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        color: $red;
+        font-size: 1rem;
+        line-height: 19px;
+        margin-top: 5px;
+        margin-bottom: 1rem;
+      }
+      .modal-content {
+        width: 88rem !important;
+      }
+      .sidebarModalBody {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 3rem !important;
+        .email-section {
+          flex: 1;
+          margin-bottom: 0 !important;
+          padding: 0 2rem;
+
+          .save-btn-section {
+            .save-btn {
+              padding: 0 3rem !important;
+              height: 100%;
+              margin: 0 !important;
+            }
+          }
+          .form-group {
+            flex: 1;
+            .form-control {
+              font-size: 16px !important;
+              min-height: auto !important;
+              height: auto !important;
+              width: 100% !important;
+              padding: 1rem 2rem !important;
+            }
+          }
+        }
+        .closebtnContainer {
+          height: 4.5rem;
+          width: 4.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.4s ease;
+          padding: 0.3rem;
+          .checkbtn {
+            .checkbtnIcon {
+              height: 1.5rem;
+              width: 1.5rem;
+            }
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $light-green-background;
+            border-radius: 5rem;
+            cursor: pointer;
+          }
+          .closebtn {
+            .closebtnIcon {
+              height: 1.8rem;
+              width: 1.8rem;
+            }
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $drop-button-hover;
+            border-radius: 5rem;
+            cursor: pointer;
+          }
+          &:hover {
+            padding: 0rem;
+          }
+        }
+      }
+    }
+  }
+}
+.sidebarModal {
+  position: absolute;
+  bottom: 0;
+  min-width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3rem;
+  .custom-form-error {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    color: $red;
+    font-size: 1rem;
+    line-height: 19px;
+    margin-top: 5px;
+    margin-bottom: 1rem;
+  }
+  .modal-content {
+    width: 88rem !important;
+  }
+  .sidebarModalBody {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 3rem !important;
+    .email-section {
+      flex: 1;
+      margin-bottom: 0 !important;
+      padding: 0 2rem;
+
+      .save-btn-section {
+        .save-btn {
+          padding: 0 3rem !important;
+          height: 100%;
+          margin: 0 !important;
+        }
+      }
+      .form-group {
+        flex: 1;
+        .form-control {
+          font-size: 16px !important;
+          min-height: auto !important;
+          height: auto !important;
+          width: 100% !important;
+          padding: 1rem 2rem !important;
+        }
+      }
+    }
+    .closebtnContainer {
+      height: 5.2rem;
+      width: 5.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease;
+      padding: 0.3rem;
+      .checkbtn {
+        .checkbtnIcon {
+          height: 1.6rem;
+          width: 1.6rem;
+        }
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $light-green-background;
+        border-radius: 5rem;
+        cursor: pointer;
+      }
+      .closebtn {
+        .closebtnIcon {
+          height: 2rem;
+          width: 2rem;
+        }
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $drop-button-hover;
+        border-radius: 5rem;
+        cursor: pointer;
+      }
+      &:hover {
+        padding: 0rem;
+      }
+    }
+  }
+}
 .sidebar-section {
   // position: absolute;
   position: fixed;
@@ -5,6 +232,7 @@
   top: 0;
   background-color: $secondary;
   width: 27.2rem;
+  z-index: 100;
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;
@@ -19,10 +247,7 @@
       }
 
       .sidebar-footer {
-        // padding: 3rem 3rem 0rem;
-        // padding: 3rem 1rem 0rem;
-        padding: 3.4rem 3.4rem 0rem;
-        padding-right: 3.8rem;
+        padding: 2.4rem;
       }
     }
   }
@@ -63,6 +288,7 @@
         position: relative;
         height: 9rem;
         box-sizing: border-box;
+        width: 102.4%;
       }
     }
     .currency-wrapper {
@@ -196,7 +422,6 @@
         justify-content: space-between;
         height: 100%;
         padding-top: 2.5rem;
-
         overflow: auto;
 
         &::-webkit-scrollbar {
@@ -430,7 +655,66 @@
       width: 100%;
       border-top: 0.1rem solid $grey-CAC;
       padding-top: 4rem;
-      padding-left: 1.3rem;
+      .sideBarFooterSignInContainer {
+        color: $grey-313;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 0.8rem;
+        transition-duration: 300ms;
+        border: 1.5px $white-E5E solid;
+        cursor: pointer;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        background-color: white;
+        &:hover {
+          box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
+          background-color: rgba(229, 229, 230, 0.5);
+          color: $black-191;
+          .sideBarFooterSignInIconContainer {
+            background-color: white;
+          }
+        }
+
+        .sideBarFooterSignInIconContainer {
+          transition-duration: 300ms;
+          margin-right: 0.5rem;
+          border: 0.1rem solid $white-E5E;
+          min-width: 2.5rem;
+          min-height: 2.5rem;
+          max-width: 2.5rem;
+          max-height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 0.8rem;
+          background-color: white;
+          .sideBarFooterSignInIcon {
+            height: 1.3rem;
+          }
+        }
+      }
+      .sideBarFooterSignedInContainer {
+        justify-content: space-between;
+        .sideBarFooterSignInData {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          width: 60%;
+        }
+        .sideBarFooterSignedInIconContainer {
+          background-color: $grey-F2F;
+        }
+        .sideBarFooterSignedInLeaveContainer {
+          color: $grey-B0B;
+          .sideBarFooterSignedInLeaveIcon {
+            width: 1.6rem;
+            margin-right: 0.5rem;
+          }
+        }
+      }
       ul {
         li {
           // margin-bottom: 2.8rem;
