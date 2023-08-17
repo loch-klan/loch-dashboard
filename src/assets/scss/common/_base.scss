@@ -1805,6 +1805,14 @@ form {
     }
   }
 
+  .tableWatermark {
+    background: url(../../images/graph-logo.svg) no-repeat center center;
+    background-size: 104px 39px;
+    background-position-y: 48%;
+  }
+  .tableWatermarkMoveUp {
+    background-position-y: 35%;
+  }
   .ReactVirtualized__Table__Grid {
     border-radius: 1.2rem;
 

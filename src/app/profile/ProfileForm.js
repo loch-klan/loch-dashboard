@@ -186,17 +186,17 @@ class ProfileForm extends BaseReactComponent {
   render() {
     return (
       <div className="profile-form">
-        <div className="form-title">
+        {/* <div className="form-title">
           <Image src={profileInfoIcon} className="m-r-12" />
           <p className="inter-display-semi-bold f-s-16 lh-19">
             Basic Information
           </p>
-        </div>
+        </div> */}
         <div className="form">
           <Form onValidSubmit={this.onValidSubmit}>
-            <div className="m-b-13">
+            <div>
               <Row>
-                <Col md={3} className="p-r-0">
+                <Col md={4} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
                     label="First Name"
@@ -213,7 +213,7 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={3} className="p-r-0">
+                <Col md={4} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
                     label="Last Name"
@@ -230,7 +230,7 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={3} className="p-r-0">
+                <Col md={4} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "email")}
                     label="Email"
@@ -247,7 +247,9 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={3}>
+              </Row>
+              <Row>
+                <Col md={4}>
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
@@ -263,6 +265,23 @@ class ProfileForm extends BaseReactComponent {
                       }
                     }
                   />
+                </Col>
+                <Col md={4}></Col>
+                <Col md={4}>
+                  <div className="formBtnContainer">
+                    <Button
+                      className="inter-display-semi-bold f-s-14 lh-24 black-191  submit-button"
+                      type="submit"
+                      onClick={() =>
+                        ProfileSaved({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                        })
+                      }
+                    >
+                      Save changes
+                    </Button>
+                  </div>
                 </Col>
               </Row>
             </div>
@@ -308,21 +327,6 @@ class ProfileForm extends BaseReactComponent {
                 </Col>
               </Row>
             </div> */}
-
-            <div>
-              <Button
-                className="inter-display-semi-bold f-s-14 lh-24 black-191  submit-button"
-                type="submit"
-                onClick={() =>
-                  ProfileSaved({
-                    email_address: getCurrentUser().email,
-                    session_id: getCurrentUser().id,
-                  })
-                }
-              >
-                Save changes
-              </Button>
-            </div>
           </Form>
           {/* {this.state.MetaAddress !== "" ? (
             <p className="inter-display-semi-bold f-s-13 lh-15 m-t-16">

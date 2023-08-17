@@ -31,12 +31,20 @@ class AssetValueEmailModal extends BaseReactComponent {
       show: props.show,
       onHide: props.onHide,
       modalType: "Email",
+      isUserEmail: false,
     };
   }
 
   componentDidMount() {
     // set popup active
     localStorage.setItem("isPopupActive", true);
+    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    if (userDetails.email) {
+      this.setState({
+        email: userDetails.email,
+        isUserEmail: true,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -102,10 +110,17 @@ class AssetValueEmailModal extends BaseReactComponent {
             style={{ padding: "0rem 10.5rem" }}
           >
             <h6 className="inter-display-medium f-s-20 lh-24 ">Get notified</h6>
-            <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-              Add your email address so we can notify you <br /> when all your
-              data is loaded
-            </p>
+            {this.state.isUserEmail ? (
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                We will notify you when all your
+                <br /> data is loaded
+              </p>
+            ) : (
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                Add your email address so we can notify you <br /> when all your
+                data is loaded
+              </p>
+            )}
 
             <div className="email-section auth-modal">
               {/* For Signin or Signup */}
@@ -139,7 +154,7 @@ class AssetValueEmailModal extends BaseReactComponent {
                     type="submit"
                     style={{ padding: "1.7rem 3.1rem" }}
                   >
-                    Save
+                    {this.state.isUserEmail ? "Send" : "Save"}
                   </Button>
                 </div>
               </Form>

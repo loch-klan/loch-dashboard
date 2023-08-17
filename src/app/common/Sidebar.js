@@ -16,6 +16,7 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { CoinsIcon } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -26,7 +27,6 @@ import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg
 import SharePortfolioIconWhite from "../../assets/images/icons/SharePortfolioIconWhite.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import StarIcon from "../../assets/images/icons/star-top.svg";
-import TwitterIcon from "../../assets/images/icons/twitter-top.svg";
 import EyeIcon from "../../assets/images/icons/eye.svg";
 import CompassIcon from "../../assets/images/icons/compass.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
@@ -81,6 +81,7 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
 
@@ -95,6 +96,7 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -239,7 +241,14 @@ function Sidebar(props) {
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
     // Me section
-    if (["/home", "/decentralized-finance", "/profile"].includes(activeTab)) {
+    if (
+      [
+        "/home",
+        "/profile",
+        "/decentralized-finance",
+        "/yield-opportunities",
+      ].includes(activeTab)
+    ) {
       let obj = {
         me: true,
         discover: false,
@@ -275,7 +284,6 @@ function Sidebar(props) {
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
-
     // Discover section
     else if (
       ["/whale-watch", "/watchlist"].includes(activeTab) ||
@@ -610,6 +618,25 @@ function Sidebar(props) {
   const handleClose = () => {
     setDiscoverPopup(false);
   };
+  const trackPos = (data) => {
+    if (data) {
+      setDragPosition({ x: data.x, y: data.y });
+
+      window.sessionStorage.setItem(
+        "floatingModalPosition",
+        JSON.stringify({ x: data.x, y: data.y })
+      );
+    }
+  };
+  useEffect(() => {
+    let floatingModalPosition = window.sessionStorage.getItem(
+      "floatingModalPosition"
+    );
+    if (floatingModalPosition) {
+      setDragPosition(JSON.parse(floatingModalPosition));
+    }
+  }, []);
+
   return (
     <div className="sidebar-section">
       {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
@@ -950,6 +977,37 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
+                          </NavLink>
+                        </li>
+
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={CoinsIcon}
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
                           </NavLink>
                         </li>
                         <li>
@@ -1803,23 +1861,18 @@ function Sidebar(props) {
       )}
 
       {/* after 15 sec open this */}
+
       {signinPopup ? (
-        <AuthModal
+        <DontLoseDataModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
           show={signinPopup}
           onHide={handleSiginPopup}
           history={history}
-          modalType={"create_account"}
-          iconImage={SignInPopupIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
-          stopUpdate={true}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
 }

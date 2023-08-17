@@ -23,6 +23,9 @@ const Pagination = (props) => {
     }
   };
   const onSubumit = (props) => {
+    if (props.onPageChange) {
+      props.onPageChange();
+    }
     var pageNo = document.getElementById("pageNo");
     if (input <= 0) {
       const params = new URLSearchParams(props.location.search);
@@ -42,6 +45,9 @@ const Pagination = (props) => {
   };
 
   const onLeftClick = (props) => {
+    if (props.onPageChange) {
+      props.onPageChange();
+    }
     var pageNo = document.getElementById("pageNo");
     //  TransactionHistoryPageBack({
     //    session_id: getCurrentUser().id,
@@ -63,6 +69,9 @@ const Pagination = (props) => {
   };
 
   const onNextClick = (props) => {
+    if (props.onPageChange) {
+      props.onPageChange();
+    }
     var pageNo = document.getElementById("pageNo");
     // TransactionHistoryPageNext({
     //   session_id: getCurrentUser().id,
