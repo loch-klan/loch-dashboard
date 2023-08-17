@@ -16,11 +16,13 @@ import {
   WatchListLoadingReducer,
   WatchListReducer,
 } from "../app/watchlist/redux/WatchListReducer";
+import LochUserReducer from "../app/profile/LochUserReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
   DefiState: DefiReducer,
   HeaderState: HeaderReducer,
+  LochUserState: LochUserReducer,
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,

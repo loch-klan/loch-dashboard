@@ -24,7 +24,7 @@ import {
   SigninWallet,
   VerifyEmail,
 } from "./Api.js";
-import { updateUser } from "../profile/Api";
+
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -428,7 +428,7 @@ class AuthModal extends BaseReactComponent {
                 onClick={this.props.goToSignUp}
                 className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"
               >
-                Don’t have an account yet, click here to Sign up.
+                Don’t have an account yet? Click here to sign up.
               </p>
             ) : null}
             <div className="m-b-36 footer">

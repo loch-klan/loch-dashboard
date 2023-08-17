@@ -62,8 +62,6 @@ class AssetValueEmailModal extends BaseReactComponent {
         email_address: this.state.email,
       });
     }
-
-    // updateUser(data, this);
   };
 
   render() {
