@@ -871,6 +871,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p
