@@ -1501,17 +1501,7 @@ export const ProfitLossEV = ({ session_id, email_address }) => {
   //console.log("Home Page:Profit and Loss expanded view");
 };
 
-//97.Home Page:Profit and Loss hover
-export const ProfitLossHover = ({ session_id, email_address, hover_value }) => {
-  const event_name = "Home:Profit and Loss hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "bar hovered": hover_value,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Home Page:Profit and Loss hover");
-};
+
 
 //97.Home Page:counterparty fees hover
 export const HomeCounterPartyHover = ({
@@ -2817,8 +2807,37 @@ export const topNetflowAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 
-// Intelligence:netflows: inflows hover - done
+export const homeInflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: inflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "inflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
+export const homeOutflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: outflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "outflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const homeNetHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: net hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "net hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+// Intelligence:netflows: inflows hover - done
 export const netflowInflowHover = ({ session_id, email_address, hovered }) => {
   const event_name = "Intelligence:netflows: inflows hover";
   const eventProperties = {

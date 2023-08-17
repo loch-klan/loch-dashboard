@@ -99,8 +99,19 @@ class Intelligence extends Component {
       isGraphLoading: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
