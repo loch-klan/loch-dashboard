@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IntelWelcomeCard from "./IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
@@ -735,7 +734,6 @@ class Intelligence extends Component {
               updateTimer={this.updateTimer}
             />
 
-            <IntelWelcomeCard history={this.props.history} />
             <div className="insights-image m-b-60">
               <PageHeader
                 title="Insights"
