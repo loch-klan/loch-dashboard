@@ -11,6 +11,7 @@ export const DEFAULT_COLOR = "#2c2c2c";
 export const BASE_URL_S3 = process.env.REACT_APP_BASE_URL_S3;
 export const BASE_GA_KEY = process.env.REACT_APP_GOOGLE_ANALYTICS_KEY;
 
+export const SORT_BY_VALUE = "SORT_BY_VALUE";
 export const SEARCH_IN_ID = "SEARCH_IN_ID";
 export const SEARCH_BY_ACTIVE = "SEARCH_BY_ACTIVE";
 export const SEARCH_BY_CHAIN_IN = "SEARCH_BY_CHAIN_IN";
