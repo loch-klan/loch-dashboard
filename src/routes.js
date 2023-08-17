@@ -33,6 +33,7 @@ import topInsights from "./app/topAccount/top-insights";
 import topCosts from "./app/topAccount/top-costs";
 import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
+import TransactionFeedPage from "./app/transactionFeed/TransactionFeedPage";
 const routes = [
   {
     path: "/",
@@ -172,6 +173,12 @@ const routes = [
     name: "Decentralized Finance",
     type: PrivateRoute,
     component: topDefi,
+  },
+  {
+    path: "/transaction-feed",
+    name: "Transaction feed",
+    type: PrivateRoute,
+    component: TransactionFeedPage,
   },
   {
     path: "/twitter-influencers",
