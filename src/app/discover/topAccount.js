@@ -1351,6 +1351,7 @@ class TopAccountPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p

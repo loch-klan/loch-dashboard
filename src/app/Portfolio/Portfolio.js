@@ -1619,6 +1619,13 @@ class Portfolio extends BaseReactComponent {
 
     // Cost basis
     let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    if (tableDataCostBasis.length < 6) {
+      const tempTableDataCostBasis = [...tableDataCostBasis];
+      for (let i = tableDataCostBasis.length; i < 6; i++) {
+        tempTableDataCostBasis.push("EMPTY");
+      }
+      tableDataCostBasis = tempTableDataCostBasis;
+    }
     const CostBasisColumnData = [
       {
         labelName: (
@@ -1642,6 +1649,9 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
             return (
               // <CoinChip
               //   coin_img_src={rowData.Asset}
@@ -1712,6 +1722,9 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1766,6 +1779,9 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1952,6 +1968,9 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -2171,6 +2190,7 @@ class Portfolio extends BaseReactComponent {
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
                         isAnalytics="average cost basis"
+                        addWatermark
                       />
                     </div>
                   </Col>
@@ -2248,6 +2268,8 @@ class Portfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                     {/* <div className="m-r-16 profit-chart">

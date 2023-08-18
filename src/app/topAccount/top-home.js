@@ -1722,6 +1722,7 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
+                        addWatermark
                       />
                     </div>
                   </Col>
@@ -1806,6 +1807,8 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                   </Col>
