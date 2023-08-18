@@ -152,6 +152,7 @@ class TopAccountPage extends BaseReactComponent {
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
       walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -244,8 +245,26 @@ class TopAccountPage extends BaseReactComponent {
       getTopAccounts(data, this);
     }, 300);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     // chain detection
     // if (prevState?.walletInput !== this.state.walletInput) {
     // }
@@ -1331,6 +1350,7 @@ class TopAccountPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
                   />
                   {/* <div className="ShowDust">
                   <p
