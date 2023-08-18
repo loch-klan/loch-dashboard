@@ -130,6 +130,36 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
       });
   };
 };
+export const detectNameTag = (
+  wallet,
+  ctx = null,
+  isCohort = false,
+  index = 0
+) => {
+  return function (dispatch, getState) {
+    let data = new URLSearchParams();
+    data.append("address", wallet.address);
+    postLoginInstance
+      .post("wallet/user-wallet/get-nametag", data)
+      .then((res) => {
+        if (
+          !res.error &&
+          res.data &&
+          res.data.data &&
+          res.data.data.result &&
+          res.data.data.result.length > 0
+        ) {
+          if (res.data.data.result[0] && ctx) {
+            const resNameTag = res.data.data.result[0];
+            ctx.handleSetNameTag({ ...wallet }, resNameTag);
+          }
+        }
+      })
+      .catch((err) => {
+        // console.log("Catch", err);
+      });
+  };
+};
 
 export const signIn = (ctx, data) => {
   preLoginInstance
@@ -499,7 +529,6 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
   localStorage.setItem("lochToken", "jsk");
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
-    console.log("inside create user function", res);
     if (!res.data.error) {
       localStorage.setItem("lochDummyUser", res.data.data.user.link);
       localStorage.setItem("lochToken", res.data.data.token);

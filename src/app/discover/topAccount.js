@@ -5,6 +5,7 @@ import searchIcon from "../../assets/images/icons/search-icon.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
+import { getWatchListByUser } from "../watchlist/redux/WatchListApi";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   Method,
@@ -46,6 +47,7 @@ import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
+  getAllCurrencyRatesApi,
   getUser,
   setPageFlagDefault,
 } from "../common/Api";
@@ -57,6 +59,7 @@ import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { TimeFilterType } from "../../utils/Constant";
 import {
+  TopAccountAddAccountToWatchList,
   TopAccountClickedAccount,
   TopAccountInflowHover,
   TopAccountNameHover,
@@ -67,6 +70,7 @@ import {
   TopAccountPagePrev,
   TopAccountPageSearch,
   TopAccountPageView,
+  TopAccountRemoveAccountFromWatchList,
   TopAccountSearch,
   TopAccountShare,
   TopAccountSortByNetWorth,
@@ -75,6 +79,11 @@ import {
   TopAccountTimeFilter,
   TopAccountTimeSpent,
 } from "../../utils/AnalyticsFunctions";
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import {
+  updateAddToWatchList,
+  removeFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -88,6 +97,7 @@ class TopAccountPage extends BaseReactComponent {
       search: "",
       method: "",
       asset: "",
+      accountInWatchList: [],
       methodsDropdown: Method.opt,
       table: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
@@ -223,13 +233,16 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   callApi = (page = START_INDEX) => {
+    this.props.getWatchListByUser();
     this.setState({ tableLoading: true });
-    let data = new URLSearchParams();
-    data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
-    data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    getTopAccounts(data, this);
+    setTimeout(() => {
+      let data = new URLSearchParams();
+      data.append("start", page * API_LIMIT);
+      data.append("conditions", JSON.stringify(this.state.condition));
+      data.append("limit", API_LIMIT);
+      data.append("sorts", JSON.stringify(this.state.sort));
+      getTopAccounts(data, this);
+    }, 300);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -241,7 +254,12 @@ class TopAccountPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.state.currency) {
+      this.setState({
+        currency: JSON.parse(localStorage.getItem("currency")),
+      });
+      getAllCurrencyRatesApi();
+    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
@@ -274,6 +292,18 @@ class TopAccountPage extends BaseReactComponent {
           });
           this.updateTimer();
         }
+      }
+    }
+
+    if (
+      this.props.TopAccountsInWatchListState !==
+      prevProps.TopAccountsInWatchListState
+    ) {
+      const tempList = this.props.TopAccountsInWatchListState;
+      if (tempList) {
+        this.setState({
+          accountInWatchList: tempList,
+        });
       }
     }
   }
@@ -391,7 +421,9 @@ class TopAccountPage extends BaseReactComponent {
             },
           ];
           let time = TimeFilterType.getText(
-            this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+            this.state.timeFIlter === "Time"
+              ? "6 months"
+              : this.state.timeFIlter
           );
           this.addCondition("SEARCH_BY_TIMESTAMP", time);
           TopAccountSortByNetflows({
@@ -499,7 +531,31 @@ class TopAccountPage extends BaseReactComponent {
     });
     this.updateTimer();
   };
-
+  handleAddRemoveFromWatchList = (walletAddress, addItem, tagName) => {
+    let tempWatchListata = new URLSearchParams();
+    if (addItem) {
+      TopAccountAddAccountToWatchList({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: tagName ? tagName : walletAddress,
+      });
+      this.updateTimer();
+      tempWatchListata.append("wallet_address", walletAddress);
+      tempWatchListata.append("analysed", false);
+      tempWatchListata.append("remarks", "");
+      tempWatchListata.append("name_tag", tagName);
+      this.props.updateAddToWatchList(tempWatchListata);
+    } else {
+      TopAccountRemoveAccountFromWatchList({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: tagName ? tagName : walletAddress,
+      });
+      this.updateTimer();
+      tempWatchListata.append("address", walletAddress);
+      this.props.removeFromWatchList(tempWatchListata);
+    }
+  };
   render() {
     let chainList = this.props.OnboardingState?.coinsList
       ?.filter((e) => ["Ethereum", "Polygon", "Avalanche"].includes(e.name))
@@ -554,7 +610,20 @@ class TopAccountPage extends BaseReactComponent {
     //     ],
     //   },
     // ];
-
+    const inflowOutflowTimePeriod = () => {
+      if (this.state.timeFIlter === "2 weeks") {
+        return "2 weeks";
+      } else if (this.state.timeFIlter === "1 month") {
+        return "last month";
+      } else if (this.state.timeFIlter === "5 years") {
+        return "5 years";
+      } else if (this.state.timeFIlter === "1 year") {
+        return "last year";
+      } else if (this.state.timeFIlter === "3 years") {
+        return "3 years";
+      }
+      return "6 months";
+    };
     const columnList = [
       {
         labelName: (
@@ -598,7 +667,8 @@ class TopAccountPage extends BaseReactComponent {
                   TopAccountClickedAccount({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
-                    account: rowData.account,
+                    account: rowData.account ? rowData.account : "",
+                    name_tag: rowData.tagName ? rowData.tagName : "",
                   });
                   this.updateTimer();
                   let obj = JSON.parse(localStorage.getItem("previewAddress"));
@@ -608,6 +678,12 @@ class TopAccountPage extends BaseReactComponent {
                       ...obj,
                       address: rowData.account,
                       nameTag: rowData.tagName ? rowData.tagName : "",
+                    })
+                  );
+                  localStorage.setItem(
+                    "previewAddressGoToWhaleWatch",
+                    JSON.stringify({
+                      goToWhaleWatch: false,
                     })
                   );
                   this.props?.TopsetPageFlagDefault();
@@ -751,7 +827,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "netflows") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             return (
@@ -812,7 +888,8 @@ class TopAccountPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest inflows
+              <div>Largest inflows</div>
+              <div>{inflowOutflowTimePeriod()}</div>
             </span>
             {/* <Image
               src={sortByIcon}
@@ -830,7 +907,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestBought") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -895,7 +972,8 @@ class TopAccountPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest outflows
+              <div>Largest outflows</div>
+              <div>{inflowOutflowTimePeriod()}</div>
             </span>
             {/* <Image
               src={sortByIcon}
@@ -913,7 +991,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestSold") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -963,6 +1041,47 @@ class TopAccountPage extends BaseReactComponent {
               </CustomOverlay>
             ) : (
               "-"
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="history-table-header-col no-hover"
+            id="isAddedToWatchList"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Watchlist
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "isAddedToWatchList",
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "isAddedToWatchList") {
+            const handleOnClick = (addItem) => {
+              this.handleAddRemoveFromWatchList(
+                rowData.account,
+                addItem,
+                rowData.tagName
+              );
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={this.state.accountInWatchList.includes(
+                  rowData.account
+                )}
+              />
             );
           }
         },
@@ -1099,7 +1218,7 @@ class TopAccountPage extends BaseReactComponent {
                       class="cohort-dropdown"
                       list={[
                         // "All time",
-                        "1 week",
+                        "2 weeks",
                         "1 month",
                         "6 months",
                         "1 year",
@@ -1110,7 +1229,7 @@ class TopAccountPage extends BaseReactComponent {
                       title={this.state.timeFIlter}
                       activetab={
                         this.state.timeFIlter === "Time"
-                          ? "5 years"
+                          ? "6 months"
                           : this.state.timeFIlter
                       }
                       showChecked={true}
@@ -1238,6 +1357,7 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
+  TopAccountsInWatchListState: state.TopAccountsInWatchListState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1248,6 +1368,9 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   TopsetPageFlagDefault,
   getAllParentChains,
+  getWatchListByUser,
+  removeFromWatchList,
+  updateAddToWatchList,
 };
 
 TopAccountPage.propTypes = {};

@@ -9,6 +9,7 @@ export const DEFAULT_PRICE = 0;
 export const DEFAULT_COLOR = "#2c2c2c";
 // export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
 export const BASE_URL_S3 = process.env.REACT_APP_BASE_URL_S3;
+export const BASE_GA_KEY = process.env.REACT_APP_GOOGLE_ANALYTICS_KEY;
 
 export const SEARCH_IN_ID = "SEARCH_IN_ID";
 export const SEARCH_BY_ACTIVE = "SEARCH_BY_ACTIVE";
@@ -37,6 +38,11 @@ export const GROUP_BY_YEAR = "GROUP_BY_YEAR";
 export const GROUP_BY_DATE = "GROUP_BY_DATE";
 export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 
+// Watch List
+export const SORT_BY_ADDRESS = "SORT_BY_ADDRESS";
+export const SORT_BY_ANALYSED = "SORT_BY_ANALYSED";
+export const SORT_BY_NAME_TAG = "SORT_BY_NAME_TAG";
+export const SORT_BY_REMARKS = "SORT_BY_REMARKS";
 // Top Accounts
 export const SORT_BY_LARGEST_SOLD = "SORT_BY_LARGEST_SOLD";
 export const SORT_BY_LARGEST_BOUGHT = "SORT_BY_LARGEST_BOUGHT";
@@ -409,7 +415,7 @@ export const PodType = {
 export const TimeFilterType = {
   _presentable: {
     "All time": 4000,
-    "1 week": 7,
+    "2 weeks": 14,
     "1 month": 30,
     "6 months": 183,
     "1 year": 365,

@@ -1069,7 +1069,11 @@ form {
 // }
 .custom-table {
 }
-
+.dotDotText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .table-wrapper {
   .form-group {
     width: 8rem;
@@ -1171,7 +1175,7 @@ form {
     // background-color: $secondary;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     outline: none;
     // box-shadow: none;
     // border: 1px solid $black-191;
@@ -1933,7 +1937,7 @@ form {
               white-space: nowrap;
               box-sizing: border-box;
               border-radius: 0.8rem;
-              padding: 0.8rem;
+              padding: 0.9rem;
               width: fit-content;
             }
           }

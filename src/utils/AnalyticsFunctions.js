@@ -1501,17 +1501,7 @@ export const ProfitLossEV = ({ session_id, email_address }) => {
   //console.log("Home Page:Profit and Loss expanded view");
 };
 
-//97.Home Page:Profit and Loss hover
-export const ProfitLossHover = ({ session_id, email_address, hover_value }) => {
-  const event_name = "Home:Profit and Loss hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "bar hovered": hover_value,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Home Page:Profit and Loss hover");
-};
+
 
 //97.Home Page:counterparty fees hover
 export const HomeCounterPartyHover = ({
@@ -1746,6 +1736,16 @@ export const InsightPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+// Page View: Watch List
+export const WatchlistPage = ({ session_id, email_address }) => {
+  const event_name = "Page View: Watchlist";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
 
 // Page View: Onboarding
 export const OnboardingPage = () => {
@@ -1866,6 +1866,15 @@ export const WhaleSortByName = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:sort by name");
+};
+export const WhaleSearch = ({ session_id, email_address, searched_for }) => {
+  const event_name = "Whale:search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "searched for": searched_for,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Whale:hover pods
@@ -2334,13 +2343,19 @@ export const Home_CE_OAuthCompleted = ({
 };
 
 // -------- LP connect exchange -----------
-//8. Landing Page Conversion: connect exchange
-export const LPConnectExchange = ({ session_id, email_address }) => {
-  const event_name = "Landing Page Conversion: connect exchange";
+export const LPDiscover = ({ session_id, email_address }) => {
+  const event_name = "Landing Page Conversion: discover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
   };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+//8. Landing Page Conversion: connect exchange
+export const LPConnectExchange = () => {
+  const event_name = "Landing Page Conversion: connect exchange";
+  const eventProperties = {};
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
@@ -2785,8 +2800,37 @@ export const topNetflowAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 
-// Intelligence:netflows: inflows hover - done
+export const homeInflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: inflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "inflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
+export const homeOutflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: outflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "outflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const homeNetHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: net hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "net hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+// Intelligence:netflows: inflows hover - done
 export const netflowInflowHover = ({ session_id, email_address, hovered }) => {
   const event_name = "Intelligence:netflows: inflows hover";
   const eventProperties = {
@@ -2908,6 +2952,22 @@ export const TransactionHistoryAssetFilter = ({
 };
 
 // Transaction History: methods filter - done
+export const TransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const TransactionHistoryMethodFilter = ({
   session_id,
   email_address,
@@ -3847,6 +3907,21 @@ export const TimeSpentInsights = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Insights: time spent on insights page");
 };
+// Insights: time spent on watchlist page
+
+export const TimeSpentWatchlist = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Watchlist: time spent on watchlist page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Insights: share - done
 export const InsightsShare = ({ session_id, email_address }) => {
@@ -3939,11 +4014,39 @@ export const WhaleExpandDefiCredit = ({
   pod_name,
 }) => {
   const event_name =
-    "Whale: Expanded Pod page: Defi balance sheet: yield expanded";
+    "Whale: Expanded Pod page: Defi balance sheet: credit expanded";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
+};
+export const AddWalletAddressModalOpen = ({
+  session_id,
+  email_address,
+  page,
+}) => {
+  const event_name = "Add Wallet: Modal Opened";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
+};
+export const AddConnectExchangeModalOpen = ({
+  session_id,
+  email_address,
+  page,
+}) => {
+  const event_name = "Connect Exchange: Modal Opened";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
@@ -3972,6 +4075,7 @@ export const WhaleExpandAssetFilter = ({
   email_address,
   selected,
   pod_name,
+  isSearchUsed,
 }) => {
   const event_name = "Whale: Expanded Pod page: asset filter";
   const eventProperties = {
@@ -3979,6 +4083,7 @@ export const WhaleExpandAssetFilter = ({
     "email address": email_address,
     "selected asset": selected,
     "pod name": pod_name,
+    "search used": isSearchUsed,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: asset filter");
@@ -3990,6 +4095,7 @@ export const WhaleExpandChainFilter = ({
   email_address,
   selected,
   pod_name,
+  isSearchUsed,
 }) => {
   const event_name = "Whale: Expanded Pod page: chain filter";
   const eventProperties = {
@@ -3997,6 +4103,7 @@ export const WhaleExpandChainFilter = ({
     "email address": email_address,
     "selected asset": selected,
     "pod name": pod_name,
+    "search used": isSearchUsed,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("WWhale: Expanded Pod page: chain filter");
@@ -4186,15 +4293,14 @@ export const PageviewDefi = ({ session_id, email_address }) => {
   ////console.log("Page View: Defi page");
 };
 
-//Defi: balance sheet: yield expanded - done
+//Defi: balance sheet: credit expanded - done
 export const DefiCredit = ({ session_id, email_address }) => {
-  const event_name = "Defi: balance sheet: yield expanded";
+  const event_name = "Defi: balance sheet: credit expanded";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Defi: balance sheet: yield expanded");
 };
 
 //Defi: balance sheet: debt expanded - done
@@ -4475,6 +4581,96 @@ export const TopAccountSearch = ({ session_id, email_address, search }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: search");
 };
+//Watchlist : search
+export const WatchlistSearch = ({ session_id, email_address, search }) => {
+  const event_name = "Watchlist: search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    searched: search,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByNameTag = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by name tag";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByAnalyzed = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by analyzed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByRemarks = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by remarks";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistRemarkAdded = ({
+  session_id,
+  email_address,
+  address,
+  remark,
+}) => {
+  const event_name = "Watchlist: remark added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    remark: remark,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistAnalyzedCheckbox = ({
+  session_id,
+  email_address,
+  address,
+  analyzed,
+}) => {
+  const event_name = "Watchlist: analyzed checkbox";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    analyzed: analyzed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopAccountAddAccountToWatchList = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top accounts: add account to watch list";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopAccountRemoveAccountFromWatchList = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top accounts: remove account from watch list";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //Top accounts: sort by name tag - done
 export const TopAccountSortByTag = ({ session_id, email_address }) => {
@@ -4537,13 +4733,13 @@ export const TopAccountOutflowHover = ({
   ////console.log("Top accounts: largest outflows hover");
 };
 
-//Top accounts: account clicked - done
-export const TopAccountClickedAccount = ({
+//Whale watch individual: account clicked - done
+export const WhaleIndividualClickedAccount = ({
   session_id,
   email_address,
   account,
 }) => {
-  const event_name = "Top accounts: account clicked";
+  const event_name = "Whale watch: account clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -4551,6 +4747,39 @@ export const TopAccountClickedAccount = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: account clicked");
+};
+
+//Top accounts: account clicked - done
+export const TopAccountClickedAccount = ({
+  session_id,
+  email_address,
+  account,
+  name_tag,
+}) => {
+  const event_name = "Top accounts: account clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected account": account,
+    "name tag": name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: account clicked");
+};
+export const WatchlistClickedAccount = ({
+  session_id,
+  email_address,
+  account,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: account clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected account": account,
+    "name tag": name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Top accounts: name tag hover - done
@@ -4563,6 +4792,15 @@ export const TopAccountNameHover = ({ session_id, email_address, hover }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: name tag hover");
+};
+export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
+  const event_name = "Watchlist: name tag hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Top accounts: net worth hover - done

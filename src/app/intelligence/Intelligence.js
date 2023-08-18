@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IntelWelcomeCard from "./IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
@@ -96,8 +95,19 @@ class Intelligence extends Component {
       isGraphLoading: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
@@ -138,6 +148,19 @@ class Intelligence extends Component {
   };
 
   componentDidMount() {
+    const tempLeftExplainerClosed = window.sessionStorage.getItem(
+      "netFlowLeftExplainerClosed"
+    );
+    if (tempLeftExplainerClosed) {
+      this.setState({ LeftShow: false });
+    }
+    const tempRightExplainerClosed = window.sessionStorage.getItem(
+      "netFlowRightExplainerClosed"
+    );
+    if (tempRightExplainerClosed) {
+      this.setState({ RightShow: false });
+    }
+
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
@@ -601,6 +624,7 @@ class Intelligence extends Component {
   };
 
   RightClose = () => {
+    window.sessionStorage.setItem("netFlowRightExplainerClosed", true);
     this.setState({
       RightShow: false,
     });
@@ -612,6 +636,7 @@ class Intelligence extends Component {
   };
 
   LeftClose = () => {
+    window.sessionStorage.setItem("netFlowLeftExplainerClosed", true);
     this.setState({
       LeftShow: false,
     });
@@ -706,7 +731,6 @@ class Intelligence extends Component {
               updateTimer={this.updateTimer}
             />
 
-            <IntelWelcomeCard history={this.props.history} />
             <div className="insights-image m-b-60">
               <PageHeader
                 title="Insights"

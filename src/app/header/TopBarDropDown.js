@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import LinkIconBtn from "../../assets/images/link.svg";
 import { RoundedArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
+import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const list = props.list.map((li, index) => {
@@ -63,8 +63,10 @@ export default function TopBarDropDown(props) {
     setShowDropdown(!showDropdown);
   };
   const closeDropdown = (event) => {
-    event.stopPropagation();
-    setShowDropdown(false);
+    if (showDropdown) {
+      event.stopPropagation();
+      setShowDropdown(false);
+    }
   };
   return (
     <div style={props?.relative ? { position: "relative" } : {}}>
@@ -80,25 +82,40 @@ export default function TopBarDropDown(props) {
             className="topbar-btn w-100"
             id="address-button"
           >
-            <Image className="topBarWalletChain" src={LinkIconBtn} />
+            <Image
+              className={`topBarWalletChain ${
+                props.totalWallets && props.totalWallets === 1
+                  ? "topBarWalletChainSingle"
+                  : ""
+              }`}
+              src={AddWalletAddress}
+            />
             <div className="hideText">
-              <span className="ml-1 mr-3">{props.totalWallets}</span>
-              <span className="topBarWalletName">{props.firstWallet}</span>
+              {props.totalWallets && props.totalWallets > 1 ? (
+                <span className="topBarWalletTotalWallets">
+                  {props.totalWallets}
+                </span>
+              ) : null}
+              <span>{props.firstWallet}</span>
             </div>
-            <OutsideClickHandler onOutsideClick={closeDropdown}>
-              <div
-                onClick={toggleDropdown}
-                className="topBarWalletArrowContainer pl-3 h-100 pr-1"
-              >
-                <Image
-                  className="topBarWalletArrow"
-                  src={RoundedArrowDownIcon}
-                />
-              </div>
-            </OutsideClickHandler>
+            {props.totalWallets && props.totalWallets > 1 ? (
+              <OutsideClickHandler onOutsideClick={closeDropdown}>
+                <div
+                  onClick={toggleDropdown}
+                  className="topBarWalletArrowContainer pl-3 h-100 pr-1"
+                >
+                  <Image
+                    className="topBarWalletArrow"
+                    src={RoundedArrowDownIcon}
+                  />
+                </div>
+              </OutsideClickHandler>
+            ) : null}
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu>{list}</Dropdown.Menu>
+        <Dropdown.Menu>
+          <div className="dropdown-menu-list-container">{list}</div>
+        </Dropdown.Menu>
       </Dropdown>
     </div>
   );

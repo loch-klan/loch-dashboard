@@ -1,6 +1,5 @@
 import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
-import unrecognized from "../../image/unrecognized.svg";
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id, isCohort }) {
@@ -26,7 +25,7 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
         sortedCoins ? (
           sortedCoins.length > 1 ? (
             <div
-              className="chip-wrapper"
+              className="chip-wrapper chipBottomwrapper"
               id={id}
               style={isCohort ? { position: "static" } : {}}
             >

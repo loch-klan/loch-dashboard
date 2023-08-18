@@ -7,10 +7,25 @@ class CheckboxCustomTable extends Component {
     super(props);
 
     this.state = {
-      isChecked: props?.isChecked || false,
+      isChecked: false,
     };
   }
+  componentDidMount() {
+    this.setState({
+      isChecked: this.props?.isChecked ? this.props.isChecked : false,
+    });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.isChecked !== this.props.isChecked) {
+      this.setState({
+        isChecked: this.props?.isChecked ? this.props.isChecked : false,
+      });
+    }
+  }
   handleChecked = () => {
+    if (this.props.handleOnClick) {
+      this.props.handleOnClick(!this.state.isChecked);
+    }
     this.setState({
       isChecked: !this.state.isChecked,
     });

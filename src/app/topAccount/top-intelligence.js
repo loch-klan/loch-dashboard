@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IntelWelcomeCard from "../intelligence/IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import BarGraphSection from "../common/BarGraphSection";
@@ -85,8 +84,19 @@ class TopIntelligence extends Component {
       isTopAccountPage: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
@@ -667,11 +677,6 @@ class TopIntelligence extends Component {
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
-            />
-
-            <IntelWelcomeCard
-              history={this.props.history}
-              isTopAccount={true}
             />
 
             <div className="portfolio-bar-graph" id="netflow">
