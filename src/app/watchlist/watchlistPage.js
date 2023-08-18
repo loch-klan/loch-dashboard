@@ -75,6 +75,7 @@ class WatchListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      goToBottom: false,
       initialList: false,
       showAddWatchListAddress: false,
       currency: JSON.parse(localStorage.getItem("currency")),
@@ -209,8 +210,26 @@ class WatchListPage extends BaseReactComponent {
     tempWatchListData.append("sorts", JSON.stringify(this.state.sort));
     this.props.getWatchList(tempWatchListData);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -831,6 +850,7 @@ class WatchListPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
                   />
                 </>
               )}

@@ -67,6 +67,7 @@ class CustomTable extends BaseReactComponent {
                     location={location}
                     page={currentPage}
                     pageCount={totalPage}
+                    onPageChange={this.props.onPageChange}
                   />
                 )}
               {pageSize && (
@@ -166,6 +167,7 @@ class CustomTable extends BaseReactComponent {
             pageCount={totalPage}
             pagePrev={pagePrev}
             pageNext={pageNext}
+            onPageChange={this.props.onPageChange}
           />
         )}
       </div>
