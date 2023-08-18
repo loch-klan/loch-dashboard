@@ -51,6 +51,7 @@ import {
   GroupByOptions,
   GROUP_BY_DATE,
   InsightType,
+  DEFAULT_PRICE,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
@@ -91,6 +92,7 @@ import Loading from "../common/Loading";
 import {
   CurrencyType,
   noExponents,
+  TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
@@ -100,7 +102,9 @@ import { GraphHeader } from "../common/GraphHeader";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
 import Slider from "react-slick";
 
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
+import { toast } from "react-toastify";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -265,19 +269,9 @@ class Portfolio extends BaseReactComponent {
 
       // netflow switch
       isSwitch: false,
-      waitForMixpannelCall: false,
     };
   }
-  waitForMixpannelCallOn = () => {
-    this.setState({
-      waitForMixpannelCall: true,
-    });
-  };
-  waitForMixpannelCallOff = () => {
-    this.setState({
-      waitForMixpannelCall: false,
-    });
-  };
+
   // get token
   getToken = () => {
     let token = localStorage.getItem("lochToken");
@@ -591,6 +585,8 @@ class Portfolio extends BaseReactComponent {
       this.props.getAllInsightsApi(this);
 
       this.props.getAvgCostBasis(this);
+      this.getTableData();
+
       // for chain detect
       setTimeout(() => {
         this.props.getAllCoins();
@@ -742,7 +738,6 @@ class Portfolio extends BaseReactComponent {
       this.props.getCoinRate();
 
       // // transaction history
-      // this.getTableData();
 
       // // asset value chart
       // this.getGraphData();
@@ -1004,6 +999,16 @@ class Portfolio extends BaseReactComponent {
       session_id: getCurrentUser().id,
     });
   };
+  copyContent = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+  };
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
@@ -1121,8 +1126,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        // coumnWidth: 73,
-        coumnWidth: 0.2,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
@@ -1155,8 +1159,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        // coumnWidth: 61,
-        coumnWidth: 0.17,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -1182,50 +1185,62 @@ class Portfolio extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <Image
-                    src={
-                      rowData.from.metaData?.wallet_metaData?.symbol ||
-                      unrecognizedIcon
-                    }
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={
+                        rowData.from.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 ) : rowData.from.wallet_metaData.symbol ||
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <Image
-                      src={rowData.from.wallet_metaData.symbol}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                      }}
-                    />
+                    <span>
+                      <Image
+                        src={rowData.from.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          TransactionHistoryAddress({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_hovered: rowData.from.address,
+                            display_name: rowData.from.wallet_metaData?.text
+                              ? rowData.from.wallet_metaData?.text
+                              : rowData.from.metaData?.displayAddress,
+                          });
+                          this.updateTimer();
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1234,16 +1249,20 @@ class Portfolio extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.from.metaData?.nickname}
+                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1252,9 +1271,16 @@ class Portfolio extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.from.wallet_metaData.text}
+                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   )
                 ) : rowData.from.metaData?.displayAddress ? (
@@ -1268,27 +1294,42 @@ class Portfolio extends BaseReactComponent {
                           ? rowData.from.wallet_metaData?.text
                           : rowData.from.metaData?.displayAddress,
                       });
+                      this.updateTimer();
                     }}
                   >
-                    {rowData.from.metaData?.displayAddress}
+                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 )}
-                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
               </CustomOverlay>
             );
           }
@@ -1319,7 +1360,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.17,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -1329,7 +1370,6 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                // text={rowData.to.address}
                 text={
                   (rowData.to.metaData?.nickname
                     ? rowData.to.metaData?.nickname + ": "
@@ -1345,29 +1385,12 @@ class Portfolio extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <Image
-                    src={
-                      rowData.to.metaData?.wallet_metaData?.symbol ||
-                      unrecognizedIcon
-                    }
-                    className="history-table-icon heyyyy"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
-                    }}
-                  />
-                ) : rowData.to.wallet_metaData.symbol ||
-                  rowData.to.wallet_metaData.text ||
-                  rowData.to.metaData?.nickname ? (
-                  rowData.to.wallet_metaData.symbol ? (
+                  <span>
                     <Image
-                      src={rowData.to.wallet_metaData.symbol}
+                      src={
+                        rowData.to.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
                       className="history-table-icon"
                       onMouseEnter={() => {
                         TransactionHistoryAddress({
@@ -1378,8 +1401,43 @@ class Portfolio extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
+                ) : rowData.to.wallet_metaData.symbol ||
+                  rowData.to.wallet_metaData.text ||
+                  rowData.to.metaData?.nickname ? (
+                  rowData.to.wallet_metaData.symbol ? (
+                    <span>
+                      <Image
+                        src={rowData.to.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          TransactionHistoryAddress({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_hovered: rowData.to.address,
+                            display_name: rowData.to.wallet_metaData?.text
+                              ? rowData.to.wallet_metaData?.text
+                              : rowData.to.metaData?.displayAddress,
+                          });
+                          this.updateTimer();
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
                   ) : rowData.to.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
@@ -1391,9 +1449,16 @@ class Portfolio extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.to.metaData?.nickname}
+                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   ) : (
                     <span
@@ -1406,9 +1471,16 @@ class Portfolio extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.to.wallet_metaData.text}
+                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   )
                 ) : rowData.to.metaData?.displayAddress ? (
@@ -1422,25 +1494,41 @@ class Portfolio extends BaseReactComponent {
                           ? rowData.to.wallet_metaData?.text
                           : rowData.to.metaData?.displayAddress,
                       });
+                      this.updateTimer();
                     }}
                   >
-                    {rowData.to.metaData?.displayAddress}
+                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 )}
               </CustomOverlay>
             );
@@ -1472,7 +1560,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.2,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1485,68 +1573,6 @@ class Portfolio extends BaseReactComponent {
                 text={rowData.asset.code}
               >
                 <Image src={rowData.asset.symbol} className="asset-symbol" />
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="usdValue"
-            onClick={() => {
-              this.handleTableSort("usdValue");
-              TransactionHistoryUSD({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              {CurrencyType(true)} Value
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "usdValue",
-        coumnWidth: 0.25,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "usdValue") {
-            let chain = Object.entries(assetPriceList_home);
-            let value;
-            chain.find((chain) => {
-              // if (chain[0] === rowData.usdValueToday.id) {
-              //   value =
-              //     rowData.usdValueToday.value *
-              //       chain[1].quote.USD.price *
-              //       currency?.rate || DEFAULT_PRICE;
-              //   return;
-              // }
-              if (chain[0] === rowData.usdValueThen.id) {
-                value =
-                  rowData.usdValueThen.value *
-                  rowData.usdValueThen.assetPrice *
-                  (currency?.rate || 1);
-              }
-            });
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(value?.toFixed(2)).toLocaleString("en-US")}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(value?.toFixed(2)).toLocaleString("en-US")}
-                </div>
               </CustomOverlay>
             );
           }
@@ -1612,7 +1638,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -2198,7 +2224,7 @@ class Portfolio extends BaseReactComponent {
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>
-                    {/* <div
+                    <div
                       className="m-r-16 section-table"
                       style={{
                         paddingBottom: "1.6rem",
@@ -2214,10 +2240,6 @@ class Portfolio extends BaseReactComponent {
                             this.props.history.push(
                               "/intelligence/transaction-history"
                             );
-                            TransactionHistoryEView({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
                           }
                         }}
                         subTitle="Sort, filter, and dissect all your transactions from one place"
@@ -2227,8 +2249,8 @@ class Portfolio extends BaseReactComponent {
                         isArrow={true}
                         isLoading={this.state.tableLoading}
                       />
-                    </div> */}
-                    <div className="m-r-16 profit-chart">
+                    </div>
+                    {/* <div className="m-r-16 profit-chart">
                       <div
                         className={`bar-graph-section m-b-32`}
                         style={{ paddingBottom: "0rem", position: "relative" }}
@@ -2249,7 +2271,7 @@ class Portfolio extends BaseReactComponent {
                         />
                         <div className="insights-wrapper">
                           {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                          {this.state.isLoadingInsight ? (
+                    {/* {this.state.isLoadingInsight ? (
                             <div
                               style={{
                                 height: "30rem",
@@ -2365,7 +2387,7 @@ class Portfolio extends BaseReactComponent {
                           )}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </Col>
                   <Col md={6}>
                     <div
