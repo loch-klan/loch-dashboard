@@ -16,6 +16,7 @@ import {
   WatchListLoadingReducer,
   WatchListReducer,
 } from "../app/watchlist/redux/WatchListReducer";
+import LochUserReducer from "../app/profile/LochUserReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -24,6 +25,7 @@ export default combineReducers({
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,
+  LochUserState: LochUserReducer,
   HomeState: HomeReducer,
   OnboardingState: OnboardingReducer,
   PortfolioState: PortfolioReducer,

@@ -1501,8 +1501,6 @@ export const ProfitLossEV = ({ session_id, email_address }) => {
   //console.log("Home Page:Profit and Loss expanded view");
 };
 
-
-
 //97.Home Page:counterparty fees hover
 export const HomeCounterPartyHover = ({
   session_id,
@@ -2604,6 +2602,13 @@ export const SigninMenu = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
+};
+export const SignupMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign up";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //  Menu: Sign in: email added - done

@@ -54,7 +54,7 @@ class AskEmailModal extends BaseReactComponent {
     data.append("email", this.state.email);
     data.append("signed_up_from", "Email added after metamask connect");
 
-    updateUser(data, this);
+    this.props.updateUser(data, this);
   };
 
   render() {
@@ -174,7 +174,7 @@ class AskEmailModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = { updateUser };
 AskEmailModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AskEmailModal);
