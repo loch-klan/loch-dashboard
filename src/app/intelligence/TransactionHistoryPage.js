@@ -105,6 +105,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      goToBottom: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",
@@ -520,6 +521,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
+    console.log("tableSortOpt are ", this.state.tableSortOpt);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -627,11 +629,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
-    this.setState({
-      sort: obj,
-      tableSortOpt: sort,
-    });
+    console.log("tableSortOpt changing ? ", sort);
+    // this.setState({
+    //   sort: obj,
+    //   tableSortOpt: sort,
+    // });
   };
 
   copyContent = (text) => {

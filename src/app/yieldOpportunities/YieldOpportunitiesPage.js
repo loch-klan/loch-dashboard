@@ -14,17 +14,14 @@ import {
   START_INDEX,
   SEARCH_BY_ASSETS_IN,
   SEARCH_BY_TEXT,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
   SORT_BY_ASSET,
-  SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
-  SORT_BY_METHOD,
   BASE_URL_S3,
   SORT_BY_VALUE,
   SEARCH_BY_CHAIN_IN,
+  SORT_BY_APY,
+  SORT_BY_POOL,
+  SORT_BY_PROJECT,
+  SORT_BY_TVL,
 } from "../../utils/Constant";
 import { searchTransactionApi } from "../intelligence/Api";
 import { getYieldOpportunities } from "./Api";
@@ -37,33 +34,37 @@ import {
 } from "../../utils/form";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
+import {
+  amountFormat,
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+  UpgradeTriggered,
+} from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
-  TransactionHistoryAssetFilter,
-  TransactionHistoryMethodFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
   TransactionHistoryPageSearch,
   TransactionHistoryPageView,
   TransactionHistorySearch,
   TransactionHistoryShare,
-  TransactionHistorySortAmount,
-  TransactionHistorySortAsset,
-  TransactionHistorySortDate,
-  TransactionHistorySortFrom,
-  TransactionHistorySortMethod,
-  TransactionHistorySortTo,
-  TransactionHistorySortUSDAmount,
-  TransactionHistorySortUSDFee,
-  TransactionHistoryYearFilter,
+  YieldOpportunitiesAssetFilter,
+  YieldOpportunitiesNetworkFilter,
+  YieldOpportunitiesSortAPY,
+  YieldOpportunitiesSortAsset,
+  YieldOpportunitiesSortPool,
+  YieldOpportunitiesSortProject,
+  YieldOpportunitiesSortTVL,
+  YieldOpportunitiesSortUSDvalue,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import { toast } from "react-toastify";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
+import { getFilters } from "../intelligence/Api";
 import {
   GetAllPlan,
   getUser,
@@ -73,6 +74,7 @@ import {
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import Footer from "../common/footer";
+import CoinChip from "../wallet/CoinChip";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -84,12 +86,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
-    const cond = [
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-    ];
+    const cond = [];
     this.state = {
       //YO
       yieldOpportunitiesList: [],
@@ -103,7 +100,14 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [{ key: SORT_BY_VALUE, value: false }],
+      sort: [
+        { key: SORT_BY_VALUE, value: false },
+        { key: SORT_BY_APY, value: false },
+        { key: SORT_BY_POOL, value: false },
+        { key: SORT_BY_PROJECT, value: false },
+        { key: SORT_BY_ASSET, value: false },
+        { key: SORT_BY_TVL, value: false },
+      ],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
@@ -161,6 +165,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isMethodSearchUsed: false,
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -196,6 +201,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
     this.callApi(this.state.currentPage || START_INDEX);
 
+    this.props.getFilters();
     this.props.getAllCoins();
 
     GetAllPlan();
@@ -264,20 +270,39 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
+
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(this.state.condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.getYieldOpportunities(data, page);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
       this.setState({
-        yieldOpportunitiesList: this.props.yieldOpportunitiesState.data
-          ? this.props.yieldOpportunitiesState.data
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
           : [],
         totalPage: this.props.yieldOpportunitiesState.total_count
           ? Math.ceil(
@@ -299,7 +324,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-      // console.log("prev", prevPage, "cur", page);
+      this.setState({
+        currentPage: page,
+      });
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
@@ -329,7 +356,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
       const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
@@ -339,6 +365,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           value: address,
         },
       ];
+      this.props.getFilters();
       this.props.getAllCoins();
       this.setState({
         condition: cond ? cond : [],
@@ -372,107 +399,90 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
   onValidSubmit = () => {
     // console.log("Sbmit")
   };
-
+  handleFunction = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0].name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addCondition(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
   addCondition = (key, value) => {
-    //   // console.log("key, value", key, value);
-    //   if (key === "SEARCH_BY_TIMESTAMP_IN") {
-    //     const tempIsTimeUsed = this.state.isTimeSearchUsed;
-    //     TransactionHistoryYearFilter({
-    //       session_id: getCurrentUser().id,
-    //       email_address: getCurrentUser().email,
-    //       year_filter: value === "allYear" ? "All years" : value,
-    //       isSearchUsed: tempIsTimeUsed,
-    //     });
-    //     this.updateTimer();
-    //     this.setState({ isTimeSearchUsed: false });
-    //   } else if (key === "SEARCH_BY_ASSETS_IN") {
-    //     let assets = [];
-    //     Promise.all([
-    //       new Promise((resolve) => {
-    //         // console.log("abc");
-    //         if (value !== "allAssets") {
-    //           console.log("test");
-    //           this.props.intelligenceState?.assetFilter?.map((e) => {
-    //             if (value?.includes(e.value)) {
-    //               assets.push(e.label);
-    //             }
-    //           });
-    //         }
-    //         resolve(); // Resolve the promise once the code execution is finished
-    //       }),
-    //     ]).then(() => {
-    //       // console.log("asset arr", assets, value);
-    //       const tempIsAssetUsed = this.state.isAssetSearchUsed;
-    //       TransactionHistoryAssetFilter({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //         asset_filter: value === "allAssets" ? "All assets" : assets,
-    //         isSearchUsed: tempIsAssetUsed,
-    //       });
-    //       this.updateTimer();
-    //       this.setState({ isAssetSearchUsed: false });
-    //     });
-    //   } else if (key === "SEARCH_BY_METHOD_IN") {
-    //     const tempIsMethodUsed = this.state.isMethodSearchUsed;
-    //     TransactionHistoryMethodFilter({
-    //       session_id: getCurrentUser().id,
-    //       email_address: getCurrentUser().email,
-    //       method_filter: value === "allMethod" ? "All method" : value,
-    //       isSearchUsed: tempIsMethodUsed,
-    //     });
-    //     this.updateTimer();
-    //     this.setState({ isMethodSearchUsed: false });
-    //   }
-    //   let index = this.state.condition.findIndex((e) => e.key === key);
-    //   // console.log("index", index);
-    //   let arr = [...this.state.condition];
-    //   let search_index = this.state.condition.findIndex(
-    //     (e) => e.key === SEARCH_BY_TEXT
-    //   );
-    //   if (
-    //     index !== -1 &&
-    //     value !== "allAssets" &&
-    //     value !== "allMethod" &&
-    //     value !== "allYear"
-    //   ) {
-    //     // console.log("first if", index);
-    //     arr[index].value = value;
-    //   } else if (
-    //     value === "allAssets" ||
-    //     value === "allMethod" ||
-    //     value === "allYear"
-    //   ) {
-    //     // console.log("second if", index);
-    //     if (index !== -1) {
-    //       arr.splice(index, 1);
-    //     }
-    //   } else {
-    //     // console.log("else", index);
-    //     let obj = {};
-    //     obj = {
-    //       key: key,
-    //       value: value,
-    //     };
-    //     arr.push(obj);
-    //   }
-    //   if (search_index !== -1) {
-    //     if (value === "" && key === SEARCH_BY_TEXT) {
-    //       arr.splice(search_index, 1);
-    //     }
-    //   }
-    //   // On Filter start from page 0
-    //   this.props.history.replace({
-    //     search: `?p=${START_INDEX}`,
-    //   });
-    //   this.setState({
-    //     condition: arr,
-    //   });
+    if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        YieldOpportunitiesAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
+      });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      YieldOpportunitiesNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false });
+    }
+    let index = this.state.condition.findIndex((e) => e.key === key);
+    let arr = [...this.state.condition];
+    let search_index = this.state.condition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (index !== -1 && value !== "allAssets" && value !== "allNetworks") {
+      arr[index].value = value;
+    } else if (value === "allAssets" || value === "allNetworks") {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      condition: arr,
+    });
   };
   onChangeMethod = () => {
     clearTimeout(this.delayTimer);
@@ -488,116 +498,92 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    // let sort = [...this.state.tableSortOpt];
-    // let obj = [];
-    // sort?.map((el) => {
-    //   if (el.title === val) {
-    //     if (val === "time") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_TIMESTAMP,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortDate({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "from") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_FROM_WALLET,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortFrom({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "to") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_TO_WALLET,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortTo({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "asset") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_ASSET,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortAsset({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "amount") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_AMOUNT,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortAmount({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "usdThen") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_USD_VALUE_THEN,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortUSDAmount({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "usdTransaction") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_TRANSACTION_FEE,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortUSDFee({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     } else if (val === "method") {
-    //       obj = [
-    //         {
-    //           key: SORT_BY_METHOD,
-    //           value: !el.up,
-    //         },
-    //       ];
-    //       TransactionHistorySortMethod({
-    //         session_id: getCurrentUser().id,
-    //         email_address: getCurrentUser().email,
-    //       });
-    //       this.updateTimer();
-    //     }
-    //     el.up = !el.up;
-    //   } else {
-    //     el.up = false;
-    //   }
-    // });
-    // this.setState({
-    //   sort: obj,
-    //   tableSortOpt: sort,
-    // });
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort?.forEach((el) => {
+      if (el.title === val) {
+        if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "usdValue") {
+          obj = [
+            {
+              key: SORT_BY_VALUE,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortUSDvalue({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "project") {
+          obj = [
+            {
+              key: SORT_BY_PROJECT,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortProject({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "pool") {
+          obj = [
+            {
+              key: SORT_BY_POOL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortPool({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "tvl") {
+          obj = [
+            {
+              key: SORT_BY_TVL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortTVL({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "apy") {
+          obj = [
+            {
+              key: SORT_BY_APY,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAPY({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort,
+    });
   };
 
   handleShare = () => {
@@ -635,7 +621,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           value: row.value,
           network: row.chain,
           project: row.project,
-          pool: row.symbol,
+          pool: row.pool,
           tvl: row.tvlUsd,
           apy: row.apy,
         };
@@ -660,67 +646,18 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         className: "yeildOppYourPortfolioContainer",
         headerClassName: "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.asset ? rowData.asset[0] : ""}
-              >
-                <Image src={rowData.asset[1]} className="asset-symbol" />
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="amount"
-            onClick={() => this.handleTableSort("amount")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Amount
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "amount",
-        coumnWidth: 0.14,
-        isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
-          if (dataKey === "amount") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.amount ? rowData.amount : "-"}
-              >
-                <span>
-                  {rowData.amount
-                    ? Number(noExponents(rowData.amount)).toLocaleString(
-                        "en-US"
-                      )
-                    : "-"}
-                </span>
-              </CustomOverlay>
+              <CoinChip
+                coin_img_src={rowData.asset.symbol}
+                coin_code={rowData.asset.code}
+                chain={rowData?.network}
+              />
             );
           }
         },
@@ -744,7 +681,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValue",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         className: "yeildOppYourPortfolioContainer",
         headerClassName: "yeildOppYourPortfolioContainer",
@@ -756,12 +693,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.value ? rowData.value : "-"}
+                text={amountFormat(
+                  rowData.value * this.state.currency?.rate,
+                  "en-US",
+                  "USD"
+                )}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {rowData.value
-                    ? Number(rowData.value?.toFixed(2)).toLocaleString("en-US")
-                    : "-"}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false)}
+                      {numToCurrency(rowData.value * this.state.currency?.rate)}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -787,7 +731,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "project",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "project") {
@@ -818,7 +762,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "pool",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "pool") {
@@ -850,7 +794,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         ),
         dataKey: "tvl",
         className: "usd-value",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tvl") {
@@ -860,10 +804,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.tvl}
+                text={amountFormat(
+                  rowData.tvl * this.state.currency?.rate,
+                  "en-US",
+                  "USD"
+                )}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {rowData.tvl ? rowData.tvl : "-"}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false)}
+                      {numToCurrency(rowData.tvl * this.state.currency?.rate)}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -890,7 +843,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         ),
         dataKey: "apy",
         className: "usd-value",
-        coumnWidth: 0.14,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "apy") {
@@ -904,7 +857,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                   {rowData.apy
-                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US")
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
                     : "-"}
                 </div>
               </CustomOverlay>
@@ -913,7 +867,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
       },
     ];
-
     return (
       <>
         {/* topbar */}
@@ -985,9 +938,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                       filtername="All networks"
                       options={this.props.OnboardingState.coinsList}
                       action={SEARCH_BY_CHAIN_IN}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
+                      handleClick={this.handleFunction}
                       searchIsUsed={this.networkSearchIsUsed}
                       isCaptialised
                       isGreyChain
@@ -1057,6 +1008,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
                     addWatermark
                   />
                   <Footer />
@@ -1081,6 +1033,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   searchTransactionApi,
   getYieldOpportunities,
+  getFilters,
   getAllCoins,
   setPageFlagDefault,
   updateWalletListFlag,

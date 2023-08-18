@@ -82,6 +82,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      goToBottom: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",

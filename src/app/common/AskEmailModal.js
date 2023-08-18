@@ -174,9 +174,7 @@ class AskEmailModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
-  updateUser,
-};
+const mapDispatchToProps = { updateUser };
 AskEmailModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AskEmailModal);

@@ -75,6 +75,7 @@ class WatchListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      goToBottom: false,
       initialList: false,
       showAddWatchListAddress: false,
       currency: JSON.parse(localStorage.getItem("currency")),

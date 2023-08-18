@@ -40,6 +40,11 @@ export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 
 // Yield Opportunities
 export const SORT_BY_VALUE = "SORT_BY_VALUE";
+export const SORT_BY_APY = "SORT_BY_APY";
+export const SORT_BY_POOL = "SORT_BY_POOL";
+export const SORT_BY_PROJECT = "SORT_BY_PROJECT";
+// export const SORT_BY_ASSET = "SORT_BY_ASSET";
+export const SORT_BY_TVL = "SORT_BY_TVL";
 
 // Watch List
 export const SORT_BY_ADDRESS = "SORT_BY_ADDRESS";
