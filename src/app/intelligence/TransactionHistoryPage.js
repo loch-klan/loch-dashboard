@@ -1688,6 +1688,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   <div className="ShowDust">
                     <p

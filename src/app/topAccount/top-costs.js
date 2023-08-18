@@ -875,6 +875,7 @@ class TopCost extends Component {
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"
+                  addWatermark
                 />
               </div>
             </div>
