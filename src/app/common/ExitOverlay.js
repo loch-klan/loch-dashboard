@@ -10,6 +10,7 @@ import { Modal, Image, Button } from "react-bootstrap";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import BackIcon from "../../assets/images/icons/back-icon.svg";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
@@ -613,7 +614,7 @@ class ExitOverlay extends BaseReactComponent {
       data.append("last_name", this.state.lastName);
       data.append("email", this.state.email);
       data.append("mobile", this.state.mobileNumber);
-      updateUser(data, this);
+      this.props.updateUser(data, this);
     } else {
       // signUpProperties({
       //   userId: getCurrentUser().id,
@@ -1008,6 +1009,13 @@ class ExitOverlay extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
+              {this.props.goToSignIn ? (
+                <Image
+                  className="back-icon cp"
+                  src={BackIcon}
+                  onClick={this.props.goToSignIn}
+                />
+              ) : null}
               <div
                 className="closebtn"
                 onClick={() => {
@@ -1730,7 +1738,7 @@ class ExitOverlay extends BaseReactComponent {
               ) : (
                 <div className="exit-overlay-body">
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    Don’t lose your data
+                    {this.props.signup ? "Sign up" : " Don’t lose your data"}
                   </h6>
                   {!this.props?.signup ? (
                     <>
@@ -1896,6 +1904,7 @@ const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
   getAllParentChains,
+  updateUser,
 };
 
 ExitOverlay.propTypes = {};
