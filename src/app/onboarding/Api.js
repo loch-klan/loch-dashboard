@@ -339,6 +339,9 @@ export const verifyUser = (ctx, info) => {
     });
 };
 
+export const addYieldPools = async () => {
+  postLoginInstance.post("wallet/user-wallet/add-yield-pools").then(() => {});
+};
 export const createAnonymousUserApi = (
   data,
   ctx,
@@ -516,6 +519,8 @@ export const createAnonymousUserApi = (
           });
         }
       }
+
+      addYieldPools();
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }
