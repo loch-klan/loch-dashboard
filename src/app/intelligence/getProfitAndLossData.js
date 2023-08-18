@@ -187,7 +187,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
               if (parentctx.waitForMixpannelCallOff) {
                 setTimeout(() => {
                   parentctx.waitForMixpannelCallOff();
-                }, 2000);
+                }, 500);
               }
             }
 
