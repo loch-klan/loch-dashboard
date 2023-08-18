@@ -1532,7 +1532,10 @@ function Sidebar(props) {
                 <div className="sidebar-footer">
                   {!isSubmenu.discover && (
                     <ul>
-                      {lochUser ? (
+                      {lochUser &&
+                      (lochUser.email ||
+                        lochUser.first_name ||
+                        lochUser.last_name) ? (
                         <div
                           onClick={handleLeave}
                           className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
@@ -1545,7 +1548,7 @@ function Sidebar(props) {
                               />
                             </div>
                             <div className="dotDotText">
-                              {lochUser.first_name
+                              {lochUser.first_name || lochUser.last_name
                                 ? `${lochUser.first_name} ${
                                     lochUser.last_name
                                       ? lochUser.last_name.slice(0, 1) + "."
