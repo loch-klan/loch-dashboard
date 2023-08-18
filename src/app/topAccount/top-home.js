@@ -217,9 +217,19 @@ class TopPortfolio extends BaseReactComponent {
 
       // netflow switch
       isSwitch: false,
+      waitForMixpannelCall: false,
     };
   }
-
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   // get token
   getToken = () => {
     // console.log(this.state.lochToken)

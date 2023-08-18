@@ -265,9 +265,19 @@ class Portfolio extends BaseReactComponent {
 
       // netflow switch
       isSwitch: false,
+      waitForMixpannelCall: false,
     };
   }
-
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   // get token
   getToken = () => {
     let token = localStorage.getItem("lochToken");

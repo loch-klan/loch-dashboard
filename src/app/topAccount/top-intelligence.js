@@ -84,8 +84,19 @@ class TopIntelligence extends Component {
       isTopAccountPage: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
