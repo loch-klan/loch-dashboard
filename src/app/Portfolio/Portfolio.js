@@ -1655,7 +1655,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
