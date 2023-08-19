@@ -698,7 +698,14 @@ function Sidebar(props) {
               }
             >
               {/* menu tab */}
-              <div style={{ padding: "0rem 2.4rem", position: "relative" }}>
+              <div
+                style={{
+                  padding: "0rem 2.4rem",
+                  paddingRight: "2.8rem",
+                  position: "relative",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 <div className="menu-tab-wrapper">
                   <div
                     className={`tab ${isSubmenu.discover ? "active" : ""}`}
