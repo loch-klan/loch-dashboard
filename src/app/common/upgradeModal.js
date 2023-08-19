@@ -29,7 +29,7 @@ import {
   UpdateCryptoPayment,
   VerifyEmail,
 } from "./Api.js";
-import { updateUser } from "../profile/Api";
+
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
