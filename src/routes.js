@@ -176,6 +176,7 @@ const routes = [
     component: topDefi,
   },
   {
+
     path: "/transaction-feed",
     name: "Transaction feed",
     type: PrivateRoute,
