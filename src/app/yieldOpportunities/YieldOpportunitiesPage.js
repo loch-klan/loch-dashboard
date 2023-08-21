@@ -268,13 +268,36 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
+    let listOfAddresses = [];
+    if (this.props.HeaderState?.wallet?.length > 0) {
+      const walletList = this.props.HeaderState?.wallet;
+      const tempWalletList = [];
+      if (walletList) {
+        walletList.forEach((data) => {
+          let tempAddress = "";
+          if (data?.displayAddress) {
+            tempAddress = data.displayAddress;
+          } else if (data?.address) {
+            tempAddress = data.address;
+          } else if (data?.apiAddress) {
+            tempAddress = data.apiAddress;
+          }
+
+          tempWalletList.push(tempAddress);
+        });
+        tempWalletList.sort().reverse();
+        listOfAddresses = JSON.stringify(tempWalletList);
+      }
+    }
+
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
-
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(this.state.condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
+    data.append("wallet_addresses", listOfAddresses);
+
     this.props.getYieldOpportunities(data, page);
   };
   onPageChange = () => {
@@ -831,7 +854,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("apy")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              APY (%)
+              APY
             </span>
             <Image
               src={sortByIcon}
@@ -1029,6 +1052,7 @@ const mapStateToProps = (state) => ({
   commonState: state.CommonState,
   yieldOpportunitiesState: state.YieldOpportunitiesState,
   OnboardingState: state.OnboardingState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
