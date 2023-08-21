@@ -601,7 +601,7 @@ class Portfolio extends BaseReactComponent {
       setTimeout(() => {
         this.props.getAllCoins();
         this.props.getAllParentChains();
-        getDetectedChainsApi(this);
+        this.props.getDetectedChainsApi(this);
 
         let tempData = new URLSearchParams();
         tempData.append("start", 0);
@@ -2589,6 +2589,7 @@ const mapDispatchToProps = {
   ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
+  getDetectedChainsApi,
 };
 Portfolio.propTypes = {};
 
