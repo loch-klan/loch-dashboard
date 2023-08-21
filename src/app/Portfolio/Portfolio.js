@@ -601,7 +601,7 @@ class Portfolio extends BaseReactComponent {
       setTimeout(() => {
         this.props.getAllCoins();
         this.props.getAllParentChains();
-        getDetectedChainsApi(this);
+        this.props.getDetectedChainsApi(this);
 
         let tempData = new URLSearchParams();
         tempData.append("start", 0);
@@ -802,6 +802,7 @@ class Portfolio extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
+    console.log("address are ", address);
     let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
@@ -1181,6 +1182,26 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
+                  // rowData.from.wallet_metaData?.text
+                  //   ? rowData.from.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.displayAddress &&
+                  //     rowData.from.metaData?.displayAddress !==
+                  //       rowData.from.address
+                  //   ? rowData.from.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.nickname
+                  //   ? rowData.from.metaData?.nickname +
+                  //     ": " +
+                  //     (rowData.from.wallet_metaData?.text ?
+                  //       (rowData.from.wallet_metaData?.text + ": "):"") +
+                  //     ((rowData.from.metaData?.displayAddress &&
+                  //       rowData.from.metaData?.displayAddress !==
+                  //         rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
+                  //     rowData.from.address
+                  //   : rowData.from.address
                   (rowData.from.metaData?.nickname
                     ? rowData.from.metaData?.nickname + ": "
                     : "") +
@@ -1392,6 +1413,27 @@ class Portfolio extends BaseReactComponent {
                     ? rowData.to.metaData?.displayAddress + ": "
                     : "") +
                   rowData.to.address
+                  // rowData.to.wallet_metaData?.text
+                  //   ? rowData.to.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //   ? rowData.to.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.nickname
+                  //   ? (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
+                  //     ": " : "") +
+                  //     (rowData.to.wallet_metaData?.text
+                  //       ? rowData.to.wallet_metaData?.text + ": "
+                  //       : "") +
+                  //     (rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //       ? rowData.to.metaData?.displayAddress + ": "
+                  //       : "") +
+                  //     rowData.to.address
+                  //   : rowData.to.address
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
@@ -1655,7 +1697,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -2589,6 +2631,7 @@ const mapDispatchToProps = {
   ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
+  getDetectedChainsApi,
 };
 Portfolio.propTypes = {};
 
