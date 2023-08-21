@@ -1032,6 +1032,36 @@ function Sidebar(props) {
                               }
                             }}
                             className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={CoinsIcon}
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
                             to="/profile"
                             activeclassname="active"
                           >
