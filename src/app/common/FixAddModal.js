@@ -927,7 +927,6 @@ class FixAddModal extends BaseReactComponent {
       this.state.changeList && this.state.changeList(walletList);
       const data = new URLSearchParams();
       const yieldData = new URLSearchParams();
-      yieldData.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       updateUserWalletApi(data, this, yieldData);
