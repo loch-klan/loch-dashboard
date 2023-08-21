@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { getAllWalletList } from "./WalletAction";
 
 export const getAllWalletListApi = (data, ctx) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/search-wallet", data)
       .then((res) => {
