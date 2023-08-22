@@ -1627,7 +1627,12 @@ function Sidebar(props) {
                           <div>Sign in / up</div>
                         </div>
                       )}
-                      <li style={{ justifyContent: "space-between" }}>
+                      <li
+                        style={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src = ExportIconWhite)
@@ -1648,23 +1653,20 @@ function Sidebar(props) {
                             lochUser.first_name ||
                             lochUser.last_name)
                         ) ? (
-                          <li style={{ justifyContent: "space-between" }}>
-                            <span
-                              onClick={handleLeave}
-                              onMouseOver={(e) =>
-                                (e.currentTarget.children[0].src =
-                                  LeaveBlackIcon)
-                              }
-                              onMouseLeave={(e) =>
-                                (e.currentTarget.children[0].src = LeaveIcon)
-                              }
-                            >
-                              <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
-                            </span>
-                          </li>
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
                         ) : null}
 
                         {/*                   
