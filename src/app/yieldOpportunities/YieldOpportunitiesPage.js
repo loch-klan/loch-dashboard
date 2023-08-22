@@ -300,6 +300,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.yieldPoolState !== this.props.yieldPoolState) {
+      this.callApi();
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1053,6 +1056,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   yieldOpportunitiesState: state.YieldOpportunitiesState,
+  yieldPoolState: state.YieldPoolState,
   OnboardingState: state.OnboardingState,
   HeaderState: state.HeaderState,
 });

@@ -1,6 +1,8 @@
 import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
 import { getAllWalletList } from "./WalletAction";
+import { addYieldPools } from "../onboarding/Api";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 
 export const getAllWalletListApi = (data, ctx) => {
   return function (dispatch, getState) {
@@ -26,6 +28,19 @@ export const getAllWalletListApi = (data, ctx) => {
               }),
             };
           });
+          if (localStorage.getItem("lochToken")) {
+            postLoginInstance
+              .post("wallet/user-wallet/add-yield-pools")
+              .then((res) => {
+                dispatch({
+                  type: YIELD_POOLS,
+                  payload: res,
+                });
+              })
+              .catch(() => {
+                console.log("Issue here");
+              });
+          }
           dispatch(getAllWalletList({ walletdata, totalWalletAmt }));
           ctx.setState({
             isLoading: false,
