@@ -708,10 +708,20 @@
           background-color: $grey-F2F;
         }
         .sideBarFooterSignedInLeaveContainer {
-          color: $grey-B0B;
-          .sideBarFooterSignedInLeaveIcon {
+          .navbar-button {
+            background: none;
+            border: none;
+            color: $grey-B0B;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          img {
             width: 1.6rem;
-            margin-right: 0.5rem;
+          }
+          &:hover {
+            .navbar-button {
+              color: $primary;
+            }
           }
         }
       }
