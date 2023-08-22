@@ -367,6 +367,10 @@ function Sidebar(props) {
     }
   };
 
+  const handleLeaveChild = (e) => {
+    e.stopPropagation();
+    handleLeave();
+  };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
     // console.log("isDummy user", isDummy)
@@ -1499,7 +1503,7 @@ function Sidebar(props) {
                             </div>
                           </div>
                           <span
-                            onClick={handleLeave}
+                            onClick={handleLeaveChild}
                             onMouseOver={(e) =>
                               (e.currentTarget.children[0].src = LeaveBlackIcon)
                             }
