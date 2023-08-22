@@ -196,147 +196,154 @@ export const signIn = (ctx, data) => {
 };
 
 export const verifyUser = (ctx, info) => {
-  preLoginInstance
-    .post("organisation/user/verify-otp", info)
-    .then((res) => {
-      // console.log(res.data.data.user)
-      if (!res.data.error) {
-        localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
-        localStorage.setItem("lochToken", res.data.data.token);
-        // free pricing
-        let plan = {
-          defi_enabled: true,
-          export_address_limit: -1,
-          id: "63eb32769b5e4daf6b588207",
-          is_default: false,
-          is_trial: false,
-          name: "Sovereign",
-          notifications_limit: -1,
-          notifications_provided: true,
-          plan_reference_id: "prod_NM0aQTO38msDkq",
-          subscription: {
-            active: true,
-            created_on: "2023-04-06 06:41:11.302000+00:00",
-            id: "642e69878cc994b64ca49272",
-            modified_on: "2023-04-06 06:41:11.302000+00:00",
-            plan_id: "63eb32769b5e4daf6b588207",
+  return async function () {
+    preLoginInstance
+      .post("organisation/user/verify-otp", info)
+      .then((res) => {
+        // console.log(res.data.data.user)
+        if (!res.data.error) {
+          localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
+          localStorage.setItem("lochToken", res.data.data.token);
+          // free pricing
+          let plan = {
+            defi_enabled: true,
+            export_address_limit: -1,
+            id: "63eb32769b5e4daf6b588207",
+            is_default: false,
+            is_trial: false,
+            name: "Sovereign",
+            notifications_limit: -1,
+            notifications_provided: true,
             plan_reference_id: "prod_NM0aQTO38msDkq",
-            subscription_reference_id: "",
-            trial_subscription: false,
-            user_id: "63f89011251cc82aeebfcae5",
-            valid_till: "2023-05-06 00:00:00+00:00",
-          },
-          trial_days: 30,
-          upload_csv: true,
-          wallet_address_limit: -1,
-          whale_pod_address_limit: -1,
-          whale_pod_limit: -1,
-          influencer_pod_limit: -1,
-        };
-        // free pricing
-        localStorage.setItem(
-          "currentPlan",
-          JSON.stringify({
-            ...plan,
+            subscription: {
+              active: true,
+              created_on: "2023-04-06 06:41:11.302000+00:00",
+              id: "642e69878cc994b64ca49272",
+              modified_on: "2023-04-06 06:41:11.302000+00:00",
+              plan_id: "63eb32769b5e4daf6b588207",
+              plan_reference_id: "prod_NM0aQTO38msDkq",
+              subscription_reference_id: "",
+              trial_subscription: false,
+              user_id: "63f89011251cc82aeebfcae5",
+              valid_till: "2023-05-06 00:00:00+00:00",
+            },
+            trial_days: 30,
+            upload_csv: true,
+            wallet_address_limit: -1,
+            whale_pod_address_limit: -1,
+            whale_pod_limit: -1,
             influencer_pod_limit: -1,
-          })
-        );
-        // localStorage.setItem(
-        //   "currentPlan",
-        //   JSON.stringify({...res.data.data?.current_plan,influencer_pod_limit:
-        // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
-        // );
+          };
+          // free pricing
+          localStorage.setItem(
+            "currentPlan",
+            JSON.stringify({
+              ...plan,
+              influencer_pod_limit: -1,
+            })
+          );
+          // localStorage.setItem(
+          //   "currentPlan",
+          //   JSON.stringify({...res.data.data?.current_plan,influencer_pod_limit:
+          // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
+          // );
 
-        const allChains = ctx.props.OnboardingState.coinsList;
-        let addWallet = [];
-        const apiResponse = res.data.data;
-        for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
-          let obj = {}; // <----- new Object
-          // obj['address'] = apiResponse.user.wallets[i].address;
-          obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
-          // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
-          obj["displayAddress"] =
-            apiResponse.user.user_wallets[i]?.display_address;
-          // const chainsDetected =
-          //   apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
-          //     .chains;
+          const allChains = ctx.props.OnboardingState.coinsList;
+          let addWallet = [];
+          const apiResponse = res.data.data;
+          for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
+            let obj = {}; // <----- new Object
+            // obj['address'] = apiResponse.user.wallets[i].address;
+            obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+            // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
+            obj["displayAddress"] =
+              apiResponse.user.user_wallets[i]?.display_address;
+            // const chainsDetected =
+            //   apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+            //     .chains;
 
-          const chainsDetected =
-            apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
-              ?.chains ||
-            apiResponse.wallets[
-              apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-            ]?.chains;
-          obj["coins"] = allChains.map((chain) => {
-            let coinDetected = false;
-            chainsDetected.map((item) => {
-              if (item.id === chain.id) {
-                coinDetected = true;
-              }
+            const chainsDetected =
+              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+                ?.chains ||
+              apiResponse.wallets[
+                apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+              ]?.chains;
+            obj["coins"] = allChains.map((chain) => {
+              let coinDetected = false;
+              chainsDetected.map((item) => {
+                if (item.id === chain.id) {
+                  coinDetected = true;
+                }
+              });
+              return {
+                coinCode: chain.code,
+                coinSymbol: chain.symbol,
+                coinName: chain.name,
+                chain_detected: coinDetected,
+                coinColor: chain.color,
+              };
             });
-            return {
-              coinCode: chain.code,
-              coinSymbol: chain.symbol,
-              coinName: chain.name,
-              chain_detected: coinDetected,
-              coinColor: chain.color,
-            };
+            obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
+            obj["id"] = `wallet${i + 1}`;
+
+            let chainLength =
+              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+                ?.chains?.length ||
+              apiResponse.wallets[
+                apiResponse?.user?.user_wallets[i]?.address.toLowerCase()
+              ]?.chains?.length;
+
+            obj["coinFound"] = chainLength > 0 ? true : false;
+
+            obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
+            obj["showAddress"] =
+              apiResponse?.user?.user_wallets[i]?.nickname === ""
+                ? true
+                : false;
+            obj["showNickname"] =
+              apiResponse?.user?.user_wallets[i]?.nickname !== ""
+                ? true
+                : false;
+
+            addWallet.push(obj);
+          }
+
+          // Mixpanel function
+          signInUser({
+            email_address: res.data.data.user?.email,
+            userId: res.data.data.user?.link,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+            track: "Landing page sign in",
           });
-          obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
-          obj["id"] = `wallet${i + 1}`;
-
-          let chainLength =
-            apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
-              ?.chains?.length ||
-            apiResponse.wallets[
-              apiResponse?.user?.user_wallets[i]?.address.toLowerCase()
-            ]?.chains?.length;
-
-          obj["coinFound"] = chainLength > 0 ? true : false;
-
-          obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
-          obj["showAddress"] =
-            apiResponse?.user?.user_wallets[i]?.nickname === "" ? true : false;
-          obj["showNickname"] =
-            apiResponse?.user?.user_wallets[i]?.nickname !== "" ? true : false;
-
-          addWallet.push(obj);
-        }
-
-        // Mixpanel function
-        signInUser({
-          email_address: res.data.data.user?.email,
-          userId: res.data.data.user?.link,
-          first_name: res.data.data.user?.first_name,
-          last_name: res.data.data.user?.last_name,
-          track: "Landing page sign in",
-        });
-        // console.log("addWallet", addWallet);
-        localStorage.setItem("addWallet", JSON.stringify(addWallet));
-        ctx.props.history.push({
-          pathname: "/home",
-          state: { addWallet },
-        });
-        UserSignedinCorrectly({
-          email_address: res.data.data.user.email,
-          session_id: res.data.data.user?.link,
-        });
-      } else {
-        UserWrongCode({ email_address: ctx.state.email });
-        toast.error(
-          <div className="custom-toast-msg">
-            <div>{res.data.message}</div>
-            <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              Please enter a valid otp
+          // console.log("addWallet", addWallet);
+          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          ctx.props.history.push({
+            pathname: "/home",
+            state: { addWallet },
+          });
+          UserSignedinCorrectly({
+            email_address: res.data.data.user.email,
+            session_id: res.data.data.user?.link,
+          });
+          addYieldPools();
+        } else {
+          UserWrongCode({ email_address: ctx.state.email });
+          toast.error(
+            <div className="custom-toast-msg">
+              <div>{res.data.message}</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                Please enter a valid otp
+              </div>
             </div>
-          </div>
-        );
-        // toast.error(res.data.message || "Something Went Wrong")
-      }
-    })
-    .catch((err) => {
-      console.log("error while verifying", err);
-    });
+          );
+          // toast.error(res.data.message || "Something Went Wrong")
+        }
+      })
+      .catch((err) => {
+        console.log("error while verifying", err);
+      });
+  };
 };
 
 export const addYieldPools = async () => {

@@ -100,14 +100,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [
-        { key: SORT_BY_VALUE, value: false },
-        { key: SORT_BY_APY, value: false },
-        { key: SORT_BY_POOL, value: false },
-        { key: SORT_BY_PROJECT, value: false },
-        { key: SORT_BY_ASSET, value: false },
-        { key: SORT_BY_TVL, value: false },
-      ],
+      sort: [],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
@@ -604,6 +597,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         el.up = false;
       }
     });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
     this.setState({
       sort: obj,
       tableSortOpt: sort,
@@ -619,10 +615,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
     let shareLink =
-      BASE_URL_S3 +
-      "home/" +
-      slink +
-      "?redirect=decentralized-finance/yield-opportunities?p=0";
+      BASE_URL_S3 + "home/" + slink + "?redirect=yield-opportunities?p=0";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -1026,7 +1019,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                   <TransactionTable
                     tableData={tableData}
                     columnList={columnList}
-                    message={"No Yield Opportunities Found"}
+                    message={"No yield opportunities found"}
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
