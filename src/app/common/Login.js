@@ -89,22 +89,6 @@ class Login extends BaseReactComponent {
     }
   }
 
-  componentWillUnmount() {
-    // window.hj("identify", );
-    let baseToken = localStorage.getItem("baseToken");
-    // console.log("access code", baseToken);
-    window.hj("identify", null, {
-      "access code": baseToken,
-      // Add your own custom attributes here. Some EXAMPLES:
-      // 'Signed up': '2019—06-20Z', // Signup date in ISO-8601 format.
-      // 'Last purchase category': 'Electronics', // Send strings with quotes around them.
-      // 'Total purchases': 15, // Send numbers without quotes.
-      // 'Last purchase date': '2019-06-20Z', // Send dates in ISO-8601 format.
-      // 'Last refund date': null, // Send null when no value exists for a user.
-    });
-    // window.hj("user.set", "access code", baseToken);
-  }
-
   onValidSubmit = () => {
     const data = new URLSearchParams();
     data.append("password", this.state.password);
