@@ -43,13 +43,13 @@ import {
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
-  TimeSpentTransactionHistory,
-  TransactionHistoryPageBack,
-  TransactionHistoryPageNext,
-  TransactionHistoryPageSearch,
-  TransactionHistoryPageView,
-  TransactionHistorySearch,
-  TransactionHistoryShare,
+  TimeSpentYieldOpportunities,
+  YieldOpportunitiesPageBack,
+  YieldOpportunitiesPageNext,
+  YieldOpportunitiesPageSearch,
+  YieldOpportunitiesPageView,
+  YieldOpportunitiesSearch,
+  YieldOpportunitiesShare,
   YieldOpportunitiesAssetFilter,
   YieldOpportunitiesNetworkFilter,
   YieldOpportunitiesSortAPY,
@@ -75,6 +75,7 @@ import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import Footer from "../common/footer";
 import CoinChip from "../wallet/CoinChip";
+import { getAllWalletListApi } from "../wallet/Api";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -179,7 +180,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   };
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    TransactionHistoryPageView({
+    YieldOpportunitiesPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -236,7 +237,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentTransactionHistory({
+      TimeSpentYieldOpportunities({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -334,7 +335,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.props.commonState.yieldOpportunities) {
+      this.props.updateWalletListFlag("yieldOpportunities", true);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
+    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
@@ -346,21 +355,21 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
-          TransactionHistoryPageBack({
+          YieldOpportunitiesPageBack({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page_no: page + 1,
           });
           this.updateTimer();
         } else if (prevPage + 1 === page) {
-          TransactionHistoryPageNext({
+          YieldOpportunitiesPageNext({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page_no: page + 1,
           });
           this.updateTimer();
         } else {
-          TransactionHistoryPageSearch({
+          YieldOpportunitiesPageSearch({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page_search: page + 1,
@@ -504,7 +513,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
       this.addCondition(SEARCH_BY_TEXT, this.state.search);
-      TransactionHistorySearch({
+      YieldOpportunitiesSearch({
         session_id: getCurrentUser().id,
         email: getCurrentUser().email,
         searched: this.state.search,
@@ -618,7 +627,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
-    TransactionHistoryShare({
+    YieldOpportunitiesShare({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -1053,6 +1062,7 @@ const mapDispatchToProps = {
   getFilters,
   getAllCoins,
   setPageFlagDefault,
+  getAllWalletListApi,
   updateWalletListFlag,
 };
 

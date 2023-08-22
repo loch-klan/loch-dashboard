@@ -346,8 +346,24 @@ export const verifyUser = (ctx, info) => {
   };
 };
 
-export const addYieldPools = async () => {
-  postLoginInstance.post("wallet/user-wallet/add-yield-pools").then(() => {});
+export const addYieldPools = async (address) => {
+  if (address) {
+    const yieldData = new URLSearchParams();
+    yieldData.append("wallet_addresses", JSON.stringify(address));
+    postLoginInstance
+      .post("wallet/user-wallet/add-yield-pools", yieldData)
+      .then(() => {})
+      .catch(() => {
+        console.log("Issue here");
+      });
+  } else {
+    postLoginInstance
+      .post("wallet/user-wallet/add-yield-pools")
+      .then(() => {})
+      .catch(() => {
+        console.log("Issue here");
+      });
+  }
 };
 export const createAnonymousUserApi = (
   data,
@@ -527,7 +543,12 @@ export const createAnonymousUserApi = (
         }
       }
 
-      addYieldPools();
+      let passAddress = newAddWallet?.map((wallet) => {
+        return wallet.address;
+      });
+      if (localStorage.getItem("lochToken")) {
+        addYieldPools(passAddress);
+      }
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }
