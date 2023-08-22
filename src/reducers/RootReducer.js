@@ -19,6 +19,7 @@ import {
 } from "../app/watchlist/redux/WatchListReducer";
 import LochUserReducer from "../app/profile/LochUserReducer";
 import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
+import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -28,6 +29,7 @@ export default combineReducers({
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   YieldOpportunitiesState: YieldOpportunitiesReducer,
+  YieldPoolState: YieldPoolReducer,
   CommonState: CommonReducer,
   LochUserState: LochUserReducer,
   HomeState: HomeReducer,

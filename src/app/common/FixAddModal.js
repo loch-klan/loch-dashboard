@@ -657,7 +657,7 @@ class FixAddModal extends BaseReactComponent {
             });
           }
 
-          updateUserWalletApi(data, this, yieldData);
+          this.props.updateUserWalletApi(data, this, yieldData);
 
           // message for user
           this.setState({
@@ -930,7 +930,7 @@ class FixAddModal extends BaseReactComponent {
       yieldData.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
-      updateUserWalletApi(data, this, yieldData);
+      this.props.updateUserWalletApi(data, this, yieldData);
       // if (this.props.handleUpdateWallet) {
       //     this.props.handleUpdateWallet()
       // }
@@ -1568,6 +1568,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   updateWalletListFlag,
   setHeaderReducer,
+  updateUserWalletApi,
 };
 FixAddModal.propTypes = {};
 

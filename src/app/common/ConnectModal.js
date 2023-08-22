@@ -1250,10 +1250,15 @@ class ConnectModal extends BaseReactComponent {
     // data.append("link", );
     if (isConnect) {
       // console.log("create user and go to home");
-      createAnonymousUserApi(data, this, finalArr, null);
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
     } else {
       // console.log("create user and connect exhcnage");
-      createAnonymousUserApi(data, this, finalArr, this.handleConnect);
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        this.handleConnect
+      );
     }
 
     // console.log(finalArr);
@@ -1669,6 +1674,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   getExchangeBalance,
   setPageFlagDefault,
+  createAnonymousUserApi,
 };
 ConnectModal.propTypes = {};
 
