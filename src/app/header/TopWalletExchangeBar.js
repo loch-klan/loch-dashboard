@@ -71,7 +71,6 @@ class TopBar extends Component {
       const tempExchangeList = [];
       const tempExchangeListImages = [];
       if (walletList) {
-        console.log("walletList is ", walletList);
         walletList.map((data) => {
           if (data?.chains.length === 0) {
             if (data.protocol) {
