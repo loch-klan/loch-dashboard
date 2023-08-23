@@ -263,8 +263,11 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
   callApi = (page = START_INDEX) => {
     let listOfAddresses = "";
-    if (this.props.HeaderState?.wallet?.length > 0) {
-      const walletList = this.props.HeaderState?.wallet;
+    if (
+      this.props.walletState &&
+      this.props.walletState.walletList?.length > 0
+    ) {
+      const walletList = this.props.walletState.walletList;
       const tempWalletList = [];
       if (walletList) {
         walletList.forEach((data) => {
@@ -302,6 +305,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.walletState !== this.props.walletState) {
+      this.callApi();
+    }
     if (prevProps.yieldPoolState !== this.props.yieldPoolState) {
       this.callApi();
     }
@@ -1061,6 +1067,7 @@ const mapStateToProps = (state) => ({
   yieldPoolState: state.YieldPoolState,
   OnboardingState: state.OnboardingState,
   HeaderState: state.HeaderState,
+  walletState: state.WalletState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
