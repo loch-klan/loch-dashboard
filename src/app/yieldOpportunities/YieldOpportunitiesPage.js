@@ -262,7 +262,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
-    let listOfAddresses = [];
+    let listOfAddresses = "";
     if (this.props.HeaderState?.wallet?.length > 0) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
