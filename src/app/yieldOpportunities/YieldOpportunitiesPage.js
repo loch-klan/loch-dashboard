@@ -291,8 +291,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
     data.append("wallet_addresses", listOfAddresses);
-
-    this.props.getYieldOpportunities(data, page);
+    if (listOfAddresses) {
+      this.props.getYieldOpportunities(data, page);
+    }
   };
   onPageChange = () => {
     this.setState({
