@@ -28,9 +28,14 @@ export const getAllWalletListApi = (data, ctx) => {
               }),
             };
           });
+          let passAddress = walletdata?.map((wallet) => {
+            return wallet.address;
+          });
           if (localStorage.getItem("lochToken")) {
+            const yieldData = new URLSearchParams();
+            yieldData.append("wallet_addresses", JSON.stringify(passAddress));
             postLoginInstance
-              .post("wallet/user-wallet/add-yield-pools")
+              .post("wallet/user-wallet/add-yield-pools", yieldData)
               .then((res) => {
                 dispatch({
                   type: YIELD_POOLS,
