@@ -1417,7 +1417,9 @@ export const updateAccessToken = (data, ctx, name) => {
         tempData.append("conditions", JSON.stringify([]));
         tempData.append("limit", 50);
         tempData.append("sorts", JSON.stringify([]));
-        getAllWalletListApi(tempData, this);
+        setTimeout(() => {
+          ctx.props.getAllWalletListApi(tempData, ctx);
+        }, 4000);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
