@@ -367,6 +367,10 @@ function Sidebar(props) {
     }
   };
 
+  const handleLeaveChild = (e) => {
+    e.stopPropagation();
+    handleLeave();
+  };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
     // console.log("isDummy user", isDummy)
@@ -380,6 +384,9 @@ function Sidebar(props) {
       setConfirmLeave(!confirmLeave);
       // props.history.push('/welcome');
     }
+  };
+  const handleGoToProfile = () => {
+    props.history.push("/profile");
   };
 
   const handleCohort = () => {
@@ -1512,7 +1519,7 @@ function Sidebar(props) {
                         lochUser.first_name ||
                         lochUser.last_name) ? (
                         <div
-                          onClick={handleLeave}
+                          onClick={handleGoToProfile}
                           className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
                         >
                           <div className="sideBarFooterSignInData">
@@ -1532,12 +1539,20 @@ function Sidebar(props) {
                                 : "Signed In"}
                             </div>
                           </div>
-                          <span className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13">
-                            <Image
-                              className="sideBarFooterSignedInLeaveIcon"
-                              src={LeaveIcon}
-                            />
-                            <span>Leave</span>
+                          <span
+                            onClick={handleLeaveChild}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                            className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
                           </span>
                         </div>
                       ) : (
@@ -1554,7 +1569,12 @@ function Sidebar(props) {
                           <div>Sign in / up</div>
                         </div>
                       )}
-                      <li style={{ justifyContent: "space-between" }}>
+                      <li
+                        style={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src = ExportIconWhite)
@@ -1569,6 +1589,27 @@ function Sidebar(props) {
                             Export
                           </Button>
                         </span>
+                        {!(
+                          lochUser &&
+                          (lochUser.email ||
+                            lochUser.first_name ||
+                            lochUser.last_name)
+                        ) ? (
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                        ) : null}
 
                         {/*                   
                                 <span
@@ -1610,29 +1651,6 @@ function Sidebar(props) {
                         </span>
                       </li>
 
-                      {!(
-                        lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name)
-                      ) ? (
-                        <li style={{ justifyContent: "space-between" }}>
-                          <span
-                            onClick={handleLeave}
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src = LeaveBlackIcon)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src = LeaveIcon)
-                            }
-                          >
-                            <Image src={LeaveIcon} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                              Leave
-                            </Button>
-                          </span>
-                        </li>
-                      ) : null}
                       {/* <li>
                     <span
                       onMouseOver={(e) =>
