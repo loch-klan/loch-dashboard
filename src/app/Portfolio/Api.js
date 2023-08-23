@@ -48,7 +48,7 @@ export const getCoinRate = () => {
 };
 
 export const getUserWallet = (wallet, ctx, isRefresh, index) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     let data = new URLSearchParams();
     data.append("chain", wallet.coinCode);
     data.append("wallet_address", wallet.address);
@@ -129,7 +129,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
 };
 
 export const getExchangeBalance = (exchangeName, ctx) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     //  console.log(exchangeName);
     let data = new URLSearchParams();
     data.append("exchange", exchangeName);
@@ -177,7 +177,7 @@ export const getExchangeBalance = (exchangeName, ctx) => {
 };
 
 export const getExchangeBalances = (ctx, isRefresh = false) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (!isRefresh) {
       data.append("update_balance", false);
@@ -234,7 +234,7 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
 };
 
 export const settingDefaultValues = (ctx) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch({
       type: ctx?.state?.isTopAccountPage ? TOP_DEFAULT_VALUES : DEFAULT_VALUES,
     });
@@ -511,7 +511,7 @@ export const getAllProtocol = (ctx) => {
 };
 
 export const getProtocolBalanceApi = (ctx, data) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-debank-balance", data)
       .then((res) => {

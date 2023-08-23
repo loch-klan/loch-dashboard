@@ -1,11 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
+import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 
 import { EyeIcon, CloseIcon, CheckIcon } from "../../assets/images/icons";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";

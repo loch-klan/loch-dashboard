@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Modal } from "react-bootstrap";
-import backIcon from "../../image/back-icon.svg";
+import backIcon from "../../image/white-back-icon.svg";
 
 const OnboardingModal = ({
   show,

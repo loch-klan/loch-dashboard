@@ -423,7 +423,7 @@ class AuthModal extends BaseReactComponent {
                 Skip for now
               </p>
             )}
-            {this.props.goToSignUp ? (
+            {this.props.goToSignUp && !this.state.isShowOtp ? (
               <p
                 onClick={this.props.goToSignUp}
                 className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"

@@ -20,7 +20,7 @@ import Loading from "./Loading";
 
 import DesktopImg from "../../assets/images/icons/desktop.svg";
 import LochIcon from "../../assets/images/icons/grey-loch.svg";
-import BackIcon from "../../assets/images/icons/back-icon.svg";
+import BackIcon from "../../assets/images/icons/backIcon.svg";
 import {
   MobileEmail,
   MobileEmailPageView,

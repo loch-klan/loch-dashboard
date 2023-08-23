@@ -81,6 +81,7 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import { NewspaperIcon } from "../../assets/images/icons";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
@@ -286,7 +287,7 @@ function Sidebar(props) {
     }
     // Discover section
     else if (
-      ["/whale-watch", "/watchlist"].includes(activeTab) ||
+      ["/whale-watch", "/watchlist", "/transaction-feed"].includes(activeTab) ||
       activeTab.includes("/whale-watch")
     ) {
       let obj = {
@@ -367,6 +368,10 @@ function Sidebar(props) {
     }
   };
 
+  const handleLeaveChild = (e) => {
+    e.stopPropagation();
+    handleLeave();
+  };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
     // console.log("isDummy user", isDummy)
@@ -380,6 +385,9 @@ function Sidebar(props) {
       setConfirmLeave(!confirmLeave);
       // props.history.push('/welcome');
     }
+  };
+  const handleGoToProfile = () => {
+    props.history.push("/profile");
   };
 
   const handleCohort = () => {
@@ -697,7 +705,14 @@ function Sidebar(props) {
               }
             >
               {/* menu tab */}
-              <div style={{ padding: "0rem 2.4rem", position: "relative" }}>
+              <div
+                style={{
+                  padding: "0rem 2.4rem",
+                  paddingRight: "2.8rem",
+                  position: "relative",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 <div className="menu-tab-wrapper">
                   <div
                     className={`tab ${isSubmenu.discover ? "active" : ""}`}
@@ -977,6 +992,37 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
+                          </NavLink>
+                        </li>
+
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={CoinsIcon}
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
                           </NavLink>
                         </li>
                         <li>
@@ -1465,6 +1511,36 @@ function Sidebar(props) {
                             Watchlist
                           </NavLink>
                         </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/transaction-feed"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={NewspaperIcon}
+                              style={
+                                activeTab === "/transaction-feed"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Transaction feed
+                          </NavLink>
+                        </li>
                       </>
                     )}
                     {/* <li>
@@ -1505,7 +1581,7 @@ function Sidebar(props) {
                         lochUser.first_name ||
                         lochUser.last_name) ? (
                         <div
-                          onClick={handleLeave}
+                          onClick={handleGoToProfile}
                           className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
                         >
                           <div className="sideBarFooterSignInData">
@@ -1525,12 +1601,20 @@ function Sidebar(props) {
                                 : "Signed In"}
                             </div>
                           </div>
-                          <span className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13">
-                            <Image
-                              className="sideBarFooterSignedInLeaveIcon"
-                              src={LeaveIcon}
-                            />
-                            <span>Leave</span>
+                          <span
+                            onClick={handleLeaveChild}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                            className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
                           </span>
                         </div>
                       ) : (
@@ -1547,7 +1631,12 @@ function Sidebar(props) {
                           <div>Sign in / up</div>
                         </div>
                       )}
-                      <li style={{ justifyContent: "space-between" }}>
+                      <li
+                        style={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src = ExportIconWhite)
@@ -1562,6 +1651,27 @@ function Sidebar(props) {
                             Export
                           </Button>
                         </span>
+                        {!(
+                          lochUser &&
+                          (lochUser.email ||
+                            lochUser.first_name ||
+                            lochUser.last_name)
+                        ) ? (
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                        ) : null}
 
                         {/*                   
                                 <span
@@ -1603,29 +1713,6 @@ function Sidebar(props) {
                         </span>
                       </li>
 
-                      {!(
-                        lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name)
-                      ) ? (
-                        <li style={{ justifyContent: "space-between" }}>
-                          <span
-                            onClick={handleLeave}
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src = LeaveBlackIcon)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src = LeaveIcon)
-                            }
-                          >
-                            <Image src={LeaveIcon} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                              Leave
-                            </Button>
-                          </span>
-                        </li>
-                      ) : null}
                       {/* <li>
                     <span
                       onMouseOver={(e) =>
