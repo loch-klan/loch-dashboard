@@ -673,7 +673,7 @@ class AddWallet extends BaseReactComponent {
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       // data.append("link", );
-      createAnonymousUserApi(data, this, finalArr, null);
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
 
       const address = finalArr?.map((e) => e.address);
 
@@ -743,11 +743,14 @@ class AddWallet extends BaseReactComponent {
 
       // this.state?.onHide();
       const data = new URLSearchParams();
+      const yieldData = new URLSearchParams();
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
+      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
-      updateUserWalletApi(data, this);
+      this.props.updateUserWalletApi(data, this, yieldData);
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -1289,6 +1292,7 @@ const mapDispatchToProps = {
   createAnonymousUserApi,
   getAllParentChains,
   setHeaderReducer,
+  updateUserWalletApi,
 };
 AddWallet.propTypes = {};
 

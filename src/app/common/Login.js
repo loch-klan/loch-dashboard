@@ -108,7 +108,7 @@ class Login extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify([]));
       // data.append("link", this.state.id);
-      createAnonymousUserApi(data, this, [], null);
+      this.props.createAnonymousUserApi(data, this, [], null);
     } else {
       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
       // console.log('Heyyyy',addWallet);
@@ -125,7 +125,7 @@ class Login extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(AddressList));
       data.append("link", this.state.id);
-      createAnonymousUserApi(data, this, addWallet, null);
+      this.props.createAnonymousUserApi(data, this, addWallet, null);
     }
   };
 
@@ -192,6 +192,7 @@ const mapDispatchToProps = {
   // getPosts: fetchPosts
   getDetailsByLinkApi,
   getAllCoins,
+  createAnonymousUserApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
