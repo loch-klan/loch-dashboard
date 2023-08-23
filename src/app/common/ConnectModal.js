@@ -47,6 +47,7 @@ import {
   createAnonymousUserApi,
   getAllParentChains,
 } from "../onboarding/Api";
+import { getAllWalletListApi } from "../wallet/Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -1674,6 +1675,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   getExchangeBalance,
   setPageFlagDefault,
+  getAllWalletListApi,
   createAnonymousUserApi,
 };
 ConnectModal.propTypes = {};
