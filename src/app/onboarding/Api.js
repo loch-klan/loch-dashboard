@@ -327,17 +327,19 @@ export const verifyUser = (ctx, info) => {
             email_address: res.data.data.user.email,
             session_id: res.data.data.user?.link,
           });
-          postLoginInstance
-            .post("wallet/user-wallet/add-yield-pools")
-            .then((res) => {
-              dispatch({
-                type: YIELD_POOLS,
-                payload: res,
+          if (localStorage.getItem("lochToken")) {
+            postLoginInstance
+              .post("wallet/user-wallet/add-yield-pools")
+              .then((res) => {
+                dispatch({
+                  type: YIELD_POOLS,
+                  payload: res,
+                });
+              })
+              .catch(() => {
+                console.log("Issue here");
               });
-            })
-            .catch(() => {
-              console.log("Issue here");
-            });
+          }
         } else {
           UserWrongCode({ email_address: ctx.state.email });
           toast.error(
