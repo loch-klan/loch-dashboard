@@ -10,6 +10,7 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { setHeaderReducer } from "./HeaderAction";
 
 class TopBar extends Component {
   constructor(props) {
@@ -67,6 +68,14 @@ class TopBar extends Component {
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
+      const passDataHeader = walletList.map((walRes) => {
+        return {
+          nickname: walRes.nickname,
+          displayAddress: walRes.display_address,
+          address: walRes.address,
+        };
+      });
+      this.props.setHeaderReducer(passDataHeader);
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
@@ -115,30 +124,41 @@ class TopBar extends Component {
     if (this.props.HeaderState?.wallet?.length > 0) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
+      const tempExchangeList = [];
+      const tempExchangeListImages = [];
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
-          let tempAddress = "";
-          if (data?.nickname) {
-            tempAddress = data.nickname;
-          } else if (data?.displayAddress) {
-            tempAddress = data.displayAddress;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+          if (data.isExchange) {
+            if (data.exchangeCode) {
+              tempExchangeList.push(data.exchangeCode);
             }
-          } else if (data?.address) {
-            tempAddress = data.address;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+            if (data.exchangeSymbol) {
+              tempExchangeListImages.push(data.exchangeSymbol);
             }
-          } else if (data?.apiAddress) {
-            tempAddress = data.apiAddress;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+          } else {
+            let tempAddress = "";
+            if (data?.nickname && data?.nickname !== "") {
+              tempAddress = data.nickname;
+            } else if (data?.displayAddress) {
+              tempAddress = data.displayAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.address) {
+              tempAddress = data.address;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.apiAddress) {
+              tempAddress = data.apiAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
             }
-          }
 
-          tempWalletList.push(tempAddress);
+            tempWalletList.push(tempAddress);
+          }
         });
         tempWalletList.sort().reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
@@ -150,6 +170,9 @@ class TopBar extends Component {
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
+          exchangeList: tempExchangeList,
+          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
+          exchangeListImages: tempExchangeListImages,
         });
       }
     }
@@ -237,6 +260,8 @@ const mapStateToProps = (state) => ({
   HeaderState: state.HeaderState,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setHeaderReducer,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
