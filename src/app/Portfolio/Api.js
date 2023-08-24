@@ -776,6 +776,9 @@ export const getProtocolBalanceApi = (ctx, data) => {
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
+        ctx.setState({
+          defiLoader: false,
+        });
         return false;
       })
       .catch((err) => {
