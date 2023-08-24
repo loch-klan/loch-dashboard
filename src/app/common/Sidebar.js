@@ -1719,7 +1719,7 @@ function Sidebar(props) {
                       {quotes[currentIndex]}
                     </p>
                   </div>
-                  <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
+                  <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo">
                     {authors[currentIndex]}
                   </div>
 
