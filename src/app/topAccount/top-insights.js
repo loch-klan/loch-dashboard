@@ -94,8 +94,8 @@ class TopInsightsPage extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.setState({ startTime: new Date() * 1 });
   }
 
@@ -541,6 +541,8 @@ const mapDispatchToProps = {
   getAllInsightsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopInsightsPage);

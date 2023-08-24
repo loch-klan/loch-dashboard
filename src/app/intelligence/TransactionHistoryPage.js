@@ -216,8 +216,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.props.getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -1726,6 +1726,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  GetAllPlan,getUser,
 };
 
 TransactionHistoryPage.propTypes = {};

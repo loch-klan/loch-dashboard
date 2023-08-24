@@ -152,8 +152,8 @@ class TopIntelligence extends Component {
     this.timeFilter(0, true);
     this.startPageView();
     this.updateTimer(true);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.assetList();
 
     let obj = UpgradeTriggered();
@@ -892,6 +892,8 @@ const mapDispatchToProps = {
   getAssetProfitLoss,
   updateWalletListFlag,
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 // const mapDispatchToProps = {
