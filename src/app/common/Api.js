@@ -27,10 +27,6 @@ import {
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { getAllWalletListApi } from "../wallet/Api";
 import {
-  setExchangeHeaderReducer,
-  setHeaderReducer,
-} from "../header/HeaderAction";
-import {
   BinanceIcon,
   BitstampIcon,
   BybitIcon,

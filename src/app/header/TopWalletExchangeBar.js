@@ -68,17 +68,13 @@ class TopBar extends Component {
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
-      const passDataHeader = walletList.map((walRes) => {
-        return {
-          nickname: walRes.nickname,
-          displayAddress: walRes.display_address,
-          address: walRes.address,
-        };
-      });
-      this.props.setHeaderReducer(passDataHeader);
+
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
+
+      const tempWalletListToPush = [];
+      const tempExchangeListToPush = [];
       if (walletList) {
         walletList.map((data) => {
           if (data?.chains.length === 0) {
@@ -90,6 +86,13 @@ class TopBar extends Component {
                 tempExchangeListImages.push(data.protocol.symbol);
               }
             }
+            const sendThis = {
+              exchangeCode: data.protocol.code,
+              exchangeSymbol: data.protocol.symbol,
+              isExchange: true,
+            };
+
+            tempExchangeListToPush.push(sendThis);
           } else {
             if (data?.nickname) {
               tempWalletList.push(data.nickname);
@@ -100,6 +103,13 @@ class TopBar extends Component {
             } else if (data?.address) {
               tempWalletList.push(this.TruncateText(data.address));
             }
+
+            const sendThis = {
+              nickname: data.nickname,
+              displayAddress: data.display_address,
+              address: data.address,
+            };
+            tempWalletListToPush.push(sendThis);
           }
           return null;
         });
@@ -117,6 +127,11 @@ class TopBar extends Component {
           firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
           exchangeListImages: tempExchangeListImages,
         });
+        const passDataHeader = [
+          ...tempWalletListToPush,
+          ...tempExchangeListToPush,
+        ];
+        this.props.setHeaderReducer(passDataHeader);
       }
     }
   };
