@@ -27,6 +27,11 @@ import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import {
+  ProfileGlobeIcon,
+  ProfileProfileIcon,
+} from "../../assets/images/icons";
+import ProfileBundles from "./ProfileBundles";
 
 class Profile extends Component {
   constructor(props) {
@@ -259,6 +264,13 @@ class Profile extends Component {
               // // connect exchange btn
               // SecondaryBtn={true}
               // handleUpdate={this.handleUpdateWallet}
+            />
+            <ProfileBundles />
+            <PageHeader
+              title="Your details"
+              titleImageUrl={ProfileProfileIcon}
+              titleImageClass="smallerHeadingImages"
+              titleClass="smallerHeading"
             />
             {/* <div className="profile-plan-wrapper">
             <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
