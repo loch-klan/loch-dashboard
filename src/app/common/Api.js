@@ -1430,7 +1430,7 @@ export const updateAccessToken = (data, ctx, name) => {
           ctx.state.onHide();
           // window.location.reload();
           setTimeout(() => {
-            ctx.props.setPageFlagDefault();
+            // ctx.props.setPageFlagDefault();
             ctx.props?.handleUpdate && ctx.props.handleUpdate();
             ctx.props.openPopup();
           }, 1000);
