@@ -524,7 +524,7 @@ function Sidebar(props) {
         // console.log("active popup");
         SiginModal();
       }
-    }, 5000);
+    }, 15000);
   };
 
   const handleFunction = (currency) => {
