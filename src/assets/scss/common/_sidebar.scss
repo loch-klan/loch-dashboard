@@ -225,6 +225,10 @@
     }
   }
 }
+.sidebar-modal-section {
+  z-index: 101;
+  position: relative;
+}
 .sidebar-section {
   // position: absolute;
   position: fixed;
@@ -232,7 +236,6 @@
   top: 0;
   background-color: $secondary;
   width: 27.2rem;
-  z-index: 100;
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;
@@ -288,7 +291,6 @@
         position: relative;
         height: 9rem;
         box-sizing: border-box;
-        width: 102.4%;
       }
     }
     .currency-wrapper {
