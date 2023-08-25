@@ -822,7 +822,7 @@ class PieChart2 extends BaseReactComponent {
                 true
               )}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(
                 2
-              )}% &nbsp;&nbsp;</p>`;
+              )}%</p>`;
             },
             // x: 10,
             // y: -5,

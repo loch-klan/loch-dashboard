@@ -252,6 +252,12 @@ class AuthModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        animation={
+          this.props.modalAnimation !== undefined ||
+          this.props.modalAnimation !== null
+            ? this.props.modalAnimation
+            : true
+        }
       >
         <Modal.Header>
           {this.state.isShowOtp || this.props.signinBack ? (
@@ -423,7 +429,7 @@ class AuthModal extends BaseReactComponent {
                 Skip for now
               </p>
             )}
-            {this.props.goToSignUp ? (
+            {this.props.goToSignUp && !this.state.isShowOtp ? (
               <p
                 onClick={this.props.goToSignUp}
                 className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"

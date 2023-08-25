@@ -21,7 +21,7 @@ import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
 
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/back-icon.svg";
+import backIcon from "../../assets/images/icons/backIcon.svg";
 import Slider from "react-slick";
 import { addUpdateAccount, getUserAccount } from "../cost/Api";
 import { getExchangeBalance } from "../Portfolio/Api";
