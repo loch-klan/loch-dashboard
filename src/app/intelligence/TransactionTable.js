@@ -55,6 +55,8 @@ function TransactionTable(props) {
         addWatermark={props.addWatermark}
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
+        topAccountBlur={props.topAccountBlur}
+        blurButtonClick={props.blurButtonClick}
         // isStickyHead={props?.isStickyHead}
       />
     </div>

@@ -225,6 +225,10 @@
     }
   }
 }
+.sidebar-modal-section {
+  z-index: 101;
+  position: relative;
+}
 .sidebar-section {
   // position: absolute;
   position: fixed;
@@ -232,7 +236,6 @@
   top: 0;
   background-color: $secondary;
   width: 27.2rem;
-  z-index: 100;
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;
@@ -288,7 +291,6 @@
         position: relative;
         height: 9rem;
         box-sizing: border-box;
-        width: 102.4%;
       }
     }
     .currency-wrapper {
@@ -421,8 +423,8 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-        padding-top: 2.5rem;
-        overflow: auto;
+        padding-top: 2rem;
+        overflow: scroll;
 
         &::-webkit-scrollbar {
           width: 0.4rem;
@@ -451,7 +453,6 @@
 
       nav {
         padding: 0rem 2.4rem;
-        padding-right: 2.8rem;
         ul {
           li {
             // old
@@ -708,10 +709,20 @@
           background-color: $grey-F2F;
         }
         .sideBarFooterSignedInLeaveContainer {
-          color: $grey-B0B;
-          .sideBarFooterSignedInLeaveIcon {
+          .navbar-button {
+            background: none;
+            border: none;
+            color: $grey-B0B;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          img {
             width: 1.6rem;
-            margin-right: 0.5rem;
+          }
+          &:hover {
+            .navbar-button {
+              color: $primary;
+            }
           }
         }
       }
