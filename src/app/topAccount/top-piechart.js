@@ -25,6 +25,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import arrowUp from "../../assets/images/arrow-up.svg";
+import { PieChartWatermarkIcon } from "../../assets/images/icons";
 import {
   getUserWallet,
   getProtocolBalanceApi,
@@ -744,13 +745,16 @@ class TopPieChart extends BaseReactComponent {
               seriesCenter = series.center,
               x = seriesCenter[0] + this.plotLeft,
               y = seriesCenter[1] + this.plotTop,
-              text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${CurrencyType(
-                false
-              )}${numToCurrency(
-                self.state.assetTotal
-              )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(
-                true
-              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
+              text = `<div class="pie-chart-middle-text-container">
+              <img class="pie-chart-watermark-logo" src="${PieChartWatermarkIcon}"/><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${
+                CurrencyType(false) ? CurrencyType(false) : ""
+              }${
+                numToCurrency(self.state.assetTotal)
+                  ? numToCurrency(self.state.assetTotal)
+                  : ""
+              }  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${
+                CurrencyType(true) ? CurrencyType(true) : ""
+              }</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
             series.data?.map((e, i) => {
               e.dataLabel

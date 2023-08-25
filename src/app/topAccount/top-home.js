@@ -219,9 +219,19 @@ class TopPortfolio extends BaseReactComponent {
 
       // netflow switch
       isSwitch: false,
+      waitForMixpannelCall: false,
     };
   }
-
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   // get token
   getToken = () => {
     // console.log(this.state.lochToken)
@@ -1722,6 +1732,7 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
+                        addWatermark
                       />
                     </div>
                   </Col>
@@ -1806,6 +1817,8 @@ class TopPortfolio extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                   </Col>

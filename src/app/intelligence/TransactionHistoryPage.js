@@ -520,6 +520,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
+    console.log("tableSortOpt are ", this.state.tableSortOpt);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -627,11 +628,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
-    this.setState({
-      sort: obj,
-      tableSortOpt: sort,
-    });
+    console.log("tableSortOpt changing ? ", sort);
+    // this.setState({
+    //   sort: obj,
+    //   tableSortOpt: sort,
+    // });
   };
 
   copyContent = (text) => {
@@ -1688,6 +1689,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   <div className="ShowDust">
                     <p

@@ -21,7 +21,7 @@ import {
 } from "../topAccount/ActionTypes";
 
 export const searchTransactionApi = (data, ctx, page = 0) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {

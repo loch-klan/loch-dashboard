@@ -428,7 +428,7 @@ export const getAvgCostBasis = (ctx) => {
 // sort average cost basis
 
 export const updateAverageCostBasis = (data, ctx) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch({
       type: ctx?.state?.isTopAccountPage
         ? TOP_AVERAGE_COST_SORT
@@ -441,7 +441,7 @@ export const updateAverageCostBasis = (data, ctx) => {
 // reset average cost basis
 
 export const ResetAverageCostBasis = (ctx) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch({
       type: ctx?.state?.isTopAccountPage
         ? TOP_AVERAGE_COST_RESET

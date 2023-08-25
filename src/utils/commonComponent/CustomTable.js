@@ -117,6 +117,13 @@ class CustomTable extends BaseReactComponent {
                     rowCount={tableData.length}
                     rowGetter={({ index }) => tableData[index]}
                     className={`custom-table ${className}`}
+                    gridClassName={`${
+                      this.props.addWatermark ? "tableWatermark" : ""
+                    } ${
+                      this.props.addWatermarkMoveUp
+                        ? "tableWatermarkMoveUp"
+                        : ""
+                    }`}
                   >
                     {columnList &&
                       columnList.length > 0 &&
@@ -132,6 +139,7 @@ class CustomTable extends BaseReactComponent {
                             cellRenderer={({ rowData }) => {
                               return item.cell(rowData, item.dataKey);
                             }}
+                            headerClassName={item.headerClassName}
                           />
                         );
                       })}
