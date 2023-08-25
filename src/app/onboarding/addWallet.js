@@ -637,8 +637,11 @@ class AddWallet extends BaseReactComponent {
       });
       if (addWalletTemp) {
         setTimeout(() => {
+          let holder = [];
           const pulledTempWalletData = this.props.HeaderState.wallet;
-          const holder = pulledTempWalletData.filter((res) => res.isExchange);
+          if (pulledTempWalletData) {
+            holder = pulledTempWalletData.filter((res) => res.isExchange);
+          }
           this.props.setHeaderReducer([...holder, ...addWalletTemp]);
         }, 500);
       }
@@ -739,8 +742,11 @@ class AddWallet extends BaseReactComponent {
         w.id = `wallet${i + 1}`;
       });
       if (addWallet) {
+        let holder = [];
         const pulledTempWalletData = this.props.HeaderState.wallet;
-        const holder = pulledTempWalletData.filter((res) => res.isExchange);
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
         this.props.setHeaderReducer([...holder, ...addWallet]);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
