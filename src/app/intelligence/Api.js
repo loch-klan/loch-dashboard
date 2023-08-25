@@ -71,6 +71,7 @@ export const getFilters = (ctx) => {
           let obj = {
             value: item._id,
             label: item.asset.name,
+            code: item.asset.code,
           };
           assetFilter.push(obj);
         });
