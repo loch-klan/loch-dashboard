@@ -26,6 +26,17 @@ import {
 } from "./ActionTypes";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { getAllWalletListApi } from "../wallet/Api";
+import {
+  BinanceIcon,
+  BitstampIcon,
+  BybitIcon,
+  CoinbaseIcon,
+  GeminiIcon,
+  HuobiIcon,
+  krakanIcon,
+  KuCoinIcon,
+  OkxIcon,
+} from "../../assets/images/icons";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -1419,23 +1430,59 @@ export const updateAccessToken = (data, ctx, name) => {
           ctx.state.onHide();
           // window.location.reload();
           setTimeout(() => {
-            ctx.props.setPageFlagDefault();
+            // ctx.props.setPageFlagDefault();
             ctx.props?.handleUpdate && ctx.props.handleUpdate();
             ctx.props.openPopup();
           }, 1000);
         }
-        let tempData = new URLSearchParams();
-        tempData.append("start", 0);
-        tempData.append("conditions", JSON.stringify([]));
-        tempData.append("limit", 50);
-        tempData.append("sorts", JSON.stringify([]));
-        setTimeout(() => {
-          ctx.props.getAllWalletListApi(tempData, ctx);
-        }, 4000);
+        let tempWalletData = [];
+        if (ctx.props.HeaderState) {
+          tempWalletData = ctx.props.HeaderState.wallet;
+        } else {
+          const walletList = ctx.props.walletState.walletList;
+          tempWalletData = walletList.map((walRes) => {
+            return {
+              nickname: walRes.nickname,
+              displayAddress: walRes.display_address,
+              address: walRes.address,
+            };
+          });
+        }
+        let tempData = [
+          ...tempWalletData,
+          {
+            exchangeCode: name,
+            exchangeSymbol: getExhangeIcon(name.toLowerCase()),
+            isExchange: true,
+          },
+        ];
+        ctx.props.setHeaderReducer(tempData);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
+};
+const getExhangeIcon = (name) => {
+  if (name === "coinbase") {
+    return CoinbaseIcon;
+  } else if (name === "binance") {
+    return BinanceIcon;
+  } else if (name === "bitstamp") {
+    return BitstampIcon;
+  } else if (name === "bybit") {
+    return BybitIcon;
+  } else if (name === "gemini") {
+    return GeminiIcon;
+  } else if (name === "huobi") {
+    return HuobiIcon;
+  } else if (name === "okx") {
+    return OkxIcon;
+  } else if (name === "krakan") {
+    return krakanIcon;
+  } else if (name === "kuCoin") {
+    return KuCoinIcon;
+  }
+  return CoinbaseIcon;
 };
 
 // api page flage

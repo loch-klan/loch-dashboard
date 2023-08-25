@@ -10,6 +10,7 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { setHeaderReducer } from "./HeaderAction";
 
 class TopBar extends Component {
   constructor(props) {
@@ -67,9 +68,13 @@ class TopBar extends Component {
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
+
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
+
+      const tempWalletListToPush = [];
+      const tempExchangeListToPush = [];
       if (walletList) {
         walletList.map((data) => {
           if (data?.chains.length === 0) {
@@ -81,6 +86,13 @@ class TopBar extends Component {
                 tempExchangeListImages.push(data.protocol.symbol);
               }
             }
+            const sendThis = {
+              exchangeCode: data.protocol.code,
+              exchangeSymbol: data.protocol.symbol,
+              isExchange: true,
+            };
+
+            tempExchangeListToPush.push(sendThis);
           } else {
             if (data?.nickname) {
               tempWalletList.push(data.nickname);
@@ -91,6 +103,13 @@ class TopBar extends Component {
             } else if (data?.address) {
               tempWalletList.push(this.TruncateText(data.address));
             }
+
+            const sendThis = {
+              nickname: data.nickname,
+              displayAddress: data.display_address,
+              address: data.address,
+            };
+            tempWalletListToPush.push(sendThis);
           }
           return null;
         });
@@ -108,6 +127,11 @@ class TopBar extends Component {
           firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
           exchangeListImages: tempExchangeListImages,
         });
+        const passDataHeader = [
+          ...tempWalletListToPush,
+          ...tempExchangeListToPush,
+        ];
+        this.props.setHeaderReducer(passDataHeader);
       }
     }
   };
@@ -115,30 +139,41 @@ class TopBar extends Component {
     if (this.props.HeaderState?.wallet?.length > 0) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
+      const tempExchangeList = [];
+      const tempExchangeListImages = [];
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
-          let tempAddress = "";
-          if (data?.nickname) {
-            tempAddress = data.nickname;
-          } else if (data?.displayAddress) {
-            tempAddress = data.displayAddress;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+          if (data.isExchange) {
+            if (data.exchangeCode) {
+              tempExchangeList.push(data.exchangeCode);
             }
-          } else if (data?.address) {
-            tempAddress = data.address;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+            if (data.exchangeSymbol) {
+              tempExchangeListImages.push(data.exchangeSymbol);
             }
-          } else if (data?.apiAddress) {
-            tempAddress = data.apiAddress;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+          } else {
+            let tempAddress = "";
+            if (data?.nickname && data?.nickname !== "") {
+              tempAddress = data.nickname;
+            } else if (data?.displayAddress) {
+              tempAddress = data.displayAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.address) {
+              tempAddress = data.address;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.apiAddress) {
+              tempAddress = data.apiAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
             }
-          }
 
-          tempWalletList.push(tempAddress);
+            tempWalletList.push(tempAddress);
+          }
         });
         tempWalletList.sort().reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
@@ -150,6 +185,9 @@ class TopBar extends Component {
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
+          exchangeList: tempExchangeList,
+          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
+          exchangeListImages: tempExchangeListImages,
         });
       }
     }
@@ -237,6 +275,8 @@ const mapStateToProps = (state) => ({
   HeaderState: state.HeaderState,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setHeaderReducer,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

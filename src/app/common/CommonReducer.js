@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   insight: false,
   defi: false,
   defi_home: false,
+  yieldOpportunities: false,
 
   // top account
   top_home: false,
@@ -53,6 +54,7 @@ const CommonReducer = (state = INITIAL_STATE, action) => {
         whaleWatchIndividual: false,
         cost: false,
         defi_home: false,
+        yieldOpportunities: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {
