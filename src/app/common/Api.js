@@ -981,7 +981,7 @@ export const VerifyEmail = (data, ctx) => {
                 ctx.state.onHide();
                 // console.log("reload")
                 window.location.reload();
-              }, 1000);
+              }, 3000);
             } else {
               if (userId) {
                 // if dummy user
@@ -1091,14 +1091,20 @@ export const VerifyEmail = (data, ctx) => {
                   // for upgrade
                   ctx.AddEmailModal();
                 } else {
-                  ctx.state.onHide();
+                  setTimeout(() => {
+                    ctx.state.onHide();
+                  }, 3000);
                 }
               }
             }
           }
         );
         if (isOptValid) {
-          toast.success(`Email verified`);
+          if (ctx.emailIsVerified) {
+            ctx.emailIsVerified();
+          } else {
+            toast.success(`Email verified`);
+          }
         }
 
         // console.log("user id ", userId)
