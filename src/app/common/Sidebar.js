@@ -73,6 +73,7 @@ import {
   MenuTopAccountsAssetValue,
   MenuTopAccountsNetflow,
   SignupMenu,
+  YieldOpportunitiesMenu,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
@@ -1003,7 +1004,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  ProfileMenu({
+                                  YieldOpportunitiesMenu({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1496,10 +1497,10 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
+                                  // ProfileMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
                                 }
                               }}
                               className="nav-link"
