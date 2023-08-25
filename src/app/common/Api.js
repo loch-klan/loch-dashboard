@@ -25,6 +25,7 @@ import {
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { getAllWalletListApi } from "../wallet/Api";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -989,7 +990,13 @@ export const VerifyEmail = (data, ctx) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                if (ctx.emailIsVerified) {
+                  setTimeout(() => {
+                    UpdateUserDetails(userdata, ctx);
+                  }, 2000);
+                } else {
+                  UpdateUserDetails(userdata, ctx);
+                }
               } else {
                 // console.log("welcome upgrade signin")
                 let obj = JSON.parse(localStorage.getItem("lochUser"));
@@ -1417,6 +1424,14 @@ export const updateAccessToken = (data, ctx, name) => {
             ctx.props.openPopup();
           }, 1000);
         }
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        setTimeout(() => {
+          ctx.props.getAllWalletListApi(tempData, ctx);
+        }, 4000);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
