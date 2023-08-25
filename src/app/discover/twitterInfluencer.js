@@ -30,13 +30,16 @@ import {
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
   SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
+import {
+  searchTransactionApi,
+  getFilters,
+  getTransactionAsset,
+} from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -66,7 +69,12 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  TopsetPageFlagDefault,
+  getUser,
+  setPageFlagDefault,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
@@ -871,6 +879,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p

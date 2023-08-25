@@ -67,6 +67,7 @@ class CustomTable extends BaseReactComponent {
                     location={location}
                     page={currentPage}
                     pageCount={totalPage}
+                    onPageChange={this.props.onPageChange}
                   />
                 )}
               {pageSize && (
@@ -116,6 +117,13 @@ class CustomTable extends BaseReactComponent {
                     rowCount={tableData.length}
                     rowGetter={({ index }) => tableData[index]}
                     className={`custom-table ${className}`}
+                    gridClassName={`${
+                      this.props.addWatermark ? "tableWatermark" : ""
+                    } ${
+                      this.props.addWatermarkMoveUp
+                        ? "tableWatermarkMoveUp"
+                        : ""
+                    }`}
                   >
                     {columnList &&
                       columnList.length > 0 &&
@@ -131,6 +139,7 @@ class CustomTable extends BaseReactComponent {
                             cellRenderer={({ rowData }) => {
                               return item.cell(rowData, item.dataKey);
                             }}
+                            headerClassName={item.headerClassName}
                           />
                         );
                       })}
@@ -166,6 +175,7 @@ class CustomTable extends BaseReactComponent {
             pageCount={totalPage}
             pagePrev={pagePrev}
             pageNext={pageNext}
+            onPageChange={this.props.onPageChange}
           />
         )}
       </div>

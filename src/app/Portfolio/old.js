@@ -1494,6 +1494,7 @@ class Portfolio extends BaseReactComponent {
                         columnList={columnList}
                         headerHeight={60}
                         isLoading={this.state.tableLoading}
+                        addWatermark
                       />
                     </div>
                   </Col>

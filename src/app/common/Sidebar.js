@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   Container,
@@ -16,6 +16,7 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { CoinsIcon } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -26,7 +27,6 @@ import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg
 import SharePortfolioIconWhite from "../../assets/images/icons/SharePortfolioIconWhite.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import StarIcon from "../../assets/images/icons/star-top.svg";
-import TwitterIcon from "../../assets/images/icons/twitter-top.svg";
 import EyeIcon from "../../assets/images/icons/eye.svg";
 import CompassIcon from "../../assets/images/icons/compass.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
@@ -72,6 +72,7 @@ import {
   MenuTopAccountsTH,
   MenuTopAccountsAssetValue,
   MenuTopAccountsNetflow,
+  SignupMenu,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
@@ -80,6 +81,9 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import DontLoseDataModal from "./DontLoseDataModal";
+import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
+import { useSelector } from "react-redux";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -92,11 +96,13 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
   const [shareModal, setShareModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
+  const [signupModal, setSignupModal] = React.useState(false);
   const [confirmLeave, setConfirmLeave] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [currencyList, setAllCurrencyList] = React.useState([]);
@@ -235,7 +241,14 @@ function Sidebar(props) {
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
     // Me section
-    if (["/home", "/decentralized-finance", "/profile"].includes(activeTab)) {
+    if (
+      [
+        "/home",
+        "/profile",
+        "/decentralized-finance",
+        "/yield-opportunities",
+      ].includes(activeTab)
+    ) {
       let obj = {
         me: true,
         discover: false,
@@ -271,7 +284,6 @@ function Sidebar(props) {
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
-
     // Discover section
     else if (
       ["/whale-watch", "/watchlist"].includes(activeTab) ||
@@ -355,6 +367,10 @@ function Sidebar(props) {
     }
   };
 
+  const handleLeaveChild = (e) => {
+    e.stopPropagation();
+    handleLeave();
+  };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
     // console.log("isDummy user", isDummy)
@@ -368,6 +384,9 @@ function Sidebar(props) {
       setConfirmLeave(!confirmLeave);
       // props.history.push('/welcome');
     }
+  };
+  const handleGoToProfile = () => {
+    props.history.push("/profile");
   };
 
   const handleCohort = () => {
@@ -408,15 +427,20 @@ function Sidebar(props) {
       email_address: getCurrentUser().email,
     });
   };
+  useSelector((state) => state.LochUserState);
 
   const handleSigninModal = () => {
+    setSignupModal(false);
     setSigninModal(!signinModal);
-    // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
-    //  MenuShare({
-    //    session_id: getCurrentUser().id,
-    //    email_address: getCurrentUser().email,
-    //  });
+
     SigninMenu({
+      session_id: getCurrentUser().id,
+    });
+  };
+  const handleSignUpModal = () => {
+    setSigninModal(false);
+    setSignupModal(!signupModal);
+    SignupMenu({
       session_id: getCurrentUser().id,
     });
   };
@@ -601,6 +625,25 @@ function Sidebar(props) {
   const handleClose = () => {
     setDiscoverPopup(false);
   };
+  const trackPos = (data) => {
+    if (data) {
+      setDragPosition({ x: data.x, y: data.y });
+
+      window.sessionStorage.setItem(
+        "floatingModalPosition",
+        JSON.stringify({ x: data.x, y: data.y })
+      );
+    }
+  };
+  useEffect(() => {
+    let floatingModalPosition = window.sessionStorage.getItem(
+      "floatingModalPosition"
+    );
+    if (floatingModalPosition) {
+      setDragPosition(JSON.parse(floatingModalPosition));
+    }
+  }, []);
+
   return (
     <div className="sidebar-section">
       {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
@@ -661,7 +704,14 @@ function Sidebar(props) {
               }
             >
               {/* menu tab */}
-              <div style={{ padding: "0rem 2.4rem", position: "relative" }}>
+              <div
+                style={{
+                  padding: "0rem 2.4rem",
+                  paddingRight: "2.8rem",
+                  position: "relative",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 <div className="menu-tab-wrapper">
                   <div
                     className={`tab ${isSubmenu.discover ? "active" : ""}`}
@@ -941,6 +991,36 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/yield-opportunities"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={CoinsIcon}
+                              style={
+                                activeTab === "/yield-opportunities"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Yield Opportunities
                           </NavLink>
                         </li>
                         <li>
@@ -1434,7 +1514,67 @@ function Sidebar(props) {
                 <div className="sidebar-footer">
                   {!isSubmenu.discover && (
                     <ul>
-                      <li style={{ justifyContent: "space-between" }}>
+                      {lochUser &&
+                      (lochUser.email ||
+                        lochUser.first_name ||
+                        lochUser.last_name) ? (
+                        <div
+                          onClick={handleGoToProfile}
+                          className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
+                        >
+                          <div className="sideBarFooterSignInData">
+                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                              <Image
+                                className="sideBarFooterSignInIcon"
+                                src={BlackManIcon}
+                              />
+                            </div>
+                            <div className="dotDotText">
+                              {lochUser.first_name || lochUser.last_name
+                                ? `${lochUser.first_name} ${
+                                    lochUser.last_name
+                                      ? lochUser.last_name.slice(0, 1) + "."
+                                      : ""
+                                  }`
+                                : "Signed In"}
+                            </div>
+                          </div>
+                          <span
+                            onClick={handleLeaveChild}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                            className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={handleSigninModal}
+                          className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                        >
+                          <div className="sideBarFooterSignInIconContainer">
+                            <Image
+                              className="sideBarFooterSignInIcon"
+                              src={GreyManIcon}
+                            />
+                          </div>
+                          <div>Sign in / up</div>
+                        </div>
+                      )}
+                      <li
+                        style={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src = ExportIconWhite)
@@ -1449,7 +1589,49 @@ function Sidebar(props) {
                             Export
                           </Button>
                         </span>
+                        {!(
+                          lochUser &&
+                          (lochUser.email ||
+                            lochUser.first_name ||
+                            lochUser.last_name)
+                        ) ? (
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                        ) : null}
 
+                        {/*                   
+                                <span
+                              // onMouseOver={(e) =>
+                              //   (e.currentTarget.children[0].src = SharePortfolioIcon)
+                              // }
+                              // onMouseLeave={(e) =>
+                              //   (e.currentTarget.children[0].src =
+                              //     SharePortfolioIconWhite)
+                              // }
+                              onClick={handleSigninModal}
+                              style={{ marginRight: "1rem" }}
+                              className="signin"
+                            >
+                              <Image src={SignInIcon} />
+                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                                Sign in
+                              </Button>
+                            </span>
+                          */}
+                      </li>
+                      <li>
                         <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src =
@@ -1467,26 +1649,8 @@ function Sidebar(props) {
                             Share
                           </Button>
                         </span>
-                        {/*                   
-                    <span
-                      // onMouseOver={(e) =>
-                      //   (e.currentTarget.children[0].src = SharePortfolioIcon)
-                      // }
-                      // onMouseLeave={(e) =>
-                      //   (e.currentTarget.children[0].src =
-                      //     SharePortfolioIconWhite)
-                      // }
-                      onClick={handleSigninModal}
-                      style={{ marginRight: "1rem" }}
-                      className="signin"
-                    >
-                      <Image src={SignInIcon} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Sign in
-                      </Button>
-                    </span>
-                   */}
                       </li>
+
                       {/* <li>
                     <span
                       onMouseOver={(e) =>
@@ -1522,40 +1686,25 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                      <li style={{ justifyContent: "space-between" }}>
-                        <span
-                          onClick={handleLeave}
-                          onMouseOver={(e) =>
-                            (e.currentTarget.children[0].src = LeaveBlackIcon)
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.children[0].src = LeaveIcon)
-                          }
-                        >
-                          <Image src={LeaveIcon} />
-                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                            Leave
-                          </Button>
-                        </span>
-                        {/* {!lochUser && activeTab !== "/home" && (
-                    <span
-                      onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = SharePortfolioIcon)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src =
-                          SharePortfolioIconWhite)
-                      }
-                      onClick={handleShareModal}
-                      style={{ marginRight: "1rem" }}
-                    >
-                      <Image src={SharePortfolioIconWhite} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Share
-                      </Button>
-                    </span>
-                  )} */}
-                      </li>
+                      {/* {!lochUser && activeTab !== "/home" && (
+                          <span
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = SharePortfolioIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src =
+                                SharePortfolioIconWhite)
+                            }
+                            onClick={handleShareModal}
+                            style={{ marginRight: "1rem" }}
+                          >
+                            <Image src={SharePortfolioIconWhite} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Share
+                            </Button>
+                          </span>
+                        )} */}
+                      {/* </li> */}
                     </ul>
                   )}
 
@@ -1720,29 +1869,43 @@ function Sidebar(props) {
           description="Get right back into your account"
           stopUpdate={true}
           tracking="Sign in button"
+          goToSignUp={handleSignUpModal}
+        />
+      ) : (
+        ""
+      )}
+      {signupModal ? (
+        <ExitOverlay
+          show={signupModal}
+          onHide={handleSignUpModal}
+          history={history}
+          modalType={"exitOverlay"}
+          handleRedirection={() => {
+            resetUser();
+            setTimeout(function () {
+              props.history.push("/welcome");
+            }, 3000);
+          }}
+          signup={true}
+          goToSignIn={handleSigninModal}
         />
       ) : (
         ""
       )}
 
       {/* after 15 sec open this */}
+
       {signinPopup ? (
-        <AuthModal
+        <DontLoseDataModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
           show={signinPopup}
           onHide={handleSiginPopup}
           history={history}
-          modalType={"create_account"}
-          iconImage={SignInPopupIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
-          stopUpdate={true}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
 }

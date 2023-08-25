@@ -1,2 +1,3 @@
 const RECEIVE_POSTS = "RECEIVE_POSTS";
-export { RECEIVE_POSTS };
+const LOCH_USER = "LOCH_USER";
+export { RECEIVE_POSTS, LOCH_USER };

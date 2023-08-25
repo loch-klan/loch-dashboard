@@ -5,6 +5,8 @@ import routes from "./routes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
+import ReactGA from "react-ga4";
+import { BASE_GA_KEY } from "./utils/Constant";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -33,6 +35,9 @@ function App() {
     return () => {
       window.sessionStorage.removeItem("isRendered");
     };
+  }, []);
+  useEffect(() => {
+    ReactGA.initialize(BASE_GA_KEY);
   }, []);
 
   return isMobile ? (

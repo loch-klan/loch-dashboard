@@ -642,9 +642,11 @@ class FixAddModal extends BaseReactComponent {
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
           const data = new URLSearchParams();
+          const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
           data.append("wallet_addresses", JSON.stringify(addressList));
+          yieldData.append("wallet_addresses", JSON.stringify(addressList));
           // data.append("chain_detected", chain_detechted);
 
           // if its upload then we pass user id
@@ -655,7 +657,7 @@ class FixAddModal extends BaseReactComponent {
             });
           }
 
-          updateUserWalletApi(data, this);
+          this.props.updateUserWalletApi(data, this, yieldData);
 
           // message for user
           this.setState({
@@ -924,9 +926,11 @@ class FixAddModal extends BaseReactComponent {
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
       const data = new URLSearchParams();
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_addresses", JSON.stringify(newArr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
-      updateUserWalletApi(data, this);
+      this.props.updateUserWalletApi(data, this, yieldData);
       // if (this.props.handleUpdateWallet) {
       //     this.props.handleUpdateWallet()
       // }
@@ -1564,6 +1568,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   updateWalletListFlag,
   setHeaderReducer,
+  updateUserWalletApi,
 };
 FixAddModal.propTypes = {};
 

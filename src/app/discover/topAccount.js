@@ -47,6 +47,7 @@ import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
+  getAllCurrencyRatesApi,
   getUser,
   setPageFlagDefault,
 } from "../common/Api";
@@ -151,6 +152,7 @@ class TopAccountPage extends BaseReactComponent {
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
       walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -243,8 +245,26 @@ class TopAccountPage extends BaseReactComponent {
       getTopAccounts(data, this);
     }, 300);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     // chain detection
     // if (prevState?.walletInput !== this.state.walletInput) {
     // }
@@ -253,7 +273,12 @@ class TopAccountPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.state.currency) {
+      this.setState({
+        currency: JSON.parse(localStorage.getItem("currency")),
+      });
+      getAllCurrencyRatesApi();
+    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
@@ -415,7 +440,9 @@ class TopAccountPage extends BaseReactComponent {
             },
           ];
           let time = TimeFilterType.getText(
-            this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+            this.state.timeFIlter === "Time"
+              ? "6 months"
+              : this.state.timeFIlter
           );
           this.addCondition("SEARCH_BY_TIMESTAMP", time);
           TopAccountSortByNetflows({
@@ -603,18 +630,18 @@ class TopAccountPage extends BaseReactComponent {
     //   },
     // ];
     const inflowOutflowTimePeriod = () => {
-      if (this.state.timeFIlter === "1 week") {
-        return "last week";
+      if (this.state.timeFIlter === "2 weeks") {
+        return "2 weeks";
       } else if (this.state.timeFIlter === "1 month") {
         return "last month";
-      } else if (this.state.timeFIlter === "6 months") {
-        return "6 months";
+      } else if (this.state.timeFIlter === "5 years") {
+        return "5 years";
       } else if (this.state.timeFIlter === "1 year") {
         return "last year";
       } else if (this.state.timeFIlter === "3 years") {
         return "3 years";
       }
-      return "5 years";
+      return "6 months";
     };
     const columnList = [
       {
@@ -819,7 +846,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "netflows") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             return (
@@ -899,7 +926,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestBought") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -983,7 +1010,7 @@ class TopAccountPage extends BaseReactComponent {
           if (dataKey === "largestSold") {
             let type = TimeFilterType.getText(
               this.state.timeFIlter === "Time"
-                ? "5 years"
+                ? "6 months"
                 : this.state.timeFIlter
             );
             let text = "";
@@ -1210,7 +1237,7 @@ class TopAccountPage extends BaseReactComponent {
                       class="cohort-dropdown"
                       list={[
                         // "All time",
-                        "1 week",
+                        "2 weeks",
                         "1 month",
                         "6 months",
                         "1 year",
@@ -1221,7 +1248,7 @@ class TopAccountPage extends BaseReactComponent {
                       title={this.state.timeFIlter}
                       activetab={
                         this.state.timeFIlter === "Time"
-                          ? "5 years"
+                          ? "6 months"
                           : this.state.timeFIlter
                       }
                       showChecked={true}
@@ -1323,6 +1350,8 @@ class TopAccountPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p

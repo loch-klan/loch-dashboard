@@ -54,7 +54,7 @@ class SignIn extends BaseReactComponent {
       data.append("email", this.state.email);
       data.append("otp_token", this.state.text);
 
-      verifyUser(this, data);
+      this.props.verifyUser(this, data);
     }
   };
 
@@ -176,7 +176,9 @@ class SignIn extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  verifyUser,
+};
 SignIn.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
