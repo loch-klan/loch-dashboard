@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Container,
@@ -108,6 +108,7 @@ function Sidebar(props) {
   const [currencyList, setAllCurrencyList] = React.useState([]);
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
+  const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(localStorage.getItem("currency"))
   );
@@ -429,17 +430,24 @@ function Sidebar(props) {
   };
   useSelector((state) => state.LochUserState);
 
-  const handleSigninModal = () => {
+  const openSigninModal = () => {
     setSignupModal(false);
-    setSigninModal(!signinModal);
+    setSigninModal(true);
 
     SigninMenu({
       session_id: getCurrentUser().id,
     });
   };
-  const handleSignUpModal = () => {
+  const onCloseModal = () => {
+    setSignInModalAnimation(true);
     setSigninModal(false);
-    setSignupModal(!signupModal);
+    setSignupModal(false);
+  };
+
+  const openSignUpModal = () => {
+    setSignInModalAnimation(false);
+    setSigninModal(false);
+    setSignupModal(true);
     SignupMenu({
       session_id: getCurrentUser().id,
     });
@@ -1520,7 +1528,7 @@ function Sidebar(props) {
                         </div>
                       ) : (
                         <div
-                          onClick={handleSigninModal}
+                          onClick={openSigninModal}
                           className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
                         >
                           <div className="sideBarFooterSignInIconContainer">
@@ -1822,8 +1830,9 @@ function Sidebar(props) {
 
       {signinModal ? (
         <AuthModal
+          modalAnimation={signInModalAnimation}
           show={signinModal}
-          onHide={handleSigninModal}
+          onHide={onCloseModal}
           history={history}
           modalType={"create_account"}
           iconImage={SignInIcon}
@@ -1832,15 +1841,16 @@ function Sidebar(props) {
           description="Get right back into your account"
           stopUpdate={true}
           tracking="Sign in button"
-          goToSignUp={handleSignUpModal}
+          goToSignUp={openSignUpModal}
         />
       ) : (
         ""
       )}
       {signupModal ? (
         <ExitOverlay
+          modalAnimation={false}
           show={signupModal}
-          onHide={handleSignUpModal}
+          onHide={onCloseModal}
           history={history}
           modalType={"exitOverlay"}
           handleRedirection={() => {
@@ -1850,7 +1860,7 @@ function Sidebar(props) {
             }, 3000);
           }}
           signup={true}
-          goToSignIn={handleSigninModal}
+          goToSignIn={openSigninModal}
         />
       ) : (
         ""

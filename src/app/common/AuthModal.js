@@ -252,6 +252,12 @@ class AuthModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        animation={
+          this.props.modalAnimation !== undefined ||
+          this.props.modalAnimation !== null
+            ? this.props.modalAnimation
+            : true
+        }
       >
         <Modal.Header>
           {this.state.isShowOtp || this.props.signinBack ? (
