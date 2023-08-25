@@ -10,7 +10,7 @@ import { Modal, Image, Button } from "react-bootstrap";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import BackIcon from "../../assets/images/icons/back-icon.svg";
+import BackIcon from "../../assets/images/icons/backIcon.svg";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {

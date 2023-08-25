@@ -36,6 +36,7 @@ import {
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
+import { PieChartWatermarkIcon } from "../../assets/images/icons";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -733,13 +734,15 @@ class PieChart2 extends BaseReactComponent {
               seriesCenter = series.center,
               x = seriesCenter[0] + this.plotLeft,
               y = seriesCenter[1] + this.plotTop,
-              text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${CurrencyType(
-                false
-              )}${numToCurrency(
+              text = `<div class="pie-chart-middle-text-container">
+              <img class="pie-chart-watermark-logo" src="${PieChartWatermarkIcon}"/>
+              <div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${
+                CurrencyType(false) ? CurrencyType(false) : ""
+              }${numToCurrency(
                 self.state.assetTotal
-              )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(
-                true
-              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
+              )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${
+                CurrencyType(true) ? CurrencyType(true) : ""
+              }</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
             series.data?.map((e, i) => {
               e.dataLabel
@@ -819,7 +822,7 @@ class PieChart2 extends BaseReactComponent {
                 true
               )}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(
                 2
-              )}% &nbsp;&nbsp;</p>`;
+              )}%</p>`;
             },
             // x: 10,
             // y: -5,
@@ -1225,7 +1228,13 @@ class PieChart2 extends BaseReactComponent {
                           : this.state.chainList?.length + 1 + " Networks"}
                       </span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
                       <Image
                         src={arrowUp}
                         style={{
@@ -1335,9 +1344,7 @@ class PieChart2 extends BaseReactComponent {
                     <div className="balance-card-header cp">
                       <div
                         onClick={this.toggleYield}
-                        // style={
-                        //   this.state.isYeildToggle ? {  } : {}
-                        // }
+                        style={{ whiteSpace: "nowrap" }}
                       >
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"
@@ -1372,7 +1379,13 @@ class PieChart2 extends BaseReactComponent {
                         />
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
                         <div onClick={this.toggleDebt}>
                           <span
                             className="inter-display-semi-bold f-s-16 lh-19"

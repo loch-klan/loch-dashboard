@@ -179,6 +179,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -520,6 +521,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
+    console.log("tableSortOpt are ", this.state.tableSortOpt);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -627,11 +629,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
-    this.setState({
-      sort: obj,
-      tableSortOpt: sort,
-    });
+    console.log("tableSortOpt changing ? ", sort);
+    // this.setState({
+    //   sort: obj,
+    //   tableSortOpt: sort,
+    // });
   };
 
   copyContent = (text) => {
@@ -696,6 +698,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
+    console.log("assetPriceList ", assetPriceList);
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1277,10 +1280,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
                 <Image src={rowData.asset.symbol} className="asset-symbol" />
               </CustomOverlay>
             );
@@ -1688,6 +1687,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     page={currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   <div className="ShowDust">
                     <p

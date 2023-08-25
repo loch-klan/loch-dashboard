@@ -125,6 +125,7 @@ class WatchListPage extends BaseReactComponent {
       timeFIlter: "Time",
       tableData: [],
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -230,6 +231,7 @@ class WatchListPage extends BaseReactComponent {
         }
       );
     }
+
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -851,6 +853,7 @@ class WatchListPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    addWatermark
                   />
                 </>
               )}

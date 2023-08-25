@@ -384,6 +384,7 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.push({
         // linkedTo: key,
         name: value.assetDetails.code,
+        code: value.assetDetails.name,
         id: key,
         type: "area",
         // type: "areaspline",
@@ -659,8 +660,8 @@ class LineChartSlider extends BaseReactComponent {
 
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
-      seriesData?.map((e) => {
-        AllLegends.push({ label: e.name, value: e.id });
+      seriesData?.forEach((e) => {
+        AllLegends.push({ label: e.name, value: e.id, code: e.code });
       });
 
     let topLegends =

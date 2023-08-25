@@ -21,7 +21,7 @@ import {
 } from "../topAccount/ActionTypes";
 
 export const searchTransactionApi = (data, ctx, page = 0) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {
@@ -71,6 +71,7 @@ export const getFilters = (ctx) => {
           let obj = {
             value: item._id,
             label: item.asset.name,
+            code: item.asset.code,
           };
           assetFilter.push(obj);
         });

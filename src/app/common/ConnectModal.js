@@ -21,7 +21,7 @@ import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
 
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/back-icon.svg";
+import backIcon from "../../assets/images/icons/backIcon.svg";
 import Slider from "react-slick";
 import { addUpdateAccount, getUserAccount } from "../cost/Api";
 import { getExchangeBalance } from "../Portfolio/Api";
@@ -47,6 +47,7 @@ import {
   createAnonymousUserApi,
   getAllParentChains,
 } from "../onboarding/Api";
+import { getAllWalletListApi } from "../wallet/Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -1250,10 +1251,15 @@ class ConnectModal extends BaseReactComponent {
     // data.append("link", );
     if (isConnect) {
       // console.log("create user and go to home");
-      createAnonymousUserApi(data, this, finalArr, null);
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
     } else {
       // console.log("create user and connect exhcnage");
-      createAnonymousUserApi(data, this, finalArr, this.handleConnect);
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        this.handleConnect
+      );
     }
 
     // console.log(finalArr);
@@ -1669,6 +1675,8 @@ const mapDispatchToProps = {
   getAllParentChains,
   getExchangeBalance,
   setPageFlagDefault,
+  getAllWalletListApi,
+  createAnonymousUserApi,
 };
 ConnectModal.propTypes = {};
 

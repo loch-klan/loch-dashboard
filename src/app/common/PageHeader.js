@@ -124,13 +124,28 @@ export default function PageHeader(props) {
             ""
           )}
           <div>
-            <h4
-              className={`inter-display-medium f-s-24 lh-30 ${
+            <div
+              className={`d-flex justify-content-start align-items-center ${
                 props.showImg || props.multipleImg ? "" : "m-b-8"
               }`}
             >
-              {props.title}
-            </h4>
+              {props.titleImageUrl ? (
+                <img
+                  src={props.titleImageUrl}
+                  alt="TitleLogo"
+                  className={`page-header-title-img ${
+                    props.titleImageClass ? props.titleImageClass : ""
+                  } `}
+                />
+              ) : null}
+              <h4
+                className={` ${
+                  props.titleClass ? props.titleClass : ""
+                }  inter-display-medium f-s-24 lh-30`}
+              >
+                {props.title}
+              </h4>
+            </div>
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}
