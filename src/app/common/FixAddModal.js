@@ -467,7 +467,7 @@ class FixAddModal extends BaseReactComponent {
     this.props.getAllParentChains();
     //  this.makeApiCall();
     getAllWalletApi(this);
-    getDetectedChainsApi(this);
+    this.props.getDetectedChainsApi(this);
     const fixWallet = [];
     JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
       // console.log("e fix wallet", e);
@@ -493,7 +493,7 @@ class FixAddModal extends BaseReactComponent {
     this.props.getAllParentChains();
     // //  this.makeApiCall();
     // getAllWalletApi(this);
-    getDetectedChainsApi(this);
+    this.props.getDetectedChainsApi(this);
   }
 
   addAddress = () => {
@@ -637,7 +637,12 @@ class FixAddModal extends BaseReactComponent {
             w.id = `wallet${i + 1}`;
           });
           if (addWallet) {
-            this.props.setHeaderReducer(addWallet);
+            let holder = [];
+            const pulledTempWalletData = this.props.HeaderState.wallet;
+            if (pulledTempWalletData) {
+              holder = pulledTempWalletData.filter((res) => res.isExchange);
+            }
+            this.props.setHeaderReducer([...holder, ...addWallet]);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
@@ -919,7 +924,12 @@ class FixAddModal extends BaseReactComponent {
         });
       }
       if (walletList) {
-        this.props.setHeaderReducer(walletList);
+        let holder = [];
+        const pulledTempWalletData = this.props.HeaderState.wallet;
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
+        this.props.setHeaderReducer([...holder, ...walletList]);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
@@ -1559,6 +1569,7 @@ class FixAddModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1569,6 +1580,7 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setHeaderReducer,
   updateUserWalletApi,
+  getDetectedChainsApi,
 };
 FixAddModal.propTypes = {};
 
