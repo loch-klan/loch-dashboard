@@ -34,7 +34,9 @@ class EditWalletModal extends BaseReactComponent {
       displayAddress: props.displayAddress
         ? props.displayAddress
         : props.walletAddress,
-      walletName: props.walletMetaData ? props.walletMetaData.id : "",
+      walletName: props.walletMetaData
+        ? props.walletMetaData.id
+        : "634650d88e5d5d3da6a78ccf",
       walletNickname: props.nickname ? props.nickname : "",
       walletMetaData: props.walletMetaData,
       walletNameList: [],
