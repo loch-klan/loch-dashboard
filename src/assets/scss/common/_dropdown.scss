@@ -42,28 +42,25 @@
   min-height: 4rem;
   user-select: none;
 
-  &:hover{
+  &:hover {
     //  background-color: rgba(229, 229, 230, 0.35);
-     border: 0.1rem solid $black-191;
+    border: 0.1rem solid $black-191;
   }
 
-  &.lineChart{
+  &.lineChart {
     position: relative;
     margin: 0;
     padding: 0;
     background: #ffffff;
-    border: 0.1rem solid #B0B1B3;
+    border: 0.1rem solid #b0b1b3;
     border-radius: 0.8rem;
-    color: #19191A;
+    color: #19191a;
     user-select: none;
     z-index: 2;
   }
-  
 
-   &.lineChart:hover{
-
-     border: 0.1rem solid $black-191;
-
+  &.lineChart:hover {
+    border: 0.1rem solid $black-191;
   }
 
   .dropdown-content {
@@ -134,83 +131,87 @@
       }
     }
 
-    .dropdown-search-wrapper{
+    .dropdown-search-wrapper {
       padding: 0.4rem 0.4rem 0.1rem;
       position: relative;
-         .dropdown-search-input{
-      background: #FFFFFF;
-      width: 100%;
-      border: none;
-      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
-      border-radius: 4px;
-      padding: 1rem 1rem 1rem 2.5rem;
-       @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
-
-
-
-      &:focus,:active,:focus-visible
-      {
-        border:none;
-        outline: none;
+      .dropdown-search-wrapper-image-small {
+        height: 1rem;
       }
+      .dropdown-search-input {
+        flex: 1;
+        background: #ffffff;
+        width: 100%;
+        border: none;
+        box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+          0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+        border-radius: 4px;
+        padding: 1rem 1rem 1rem 2.5rem;
+        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
 
-      &::placeholder{
-         @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        &:focus,
+        :active,
+        :focus-visible {
+          border: none;
+          outline: none;
+        }
+
+        &::placeholder {
+          @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        }
       }
-
-     
+      .dropdown-search-input-smaller {
+        padding: 1rem 1rem 1rem 2rem;
+        font-size: 1rem;
+        &::placeholder {
+          @include font($black-191, "Inter-Medium", 1rem, 500, 1.6rem);
+        }
+      }
+      img {
+        position: absolute;
+        top: 52%;
+        transform: translateY(-50%);
+        left: 1rem;
+      }
     }
-     img{
-            position: absolute;
-    top: 52%;
-    transform: translateY(-50%);
-    left: 1rem;
 
+    .dropdown-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 4px 4px;
+      // border-top: 1px solid $secondary-6;
+      .primary-btn {
+        &:hover {
+          background-color: $secondary;
+          color: $black-191;
+          border: 1px solid $black-191;
+        }
+
+        svg {
+          width: 16px;
+        }
       }
-    }
 
- 
-
-
-    .dropdown-footer{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 4px 4px;
-        // border-top: 1px solid $secondary-6;
-        .primary-btn{
-          &:hover{
-            background-color: $secondary;
-            color: $black-191;
-            border: 1px solid $black-191;
-          }
-
-          svg {
-            width: 16px;
-          }
-
+      .secondary-btn {
+        svg {
+          width: 16px;
         }
+      }
 
-        .secondary-btn{
-          svg {
-            width: 16px;
-          }
-        }
-
-        .dropdown-btn{
-            // background-color: $secondary-6;
-            // border-radius: 3px;
-            // border: none;
-            text-align: center;
-            width: 48%;
-            padding: 0.8rem;
-            user-select: none;
-            border-radius: 4px;
-            cursor: pointer;
-            // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
-            font-size: 1.1rem
-        }
+      .dropdown-btn {
+        // background-color: $secondary-6;
+        // border-radius: 3px;
+        // border: none;
+        text-align: center;
+        width: 48%;
+        padding: 0.8rem;
+        user-select: none;
+        border-radius: 4px;
+        cursor: pointer;
+        // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
+        font-size: 1.1rem;
+      }
     }
   }
 
@@ -227,62 +228,57 @@
     text-align: center;
     transform: translateY(-50%);
 
-    &.lineChartPlaceholder{
-       @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
-           height: 4rem;
-    display: flex;
-    align-items: center;
+    &.lineChartPlaceholder {
+      @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+      height: 4rem;
+      display: flex;
+      align-items: center;
 
-       span{
-        margin-left: 1.6rem
-       }
+      span {
+        margin-left: 1.6rem;
+      }
 
+      svg {
+        position: absolute;
+        right: 1rem;
+        // top: -0.1rem;
+        top: 1.1rem;
+      }
 
-       svg {
-      position: absolute;
-      right: 1rem;
-      // top: -0.1rem;
-      top: 1.1rem;
-    }
+      svg path {
+        fill: hsl(0, 0%, 0%);
+      }
 
-     svg path {
-      fill: hsl(0, 0%, 0%);
-    }
-
-    // svg > path:nth-child(1) {
-    //   fill: transparent;
-    // }
-    // svg > path:nth-child(2) {
-    //   fill: #000000;
-    // }
-
+      // svg > path:nth-child(1) {
+      //   fill: transparent;
+      // }
+      // svg > path:nth-child(2) {
+      //   fill: #000000;
+      // }
     }
 
     svg {
       position: absolute;
       right: 3rem;
       // top: -0.1rem;
-       top: 1rem;
+      top: 1rem;
     }
 
     svg path {
       fill: hsl(0, 0%, 80%);
     }
-
-   
   }
 
-   &.top-account-dropdown{
-      .placeholder{
- svg {
-      position: absolute;
-      right: 1.5rem;
-      // top: -0.1rem;
-       top: 1rem;
-    }
+  &.top-account-dropdown {
+    .placeholder {
+      svg {
+        position: absolute;
+        right: 1.5rem;
+        // top: -0.1rem;
+        top: 1rem;
       }
-      
     }
+  }
 
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {
