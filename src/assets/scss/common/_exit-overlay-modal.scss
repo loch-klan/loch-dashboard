@@ -7,9 +7,9 @@
   .modal-content {
     border-radius: 1.2rem;
     width: 78rem;
+    padding: 0 !important;
 
     .modal-header {
-      padding: 2.8rem;
       // display: block;
       // text-align: center;
       display: flex;
@@ -18,17 +18,49 @@
       // margin-bottom: 4.2rem;
       border: none;
 
-      .api-modal-header {
-        img {
-          width: 2.4rem;
-          height: 2.4rem;
+      .new-modal-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 2.8rem;
+        div,
+        h6,
+        p {
+          z-index: 2;
         }
+        .banner-image {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          opacity: 100%;
+          z-index: 1;
+        }
+        .api-modal-header {
+          background-color: white;
+          width: fit-content;
+          height: fit-content;
+          .banner-image {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+          img {
+            width: 2.4rem;
+            height: 2.4rem;
+          }
 
-        padding: 1.8rem;
-        box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
-          0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
-        margin-top: 1rem;
-        border-radius: 2rem;
+          padding: 1.8rem;
+          box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+            0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+          margin-top: 1rem;
+          border-radius: 2rem;
+        }
       }
 
       .exitOverlayIcon {

@@ -14,7 +14,6 @@ class ProfileBundles extends Component {
     super(props);
     this.state = {
       createBundleModal: false,
-      viewBundleModal: false,
       editBundleModal: false,
       selectedBundle: 0,
       rawData: [
@@ -325,7 +324,6 @@ class ProfileBundles extends Component {
       },
       () => {
         console.log("Changed ", this.state.selectedBundle);
-        this.showViewBundleModal();
       }
     );
   };
@@ -342,28 +340,15 @@ class ProfileBundles extends Component {
     this.setState(
       {
         editBundleModal: false,
-        viewBundleModal: false,
       },
       () => {
         this.setState({ createBundleModal: true });
       }
     );
   };
-  showViewBundleModal = () => {
-    this.setState(
-      {
-        editBundleModal: false,
-        createBundleModal: false,
-      },
-      () => {
-        this.setState({ viewBundleModal: true });
-      }
-    );
-  };
   showEditBundleModal = () => {
     this.setState(
       {
-        viewBundleModal: false,
         createBundleModal: false,
       },
       () => {
@@ -374,7 +359,6 @@ class ProfileBundles extends Component {
   hideAllModals = () => {
     this.setState({
       editBundleModal: false,
-      viewBundleModal: false,
       createBundleModal: false,
     });
   };
@@ -426,11 +410,6 @@ class ProfileBundles extends Component {
                       </h4>
                     </div>
                     <div className="bundleWalletNameRight">
-                      {index === this.state.selectedBundle ? (
-                        <div className="bundleWalletNameRightCurrent">
-                          Current
-                        </div>
-                      ) : null}
                       <Image
                         onClick={(e) => {
                           e.stopPropagation();
@@ -463,24 +442,7 @@ class ProfileBundles extends Component {
             updateTimer={this.updateTimer}
           />
         ) : null}
-        {this.state.viewBundleModal ? (
-          <AddBundleModal
-            show
-            onHide={this.hideAllModals}
-            history={this.props.history}
-            iconImage={ProfileGlobeIcon}
-            headerTitle={"Create an address bundle"}
-            total_addresses={0}
-            updateTimer={this.updateTimer}
-            //Edit
 
-            isView
-            walletaddress={this.state.selectedWalletAddresses}
-            goToEdit={this.showEditBundleModal}
-            chainImages={this.state.selectedChainImages}
-            bundleName={this.state.selectedBundleName}
-          />
-        ) : null}
         {this.state.editBundleModal ? (
           <AddBundleModal
             show

@@ -6,7 +6,7 @@ import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import CustomTextControl from "../../utils/form/CustomTextControl";
 import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 import CopyLink from "../../assets/images/icons/CopyLink.svg";
-
+import Banner from "../../image/Frame.png";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -297,98 +297,108 @@ class AddBundleModal extends BaseReactComponent {
           backdropClassName="exitoverlaymodal"
         >
           <Modal.Header>
-            {this.props.isEdit || this.props.isView ? (
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                  borderRadius: "12px",
-                  padding: "6px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  width: "60px",
-                }}
-              >
-                {/* chainImages */}
-                <Image
-                  src={this.props.chainImages[0]}
+            <div className="new-modal-header">
+              <Image src={Banner} className="banner-image" />
+
+              {this.props.isEdit || this.props.isView ? (
+                <div
                   style={{
-                    margin: "0px 4px 4px 0px",
-                    width: "2.2rem",
-                    borderRadius: "0.6rem",
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                    borderRadius: "12px",
+                    padding: "6px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    width: "60px",
                   }}
-                />
-                <Image
-                  src={this.props.chainImages[1]}
-                  style={{
-                    margin: "0px 0px 4px 0px",
-                    width: "2.2rem",
-                    borderRadius: "0.6rem",
-                  }}
-                />
-                <Image
-                  src={this.props.chainImages[2]}
-                  style={{
-                    margin: "0px 4px 0px 0px",
-                    width: "2.2rem",
-                    borderRadius: "0.6rem",
-                  }}
-                />
-                {this.props.chainImages?.length < 5 ? (
+                >
+                  {/* chainImages */}
                   <Image
-                    src={this.props.chainImages[3]}
+                    src={this.props.chainImages[0]}
                     style={{
-                      margin: "0px 0px 0px 0px",
+                      margin: "0px 4px 4px 0px",
                       width: "2.2rem",
                       borderRadius: "0.6rem",
                     }}
                   />
-                ) : (
-                  <div
+                  <Image
+                    src={this.props.chainImages[1]}
                     style={{
-                      margin: "0px 0px 0px 0px",
-                      height: "2.2rem",
+                      margin: "0px 0px 4px 0px",
                       width: "2.2rem",
                       borderRadius: "0.6rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: "rgba(229, 229, 230, 0.5)",
                     }}
-                    className="inter-display-semi-bold f-s-10"
-                  >
-                    {this.props.chainImages?.length - 3}+
-                  </div>
-                )}
+                  />
+                  <Image
+                    src={this.props.chainImages[2]}
+                    style={{
+                      margin: "0px 4px 0px 0px",
+                      width: "2.2rem",
+                      borderRadius: "0.6rem",
+                    }}
+                  />
+                  {this.props.chainImages?.length < 5 ? (
+                    <Image
+                      src={this.props.chainImages[3]}
+                      style={{
+                        margin: "0px 0px 0px 0px",
+                        width: "2.2rem",
+                        borderRadius: "0.6rem",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        margin: "0px 0px 0px 0px",
+                        height: "2.2rem",
+                        width: "2.2rem",
+                        borderRadius: "0.6rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(229, 229, 230, 0.5)",
+                      }}
+                      className="inter-display-semi-bold f-s-10"
+                    >
+                      {this.props.chainImages?.length - 3}+
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="api-modal-header">
+                  <Image src={this.props.iconImage} />
+                </div>
+              )}
+              <div className="closebtn" onClick={this.closeButtonClick}>
+                <Image src={CloseIcon} />
               </div>
-            ) : (
-              <div className="api-modal-header">
-                <Image src={this.props.iconImage} />
-              </div>
-            )}
-            <div className="closebtn" onClick={this.closeButtonClick}>
-              <Image src={CloseIcon} />
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="cohort-modal-body">
               <h6
-                style={{ paddingLeft: "3rem", paddingRight: "3rem" }}
-                className="inter-display-medium f-s-20 lh-24 m-b-6 black-000"
+                style={{
+                  paddingLeft: "3rem",
+                  paddingRight: "3rem",
+                  marginTop: "2rem",
+                }}
+                className="inter-display-medium f-s-20 lh-24 m-b-6 white"
               >
                 {this.props.isEdit || this.props.isView
                   ? this.props.bundleName
                   : this.props.headerTitle}
               </h6>
-              <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
+              <p
+                style={{ marginTop: "1rem" }}
+                className="inter-display-regular f-s-13 lh-16 white"
+              >
                 {this.props.isEdit || this.props.isView
                   ? `${this.props.addedon ? "added " + this.props.addedon : ""}`
                   : "Track a bundle of addresses here"}
               </p>
-
+            </div>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="cohort-modal-body">
               <div className="cohort-body">
                 <div
                   className="cohort-item-wrapper input-error-wrapper"
