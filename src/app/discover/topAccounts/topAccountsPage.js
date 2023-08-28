@@ -1234,7 +1234,7 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top accounts"}
+              title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
@@ -1264,7 +1264,7 @@ class TopAccountPage extends BaseReactComponent {
                       : LochLogoIcon
                   }
                 />
-                Loch’s Top Accounts
+                Loch’s Leaderboard
               </div>
               <div
                 className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${

@@ -1147,7 +1147,7 @@ function Sidebar(props) {
                                     : {}
                                 }
                               />
-                              Top accounts
+                              Leaderboard
                               {previewAddress?.address && (
                                 <Image
                                   src={arrowUp}
