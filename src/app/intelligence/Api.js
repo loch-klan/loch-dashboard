@@ -71,6 +71,7 @@ export const getFilters = (ctx) => {
           let obj = {
             value: item._id,
             label: item.asset.name,
+            code: item.asset.code,
           };
           assetFilter.push(obj);
         });
@@ -284,10 +285,11 @@ export const getTransactionAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         let assetFilter = [{ value: "allAssets", label: "All assets" }];
-        res?.data?.data?.assets?.map((e) => {
+        res?.data?.data?.assets?.forEach((e) => {
           assetFilter.push({
             value: e._id,
             label: e.asset.name,
+            code: e.asset?.code ? e.asset.code : "",
           });
         });
         ctx.setState({
