@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Container,
@@ -73,6 +73,7 @@ import {
   MenuTopAccountsAssetValue,
   MenuTopAccountsNetflow,
   SignupMenu,
+  YieldOpportunitiesMenu,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
@@ -110,6 +111,7 @@ function Sidebar(props) {
   const [currencyList, setAllCurrencyList] = React.useState([]);
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
+  const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(localStorage.getItem("currency"))
   );
@@ -431,17 +433,24 @@ function Sidebar(props) {
   };
   useSelector((state) => state.LochUserState);
 
-  const handleSigninModal = () => {
+  const openSigninModal = () => {
     setSignupModal(false);
-    setSigninModal(!signinModal);
+    setSigninModal(true);
 
     SigninMenu({
       session_id: getCurrentUser().id,
     });
   };
-  const handleSignUpModal = () => {
+  const onCloseModal = () => {
+    setSignInModalAnimation(true);
     setSigninModal(false);
-    setSignupModal(!signupModal);
+    setSignupModal(false);
+  };
+
+  const openSignUpModal = () => {
+    setSignInModalAnimation(false);
+    setSigninModal(false);
+    setSignupModal(true);
     SignupMenu({
       session_id: getCurrentUser().id,
     });
@@ -1003,7 +1012,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  ProfileMenu({
+                                  YieldOpportunitiesMenu({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1496,10 +1505,10 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
+                                  // ProfileMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
                                 }
                               }}
                               className="nav-link"
@@ -1660,7 +1669,7 @@ function Sidebar(props) {
                           </div>
                         ) : (
                           <div
-                            onClick={handleSigninModal}
+                            onClick={openSigninModal}
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
                           >
                             <div className="sideBarFooterSignInIconContainer">
@@ -1848,38 +1857,39 @@ function Sidebar(props) {
             </div>
           </div>
         </Container>
+      </div>
 
-        {connectModal ? (
-          <ConnectModal
-            show={connectModal}
-            onHide={handleConnectModal}
-            history={history}
-            headerTitle={"Connect exchanges"}
-            modalType={"connectModal"}
-            iconImage={LinkIcon}
-          />
-        ) : (
-          ""
-        )}
+      {connectModal ? (
+        <ConnectModal
+          show={connectModal}
+          onHide={handleConnectModal}
+          history={history}
+          headerTitle={"Connect exchanges"}
+          modalType={"connectModal"}
+          iconImage={LinkIcon}
+        />
+      ) : (
+        ""
+      )}
 
-        {leave ? (
-          <ExitOverlay
-            show={leave}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={handleLeave}
-            history={history}
-            modalType={"exitOverlay"}
-            handleRedirection={() => {
-              resetUser();
-              setTimeout(function () {
-                props.history.push("/welcome");
-              }, 3000);
-            }}
-          />
-        ) : (
-          ""
-        )}
-        {/* {cohort ? (
+      {leave ? (
+        <ExitOverlay
+          show={leave}
+          // link="http://loch.one/a2y1jh2jsja"
+          onHide={handleLeave}
+          history={history}
+          modalType={"exitOverlay"}
+          handleRedirection={() => {
+            resetUser();
+            setTimeout(function () {
+              props.history.push("/welcome");
+            }, 3000);
+          }}
+        />
+      ) : (
+        ""
+      )}
+      {/* {cohort ? (
             <ExitOverlay
               show={cohort}
               // link="http://loch.one/a2y1jh2jsja"
@@ -1897,109 +1907,111 @@ function Sidebar(props) {
             ""
           )} */}
 
-        {apiModal ? (
-          <ExitOverlay
-            show={apiModal}
-            onHide={handleApiModal}
-            history={history}
-            headerTitle={"API"}
-            modalType={"apiModal"}
-            iconImage={ApiModalIcon}
-          />
-        ) : (
-          ""
-        )}
+      {apiModal ? (
+        <ExitOverlay
+          show={apiModal}
+          onHide={handleApiModal}
+          history={history}
+          headerTitle={"API"}
+          modalType={"apiModal"}
+          iconImage={ApiModalIcon}
+        />
+      ) : (
+        ""
+      )}
 
-        {Upgrade ? (
-          <UpgradeModal
-            show={Upgrade}
-            onHide={upgradeModal}
-            history={history}
-            isShare={localStorage.getItem("share_id")}
-            // isStatic={isStatic}
-            triggerId={triggerId}
-            pname="sidebar"
-          />
-        ) : (
-          ""
-        )}
+      {Upgrade ? (
+        <UpgradeModal
+          show={Upgrade}
+          onHide={upgradeModal}
+          history={history}
+          isShare={localStorage.getItem("share_id")}
+          // isStatic={isStatic}
+          triggerId={triggerId}
+          pname="sidebar"
+        />
+      ) : (
+        ""
+      )}
 
-        {exportModal ? (
-          <ExitOverlay
-            show={exportModal}
-            onHide={handleExportModal}
-            history={history}
-            headerTitle={"Download all your data"}
-            modalType={"exportModal"}
-            iconImage={ExportIconWhite}
-          />
-        ) : (
-          ""
-        )}
-        {shareModal ? (
-          <SharePortfolio
-            show={shareModal}
-            onHide={handleShareModal}
-            history={history}
-            headerTitle={"Share this portfolio"}
-            modalType={"shareModal"}
-            iconImage={SharePortfolioIcon}
-          />
-        ) : (
-          ""
-        )}
-        {confirmLeave ? (
-          <ConfirmLeaveModal
-            show={confirmLeave}
-            history={history}
-            handleClose={handleConfirmLeaveModal}
-          />
-        ) : (
-          ""
-        )}
+      {exportModal ? (
+        <ExitOverlay
+          show={exportModal}
+          onHide={handleExportModal}
+          history={history}
+          headerTitle={"Download all your data"}
+          modalType={"exportModal"}
+          iconImage={ExportIconWhite}
+        />
+      ) : (
+        ""
+      )}
+      {shareModal ? (
+        <SharePortfolio
+          show={shareModal}
+          onHide={handleShareModal}
+          history={history}
+          headerTitle={"Share this portfolio"}
+          modalType={"shareModal"}
+          iconImage={SharePortfolioIcon}
+        />
+      ) : (
+        ""
+      )}
+      {confirmLeave ? (
+        <ConfirmLeaveModal
+          show={confirmLeave}
+          history={history}
+          handleClose={handleConfirmLeaveModal}
+        />
+      ) : (
+        ""
+      )}
 
-        {showFeedbackModal && (
-          <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
-        )}
+      {showFeedbackModal && (
+        <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
+      )}
 
-        {signinModal ? (
-          <AuthModal
-            show={signinModal}
-            onHide={handleSigninModal}
-            history={history}
-            modalType={"create_account"}
-            iconImage={SignInIcon}
-            hideSkip={true}
-            title="Sign in"
-            description="Get right back into your account"
-            stopUpdate={true}
-            tracking="Sign in button"
-            goToSignUp={handleSignUpModal}
-          />
-        ) : (
-          ""
-        )}
-        {signupModal ? (
-          <ExitOverlay
-            show={signupModal}
-            onHide={handleSignUpModal}
-            history={history}
-            modalType={"exitOverlay"}
-            handleRedirection={() => {
-              resetUser();
-              setTimeout(function () {
-                props.history.push("/welcome");
-              }, 3000);
-            }}
-            signup={true}
-            goToSignIn={handleSigninModal}
-          />
-        ) : (
-          ""
-        )}
+      {signinModal ? (
+        <AuthModal
+          modalAnimation={signInModalAnimation}
+          show={signinModal}
+          onHide={onCloseModal}
+          history={history}
+          modalType={"create_account"}
+          iconImage={SignInIcon}
+          hideSkip={true}
+          title="Sign in"
+          description="Get right back into your account"
+          stopUpdate={true}
+          tracking="Sign in button"
+          goToSignUp={openSignUpModal}
+        />
+      ) : (
+        ""
+      )}
+      {signupModal ? (
+        <ExitOverlay
+          modalAnimation={false}
+          show={signupModal}
+          onHide={onCloseModal}
+          history={history}
+          modalType={"exitOverlay"}
+          handleRedirection={() => {
+            resetUser();
+            setTimeout(function () {
+              props.history.push("/welcome");
+            }, 3000);
+          }}
+          signup={true}
+          goToSignIn={openSigninModal}
+        />
+      ) : (
+        ""
+      )}
 
-        {/* after 15 sec open this */}
-      </div>
+      {/* after 15 sec open this */}
+
       {signinPopup ? (
         <SidebarModal
           trackPos={trackPos}

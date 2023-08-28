@@ -20,7 +20,6 @@ class TopBar extends Component {
       firstWallet: "",
       walletList: [],
       exchangeList: [],
-      exchangeListImages: [],
       firstExchange: "",
     };
   }
@@ -71,7 +70,6 @@ class TopBar extends Component {
 
       const tempWalletList = [];
       const tempExchangeList = [];
-      const tempExchangeListImages = [];
 
       const tempWalletListToPush = [];
       const tempExchangeListToPush = [];
@@ -80,10 +78,10 @@ class TopBar extends Component {
           if (data?.chains.length === 0) {
             if (data.protocol) {
               if (data.protocol.code) {
-                tempExchangeList.push(data.protocol.code);
-              }
-              if (data.protocol.symbol) {
-                tempExchangeListImages.push(data.protocol.symbol);
+                tempExchangeList.push({
+                  name: data.protocol.code,
+                  symbol: data.protocol.symbol,
+                });
               }
             }
             const sendThis = {
@@ -119,13 +117,21 @@ class TopBar extends Component {
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+        tempExchangeList.sort(function (a, b) {
+          var keyA = a.name,
+            keyB = b.name;
+          // Compare the 2 dates
+          if (keyA > keyB) return -1;
+          if (keyA < keyB) return 1;
+          return 0;
+        });
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
-          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-          exchangeListImages: tempExchangeListImages,
+          firstExchange:
+            tempExchangeList.length > 0 ? tempExchangeList[0].name : "",
         });
         const passDataHeader = [
           ...tempWalletListToPush,
@@ -140,16 +146,15 @@ class TopBar extends Component {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
       const tempExchangeList = [];
-      const tempExchangeListImages = [];
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
           if (data.isExchange) {
             if (data.exchangeCode) {
-              tempExchangeList.push(data.exchangeCode);
-            }
-            if (data.exchangeSymbol) {
-              tempExchangeListImages.push(data.exchangeSymbol);
+              tempExchangeList.push({
+                name: data.exchangeCode,
+                symbol: data.exchangeSymbol,
+              });
             }
           } else {
             let tempAddress = "";
@@ -181,13 +186,22 @@ class TopBar extends Component {
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+
+        tempExchangeList.sort(function (a, b) {
+          var keyA = a.name,
+            keyB = b.name;
+          // Compare the 2 dates
+          if (keyA > keyB) return -1;
+          if (keyA < keyB) return 1;
+          return 0;
+        });
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
-          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-          exchangeListImages: tempExchangeListImages,
+          firstExchange:
+            tempExchangeList.length > 0 ? tempExchangeList[0].name : "",
         });
       }
     }
@@ -210,7 +224,6 @@ class TopBar extends Component {
     });
     this.props.handleConnectModal();
   };
-
   render() {
     return (
       <div className="topBarContainer">
@@ -238,7 +251,6 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-
         <div
           onClick={this.passConnectExchangeClick}
           className="topbar-btn ml-2 maxWidth50"
@@ -246,8 +258,8 @@ class TopBar extends Component {
           {this.state.exchangeList.length > 0 ? (
             <>
               <span className="mr-2">
-                {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                  <Image className="topBarExchangeIcons" src={imgUrl} />
+                {this.state.exchangeList.slice(0, 3).map((res) => (
+                  <Image className="topBarExchangeIcons" src={res.symbol} />
                 ))}
               </span>
               <span className="dotDotText">

@@ -1440,13 +1440,22 @@ export const updateAccessToken = (data, ctx, name) => {
           tempWalletData = ctx.props.HeaderState.wallet;
         } else {
           const walletList = ctx.props.walletState.walletList;
-          tempWalletData = walletList.map((walRes) => {
-            return {
-              nickname: walRes.nickname,
-              displayAddress: walRes.display_address,
-              address: walRes.address,
-            };
-          });
+          if (walletList) {
+            tempWalletData = walletList.map((walRes) => {
+              if (walRes?.chains.length === 0) {
+                return {
+                  exchangeCode: walRes.protocol.code,
+                  exchangeSymbol: walRes.protocol.symbol,
+                  isExchange: true,
+                };
+              }
+              return {
+                nickname: walRes.nickname,
+                displayAddress: walRes.display_address,
+                address: walRes.address,
+              };
+            });
+          }
         }
         let tempData = [
           ...tempWalletData,

@@ -304,6 +304,14 @@
     padding-bottom: 8rem;
   }
 }
+.transaction-table-loading-wrapper-smaller {
+  .animation-wrapper {
+    height: 20rem;
+  }
+  .loading-animation {
+    padding-bottom: 0;
+  }
+}
 .transaction-history-table {
   .loadingSizeContainer {
     height: 50vh;
