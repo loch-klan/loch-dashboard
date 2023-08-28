@@ -5,11 +5,11 @@
 // .exit-overlay-modal {
 .exit-overlay-modal {
   .modal-content {
-    border-radius: 1.2rem;
+    border-radius: 1.4rem;
     width: 78rem;
-    padding: 0 !important;
-
+    border: none;
     .modal-header {
+      padding: 0 !important;
       // display: block;
       // text-align: center;
       display: flex;
@@ -79,16 +79,12 @@
         position: absolute;
         top: 2.8rem;
         right: 2.8rem;
-        padding: 1.3rem;
-        background-color: $drop-button-hover;
-        border-radius: 5rem;
+
         cursor: pointer;
         transition: all 0.4s ease;
 
         &:hover {
-          top: 2.5rem;
-          right: 2.5rem;
-          padding: 1.6rem;
+          transform: scale(1.1);
         }
       }
       .back-icon {

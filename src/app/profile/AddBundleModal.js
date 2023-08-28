@@ -2,7 +2,7 @@ import React from "react";
 import { BaseReactComponent, Form, FormElement } from "../../utils/form";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import CloseBtn from "../../assets/images/icons/CloseBtn.svg";
 import CustomTextControl from "../../utils/form/CustomTextControl";
 import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 import CopyLink from "../../assets/images/icons/CopyLink.svg";
@@ -297,10 +297,16 @@ class AddBundleModal extends BaseReactComponent {
           backdropClassName="exitoverlaymodal"
         >
           <Modal.Header>
-            <div className="new-modal-header">
+            <div
+              style={{
+                paddingTop: this.props.isEdit ? "3rem" : "",
+                paddingBottom: this.props.isEdit ? "3rem" : "",
+              }}
+              className="new-modal-header"
+            >
               <Image src={Banner} className="banner-image" />
 
-              {this.props.isEdit || this.props.isView ? (
+              {this.props.isEdit ? (
                 <div
                   style={{
                     background: "#FFFFFF",
@@ -373,15 +379,15 @@ class AddBundleModal extends BaseReactComponent {
                 </div>
               )}
               <div className="closebtn" onClick={this.closeButtonClick}>
-                <Image src={CloseIcon} />
+                <Image src={CloseBtn} />
               </div>
               <h6
                 style={{
                   paddingLeft: "3rem",
                   paddingRight: "3rem",
-                  marginTop: "2rem",
+                  marginTop: "3rem",
                 }}
-                className="inter-display-medium f-s-20 lh-24 m-b-6 white"
+                className="inter-display-medium f-s-24 lh-24 m-b-6 white"
               >
                 {this.props.isEdit || this.props.isView
                   ? this.props.bundleName
