@@ -238,7 +238,6 @@ class BarGraphSection extends Component {
       width: "100%",
       minWidth: "100%",
     };
-    console.log("this.props.assetList ", this.props.assetList);
     return (
       <div
         className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
