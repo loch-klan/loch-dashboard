@@ -1419,7 +1419,7 @@ export const updateAccessToken = (data, ctx, name) => {
           // window.location.reload();
           setTimeout(() => {
             // ctx.props.setPageFlagDefault();
-            ctx.props?.handleUpdate && ctx.props.handleUpdate();
+            // ctx.props?.handleUpdate && ctx.props.handleUpdate();
             ctx.props.openPopup();
           }, 1000);
         }
