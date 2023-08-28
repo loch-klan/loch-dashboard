@@ -46,11 +46,16 @@ class CustomTable extends BaseReactComponent {
       pageNext,
       isLoading,
       isStickyHead,
+      isMiniversion,
     } = this.props;
     return (
       <div className="table-wrapper">
         {isLoading === true ? (
-          <div className="transaction-table-loading-wrapper">
+          <div
+            className={`transaction-table-loading-wrapper ${
+              isMiniversion ? "transaction-table-loading-wrapper-smaller" : ""
+            }`}
+          >
             <div className="animation-wrapper">
               <Loading />
             </div>

@@ -2177,12 +2177,13 @@ class Portfolio extends BaseReactComponent {
                       className="m-r-16 section-table"
                       style={{
                         paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
+                        height: "32rem",
+                        minHeight: "32rem",
                         marginBottom: 0,
                       }}
                     >
                       <TransactionTable
+                        isMiniversion
                         title="Average cost basis"
                         handleClick={() => {
                           if (this.state.lochToken) {
@@ -2194,7 +2195,7 @@ class Portfolio extends BaseReactComponent {
                           }
                         }}
                         subTitle="Understand your average entry price"
-                        tableData={tableDataCostBasis.slice(0, 6)}
+                        tableData={tableDataCostBasis.slice(0, 3)}
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
@@ -2207,6 +2208,7 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
+                        loaderHeight={15.5}
                         headerTitle="Net flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
@@ -2258,12 +2260,13 @@ class Portfolio extends BaseReactComponent {
                       className="m-r-16 section-table"
                       style={{
                         paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
+                        height: "32rem",
+                        minHeight: "32rem",
                         marginBottom: 0,
                       }}
                     >
                       <TransactionTable
+                        isMiniversion
                         title="Transaction History"
                         handleClick={() => {
                           if (this.state.lochToken) {
@@ -2273,7 +2276,7 @@ class Portfolio extends BaseReactComponent {
                           }
                         }}
                         subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData.slice(0, 6)}
+                        tableData={tableData.slice(0, 3)}
                         columnList={columnList}
                         headerHeight={60}
                         isArrow={true}
