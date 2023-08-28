@@ -507,17 +507,30 @@ class CustomDropdown extends Component {
           }}
         >
           <div className="dropdown-search-wrapper">
-            <Image src={SearchIcon} />
+            <Image
+              className={
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "dropdown-search-wrapper-image-small"
+                  : ""
+              }
+              src={SearchIcon}
+            />
             <input
               value={this.state.search}
               type="text"
               placeholder={
-                this.props.filtername.toLowerCase() === "all assets"
-                  ? "Search by name or symbol"
+                this.props.filtername.toLowerCase() === "all assets" ||
+                this.props.filtername.toLowerCase() === "all assets selected" ||
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "Name or symbol"
                   : "Search"
               }
               onChange={this.handleSearch}
-              className="dropdown-search-input"
+              className={`dropdown-search-input ${
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "dropdown-search-input-smaller"
+                  : ""
+              }`}
             />
           </div>
           <div
