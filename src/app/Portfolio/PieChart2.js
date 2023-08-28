@@ -1344,9 +1344,7 @@ class PieChart2 extends BaseReactComponent {
                     <div className="balance-card-header cp">
                       <div
                         onClick={this.toggleYield}
-                        // style={
-                        //   this.state.isYeildToggle ? {  } : {}
-                        // }
+                        style={{ whiteSpace: "nowrap" }}
                       >
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"

@@ -25,6 +25,7 @@ import {
   DEFAULT_PRICE,
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
+  SEARCH_BY_CHAIN_IN,
 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
@@ -154,6 +155,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       isTopAccountPage: true,
       // time spent
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -333,7 +335,18 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   onValidSubmit = () => {};
-
+  handleFunction = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0].name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addCondition(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       // TransactionHistoryYearFilter({
@@ -360,7 +373,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         //   asset_filter: value == "allAssets" ? "All assets" : assets,
         // });
       });
-    } else if (key === "SEARCH_BY_METHOD_IN") {
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
       // TransactionHistoryMethodFilter({
       //   session_id: getCurrentUser().id,
       //   email_address: getCurrentUser().email,
@@ -376,13 +389,15 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       index !== -1 &&
       value !== "allAssets" &&
       value !== "allMethod" &&
-      value !== "allYear"
+      value !== "allYear" &&
+      value !== "allNetworks"
     ) {
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
-      value === "allYear"
+      value === "allYear" ||
+      value === "allNetworks"
     ) {
       if (index !== -1) {
         arr.splice(index, 1);
@@ -1491,13 +1506,12 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col md={3}>
                     <CustomDropdown
-                      filtername="All methods"
-                      options={this.props.topAccountState.methodFilter}
-                      action={SEARCH_BY_METHOD_IN}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
+                      filtername="All networks"
+                      options={this.props.OnboardingState.coinsList}
+                      action={SEARCH_BY_CHAIN_IN}
+                      handleClick={this.handleFunction}
                       isCaptialised
+                      isGreyChain
                     />
                   </Col>
                   {/* {fillter_tabs} */}
@@ -1568,7 +1582,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
-
+  OnboardingState: state.OnboardingState,
   // top account
   topAccountState: state.TopAccountState,
 });
