@@ -822,7 +822,7 @@ class PieChart2 extends BaseReactComponent {
                 true
               )}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(
                 2
-              )}% &nbsp;&nbsp;</p>`;
+              )}%</p>`;
             },
             // x: 10,
             // y: -5,
@@ -1228,7 +1228,13 @@ class PieChart2 extends BaseReactComponent {
                           : this.state.chainList?.length + 1 + " Networks"}
                       </span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
                       <Image
                         src={arrowUp}
                         style={{
@@ -1375,7 +1381,13 @@ class PieChart2 extends BaseReactComponent {
                         />
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
                         <div onClick={this.toggleDebt}>
                           <span
                             className="inter-display-semi-bold f-s-16 lh-19"
