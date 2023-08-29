@@ -628,11 +628,13 @@ class TransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-    console.log("tableSortOpt changing ? ", sort);
-    // this.setState({
-    //   sort: obj,
-    //   tableSortOpt: sort,
-    // });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort,
+    });
   };
 
   copyContent = (text) => {
