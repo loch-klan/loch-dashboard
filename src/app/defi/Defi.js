@@ -560,6 +560,7 @@ class Defi extends Component {
                           </span>
                         </div>
                         <Image
+                          className="defiMenu"
                           src={arrowUp}
                           style={
                             this.state.isYeildToggle
@@ -628,6 +629,7 @@ class Defi extends Component {
                           </span>
                         </div>
                         <Image
+                          className="defiMenu"
                           src={arrowUp}
                           style={
                             this.state.isDebtToggle

@@ -1236,6 +1236,7 @@ class PieChart2 extends BaseReactComponent {
                       }}
                     >
                       <Image
+                        className="defiMenu"
                         src={arrowUp}
                         style={{
                           height: "1.25rem",
@@ -1372,6 +1373,7 @@ class PieChart2 extends BaseReactComponent {
                         </span>
 
                         <Image
+                          className="defiMenu"
                           src={arrowUp}
                           style={
                             this.state.isYeildToggle
@@ -1413,6 +1415,7 @@ class PieChart2 extends BaseReactComponent {
                           </span>
 
                           <Image
+                            className="defiMenu"
                             src={arrowUp}
                             style={
                               this.state.isDebtToggle
