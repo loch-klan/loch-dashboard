@@ -214,8 +214,8 @@ class TopAccountPage extends BaseReactComponent {
     this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -1234,7 +1234,7 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top accounts"}
+              title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
@@ -1264,7 +1264,7 @@ class TopAccountPage extends BaseReactComponent {
                       : LochLogoIcon
                   }
                 />
-                Loch’s Top Accounts
+                Loch’s Leaderboard
               </div>
               <div
                 className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${
@@ -1471,6 +1471,8 @@ const mapDispatchToProps = {
   getWatchListByUser,
   removeFromWatchList,
   updateAddToWatchList,
+  GetAllPlan,
+  getUser,
 };
 
 TopAccountPage.propTypes = {};

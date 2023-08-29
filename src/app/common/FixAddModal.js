@@ -467,7 +467,7 @@ class FixAddModal extends BaseReactComponent {
     this.props.getAllParentChains();
     //  this.makeApiCall();
     getAllWalletApi(this);
-    getDetectedChainsApi(this);
+    this.props.getDetectedChainsApi(this);
     const fixWallet = [];
     JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
       // console.log("e fix wallet", e);
@@ -493,7 +493,7 @@ class FixAddModal extends BaseReactComponent {
     this.props.getAllParentChains();
     // //  this.makeApiCall();
     // getAllWalletApi(this);
-    getDetectedChainsApi(this);
+    this.props.getDetectedChainsApi(this);
   }
 
   addAddress = () => {
@@ -1580,6 +1580,7 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setHeaderReducer,
   updateUserWalletApi,
+  getDetectedChainsApi,
 };
 FixAddModal.propTypes = {};
 

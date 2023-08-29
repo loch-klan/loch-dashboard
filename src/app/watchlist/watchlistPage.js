@@ -156,8 +156,8 @@ class WatchListPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -876,6 +876,8 @@ const mapDispatchToProps = {
   getWatchList,
   updateAddToWatchList,
   getWatchListLoading,
+  GetAllPlan,
+  getUser,
 };
 
 WatchListPage.propTypes = {};

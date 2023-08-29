@@ -1147,7 +1147,7 @@ function Sidebar(props) {
                                     : {}
                                 }
                               />
-                              Top accounts
+                              Leaderboard
                               {previewAddress?.address && (
                                 <Image
                                   src={arrowUp}
@@ -1531,6 +1531,68 @@ function Sidebar(props) {
                         </>
                       )}
                       {/* <li>
+                        <li>
+                          <NavLink
+                            className={`nav-link`}
+                            to="/watchlist"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWatchlist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={EyeIcon}
+                              style={
+                                activeTab === "/watchlist"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Watchlist
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/transaction-feed"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={NewspaperIcon}
+                              style={
+                                activeTab === "/transaction-feed"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Transaction feed
+                          </NavLink>
+                        </li>
+                      </>
+                    )}
+                    {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -1912,6 +1974,7 @@ function Sidebar(props) {
 
       {signinModal ? (
         <AuthModal
+          hideOnblur
           modalAnimation={signInModalAnimation}
           show={signinModal}
           onHide={onCloseModal}
@@ -1930,6 +1993,7 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          hideOnblur
           modalAnimation={false}
           show={signupModal}
           onHide={onCloseModal}

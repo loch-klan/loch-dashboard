@@ -516,11 +516,11 @@ class TopPortfolio extends BaseReactComponent {
 
       // for chain detect
       setTimeout(() => {
-        getDetectedChainsApi(this);
+        this.props.getDetectedChainsApi(this);
       }, 1000);
 
-      GetAllPlan();
-      getUser(this);
+      this.props.GetAllPlan();
+      this.props.getUser(this);
     } else if (prevState.sort !== this.state.sort) {
       // sort table
       this.getTableData();
@@ -1958,8 +1958,10 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
-  getAllParentChains,
+  getDetectedChainsApi,
   getAssetProfitLoss,
+  GetAllPlan,
+  getUser,
 };
 TopPortfolio.propTypes = {};
 

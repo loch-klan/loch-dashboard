@@ -178,8 +178,8 @@ class Intelligence extends Component {
     this.startPageView();
     this.props.getAllCoins();
     this.timeFilter(0, true);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.assetList();
 
     let obj = UpgradeTriggered();
@@ -1031,6 +1031,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 // const mapDispatchToProps = {

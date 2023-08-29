@@ -98,8 +98,8 @@ class AssetValueGraph extends Component {
     this.props.getAllCoins();
     // this.getGraphData();
     this.setState({});
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -381,6 +381,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

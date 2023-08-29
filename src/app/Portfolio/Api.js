@@ -352,7 +352,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
             // ctx.props.getProfitAndLossApi(ctx, false, false, false);
             //  ctx.props.getAllInsightsApi(ctx);
             //        GetAllPlan();
-            // getUser(ctx);
+            // this.props.getUser(ctx);
             ctx.props.setPageFlagDefault();
           }
         } else {
@@ -745,6 +745,14 @@ export const getProtocolBalanceApi = (ctx, data) => {
               type_text: "Yield",
             },
           ];
+          YieldValues.sort(function (a, b) {
+            var keyA = a.totalPrice,
+              keyB = b.totalPrice;
+            // Compare the 2 dates
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+          });
           const DebtValues = [
             {
               id: 6,

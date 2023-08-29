@@ -331,7 +331,7 @@ class AddWallet extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
 
-    GetAllPlan();
+    this.props.GetAllPlan();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -1304,6 +1304,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   setHeaderReducer,
   updateUserWalletApi,
+  GetAllPlan,
 };
 AddWallet.propTypes = {};
 
