@@ -291,7 +291,9 @@ class AddBundleModal extends BaseReactComponent {
           className="exit-overlay-form"
           onHide={this.state.onHide}
           size="lg"
-          dialogClassName={"exit-overlay-modal"}
+          dialogClassName={
+            "exit-overlay-modal exit-overlay-modal-address-bundle"
+          }
           centered
           aria-labelledby="contained-modal-title-vcenter"
           backdropClassName="exitoverlaymodal"
@@ -378,7 +380,10 @@ class AddBundleModal extends BaseReactComponent {
                   <Image src={this.props.iconImage} />
                 </div>
               )}
-              <div className="closebtn" onClick={this.closeButtonClick}>
+              <div
+                className="closebtnAddBundle"
+                onClick={this.closeButtonClick}
+              >
                 <Image src={CloseBtn} />
               </div>
               <h6
