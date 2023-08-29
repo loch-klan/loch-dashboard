@@ -1830,6 +1830,7 @@ function Sidebar(props) {
 
       {signinModal ? (
         <AuthModal
+          hideOnblur
           modalAnimation={signInModalAnimation}
           show={signinModal}
           onHide={onCloseModal}
@@ -1848,6 +1849,7 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          hideOnblur
           modalAnimation={false}
           show={signupModal}
           onHide={onCloseModal}

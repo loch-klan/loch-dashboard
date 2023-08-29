@@ -80,7 +80,7 @@ class FormElementComponent extends BaseReactComponent {
       isValid,
       isInvalid,
       isCancel = false,
-      hideOnblur = false,
+      hideOnblur = this.props.hideOnblur ? true : false,
       control: { type, settings },
     } = this.props;
     // console.log('this.props', this.props);
