@@ -5,11 +5,11 @@
 // .exit-overlay-modal {
 .exit-overlay-modal {
   .modal-content {
-    border-radius: 1.4rem;
+    border-radius: 1.2rem;
     width: 78rem;
-    border: none;
+
     .modal-header {
-      padding: 0 !important;
+      padding: 2.8rem;
       // display: block;
       // text-align: center;
       display: flex;
@@ -18,49 +18,17 @@
       // margin-bottom: 4.2rem;
       border: none;
 
-      .new-modal-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        padding: 2.8rem;
-        div,
-        h6,
-        p {
-          z-index: 2;
+      .api-modal-header {
+        img {
+          width: 2.4rem;
+          height: 2.4rem;
         }
-        .banner-image {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          opacity: 100%;
-          z-index: 1;
-        }
-        .api-modal-header {
-          background-color: white;
-          width: fit-content;
-          height: fit-content;
-          .banner-image {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-          }
-          img {
-            width: 2.4rem;
-            height: 2.4rem;
-          }
 
-          padding: 1.8rem;
-          box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
-            0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
-          margin-top: 1rem;
-          border-radius: 2rem;
-        }
+        padding: 1.8rem;
+        box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+          0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+        margin-top: 1rem;
+        border-radius: 2rem;
       }
 
       .exitOverlayIcon {
@@ -79,12 +47,16 @@
         position: absolute;
         top: 2.8rem;
         right: 2.8rem;
-
+        padding: 1.3rem;
+        background-color: $drop-button-hover;
+        border-radius: 5rem;
         cursor: pointer;
         transition: all 0.4s ease;
 
         &:hover {
-          transform: scale(1.1);
+          top: 2.5rem;
+          right: 2.5rem;
+          padding: 1.6rem;
         }
       }
       .back-icon {
@@ -929,6 +901,71 @@
             color: $black-191;
             background-color: $secondary;
           }
+        }
+      }
+    }
+  }
+}
+.exit-overlay-modal-address-bundle {
+  .modal-content {
+    border-radius: 1.4rem;
+    border: none;
+    .modal-header {
+      padding: 0 !important;
+      .new-modal-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 2.8rem;
+        div,
+        h6,
+        p {
+          z-index: 2;
+        }
+        .banner-image {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          opacity: 100%;
+          z-index: 1;
+        }
+        .api-modal-header {
+          background-color: white;
+          width: fit-content;
+          height: fit-content;
+          .banner-image {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+          img {
+            width: 2.4rem;
+            height: 2.4rem;
+          }
+
+          padding: 1.8rem;
+          box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+            0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+          margin-top: 1rem;
+          border-radius: 2rem;
+        }
+      }
+      .closebtnAddBundle {
+        position: absolute;
+        top: 2.8rem;
+        right: 2.8rem;
+
+        cursor: pointer;
+        transition: all 0.4s ease;
+
+        &:hover {
+          transform: scale(1.1);
         }
       }
     }
