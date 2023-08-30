@@ -1139,6 +1139,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "time") {
             return moment(rowData.time).format("MM/DD/YY");
           }
@@ -1172,6 +1175,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "from") {
             return (
               <CustomOverlay
@@ -1373,6 +1379,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "to") {
             return (
               <CustomOverlay
@@ -1573,6 +1582,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "asset") {
             return (
               <CustomOverlay
@@ -1635,6 +1647,13 @@ class Portfolio extends BaseReactComponent {
         tempTableDataCostBasis.push("EMPTY");
       }
       tableDataCostBasis = tempTableDataCostBasis;
+    }
+    if (tableData.length < 6) {
+      const temptableData = [...tableData];
+      for (let i = tableData.length; i < 6; i++) {
+        temptableData.push("EMPTY");
+      }
+      tableData = temptableData;
     }
     const CostBasisColumnData = [
       {
