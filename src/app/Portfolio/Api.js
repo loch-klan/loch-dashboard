@@ -519,6 +519,8 @@ export const getProtocolBalanceApi = (ctx, data) => {
           let defiList = ctx.props.defiState.defiList || [];
           let totalYield = ctx.props.defiState.totalYield;
           let totalDebt = ctx.props.defiState.totalDebt;
+          let lastYieldValues = ctx.props.defiState.YieldValues;
+          let lastDebtValues = ctx.props.defiState.DebtValues;
 
           let totalSuppliedPrice = 0;
           let totalLentPrice = 0;
@@ -745,6 +747,30 @@ export const getProtocolBalanceApi = (ctx, data) => {
               type_text: "Yield",
             },
           ];
+          if (lastYieldValues.length > 0) {
+            YieldValues.forEach((resData) => {
+              let lastValue = 0;
+              lastYieldValues.forEach((resRes) => {
+                if (
+                  resData.name &&
+                  resRes.name &&
+                  resData.name === resRes.name
+                ) {
+                  lastValue = resRes.totalPrice;
+                }
+              });
+              resData.totalPrice = resData.totalPrice + lastValue;
+            });
+          }
+
+          YieldValues.sort(function (a, b) {
+            var keyA = a.totalPrice,
+              keyB = b.totalPrice;
+            // Compare the 2 dates
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+          });
           const DebtValues = [
             {
               id: 6,
@@ -752,6 +778,21 @@ export const getProtocolBalanceApi = (ctx, data) => {
               totalPrice: totalBorrowedPrice,
             },
           ];
+          if (lastDebtValues.length > 0) {
+            DebtValues.forEach((resData) => {
+              let lastValue = 0;
+              lastDebtValues.forEach((resRes) => {
+                if (
+                  resData.name &&
+                  resRes.name &&
+                  resData.name === resRes.name
+                ) {
+                  lastValue = resRes.totalPrice;
+                }
+              });
+              resData.totalPrice = resData.totalPrice + lastValue;
+            });
+          }
           const tempTotalYeild =
             totalSuppliedPrice +
             totalLentPrice +
@@ -759,20 +800,20 @@ export const getProtocolBalanceApi = (ctx, data) => {
             totalStakedPrice +
             totalPoolPrice +
             totalYield;
-          // setTimeout(() => {
-          dispatch({
-            type: ctx?.state?.isTopAccountPage
-              ? TOP_GET_DEFI_DATA
-              : GET_DEFI_DATA,
-            payload: {
-              defiList: [...defiData, ...defiList],
-              YieldValues: YieldValues,
-              DebtValues: DebtValues,
-              totalYield: tempTotalYeild,
-              totalDebt: totalBorrowedPrice + totalDebt,
-            },
-          });
-          // }, 100);
+          setTimeout(() => {
+            dispatch({
+              type: ctx?.state?.isTopAccountPage
+                ? TOP_GET_DEFI_DATA
+                : GET_DEFI_DATA,
+              payload: {
+                defiList: [...defiData, ...defiList],
+                YieldValues: YieldValues,
+                DebtValues: DebtValues,
+                totalYield: tempTotalYeild,
+                totalDebt: totalBorrowedPrice + totalDebt,
+              },
+            });
+          }, 100);
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
