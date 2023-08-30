@@ -125,6 +125,7 @@ class WatchListPage extends BaseReactComponent {
       timeFIlter: "Time",
       tableData: [],
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -155,8 +156,8 @@ class WatchListPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -230,6 +231,7 @@ class WatchListPage extends BaseReactComponent {
         }
       );
     }
+
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -874,6 +876,8 @@ const mapDispatchToProps = {
   getWatchList,
   updateAddToWatchList,
   getWatchListLoading,
+  GetAllPlan,
+  getUser,
 };
 
 WatchListPage.propTypes = {};

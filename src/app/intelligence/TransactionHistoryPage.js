@@ -179,6 +179,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -216,8 +217,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.props.getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -699,6 +700,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
+    console.log("assetPriceList ", assetPriceList);
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1280,10 +1282,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
                 <Image src={rowData.asset.symbol} className="asset-symbol" />
               </CustomOverlay>
             );
@@ -1728,6 +1726,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  GetAllPlan,getUser,
 };
 
 TransactionHistoryPage.propTypes = {};

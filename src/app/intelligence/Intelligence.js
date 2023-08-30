@@ -51,6 +51,9 @@ import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { InflowOutflowIcon } from "../../assets/images/icons";
+import InflowOutflowCharSlider from "./InflowOutflowChartSlider";
+import InflowOutflowChart from "./InflowOutflowChart";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -175,8 +178,8 @@ class Intelligence extends Component {
     this.startPageView();
     this.props.getAllCoins();
     this.timeFilter(0, true);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.assetList();
 
     let obj = UpgradeTriggered();
@@ -980,6 +983,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
+              <InflowOutflowChart />
               {/* footer */}
               <Footer />
             </div>
@@ -1027,6 +1031,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 // const mapDispatchToProps = {
