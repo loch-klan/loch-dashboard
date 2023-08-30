@@ -1084,6 +1084,7 @@ class ExitOverlay extends BaseReactComponent {
                             </span>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
+                              showHiddenError={this.props.showHiddenError}
                               valueLink={this.linkState(
                                 this,
                                 "fromDate",
@@ -1133,6 +1134,7 @@ class ExitOverlay extends BaseReactComponent {
                             </span>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
+                              showHiddenError={this.props.showHiddenError}
                               valueLink={this.linkState(
                                 this,
                                 "toDate",
@@ -1254,6 +1256,7 @@ class ExitOverlay extends BaseReactComponent {
                             <div style={{ position: "relative" }}>
                               <FormElement
                                 hideOnblur={this.props.hideOnblur}
+                                showHiddenError={this.props.showHiddenError}
                                 valueLink={this.linkState(this, "cohort_name")}
                                 label="Pod Name"
                                 required
@@ -1576,6 +1579,9 @@ class ExitOverlay extends BaseReactComponent {
                                         >
                                           <FormElement
                                             hideOnblur={this.props.hideOnblur}
+                                            showHiddenError={
+                                              this.props.showHiddenError
+                                            }
                                             valueLink={this.linkState(
                                               this,
                                               "email_notification"
@@ -1685,6 +1691,7 @@ class ExitOverlay extends BaseReactComponent {
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
                         hideOnblur={this.props.hideOnblur}
+                        showHiddenError={this.props.showHiddenError}
                         valueLink={this.linkState(this, "email")}
                         // label="Email Info"
                         required
@@ -1773,6 +1780,7 @@ class ExitOverlay extends BaseReactComponent {
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
                         hideOnblur={this.props.hideOnblur}
+                        showHiddenError={this.props.showHiddenError}
                         valueLink={this.linkState(this, "email")}
                         // label="Email Info"
                         required

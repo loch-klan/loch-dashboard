@@ -310,6 +310,7 @@ class AuthModal extends BaseReactComponent {
                 <Form onValidSubmit={this.handleAccountCreate}>
                   <FormElement
                     hideOnblur={this.props.hideOnblur}
+                    showHiddenError={this.props.showHiddenError}
                     valueLink={this.linkState(this, "email")}
                     // label="Email Info"
                     required
