@@ -1386,8 +1386,10 @@ class TopPieChart extends BaseReactComponent {
                             `}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.YieldValues &&
-                              numToCurrency(this.props.defiState.totalYield)}
+                            {this.props.topAccountState.YieldValues &&
+                              numToCurrency(
+                                this.props.topAccountState.totalYield
+                              )}
                           </span>
 
                           <Image
@@ -1431,8 +1433,10 @@ class TopPieChart extends BaseReactComponent {
                             `}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.DebtValues &&
-                              numToCurrency(this.props.defiState.totalDebt)}
+                            {this.props.topAccountState.DebtValues &&
+                              numToCurrency(
+                                this.props.topAccountState.totalDebt
+                              )}
                           </span>
 
                           <Image
