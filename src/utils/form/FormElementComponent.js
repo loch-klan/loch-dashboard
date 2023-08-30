@@ -80,7 +80,7 @@ class FormElementComponent extends BaseReactComponent {
       isValid,
       isInvalid,
       isCancel = false,
-      hideOnblur = false,
+      hideOnblur = this.props.hideOnblur ? true : false,
       control: { type, settings },
     } = this.props;
     // console.log('this.props', this.props);
@@ -123,8 +123,7 @@ class FormElementComponent extends BaseReactComponent {
         />
         {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
         {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
-
-        {(failedValidation || helpText) && (
+        {(failedValidation && failedValidation.message) || helpText ? (
           <Form.Text
             className={`${
               failedValidation ? "has-error" : ""
@@ -156,8 +155,15 @@ class FormElementComponent extends BaseReactComponent {
             )}
             {failedValidation ? failedValidation.message : helpText + "ab"}
           </Form.Text>
+        ) : (
+          <Form.Text
+            className="has-error custom-form-error"
+            style={{ opacity: 0 }}
+          >
+            {isCancel && <Image src={cancelIcon} className="cancel-icon" />}
+            Please enter valid email id
+          </Form.Text>
         )}
-
         {toolTipText && (
           <Form.Control.Feedback
             tooltip
