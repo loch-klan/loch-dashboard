@@ -483,7 +483,9 @@ class TopAccountPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
     this.setState({
       sort: obj,
       tableSortOpt: sort,
