@@ -182,7 +182,11 @@ class CustomTable extends BaseReactComponent {
                 ) : null}
               </>
             ) : (
-              <div className="not-found-wrapper">
+              <div
+                className={`not-found-wrapper ${
+                  isMiniversion ? "not-found-mini-wrapper" : ""
+                }`}
+              >
                 {/* <Image src={notFoundImage} /> */}
                 <p className="inter-display-medium f-s-16 lh-19 grey-313">
                   {" "}
