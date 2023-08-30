@@ -1199,7 +1199,7 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top accounts"}
+              title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
