@@ -155,7 +155,7 @@ class FormElementComponent extends BaseReactComponent {
             )}
             {failedValidation ? failedValidation.message : helpText + "ab"}
           </Form.Text>
-        ) : (
+        ) : this.props.showHiddenError ? (
           <Form.Text
             className="has-error custom-form-error"
             style={{ opacity: 0 }}
@@ -163,7 +163,7 @@ class FormElementComponent extends BaseReactComponent {
             {isCancel && <Image src={cancelIcon} className="cancel-icon" />}
             Please enter valid email id
           </Form.Text>
-        )}
+        ) : null}
         {toolTipText && (
           <Form.Control.Feedback
             tooltip
