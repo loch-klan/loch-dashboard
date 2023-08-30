@@ -331,7 +331,7 @@ class AddWallet extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
 
-    GetAllPlan();
+    this.props.GetAllPlan();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -637,7 +637,12 @@ class AddWallet extends BaseReactComponent {
       });
       if (addWalletTemp) {
         setTimeout(() => {
-          this.props.setHeaderReducer(addWalletTemp);
+          let holder = [];
+          const pulledTempWalletData = this.props.HeaderState.wallet;
+          if (pulledTempWalletData) {
+            holder = pulledTempWalletData.filter((res) => res.isExchange);
+          }
+          this.props.setHeaderReducer([...holder, ...addWalletTemp]);
         }, 500);
       }
       let finalArr = [];
@@ -737,7 +742,12 @@ class AddWallet extends BaseReactComponent {
         w.id = `wallet${i + 1}`;
       });
       if (addWallet) {
-        this.props.setHeaderReducer(addWallet);
+        let holder = [];
+        const pulledTempWalletData = this.props.HeaderState.wallet;
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
+        this.props.setHeaderReducer([...holder, ...addWallet]);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
@@ -1284,6 +1294,7 @@ class AddWallet extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1293,6 +1304,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   setHeaderReducer,
   updateUserWalletApi,
+  GetAllPlan,
 };
 AddWallet.propTypes = {};
 

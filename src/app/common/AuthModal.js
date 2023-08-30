@@ -309,6 +309,7 @@ class AuthModal extends BaseReactComponent {
               {!this.state.isShowOtp ? (
                 <Form onValidSubmit={this.handleAccountCreate}>
                   <FormElement
+                    hideOnblur={this.props.hideOnblur}
                     valueLink={this.linkState(this, "email")}
                     // label="Email Info"
                     required

@@ -142,8 +142,8 @@ class Cost extends Component {
     this.getBlockchainFee(0, true);
     this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -1134,6 +1134,8 @@ const mapDispatchToProps = {
   updateAverageCostBasis,
   updateWalletListFlag,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);

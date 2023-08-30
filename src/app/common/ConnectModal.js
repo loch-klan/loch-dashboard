@@ -47,6 +47,8 @@ import {
   createAnonymousUserApi,
   getAllParentChains,
 } from "../onboarding/Api";
+import { getAllWalletListApi } from "../wallet/Api";
+import { setHeaderReducer } from "../header/HeaderAction";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -1667,6 +1669,7 @@ class ConnectModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   walletState: state.WalletState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1674,7 +1677,9 @@ const mapDispatchToProps = {
   getAllParentChains,
   getExchangeBalance,
   setPageFlagDefault,
+  getAllWalletListApi,
   createAnonymousUserApi,
+  setHeaderReducer,
 };
 ConnectModal.propTypes = {};
 
