@@ -55,6 +55,7 @@ function TransactionTable(props) {
         addWatermark={props.addWatermark}
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
+        isMiniversion={props.isMiniversion}
         // isStickyHead={props?.isStickyHead}
       />
     </div>

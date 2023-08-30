@@ -1196,9 +1196,15 @@ backdrop-filter: blur(15px);">
       },
     };
 
-    const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" };
+    const minVersion = {
+      padding: "3.2rem 3.2rem 0rem 3.2rem",
+      height: "32rem",
+    };
+    const minGraphVersion = {
+      style: { height: "75%" },
+    };
     const minVersionSection = {
-      minHeight: "51rem",
+      minHeight: "32rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
@@ -1240,7 +1246,7 @@ backdrop-filter: blur(15px);">
             {this.props.graphLoading ? (
               <div
                 style={{
-                  height: "30rem",
+                  height: this.props.hideTimeFilter ? "15.5rem" : "30rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -1371,6 +1377,9 @@ backdrop-filter: blur(15px);">
                   options={options}
                   // options={options2}
                   constructorType={"stockChart"}
+                  containerProps={
+                    this.props.hideTimeFilter ? minGraphVersion : null
+                  }
                   // allowChartUpdate={true}
                   // updateArgs={[true]}
                 />
