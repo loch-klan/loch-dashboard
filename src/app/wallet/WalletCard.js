@@ -165,12 +165,14 @@ export default function WalletCard(props) {
               )}
               {!props.protocol && (
                 <div className="account-details">
+                  {props.tag_name ? (
+                    <span className="inter-display-regular f-s-13 lh-16 m-r-12 text-center">
+                      {props.tag_name}
+                    </span>
+                  ) : null}
                   {props.display_address && (
                     <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
+                      <span className="inter-display-regular f-s-13 lh-16">
                         {props.display_address}
                       </span>
                       {!props.protocol && (
@@ -184,10 +186,7 @@ export default function WalletCard(props) {
                   )}
                   {props.wallet_account_number && (
                     <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
+                      <span className="inter-display-regular f-s-13 lh-16">
                         {props.wallet_account_number}
                       </span>
                       {!props.protocol && (

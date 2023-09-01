@@ -71,8 +71,8 @@ class TopAssetValueGraph extends Component {
   };
   componentDidMount() {
     this.props.getAllCoins();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
     this.setState({
@@ -356,6 +356,8 @@ const mapDispatchToProps = {
   getExternalEventsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopAssetValueGraph);
