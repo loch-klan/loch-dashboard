@@ -1,0 +1,161 @@
+.toolTipContainer {
+  .tooltip-inner {
+    background-color: var(--primaryBlockColor);
+    max-width: max-content;
+    border: 0.1rem solid var(--greyE5e);
+    border-radius: 0.8rem;
+    opacity: 1;
+    // max-height: 15rem;
+    // overflow-y: auto;
+    // padding: 0rem;
+
+    ul {
+      // padding: inherit;
+      width: auto;
+      margin-left: -0.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: -0.4rem;
+      // padding: inherit;
+      // width: auto;
+      // margin-left: -0.1rem;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      // margin-bottom: -0.4rem;
+
+      li {
+        height: 2.4rem;
+        display: flex;
+        // justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        background: rgba(229, 229, 230, 0.5);
+        border: 0.1rem solid var(greyCac);
+        border-radius: 0.4rem;
+
+        margin-bottom: 0.4rem;
+
+        span {
+          padding: 0.2rem 0.8rem;
+        }
+
+        img {
+          position: relative;
+          left: -1px;
+          width: 2.4rem;
+          height: 2.4rem;
+          border-top-left-radius: 0.4rem;
+          border-bottom-left-radius: 0.4rem;
+          margin-right: 0rem;
+          margin-top: 0rem;
+        }
+      }
+    }
+
+    .text-tooltip {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 0.8rem;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 0.4rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.8rem;
+      // background-color: #E5E5E6;
+      background-color: var(--scrollBarThumb);
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(229, 229, 230, 0.5);
+      // background-color: var(--greyE5e);
+      border-radius: 0.8rem;
+    }
+  }
+
+  &.hover-chip {
+    .tooltip-inner {
+      // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+      // border: 0;
+      border-radius: 4px;
+    }
+  }
+
+  &.question-hover {
+    .tooltip-inner {
+      padding: 1.2rem 1.6rem;
+      // border: 0;
+      // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+    }
+  }
+  &.fix-width {
+    .tooltip-inner {
+      width: 39rem;
+    }
+  }
+
+  &.pod-width {
+    .tooltip-inner {
+      width: 29rem;
+      text-align: start;
+    }
+  }
+
+  &.text-start {
+    text-align: start;
+  }
+
+  &.wallet-tooltip {
+    .tooltip-inner {
+      padding: 0.8rem 1.2rem;
+      // box-shadow: none;
+      // box-shadow: 0rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.15);
+      border-radius: 0.8rem;
+      // border: 0.1rem solid var(--greyE5e);
+    }
+  }
+  &.coin-hover-tooltip {
+    .tooltip-inner {
+      max-width: max-content;
+    }
+  }
+
+  &.bs-tooltip-top {
+    padding-bottom: 0.8rem;
+  }
+
+  .arrow::before {
+    border-top-color: var(--greyE5e) !important;
+    position: relative !important;
+    top: -2px !important;
+  }
+
+  .button-tooltip {
+    background-color: var(--primaryBlockColor);
+    color: var(--grey313);
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    // padding: 1.2rem 1.6rem;
+    // gap: 1.2rem;
+    // height: 5.6rem;
+    span {
+      display: flex;
+      align-items: center;
+      color: var(--grey313);
+      text-align: left;
+      margin-left: 1.2rem;
+    }
+  }
+}

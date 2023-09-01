@@ -1975,6 +1975,7 @@ function Sidebar(props) {
       {signinModal ? (
         <AuthModal
           hideOnblur
+          showHiddenError
           modalAnimation={signInModalAnimation}
           show={signinModal}
           onHide={onCloseModal}
@@ -1994,6 +1995,7 @@ function Sidebar(props) {
       {signupModal ? (
         <ExitOverlay
           hideOnblur
+          showHiddenError
           modalAnimation={false}
           show={signupModal}
           onHide={onCloseModal}

@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Image, Tooltip } from "react-bootstrap";
 import { lightenDarkenColor } from "../ReusableFunctions";
+import "./commonComponentScss/_customOverlay.scss";
 
 function CustomOverlay({
   text,
@@ -18,7 +19,7 @@ function CustomOverlay({
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
     <Tooltip
-      className={`tool-tip-container ${
+      className={`toolTipContainer ${
         isInfo ? "question-hover" : "hover-chip"
       } ${className ? className : ""}`}
       id="button-tooltip"
@@ -29,7 +30,7 @@ function CustomOverlay({
           {isIcon ? <Image src={IconImage} /> : null}
           {isName ? (
             <span
-              className={`inter-display-medium f-s-13 lh-16 m-r-8`}
+              className={`interDisplayMediumText f-s-13 lh-16 m-r-8`}
               style={{ color: colorCode ? colorCode : "#19191A" }}
             >
               {isName}
@@ -38,7 +39,7 @@ function CustomOverlay({
             ""
           )}
           <span
-            className={`inter-display-medium f-s-13 lh-16 ${
+            className={`interDisplayMediumText f-s-13 lh-16 ${
               isCaptialised ? "text-capitalize" : ""
             }`}
           >
@@ -59,7 +60,7 @@ function CustomOverlay({
                     )} `,
                   }}
                 />
-                <span className="inter-display-medium f-s-13 grey-313 lh-16">
+                <span className="interDisplayMediumText f-s-13 grey-313 lh-16">
                   {e.coinName}
                 </span>
               </li>
