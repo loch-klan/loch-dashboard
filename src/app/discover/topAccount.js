@@ -186,8 +186,8 @@ class TopAccountPage extends BaseReactComponent {
     this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -1394,6 +1394,8 @@ const mapDispatchToProps = {
   getWatchListByUser,
   removeFromWatchList,
   updateAddToWatchList,
+  getUser,
+  GetAllPlan,
 };
 
 TopAccountPage.propTypes = {};

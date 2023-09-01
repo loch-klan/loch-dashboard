@@ -611,8 +611,8 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllWalletListApi(tempData, this);
       }, 1000);
 
-      GetAllPlan();
-      getUser(this);
+      this.props.GetAllPlan();
+      this.props.getUser(this);
 
       // if (prevProps.userWalletList !== this.state.userWalletList) {
       //   this.state.userWalletList?.length > 0 &&
@@ -2612,6 +2612,8 @@ const mapDispatchToProps = {
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
+  GetAllPlan,
+  getUser,
 };
 Portfolio.propTypes = {};
 

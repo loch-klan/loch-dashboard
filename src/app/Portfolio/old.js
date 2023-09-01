@@ -406,8 +406,8 @@ class Portfolio extends BaseReactComponent {
 
         // run when updatedInsightList === ""
         this.props.getAllInsightsApi(this);
-        GetAllPlan();
-        getUser(this);
+        this.props.GetAllPlan();
+        this.props.getUser(this);
       }
     } else if (prevState.sort !== this.state.sort) {
       // sort table
@@ -456,10 +456,10 @@ class Portfolio extends BaseReactComponent {
       this.props.getAllInsightsApi(this);
 
       // get all upgrade plans
-      GetAllPlan();
+      this.props.GetAllPlan();
 
       // get users current plan
-      getUser(this);
+      this.props.getUser(this);
     }
   };
 
@@ -1634,6 +1634,8 @@ const mapDispatchToProps = {
   getYesterdaysBalanceApi,
   getExternalEventsApi,
   getAllInsightsApi,
+  GetAllPlan,
+  getUser,
 };
 Portfolio.propTypes = {};
 
