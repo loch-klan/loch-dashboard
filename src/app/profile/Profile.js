@@ -136,8 +136,8 @@ class Profile extends Component {
     }, 900000);
   };
   componentDidMount() {
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     ManageLink(this);
 
     this.startPageView();
@@ -536,6 +536,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func

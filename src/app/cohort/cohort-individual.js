@@ -315,8 +315,8 @@ class CohortPage extends BaseReactComponent {
     this.getNotificationApi();
     this.props.getAllCoins();
     this.getAssetFilter();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -2218,6 +2218,8 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   updateWalletListFlag,
   TopsetPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortPage);

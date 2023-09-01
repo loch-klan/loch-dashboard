@@ -184,8 +184,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     this.props.getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
     let obj = UpgradeTriggered();
@@ -1578,6 +1578,8 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 TopTransactionHistoryPage.propTypes = {};

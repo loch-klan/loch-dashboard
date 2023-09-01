@@ -164,8 +164,8 @@ class TwitterInflucencePage extends BaseReactComponent {
     this.props.getAllCoins();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
   }
 
   assetList = () => {
@@ -914,6 +914,8 @@ const mapDispatchToProps = {
   getFilters,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  getUser,
+  GetAllPlan,
 };
 
 TwitterInflucencePage.propTypes = {};
