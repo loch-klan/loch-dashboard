@@ -1,0 +1,23 @@
+.interDisplayMediumText {
+  font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.spaceGroteskMedium {
+  font-family: "SpaceGrotesk-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.secondaryText {
+  color: var(--secondaryTextColor);
+}
+.secondaryDarkText {
+  color: var(--secondaryDarkTextColor);
+}
+.invertFilter {
+  filter: var(--invertColor);
+}

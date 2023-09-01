@@ -1,0 +1,38 @@
+:root {
+  $boxShadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+    0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+  --primaryTextColor: #0d0d0d;
+  --primaryBlockColor: white;
+  --primaryBackgroud: #f2f2f2;
+  --scrollBarThumb: #cacbcc;
+  --invertColor: invert(0%);
+
+  // Secondary
+  --secondaryTextColor: #adadad;
+  --secondaryDarkTextColor: #4f4f4f;
+
+  //TEMP
+  --greyF2f: #f2f2f2;
+  --grey636: #636467;
+  --greyE5e: #e5e5e6;
+  --greyCac: #cacbcc;
+  --grey313: #313233;
+}
+[data-theme="dark"] {
+  --primaryTextColor: white;
+  --primaryBlockColor: #0d0d0d;
+  --primaryBackgroud: #252525;
+  --scrollBarThumb: #cacbcc;
+  --invertColor: invert(100%);
+
+  // Secondary
+  --secondaryTextColor: white;
+  --secondaryDarkTextColor: white;
+
+  //TEMP
+  --greyF2f: #f2f2f2;
+  --grey636: #636467;
+  --greyE5e: #e5e5e6;
+  --greyCac: #cacbcc;
+  --grey313: #313233;
+}
