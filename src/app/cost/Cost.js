@@ -1132,7 +1132,8 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
-  portfolioState: state.PortfolioState,defiState: state.DefiState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   getAllCoins,

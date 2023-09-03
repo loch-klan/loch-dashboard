@@ -256,7 +256,7 @@ class LineChartSlider extends BaseReactComponent {
                   moment(assetData.timestamp).format("MMMM YYYY") ===
                     currentDate
                 ? data.count
-                : data.max_count;
+                : data.count;
 
             //     if (
             //       (this.state.title === "Year" &&

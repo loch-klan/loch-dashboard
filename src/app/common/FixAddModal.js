@@ -637,7 +637,12 @@ class FixAddModal extends BaseReactComponent {
             w.id = `wallet${i + 1}`;
           });
           if (addWallet) {
-            this.props.setHeaderReducer(addWallet);
+            let holder = [];
+            const pulledTempWalletData = this.props.HeaderState.wallet;
+            if (pulledTempWalletData) {
+              holder = pulledTempWalletData.filter((res) => res.isExchange);
+            }
+            this.props.setHeaderReducer([...holder, ...addWallet]);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
@@ -919,7 +924,12 @@ class FixAddModal extends BaseReactComponent {
         });
       }
       if (walletList) {
-        this.props.setHeaderReducer(walletList);
+        let holder = [];
+        const pulledTempWalletData = this.props.HeaderState.wallet;
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
+        this.props.setHeaderReducer([...holder, ...walletList]);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
@@ -1559,6 +1569,7 @@ class FixAddModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
