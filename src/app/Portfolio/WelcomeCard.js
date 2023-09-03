@@ -104,8 +104,9 @@ export default function WelcomeCard(props) {
     props?.assetTotal && props?.yesterdayBalance
       ? props?.assetTotal - props?.yesterdayBalance
       : 0;
-  let percent =
-    props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
+  let percent = props?.assetTotal
+    ? ((difference / props?.assetTotal) * 100).toFixed(2)
+    : 0;
   const changeCurrentAccount = () => {
     const temp = JSON.parse(
       localStorage.getItem("previewAddressGoToWhaleWatch")
@@ -116,6 +117,7 @@ export default function WelcomeCard(props) {
       props?.history.push("/top-accounts");
     }
   };
+  console.log("props.assetTotal ", props.assetTotal);
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -242,7 +244,9 @@ export default function WelcomeCard(props) {
         <div
           className="row-div"
           style={{
-            width: "calc(60% - 3rem)",
+            // width: "calc(60% - 3rem)",
+            flex: 1,
+            marginRight: "2rem",
             // position: "absolute",
             // left: "calc(50% - 13rem)",
             // transform: "translateX(-50%)",
@@ -316,7 +320,8 @@ export default function WelcomeCard(props) {
           // </div>
           null}
         </div>
-        {props.showNetworth && (
+
+        {!props?.hideButton ? (
           <div
             className="row-div"
             style={{
@@ -324,7 +329,8 @@ export default function WelcomeCard(props) {
               // // left: "50%",
               // // transform: "translateX(-50%)",
               // right: 0,
-              marginRight: !lochUser ? "8.2rem" : "0rem",
+              marginRight: "0rem",
+              opacity: props.showNetworth ? 1 : 0,
             }}
           >
             <div
@@ -336,7 +342,9 @@ export default function WelcomeCard(props) {
               <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
               {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
             </div>
-            {props.assetTotal !== null && !props.isLoading ? (
+            {props.assetTotal !== null &&
+            props.assetTotal !== undefined &&
+            !props.isLoading ? (
               <CustomOverlay
                 position="bottom"
                 isIcon={false}
@@ -360,7 +368,7 @@ export default function WelcomeCard(props) {
               </div>
             )}
           </div>
-        )}
+        ) : null}
       </div>
       {connectModal ? (
         <ConnectModal

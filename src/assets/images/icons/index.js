@@ -1,3 +1,5 @@
+export { default as XCircleIcon } from "./xCircle.svg";
+export { default as EyeIconBold } from "./eyeIconBold.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as LoaderIcon } from "./loader.svg";
 export { default as BellOffIcon } from "./bellOff.svg";
