@@ -217,7 +217,22 @@ class Profile extends Component {
 
     this.props.setPageFlagDefault();
   };
+  getTotalAssetValue = () => {
+    if (this.props.portfolioState) {
+      const tempWallet = this.props.portfolioState.walletTotal
+        ? this.props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = this.props.defiState.totalYield
+        ? this.props.defiState.totalYield
+        : 0;
+      const tempDebt = this.props.defiState.totalDebt
+        ? this.props.defiState.totalDebt
+        : 0;
 
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   render() {
     return (
       <>
@@ -230,6 +245,8 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={this.getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -544,6 +561,8 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => ({
   profileState: state.ProfileState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts

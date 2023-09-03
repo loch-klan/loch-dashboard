@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import WalletIcon from "../../assets/images/icons/wallet_icon.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
 import {
@@ -251,31 +252,40 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-        <div
-          onClick={this.passConnectExchangeClick}
-          className="topbar-btn ml-2 maxWidth50"
-        >
-          {this.state.exchangeList.length > 0 ? (
-            <>
-              <span className="mr-2">
-                {this.state.exchangeList.slice(0, 3).map((res) => (
-                  <Image className="topBarExchangeIcons" src={res.symbol} />
-                ))}
-              </span>
-              <span className="dotDotText">
-                <span className="captilasideText">
-                  {this.state.firstExchange?.toLowerCase()}{" "}
+        <div className="topBarFlexContainer maxWidth50">
+          <div
+            // onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            <Image className="topBarWalletAdd " src={WalletIcon} />
+            <span className="dotDotText">Connect wallet</span>
+          </div>
+          <div
+            onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 "
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
                 </span>
-                {this.state.exchangeList.length > 1 ? "and others " : ""}
-                {"connected"}
-              </span>
-            </>
-          ) : (
-            <>
-              <Image className="topBarWalletAdd " src={LinkIconBtn} />
-              <span className="dotDotText">Connect exchange</span>
-            </>
-          )}
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );

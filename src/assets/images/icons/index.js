@@ -1,3 +1,5 @@
+export { default as XCircleIcon } from "./xCircle.svg";
+export { default as EyeIconBold } from "./eyeIconBold.svg";
 export { default as CoinbaseIcon } from "./coinbase.svg";
 export { default as BinanceIcon } from "./Binance.svg";
 export { default as BitstampIcon } from "./Bitstamp.jpg";

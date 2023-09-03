@@ -1417,6 +1417,22 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.topAccountState) {
+        const tempWallet = this.props.topAccountState.walletTotal
+          ? this.props.topAccountState.walletTotal
+          : 0;
+        const tempCredit = this.props.topAccountState.totalYield
+          ? this.props.topAccountState.totalYield
+          : 0;
+        const tempDebt = this.props.topAccountState.totalDebt
+          ? this.props.topAccountState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -1428,6 +1444,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.topAccountState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1592,7 +1610,8 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
-  GetAllPlan,getUser,
+  GetAllPlan,
+  getUser,
 };
 
 TopTransactionHistoryPage.propTypes = {};
