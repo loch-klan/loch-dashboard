@@ -32,15 +32,11 @@ import ChangeIcon from "../../assets/images/icons/change-icon.svg";
 import { TopWalletExchangeBar } from "../header";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
-  const [switchTempStyle, setSwitchTempStyle] = useState(true);
   const [manageWallet, setManageWallet] = React.useState(true);
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
   const [signUpModal, setSignUpModal] = React.useState(false);
-  const toggleSwitchTempStyle = () => {
-    setSwitchTempStyle(!switchTempStyle);
-  };
   // const [addWallet, setAddWallet] = React.useState(true)
   // console.log(props)
   function handleAddWalletClick() {
@@ -242,36 +238,8 @@ export default function WelcomeCard(props) {
     //   )}
     // </div>
     <div className="welcome-card-section-topbar">
-      <Button
-        className="secondary-btn white-bg"
-        onClick={toggleSwitchTempStyle}
-        style={{
-          transform: "scale(0.5)",
-          position: "absolute",
-          left: 0,
-          top: "2rem",
-          zIndex: 102,
-        }}
-      >
-        Switch Style
-      </Button>
       <div className="welcome-card-topbar">
-        <div
-          className="row-div"
-          style={
-            switchTempStyle
-              ? {
-                  width: "calc(70% - 3rem)",
-                  // position: "absolute",
-                  // left: "calc(50% - 13rem)",
-                  // transform: "translateX(-50%)",
-                }
-              : {
-                  flex: 1,
-                  marginRight: "2rem",
-                }
-          }
-        >
+        <div className="row-div" style={{ width: "calc(70% - 3rem)" }}>
           {props?.isPreviewing ? (
             <div
               className="Preview-topbar-btn"
