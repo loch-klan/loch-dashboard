@@ -441,22 +441,6 @@ class Defi extends Component {
     this.updateTimer();
   };
   render() {
-    const chips = [
-      {
-        chain: {
-          symbol: Coin2,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-      {
-        chain: {
-          symbol: Coin3,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-    ];
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
