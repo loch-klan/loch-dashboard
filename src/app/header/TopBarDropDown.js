@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { RoundedArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import { EyeIconBold } from "../../assets/images/icons";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -80,25 +79,23 @@ export default function TopBarDropDown(props) {
           <div
             onClick={props.handleAddWalletClick}
             ref={props.buttonRef}
-            className="topbar-btn topbar-btn-blank w-100"
+            className="topbar-btn w-100"
             id="address-button"
           >
-            <div
-              className={`topBarWalletChainContainer ${
+            <Image
+              className={`topBarWalletChain ${
                 props.totalWallets && props.totalWallets === 1
-                  ? "topBarWalletChainContainerSingle"
+                  ? "topBarWalletChainSingle"
                   : ""
               }`}
-            >
-              <Image className="topBarWalletChain" src={EyeIconBold} />
+              src={EyeIconBold}
+            />
+            <div className="hideText">
               {props.totalWallets && props.totalWallets > 1 ? (
                 <span className="topBarWalletTotalWallets">
                   {props.totalWallets}
                 </span>
               ) : null}
-            </div>
-
-            <div className="hideText">
               <span>{props.firstWallet}</span>
             </div>
             {props.totalWallets && props.totalWallets > 1 ? (

@@ -9,6 +9,8 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@web3-onboard/core": "^2.21.0",
+    "@web3-onboard/injected-wallets": "^2.10.5",
     "amplitude-js": "^8.21.2",
     "axios": "^0.21.1",
     "base64url": "^3.0.1",
