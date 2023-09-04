@@ -41,7 +41,7 @@ class ProfileBundlesBlock extends Component {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div className="inter-display-medium f-s-12 lh-12 ">
+                  <div className="interDisplayMediumText f-s-12 lh-12 ">
                     {TruncateText(resWallet.wallet_address)}
                   </div>
                   <Image style={{ height: "2rem" }} src={TempIconIcon} />
@@ -51,7 +51,7 @@ class ProfileBundlesBlock extends Component {
           : null}
         {this.state.bundleData?.walletaddress &&
         this.state.bundleData.walletaddress.length > 3 ? (
-          <div className="inter-display-medium f-s-14 lh-14 grey-B0B bundleWalletRowEnd">
+          <div className="interDisplayMediumText f-s-14 lh-14 grey-B0B bundleWalletRowEnd">
             and {this.state.bundleData.walletaddress.length - 3} more
           </div>
         ) : null}

@@ -19,8 +19,6 @@ import {
 import { getAllWalletListApi } from "../wallet/Api";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
-import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";

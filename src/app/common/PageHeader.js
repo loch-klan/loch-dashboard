@@ -134,7 +134,7 @@ export default function PageHeader(props) {
                 <img
                   src={props.titleImageUrl}
                   alt="TitleLogo"
-                  className={`page-header-title-img ${
+                  className={`pageHeaderTitleImg ${
                     props.titleImageClass ? props.titleImageClass : ""
                   } `}
                 />
@@ -142,13 +142,13 @@ export default function PageHeader(props) {
               <h4
                 className={` ${
                   props.titleClass ? props.titleClass : ""
-                }  inter-display-medium f-s-24 lh-30`}
+                }  interDisplayMediumText f-s-24 lh-30`}
               >
                 {props.title}
               </h4>
             </div>
             {props.subTitle ? (
-              <p className="interDisplayMediumText f-s-16 lh-19">
+              <div className="interDisplayMediumText interDisplayMediumSubText f-s-16 lh-19">
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
@@ -177,7 +177,7 @@ export default function PageHeader(props) {
                 ) : (
                   ""
                 )}
-              </p>
+              </div>
             ) : (
               ""
             )}
