@@ -17,8 +17,6 @@ import {
 import { getAllWalletListApi } from "../wallet/Api";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
-import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
@@ -440,22 +438,6 @@ class Defi extends Component {
     this.updateTimer();
   };
   render() {
-    const chips = [
-      {
-        chain: {
-          symbol: Coin2,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-      {
-        chain: {
-          symbol: Coin3,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-    ];
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
