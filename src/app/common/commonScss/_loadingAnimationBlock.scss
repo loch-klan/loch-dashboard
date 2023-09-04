@@ -1,0 +1,48 @@
+.loadingAnimationBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .noData {
+    width: 15rem;
+    filter: var(--invertColor);
+  }
+  .slickText {
+    display: flex;
+    max-height: 2rem;
+    overflow: hidden;
+    line-height: 120%;
+    // font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    font-family: "Inter-Medium";
+
+    color: #55575a;
+    background: blur(3px);
+    align-items: center;
+    white-space: nowrap;
+
+    span {
+      white-space: nowrap;
+    }
+
+    .slickSlider {
+      padding-left: 2px;
+
+      .h3 {
+        width: fit-content;
+      }
+
+      .slick-list {
+        height: 2.1rem;
+        width: 13.7rem;
+        font-size: 1rem;
+
+        h3 {
+          line-height: 21px;
+          font-size: 1.6rem;
+        }
+      }
+    }
+  }
+}
