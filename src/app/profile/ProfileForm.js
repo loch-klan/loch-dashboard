@@ -185,7 +185,7 @@ class ProfileForm extends BaseReactComponent {
   };
   render() {
     return (
-      <div className="profile-form">
+      <div className="profileFormBlock">
         {/* <div className="form-title">
           <Image src={profileInfoIcon} className="m-r-12" />
           <p className="inter-display-semi-bold f-s-16 lh-19">

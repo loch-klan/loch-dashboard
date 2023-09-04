@@ -399,10 +399,10 @@ class ProfileBundles extends Component {
                       : ""
                   }`}
                 >
-                  <div className="inter-display-medium f-s-16 lh-14 bundleWalletName">
+                  <div className="interDisplayMediumText f-s-16 lh-14 bundleWalletName">
                     <div>
                       <div>{bundleData.bundleName}</div>
-                      <h4 className="inter-display-medium f-s-14 lh-14 mt-3 grey-7C7">
+                      <h4 className="interDisplayMediumText f-s-14 lh-14 mt-3 grey-7C7">
                         {numToCurrency(37491)}
                         <span className="f-s-10 grey-ADA">
                           {CurrencyType(true)}

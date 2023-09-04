@@ -11,7 +11,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 // Upgrade
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -32,6 +32,11 @@ import {
   ProfileProfileIcon,
 } from "../../assets/images/icons";
 import ProfileBundles from "./ProfileBundles";
+import {
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions";
+import "./_profilePage.scss";
 
 class Profile extends Component {
   constructor(props) {
@@ -220,7 +225,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <>
+      <div className="profileFullPage">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -239,8 +244,8 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-        <div className="profile-page-section m-t-80">
-          <div className="profile-section page">
+        <div className="profilePageSection m-t-80">
+          <div className="profileSection page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -256,6 +261,29 @@ class Profile extends Component {
                 from="profile"
               />
             )}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToDarkMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Dark Mode
+              </Button>
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToLightMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Light Mode
+              </Button>
+            </div>
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
@@ -383,9 +411,9 @@ class Profile extends Component {
               </div>
             </div>
            
-          </div> */}
+            </div> */}
             <div
-              className="profile-form-section"
+              className="profileFormSection"
               style={{ marginBottom: "1rem" }}
             >
               <Row>
@@ -537,7 +565,7 @@ class Profile extends Component {
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
         />
-      </>
+      </div>
     );
   }
 }
