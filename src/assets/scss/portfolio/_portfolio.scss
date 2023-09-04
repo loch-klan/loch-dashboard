@@ -63,7 +63,7 @@
       height: 9rem;
       box-sizing: border-box;
       // padding: 2.05rem 0rem;
-      z-index: 99;
+      z-index: 10;
       box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.04),
         6px 1px 1px rgba(0, 0, 0, 0.04);
 
@@ -160,13 +160,8 @@
             padding-right: 1.4rem;
             border: 1px $grey-50 solid;
             box-shadow: 0 0 10px 4px $grey-50;
-            .topBarFlexContainer {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              .maxWidth50 {
-                max-width: 50%;
-              }
+            .maxWidth50 {
+              max-width: 50%;
             }
           }
         }
@@ -191,23 +186,17 @@
               text-transform: capitalize;
             }
           }
-          .topBarWalletChainContainer {
+
+          .topBarWalletChain {
+            height: 1.2rem;
             margin-right: 0.4rem;
-            background: rgba(229, 229, 230, 0.5);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            transition: background-color 300ms ease;
-            .topBarWalletChain {
-              height: 1.2rem;
-            }
-            .topBarWalletTotalWallets {
-              margin-left: 0.4rem;
-            }
           }
-          .topBarWalletChainContainerSingle {
+          .topBarWalletChainSingle {
             margin-right: 0.8rem;
           }
-
+          .topBarWalletTotalWallets {
+            margin-right: 0.6rem;
+          }
           .topBarWalletArrow {
             width: 1.2rem;
           }
@@ -245,15 +234,6 @@
             transition-duration: 300ms;
             &:hover {
               opacity: 1;
-            }
-          }
-        }
-        .topbar-btn-blank {
-          background-color: transparent;
-          &:hover {
-            .topBarWalletChainContainer {
-              background-color: $black-191;
-              // color: $secondary;
             }
           }
         }

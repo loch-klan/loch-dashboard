@@ -11,6 +11,8 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import Onboard from "@web3-onboard/core";
+import injectedModule from "@web3-onboard/injected-wallets";
 
 class TopBar extends Component {
   constructor(props) {
@@ -174,6 +176,35 @@ class TopBar extends Component {
     this.props.handleConnectModal();
   };
 
+  connectWalletBlockNative = async () => {
+    const MAINNET_RPC_URL =
+      "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
+    const injected = injectedModule({
+      displayUnavailable: true,
+    });
+    const onboard = Onboard({
+      wallets: [injected],
+      chains: [
+        {
+          id: "0x1",
+          token: "ETH",
+          label: "Ethereum Mainnet",
+          rpcUrl: MAINNET_RPC_URL,
+        },
+        {
+          id: "0x2105",
+          token: "ETH",
+          label: "Base",
+          rpcUrl: "https://mainnet.base.org",
+        },
+      ],
+    });
+    if (onboard && onboard.connectWallet) {
+      const wallets = onboard.connectWallet();
+      // console.log("wallets ", wallets);
+    }
+  };
+
   render() {
     return (
       <div className="topBarContainer">
@@ -201,9 +232,18 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-        <div className="topBarFlexContainer maxWidth50">
+
+        <div
+          style={{
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
+        >
           <div
-            // onClick={this.passConnectExchangeClick}
+            onClick={this.connectWalletBlockNative}
             className="topbar-btn ml-2 maxWidth50"
           >
             <Image className="topBarWalletAdd " src={WalletIcon} />
@@ -211,7 +251,7 @@ class TopBar extends Component {
           </div>
           <div
             onClick={this.passConnectExchangeClick}
-            className="topbar-btn ml-2 "
+            className="topbar-btn ml-2 maxWidth50"
           >
             {this.state.exchangeList.length > 0 ? (
               <>
