@@ -11,12 +11,9 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-<<<<<<< HEAD
 import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
-=======
 import { setHeaderReducer } from "./HeaderAction";
->>>>>>> 23223bc9edbf80701d27d900179b93214198f386
 
 class TopBar extends Component {
   constructor(props) {
