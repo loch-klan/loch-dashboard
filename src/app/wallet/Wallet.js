@@ -31,6 +31,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import "./_walletBlock.scss";
 
 class Wallet extends Component {
   constructor(props) {
@@ -250,7 +251,7 @@ class Wallet extends Component {
     const { walletList, totalWalletAmt } = this.props.walletState;
     const { currency, isLoading } = this.state;
     return (
-      <div className="wallet-page-section">
+      <div className="walletBlock">
         {/* <Sidebar ownerName="" /> */}
         {this.state.addModal && (
           <FixAddModal
@@ -294,19 +295,19 @@ class Wallet extends Component {
             chainList={this.props.OnboardingState.coinsList}
             handleFunction={this.handleFunction}
           />
-          <div className="m-b-16 sortby-section">
-            <div className="dropdown-section">
-              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+          <div className="m-b-16 sortbySection">
+            <div className="dropdownSection">
+              <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 naming">
                 Sort by
               </span>
               {this.state.sortBy.map((e, index) => {
                 return (
                   <span
-                    className="sort-by-title"
+                    className="sortByTitle"
                     key={index}
                     onClick={() => this.handleSort(e)}
                   >
-                    <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                    <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 grey-7C7 ">
                       {e.title}
                     </span>{" "}
                     {/* <Image src={sort} style={{ width: "1rem" }} /> */}
@@ -321,20 +322,20 @@ class Wallet extends Component {
             </div>
           </div>
           {walletList.length > 0 && (
-            <div className="net-worth-wrapper">
+            <div className="netWorthWrapper">
               <div className="left">
-                <Image src={netWorthIcon} className="net-worth-icon" />
-                <h3 className="inter-display-medium f-s-20 lh-24 ">
+                <Image src={netWorthIcon} className="netWorthIcon" />
+                <h3 className="interDisplayMediumText f-s-20 lh-24 ">
                   Total net worth
                 </h3>
               </div>
               <div className="right">
-                <h3 className="space-grotesk-medium f-s-24 lh-29">
+                <h3 className="spaceGroteskMedium f-s-24 lh-29">
                   {CurrencyType(false)}
                   {numToCurrency(totalWalletAmt)}{" "}
-                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
+                  <div className="interDisplaySemiBoldText interDisplaySubText f-s-10 lh-12 ml-2">
                     {CurrencyType(true)}
-                  </span>
+                  </div>
                 </h3>
               </div>
             </div>
@@ -342,8 +343,8 @@ class Wallet extends Component {
 
           <div className="cards">
             {isLoading === true ? (
-              <div className="loading-container">
-                <div className="animation-wrapper">
+              <div className="loadingContainer">
+                <div className="animationWrapper">
                   <Loading />
                 </div>
               </div>
@@ -371,11 +372,12 @@ class Wallet extends Component {
                 );
               })
             ) : (
-              <div style={{ textAlign: "center" }}>
-                {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
-                  No data found
-                </h3>
+              <div className="loadingContainer">
+                <div className="noDataContainer">
+                  <h3 className="interDisplayMediumText f-s-16 lh-19">
+                    No data found
+                  </h3>
+                </div>
               </div>
             )}
           </div>

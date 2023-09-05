@@ -249,12 +249,7 @@
             }
           }
           .sortByTitle:hover {
-            span {
-              // color: $primary;
-            }
-            img {
-              filter: brightness(0.5) var(--invertColor);
-            }
+            filter: brightness(0.5) var(--invertColor);
           }
         }
       }

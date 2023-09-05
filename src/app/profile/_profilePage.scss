@@ -86,6 +86,18 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            .submitButton {
+              padding: 1.55rem 2.8rem;
+              border: none;
+              border-radius: 0.8rem;
+              background-color: var(--greyCardBackgroud);
+              color: var(--primaryTextColor);
+              box-shadow: none;
+            }
+            .submitButton:hover {
+              background-color: var(--primaryTextColor);
+              color: var(--cardBackgroud);
+            }
           }
           .form-group {
             label {
@@ -98,6 +110,24 @@
             .form-control {
               padding: 1.2rem 1.6rem;
               min-height: 4.3rem;
+              border: 0.1rem solid var(--cardBorder);
+              background-color: var(--cardBackgroud);
+              color: var(--primaryTextColor);
+              &:hover {
+                border-color: var(--primaryTextColor);
+              }
+              &:focus {
+                border-color: var(--primaryTextColor);
+              }
+              &::-webkit-input-placeholder {
+                color: var(--primarySubTextColor);
+              }
+              &:-ms-input-placeholder {
+                color: var(--primarySubTextColor);
+              }
+              &::placeholder {
+                color: var(--primarySubTextColor);
+              }
               //   border: 0.1rem solid $grey-D4D;
             }
             .form-control:hover {
@@ -110,17 +140,6 @@
               //   box-shadow: 0 0 0.4rem $grey-D3D;
               //   border: 0.1rem solid $black-191;
             }
-          }
-
-          .submit-button {
-            padding: 1.55rem 2.8rem;
-            border: none;
-            border-radius: 0.8rem;
-            background-color: var(--greyE5e);
-            box-shadow: none;
-          }
-          .submit-button:hover {
-            background-color: var(--backColor);
           }
         }
       }

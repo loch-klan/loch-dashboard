@@ -148,7 +148,7 @@ export default function PageHeader(props) {
               </h4>
             </div>
             {props.subTitle ? (
-              <div className="interDisplayMediumText interDisplayMediumSubText f-s-16 lh-19">
+              <div className="interDisplayMediumText interDisplaySubText f-s-16 lh-19">
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay

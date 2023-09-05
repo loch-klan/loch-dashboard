@@ -5,7 +5,14 @@
   color: var(--primaryTextColor);
   line-height: normal;
 }
-.interDisplayMediumSubText {
+.interDisplaySemiBoldText {
+  font-family: "Inter-SemiBold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplaySubText {
   color: var(--primarySubTextColor);
 }
 .spaceGroteskMedium {

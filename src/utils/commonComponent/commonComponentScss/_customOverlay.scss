@@ -1,8 +1,8 @@
 .toolTipContainer {
   .tooltip-inner {
-    background-color: var(--primaryBlockColor);
+    background-color: var(--cardBackgroud);
     max-width: max-content;
-    border: 0.1rem solid var(--greyE5e);
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -133,13 +133,13 @@
   }
 
   .arrow::before {
-    border-top-color: var(--greyE5e) !important;
+    border-top-color: var(--cardBorder) !important;
     position: relative !important;
     top: -2px !important;
   }
 
   .button-tooltip {
-    background-color: var(--primaryBlockColor);
+    background-color: var(--cardBackgroud);
     color: var(--grey313);
     border-radius: 0.8rem;
     display: flex;

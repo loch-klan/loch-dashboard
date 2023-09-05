@@ -1,3 +1,5 @@
+export { default as ProfileWalletIcon } from "./profileWallet.svg";
+export { default as ProfileProfileIcon } from "./profileProfile.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
 export { default as EyeIconBold } from "./eyeIconBold.svg";
 export { default as CoinbaseIcon } from "./coinbase.svg";
@@ -33,8 +35,6 @@ export { default as GreyManIcon } from "./greyMan.svg";
 export { default as CheckIcon } from "./check.svg";
 export { default as DisclaimerIcon } from "./disclaimer.svg";
 export { default as CompassWhiteIcon } from "./compassWhite.svg";
-export { default as ProfileWalletIcon } from "./profileWallet.svg";
-export { default as ProfileProfileIcon } from "./profileProfile.svg";
 export { default as ProfileGlobeIcon } from "./profileGlobe.svg";
 export { default as PencilIcon } from "./pencil.svg";
 export { default as TempIconIcon } from "./tempIcon.svg";
