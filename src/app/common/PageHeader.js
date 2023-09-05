@@ -125,15 +125,30 @@ export default function PageHeader(props) {
             ""
           )}
           <div>
-            <h4
-              className={`interDisplayMediumText f-s-24 lh-30 ${
+            <div
+              className={`d-flex justify-content-start align-items-center ${
                 props.showImg || props.multipleImg ? "" : "m-b-8"
               }`}
             >
-              {props.title}
-            </h4>
+              {props.titleImageUrl ? (
+                <img
+                  src={props.titleImageUrl}
+                  alt="TitleLogo"
+                  className={`pageHeaderTitleImg ${
+                    props.titleImageClass ? props.titleImageClass : ""
+                  } `}
+                />
+              ) : null}
+              <h4
+                className={` ${
+                  props.titleClass ? props.titleClass : ""
+                }  interDisplayMediumText f-s-24 lh-30`}
+              >
+                {props.title}
+              </h4>
+            </div>
             {props.subTitle ? (
-              <p className="interDisplayMediumText f-s-16 lh-19">
+              <div className="interDisplayMediumText interDisplaySubText f-s-16 lh-19">
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
@@ -162,7 +177,7 @@ export default function PageHeader(props) {
                 ) : (
                   ""
                 )}
-              </p>
+              </div>
             ) : (
               ""
             )}

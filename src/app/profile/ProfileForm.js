@@ -185,10 +185,10 @@ class ProfileForm extends BaseReactComponent {
   };
   render() {
     return (
-      <div className="profile-form">
+      <div className="profileFormBlock">
         {/* <div className="form-title">
           <Image src={profileInfoIcon} className="m-r-12" />
-          <p className="inter-display-semi-bold f-s-16 lh-19">
+          <p className="interDisplaySemiBoldText f-s-16 lh-19">
             Basic Information
           </p>
         </div> */}
@@ -270,7 +270,7 @@ class ProfileForm extends BaseReactComponent {
                 <Col md={4}>
                   <div className="formBtnContainer">
                     <Button
-                      className="inter-display-semi-bold f-s-14 lh-24 black-191  submit-button"
+                      className="interDisplaySemiBoldText f-s-14 lh-24 submitButton"
                       type="submit"
                       onClick={() =>
                         ProfileSaved({
@@ -329,7 +329,7 @@ class ProfileForm extends BaseReactComponent {
             </div> */}
           </Form>
           {/* {this.state.MetaAddress !== "" ? (
-            <p className="inter-display-semi-bold f-s-13 lh-15 m-t-16">
+            <p className="interDisplaySemiBoldText f-s-13 lh-15 m-t-16">
               {this.state.MetaAddress} connected
             </p>
           ) : (

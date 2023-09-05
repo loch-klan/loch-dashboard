@@ -53,6 +53,11 @@
       width: max-content;
       display: flex;
       align-items: center;
+      .pageHeaderTitleImg {
+        margin-right: 1rem;
+        height: 24px;
+        filter: var(--invertColor);
+      }
       .showImg {
         padding: 1.8rem;
         background-color: var(--greyE5e);
@@ -98,11 +103,11 @@
   }
   .primary-btn {
     &:hover:not([disabled]) {
-      border-color: var(--primaryBlockColor);
+      border-color: var(--cardBackgroud);
       box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
         0px 1rem 1rem rgba(0, 0, 0, 0.04);
       color: var(--primaryTextColor);
-      background-color: var(--primaryBlockColor);
+      background-color: var(--cardBackgroud);
     }
   }
 

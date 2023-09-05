@@ -1,3 +1,5 @@
+export { default as ProfileWalletIcon } from "./profileWallet.svg";
+export { default as ProfileProfileIcon } from "./profileProfile.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as LoaderIcon } from "./loader.svg";
 export { default as BellOffIcon } from "./bellOff.svg";

@@ -1,9 +1,15 @@
 :root {
+  // UPDATED
+  --primaryBackgroud: #f2f2f2;
+  --cardBackgroud: white;
+  --cardBorder: #cacbcc;
+  --greyCardBackgroud: #e5e5e680;
+  --cardSeperator: #e5e5e680;
+  --primaryTextColor: #0d0d0d;
+  --primarySubTextColor: #adadad;
+  // UPDATED
   $boxShadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
     0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-  --primaryTextColor: #0d0d0d;
-  --primaryBlockColor: white;
-  --primaryBackgroud: #f2f2f2;
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0%);
 
@@ -12,6 +18,7 @@
   --secondaryDarkTextColor: #4f4f4f;
 
   //TEMP
+  --backColor: #000;
   --greyF2f: #f2f2f2;
   --grey636: #636467;
   --greyE5e: #e5e5e6;
@@ -19,9 +26,15 @@
   --grey313: #313233;
 }
 [data-theme="dark"] {
+  // UPDATED
+  --primaryBackgroud: #101010;
+  --cardBackgroud: #181818;
+  --cardBorder: #313233;
+  --greyCardBackgroud: #313233;
+  --cardSeperator: #313233;
   --primaryTextColor: white;
-  --primaryBlockColor: #0d0d0d;
-  --primaryBackgroud: #252525;
+  --primarySubTextColor: #7c7d81;
+  // UPDATED
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
 
@@ -35,4 +48,5 @@
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
   --grey313: #313233;
+  --backColor: #fff;
 }
