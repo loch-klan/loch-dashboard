@@ -1,3 +1,4 @@
+export { default as LochLogoNameIcon } from "./lochLogoName.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
 export { default as EyeIconBold } from "./eyeIconBold.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
