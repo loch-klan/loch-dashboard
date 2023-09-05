@@ -456,6 +456,14 @@ class AddWallet extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      this.props.detectNameTag(
+        {
+          id: name,
+          address: value,
+        },
+        this,
+        false
+      );
       for (let i = 0; i < parentCoinList.length; i++) {
         this.handleSetNameTagLoadingTrue({
           id: name,
@@ -466,20 +474,6 @@ class AddWallet extends BaseReactComponent {
           coinColor: parentCoinList[i].color,
           subChains: parentCoinList[i].sub_chains,
         });
-        this.props.detectNameTag(
-          {
-            id: name,
-            coinCode: parentCoinList[i].code,
-            coinSymbol: parentCoinList[i].symbol,
-            coinName: parentCoinList[i].name,
-            address: value,
-            coinColor: parentCoinList[i].color,
-            subChains: parentCoinList[i].sub_chains,
-          },
-          this,
-          false,
-          i
-        );
         this.props.detectCoin(
           {
             id: name,
