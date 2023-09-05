@@ -164,10 +164,15 @@ export default function WalletCard(props) {
                 />
               )}
               {!props.protocol && (
-                <div className="accountDetails">
+                <div className="account-details">
+                  {props.tag_name ? (
+                    <span className="inter-display-regular f-s-13 lh-16 m-r-12 text-center">
+                      {props.tag_name}
+                    </span>
+                  ) : null}
                   {props.display_address && (
                     <>
-                      <span className="interDisplayMediumText interDisplaySubText f-s-13 lh-16">
+                      <span className="inter-display-regular f-s-13 lh-16">
                         {props.display_address}
                       </span>
                       {!props.protocol && (

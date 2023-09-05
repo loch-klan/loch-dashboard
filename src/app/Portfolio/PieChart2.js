@@ -1355,6 +1355,7 @@ class PieChart2 extends BaseReactComponent {
                         //   this.state.isYeildToggle ? {  } : {}
                         // }
                         className="balance-sheet-card-credit"
+                        style={{ whiteSpace: "nowrap" }}
                       >
                         <div>
                           <span

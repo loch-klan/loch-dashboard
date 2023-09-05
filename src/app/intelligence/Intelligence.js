@@ -51,6 +51,9 @@ import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { InflowOutflowIcon } from "../../assets/images/icons";
+import InflowOutflowCharSlider from "./InflowOutflowChartSlider";
+import InflowOutflowChart from "./InflowOutflowChart";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -175,8 +178,8 @@ class Intelligence extends Component {
     this.startPageView();
     this.props.getAllCoins();
     this.timeFilter(0, true);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.assetList();
 
     let obj = UpgradeTriggered();
@@ -685,7 +688,22 @@ class Intelligence extends Component {
     });
     this.updateTimer();
   };
+  getTotalAssetValue = () => {
+    if (this.props.portfolioState) {
+      const tempWallet = this.props.portfolioState.walletTotal
+        ? this.props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = this.props.defiState.totalYield
+        ? this.props.defiState.totalYield
+        : 0;
+      const tempDebt = this.props.defiState.totalDebt
+        ? this.props.defiState.totalDebt
+        : 0;
 
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   render() {
     return (
       <>
@@ -698,6 +716,8 @@ class Intelligence extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={this.getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -980,6 +1000,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
+              <InflowOutflowChart />
               {/* footer */}
               <Footer />
             </div>
@@ -1014,6 +1035,7 @@ const mapStateToProps = (state) => ({
   // add wallet
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -1027,6 +1049,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 // const mapDispatchToProps = {
