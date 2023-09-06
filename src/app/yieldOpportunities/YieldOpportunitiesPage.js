@@ -198,8 +198,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     this.props.getFilters();
     this.props.getAllCoins();
 
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -1076,6 +1076,8 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  GetAllPlan,
+  getUser,
 };
 
 YieldOpportunitiesPage.propTypes = {};

@@ -46,11 +46,16 @@ class CustomTable extends BaseReactComponent {
       pageNext,
       isLoading,
       isStickyHead,
+      isMiniversion,
     } = this.props;
     return (
       <div className="table-wrapper">
         {isLoading === true ? (
-          <div className="transaction-table-loading-wrapper">
+          <div
+            className={`transaction-table-loading-wrapper ${
+              isMiniversion ? "transaction-table-loading-wrapper-smaller" : ""
+            }`}
+          >
             <div className="animation-wrapper">
               <Loading />
             </div>
@@ -147,7 +152,11 @@ class CustomTable extends BaseReactComponent {
                 )}
               </AutoSizer>
             ) : (
-              <div className="not-found-wrapper">
+              <div
+                className={`not-found-wrapper ${
+                  isMiniversion ? "not-found-mini-wrapper" : ""
+                }`}
+              >
                 {/* <Image src={notFoundImage} /> */}
                 <p className="inter-display-medium f-s-16 lh-19 grey-313">
                   {" "}
