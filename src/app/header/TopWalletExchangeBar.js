@@ -109,6 +109,7 @@ class TopBar extends Component {
               nickname: data.nickname,
               displayAddress: data.display_address,
               address: data.address,
+              nameTag: data.tag,
             };
             tempWalletListToPush.push(sendThis);
           }
