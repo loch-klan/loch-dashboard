@@ -128,6 +128,7 @@ class TopBar extends Component {
           if (keyA < keyB) return 1;
           return 0;
         });
+
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
@@ -152,12 +153,20 @@ class TopBar extends Component {
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
-          if (data.isExchange) {
-            if (data.exchangeCode) {
-              tempExchangeList.push({
-                name: data.exchangeCode,
-                symbol: data.exchangeSymbol,
-              });
+          let tempAddress = "";
+          if (data?.nickname) {
+            tempAddress = data.nickname;
+          } else if (data?.nameTag) {
+            tempAddress = data.nameTag;
+          } else if (data?.displayAddress) {
+            tempAddress = data.displayAddress;
+            if (!regex.test(tempAddress)) {
+              tempAddress = this.TruncateText(tempAddress);
+            }
+          } else if (data?.address) {
+            tempAddress = data.address;
+            if (!regex.test(tempAddress)) {
+              tempAddress = this.TruncateText(tempAddress);
             }
           } else {
             let tempAddress = "";
@@ -179,9 +188,8 @@ class TopBar extends Component {
                 tempAddress = this.TruncateText(tempAddress);
               }
             }
-
-            tempWalletList.push(tempAddress);
           }
+          tempWalletList.push(tempAddress);
         });
         tempWalletList.sort().reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);

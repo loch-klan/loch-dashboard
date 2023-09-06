@@ -184,6 +184,16 @@ export default function WalletCard(props) {
                       )}
                     </>
                   )}
+                  {props.nameTag && (
+                    <>
+                      <span
+                        className="interDisplayMediumText interDisplaySubText f-s-13 lh-16 mr-4"
+                        id="account_number"
+                      >
+                        {props.nameTag}
+                      </span>
+                    </>
+                  )}
                   {props.wallet_account_number && (
                     <>
                       <span className="interDisplayMediumText interDisplaySubText f-s-13 lh-16">
