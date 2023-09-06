@@ -102,6 +102,9 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
                 let obj = {}; // <----- new Object
                 obj["address"] = apiResponse.user.user_wallets[i].address;
+                if (apiResponse.user.user_wallets[i].tag) {
+                  obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+                }
                 obj["displayAddress"] =
                   apiResponse.user.user_wallets[i]?.display_address;
 
@@ -301,6 +304,9 @@ export const getUserAddresses = (ctx) => {
         for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
           let obj = {}; // <----- new Object
           obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+          if (apiResponse.user.user_wallets[i].tag) {
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+          }
           obj["displayAddress"] =
             apiResponse?.user?.user_wallets[i]?.display_address;
 
@@ -348,6 +354,7 @@ export const getUserAddresses = (ctx) => {
         }
       }
       // console.log('newAddWallet',newAddWallet);
+
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       setTimeout(() => {
         ctx.props.history.push({
@@ -383,6 +390,9 @@ export const sendWhopCode = (ctx, data) => {
           for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
             let obj = {}; // <----- new Object
             obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+            if (apiResponse.user.user_wallets[i].tag) {
+              obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+            }
             obj["displayAddress"] =
               apiResponse?.user?.user_wallets[i]?.display_address;
 
@@ -919,6 +929,9 @@ export const VerifyEmail = (data, ctx) => {
                 let obj = {}; // <----- new Object
                 // obj['address'] = apiResponse.user.wallets[i].address;
                 obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+                if (apiResponse.user.user_wallets[i].tag) {
+                  obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+                }
                 // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
                 obj["displayAddress"] =
                   apiResponse.user.user_wallets[i]?.display_address;
@@ -1016,6 +1029,9 @@ export const VerifyEmail = (data, ctx) => {
                   ) {
                     let obj = {}; // <----- new Object
                     obj["address"] = apiResponse.user?.user_wallets[i].address;
+                    if (apiResponse.user.user_wallets[i].tag) {
+                      obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+                    }
                     obj["displayAddress"] =
                       apiResponse.user?.user_wallets[i]?.display_address;
                     obj["wallet_metadata"] =
@@ -1423,6 +1439,42 @@ export const updateAccessToken = (data, ctx, name) => {
     });
 };
 
+// Nametag API
+export const detectNameTag = (
+  wallet,
+  ctx = null,
+  isCohort = false,
+  index = 0
+) => {
+  return function (dispatch, getState) {
+    let data = new URLSearchParams();
+    data.append("address", wallet.address);
+    postLoginInstance
+      .post("wallet/user-wallet/get-nametag", data)
+      .then((res) => {
+        if (
+          !res.error &&
+          res.data &&
+          res.data.data &&
+          res.data.data.result &&
+          res.data.data.result.length > 0
+        ) {
+          if (res.data.data.result[0] && ctx) {
+            const resNameTag = res.data.data.result[0];
+            ctx.handleSetNameTag({ ...wallet }, resNameTag);
+          } else {
+            ctx.handleSetNameTagLoadingFalse({ ...wallet });
+          }
+        } else {
+          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        }
+      })
+      .catch((err) => {
+        // console.log("Catch", err);
+        ctx.handleSetNameTagLoadingFalse({ ...wallet });
+      });
+  };
+};
 // api page flage
 
 export const updateWalletListFlag = (page, status) => {
@@ -1590,6 +1642,9 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             let obj = {}; // <----- new Object
             // obj['address'] = apiResponse.user.wallets[i].address;
             obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+            if (apiResponse.user.user_wallets[i].tag) {
+              obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+            }
             // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
@@ -1676,6 +1731,9 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               for (let i = 0; i < apiResponse.user?.user_wallets?.length; i++) {
                 let obj = {}; // <----- new Object
                 obj["address"] = apiResponse.user?.user_wallets[i].address;
+                if (apiResponse.user.user_wallets[i].tag) {
+                  obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
+                }
                 obj["displayAddress"] =
                   apiResponse.user?.user_wallets[i]?.display_address;
                 obj["wallet_metadata"] =

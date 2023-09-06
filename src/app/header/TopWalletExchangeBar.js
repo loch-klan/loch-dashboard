@@ -121,6 +121,8 @@ class TopBar extends Component {
           let tempAddress = "";
           if (data?.nickname) {
             tempAddress = data.nickname;
+          } else if (data?.nameTag) {
+            tempAddress = data.nameTag;
           } else if (data?.displayAddress) {
             tempAddress = data.displayAddress;
             if (!regex.test(tempAddress)) {
