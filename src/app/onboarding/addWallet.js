@@ -12,10 +12,10 @@ import {
 import {
   createAnonymousUserApi,
   getAllParentChains,
-  detectNameTag,
   getAllCoins,
   detectCoin,
 } from "./Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -465,15 +465,14 @@ class AddWallet extends BaseReactComponent {
         false
       );
       for (let i = 0; i < parentCoinList.length; i++) {
-        this.handleSetNameTagLoadingTrue({
-          id: name,
-          coinCode: parentCoinList[i].code,
-          coinSymbol: parentCoinList[i].symbol,
-          coinName: parentCoinList[i].name,
-          address: value,
-          coinColor: parentCoinList[i].color,
-          subChains: parentCoinList[i].sub_chains,
-        });
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
         this.props.detectCoin(
           {
             id: name,
@@ -1074,24 +1073,6 @@ class AddWallet extends BaseReactComponent {
                                     return "";
                                   }
                                 })}
-                              {c.showAddress &&
-                              !c.nameTag &&
-                              c.loadingNameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <CustomCoin
-                                    isStatic
-                                    coins={null}
-                                    isLoaded={false}
-                                  />
-                                </div>
-                              ) : null}
-                              {c.showAddress && c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null}
                             </div>
                           )}
                         </>
