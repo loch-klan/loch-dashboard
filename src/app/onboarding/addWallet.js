@@ -12,10 +12,10 @@ import {
 import {
   createAnonymousUserApi,
   getAllParentChains,
-  detectNameTag,
   getAllCoins,
   detectCoin,
 } from "./Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -454,6 +454,14 @@ class AddWallet extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
         this.props.detectCoin(
           {
             id: name,

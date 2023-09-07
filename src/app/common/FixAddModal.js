@@ -74,6 +74,7 @@ class FixAddModal extends BaseReactComponent {
               nickname: "",
               showAddress: true,
               showNickname: true,
+              showNameTag: true,
               apiAddress: "",
             },
           ];
@@ -240,6 +241,7 @@ class FixAddModal extends BaseReactComponent {
               nickname: "",
               showAddress: true,
               showNickname: true,
+              showNameTag: true,
               apiAddress: e[0],
             });
           });
@@ -1058,6 +1060,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
+    console.log("addWalletList ", this.state.addWalletList);
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });

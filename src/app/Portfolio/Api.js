@@ -269,9 +269,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
           for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
             let obj = {}; // <----- new Object
             obj["address"] = apiResponse.user.user_wallets[i].address;
-            if (apiResponse.user.user_wallets[i].tag) {
-              obj["nameTag"] = apiResponse.user.user_wallets[i].tag;
-            }
+
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
             // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
@@ -316,6 +314,12 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
               apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
             obj["showNickname"] =
               apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
           }
           // console.log('addWallet',addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
