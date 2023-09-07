@@ -1,3 +1,4 @@
+export { default as LochLogoNameIcon } from "./lochLogoName.svg";
 export { default as ProfileWalletIcon } from "./profileWallet.svg";
 export { default as ProfileProfileIcon } from "./profileProfile.svg";
 export { default as XCircleIcon } from "./xCircle.svg";

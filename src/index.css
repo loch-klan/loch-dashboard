@@ -11,6 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-section.svelte-baitaa {
-  background-color: red;
+:root {
+  --onboard-font-size-5: 1.5rem;
+  --onboard-font-size-6: 1.1rem;
+  --onboard-font-size-7: 1.2rem;
 }

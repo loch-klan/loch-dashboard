@@ -12,7 +12,8 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import Onboard from "@web3-onboard/core";
-import injectedModule from "@web3-onboard/injected-wallets";
+import injectedModule, { ProviderLabel } from "@web3-onboard/injected-wallets";
+import { LochLogoNameIcon } from "../../assets/images/icons";
 import { setHeaderReducer } from "./HeaderAction";
 
 class TopBar extends Component {
@@ -241,7 +242,11 @@ class TopBar extends Component {
     const MAINNET_RPC_URL =
       "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
     const injected = injectedModule({
-      displayUnavailable: true,
+      displayUnavailable: [
+        ProviderLabel.MetaMask,
+        ProviderLabel.Coinbase,
+        ProviderLabel.Phantom,
+      ],
     });
     const onboard = Onboard({
       wallets: [injected],
@@ -259,6 +264,11 @@ class TopBar extends Component {
           rpcUrl: "https://mainnet.base.org",
         },
       ],
+      appMetadata: {
+        name: "Loch",
+        icon: LochLogoNameIcon,
+        description: "A loch app",
+      },
     });
     if (onboard && onboard.connectWallet) {
       const wallets = onboard.connectWallet();
