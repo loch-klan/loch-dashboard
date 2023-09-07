@@ -22,6 +22,8 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HC_rounded from "highcharts-rounded-corners";
 import ChartjsPluginWatermark from "chartjs-plugin-watermark";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 
 HC_rounded(Highcharts);
 
@@ -238,6 +240,8 @@ class BarGraphSection extends Component {
       width: "100%",
       minWidth: "100%",
     };
+    // console.log("options ", options);
+    // console.log("data ", data);
     return (
       <div
         className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
@@ -375,27 +379,41 @@ class BarGraphSection extends Component {
                 )}
 
                 {showSwitch && (
-                  <div
-                    className={`inter-display-medium f-s-13 lh-16 ${
-                      this.state.isSmallerToggle
-                        ? "smaller-toggle grey-ADA"
-                        : "primary-color"
-                    }`}
-                  >
-                    <Form.Check
-                      type="switch"
-                      id="custom-switch"
-                      label="Click to show breakdown"
-                      checked={this.state.switchselected}
-                      onChange={(e) => {
-                        this.setState({
-                          switchselected: e.target.checked,
-                        });
-                        if (this.props.setSwitch) {
-                          this.props.setSwitch();
-                        }
-                      }}
-                    />
+                  <div className="showBreakdownContainer">
+                    <div
+                      className={`inter-display-medium f-s-13 lh-16 ${
+                        this.state.isSmallerToggle
+                          ? "smaller-toggle grey-ADA"
+                          : "primary-color"
+                      }`}
+                    >
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        label="Click to show breakdown"
+                        checked={this.state.switchselected}
+                        onChange={(e) => {
+                          this.setState({
+                            switchselected: e.target.checked,
+                          });
+                          if (this.props.setSwitch) {
+                            this.props.setSwitch();
+                          }
+                        }}
+                      />
+                    </div>
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                      subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                      className={"fix-width"}
+                      isLeftText
+                    >
+                      <Image src={InfoIcon} className="infoIcon" />
+                    </CustomOverlay>
                   </div>
                 )}
               </div>
