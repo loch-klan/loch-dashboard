@@ -1815,25 +1815,25 @@ class ExitOverlay extends BaseReactComponent {
                   </div>
                   {!this.props?.signup && (
                     <>
-                      <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                      {/* <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
                         or
                       </p>
                       <div className="m-b-24 links">
                         <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
                           {this.state.sharelink}
                         </div>
-                        {/* <div className='edit-options'>
-                                <Image src={EditBtnImage} className="m-r-8"/>
-                                <Dropdown
-                                    id="edit-option-dropdown"
-                                    title={this.state.dropdowntitle}
-                                    list={["View and edit" , "View only"]}
-                                    onSelect={this.handleSelect}
-                                    activetab = {this.state.activeli}
-                                />
-                            </div> */}
-                      </div>
-                      <div className="copy-link-section">
+                        // <div className='edit-options'>
+                                // <Image src={EditBtnImage} className="m-r-8"/>
+                                // <Dropdown
+                                    // id="edit-option-dropdown"
+                                    // title={this.state.dropdowntitle}
+                                    // list={["View and edit" , "View only"]}
+                                    // onSelect={this.handleSelect}
+                                    // activetab = {this.state.activeli}
+                                // />
+                            // </div>
+                      </div> */}
+                      <div className="copy-link-section mt-4">
                         <div className="link" onClick={this.copyLink}>
                           <Image src={CopyLink} className="m-r-8" />
                           <h3 className="inter-display-medium f-s-16 lh-19 black-191">
