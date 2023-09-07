@@ -137,6 +137,18 @@ class TopIntelligence extends Component {
   };
 
   componentDidMount() {
+    const tempLeftExplainerClosed = window.sessionStorage.getItem(
+      "netFlowLeftExplainerClosed"
+    );
+    if (tempLeftExplainerClosed) {
+      this.setState({ LeftShow: false });
+    }
+    const tempRightExplainerClosed = window.sessionStorage.getItem(
+      "netFlowRightExplainerClosed"
+    );
+    if (tempRightExplainerClosed) {
+      this.setState({ RightShow: false });
+    }
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
@@ -570,6 +582,7 @@ class TopIntelligence extends Component {
   };
 
   RightClose = () => {
+    window.sessionStorage.setItem("netFlowRightExplainerClosed", true);
     this.setState({
       RightShow: false,
     });
@@ -581,6 +594,7 @@ class TopIntelligence extends Component {
   };
 
   LeftClose = () => {
+    window.sessionStorage.setItem("netFlowLeftExplainerClosed", true);
     this.setState({
       LeftShow: false,
     });

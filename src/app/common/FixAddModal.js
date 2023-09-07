@@ -8,7 +8,7 @@ import {
 } from "../../utils/form";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
+import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import Banner from "../../image/Frame.png";
@@ -17,15 +17,12 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CloseBtn from "../../assets/images/icons/CloseBtn.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from "../../assets/images/icons/CloseIcon.svg";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
+import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 import {
   getDetectedChainsApi,
   updateUserWalletApi,
   updateWalletListFlag,
+  detectNameTag,
 } from "./Api";
 import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
@@ -50,10 +47,12 @@ import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg
 import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import Papa from "papaparse";
+import { CustomCoin } from "../../utils/commonComponent";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    console.log("Pulled ", addWalletList);
     addWalletList =
       addWalletList && addWalletList?.length > 0
         ? addWalletList?.map((e) => {
@@ -61,6 +60,7 @@ class FixAddModal extends BaseReactComponent {
               ...e,
               showAddress: e.nickname === "" ? true : false,
               showNickname: e.nickname === "" ? false : true,
+              showNameTag: e.nameTag === "" ? false : true,
               apiAddress: e.address,
             };
           })
@@ -74,6 +74,7 @@ class FixAddModal extends BaseReactComponent {
               nickname: "",
               showAddress: true,
               showNickname: true,
+              showNameTag: true,
               apiAddress: "",
             },
           ];
@@ -197,6 +198,9 @@ class FixAddModal extends BaseReactComponent {
             showAddress: true,
             showNickname: true,
             apiAddress: "",
+            showNameTag: true,
+            nameTag: "",
+            loadingNameTag: false,
           },
         ],
         uploadStatus: "Uploading",
@@ -237,6 +241,7 @@ class FixAddModal extends BaseReactComponent {
               nickname: "",
               showAddress: true,
               showNickname: true,
+              showNameTag: true,
               apiAddress: e[0],
             });
           });
@@ -394,6 +399,18 @@ class FixAddModal extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      this.props.detectNameTag(
+        {
+          id: name,
+          address: value,
+        },
+        this,
+        false
+      );
+      this.handleSetNameTagLoadingTrue({
+        id: name,
+        address: value,
+      });
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -409,6 +426,50 @@ class FixAddModal extends BaseReactComponent {
         );
       }
     }
+  };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.addWalletList];
+    let index = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.addWalletList[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      addWalletList: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.addWalletList];
+    let index = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.addWalletList[index],
+        loadingNameTag: true,
+      };
+    }
+    this.setState({
+      addWalletList: newAddress,
+    });
+  };
+  handleSetNameTag = (data, nameTag) => {
+    let newAddress = [...this.state.addWalletList];
+    let index = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.addWalletList[index],
+        nameTag: nameTag,
+        loadingNameTag: false,
+        showNameTag: true,
+      };
+    }
+    this.setState({
+      addWalletList: newAddress,
+    });
   };
   handleSetCoin = (data) => {
     //   console.log("data", data);
@@ -517,6 +578,9 @@ class FixAddModal extends BaseReactComponent {
         showNickname: true,
         wallet_metadata: {},
         apiAddress: "",
+        showNameTag: true,
+        nameTag: "",
+        loadingNameTag: false,
       });
       this.setState({
         addWalletList: this.state.addWalletList,
@@ -637,7 +701,12 @@ class FixAddModal extends BaseReactComponent {
             w.id = `wallet${i + 1}`;
           });
           if (addWallet) {
-            this.props.setHeaderReducer(addWallet);
+            let holder = [];
+            const pulledTempWalletData = this.props.HeaderState.wallet;
+            if (pulledTempWalletData) {
+              holder = pulledTempWalletData.filter((res) => res.isExchange);
+            }
+            this.props.setHeaderReducer([...holder, ...addWallet]);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
@@ -916,10 +985,18 @@ class FixAddModal extends BaseReactComponent {
           nickname: "",
           showAddress: true,
           showNickname: true,
+          showNameTag: true,
+          nameTag: "",
+          loadingNameTag: false,
         });
       }
       if (walletList) {
-        this.props.setHeaderReducer(walletList);
+        let holder = [];
+        const pulledTempWalletData = this.props.HeaderState.wallet;
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
+        this.props.setHeaderReducer([...holder, ...walletList]);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
@@ -993,6 +1070,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
+    console.log("addWalletList ", this.state.addWalletList);
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
@@ -1094,110 +1172,195 @@ class FixAddModal extends BaseReactComponent {
 
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div
-          className="add-wallet-input-section"
-          key={index}
-          id={`add-wallet-${index}`}
-          style={
-            index == this.state.addWalletList.length - 1
-              ? { marginBottom: 0 }
-              : {}
-          }
-        >
+        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
           {this.state.addWalletList.length > 1 ? (
-            <div
-              className="delete-icon"
+            <Image
+              key={index}
+              className={`awOldDelBtn`}
+              // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+              src={DeleteIcon}
               onClick={() => this.deleteAddress(index)}
-            >
-              <Image src={DeleteIcon} />
-            </div>
+            />
           ) : (
-            ""
-          )}
-          {elem.showAddress && (
-            <input
-              autoFocus
-              name={`wallet${index + 1}`}
-              value={elem.displayAddress || elem.address || ""}
-              placeholder="Paste any wallet address or ENS here"
-              // className='inter-display-regular f-s-16 lh-20'
-              className={`inter-display-regular f-s-16 lh-20 ${
-                elem.address ? "is-valid" : null
-              }`}
-              onChange={(e) => this.handleOnchange(e)}
-              id={elem.id}
-              style={getPadding(
-                `add-wallet-${index}`,
-                elem,
-                this.props.OnboardingState
-              )}
-              onKeyDown={this.handleTabPress}
-              onFocus={(e) => {
-                // console.log(e);
-                this.FocusInInput(e);
-              }}
+            <Image
+              key={index}
+              className={`awOldDelBtn fakeBtn`}
+              src={DeleteIcon}
             />
           )}
+          <div
+            className={`awInputWrapper ${
+              elem.address ? "isAwInputWrapperValid" : null
+            }`}
+          >
+            {elem.showAddress && (
+              <div className="awTopInputWrapper">
+                <div className="awInputContainer">
+                  <input
+                    autoFocus
+                    name={`wallet${index + 1}`}
+                    value={elem.displayAddress || elem.address || ""}
+                    placeholder="Paste any wallet address or ENS here"
+                    // className='inter-display-regular f-s-16 lh-20'
+                    className={`inter-display-regular f-s-16 lh-20 awInput`}
+                    onChange={(e) => this.handleOnchange(e)}
+                    id={elem.id}
+                    style={getPadding(
+                      `add-wallet-${index}`,
+                      elem,
+                      this.props.OnboardingState
+                    )}
+                    onKeyDown={this.handleTabPress}
+                    onFocus={(e) => {
+                      // console.log(e);
+                      this.FocusInInput(e);
+                    }}
+                  />
+                </div>
+                {this.state.addWalletList?.map((e, i) => {
+                  if (
+                    this.state.addWalletList[index].address &&
+                    e.id === `wallet${index + 1}`
+                  ) {
+                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                    if (e.coinFound && e.coins.length > 0) {
+                      return (
+                        <CustomCoin
+                          isStatic
+                          coins={e.coins.filter((c) => c.chain_detected)}
+                          key={i}
+                          isLoaded={true}
+                        />
+                      );
+                    } else {
+                      if (
+                        e.coins.length ===
+                        this.props.OnboardingState.coinsList.length
+                      ) {
+                        return (
+                          <CustomCoin
+                            isStatic
+                            coins={null}
+                            key={i}
+                            isLoaded={true}
+                          />
+                        );
+                      } else {
+                        return (
+                          <CustomCoin
+                            isStatic
+                            coins={null}
+                            key={i}
+                            isLoaded={false}
+                          />
+                        );
+                      }
+                    }
+                  } else {
+                    return "";
+                  }
+                })}
+              </div>
+            )}
 
-          {elem.coinFound && elem.showNickname && (
-            <input
-              // autoFocus
-              name={`wallet${index + 1}`}
-              value={elem.nickname || ""}
-              placeholder="Enter Nickname"
-              // className='inter-display-regular f-s-16 lh-20'
-              className={`inter-display-regular f-s-16 lh-20 ${
-                elem.address ? "is-valid" : null
-              }`}
-              onChange={(e) => this.handleOnchangeNickname(e)}
-              id={elem.id}
-              style={getPadding(
-                `add-wallet-${index}`,
-                elem,
-                this.props.OnboardingState
-              )}
-              onFocus={(e) => {
-                // console.log(e);
-                this.FocusInInput(e);
-              }}
-              onBlur={(e) => {
-                AddWalletAddressNickname({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  nickname: e.target?.value,
-                  address: elem.address,
-                });
-                if (this.props.updateTimer) {
-                  this.props.updateTimer();
-                }
-              }}
-              // onKeyDown={this.handleTabPress}
-            />
-          )}
-          {elem.address ? (
-            elem.coinFound && elem.coins.length > 0 ? (
-              // COIN FOUND STATE
-              <CustomChip
-                coins={elem.coins.filter((c) => c.chain_detected)}
-                key={index}
-                isLoaded={true}
-              ></CustomChip>
-            ) : elem.coins.length ===
-              this.props.OnboardingState.coinsList.length ? (
-              // elem.coins.length === 1
-              // UNRECOGNIZED WALLET
-              <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-            ) : (
-              // LOADING STATE
-              <CustomChip
-                coins={null}
-                key={index}
-                isLoaded={false}
-              ></CustomChip>
-            )
-          ) : (
-            ""
-          )}
+            {elem.coinFound && elem.showNickname && (
+              <div
+                className={`awBottomInputWrapper ${
+                  elem.showAddress ? "mt-2" : ""
+                }`}
+              >
+                <div className="awInputContainer">
+                  <div className="awLable">Nickname</div>
+                  <input
+                    // autoFocus
+                    name={`wallet${index + 1}`}
+                    value={elem.nickname || ""}
+                    placeholder="Enter Nickname"
+                    // className='inter-display-regular f-s-16 lh-20'
+                    className={`inter-display-regular f-s-16 lh-20 awInput`}
+                    onChange={(e) => this.handleOnchangeNickname(e)}
+                    id={elem.id}
+                    style={getPadding(
+                      `add-wallet-${index}`,
+                      elem,
+                      this.props.OnboardingState
+                    )}
+                    onFocus={(e) => {
+                      // console.log(e);
+                      this.FocusInInput(e);
+                    }}
+                    onBlur={(e) => {
+                      AddWalletAddressNickname({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        nickname: e.target?.value,
+                        address: elem.address,
+                      });
+                      if (this.props.updateTimer) {
+                        this.props.updateTimer();
+                      }
+                    }}
+                  />
+                </div>
+                {!elem.showAddress &&
+                  this.state.addWalletList?.map((e, i) => {
+                    if (
+                      this.state.addWalletList[index].address &&
+                      e.id === `wallet${index + 1}`
+                    ) {
+                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                      if (e.coinFound && e.coins.length > 0) {
+                        return (
+                          <CustomCoin
+                            isStatic
+                            coins={e.coins.filter((c) => c.chain_detected)}
+                            key={i}
+                            isLoaded={true}
+                          />
+                        );
+                      } else {
+                        if (
+                          e.coins.length ===
+                          this.props.OnboardingState.coinsList.length
+                        ) {
+                          return (
+                            <CustomCoin
+                              isStatic
+                              coins={null}
+                              key={i}
+                              isLoaded={true}
+                            />
+                          );
+                        } else {
+                          return (
+                            <CustomCoin
+                              isStatic
+                              coins={null}
+                              key={i}
+                              isLoaded={false}
+                            />
+                          );
+                        }
+                      }
+                    } else {
+                      return "";
+                    }
+                  })}
+                {elem.showAddress && !elem.nameTag && elem.loadingNameTag ? (
+                  <div className="awBlockContainer">
+                    <div className="awLable">Name tag</div>
+                    <CustomCoin isStatic coins={null} isLoaded={false} />
+                  </div>
+                ) : null}
+                {elem.showAddress && elem.showNameTag && elem.nameTag ? (
+                  <div className="awBlockContainer">
+                    <div className="awLable">Name tag</div>
+                    <div className="awNameTag">{elem.nameTag}</div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
         </div>
       );
     });
@@ -1277,14 +1440,18 @@ class FixAddModal extends BaseReactComponent {
                       <div className="fix-modal-input">{inputs}</div>
                     )}
                     {this.state.modalType === "addwallet" && (
-                      <div className="add-modal-inputs">{wallets}</div>
+                      <div className="addWalletWrapperContainerParent">
+                        <div className="addWalletWrapperContainer">
+                          {wallets}
+                        </div>
+                      </div>
                     )}
 
                     {this.state.addWalletList.length >= 0 &&
                       this.state.modalType === "addwallet" && (
-                        <div className="add-wallet-btn">
+                        <div className="addAnotherBtnContainer">
                           <Button
-                            className="grey-btn m-b-32"
+                            className="grey-btn m-b-32 w-100"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
@@ -1559,6 +1726,7 @@ class FixAddModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1570,6 +1738,7 @@ const mapDispatchToProps = {
   setHeaderReducer,
   updateUserWalletApi,
   getDetectedChainsApi,
+  detectNameTag,
 };
 FixAddModal.propTypes = {};
 
