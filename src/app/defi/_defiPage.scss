@@ -1,0 +1,258 @@
+.defiFullPage {
+  .defiPageContainer {
+    display: flex;
+    .defiPage {
+      // Balance Sheet
+      .balanceSheetCard {
+        background-color: var(--cardBackgroud);
+        box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
+          0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+        border-radius: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 2.8rem;
+        user-select: none;
+        //   cursor: pointer;
+        position: relative;
+        border: 1px solid var(--cardBackgroud);
+        cursor: pointer;
+
+        .balanceDropdown {
+          background-color: var(--cardBackgroud);
+          left: 0;
+          border-radius: 12px;
+          width: 100%;
+          z-index: 1;
+
+          .balanceListContent {
+            width: 100%;
+            .row {
+              margin: 0;
+              .col-md-6 {
+                padding: 0;
+              }
+            }
+            &::-webkit-scrollbar {
+              width: 0.4rem;
+              height: 0.4rem;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              border-radius: 0.8rem;
+              // background-color: $scrollBar-thumb;
+            }
+
+            &::-webkit-scrollbar-track {
+              background-color: rgba(229, 229, 230, 0.5);
+              border-radius: 0.8rem;
+            }
+            .balanceSheetTitle {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 2.4rem 1.6rem 1.6rem;
+              padding-bottom: 2rem;
+              cursor: pointer;
+              .defiMenu {
+                height: 1.25rem;
+                width: 1.25rem;
+                margin-bottom: 5px;
+                cursor: pointer;
+                filter: var(--invertColor) opacity(0.5);
+              }
+              .defiMenuSelected {
+                filter: var(--invertColor) opacity(1);
+                transform: rotate(180deg);
+              }
+
+              .balanceSheetTitleText {
+                margin-right: 0.8rem;
+                color: #636467;
+              }
+              .balanceSheetTitleAmount {
+                color: #b0b1b3;
+              }
+              .balanceSheetTitleTextSelected {
+                color: var(--primaryTextColor);
+              }
+              &:hover {
+                .defiMenu {
+                  filter: var(--invertColor) opacity(1);
+                }
+                .balanceSheetTitleText {
+                  color: var(--primaryTextColor);
+                }
+                .balanceSheetTitleAmount {
+                  color: var(--primaryTextColor);
+                }
+              }
+            }
+            .balanceSheetListContainer {
+              padding: 0 1.6rem 1.6rem;
+              .balanceSheetList {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1.15rem 0rem;
+                border-top: 1px solid var(--cardSeperator);
+
+                .balanceAmt {
+                  background-color: var(--greyCardBackgroud);
+                  border-radius: 4px;
+                  padding: 6px;
+                }
+              }
+            }
+          }
+        }
+        .balance-card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          img {
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-bottom: 5px;
+          }
+        }
+      }
+      // Card Wrapper
+      .defiCardWrapper {
+        background: var(--cardBackgroud);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        border-radius: 16px;
+        width: 100%;
+        margin-bottom: 3.2rem;
+
+        .topTitleWrapper {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 2rem;
+
+          .headingImage {
+            display: flex;
+            align-items: center;
+
+            img {
+              margin-right: 1.6rem;
+              width: 4.3rem;
+              border-radius: 8px;
+              box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+                0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+            }
+          }
+        }
+
+        .col-md-3,
+        .col-md-2,
+        .col-md-6 {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          padding: 0rem 2rem;
+        }
+
+        .tableHead {
+          border-top: 1px solid var(--cardSeperator);
+          padding: 2.2rem 0rem 2.2rem;
+          margin: 0;
+
+          .headerCol {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            // justify-content: center;
+
+            .rotateUp {
+              transform: rotate(180deg);
+              margin-left: 1rem;
+            }
+            .rotateDown {
+              transform: rotate(0deg);
+              margin-left: 1rem;
+            }
+          }
+        }
+
+        .tableContentRow {
+          margin: 0;
+          border-top: 1px solid var(--cardSeperator);
+          padding: 2.2rem 0rem 2.2rem;
+          .overflowValueWrapContainer {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-wrap: wrap;
+          }
+          .grayChip {
+            background: var(--greyCardBackgroud);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+          }
+          .overflowValueContainer {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .overlapImg {
+            min-width: 2.6rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            img {
+              // box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+              border-radius: 8px;
+              width: 2.6rem;
+              // height: 60px;
+              position: relative;
+            }
+          }
+        }
+      }
+
+      margin-top: 5rem;
+      min-width: 90rem; //solve overflow issue
+      overflow: hidden; //solve overflow issue
+      .animationWrapper {
+        // box-shadow: $boxShadow;
+        margin-bottom: 2rem;
+        padding: 0;
+        background-color: var(--cardBackgroud);
+        padding: 2rem 2rem 4rem;
+        border-radius: 1.2rem;
+      }
+      .sortbySection {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .dropdownSection {
+          display: flex;
+          .naming {
+            padding: 1.2rem 0;
+          }
+          .sortByTitle {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 1.6rem;
+            cursor: pointer;
+            user-select: none;
+
+            .rotateUp {
+              transform: rotate(180deg);
+              margin-left: 1rem;
+            }
+            .rotateDown {
+              transform: rotate(0deg);
+              margin-left: 1rem;
+            }
+          }
+          .sortByTitle:hover {
+            filter: brightness(0.5) var(--invertColor);
+          }
+        }
+      }
+    }
+  }
+}
