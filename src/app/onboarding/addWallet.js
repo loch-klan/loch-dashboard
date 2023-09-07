@@ -534,6 +534,34 @@ class AddWallet extends BaseReactComponent {
       walletInput: newAddress,
     });
   };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
   handleSetNameTag = (data, nameTag) => {
     let newAddress = [...this.state.walletInput];
     let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
