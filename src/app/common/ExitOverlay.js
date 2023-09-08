@@ -81,6 +81,7 @@ import { updateUser } from "../profile/Api";
 import UpgradeModal from "./upgradeModal";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import { Form as FormB } from "react-bootstrap";
+
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);

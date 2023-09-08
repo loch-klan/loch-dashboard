@@ -148,7 +148,7 @@ class TopBar extends Component {
     }
   };
   applyTempWalletList = () => {
-    if (this.props.HeaderState?.wallet?.length > 0) {
+    if (this.props.HeaderState?.wallet) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
       const tempExchangeList = [];
