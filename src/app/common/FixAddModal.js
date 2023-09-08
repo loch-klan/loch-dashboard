@@ -1060,7 +1060,6 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
-    console.log("addWalletList ", this.state.addWalletList);
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
