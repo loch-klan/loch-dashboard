@@ -64,7 +64,7 @@
     }
 
     .btn-primary:not(:disabled):not(.disabled):active {
-      background-color: #e5e5e6 !important;
+      background-color: #f2f2f2 !important;
       border: 0.1rem solid transparent !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
@@ -72,7 +72,7 @@
     }
 
     .btn-primary.dropdown-toggle {
-      background-color: #e5e5e6 !important;
+      background-color: #f2f2f2 !important;
       border: 0.1rem solid transparent !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
@@ -85,13 +85,13 @@
 
     .btn-primary.dropdown-toggle:focus {
       box-shadow: none;
-      background-color: #e5e5e6 !important;
+      background-color: #f2f2f2 !important;
       border: 0.1rem solid $primary !important;
       color: $black-191;
     }
 
     .dropdown-toggle {
-      background-color: #e5e5e6;
+      background-color: #f2f2f2;
       color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
