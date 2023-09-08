@@ -27,6 +27,7 @@ import moment from "moment";
 import Loading from "../common/Loading";
 import {
   CurrencyType,
+  TruncateText,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
@@ -548,7 +549,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (current == value) {
             // selectedEvents.push(item);
-            item.event?.map((a) => {
+            item.event?.map((a, index) => {
               let e_usd =
                 a.asset.value *
                 (a.asset_price * (this.state.currency?.rate || 1));
@@ -580,13 +581,17 @@ class LineChartSlider extends BaseReactComponent {
                 e_text = "to";
               }
               e_full_address = e_address;
-              if (e_address.length > 16) {
-                e_address =
-                  '"' +
-                  e_address.substr(0, e_text === "from" ? 7 : 9) +
-                  "..." +
-                  e_address.substr(e_address.length - 7, e_address.length) +
-                  '"';
+              // if (e_address.length > 16) {
+              //   e_address =
+              //     '"' +
+              //     e_address.substr(0, e_text === "from" ? 7 : 9) +
+              //     "..." +
+              //     e_address.substr(e_address.length - 7, e_address.length) +
+              //     '"';
+              // }
+              let temp_e_address = TruncateText(e_address);
+              if (index % 2 === 0) {
+                temp_e_address = e_address.toString().slice(0, 5);
               }
               // console.log("internal", a);
               selectedEvents.push({
@@ -595,7 +600,8 @@ class LineChartSlider extends BaseReactComponent {
                 assetCode: e_assetCode,
                 tooltip: e_tooltipData,
                 text: e_text,
-                address: e_address,
+                // address: e_address,
+                address: temp_e_address,
                 fulladdress: e_full_address,
               });
             });
