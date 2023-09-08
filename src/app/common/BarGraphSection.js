@@ -467,7 +467,12 @@ class BarGraphSection extends Component {
                           // constructorType={"stockChart"}
                           // allowChartUpdate={true}
                           // updateArgs={[true]}
-                          containerProps={{ style: { height: "100%" } }}
+                          containerProps={{
+                            style:
+                              showSwitch && !showPercentage
+                                ? { height: "100%" }
+                                : {},
+                          }}
                         />
                       </div>
                     )}
