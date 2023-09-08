@@ -273,7 +273,6 @@
 
           .ReactVirtualized__Table__Grid {
             padding-left: 0rem;
-
             .ReactVirtualized__Grid__innerScrollContainer {
               .ReactVirtualized__Table__row {
                 .ReactVirtualized__Table__rowColumn {
@@ -298,7 +297,7 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
   }
-  .loading-animation {
+  .loadingAnimationBlock {
     backdrop-filter: blur(1rem);
     border-radius: 1.2rem;
     height: 100%;
@@ -309,7 +308,7 @@
   .animation-wrapper {
     height: 20rem;
   }
-  .loading-animation {
+  .loadingAnimationBlock {
     padding-bottom: 0;
   }
 }
