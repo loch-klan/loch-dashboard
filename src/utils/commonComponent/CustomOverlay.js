@@ -15,6 +15,9 @@ function CustomOverlay({
   colorCode = "",
   className,
   isCaptialised,
+  isLeftText,
+  heading,
+  subHeading,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -26,26 +29,56 @@ function CustomOverlay({
       {...props}
     >
       {isInfo ? (
-        <div className={isText ? "text-tooltip" : "button-tooltip"}>
-          {isIcon ? <Image src={IconImage} /> : null}
-          {isName ? (
-            <span
-              className={`interDisplayMediumText f-s-13 lh-16 m-r-8`}
-              style={{ color: colorCode ? colorCode : "#19191A" }}
+        <>
+          {heading ? (
+            <div
+              className={`${isText ? "text-tooltip" : "button-tooltip"} ${
+                isLeftText ? "text-left" : ""
+              }`}
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              {isName}
-            </span>
+              <div
+                className={`inter-display-semi-bold f-s-13 lh-16 mb-4 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                {heading}
+              </div>
+              <div
+                className={`inter-display-medium text-tooltip-subheading f-s-13 lh-16 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                {subHeading}
+              </div>
+            </div>
           ) : (
-            ""
+            <div
+              className={`${isText ? "text-tooltip" : "button-tooltip"}  ${
+                isLeftText ? "text-left" : ""
+              }`}
+            >
+              {isIcon ? <Image src={IconImage} /> : null}
+              {isName ? (
+                <span
+                  className={`interDisplayMediumText f-s-13 lh-16 m-r-8`}
+                  style={{ color: colorCode ? colorCode : "#19191A" }}
+                >
+                  {isName}
+                </span>
+              ) : (
+                ""
+              )}
+              <span
+                className={`interDisplayMediumText f-s-13 lh-16 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                {text}
+              </span>
+            </div>
           )}
-          <span
-            className={`interDisplayMediumText f-s-13 lh-16 ${
-              isCaptialised ? "text-capitalize" : ""
-            }`}
-          >
-            {text}
-          </span>
-        </div>
+        </>
       ) : (
         <ul>
           {text.map((e, i) =>
