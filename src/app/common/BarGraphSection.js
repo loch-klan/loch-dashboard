@@ -402,18 +402,21 @@ class BarGraphSection extends Component {
                         }}
                       />
                     </div>
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                      subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
-                      className={"fix-width"}
-                      isLeftText
-                    >
-                      <Image src={InfoIcon} className="infoIcon" />
-                    </CustomOverlay>
+
+                    {!this.props.isSmallerToggle ? (
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                        subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                        className={"fix-width"}
+                        isLeftText
+                      >
+                        <Image src={InfoIcon} className="infoIcon" />
+                      </CustomOverlay>
+                    ) : null}
                   </div>
                 )}
               </div>
@@ -485,10 +488,50 @@ class BarGraphSection extends Component {
                           // constructorType={"stockChart"}
                           // allowChartUpdate={true}
                           // updateArgs={[true]}
-                          containerProps={{ style: { height: "100%" } }}
+                          // containerProps={{ style: { height: "100%" } }}
                         />
                       </div>
                     )}
+                    {!this.props.isSmallerToggle ? (
+                      <div className="bottomExplainersContainer">
+                        <div className="bottomExplainersLeftText">$0.00</div>
+                        <div className="bottomExplainers">
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text="Sum total of all assets received by your portfolio."
+                            className={"fix-width"}
+                            isLeftText
+                          >
+                            <Image src={InfoIcon} className="infoIcon" />
+                          </CustomOverlay>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text="Sum total of all assets and fees sent out by your portfolio"
+                            className={"fix-width"}
+                            isLeftText
+                          >
+                            <Image src={InfoIcon} className="infoIcon" />
+                          </CustomOverlay>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text="Outflows - Inflows"
+                            className={"fix-width"}
+                            isLeftText
+                          >
+                            <Image src={InfoIcon} className="infoIcon" />
+                          </CustomOverlay>
+                        </div>
+                      </div>
+                    ) : null}
                   </>
                 )}
               </div>
