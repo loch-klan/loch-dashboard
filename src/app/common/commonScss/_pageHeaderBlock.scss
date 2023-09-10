@@ -1,0 +1,137 @@
+.pageHeaderBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // align-items: baseline;
+  // flex-direction: column;
+  nav {
+    ol {
+      align-items: center;
+      background-color: var(--greyF2f);
+      border: none;
+      padding: 0rem;
+      margin-bottom: 2.4rem;
+      // .breadcrumb{
+      // }
+      .breadcrumb-item + .breadcrumb-item::before {
+        content: url("../../../assets/images/icons/ChevronArrowRight.svg");
+        position: relative;
+        top: 0.1rem;
+        padding-right: 1.4rem;
+      }
+      .breadcrumb-item {
+        padding-left: 1.4rem;
+        text-transform: capitalize;
+        cursor: pointer;
+        a {
+          color: var(--secondaryTextColor);
+
+          &:hover {
+            color: var(--primaryTextColor);
+
+            img {
+              filter: brightness(0.5);
+            }
+          }
+        }
+      }
+      .active {
+        color: var(--grey636);
+      }
+      .breadcrumb-item:nth-child(1) {
+        padding: 0rem;
+      }
+    }
+  }
+  .headerBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .headerBlockLeft {
+      width: max-content;
+      display: flex;
+      align-items: center;
+      .pageHeaderTitleImg {
+        margin-right: 1rem;
+        height: 24px;
+        filter: var(--invertColor);
+      }
+      .showImg {
+        padding: 1.8rem;
+        background-color: var(--greyE5e);
+        border-radius: 1.6rem;
+      }
+      .multipleImg {
+        img {
+          box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12),
+            0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+          border-radius: 20px;
+          width: 60px;
+          height: 60px;
+          position: relative;
+        }
+      }
+      .fixWidth {
+        .tooltip-inner {
+          width: 39rem;
+        }
+        .infoIcon {
+          margin-left: 0.5rem;
+          margin-bottom: 0.1rem;
+          width: 1.6rem;
+        }
+      }
+    }
+    h4 {
+      color: var(--primaryTextColor);
+    }
+
+    p {
+      color: var(--secondaryTextColor);
+    }
+  }
+
+  button {
+    // padding: 1.3rem 2.6rem;
+    // border:0.1rem solid $black-171;
+    // line-height: 2.4rem;
+    padding: 1.65rem 2.76rem;
+    border: 0.1rem solid #171717;
+    line-height: 1.9rem;
+  }
+  .primary-btn {
+    &:hover:not([disabled]) {
+      border-color: var(--cardBackgroud);
+      box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+        0px 1rem 1rem rgba(0, 0, 0, 0.04);
+      color: var(--primaryTextColor);
+      background-color: var(--cardBackgroud);
+    }
+  }
+
+  .secondaryBtn {
+    &.white-bg {
+      // background-color: #FFFFFF;
+      margin-right: 1.6rem;
+
+      &:hover {
+        background-color: var(--primaryTextColor);
+      }
+    }
+  }
+  .view-more {
+    cursor: pointer;
+    // @include font(#4a4b4d, "Inter-SemiBold", 1.6rem, 600, 19px);
+
+    &:hover {
+      color: var(--primaryTextColor);
+    }
+  }
+}
+.historyHeader {
+  flex-direction: column;
+  align-items: baseline;
+  margin-bottom: 2.4rem;
+}

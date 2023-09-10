@@ -5,7 +5,7 @@ import { lightenDarkenColor } from "../../utils/ReusableFunctions";
 export default function CoinChip(props) {
   return (
     <div
-      className="coin-chip"
+      className="coinChip"
       style={props?.chain ? { position: "relative" } : {}}
     >
       <Image
@@ -50,7 +50,7 @@ export default function CoinChip(props) {
           className="chain-img"
         />
       )}
-      <div className="inter-display-medium f-s-13 lh-14 coin-percent">
+      <div className="interDisplayMediumText f-s-13 lh-14 coinPercent">
         {props.coin_percent
           ? props.coin_percent
           : props.coin_code
