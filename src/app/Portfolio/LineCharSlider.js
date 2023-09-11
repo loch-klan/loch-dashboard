@@ -589,8 +589,8 @@ class LineChartSlider extends BaseReactComponent {
               //     e_address.substr(e_address.length - 7, e_address.length) +
               //     '"';
               // }
-              let temp_e_address = TruncateText(e_address);
-              if (index % 2 === 0) {
+              let temp_e_address = e_address.toString();
+              if (e_address.toString().length > 4) {
                 temp_e_address = e_address.toString().slice(0, 5);
               }
               // console.log("internal", a);
@@ -1478,16 +1478,17 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
-                                    {event.assetCode}
-                                    {` or `}
                                     <span className="inter-display-semi-bold">
                                       {CurrencyType(false)}
                                       {numToCurrency(event.usd)}
                                     </span>
-                                    {event.text === "from"
-                                      ? " received from "
-                                      : " sent to "}
+                                    <span>
+                                      {" ("}
+                                      {event.assetValue.toFixed(count)}{" "}
+                                      {event.assetCode}
+                                      {")"}
+                                    </span>
+                                    {event.text === "from" ? " from " : " to "}
                                   </span>
                                   <CustomOverlay
                                     position="top"
@@ -1554,16 +1555,17 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
-                                    {event.assetCode}
-                                    {` or `}
                                     <span className="inter-display-semi-bold">
                                       {CurrencyType(false)}
                                       {numToCurrency(event.usd)}
                                     </span>
-                                    {event.text === "from"
-                                      ? " received from "
-                                      : " sent to "}
+                                    <span>
+                                      {" ("}
+                                      {event.assetValue.toFixed(count)}{" "}
+                                      {event.assetCode}
+                                      {")"}
+                                    </span>
+                                    {event.text === "from" ? " from " : " to "}
                                   </span>
                                   <CustomOverlay
                                     position="top"
