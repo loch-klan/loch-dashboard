@@ -94,11 +94,13 @@
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
-  background-color: $grey-F2F;
+}
+body {
+  background-color: var(--primaryBackgroud);
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
 }
 
 h1,
@@ -1511,6 +1513,9 @@ form {
 
       img {
         margin-right: 0.8rem;
+      }
+      .text-tooltip-subheading {
+        color: #96979a;
       }
     }
 

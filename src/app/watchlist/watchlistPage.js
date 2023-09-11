@@ -125,6 +125,7 @@ class WatchListPage extends BaseReactComponent {
       timeFIlter: "Time",
       tableData: [],
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -230,6 +231,7 @@ class WatchListPage extends BaseReactComponent {
         }
       );
     }
+
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -522,6 +524,14 @@ class WatchListPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
+            const addressOrEns = () => {
+              const regex = /\.eth$/;
+              let tempAddress = rowData.address;
+              if (!regex.test(rowData.address)) {
+                tempAddress = this.TruncateText(rowData.address);
+              }
+              return tempAddress;
+            };
             return (
               <div
                 onClick={() => {
@@ -561,9 +571,9 @@ class WatchListPage extends BaseReactComponent {
                     this.props.history.push("/top-accounts/home");
                   }, 200);
                 }}
-                className="top-account-address"
+                className="top-account-address dotDotText"
               >
-                {TruncateText(rowData.address)}
+                {addressOrEns()}
               </div>
             );
           }
@@ -703,6 +713,22 @@ class WatchListPage extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -714,6 +740,8 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -730,6 +758,8 @@ class WatchListPage extends BaseReactComponent {
                 show={this.state.showAddWatchListAddress}
                 onHide={this.handleAddWatchlistAddress}
                 history={this.props.history}
+                callApi={this.callApi}
+                location={this.props.location}
               />
             ) : null}
             {this.state.addModal && (
@@ -768,8 +798,8 @@ class WatchListPage extends BaseReactComponent {
               topaccount={true}
               ShareBtn={false}
               handleShare={this.handleShare}
-              // btnText="Add address"
-              // handleBtn={this.handleAddWatchlistAddress}
+              btnText="Add address"
+              handleBtn={this.handleAddWatchlistAddress}
             />
 
             <div className="fillter_tabs_section">
@@ -843,7 +873,7 @@ class WatchListPage extends BaseReactComponent {
                     message={
                       this.state.initialList
                         ? "No addresses found."
-                        : "Add addresses to your watchlist from the Top accounts page."
+                        : "Add addresses to your watchlist from the Leaderboard page."
                     }
                     totalPage={this.state.totalPage}
                     history={this.props.history}
@@ -867,6 +897,8 @@ class WatchListPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   WatchListState: state.WatchListState,
   WatchListLoadingState: state.WatchListLoadingState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   setPageFlagDefault,

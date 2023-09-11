@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
+import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 
+import { detectNameTag } from "../common/Api";
 import { EyeIcon, CloseIcon, CheckIcon } from "../../assets/images/icons";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
+import { getPadding } from "../../utils/ReusableFunctions";
+import { addAddressToWatchList } from "./redux/WatchListApi";
+import { START_INDEX } from "../../utils/Constant";
 
 class AddWatchListAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -18,6 +18,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
     this.state = {
       show: props.show,
       onHide: this.props.onHide,
+      loadAddBtn: false,
       walletInput: [
         {
           id: `wallet1`,
@@ -31,6 +32,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
           apiAddress: "",
           showNameTag: true,
           nameTag: "",
+          loadingNameTag: false,
         },
       ],
       addressesAdded: false,
@@ -63,7 +65,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
       walletInput: walletCopy,
     });
   };
-  handleOnChange = (e) => {
+  handleOnchange = (e) => {
     let { name, value } = e.target;
     let walletCopy = [...this.state.walletInput];
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
@@ -92,6 +94,50 @@ class AddWatchListAddressModal extends BaseReactComponent {
     this.timeout = setTimeout(() => {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
+  };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTag = (data, nameTag) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        nameTag: nameTag,
+        loadingNameTag: false,
+        showNameTag: true,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
   };
   handleSetCoin = (data) => {
     let coinList = {
@@ -137,8 +183,19 @@ class AddWatchListAddressModal extends BaseReactComponent {
   };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
-    console.log("parentCoinList is ", parentCoinList);
     if (parentCoinList && value) {
+      this.props.detectNameTag(
+        {
+          id: name,
+          address: value,
+        },
+        this,
+        false
+      );
+      this.handleSetNameTagLoadingTrue({
+        id: name,
+        address: value,
+      });
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -169,7 +226,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
       }
     }
   };
-  nicknameOnChain = (e) => {
+  handleOnchangeNickname = (e) => {
     let { name, value } = e.target;
     let walletCopy = [...this.state.walletInput];
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
@@ -206,8 +263,32 @@ class AddWatchListAddressModal extends BaseReactComponent {
     }
     return isDisableFlag;
   };
+  addAddressToWatchListFun = () => {
+    if (this.state.walletInput.length > 0) {
+      const tempWalletAddress = this.state.walletInput[0].address
+        ? this.state.walletInput[0].address
+        : "";
+      const tempNameTag = this.state.walletInput[0].nameTag
+        ? this.state.walletInput[0].nameTag
+        : "";
+      this.setState({
+        loadAddBtn: true,
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_address", tempWalletAddress);
+      data.append("type", "self");
+      data.append("name_tag", tempNameTag);
+      this.props.addAddressToWatchList(data, this);
+    }
+  };
   showAddressesAdded = () => {
     this.setState({ addressesAdded: true });
+    this.refetchList();
+  };
+  refetchList = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    this.props.callApi(page);
   };
   render() {
     return (
@@ -272,40 +353,136 @@ class AddWatchListAddressModal extends BaseReactComponent {
             </div>
 
             <div className="addWatchListWrapperContainer">
-              {this.state.walletInput?.map((c, index) => {
+              {this.state.walletInput?.map((elem, index) => {
                 return (
                   <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
                     <div
                       className={`awInputWrapper ${
-                        this.state.walletInput[index].address
-                          ? "isAwInputWrapperValid"
-                          : null
+                        elem.address ? "isAwInputWrapperValid" : null
                       }`}
                     >
-                      <>
-                        {c.showAddress && (
-                          <div className="awTopInputWrapper">
-                            <div className="awInputContainer">
-                              <input
-                                autoFocus
-                                name={`wallet${index + 1}`}
-                                value={c.address || ""}
-                                className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                placeholder="Paste any wallet address here"
-                                title={c.address || ""}
-                                onChange={(e) => this.handleOnChange(e)}
-                                onKeyDown={this.handleTabPress}
-                                onFocus={(e) => {
-                                  this.FocusInInput(e);
-                                }}
-                              />
-                            </div>
+                      {elem.showAddress && (
+                        <div className="awTopInputWrapper">
+                          <div className="awInputContainer">
+                            <input
+                              autoFocus
+                              name={`wallet${index + 1}`}
+                              value={elem.displayAddress || elem.address || ""}
+                              placeholder="Paste any wallet address or ENS here"
+                              // className='inter-display-regular f-s-16 lh-20'
+                              className={`inter-display-regular f-s-16 lh-20 awInput`}
+                              onChange={(e) => this.handleOnchange(e)}
+                              id={elem.id}
+                              style={getPadding(
+                                `add-wallet-${index}`,
+                                elem,
+                                this.props.OnboardingState
+                              )}
+                              onKeyDown={this.handleTabPress}
+                              onFocus={(e) => {
+                                // console.log(e);
+                                this.FocusInInput(e);
+                              }}
+                            />
+                          </div>
+                          {this.state.walletInput?.map((e, i) => {
+                            if (
+                              this.state.walletInput[index].address &&
+                              e.id === `wallet${index + 1}`
+                            ) {
+                              // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                              if (e.coinFound && e.coins.length > 0) {
+                                return (
+                                  <CustomCoin
+                                    isStatic
+                                    coins={e.coins.filter(
+                                      (c) => c.chain_detected
+                                    )}
+                                    key={i}
+                                    isLoaded={true}
+                                  />
+                                );
+                              } else {
+                                if (
+                                  e.coins.length ===
+                                  this.props.OnboardingState.coinsList.length
+                                ) {
+                                  return (
+                                    <CustomCoin
+                                      isStatic
+                                      coins={null}
+                                      key={i}
+                                      isLoaded={true}
+                                    />
+                                  );
+                                } else {
+                                  return (
+                                    <CustomCoin
+                                      isStatic
+                                      coins={null}
+                                      key={i}
+                                      isLoaded={false}
+                                    />
+                                  );
+                                }
+                              }
+                            } else {
+                              return "";
+                            }
+                          })}
+                        </div>
+                      )}
 
-                            {this.state.walletInput?.map((e, i) => {
+                      {elem.coinFound && elem.showNickname && (
+                        <div
+                          className={`awBottomInputWrapper ${
+                            elem.showAddress &&
+                            ((elem.showNameTag && elem.nameTag) ||
+                              elem.loadingNameTag)
+                              ? "mt-2"
+                              : ""
+                          }`}
+                        >
+                          {/* <div className="awInputContainer">
+                            <div className="awLable">Nickname</div>
+                            <input
+                              // autoFocus
+                              name={`wallet${index + 1}`}
+                              value={elem.nickname || ""}
+                              placeholder="Enter Nickname"
+                              // className='inter-display-regular f-s-16 lh-20'
+                              className={`inter-display-regular f-s-16 lh-20 awInput`}
+                              onChange={(e) => this.handleOnchangeNickname(e)}
+                              id={elem.id}
+                              style={getPadding(
+                                `add-wallet-${index}`,
+                                elem,
+                                this.props.OnboardingState
+                              )}
+                              onFocus={(e) => {
+                                // console.log(e);
+                                this.FocusInInput(e);
+                              }}
+                              onBlur={(e) => {
+                                // AddWalletAddressNickname({
+                                //   session_id: getCurrentUser().id,
+                                //   email_address: getCurrentUser().email,
+                                //   nickname: e.target?.value,
+                                //   address: elem.address,
+                                // });
+                                if (this.props.updateTimer) {
+                                  this.props.updateTimer();
+                                }
+                              }}
+                            />
+                          </div> */}
+                          {!elem.showAddress &&
+                            this.state.walletInput?.map((e, i) => {
                               if (
                                 this.state.walletInput[index].address &&
                                 e.id === `wallet${index + 1}`
                               ) {
+                                // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                 if (e.coinFound && e.coins.length > 0) {
                                   return (
                                     <CustomCoin
@@ -345,94 +522,28 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 return "";
                               }
                             })}
-                          </div>
-                        )}
-                        {c.coinFound && c.showNickname && (
-                          <div
-                            className={`awBottomInputWrapper ${
-                              c.showAddress ? "mt-2" : ""
-                            }`}
-                          >
-                            <div className="awInputContainer">
-                              {/* <div className="awLable">Nickname</div> */}
-                              <input
-                                name={`wallet${index + 1}`}
-                                value={c.nickname || ""}
-                                className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                placeholder="Enter nickname"
-                                title={c.nickname || ""}
-                                onChange={(e) => {
-                                  this.nicknameOnChain(e);
-                                }}
-                                onBlur={(e) => {
-                                  // LandingPageNickname({
-                                  //   session_id: getCurrentUser().id,
-                                  //   email_address: getCurrentUser().email,
-                                  //   nickname: e.target?.value,
-                                  //   address: c.address,
-                                  // });
-                                }}
-                                onFocus={(e) => {
-                                  this.FocusInInput(e);
-                                }}
+                          {elem.showAddress &&
+                          !elem.nameTag &&
+                          elem.loadingNameTag ? (
+                            <div className="awBlockContainer">
+                              <div className="awLable">Name tag</div>
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                isLoaded={false}
                               />
                             </div>
-                            {!c.showAddress &&
-                              this.state.walletInput?.map((e, i) => {
-                                if (
-                                  this.state.walletInput[index].address &&
-                                  e.id === `wallet${index + 1}`
-                                ) {
-                                  // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                  if (e.coinFound && e.coins.length > 0) {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={e.coins.filter(
-                                          (c) => c.chain_detected
-                                        )}
-                                        key={i}
-                                        isLoaded={true}
-                                      />
-                                    );
-                                  } else {
-                                    if (
-                                      e.coins.length ===
-                                      this.props.OnboardingState.coinsList
-                                        .length
-                                    ) {
-                                      return (
-                                        <CustomCoin
-                                          isStatic
-                                          coins={null}
-                                          key={i}
-                                          isLoaded={true}
-                                        />
-                                      );
-                                    } else {
-                                      return (
-                                        <CustomCoin
-                                          isStatic
-                                          coins={null}
-                                          key={i}
-                                          isLoaded={false}
-                                        />
-                                      );
-                                    }
-                                  }
-                                } else {
-                                  return "";
-                                }
-                              })}
-                            {/* {c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null} */}
-                          </div>
-                        )}
-                      </>
+                          ) : null}
+                          {elem.showAddress &&
+                          elem.showNameTag &&
+                          elem.nameTag ? (
+                            <div className="awBlockContainer">
+                              <div className="awLable">Name tag</div>
+                              <div className="awNameTag">{elem.nameTag}</div>
+                            </div>
+                          ) : null}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -449,13 +560,16 @@ class AddWatchListAddressModal extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  this.state.addButtonVisible ? this.isDisabled(true) : false
+                  (this.state.addButtonVisible
+                    ? this.isDisabled(true)
+                    : false) || this.state.loadAddBtn
                 }
                 isDisabled={
-                  this.state.addButtonVisible ? this.isDisabled() : true
+                  (this.state.addButtonVisible ? this.isDisabled() : true) ||
+                  this.state.loadAddBtn
                 }
                 buttonText="Add"
-                handleClick={this.showAddressesAdded}
+                handleClick={this.addAddressToWatchListFun}
               />
             </div>
           </div>
@@ -472,6 +586,8 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllParentChains,
   detectCoin,
+  detectNameTag,
+  addAddressToWatchList,
 };
 
 AddWatchListAddressModal.propTypes = {};
