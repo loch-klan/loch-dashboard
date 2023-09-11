@@ -465,14 +465,6 @@ class AddWallet extends BaseReactComponent {
         false
       );
       for (let i = 0; i < parentCoinList.length; i++) {
-        this.props.detectNameTag(
-          {
-            id: name,
-            address: value,
-          },
-          this,
-          false
-        );
         this.props.detectCoin(
           {
             id: name,
