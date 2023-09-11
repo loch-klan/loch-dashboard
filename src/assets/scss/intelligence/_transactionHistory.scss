@@ -302,12 +302,12 @@
     backdrop-filter: blur(1rem);
     border-radius: 1.2rem;
     height: 100%;
-    padding-bottom: 8rem;
   }
 }
 .transaction-table-loading-wrapper-smaller {
+  height: 100%;
   .animation-wrapper {
-    height: 20rem;
+    height: 100%;
   }
   .loading-animation {
     padding-bottom: 0;
@@ -329,6 +329,7 @@
 
 .transaction-table-section {
   .table-wrapper {
+    flex: 1;
     .not-found-wrapper {
       display: flex;
       justify-content: center;

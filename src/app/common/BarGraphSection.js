@@ -241,7 +241,18 @@ class BarGraphSection extends Component {
     return (
       <div
         className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
-        style={this.props.isCounterPartyMini ? { paddingBottom: "0rem" } : {}}
+        style={
+          this.props.isCounterPartyMini
+            ? {
+                paddingBottom: "0rem",
+                display: "flex",
+                flexDirection: "column",
+              }
+            : {
+                display: "flex",
+                flexDirection: "column",
+              }
+        }
       >
         {headerTitle || headerSubTitle ? (
           <GraphHeader
@@ -249,13 +260,21 @@ class BarGraphSection extends Component {
             subtitle={headerSubTitle}
             isArrow={isArrow}
             handleClick={handleClick}
+            noSubtitleBottomPadding={this.props.noSubtitleBottomPadding}
           />
         ) : (
           ""
         )}
 
         {data && options && !isLoading ? (
-          <span className={`${comingSoon ? "blur-effect" : ""}`}>
+          <span
+            style={{
+              flex: 1,
+              paddingTop: this.props.noSubtitleBottomPadding ? "2rem" : 0,
+              overflow: this.props.noSubtitleBottomPadding ? "hidden" : "",
+            }}
+            className={`${comingSoon ? "blur-effect" : ""}`}
+          >
             <>
               <div
                 style={{
@@ -457,8 +476,13 @@ class BarGraphSection extends Component {
                         className="chartArea"
                         style={
                           showSwitch && !showPercentage
-                            ? { maxHeight: "35.55rem" }
-                            : {}
+                            ? {
+                                maxHeight: "35.55rem",
+                                overflow: "hidden",
+                              }
+                            : {
+                                overflow: "hidden",
+                              }
                         }
                       >
                         <HighchartsReact
@@ -467,7 +491,13 @@ class BarGraphSection extends Component {
                           // constructorType={"stockChart"}
                           // allowChartUpdate={true}
                           // updateArgs={[true]}
-                          containerProps={{ style: { height: "100%" } }}
+                          containerProps={{
+                            style: {
+                              height: this.props.noSubtitleBottomPadding
+                                ? "120%"
+                                : "",
+                            },
+                          }}
                         />
                       </div>
                     )}
@@ -501,9 +531,7 @@ class BarGraphSection extends Component {
         ) : (
           <div
             style={{
-              height: this?.props?.loaderHeight
-                ? this?.props?.loaderHeight + "rem"
-                : "30rem",
+              flex: 1,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
