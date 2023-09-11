@@ -522,6 +522,14 @@ class WatchListPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
+            const addressOrEns = () => {
+              const regex = /\.eth$/;
+              let tempAddress = rowData.address;
+              if (!regex.test(rowData.address)) {
+                tempAddress = this.TruncateText(rowData.address);
+              }
+              return tempAddress;
+            };
             return (
               <div
                 onClick={() => {
@@ -561,9 +569,9 @@ class WatchListPage extends BaseReactComponent {
                     this.props.history.push("/top-accounts/home");
                   }, 200);
                 }}
-                className="top-account-address"
+                className="top-account-address dotDotText"
               >
-                {TruncateText(rowData.address)}
+                {addressOrEns()}
               </div>
             );
           }
@@ -730,6 +738,8 @@ class WatchListPage extends BaseReactComponent {
                 show={this.state.showAddWatchListAddress}
                 onHide={this.handleAddWatchlistAddress}
                 history={this.props.history}
+                callApi={this.callApi}
+                location={this.props.location}
               />
             ) : null}
             {this.state.addModal && (
@@ -768,8 +778,8 @@ class WatchListPage extends BaseReactComponent {
               topaccount={true}
               ShareBtn={false}
               handleShare={this.handleShare}
-              // btnText="Add address"
-              // handleBtn={this.handleAddWatchlistAddress}
+              btnText="Add address"
+              handleBtn={this.handleAddWatchlistAddress}
             />
 
             <div className="fillter_tabs_section">
@@ -843,7 +853,7 @@ class WatchListPage extends BaseReactComponent {
                     message={
                       this.state.initialList
                         ? "No addresses found."
-                        : "Add addresses to your watchlist from the Top accounts page."
+                        : "Add addresses to your watchlist from the Leaderboard page."
                     }
                     totalPage={this.state.totalPage}
                     history={this.props.history}
