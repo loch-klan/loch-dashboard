@@ -853,7 +853,7 @@ class WatchListPage extends BaseReactComponent {
                     message={
                       this.state.initialList
                         ? "No addresses found."
-                        : "Add addresses to your watchlist from the Leaderboard page."
+                        : "Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."
                     }
                     totalPage={this.state.totalPage}
                     history={this.props.history}
