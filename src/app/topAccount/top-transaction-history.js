@@ -1561,7 +1561,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             </div>
             <div className="transaction-history-table">
               {this.state.tableLoading ? (
-                <Loading />
+                <div className="loadingSizeContainer">
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
