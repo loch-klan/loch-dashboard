@@ -724,7 +724,7 @@ class WatchListPage extends BaseReactComponent {
             return (
               <RemarkInput
                 onSubmit={passRemarkChanged}
-                remark={rowData.remark}
+                remark={rowData.remark ? rowData.remark : ""}
               />
             );
           }
