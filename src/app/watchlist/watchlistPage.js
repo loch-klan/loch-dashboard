@@ -585,9 +585,15 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="Accounts"
-            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[0].title);
+              }
+            }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Name Tag
@@ -636,9 +642,15 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="isAnalyzed"
-            onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[1].title);
+              }
+            }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Analyzed
@@ -676,9 +688,15 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="remark"
-            onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[2].title);
+              }
+            }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Remarks
@@ -878,6 +896,7 @@ class WatchListPage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    showHeaderOnEmpty
                     tableData={this.state.tableData}
                     columnList={columnList}
                     message="Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."

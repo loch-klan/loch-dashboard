@@ -152,27 +152,70 @@ class CustomTable extends BaseReactComponent {
                 )}
               </AutoSizer>
             ) : (
-              <div
-                className={`not-found-wrapper ${
-                  isMiniversion ? "not-found-mini-wrapper" : ""
-                }`}
-              >
-                {/* <Image src={notFoundImage} /> */}
-                <p className="inter-display-medium f-s-16 lh-19 grey-313">
-                  {" "}
-                  {moduleName ? "No " + moduleName + " Found" : message}
-                </p>
-                {isButton && (
-                  <Button className="primary-btn" onClick={isButton}>
-                    {buttonText}
-                  </Button>
-                )}
-                {linkUrl && (
-                  <Link className="primary-btn" to={linkUrl}>
-                    {linkText}
-                  </Link>
-                )}
-              </div>
+              <>
+                {this.props.showHeaderOnEmpty ? (
+                  <AutoSizer disableHeight>
+                    {({ width }) => (
+                      <Table
+                        width={width}
+                        height={60 * (tableData.length + 1) - 10}
+                        headerHeight={headerHeight ? headerHeight : 80}
+                        rowHeight={60}
+                        rowCount={tableData.length}
+                        rowGetter={({ index }) => tableData[index]}
+                        className={`custom-table ${className}`}
+                        gridClassName={`${
+                          this.props.addWatermark ? "tableWatermark" : ""
+                        } ${
+                          this.props.addWatermarkMoveUp
+                            ? "tableWatermarkMoveUp"
+                            : ""
+                        }`}
+                      >
+                        {columnList &&
+                          columnList.length > 0 &&
+                          columnList.map((item, key) => {
+                            return (
+                              <Column
+                                key={key}
+                                // width={item.coumnWidth}
+                                width={width * item.coumnWidth}
+                                className={item.className}
+                                label={item.labelName}
+                                dataKey={item.dataKey}
+                                cellRenderer={({ rowData }) => {
+                                  return item.cell(rowData, item.dataKey);
+                                }}
+                                headerClassName={item.headerClassName}
+                              />
+                            );
+                          })}
+                      </Table>
+                    )}
+                  </AutoSizer>
+                ) : null}
+                <div
+                  className={`not-found-wrapper ${
+                    isMiniversion ? "not-found-mini-wrapper" : ""
+                  }`}
+                >
+                  {/* <Image src={notFoundImage} /> */}
+                  <p className="inter-display-medium f-s-16 lh-19 grey-313">
+                    {" "}
+                    {moduleName ? "No " + moduleName + " Found" : message}
+                  </p>
+                  {isButton && (
+                    <Button className="primary-btn" onClick={isButton}>
+                      {buttonText}
+                    </Button>
+                  )}
+                  {linkUrl && (
+                    <Link className="primary-btn" to={linkUrl}>
+                      {linkText}
+                    </Link>
+                  )}
+                </div>
+              </>
             )}
           </>
         )}
