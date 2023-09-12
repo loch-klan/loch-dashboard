@@ -52,7 +52,6 @@ class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
-    console.log("Pulled ", addWalletList);
     addWalletList =
       addWalletList && addWalletList?.length > 0
         ? addWalletList?.map((e) => {
@@ -391,6 +390,12 @@ class FixAddModal extends BaseReactComponent {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+    if (!prevWallets[currentIndex].loadingNameTag) {
+      this.handleSetNameTagLoadingTrue({
+        id: name,
+        address: value,
+      });
+    }
     this.timeout = setTimeout(() => {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 500);
@@ -407,10 +412,7 @@ class FixAddModal extends BaseReactComponent {
         this,
         false
       );
-      this.handleSetNameTagLoadingTrue({
-        id: name,
-        address: value,
-      });
+
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1060,7 +1062,6 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
-    console.log("addWalletList ", this.state.addWalletList);
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
@@ -1253,117 +1254,114 @@ class FixAddModal extends BaseReactComponent {
               </div>
             )}
 
-            {elem.coinFound && elem.showNickname && (
-              <div
-                className={`awBottomInputWrapper ${
-                  elem.showAddress ? "mt-2" : ""
-                }`}
-              >
-                <div className="awInputContainer">
-                  <div
-                    style={
-                      index % 2 === 0
-                        ? {
-                            display: elem.nickname === "" ? "none" : "block",
-                          }
-                        : {
-                            opacity: elem.nickname === "" ? 0 : 1,
-                            cursor: "default",
-                          }
-                    }
-                    className="awLable"
-                  >
-                    Private Nametag
+            {(elem.displayAddress || elem.address) &&
+              elem.coinFound &&
+              elem.showNickname && (
+                <div
+                  className={`awBottomInputWrapper ${
+                    elem.showAddress ? "mt-2" : ""
+                  }`}
+                >
+                  <div className="awInputContainer">
+                    {(elem.showAddress &&
+                      elem.showNameTag &&
+                      elem.nameTag &&
+                      !elem.loadingNameTag) ||
+                    (elem.showAddress && elem.loadingNameTag) ? (
+                      <div className="awLable">Private Nametag</div>
+                    ) : null}
+                    <input
+                      // autoFocus
+                      name={`wallet${index + 1}`}
+                      value={elem.nickname || ""}
+                      placeholder="Enter Private Nametag"
+                      // className='inter-display-regular f-s-16 lh-20'
+                      className={`inter-display-regular f-s-16 lh-20 awInput`}
+                      onChange={(e) => this.handleOnchangeNickname(e)}
+                      id={elem.id}
+                      style={getPadding(
+                        `add-wallet-${index}`,
+                        elem,
+                        this.props.OnboardingState
+                      )}
+                      onFocus={(e) => {
+                        // console.log(e);
+                        this.FocusInInput(e);
+                      }}
+                      onBlur={(e) => {
+                        AddWalletAddressNickname({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          nickname: e.target?.value,
+                          address: elem.address,
+                        });
+                        if (this.props.updateTimer) {
+                          this.props.updateTimer();
+                        }
+                      }}
+                    />
                   </div>
-                  <input
-                    // autoFocus
-                    name={`wallet${index + 1}`}
-                    value={elem.nickname || ""}
-                    placeholder="Enter Private Nametag"
-                    // className='inter-display-regular f-s-16 lh-20'
-                    className={`inter-display-regular f-s-16 lh-20 awInput`}
-                    onChange={(e) => this.handleOnchangeNickname(e)}
-                    id={elem.id}
-                    style={getPadding(
-                      `add-wallet-${index}`,
-                      elem,
-                      this.props.OnboardingState
-                    )}
-                    onFocus={(e) => {
-                      // console.log(e);
-                      this.FocusInInput(e);
-                    }}
-                    onBlur={(e) => {
-                      AddWalletAddressNickname({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        nickname: e.target?.value,
-                        address: elem.address,
-                      });
-                      if (this.props.updateTimer) {
-                        this.props.updateTimer();
-                      }
-                    }}
-                  />
-                </div>
-                {!elem.showAddress &&
-                  this.state.addWalletList?.map((e, i) => {
-                    if (
-                      this.state.addWalletList[index].address &&
-                      e.id === `wallet${index + 1}`
-                    ) {
-                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                      if (e.coinFound && e.coins.length > 0) {
-                        return (
-                          <CustomCoin
-                            isStatic
-                            coins={e.coins.filter((c) => c.chain_detected)}
-                            key={i}
-                            isLoaded={true}
-                          />
-                        );
-                      } else {
-                        if (
-                          e.coins.length ===
-                          this.props.OnboardingState.coinsList.length
-                        ) {
+                  {!elem.showAddress &&
+                    this.state.addWalletList?.map((e, i) => {
+                      if (
+                        this.state.addWalletList[index].address &&
+                        e.id === `wallet${index + 1}`
+                      ) {
+                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                        if (e.coinFound && e.coins.length > 0) {
                           return (
                             <CustomCoin
                               isStatic
-                              coins={null}
+                              coins={e.coins.filter((c) => c.chain_detected)}
                               key={i}
                               isLoaded={true}
                             />
                           );
                         } else {
-                          return (
-                            <CustomCoin
-                              isStatic
-                              coins={null}
-                              key={i}
-                              isLoaded={false}
-                            />
-                          );
+                          if (
+                            e.coins.length ===
+                            this.props.OnboardingState.coinsList.length
+                          ) {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={true}
+                              />
+                            );
+                          } else {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={false}
+                              />
+                            );
+                          }
                         }
+                      } else {
+                        return "";
                       }
-                    } else {
-                      return "";
-                    }
-                  })}
-                {elem.showAddress && !elem.nameTag && elem.loadingNameTag ? (
-                  <div className="awBlockContainer">
-                    <div className="awLable">Public Nametag</div>
-                    <CustomCoin isStatic coins={null} isLoaded={false} />
-                  </div>
-                ) : null}
-                {elem.showAddress && elem.showNameTag && elem.nameTag ? (
-                  <div className="awBlockContainer">
-                    <div className="awLable">Public Nametag</div>
-                    <div className="awNameTag">{elem.nameTag}</div>
-                  </div>
-                ) : null}
-              </div>
-            )}
+                    })}
+                  {elem.showAddress && elem.loadingNameTag ? (
+                    <div className="awBlockContainer">
+                      <div className="awLable">Public Nametag</div>
+                      <CustomCoin isStatic coins={null} isLoaded={false} />
+                    </div>
+                  ) : null}
+                  {elem.showAddress &&
+                  elem.showNameTag &&
+                  elem.nameTag &&
+                  !elem.loadingNameTag ? (
+                    <div className="awBlockContainer">
+                      <div className="awLable">Public Nametag</div>
+                      <div className="awNameTag">{elem.nameTag}</div>
+                    </div>
+                  ) : null}
+                </div>
+              )}
           </div>
         </div>
       );
