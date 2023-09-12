@@ -48,6 +48,7 @@ import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
   WatchlistClickedAccount,
+  WatchlistDeleteAddress,
   WatchlistNameHover,
   WatchlistPage,
   WatchlistRemarkAdded,
@@ -511,6 +512,14 @@ class WatchListPage extends BaseReactComponent {
     tempUpdateWatchListata.append("remarks", passedRemark ? passedRemark : "");
     this.props.updateAddToWatchList(tempUpdateWatchListata);
   };
+  addressDeleted = (passedAddress, passedNameTag) => {
+    WatchlistDeleteAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: passedAddress,
+      name_tag: passedNameTag,
+    });
+  };
   render() {
     const columnList = [
       {
@@ -712,7 +721,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        coumnWidth: 0.3,
+        coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
@@ -735,7 +744,7 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: "",
         dataKey: "deleteCol",
-        coumnWidth: 0.15,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "deleteCol") {
@@ -743,7 +752,12 @@ class WatchListPage extends BaseReactComponent {
               const data = new URLSearchParams();
               data.append("address", rowData.address);
 
-              this.props.removeAddressFromWatchList(data, this);
+              this.props.removeAddressFromWatchList(
+                data,
+                this,
+                rowData.address,
+                rowData.nameTag
+              );
             };
             return (
               <div

@@ -11,6 +11,8 @@ import { CustomButton } from "../../utils/form";
 import { getPadding } from "../../utils/ReusableFunctions";
 import { addAddressToWatchList } from "./redux/WatchListApi";
 import { START_INDEX } from "../../utils/Constant";
+import { WatchlistAddAddress } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class AddWatchListAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -278,10 +280,21 @@ class AddWatchListAddressModal extends BaseReactComponent {
       data.append("wallet_address", tempWalletAddress);
       data.append("type", "self");
       data.append("name_tag", tempNameTag);
-      this.props.addAddressToWatchList(data, this);
+      this.props.addAddressToWatchList(
+        data,
+        this,
+        tempWalletAddress,
+        tempNameTag
+      );
     }
   };
-  showAddressesAdded = () => {
+  showAddressesAdded = (passedAddress, passedNameTag) => {
+    WatchlistAddAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: passedAddress,
+      name_tag: passedNameTag,
+    });
     this.setState({ addressesAdded: true });
     this.refetchList();
   };

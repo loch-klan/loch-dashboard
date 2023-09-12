@@ -4792,6 +4792,36 @@ export const WatchlistSearch = ({ session_id, email_address, search }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const WatchlistDeleteAddress = ({
+  session_id,
+  email_address,
+  address,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: address deleted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nametag: name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistAddAddress = ({
+  session_id,
+  email_address,
+  address,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nametag: name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const WatchlistSortByNameTag = ({ session_id, email_address }) => {
   const event_name = "Watchlist: sort by name tag";
   const eventProperties = {

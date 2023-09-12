@@ -80,13 +80,18 @@ export const getWatchListByUser = (data) => {
   };
 };
 
-export const addAddressToWatchList = (data, ctx) => {
+export const addAddressToWatchList = (
+  data,
+  ctx,
+  passedAddress,
+  passedNameTag
+) => {
   return async function () {
     postLoginInstance
       .post("wallet/user-wallet/add-update-watchlist", data)
       .then((res) => {
         if (!res.data.error && ctx.showAddressesAdded) {
-          ctx.showAddressesAdded();
+          ctx.showAddressesAdded(passedAddress, passedNameTag);
         }
       })
       .catch((err) => {
@@ -98,7 +103,12 @@ export const addAddressToWatchList = (data, ctx) => {
       });
   };
 };
-export const removeAddressFromWatchList = (data, ctx) => {
+export const removeAddressFromWatchList = (
+  data,
+  ctx,
+  passedAddress,
+  passedNameTag
+) => {
   return async function () {
     postLoginInstance
       .post("wallet/user-wallet/delete-watchlist", data)
@@ -108,6 +118,9 @@ export const removeAddressFromWatchList = (data, ctx) => {
           console.log("Address deleted");
           if (ctx.refetchList) {
             ctx.refetchList();
+            if (ctx.addressDeleted) {
+              ctx.addressDeleted(passedAddress, passedNameTag);
+            }
           }
         } else {
           toast.error("Something Went Wrong");
