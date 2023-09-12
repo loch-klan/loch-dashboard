@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import postLoginInstance from "../../../utils/PostLoginAxios";
 import {
   GET_WATCHLIST_DATA,
@@ -94,6 +95,26 @@ export const addAddressToWatchList = (data, ctx) => {
           ctx.refetchList();
         }
         console.log("addAddressToWatchList error", err);
+      });
+  };
+};
+export const removeAddressFromWatchList = (data, ctx) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/delete-watchlist", data)
+      .then((res) => {
+        console.log("Start ", res);
+        if (!res.data.error) {
+          console.log("Address deleted");
+          if (ctx.refetchList) {
+            ctx.refetchList();
+          }
+        } else {
+          toast.error("Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong");
       });
   };
 };
