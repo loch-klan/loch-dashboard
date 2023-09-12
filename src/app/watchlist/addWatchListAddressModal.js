@@ -92,6 +92,12 @@ class AddWatchListAddressModal extends BaseReactComponent {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+    if (!walletCopy[foundIndex].loadingNameTag) {
+      this.handleSetNameTagLoadingTrue({
+        id: name,
+        address: value,
+      });
+    }
     // timeout;
     this.timeout = setTimeout(() => {
       this.getCoinBasedOnWalletAddress(name, value);
@@ -194,10 +200,6 @@ class AddWatchListAddressModal extends BaseReactComponent {
         this,
         false
       );
-      this.handleSetNameTagLoadingTrue({
-        id: name,
-        address: value,
-      });
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -535,11 +537,9 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 return "";
                               }
                             })}
-                          {elem.showAddress &&
-                          !elem.nameTag &&
-                          elem.loadingNameTag ? (
+                          {elem.showAddress && elem.loadingNameTag ? (
                             <div className="awBlockContainer">
-                              <div className="awLable">Nametag</div>
+                              <div className="awLable">Public Nametag</div>
                               <CustomCoin
                                 isStatic
                                 coins={null}
@@ -549,9 +549,10 @@ class AddWatchListAddressModal extends BaseReactComponent {
                           ) : null}
                           {elem.showAddress &&
                           elem.showNameTag &&
-                          elem.nameTag ? (
+                          elem.nameTag &&
+                          !elem.loadingNameTag ? (
                             <div className="awBlockContainer">
-                              <div className="awLable">Nametag</div>
+                              <div className="awLable">Public Nametag</div>
                               <div className="awNameTag">{elem.nameTag}</div>
                             </div>
                           ) : null}
