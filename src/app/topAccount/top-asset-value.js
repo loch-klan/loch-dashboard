@@ -303,7 +303,7 @@ class TopAssetValueGraph extends Component {
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               topaccount={true}
-              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
             />

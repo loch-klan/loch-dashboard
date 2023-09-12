@@ -12,10 +12,10 @@ import {
 import {
   createAnonymousUserApi,
   getAllParentChains,
-  detectNameTag,
   getAllCoins,
   detectCoin,
 } from "./Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -454,6 +454,14 @@ class AddWallet extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
         this.props.detectCoin(
           {
             id: name,
@@ -522,6 +530,34 @@ class AddWallet extends BaseReactComponent {
 
     newAddress[i].apiAddress = data?.apiaddress;
 
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
     this.setState({
       walletInput: newAddress,
     });
