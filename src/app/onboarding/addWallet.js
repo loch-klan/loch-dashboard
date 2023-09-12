@@ -995,7 +995,7 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                <div className="awLable">Nickname</div>
+                                <div className="awLable">Private Nametag</div>
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
