@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import postLoginInstance from "../../../utils/PostLoginAxios";
 import {
   GET_WATCHLIST_DATA,
@@ -5,7 +6,7 @@ import {
   TOP_ACCOUNT_IN_WATCHLIST,
 } from "./ActionTypes";
 export const getWatchList = (data) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-watchlist", data)
       .then((res) => {
@@ -39,7 +40,7 @@ export const getWatchListLoading = () => {
   };
 };
 export const updateAddToWatchList = (data) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-update-watchlist", data)
       .then((res) => {
@@ -50,7 +51,7 @@ export const updateAddToWatchList = (data) => {
   };
 };
 export const removeFromWatchList = (data) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/delete-watchlist", data)
       .then((res) => {
@@ -62,7 +63,7 @@ export const removeFromWatchList = (data) => {
 };
 
 export const getWatchListByUser = (data) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-watchlist-by-user")
       .then((res) => {
@@ -76,5 +77,44 @@ export const getWatchListByUser = (data) => {
         }
       })
       .catch((err) => {});
+  };
+};
+
+export const addAddressToWatchList = (data, ctx) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/add-update-watchlist", data)
+      .then((res) => {
+        if (!res.data.error && ctx.showAddressesAdded) {
+          ctx.showAddressesAdded();
+        }
+      })
+      .catch((err) => {
+        if (ctx.hideModal) {
+          ctx.hideModal();
+          ctx.refetchList();
+        }
+        console.log("addAddressToWatchList error", err);
+      });
+  };
+};
+export const removeAddressFromWatchList = (data, ctx) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/delete-watchlist", data)
+      .then((res) => {
+        console.log("Start ", res);
+        if (!res.data.error) {
+          console.log("Address deleted");
+          if (ctx.refetchList) {
+            ctx.refetchList();
+          }
+        } else {
+          toast.error("Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong");
+      });
   };
 };
