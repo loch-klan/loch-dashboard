@@ -359,7 +359,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 name={`wallet${index + 1}`}
                                 value={c.nickname || ""}
                                 className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                placeholder="Enter nickname"
+                                placeholder="Enter Private Nametag"
                                 title={c.nickname || ""}
                                 onChange={(e) => {
                                   this.nicknameOnChain(e);

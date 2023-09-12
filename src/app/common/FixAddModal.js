@@ -1112,7 +1112,7 @@ class FixAddModal extends BaseReactComponent {
                     value={elem.nickname || ""}
                     className="inter-display-regular f-s-16  lh-19 black-191"
                     type="text"
-                    placeholder="Enter Nickname"
+                    placeholder="Enter Private Nametag"
                     id={elem.id}
                     name={`wallet${index + 1}`}
                     onChange={(e) => this.handleFixWalletChangeNickname(e)}
@@ -1260,12 +1260,26 @@ class FixAddModal extends BaseReactComponent {
                 }`}
               >
                 <div className="awInputContainer">
-                  <div className="awLable">Nickname</div>
+                  <div
+                    style={
+                      index % 2 === 0
+                        ? {
+                            display: elem.nickname === "" ? "none" : "block",
+                          }
+                        : {
+                            opacity: elem.nickname === "" ? 0 : 1,
+                            cursor: "default",
+                          }
+                    }
+                    className="awLable"
+                  >
+                    Private Nametag
+                  </div>
                   <input
                     // autoFocus
                     name={`wallet${index + 1}`}
                     value={elem.nickname || ""}
-                    placeholder="Enter Nickname"
+                    placeholder="Enter Private Nametag"
                     // className='inter-display-regular f-s-16 lh-20'
                     className={`inter-display-regular f-s-16 lh-20 awInput`}
                     onChange={(e) => this.handleOnchangeNickname(e)}
@@ -1338,13 +1352,13 @@ class FixAddModal extends BaseReactComponent {
                   })}
                 {elem.showAddress && !elem.nameTag && elem.loadingNameTag ? (
                   <div className="awBlockContainer">
-                    <div className="awLable">Name tag</div>
+                    <div className="awLable">Public Nametag</div>
                     <CustomCoin isStatic coins={null} isLoaded={false} />
                   </div>
                 ) : null}
                 {elem.showAddress && elem.showNameTag && elem.nameTag ? (
                   <div className="awBlockContainer">
-                    <div className="awLable">Name tag</div>
+                    <div className="awLable">Public Nametag</div>
                     <div className="awNameTag">{elem.nameTag}</div>
                   </div>
                 ) : null}
