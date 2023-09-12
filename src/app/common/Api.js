@@ -25,6 +25,18 @@ import {
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { getAllWalletListApi } from "../wallet/Api";
+import {
+  BinanceIcon,
+  BitstampIcon,
+  BybitIcon,
+  CoinbaseIcon,
+  GeminiIcon,
+  HuobiIcon,
+  krakanIcon,
+  KuCoinIcon,
+  OkxIcon,
+} from "../../assets/images/icons";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -86,7 +98,6 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
-        console.log("IS IT CALLED");
         if (!res.data.error) {
           postLoginInstance
             .post("wallet/user-wallet/add-yield-pools", yieldData)
@@ -103,7 +114,6 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
                 let obj = {}; // <----- new Object
                 obj["address"] = apiResponse.user.user_wallets[i].address;
-                console.log("apiResponse is ", apiResponse);
                 obj["displayAddress"] =
                   apiResponse.user.user_wallets[i]?.display_address;
 
@@ -1020,7 +1030,13 @@ export const VerifyEmail = (data, ctx) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                if (ctx.emailIsVerified) {
+                  setTimeout(() => {
+                    UpdateUserDetails(userdata, ctx);
+                  }, 2000);
+                } else {
+                  UpdateUserDetails(userdata, ctx);
+                }
               } else {
                 // console.log("welcome upgrade signin")
                 let obj = JSON.parse(localStorage.getItem("lochUser"));
@@ -1450,15 +1466,68 @@ export const updateAccessToken = (data, ctx, name) => {
           ctx.state.onHide();
           // window.location.reload();
           setTimeout(() => {
-            ctx.props.setPageFlagDefault();
-            ctx.props?.handleUpdate && ctx.props.handleUpdate();
+            // ctx.props.setPageFlagDefault();
+            // ctx.props?.handleUpdate && ctx.props.handleUpdate();
             ctx.props.openPopup();
           }, 1000);
         }
+        let tempWalletData = [];
+        if (ctx.props.HeaderState) {
+          tempWalletData = ctx.props.HeaderState.wallet;
+        } else {
+          const walletList = ctx.props.walletState.walletList;
+          if (walletList) {
+            tempWalletData = walletList.map((walRes) => {
+              if (walRes?.chains.length === 0) {
+                return {
+                  exchangeCode: walRes.protocol.code,
+                  exchangeSymbol: walRes.protocol.symbol,
+                  isExchange: true,
+                };
+              }
+              return {
+                nickname: walRes.nickname,
+                displayAddress: walRes.display_address,
+                address: walRes.address,
+              };
+            });
+          }
+        }
+        let tempData = [
+          ...tempWalletData,
+          {
+            exchangeCode: name,
+            exchangeSymbol: getExhangeIcon(name.toLowerCase()),
+            isExchange: true,
+          },
+        ];
+        ctx.props.setHeaderReducer(tempData);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
+};
+const getExhangeIcon = (name) => {
+  if (name === "coinbase") {
+    return CoinbaseIcon;
+  } else if (name === "binance") {
+    return BinanceIcon;
+  } else if (name === "bitstamp") {
+    return BitstampIcon;
+  } else if (name === "bybit") {
+    return BybitIcon;
+  } else if (name === "gemini") {
+    return GeminiIcon;
+  } else if (name === "huobi") {
+    return HuobiIcon;
+  } else if (name === "okx") {
+    return OkxIcon;
+  } else if (name === "krakan") {
+    return krakanIcon;
+  } else if (name === "kuCoin") {
+    return KuCoinIcon;
+  }
+  return CoinbaseIcon;
 };
 
 // Nametag API
@@ -1485,15 +1554,18 @@ export const detectNameTag = (
             const resNameTag = res.data.data.result[0];
             ctx.handleSetNameTag({ ...wallet }, resNameTag);
           } else {
+            ctx.handleSetNameTag({ ...wallet }, "");
             ctx.handleSetNameTagLoadingFalse({ ...wallet });
           }
         } else {
+          ctx.handleSetNameTag({ ...wallet }, "");
           ctx.handleSetNameTagLoadingFalse({ ...wallet });
         }
       })
       .catch((err) => {
         // console.log("Catch", err);
         ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        ctx.handleSetNameTag({ ...wallet }, "");
       });
   };
 };
