@@ -23,7 +23,6 @@ import {
 } from "../../utils/form";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import "./_watchlist.scss";
-
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
@@ -63,9 +62,11 @@ import {
   getWatchList,
   updateAddToWatchList,
   getWatchListLoading,
+  removeAddressFromWatchList,
 } from "./redux/WatchListApi";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -460,6 +461,11 @@ class WatchListPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
+  refetchList = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    this.callApi(page);
+  };
   updateWatchListAnalyzed = (
     passedNameTag,
     passedAddress,
@@ -517,7 +523,6 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "account",
-        // coumnWidth: 153,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
@@ -596,7 +601,6 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "nametag",
-        // coumnWidth: 153,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
@@ -648,8 +652,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "isAnalyzed",
-        // coumnWidth: 153,
-        coumnWidth: 0.3,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "isAnalyzed") {
@@ -689,8 +692,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        // coumnWidth: 153,
-        coumnWidth: 0.35,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
@@ -706,6 +708,34 @@ class WatchListPage extends BaseReactComponent {
                 onSubmit={passRemarkChanged}
                 remark={rowData.remark}
               />
+            );
+          }
+        },
+      },
+      {
+        labelName: "",
+        dataKey: "deleteCol",
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "deleteCol") {
+            const deleteThisAddress = (isChecked) => {
+              const data = new URLSearchParams();
+              data.append("address", rowData.address);
+
+              this.props.removeAddressFromWatchList(data, this);
+            };
+            return (
+              <div
+                className="watchListDeleteContainer"
+                onClick={deleteThisAddress}
+              >
+                <Image
+                  style={{ height: "2rem", width: "2rem" }}
+                  src={DeleteIcon}
+                  className="watchListDelete"
+                />
+              </div>
             );
           }
         },
@@ -850,11 +880,7 @@ class WatchListPage extends BaseReactComponent {
                   <TransactionTable
                     tableData={this.state.tableData}
                     columnList={columnList}
-                    message={
-                      this.state.initialList
-                        ? "No addresses found."
-                        : "Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."
-                    }
+                    message="Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
@@ -886,6 +912,7 @@ const mapDispatchToProps = {
   getWatchListLoading,
   GetAllPlan,
   getUser,
+  removeAddressFromWatchList,
 };
 
 WatchListPage.propTypes = {};
