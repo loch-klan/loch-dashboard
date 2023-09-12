@@ -1554,15 +1554,18 @@ export const detectNameTag = (
             const resNameTag = res.data.data.result[0];
             ctx.handleSetNameTag({ ...wallet }, resNameTag);
           } else {
+            ctx.handleSetNameTag({ ...wallet }, "");
             ctx.handleSetNameTagLoadingFalse({ ...wallet });
           }
         } else {
+          ctx.handleSetNameTag({ ...wallet }, "");
           ctx.handleSetNameTagLoadingFalse({ ...wallet });
         }
       })
       .catch((err) => {
         // console.log("Catch", err);
         ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        ctx.handleSetNameTag({ ...wallet }, "");
       });
   };
 };
