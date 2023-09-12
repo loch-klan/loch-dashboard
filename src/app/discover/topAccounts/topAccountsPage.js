@@ -757,7 +757,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Name tag
+            Nametag
             </span>
             <Image
               src={sortByIcon}

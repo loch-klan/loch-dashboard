@@ -526,7 +526,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                           !elem.nameTag &&
                           elem.loadingNameTag ? (
                             <div className="awBlockContainer">
-                              <div className="awLable">Name tag</div>
+                              <div className="awLable">Nametag</div>
                               <CustomCoin
                                 isStatic
                                 coins={null}
@@ -538,7 +538,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                           elem.showNameTag &&
                           elem.nameTag ? (
                             <div className="awBlockContainer">
-                              <div className="awLable">Name tag</div>
+                              <div className="awLable">Nametag</div>
                               <div className="awNameTag">{elem.nameTag}</div>
                             </div>
                           ) : null}
