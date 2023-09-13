@@ -1760,7 +1760,7 @@ form {
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
-    border-bottom: 0.1rem solid $grey-E5E;
+    border-bottom: 0.1rem solid var(--cardSeperator);
 
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
@@ -1782,10 +1782,10 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: brightness(0.5) var(--invertColor);
             }
           }
 
@@ -1955,11 +1955,11 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--primaryGainColor);
           }
 
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--primaryLossColor);
           }
         }
       }

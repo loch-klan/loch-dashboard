@@ -7,9 +7,13 @@
   --cardSeperator: #e5e5e680;
   --primaryTextColor: #0d0d0d;
   --primarySubTextColor: #adadad;
+  --primaryGainColor: rgba(208, 252, 234, 0.5);
+  --primaryLossColor: rgba(250, 217, 217, 0.5);
+  --primaryDropdownBackground: #f2f2f2;
+  --primaryDropdownBorder: #0d0d0d;
+  --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
+  --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   // UPDATED
-  $boxShadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
-    0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0%);
 
@@ -34,12 +38,18 @@
   --cardSeperator: #313233;
   --primaryTextColor: white;
   --primarySubTextColor: #7c7d81;
+  --primaryGainColor: rgba(208, 252, 234, 1);
+  --primaryLossColor: rgba(250, 217, 217, 1);
+  --primaryDropdownBackground: #313233;
+  --primaryDropdownBorder: white;
+  --primaryDropdownSelectedItem: #313233;
+  --primaryBoxShadowColor: hsla(240, 2%, 90%, 0.05);
   // UPDATED
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
 
   // Secondary
-  --secondaryTextColor: white;
+  --secondaryTextColor: #7c7d81;
   --secondaryDarkTextColor: white;
 
   //TEMP
