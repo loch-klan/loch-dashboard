@@ -254,7 +254,22 @@ class TopAssetValueGraph extends Component {
     });
     this.updateTimer();
   };
+  getTotalAssetValue = () => {
+    if (this.props.topAccountState) {
+      const tempWallet = this.props.topAccountState.walletTotal
+        ? this.props.topAccountState.walletTotal
+        : 0;
+      const tempCredit = this.props.topAccountState.totalYield
+        ? this.props.topAccountState.totalYield
+        : 0;
+      const tempDebt = this.props.topAccountState.totalDebt
+        ? this.props.topAccountState.totalDebt
+        : 0;
 
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   render() {
     return (
       <>
@@ -267,6 +282,8 @@ class TopAssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.topAccountState.yesterdayBalance}
+                assetTotal={this.getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -303,7 +320,7 @@ class TopAssetValueGraph extends Component {
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               topaccount={true}
-              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
             />

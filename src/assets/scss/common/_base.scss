@@ -94,11 +94,13 @@
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
-  background-color: $grey-F2F;
+}
+body {
+  background-color: var(--primaryBackgroud);
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
 }
 
 h1,
@@ -1075,6 +1077,8 @@ form {
   text-overflow: ellipsis;
 }
 .table-wrapper {
+  background-color: var(--cardBackgroud) !important;
+  border: 0.1rem solid var(--cardSeperator);
   .form-group {
     width: 8rem;
     margin-left: 3rem;
@@ -1759,7 +1763,7 @@ form {
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
-    border-bottom: 0.1rem solid $grey-E5E;
+    border-bottom: 0.1rem solid var(--cardSeperator);
 
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
@@ -1781,10 +1785,10 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: brightness(0.5) var(--invertColor);
             }
           }
 
@@ -1954,11 +1958,11 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--primaryGainColor);
           }
 
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--primaryLossColor);
           }
         }
       }
