@@ -1457,6 +1457,17 @@ backdrop-filter: blur(15px);">
                     style={this.props.hideTimeFilter ? { width: "100%" } : {}}
                   >
                     {this.state.selectedEvents?.length > 0 &&
+                    this.state.selectedEvents?.filter((e) => e.text === "from")
+                      .length > 0 ? (
+                      <h5 className="inter-display-bold f-s-13 lh-16 black-191 m-b-10">
+                        <Image
+                          style={{ marginRight: "0.5rem" }}
+                          src={DoubleArrow}
+                        />
+                        <span>Received</span>
+                      </h5>
+                    ) : null}
+                    {this.state.selectedEvents?.length > 0 &&
                       this.state.selectedEvents
                         ?.filter((e) => e.text === "from")
                         .map((event, i) => {
@@ -1481,11 +1492,6 @@ backdrop-filter: blur(15px);">
                                 //   }`,
                                 // }}
                               >
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  {event.text === "from" ? "Received" : "Sent"}
-                                </h5>
-
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
                                     <span className="inter-display-semi-bold">
@@ -1534,6 +1540,17 @@ backdrop-filter: blur(15px);">
                     style={this.props.hideTimeFilter ? { width: "100%" } : {}}
                   >
                     {this.state.selectedEvents?.length > 0 &&
+                    this.state.selectedEvents?.filter((e) => e.text === "to")
+                      .length > 0 ? (
+                      <h5 className="inter-display-bold f-s-13 lh-16 black-191 m-b-10">
+                        <Image
+                          style={{ marginRight: "0.5rem" }}
+                          src={DoubleArrow}
+                        />
+                        <span>Sent</span>
+                      </h5>
+                    ) : null}
+                    {this.state.selectedEvents?.length > 0 &&
                       this.state.selectedEvents
                         ?.filter((e) => e.text === "to")
                         .map((event, i) => {
@@ -1558,11 +1575,6 @@ backdrop-filter: blur(15px);">
                                 //   }`,
                                 // }}
                               >
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  {event.text === "from" ? "Received" : "Sent"}
-                                </h5>
-
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
                                     <span className="inter-display-semi-bold">
