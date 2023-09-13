@@ -99,7 +99,9 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      {props.showpath ? breadCrumb : ""}
+      <div className="breadcrumbsContainer">
+        {props.showpath ? breadCrumb : ""}
+      </div>
 
       <div className="headerBlock">
         <div className="headerBlockLeft">

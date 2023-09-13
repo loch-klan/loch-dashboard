@@ -1,0 +1,69 @@
+.paginationWrapper {
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 0;
+  position: absolute;
+  bottom: -5rem;
+  right: 0;
+  .rightArrow {
+    cursor: pointer;
+    filter: var(--invertColor);
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .leftArrow {
+    opacity: 0.6;
+  }
+  .leftArrowPrev {
+    cursor: pointer;
+    filter: var(--invertColor);
+    &:hover {
+      opacity: 1;
+    }
+  }
+  button {
+    background-color: var(--primaryBackgroud);
+    border-color: var(--primaryBackgroud);
+    box-shadow: 0 0 10px #d3d3d3;
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: var(--primaryBackgroud);
+      color: var(--secondaryDarkTextColor);
+    }
+    &:disabled {
+      color: #000000;
+    }
+    img {
+      width: 2rem;
+    }
+  }
+  h5 {
+    display: inline-block;
+    margin: 0 2rem;
+  }
+  input {
+    // display: flex;
+    background: var(--cardBackgroud);
+    border: 0.1rem solid var(--cardSeperator);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+      0px 1px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 0.8rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
+    width: 7rem;
+    text-align: center;
+    color: var(--primaryTextColor);
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

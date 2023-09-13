@@ -4,6 +4,13 @@
   align-items: center;
   // align-items: baseline;
   // flex-direction: column;
+  .breadcrumbsContainer {
+    .breadcrumb {
+      background-color: var(--primaryBackgroud);
+      .breadcrumb-item {
+      }
+    }
+  }
   nav {
     ol {
       align-items: center;
@@ -27,7 +34,7 @@
           color: var(--secondaryTextColor);
 
           &:hover {
-            color: var(--primaryTextColor);
+            color: var(--secondaryDarkTextColor);
 
             img {
               filter: brightness(0.5);
@@ -36,7 +43,7 @@
         }
       }
       .active {
-        color: var(--grey636);
+        color: var(--secondaryDarkTextColor);
       }
       .breadcrumb-item:nth-child(1) {
         padding: 0rem;
