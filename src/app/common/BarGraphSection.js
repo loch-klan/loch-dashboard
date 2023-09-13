@@ -492,46 +492,6 @@ class BarGraphSection extends Component {
                         />
                       </div>
                     )}
-                    {!this.props.isSmallerToggle ? (
-                      <div className="bottomExplainersContainer">
-                        <div className="bottomExplainersLeftText">$0.00</div>
-                        <div className="bottomExplainers">
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text="Sum total of all assets received by your portfolio."
-                            className={"fix-width"}
-                            isLeftText
-                          >
-                            <Image src={InfoIcon} className="infoIcon" />
-                          </CustomOverlay>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text="Sum total of all assets and fees sent out by your portfolio"
-                            className={"fix-width"}
-                            isLeftText
-                          >
-                            <Image src={InfoIcon} className="infoIcon" />
-                          </CustomOverlay>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text="Outflows - Inflows"
-                            className={"fix-width"}
-                            isLeftText
-                          >
-                            <Image src={InfoIcon} className="infoIcon" />
-                          </CustomOverlay>
-                        </div>
-                      </div>
-                    ) : null}
                   </>
                 )}
               </div>
