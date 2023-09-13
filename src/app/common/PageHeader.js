@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Breadcrumb, Image } from "react-bootstrap";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
 import { Link } from "react-router-dom";
@@ -148,6 +148,32 @@ export default function PageHeader(props) {
               >
                 {props.title}
               </h4>
+              {props.showExplainers ? (
+                <div
+                  style={{
+                    marginLeft: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CustomOverlay
+                    showExplainers={props.showExplainers}
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    className={"fix-width"}
+                    isLeftText
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="infoIcon"
+                      style={{ cursor: "pointer", height: "1.6rem" }}
+                    />
+                  </CustomOverlay>
+                </div>
+              ) : null}
             </div>
             {props.subTitle ? (
               <div className="interDisplayMediumText interDisplaySubText f-s-16 lh-19">

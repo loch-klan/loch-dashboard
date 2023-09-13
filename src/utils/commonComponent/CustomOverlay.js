@@ -18,6 +18,7 @@ function CustomOverlay({
   isLeftText,
   heading,
   subHeading,
+  showExplainers,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -30,7 +31,70 @@ function CustomOverlay({
     >
       {isInfo ? (
         <>
-          {heading ? (
+          {showExplainers ? (
+            <div
+              style={{
+                textAlign: "left",
+              }}
+            >
+              <div
+                className="m-b-30 "
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                }}
+              >
+                <div style={{ width: "22%" }}>
+                  <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                    Inflows
+                  </h3>
+                </div>
+                <div style={{ width: "65%" }}>
+                  <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                    Sum of all assets received by your portfolio
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="m-b-30 "
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                }}
+              >
+                <div style={{ width: "22%" }}>
+                  <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                    Outflows
+                  </h3>
+                </div>
+                <div style={{ width: "65%" }}>
+                  <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                    Sum of all assets and fees sent out by your portfolio
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className=""
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                }}
+              >
+                <div style={{ width: "22%" }}>
+                  <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                    Net
+                  </h3>
+                </div>
+                <div style={{ width: "65%" }}>
+                  <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                    Outflows - Inflows
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : heading ? (
             <div
               className={`${isText ? "text-tooltip" : "button-tooltip"} ${
                 isLeftText ? "text-left" : ""
