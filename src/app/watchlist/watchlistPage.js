@@ -610,7 +610,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Nametag
             </span>
             <Image
