@@ -29,7 +29,7 @@ import {
   UpdateCryptoPayment,
   VerifyEmail,
 } from "./Api.js";
-import { updateUser } from "../profile/Api";
+
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -792,7 +792,7 @@ class UpgradeModal extends BaseReactComponent {
       payLoader: false,
     });
 
-    getUser(this, true);
+    this.props.getUser(this, true);
     // if its form welcome page then redirect to Home page
     setTimeout(() => {
       // console.log("text", this.props.from, this.props.from === "home");
@@ -1540,6 +1540,7 @@ const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
   getAllParentChains,
+  getUser,
 };
 
 UpgradeModal.propTypes = {};
