@@ -677,9 +677,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="time"
             onClick={() => this.handleTableSort("time")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Date
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">Date</span>
             <Image
               src={sortByIcon}
               className={
@@ -694,7 +692,11 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
-            return moment(rowData.time).format("MM/DD/YY");
+            return (
+              <div className="interDisplayMediumText f-s-13 lh-16">
+                {moment(rowData.time).format("MM/DD/YY")}
+              </div>
+            );
           }
         },
       },
@@ -705,9 +707,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              From
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">From</span>
             <Image
               src={sortByIcon}
               className={
@@ -764,7 +764,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <span>
+                  <span className="interDisplayMediumText">
                     <Image
                       src={
                         rowData.from.metaData?.wallet_metaData?.symbol ||
@@ -793,7 +793,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <span>
+                    <span className="interDisplayMediumText">
                       <Image
                         src={rowData.from.wallet_metaData.symbol}
                         className="history-table-icon"
@@ -848,6 +848,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                         //     : rowData.from.metaData?.displayAddress,
                         // });
                       }}
+                      className="interDisplayMediumText"
                     >
                       {this.TruncateText(rowData.from.wallet_metaData.text)}
                       <Image
@@ -860,6 +861,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   )
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
+                    className="interDisplayMediumText"
                     onMouseEnter={() => {
                       // TransactionHistoryAddress({
                       //   session_id: getCurrentUser().id,
@@ -880,7 +882,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
+                  <span className="interDisplayMediumText">
                     <Image
                       src={unrecognizedIcon}
                       className="history-table-icon"
@@ -915,9 +917,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">To</span>
             <Image
               src={sortByIcon}
               className={
@@ -1125,9 +1125,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Asset
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">Asset</span>
             <Image
               src={sortByIcon}
               className={
@@ -1167,9 +1165,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Amount
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">Amount</span>
             <Image
               src={sortByIcon}
               className={
@@ -1195,7 +1191,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   "en-US"
                 )}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="interDisplayMediumText f-s-13 lh-16  ellipsis-div">
                   {Number(noExponents(rowData.amount.value)).toLocaleString(
                     "en-US"
                   )}
@@ -1212,9 +1208,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="interDisplayMediumText f-s-13 lh-16 ">{`${CurrencyType(
               true
-            )} Amount (Then)`}</span>
+            )} amount (Then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1256,7 +1252,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="interDisplayMediumText f-s-13 lh-16  ellipsis-div">
                     {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
@@ -1268,7 +1264,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="interDisplayMediumText f-s-13 lh-16  ellipsis-div">
                     {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
@@ -1285,9 +1281,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="usdTransactionFee"
             onClick={() => this.handleTableSort("usdTransaction")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="interDisplayMediumText f-s-13 lh-16 ">{`${CurrencyType(
               true
-            )} Fee (Then)`}</span>
+            )} fee (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1327,7 +1323,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="interDisplayMediumText f-s-13 lh-16  ellipsis-div">
                     {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
@@ -1339,7 +1335,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="interDisplayMediumText f-s-13 lh-16  ellipsis-div">
                     {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
@@ -1356,9 +1352,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Method
-            </span>
+            <span className="interDisplayMediumText f-s-13 lh-16 ">Method</span>
             <Image
               src={sortByIcon}
               className={
@@ -1386,13 +1380,13 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                           : "gain"
                       }`}
                     >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
+                      <span className="text-capitalize interDisplayMediumText interDisplayMediumTextDarkerText f-s-13 lh-16 ">
                         {rowData.method}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                  <div className="text-capitalize interDisplayMediumText f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
                     {rowData.method}
                   </div>
                 )}
@@ -1547,7 +1541,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   <div className="ShowDust">
                     <p
                       onClick={this.showDust}
-                      className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                      className="interDisplayMediumText f-s-16 lh-19 cp grey-ADA"
                     >
                       {this.state.showDust
                         ? "Reveal dust (less than $1)"

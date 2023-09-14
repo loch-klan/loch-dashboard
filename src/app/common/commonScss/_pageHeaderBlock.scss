@@ -37,7 +37,7 @@
             color: var(--secondaryDarkTextColor);
 
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightness);
             }
           }
         }

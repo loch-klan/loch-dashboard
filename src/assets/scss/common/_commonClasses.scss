@@ -34,3 +34,8 @@
 .invertFilter {
   filter: var(--invertColor);
 }
+.brightnessFilter {
+  &:hover {
+    filter: var(--hoverBrightness);
+  }
+}
