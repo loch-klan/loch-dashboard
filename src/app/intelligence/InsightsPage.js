@@ -512,10 +512,10 @@ class InsightsPage extends Component {
                               ? reduceRisk
                               : increaseYield
                           }
-                          className="insight-icon"
+                          className="insightIcon"
                         />
-                        <div className="insights-content">
-                          <div className="chips-wrapper">
+                        <div className="insightsContent">
+                          <div className="chipsWrapper">
                             <h5 className="interDisplayBoldText f-s-10 lh-12 titleChip">
                               {InsightType.getText(insight.insight_type)}
                             </h5>

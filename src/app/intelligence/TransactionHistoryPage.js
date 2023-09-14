@@ -797,7 +797,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="time"
             onClick={() => this.handleTableSort("time")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16">Date</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Date
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -827,7 +829,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">From</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              From
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1044,7 +1048,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">To</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              To
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1261,7 +1267,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">Asset</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Asset
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1301,7 +1309,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">Amount</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Amount
+            </span>
             <Image
               src={sortByIcon}
               className={
@@ -1344,7 +1354,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">{`${CurrencyType(
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -1421,7 +1431,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdTransactionFee"
             onClick={() => this.handleTableSort("usdTransaction")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">{`${CurrencyType(
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} fee (then)`}</span>
             <Image
@@ -1495,7 +1505,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="interDisplayMediumText f-s-13 lh-16 ">Method</span>
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Method
+            </span>
             <Image
               src={sortByIcon}
               className={

@@ -1791,7 +1791,7 @@ form {
           &.no-hover {
             &:hover {
               span {
-                color: $grey-4F4;
+                color: var(--secondaryDarkTextColor);
               }
               img {
                 filter: none;
@@ -1914,7 +1914,7 @@ form {
               border-radius: 0.4rem;
               padding: 0.6rem;
               width: fit-content;
-              background: rgba(229, 229, 230, 0.5);
+              background: var(--tableNumberCover);
             }
           }
 
@@ -1959,6 +1959,11 @@ form {
 
           .loss {
             background: var(--primaryLossColor);
+          }
+          .noGainNoLoss {
+            span {
+              color: var(--primaryTextColor);
+            }
           }
         }
       }
@@ -2274,7 +2279,7 @@ textarea {
   // right: 2rem;
   cursor: pointer;
   user-select: none;
-  border: 1px solid rgba(29, 29, 31, 0.14);
+  border: 1px solid var(--primarySubTextColor);
   &:hover {
     // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
     // border: 0.1rem solid rgba(229, 229, 230, 1);
@@ -2301,34 +2306,35 @@ textarea {
     input {
       @include font($primary, "Inter-Regular", 1.3rem, normal, 1.5rem);
       // padding: 1rem !important;
+      background-color: var(--cardBackgroud);
       min-height: 3rem;
       width: 100%;
       border-radius: 6px;
-      border: 1px solid #d4d4d4;
-
+      border: 1px solid var(--cardBorder);
+      color: var(--primaryTextColor);
       &::placeholder {
         font-size: 1.3rem;
         line-height: 1.5rem;
-        color: #b0b1b3;
+        color: var(--secondaryTextColor);
       }
 
       &:focus {
-        border: 1px solid $primary !important;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
     .form-control.is-valid {
       box-shadow: none;
-      border: 1px solid #d4d4d4;
+      border: 1px solid var(--cardBorder);
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
     .done {
       // box-shadow: 0 0 0.4rem  $grey-D3D;
-      border: 0.1rem solid $black-191 !important;
+      border: 0.1rem solid var(--cardBorder) !important;
     }
   }
 }

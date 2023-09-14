@@ -5,7 +5,7 @@ import { lightenDarkenColor } from "../../utils/ReusableFunctions";
 export default function CoinChip(props) {
   return (
     <div
-      className="coinChip"
+      className="coin-chip"
       style={props?.chain ? { position: "relative" } : {}}
     >
       <Image
