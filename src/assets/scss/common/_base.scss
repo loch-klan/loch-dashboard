@@ -2028,7 +2028,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightness);
   }
 }
 
@@ -2202,7 +2202,13 @@ textarea {
     }
   }
 }
-
+.footerContainer {
+  padding-left: 13.4rem;
+  padding-right: 13.2rem;
+}
+.footerLine {
+  border-bottom: 1px solid var(--cardBorder);
+}
 .social-media-icon {
   width: 2rem;
   cursor: pointer;

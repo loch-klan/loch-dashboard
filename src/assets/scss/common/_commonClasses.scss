@@ -15,6 +15,13 @@
   color: var(--primaryTextColor);
   line-height: normal;
 }
+.interDisplayBoldText {
+  font-family: "Inter-Bold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
 .interDisplaySubText {
   color: var(--primarySubTextColor);
 }
@@ -33,4 +40,9 @@
 }
 .invertFilter {
   filter: var(--invertColor);
+}
+.brightnessFilter {
+  &:hover {
+    filter: var(--hoverBrightness);
+  }
 }

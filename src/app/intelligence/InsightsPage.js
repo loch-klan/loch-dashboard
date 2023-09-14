@@ -37,7 +37,11 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
+import "./intelligenceScss/_insightsPage.scss";
+import {
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions";
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
@@ -363,7 +367,7 @@ class InsightsPage extends Component {
   };
   render() {
     return (
-      <>
+      <div className="insightsPageContainer">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -384,8 +388,8 @@ class InsightsPage extends Component {
             </div>
           </div>
         </div>
-        <div className="insights-section m-t-80">
-          <div className="insights-page page">
+        <div className="insightsSection m-t-80">
+          <div className="insightsPage page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -416,7 +420,29 @@ class InsightsPage extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToDarkMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Dark Mode
+              </Button>
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToLightMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Light Mode
+              </Button>
+            </div>
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
@@ -431,7 +457,7 @@ class InsightsPage extends Component {
             <div style={{ position: "relative" }}>
               {
                 // this.state.insightList && this.state.insightList.length > 0 &&
-                <div className="insights-filter">
+                <div className="insightsFilter">
                   {this.state.insightFilter?.map((filter, key) => {
                     return (
                       <div
@@ -458,7 +484,7 @@ class InsightsPage extends Component {
                   marginBottom: "2rem",
                 }}
               >
-                <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                <h2 className="interDisplayMediumText f-s-25 l-h-30">
                   This week
                 </h2>
 
@@ -468,7 +494,7 @@ class InsightsPage extends Component {
                   onMouseEnter={this.onHoverDropdown}
                 >
                   <DropDown
-                    class="cohort-dropdown"
+                    class="insightDropdown"
                     list={[
                       "All risks",
                       "Token Float Risk",
@@ -486,15 +512,15 @@ class InsightsPage extends Component {
                   />
                 </div>
               </div>
-              <div className="insights-wrapper">
-                {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+              <div className="insightsWrapper">
+                {/* <h2 className="interDisplayMediumText f-s-25 lh-30 black-191">This week</h2> */}
                 {this.state.isLoading ? (
                   <Loading />
                 ) : this.state.updatedInsightList &&
                   this.state.updatedInsightList.length > 0 ? (
                   this.state.updatedInsightList?.map((insight, key) => {
                     return (
-                      <div className="insights-card" key={key}>
+                      <div className="insightsCard" key={key}>
                         <Image
                           src={
                             insight.insight_type === InsightType.COST_REDUCTION
@@ -508,23 +534,23 @@ class InsightsPage extends Component {
                         />
                         <div className="insights-content">
                           <div className="chips-wrapper">
-                            <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                            <h5 className="interDisplayBoldText f-s-10 lh-12 titleChip">
                               {InsightType.getText(insight.insight_type)}
                             </h5>
                             {insight?.sub_type && (
-                              <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                              <h5 className="interDisplayBoldText f-s-10 lh-12 riskChip">
                                 {InsightType.getRiskType(insight.sub_type)}
                               </h5>
                             )}
                           </div>
                           <p
-                            className="inter-display-medium f-s-13 lh-16 grey-969"
+                            className="interDisplayMediumText f-s-13 lh-16 interDisplaySubText"
                             dangerouslySetInnerHTML={{
                               __html: insight.sub_title,
                             }}
                           ></p>
                           <h4
-                            className="inter-display-medium f-s-16 lh-19 grey-313"
+                            className="interDisplayMediumText f-s-16 lh-19"
                             dangerouslySetInnerHTML={{ __html: insight.title }}
                           ></h4>
                         </div>
@@ -551,25 +577,16 @@ class InsightsPage extends Component {
                           position: "relative",
                           marginTop: "5rem",
                         }}
+                        className="insightBlankCard"
                       >
-                        <div
-                          style={{
-                            position: "absolute",
-                            width: "16rem",
-                            height: "16rem",
-                            background:
-                              "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                            filter: "blur(50px)",
-                            borderRadius: "10rem",
-                            zIndex: 0,
-                          }}
-                        ></div>
+                        <div className="insightBlankCardBlurBackground"></div>
                         <Image
                           src={InsightImg}
                           style={{ position: "relative" }}
+                          className="invertFilter"
                         />
                         <h5
-                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                          className="interDisplayMediumText f-s-16 lh-19 text-center"
                           style={{
                             marginBottom: "1rem",
                             width: "90%",
@@ -581,7 +598,7 @@ class InsightsPage extends Component {
                           insights
                         </h5>
                         <p
-                          className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
+                          className="interDisplayMediumText interDisplaySubText f-s-13 lh-15 text-center"
                           style={{ position: "relative" }}
                         >
                           Insights increase with your usage
@@ -597,10 +614,10 @@ class InsightsPage extends Component {
               <div className="Insight-upgrade-wrapper m-t-16">
                 <div className="Insight-upgrade">
                   <Image src={GradientImg} />
-                  <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
+                  <h3 className="interDisplayMediumText f-s-25 lh-30 m-b-5 text-center">
                     More insights with Loch
                   </h3>
-                  <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
+                  <h5 className="interDisplayMediumText f-s-16 lh-19 grey-969 m-b-24 text-center">
                     Upgrade your plan
                   </h5>
                   <Button
@@ -614,12 +631,13 @@ class InsightsPage extends Component {
                 <div className="inner-box2"></div>
               </div>
             )}
-
-            {/* footer */}
+          </div>
+          {/* footer */}
+          <div className="footerContainer">
             <Footer />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
