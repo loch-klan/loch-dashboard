@@ -63,7 +63,7 @@
       height: 9rem;
       box-sizing: border-box;
       // padding: 2.05rem 0rem;
-      z-index: 99;
+      z-index: 10;
       box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.04),
         6px 1px 1px rgba(0, 0, 0, 0.04);
 
@@ -317,6 +317,9 @@
           font-size: 2.4rem;
           line-height: 3rem;
           color: $black-1D2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .growth-div {
@@ -324,6 +327,9 @@
           background: $green-E3F;
           border-radius: 8px;
           box-shadow: none;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           img {
             margin-right: 0.4rem;
             width: 1.85rem;

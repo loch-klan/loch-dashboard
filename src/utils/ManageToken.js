@@ -76,6 +76,7 @@ const resetPreviewAddress = () => {
       nickname: "",
       showAddress: true,
       showNickname: true,
+      showNameTag: true,
       apiAddress: "",
     })
   );

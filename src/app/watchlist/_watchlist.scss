@@ -30,6 +30,16 @@
   }
   .ReactVirtualized__Table__rowColumn {
     padding: 0 3rem !important;
+    .watchListDeleteContainer {
+      cursor: pointer;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      &:hover {
+        .watchListDelete {
+          filter: var(--hoverBrightness);
+        }
+      }
+    }
   }
 }
 
