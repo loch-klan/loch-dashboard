@@ -13,6 +13,8 @@
   --primaryDropdownBorder: #0d0d0d;
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
+  --primaryFilter: #f2f2f2;
+  --primaryActiveFilter: #fff;
   // UPDATED
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0%);
@@ -29,6 +31,10 @@
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
   --grey313: #313233;
+
+  //Insight Page
+  --insightBlurColorOne: rgba(255, 255, 255, 0.8);
+  --insightBlurColorTwo: rgba(255, 244, 158, 0.8);
 }
 [data-theme="dark"] {
   // UPDATED
@@ -45,6 +51,8 @@
   --primaryDropdownBorder: white;
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: hsla(240, 2%, 90%, 0.05);
+  --primaryFilter: #313233;
+  --primaryActiveFilter: #636467;
   // UPDATED
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
@@ -61,4 +69,8 @@
   --greyCac: #cacbcc;
   --grey313: #313233;
   --backColor: #fff;
+
+  //Insight Page
+  --insightBlurColorOne: rgba(255, 255, 255, 0.3);
+  --insightBlurColorTwo: rgba(255, 244, 158, 0.3);
 }
