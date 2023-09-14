@@ -23,7 +23,6 @@ import {
 } from "../../utils/form";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import "./_watchlist.scss";
-
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
@@ -49,6 +48,7 @@ import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
   WatchlistClickedAccount,
+  WatchlistDeleteAddress,
   WatchlistNameHover,
   WatchlistPage,
   WatchlistRemarkAdded,
@@ -63,6 +63,7 @@ import {
   getWatchList,
   updateAddToWatchList,
   getWatchListLoading,
+  removeAddressFromWatchList,
 } from "./redux/WatchListApi";
 import {
   TruncateText,
@@ -70,6 +71,7 @@ import {
   switchToLightMode,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -129,6 +131,7 @@ class WatchListPage extends BaseReactComponent {
       timeFIlter: "Time",
       tableData: [],
       startTime: "",
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -159,8 +162,8 @@ class WatchListPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -234,6 +237,7 @@ class WatchListPage extends BaseReactComponent {
         }
       );
     }
+
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -464,6 +468,11 @@ class WatchListPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
+  refetchList = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    this.callApi(page);
+  };
   updateWatchListAnalyzed = (
     passedNameTag,
     passedAddress,
@@ -507,6 +516,14 @@ class WatchListPage extends BaseReactComponent {
     tempUpdateWatchListata.append("remarks", passedRemark ? passedRemark : "");
     this.props.updateAddToWatchList(tempUpdateWatchListata);
   };
+  addressDeleted = (passedAddress, passedNameTag) => {
+    WatchlistDeleteAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: passedAddress,
+      name_tag: passedNameTag,
+    });
+  };
   render() {
     const columnList = [
       {
@@ -521,11 +538,18 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "account",
-        // coumnWidth: 153,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
+            const addressOrEns = () => {
+              const regex = /\.eth$/;
+              let tempAddress = rowData.address;
+              if (!regex.test(rowData.address)) {
+                tempAddress = this.TruncateText(rowData.address);
+              }
+              return tempAddress;
+            };
             return (
               <div
                 onClick={() => {
@@ -565,9 +589,9 @@ class WatchListPage extends BaseReactComponent {
                     this.props.history.push("/top-accounts/home");
                   }, 200);
                 }}
-                className="top-account-address interDisplayMediumText"
+                className="top-account-address dotDotText interDisplayMediumText"
               >
-                {TruncateText(rowData.address)}
+                {addressOrEns()}
               </div>
             );
           }
@@ -576,12 +600,18 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="Accounts"
-            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[0].title);
+              }
+            }}
           >
-            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
-              Name Tag
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16 grey-4F4">
+              Nametag
             </span>
             <Image
               src={sortByIcon}
@@ -592,7 +622,6 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "nametag",
-        // coumnWidth: 153,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
@@ -628,9 +657,15 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="isAnalyzed"
-            onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[1].title);
+              }
+            }}
           >
             <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Analyzed
@@ -644,8 +679,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "isAnalyzed",
-        // coumnWidth: 153,
-        coumnWidth: 0.3,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "isAnalyzed") {
@@ -669,9 +703,15 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter"
+            className={`cp history-table-header-col goToCenter ${
+              this.state.tableData.length === 0 ? "no-hover" : ""
+            }`}
             id="remark"
-            onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+            onClick={() => {
+              if (this.state.tableData.length > 0) {
+                this.handleSort(this.state.tableSortOpt[2].title);
+              }
+            }}
           >
             <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Remarks
@@ -685,8 +725,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        // coumnWidth: 153,
-        coumnWidth: 0.35,
+        coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
@@ -700,13 +739,62 @@ class WatchListPage extends BaseReactComponent {
             return (
               <RemarkInput
                 onSubmit={passRemarkChanged}
-                remark={rowData.remark}
+                remark={rowData.remark ? rowData.remark : ""}
               />
             );
           }
         },
       },
+      {
+        labelName: "",
+        dataKey: "deleteCol",
+        coumnWidth: 0.12,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "deleteCol") {
+            const deleteThisAddress = (isChecked) => {
+              const data = new URLSearchParams();
+              data.append("address", rowData.address);
+
+              this.props.removeAddressFromWatchList(
+                data,
+                this,
+                rowData.address,
+                rowData.nameTag
+              );
+            };
+            return (
+              <div
+                className="watchListDeleteContainer"
+                onClick={deleteThisAddress}
+              >
+                <Image
+                  style={{ height: "2rem", width: "2rem" }}
+                  src={DeleteIcon}
+                  className="watchListDelete"
+                />
+              </div>
+            );
+          }
+        },
+      },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -718,6 +806,8 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -734,6 +824,8 @@ class WatchListPage extends BaseReactComponent {
                 show={this.state.showAddWatchListAddress}
                 onHide={this.handleAddWatchlistAddress}
                 history={this.props.history}
+                callApi={this.callApi}
+                location={this.props.location}
               />
             ) : null}
             {this.state.addModal && (
@@ -795,8 +887,8 @@ class WatchListPage extends BaseReactComponent {
               topaccount={true}
               ShareBtn={false}
               handleShare={this.handleShare}
-              // btnText="Add address"
-              // handleBtn={this.handleAddWatchlistAddress}
+              btnText="Add address"
+              handleBtn={this.handleAddWatchlistAddress}
             />
 
             <div className="fillter_tabs_section">
@@ -865,13 +957,10 @@ class WatchListPage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    showHeaderOnEmpty
                     tableData={this.state.tableData}
                     columnList={columnList}
-                    message={
-                      this.state.initialList
-                        ? "No addresses found."
-                        : "Add addresses to your watchlist from the Top accounts page."
-                    }
+                    message="Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
@@ -894,6 +983,8 @@ class WatchListPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   WatchListState: state.WatchListState,
   WatchListLoadingState: state.WatchListLoadingState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   setPageFlagDefault,
@@ -901,6 +992,9 @@ const mapDispatchToProps = {
   getWatchList,
   updateAddToWatchList,
   getWatchListLoading,
+  GetAllPlan,
+  getUser,
+  removeAddressFromWatchList,
 };
 
 WatchListPage.propTypes = {};

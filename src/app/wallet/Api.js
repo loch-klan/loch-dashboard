@@ -196,6 +196,7 @@ export const deleteWallet = (ctx, data) => {
             nickname: "",
             showAddress: true,
             showNickname: true,
+            showNameTag: true,
             coins: [],
           });
         }

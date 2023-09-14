@@ -142,8 +142,8 @@ class Cost extends Component {
     this.getBlockchainFee(0, true);
     this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -918,6 +918,22 @@ class Cost extends Component {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
 
     return (
       <>
@@ -930,6 +946,8 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -989,7 +1007,7 @@ class Cost extends Component {
                 <p className="inter-display-regular f-s-13 lh-16 black-191">
                   This feature is coming soon.
                 </p>
-              </div> */}
+                </div> */}
                 <TransactionTable
                   title="Average cost basis"
                   subTitle="Understand your average entry price"
@@ -1114,6 +1132,8 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1134,6 +1154,8 @@ const mapDispatchToProps = {
   updateAverageCostBasis,
   updateWalletListFlag,
   getAllWalletListApi,
+  getUser,
+  GetAllPlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);
