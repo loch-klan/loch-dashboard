@@ -125,72 +125,6 @@
       }
     }
   }
-  .insightsWrapper {
-    h2 {
-      margin-bottom: 2rem;
-    }
-    .insightBlankCard {
-      min-height: 30rem;
-      .insightBlankCardBlurBackground {
-        position: absolute;
-        width: 16rem;
-        height: 16rem;
-        background: radial-gradient(
-          50% 50% at 50% 50%,
-          var(--insightBlurColorOne) 0%,
-          var(--insightBlurColorTwo) 100%
-        );
-        filter: blur(50px);
-        border-radius: 10rem;
-        z-index: 0;
-      }
-    }
-    .insightsCard {
-      background-color: var(--cardBackgroud);
-      width: 100%;
-      padding: 1.6rem 2rem;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
-        0px 1px 1px rgba(0, 0, 0, 0.04);
-      border-radius: 1.2rem;
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 2rem;
-      .insight-icon {
-        width: 4.4rem;
-        height: 4.4rem;
-        margin-right: 1.6rem;
-      }
-      .insights-content {
-        .chips-wrapper {
-          display: flex;
-          align-items: center;
-
-          .titleChip {
-            width: max-content;
-            padding: 4px 8px;
-            border-radius: 8px;
-            background-color: var(--greyCardBackgroud);
-          }
-          .riskChip {
-            width: max-content;
-            padding: 4px 8px;
-            border-radius: 8px;
-            background-color: var(--primaryTextColor);
-            margin-left: 0.8rem;
-            color: var(--cardBackgroud);
-            text-transform: uppercase;
-          }
-        }
-        p {
-          margin: 8px 0;
-        }
-      }
-    }
-    .text-center {
-      width: 70%;
-      margin: 0 auto 4rem;
-    }
-  }
 
   .Insight-upgrade-wrapper {
     position: relative;
@@ -259,5 +193,71 @@
       left: 50%;
       z-index: 1;
     }
+  }
+}
+.insightsWrapper {
+  h2 {
+    margin-bottom: 2rem;
+  }
+  .insightBlankCard {
+    min-height: 30rem;
+    .insightBlankCardBlurBackground {
+      position: absolute;
+      width: 16rem;
+      height: 16rem;
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        var(--insightBlurColorOne) 0%,
+        var(--insightBlurColorTwo) 100%
+      );
+      filter: blur(50px);
+      border-radius: 10rem;
+      z-index: 0;
+    }
+  }
+  .insightsCard {
+    background-color: var(--cardBackgroud);
+    width: 100%;
+    padding: 1.6rem 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+      0px 1px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    .insightIcon {
+      width: 4.4rem;
+      height: 4.4rem;
+      margin-right: 1.6rem;
+    }
+    .insightsContent {
+      .chipsWrapper {
+        display: flex;
+        align-items: center;
+
+        .titleChip {
+          width: max-content;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background-color: var(--greyCardBackgroud);
+        }
+        .riskChip {
+          width: max-content;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background-color: var(--primaryTextColor);
+          margin-left: 0.8rem;
+          color: var(--cardBackgroud);
+          text-transform: uppercase;
+        }
+      }
+      p {
+        margin: 8px 0;
+      }
+    }
+  }
+  .text-center {
+    width: 70%;
+    margin: 0 auto 4rem;
   }
 }

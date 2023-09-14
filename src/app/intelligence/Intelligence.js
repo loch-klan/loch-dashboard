@@ -747,7 +747,7 @@ class Intelligence extends Component {
                 updateTimer={this.updateTimer}
               />
               <div style={{ position: "relative" }}>
-                <div className="insights-wrapper">
+                <div className="insightsWrapper">
                   {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
@@ -758,7 +758,7 @@ class Intelligence extends Component {
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         return (
-                          <div className="insights-card" key={key}>
+                          <div className="insightsCard" key={key}>
                             <Image
                               src={
                                 insight.insight_type ===
@@ -769,10 +769,10 @@ class Intelligence extends Component {
                                   ? reduceRisk
                                   : increaseYield
                               }
-                              className="insight-icon"
+                              className="insightIcon"
                             />
-                            <div className="insights-content">
-                              <div className="chips-wrapper">
+                            <div className="insightsContent">
+                              <div className="chipsWrapper">
                                 <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
                                   {InsightType.getText(insight.insight_type)}
                                 </h5>
