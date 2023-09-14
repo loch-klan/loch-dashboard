@@ -18,7 +18,13 @@
   padding: 4rem;
   display: flex;
   align-items: flex-start;
-  background: linear-gradient(white, white, white, transparent, transparent);
+  background: linear-gradient(
+    var(--cardBackgroud),
+    var(--cardBackgroud),
+    var(--cardBackgroud),
+    transparent,
+    transparent
+  );
   .topAccountLeaderBoardBlurContainerTwo {
     display: flex;
     align-items: center;
@@ -48,9 +54,9 @@
     justify-content: center;
     margin-bottom: 2rem;
     padding: 2rem;
-    color: #b0b1b3;
+    color: var(--primarySubTextColor);
     font-weight: 600;
-    border-bottom: 0.25rem solid #b0b1b3;
+    border-bottom: 0.25rem solid var(--primarySubTextColor);
     cursor: pointer;
     transition-duration: 300ms;
 
@@ -63,10 +69,10 @@
     }
   }
   .topAccountsLochCommunitySelected {
-    color: #19191a;
-    border-color: #19191a;
+    color: var(--primaryTextColor);
+    border-color: var(--primaryTextColor);
     &:hover {
-      color: #19191a;
+      color: var(--primaryTextColor);
       filter: brightness(100%);
     }
   }

@@ -37,6 +37,8 @@ import {
   amountFormat,
   CurrencyType,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../../utils/ReusableFunctions";
 import {
   getCurrentUser,
@@ -681,7 +683,7 @@ class TopAccountPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Account
             </span>
             {/* <Image
@@ -706,7 +708,7 @@ class TopAccountPage extends BaseReactComponent {
               //   isText={true}
               //   text={rowData.account}
               // >
-              //   <div className="inter-display-medium f-s-13 lh-16 grey-313">
+              //   <div className="interDisplayMediumText f-s-13 lh-16 grey-313">
 
               //   </div>
               // </CustomOverlay>
@@ -741,7 +743,7 @@ class TopAccountPage extends BaseReactComponent {
                   this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
-                className="top-account-address"
+                className="top-account-address interDisplayMediumText"
               >
                 {this.TruncateText(rowData.account)}
               </span>
@@ -756,8 +758,8 @@ class TopAccountPage extends BaseReactComponent {
             id="tagName"
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-            Nametag
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Nametag
             </span>
             <Image
               src={sortByIcon}
@@ -790,6 +792,7 @@ class TopAccountPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
+                  className="interDisplayMediumText"
                 >
                   {rowData.tagName}
                 </span>
@@ -807,7 +810,7 @@ class TopAccountPage extends BaseReactComponent {
             id="networth"
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Net worth{" (" + CurrencyType(false) + ")"}
             </span>
             <Image
@@ -838,7 +841,7 @@ class TopAccountPage extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="interDisplayMediumText f-s-13 lh-16 ">
                       {numToCurrency(
                         rowData.networth * this.state.currency?.rate
                       )}
@@ -857,7 +860,7 @@ class TopAccountPage extends BaseReactComponent {
             id="netflows"
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Net flows {"(" + CurrencyType(false) + ")"}
             </span>
             <Image
@@ -897,7 +900,7 @@ class TopAccountPage extends BaseReactComponent {
                       rowData.netflows[type] < 0
                         ? "loss"
                         : rowData.netflows[type] === 0
-                        ? "cost-common"
+                        ? "noGainNoLoss"
                         : "gain"
                     }`}
                     onMouseEnter={() => {
@@ -918,7 +921,7 @@ class TopAccountPage extends BaseReactComponent {
                         src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                    <span className="interDisplayMediumText f-s-13 lh-16 grey-313 ml-2">
                       {(rowData.netflows[type] < 0 ? "-" : "") +
                         numToCurrency(
                           rowData.netflows[type] * this.state.currency?.rate
@@ -938,7 +941,7 @@ class TopAccountPage extends BaseReactComponent {
             id="largestBought"
             // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               <div>Largest inflows</div>
               <div>{inflowOutflowTimePeriod()}</div>
             </span>
@@ -1022,7 +1025,7 @@ class TopAccountPage extends BaseReactComponent {
             id="largestSold"
             // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               <div>Largest outflows</div>
               <div>{inflowOutflowTimePeriod()}</div>
             </span>
@@ -1103,7 +1106,7 @@ class TopAccountPage extends BaseReactComponent {
             id="isAddedToWatchList"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Watchlist
             </span>
             {/* <Image
@@ -1145,7 +1148,7 @@ class TopAccountPage extends BaseReactComponent {
       //       id="Gain loss"
       //       onClick={() => this.handleSort(this.state.sortBy[6])}
       //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //       <span className="interDisplayMediumText f-s-13 lh-16 grey-4F4">
       //         % Gain / Loss
       //       </span>
       //       <Image
@@ -1169,7 +1172,7 @@ class TopAccountPage extends BaseReactComponent {
       //           }`}
       //         >
       //           <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313">
+      //           <div className="interDisplayMediumText f-s-13 lh-16 grey-313">
       //             {rowData.GainLoss.toFixed(2) + "%"}
       //           </div>
       //         </div>
@@ -1252,6 +1255,29 @@ class TopAccountPage extends BaseReactComponent {
                 pname="treansaction history"
               />
             )}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToDarkMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Dark Mode
+              </Button>
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToLightMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Light Mode
+              </Button>
+            </div>
             <PageHeader
               title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
@@ -1268,7 +1294,7 @@ class TopAccountPage extends BaseReactComponent {
             />
             <div className="topAccountsLochCommunityContainer">
               <div
-                className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${
+                className={`topAccountsLochCommunity interDisplayMediumText f-s-16 lh-19 ${
                   this.state.communityLeaderboardSelected
                     ? ""
                     : "topAccountsLochCommunitySelected"
@@ -1286,7 +1312,7 @@ class TopAccountPage extends BaseReactComponent {
                 Loch’s Leaderboard
               </div>
               <div
-                className={`topAccountsLochCommunity inter-display-medium f-s-16 lh-19 ${
+                className={`topAccountsLochCommunity interDisplayMediumText f-s-16 lh-19 ${
                   this.state.communityLeaderboardSelected
                     ? "topAccountsLochCommunitySelected"
                     : ""
@@ -1330,7 +1356,7 @@ class TopAccountPage extends BaseReactComponent {
                     isTopaccount={true}
                   /> */}
                     <DropDown
-                      class="cohort-dropdown"
+                      class="topAccountsDropDown"
                       list={[
                         // "All time",
                         "2 weeks",
@@ -1454,7 +1480,7 @@ class TopAccountPage extends BaseReactComponent {
                   {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
-                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                    className="interDisplayMediumText f-s-16 lh-19 cp grey-ADA"
                   >
                     {this.state.showDust
                       ? "Reveal dust (less than $1)"

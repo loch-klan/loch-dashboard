@@ -35,6 +35,9 @@
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.8);
   --insightBlurColorTwo: rgba(255, 244, 158, 0.8);
+
+  //Table
+  --tableNumberCover: rgba(229, 229, 230, 0.5);
 }
 [data-theme="dark"] {
   // UPDATED
@@ -60,7 +63,7 @@
 
   // Secondary
   --secondaryTextColor: #7c7d81;
-  --secondaryDarkTextColor: white;
+  --secondaryDarkTextColor: #cacbcc;
 
   //TEMP
   --greyF2f: #f2f2f2;
@@ -73,4 +76,7 @@
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.3);
   --insightBlurColorTwo: rgba(255, 244, 158, 0.3);
+
+  //Table
+  --tableNumberCover: #313233;
 }

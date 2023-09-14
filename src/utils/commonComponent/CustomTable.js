@@ -158,14 +158,14 @@ class CustomTable extends BaseReactComponent {
                     <div className="topAccountLeaderBoardBlurContainerTwo">
                       <div className="topAccountLeaderBoardBlur">
                         <Image
-                          className="topAccountLeaderBoardBlurLogo"
+                          className="topAccountLeaderBoardBlurLogo invertFilter"
                           src={ContributeTrophyIcon}
                         />
                         <div className="exit-overlay-body">
-                          <h6 className="inter-display-medium f-s-24">
+                          <h6 className="interDisplayMediumText f-s-24">
                             Contribute to the community to unlock this list
                           </h6>
-                          <p className="inter-display-medium f-s-14 grey-969 mt-2">
+                          <p className="interDisplayMediumText f-s-14 grey-969 mt-2">
                             Add a unique address worth at least $1m to view the
                             full list
                           </p>

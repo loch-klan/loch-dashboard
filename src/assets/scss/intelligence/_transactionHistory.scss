@@ -136,7 +136,7 @@
       }
 
       // time filter
-      .cohort-dropdown {
+      .topAccountsDropDown {
         text-align: left !important;
         margin-top: 0rem;
 
@@ -145,47 +145,50 @@
           padding: 0.4rem;
           height: 14rem;
           overflow-y: scroll;
-
+          background-color: var(--cardBackgroud);
+          border-color: var(--cardBorder);
           .dropdown-item {
             padding: 0.8rem;
             position: relative;
             @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+            color: var(--primaryTextColor);
           }
         }
 
         .btn-primary:not(:disabled):not(.disabled):active {
-          background-color: rgba(229, 229, 230, 0.5) !important;
+          background-color: var(--primaryFilter);
           border: 0.1rem solid transparent !important;
-          color: $black-191;
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
         }
 
         .btn-primary.dropdown-toggle {
-          background-color: rgba(229, 229, 230, 0.5) !important;
+          background-color: var(--primaryFilter);
           border: 0.1rem solid transparent !important;
-          color: $black-191;
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
 
           &:hover {
-            border: 0.1rem solid $primary !important;
+            border: 0.1rem solid var(--primaryTextColor) !important;
           }
         }
 
         .btn-primary.dropdown-toggle:focus {
           box-shadow: none;
-          background-color: rgba(229, 229, 230, 0.5) !important;
-          border: 0.1rem solid $primary !important;
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          border: 0.1rem solid var(--primaryTextColor) !important;
+          color: var(--primaryTextColor);
         }
 
         .dropdown-toggle {
-          background-color: rgba(229, 229, 230, 0.5);
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
           min-width: 15rem;
+          transition-duration: 0ms;
         }
 
         .dropdown-toggle::after {

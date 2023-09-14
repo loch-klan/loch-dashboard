@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 
@@ -65,7 +65,11 @@ import {
   getWatchListLoading,
   removeAddressFromWatchList,
 } from "./redux/WatchListApi";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  TruncateText,
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 
@@ -528,7 +532,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Account
             </span>
           </div>
@@ -585,7 +589,7 @@ class WatchListPage extends BaseReactComponent {
                     this.props.history.push("/top-accounts/home");
                   }, 200);
                 }}
-                className="top-account-address dotDotText"
+                className="top-account-address dotDotText interDisplayMediumText"
               >
                 {addressOrEns()}
               </div>
@@ -606,7 +610,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16 grey-4F4">
               Nametag
             </span>
             <Image
@@ -639,7 +643,7 @@ class WatchListPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="dotDotText text-center"
+                  className="dotDotText text-center interDisplayMediumText"
                 >
                   {rowData.nameTag}
                 </span>
@@ -663,7 +667,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Analyzed
             </span>
             <Image
@@ -709,7 +713,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Remarks
             </span>
             <Image
@@ -851,6 +855,29 @@ class WatchListPage extends BaseReactComponent {
                 pname="treansaction history"
               />
             )}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToDarkMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Dark Mode
+              </Button>
+              <Button
+                className="primary-btn white-bg"
+                onClick={switchToLightMode}
+                style={{ transform: "scale(0.5)" }}
+              >
+                Light Mode
+              </Button>
+            </div>
             <PageHeader
               title={"Watchlist"}
               subTitle={"Addresses to watch"}

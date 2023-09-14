@@ -241,7 +241,11 @@ export default function PageHeader(props) {
               >
                 <Button
                   className="secondary-btn invertFilter white-bg"
-                  style={!props.btnText ? { marginRight: "0rem" } : {}}
+                  style={
+                    !props.btnText
+                      ? { marginRight: "0rem" }
+                      : { marginRight: "2rem" }
+                  }
                   onClick={props.handleShare}
                 >
                   Share
