@@ -2326,6 +2326,14 @@ textarea {
       }
     }
 
+    .form-control {
+      box-shadow: none;
+      border: 1px solid var(--cardBorder);
+
+      &:hover {
+        border: 1px solid var(--primaryTextColor) !important;
+      }
+    }
     .form-control.is-valid {
       box-shadow: none;
       border: 1px solid var(--cardBorder);
