@@ -1,38 +1,52 @@
 .bar-graph-section {
-    background: $secondary;
-    box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
-    border-radius: 1.2rem;
-    padding: 3.2rem 3.2rem 5rem 3.2rem;
-    width: 90rem;
+  background: $secondary;
+  box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
+    0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+  border-radius: 1.2rem;
+  padding: 3.2rem 3.2rem 5rem 3.2rem;
+  width: 90rem;
 
-    .show-percentage-div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .content {
-            padding: 0.8rem 1.2rem;
-            border-radius: 0.8rem;
-            display: flex;
-        }
-
-        .inc {
-            background-color: $green-E3F;
-        }
-        .dec{
-          background-color: #FFE0D9;
-        }
+  .show-percentage-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .content {
+      padding: 0.8rem 1.2rem;
+      border-radius: 0.8rem;
+      display: flex;
     }
 
-    .coin-badges {
-        .dropdown {
+    .inc {
+      background-color: $green-E3F;
+    }
+    .dec {
+      background-color: #ffe0d9;
+    }
+    .showBreakdownContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .leftAlignText {
+        text-align: left;
+      }
+      .infoIcon {
+        height: 1.6rem;
+        cursor: pointer;
+        margin-left: 1rem;
+      }
+    }
+  }
 
-            .dropdown-toggle,
-            .dropdown-toggle:focus {
-                box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
-            }
-        }
+  .coin-badges {
+    .dropdown {
+      .dropdown-toggle,
+      .dropdown-toggle:focus {
+        box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
+      }
     }
-    .custom-volume-graph{
-      height: 37rem;
-    }
+  }
+  .custom-volume-graph {
+    height: 37rem;
+  }
 }
