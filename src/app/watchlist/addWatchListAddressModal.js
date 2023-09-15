@@ -211,6 +211,13 @@ class AddWatchListAddressModal extends BaseReactComponent {
           id: name,
           address: value,
         });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
       }
 
       for (let i = 0; i < parentCoinList.length; i++) {
