@@ -605,7 +605,7 @@ class WatchListPage extends BaseReactComponent {
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Name Tag
+              Nametag
             </span>
             <Image
               src={sortByIcon}
