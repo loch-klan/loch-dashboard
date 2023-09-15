@@ -12,10 +12,10 @@ import {
 import {
   createAnonymousUserApi,
   getAllParentChains,
-  detectNameTag,
   getAllCoins,
   detectCoin,
 } from "./Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -453,6 +453,29 @@ class AddWallet extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
+          id: name,
+          address: value,
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -522,6 +545,34 @@ class AddWallet extends BaseReactComponent {
 
     newAddress[i].apiAddress = data?.apiaddress;
 
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
     this.setState({
       walletInput: newAddress,
     });
@@ -959,12 +1010,12 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                {/* <div className="awLable">Nickname</div> */}
+                                {/* <div className="awLable">Private Nametag</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Enter nickname"
+                                  placeholder="Enter Private Nametag"
                                   title={c.nickname || ""}
                                   onChange={(e) => {
                                     this.nicknameOnChain(e);

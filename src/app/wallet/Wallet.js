@@ -353,6 +353,7 @@ class Wallet extends Component {
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
                     display_address={wallet.display_address}
+                    nameTag={wallet.tag}
                     wallet_amount={wallet.total_value * currency?.rate}
                     wallet_coins={wallet?.chains}
                     makeApiCall={this.makeApiCall}

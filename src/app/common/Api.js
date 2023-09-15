@@ -152,6 +152,12 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
                   apiResponse.user.user_wallets[i]?.nickname !== ""
                     ? true
                     : false;
+                obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? apiResponse.user.user_wallets[i].tag
+                  : "";
+                obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? true
+                  : false;
                 newAddWallet.push(obj);
               }
               // console.log('newAddWallet',newAddWallet);
@@ -301,6 +307,7 @@ export const getUserAddresses = (ctx) => {
         for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
           let obj = {}; // <----- new Object
           obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+
           obj["displayAddress"] =
             apiResponse?.user?.user_wallets[i]?.display_address;
 
@@ -344,10 +351,17 @@ export const getUserAddresses = (ctx) => {
             apiResponse?.user?.user_wallets[i]?.nickname === "" ? true : false;
           obj["showNickname"] =
             apiResponse?.user?.user_wallets[i]?.nickname !== "" ? true : false;
+          obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+            ? apiResponse.user.user_wallets[i].tag
+            : "";
+          obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+            ? true
+            : false;
           newAddWallet.push(obj);
         }
       }
       // console.log('newAddWallet',newAddWallet);
+
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       setTimeout(() => {
         ctx.props.history.push({
@@ -383,6 +397,7 @@ export const sendWhopCode = (ctx, data) => {
           for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
             let obj = {}; // <----- new Object
             obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+
             obj["displayAddress"] =
               apiResponse?.user?.user_wallets[i]?.display_address;
 
@@ -430,6 +445,12 @@ export const sendWhopCode = (ctx, data) => {
               apiResponse?.user?.user_wallets[i]?.nickname !== ""
                 ? true
                 : false;
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
             newAddWallet.push(obj);
           }
         }
@@ -601,6 +622,7 @@ export const getDetectedChainsApi = (ctx) => {
                       wallet_metadata: {},
                       showAddress: true,
                       showNickname: true,
+                      showNameTag: true,
                       nickname: "",
                       apiAddress: "",
                     },
@@ -919,6 +941,7 @@ export const VerifyEmail = (data, ctx) => {
                 let obj = {}; // <----- new Object
                 // obj['address'] = apiResponse.user.wallets[i].address;
                 obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+
                 // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
                 obj["displayAddress"] =
                   apiResponse.user.user_wallets[i]?.display_address;
@@ -972,6 +995,12 @@ export const VerifyEmail = (data, ctx) => {
                     ? true
                     : false;
                 obj["apiAddress"] = apiResponse?.user?.user_wallets[i]?.address;
+                obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? apiResponse.user.user_wallets[i].tag
+                  : "";
+                obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? true
+                  : false;
 
                 addWallet.push(obj);
               }
@@ -1016,6 +1045,7 @@ export const VerifyEmail = (data, ctx) => {
                   ) {
                     let obj = {}; // <----- new Object
                     obj["address"] = apiResponse.user?.user_wallets[i].address;
+
                     obj["displayAddress"] =
                       apiResponse.user?.user_wallets[i]?.display_address;
                     obj["wallet_metadata"] =
@@ -1075,6 +1105,12 @@ export const VerifyEmail = (data, ctx) => {
                       apiResponse.user?.user_wallets[i]?.nickname !== ""
                         ? true
                         : false;
+                    obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+                      ? apiResponse.user.user_wallets[i].tag
+                      : "";
+                    obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+                      ? true
+                      : false;
                     obj["apiAddress"] =
                       apiResponse.user?.user_wallets[i]?.address;
 
@@ -1423,6 +1459,45 @@ export const updateAccessToken = (data, ctx, name) => {
     });
 };
 
+// Nametag API
+export const detectNameTag = (
+  wallet,
+  ctx = null,
+  isCohort = false,
+  index = 0
+) => {
+  return function (dispatch, getState) {
+    let data = new URLSearchParams();
+    data.append("address", wallet.address);
+    postLoginInstance
+      .post("wallet/user-wallet/get-nametag", data)
+      .then((res) => {
+        if (
+          !res.error &&
+          res.data &&
+          res.data.data &&
+          res.data.data.result &&
+          res.data.data.result.length > 0
+        ) {
+          if (res.data.data.result[0] && ctx) {
+            const resNameTag = res.data.data.result[0];
+            ctx.handleSetNameTag({ ...wallet }, resNameTag);
+          } else {
+            ctx.handleSetNameTag({ ...wallet }, "");
+            ctx.handleSetNameTagLoadingFalse({ ...wallet });
+          }
+        } else {
+          ctx.handleSetNameTag({ ...wallet }, "");
+          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        }
+      })
+      .catch((err) => {
+        // console.log("Catch", err);
+        ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        ctx.handleSetNameTag({ ...wallet }, "");
+      });
+  };
+};
 // api page flage
 
 export const updateWalletListFlag = (page, status) => {
@@ -1590,6 +1665,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             let obj = {}; // <----- new Object
             // obj['address'] = apiResponse.user.wallets[i].address;
             obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+
             // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
@@ -1639,6 +1715,12 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               apiResponse?.user?.user_wallets[i]?.nickname !== ""
                 ? true
                 : false;
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
             obj["apiAddress"] = apiResponse?.user?.user_wallets[i]?.address;
 
             addWallet.push(obj);
@@ -1676,6 +1758,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               for (let i = 0; i < apiResponse.user?.user_wallets?.length; i++) {
                 let obj = {}; // <----- new Object
                 obj["address"] = apiResponse.user?.user_wallets[i].address;
+
                 obj["displayAddress"] =
                   apiResponse.user?.user_wallets[i]?.display_address;
                 obj["wallet_metadata"] =
@@ -1734,6 +1817,12 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
                   apiResponse.user?.user_wallets[i]?.nickname !== ""
                     ? true
                     : false;
+                obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? apiResponse.user.user_wallets[i].tag
+                  : "";
+                obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+                  ? true
+                  : false;
                 obj["apiAddress"] = apiResponse.user?.user_wallets[i]?.address;
 
                 newAddWallet.push(obj);
