@@ -86,7 +86,6 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
-        console.log("IS IT CALLED");
         if (!res.data.error) {
           postLoginInstance
             .post("wallet/user-wallet/add-yield-pools", yieldData)
@@ -103,7 +102,6 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
                 let obj = {}; // <----- new Object
                 obj["address"] = apiResponse.user.user_wallets[i].address;
-                console.log("apiResponse is ", apiResponse);
                 obj["displayAddress"] =
                   apiResponse.user.user_wallets[i]?.display_address;
 
