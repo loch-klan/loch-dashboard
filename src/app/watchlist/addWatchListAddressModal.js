@@ -196,14 +196,23 @@ class AddWatchListAddressModal extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      this.props.detectNameTag(
-        {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
           id: name,
           address: value,
-        },
-        this,
-        false
-      );
+        });
+      }
+
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
