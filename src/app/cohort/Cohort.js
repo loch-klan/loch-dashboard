@@ -623,6 +623,7 @@ class Cohort extends Component {
                 handleAddModal={this.handleAddModal}
                 // handleUpdate={this.handleUpdateWallet}
                 updateTimer={this.updateTimer}
+                hideButton
               />
             </div>
           </div>
