@@ -859,6 +859,7 @@ class CohortPage extends BaseReactComponent {
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
                 updateTimer={this.updateTimer}
+                hideButton
               />
             </div>
           </div>
