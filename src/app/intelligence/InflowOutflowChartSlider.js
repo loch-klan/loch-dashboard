@@ -551,11 +551,17 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                   </>
                 )}
                 <div
-                  className="chart-y-selection"
+                  // className="chart-y-selection"
                   style={
                     this.props.hideTimeFilter
-                      ? { width: "100%", marginTop: "0.5rem" }
-                      : { width: "100%" }
+                      ? {
+                          width: "100%",
+                        }
+                      : {
+                          width: "100%",
+                          paddingBottom: "1rem",
+                          paddingTop: "0.5rem",
+                        }
                   }
                 >
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
