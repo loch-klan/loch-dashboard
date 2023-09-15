@@ -23,6 +23,20 @@
     .dec {
       background-color: #ffe0d9;
     }
+    .showBreakdownContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      .leftAlignText {
+        text-align: left;
+      }
+      .infoIcon {
+        height: 1.6rem;
+        cursor: pointer;
+        margin-left: 1rem;
+      }
+    }
   }
 
   .coin-badges {

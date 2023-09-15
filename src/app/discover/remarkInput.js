@@ -7,10 +7,23 @@ class RemarkInput extends BaseReactComponent {
     super(props);
 
     this.state = {
-      remark: props?.remark || "",
+      remark: "",
     };
   }
-
+  componentDidMount() {
+    if (this.props.remark !== undefined || this.props.remark !== null) {
+      this.setState({
+        remark: this.props.remark,
+      });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.remark !== this.props.remark) {
+      this.setState({
+        remark: this.props.remark,
+      });
+    }
+  }
   onSubmit = () => {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.remark);

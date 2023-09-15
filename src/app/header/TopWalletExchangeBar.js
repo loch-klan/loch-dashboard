@@ -10,7 +10,7 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-
+import { setHeaderReducer } from "./HeaderAction";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -70,6 +70,7 @@ class TopBar extends Component {
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
+      const tempWalletListToPush = [];
       if (walletList) {
         walletList.map((data) => {
           if (data?.chains.length === 0) {
@@ -91,6 +92,14 @@ class TopBar extends Component {
             } else if (data?.address) {
               tempWalletList.push(this.TruncateText(data.address));
             }
+
+            const sendThis = {
+              nickname: data.nickname,
+              displayAddress: data.display_address,
+              address: data.address,
+              nameTag: data.tag,
+            };
+            tempWalletListToPush.push(sendThis);
           }
           return null;
         });
@@ -108,11 +117,13 @@ class TopBar extends Component {
           firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
           exchangeListImages: tempExchangeListImages,
         });
+        const passDataHeader = [...tempWalletListToPush];
+        this.props.setHeaderReducer(passDataHeader);
       }
     }
   };
   applyTempWalletList = () => {
-    if (this.props.HeaderState?.wallet?.length > 0) {
+    if (this.props.HeaderState?.wallet) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
       const regex = /\.eth$/;
@@ -121,6 +132,8 @@ class TopBar extends Component {
           let tempAddress = "";
           if (data?.nickname) {
             tempAddress = data.nickname;
+          } else if (data?.nameTag) {
+            tempAddress = data.nameTag;
           } else if (data?.displayAddress) {
             tempAddress = data.displayAddress;
             if (!regex.test(tempAddress)) {
@@ -237,6 +250,8 @@ const mapStateToProps = (state) => ({
   HeaderState: state.HeaderState,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setHeaderReducer,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

@@ -256,6 +256,7 @@ export const verifyUser = (ctx, info) => {
             let obj = {}; // <----- new Object
             // obj['address'] = apiResponse.user.wallets[i].address;
             obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+
             // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
@@ -305,7 +306,12 @@ export const verifyUser = (ctx, info) => {
               apiResponse?.user?.user_wallets[i]?.nickname !== ""
                 ? true
                 : false;
-
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
             addWallet.push(obj);
           }
 
@@ -463,6 +469,7 @@ export const createAnonymousUserApi = (
           for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
             let obj = {}; // <----- new Object
             obj["address"] = apiResponse.user.user_wallets[i].address;
+
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
             const chainsDetected =
@@ -501,6 +508,12 @@ export const createAnonymousUserApi = (
               apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
             obj["showNickname"] =
               apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
             newAddWallet.push(obj);
           }
           if (ctx.state.podName) {
@@ -657,6 +670,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
         let obj = {}; // <----- new Object
         obj["address"] = apiResponse.user.user_wallets[i].address;
+
         obj["displayAddress"] =
           apiResponse.user.user_wallets[i]?.display_address;
         const chainsDetected =
@@ -695,6 +709,12 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
           apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
         obj["showNickname"] =
           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
+        obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+          ? apiResponse.user.user_wallets[i].tag
+          : "";
+        obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+          ? true
+          : false;
         newAddWallet.push(obj);
       }
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));

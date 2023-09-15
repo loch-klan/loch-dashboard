@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Breadcrumb, Image } from "react-bootstrap";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
 import { Link } from "react-router-dom";
@@ -124,13 +124,41 @@ export default function PageHeader(props) {
             ""
           )}
           <div>
-            <h4
-              className={`inter-display-medium f-s-24 lh-30 ${
-                props.showImg || props.multipleImg ? "" : "m-b-8"
-              }`}
-            >
-              {props.title}
-            </h4>
+            <div style={{ display: "flex" }}>
+              <h4
+                className={`inter-display-medium f-s-24 lh-30 ${
+                  props.showImg || props.multipleImg ? "" : "m-b-8"
+                }`}
+              >
+                {props.title}
+              </h4>
+              {props.showExplainers ? (
+                <div
+                  style={{
+                    marginLeft: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CustomOverlay
+                    showExplainers={props.showExplainers}
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    className={"fix-width"}
+                    isLeftText
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="infoIcon"
+                      style={{ cursor: "pointer", height: "1.6rem" }}
+                    />
+                  </CustomOverlay>
+                </div>
+              ) : null}
+            </div>
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}

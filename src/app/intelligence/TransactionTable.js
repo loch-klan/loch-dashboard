@@ -36,6 +36,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"
         }`}
