@@ -686,7 +686,7 @@ class AddWallet extends BaseReactComponent {
       addWalletTemp?.forEach((w, i) => {
         w.id = `wallet${i + 1}`;
       });
-      if (addWalletTemp && addWalletTemp.length > 1) {
+      if (addWalletTemp && addWalletTemp.length > 0) {
         const filteredAddWalletTemp = addWalletTemp.filter(
           (filData) => filData.address !== ""
         );
