@@ -1010,6 +1010,9 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
+                                {c.nickname && c.nickname !== "" ? (
+                                  <div className="awLable">Private Nametag</div>
+                                ) : null}
                                 {/* <div className="awLable">Private Nametag</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
