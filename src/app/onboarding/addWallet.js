@@ -687,9 +687,19 @@ class AddWallet extends BaseReactComponent {
         w.id = `wallet${i + 1}`;
       });
       if (addWalletTemp && addWalletTemp.length > 0) {
-        const filteredAddWalletTemp = addWalletTemp.filter(
-          (filData) => filData.address !== ""
-        );
+        var mySet = new Set();
+
+        const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+          if (filData.address !== "") {
+            if (mySet.has(filData.address)) {
+              return false;
+            } else {
+              mySet.add(filData.address);
+              return true;
+            }
+          }
+          return false;
+        });
         if (filteredAddWalletTemp) {
           setTimeout(() => {
             this.props.setHeaderReducer(filteredAddWalletTemp);
