@@ -989,7 +989,7 @@ class Cost extends Component {
                 <p className="inter-display-regular f-s-13 lh-16 black-191">
                   This feature is coming soon.
                 </p>
-              </div> */}
+                </div> */}
                 <TransactionTable
                   title="Average cost basis"
                   subTitle="Understand your average entry price"

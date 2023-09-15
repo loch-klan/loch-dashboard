@@ -1231,7 +1231,7 @@ backdrop-filter: blur(15px);">
                 ? {
                     padding: "0rem 4.8rem",
                   }
-                : minVersion
+                : { ...minVersion, display: "flex", flexDirection: "column" }
             }
             // onMouseLeave={() => {
             //   this.resetEvent();
@@ -1244,6 +1244,7 @@ backdrop-filter: blur(15px);">
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
+                noSubtitleBottomPadding={this.props.noSubtitleBottomPadding}
                 // loader={true}
                 // loaderText="Don't worry we're still loading all your data"
               />
@@ -1256,6 +1257,7 @@ backdrop-filter: blur(15px);">
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <Loading />
@@ -1323,8 +1325,16 @@ backdrop-filter: blur(15px);">
                   className="chart-y-selection"
                   style={
                     this.props.hideTimeFilter
-                      ? { width: "100%", marginTop: "0.5rem" }
-                      : { width: "100%" }
+                      ? {
+                          width: "100%",
+                          marginTop: "0.5rem",
+                          paddingTop: this.props.noSubtitleBottomPadding
+                            ? "2rem"
+                            : "",
+                        }
+                      : {
+                          width: "100%",
+                        }
                   }
                 >
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">

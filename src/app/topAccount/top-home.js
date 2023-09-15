@@ -1711,7 +1711,6 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        paddingBottom: "1.6rem",
                         height: "32rem",
                         minHeight: "32rem",
                         marginBottom: 0,
@@ -1740,6 +1739,7 @@ class TopPortfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
+                        noSubtitleBottomPadding
                         loaderHeight={15.5}
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your portfolio's profitability"
@@ -1793,7 +1793,6 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        paddingBottom: "1.6rem",
                         height: "32rem",
                         minHeight: "32rem",
                         marginBottom: 0,
@@ -1831,6 +1830,7 @@ class TopPortfolio extends BaseReactComponent {
                       // style={{ paddingBottom: "1.15rem" }}
                     >
                       <LineChartSlider
+                        noSubtitleBottomPadding
                         assetValueData={
                           this.props.topAccountState.assetValueDay &&
                           this.props.topAccountState.assetValueDay

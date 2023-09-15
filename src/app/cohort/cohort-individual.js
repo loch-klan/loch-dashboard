@@ -1084,12 +1084,7 @@ class CohortPage extends BaseReactComponent {
             </h2>
             <div style={{}} className="balance-sheet-card">
               <div className="balance-dropdown">
-                <div
-                  className="balance-list-content"
-                  style={
-                    this.state.DefiLoader ? { marginBottom: "2.5rem" } : {}
-                  }
-                >
+                <div className="balance-list-content">
                   {/* For yeild */}
                   <Row>
                     {!this.state.DefiLoader ? (
@@ -1250,13 +1245,14 @@ class CohortPage extends BaseReactComponent {
                       </>
                     ) : (
                       <Col md={12}>
-                        <div style={{ paddingBottom: "3rem" }}>
+                        <div
+                          style={{ paddingBottom: "3rem", paddingTop: "3rem" }}
+                        >
                           <Loading />
                         </div>
                       </Col>
                     )}
                   </Row>
-
                   {/* For debt */}
                 </div>
               </div>
