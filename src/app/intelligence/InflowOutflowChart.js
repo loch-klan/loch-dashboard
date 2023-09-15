@@ -7,7 +7,8 @@ import PageHeader from "../common/PageHeader";
 import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
 import { GROUP_BY_YEAR, GroupByOptions } from "../../utils/Constant";
 import { ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
-import { getAssetGraphDataApi } from "../Portfolio/Api";
+import { getInflowsAndOutflowsGraphDataApi } from "./Api";
+import InflowOutflowChartSliderOld from "./InflowOutflowChartSliderOld";
 
 class InflowOutflowChart extends BaseReactComponent {
   constructor(props) {
@@ -16,11 +17,13 @@ class InflowOutflowChart extends BaseReactComponent {
       graphLoading: false,
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       tab: "day",
+      inflowsOutflowsList: [],
     };
   }
+  componentDidMount() {
+    this.getGraphData();
+  }
   getGraphData = () => {
-    // console.log("data a", this.props);
-
     let ActionType = ASSET_VALUE_GRAPH_YEAR;
     this.setState({
       tab: "year",
@@ -30,11 +33,7 @@ class InflowOutflowChart extends BaseReactComponent {
     this.state.userWalletList?.map((wallet) =>
       addressList.push(wallet.address)
     );
-    // console.log("addressList", this.state.userWalletList);
-    let data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(addressList));
-    data.append("group_criteria", GROUP_BY_YEAR);
-    this.props.getAssetGraphDataApi(data, this, ActionType);
+    this.props.getInflowsAndOutflowsGraphDataApi(this, ActionType);
   };
   handleGroupBy = (value) => {
     let groupByValue = GroupByOptions.getGroupBy(value);
@@ -46,16 +45,9 @@ class InflowOutflowChart extends BaseReactComponent {
         <PageHeader title="Inflows and Outflows" showImg={InflowOutflowIcon} />
         <div className="graph-container" style={{ marginBottom: "5rem" }}>
           <InflowOutflowChartSlider
-            assetValueData={
-              this.state.tab === "day"
-                ? this.props.portfolioState.assetValueDay &&
-                  this.props.portfolioState.assetValueDay
-                : this.state.tab === "month"
-                ? this.props.portfolioState.assetValueMonth &&
-                  this.props.portfolioState.assetValueMonth
-                : this.state.tab === "year"
-                ? this.props.portfolioState.assetValueYear &&
-                  this.props.portfolioState.assetValueYear
+            inflowOutflowData={
+              this.state.inflowsOutflowsList
+                ? this.state.inflowsOutflowsList
                 : []
             }
             externalEvents={
@@ -83,6 +75,6 @@ const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
 });
 const mapDispatchToProps = {
-  getAssetGraphDataApi,
+  getInflowsAndOutflowsGraphDataApi,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InflowOutflowChart);
