@@ -234,7 +234,7 @@
   position: fixed;
   height: 100vh;
   top: 0;
-  background-color: $secondary;
+  background-color: var(--sidebarBackgroud);
   width: 27.2rem;
   .container {
     width: 27.2rem;
@@ -275,14 +275,19 @@
       img {
         width: 4rem;
         margin-right: 1rem;
+        filter: var(--invertColor);
       }
       .loch-text {
-        @include font($black-191, "Inter-Medium", 2.4rem, 500, 24px);
+        font-family: "Inter-Medium";
+        font-size: 2.4rem;
+        font-weight: 500;
+        line-height: 24px;
+        color: var(--primaryTextColor);
         vertical-align: middle;
       }
 
       &.home-topbar {
-        background: #ffffff;
+        background: var(--cardBackgroud);
         box-shadow: -6px 4px 10px rgba(0, 0, 0, 0.04),
           -6px 1px 1px rgba(0, 0, 0, 0.04);
         padding: 2rem 3.2rem;
@@ -303,13 +308,17 @@
           border: 1px solid transparent;
           padding: 1.2rem;
           border-radius: 8px;
-          @include font($grey-969, "Inter-SemiBold", 1rem, 600, 12px);
+          font-family: "Inter-SemiBold";
+          font-size: 1rem;
+          font-weight: 600;
+          line-height: 12px;
+          color: var(--secondaryTextColor);
           &:focus {
-            border: 1px solid $grey-E5E;
+            border: 1px solid var(--currenyConvertorText);
           }
 
           &:hover {
-            border: 1px solid $grey-E5E;
+            border: 1px solid var(--currenyConvertorBorder);
           }
         }
         .dropdown-menu {
@@ -468,7 +477,11 @@
 
             margin-bottom: 1rem;
             .nav-link {
-              @include font($grey-636, "Inter-Medium", 1.3rem, 500, 19.2px);
+              color: var(--sidebarTextColor);
+              font-family: "Inter-Medium";
+              font-size: 1.3rem;
+              font-weight: 500;
+              line-height: 19.2px;
               padding: 1rem;
               display: flex;
               align-items: center;
@@ -482,7 +495,7 @@
                 margin-left: auto;
                 width: 1.2rem;
                 transform: rotate(180deg);
-                filter: opacity(0.5);
+                filter: opacity(0.5) var(--invertColor);
                 cursor: pointer;
                 user-select: none;
 
@@ -491,32 +504,43 @@
                 }
 
                 &:hover {
-                  filter: opacity(1);
+                  filter: opacity(1) var(--invertColor);
                 }
               }
-
+              transition-duration: 300ms;
               &:hover {
-                box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-                  0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                box-shadow: 0px 8px 28px -6px var(--primaryBoxShadowColor),
+                  0px 18px 88px -4px var(--primaryBoxShadowColor);
                 border-radius: 1.2rem;
               }
             }
-            .active {
-              background-color: rgba(229, 229, 230, 0.5);
+            .nav-link.active {
+              background-color: var(--sidebarActivePageColor);
               border-radius: 1.2rem;
-              color: $black-191;
+              color: var(--primaryTextColor);
+              transition-duration: 0ms;
+              img {
+                filter: var(--invertColor) !important;
+              }
               &:hover {
                 cursor: default;
                 box-shadow: none;
               }
             }
-            .none {
+            .nav-link.none {
               background-color: transparent;
-              @include font($grey-636, "Inter-Medium", 1.3rem, 500, 19.2px);
+              font-family: "Inter-Medium";
+              font-size: 1.3rem;
+              font-weight: 500;
+              line-height: 19.2px;
+              color: var(--sidebarTextColor);
+              img {
+                filter: none !important;
+              }
               &:hover {
                 cursor: pointer;
-                box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-                  0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                box-shadow: 0px 8px 28px -6px var(--primaryBoxShadowColor),
+                  0px 18px 88px -4px var(--primaryBoxShadowColor);
                 border-radius: 1.2rem;
               }
             }
@@ -568,7 +592,7 @@
       // margin-bottom: 21rem;
     }
     .menu-tab-wrapper {
-      background: rgba(229, 229, 230, 0.5);
+      background: var(--sidebarActivePageColor);
       border-radius: 1.2rem;
       padding: 0.8rem;
       width: 100%;
@@ -596,16 +620,16 @@
 
         &:hover,
         &.active {
-          background: #ffffff;
+          background: var(--sidebarBackgroud);
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
 
           img {
-            filter: brightness(0);
+            filter: brightness(0) var(--invertColor);
           }
 
           h4 {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
         }
       }
@@ -654,33 +678,31 @@
     }
     .sidebar-footer {
       width: 100%;
-      border-top: 0.1rem solid $grey-CAC;
+      border-top: 0.1rem solid var(--secondaryTextColor);
       padding-top: 4rem;
       .sideBarFooterSignInContainer {
-        color: $grey-313;
+        color: var(--secondaryDarkTextColor);
         padding: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 2rem;
         border-radius: 0.8rem;
-        transition-duration: 300ms;
-        border: 1.3px $white-E5E solid;
+
+        border: 1.3px var(--cardBorder) solid;
         cursor: pointer;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
-          0px 1px 1px rgba(0, 0, 0, 0.04);
-        background-color: white;
+        box-shadow: 0px 4px 10px var(primaryBoxShadowDarkerColor),
+          0px 1px 1px var(primaryBoxShadowDarkerColor);
+        background-color: var(--sidebarBackgroud);
         &:hover {
           box-shadow: none;
-          background-color: $grey-F2F;
-          color: $black-191;
+          background-color: var(--sidebarActivePageColor);
           .sideBarFooterSignInIconContainer {
-            background-color: white;
+            background-color: var(--cardBackgroud);
           }
         }
 
         .sideBarFooterSignInIconContainer {
-          transition-duration: 300ms;
           margin-right: 0.5rem;
           border: 0.1rem solid $white-E5E;
           min-width: 2.5rem;
@@ -691,7 +713,7 @@
           align-items: center;
           justify-content: center;
           border-radius: 0.8rem;
-          background-color: white;
+          background-color: var(--cardBackgroud);
           .sideBarFooterSignInIcon {
             height: 1.3rem;
           }
@@ -706,13 +728,16 @@
           width: 60%;
         }
         .sideBarFooterSignedInIconContainer {
-          background-color: $grey-F2F;
+          background-color: var(--cardBackgroud);
+          img {
+            filter: var(--invertColor);
+          }
         }
         .sideBarFooterSignedInLeaveContainer {
           .navbar-button {
             background: none;
             border: none;
-            color: $grey-B0B;
+            color: var(--sidebarBottomOptions);
             outline: none !important;
             box-shadow: none !important;
           }
@@ -730,34 +755,30 @@
         li {
           // margin-bottom: 2.8rem;
           margin-bottom: 1.6rem;
-          .navbar-button-two {
-            background: none;
-            border: none;
-            color: $grey-B0B;
-            outline: none !important;
-            box-shadow: none !important;
-          }
-          .navbar-button-two-active {
-            color: $primary;
-          }
-          .navbar-button {
-            background: none;
-            border: none;
-            color: $grey-B0B;
-            outline: none !important;
-            box-shadow: none !important;
+          .navbar-button-container {
+            .navbar-button {
+              background: none;
+              border: none;
+              color: $grey-B0B;
+              outline: none !important;
+              box-shadow: none !important;
+            }
+            img {
+              width: 1.6rem;
+            }
+            &:hover {
+              .navbar-button {
+                color: var(--primaryTextColor);
+              }
+              img {
+                filter: var(--hoverBrightness);
+              }
+            }
           }
           // &:hover .navbar-button{
           //     color:$primary
           // }
-          span {
-            img {
-              width: 1.6rem;
-            }
-            &:hover .navbar-button {
-              color: $primary;
-            }
-          }
+
           .signin {
             img {
               width: 1.6rem;

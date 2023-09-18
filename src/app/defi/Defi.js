@@ -691,7 +691,7 @@ class Defi extends Component {
                       onClick={() => this.handleSort(e)}
                       key={`sortBy-${index}`}
                     >
-                      <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 grey-7C7">
+                      <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 ">
                         {e.title}
                       </span>{" "}
                       {/* <Image src={sort} style={{ width: "1rem" }} /> */}

@@ -122,7 +122,12 @@ function Sidebar(props) {
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.querySelector("body").getAttribute("data-theme") &&
+      document.querySelector("body").getAttribute("data-theme") === "dark"
+      ? true
+      : false
+  );
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(localStorage.getItem("currency"))
   );
@@ -397,7 +402,7 @@ function Sidebar(props) {
       } else {
         setIsDarkMode(false);
       }
-    }, 50);
+    }, 10);
   }, []);
 
   const handleDarkMode = () => {
@@ -767,7 +772,7 @@ function Sidebar(props) {
                       onClick={handleDiscoverSubmenu}
                     >
                       <Image src={CompassIcon} />
-                      <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      <h4 className="interDisplayBoldText f-s-13 lh-16 secondaryText">
                         Discover
                       </h4>
                     </div>
@@ -776,7 +781,7 @@ function Sidebar(props) {
                       onClick={handleMeSubmenu}
                     >
                       <Image src={ProfileIcon} />
-                      <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      <h4 className="interDisplayBoldText f-s-13 lh-16 secondaryText">
                         Me
                       </h4>
                     </div>
@@ -1725,17 +1730,11 @@ function Sidebar(props) {
                           }}
                         >
                           <span
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src =
-                                ExportIconWhite)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src = ExportIcon)
-                            }
                             onClick={handleExportModal}
+                            className="navbar-button-container"
                           >
                             <Image src={ExportIcon} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                               Export
                             </Button>
                           </span>
@@ -1747,16 +1746,10 @@ function Sidebar(props) {
                           ) ? (
                             <span
                               onClick={handleLeave}
-                              onMouseOver={(e) =>
-                                (e.currentTarget.children[0].src =
-                                  LeaveBlackIcon)
-                              }
-                              onMouseLeave={(e) =>
-                                (e.currentTarget.children[0].src = LeaveIcon)
-                              }
+                              className="navbar-button-container"
                             >
                               <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                                 Leave
                               </Button>
                             </span>
@@ -1776,7 +1769,7 @@ function Sidebar(props) {
                               className="signin"
                             >
                               <Image src={SignInIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                                 Sign in
                               </Button>
                             </span>
@@ -1789,70 +1782,101 @@ function Sidebar(props) {
                           }}
                         >
                           <span
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src =
-                                SharePortfolioIcon)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src =
-                                SharePortfolioIconWhite)
-                            }
                             onClick={handleShareModal}
-                            style={{ marginRight: "1rem" }}
+                            className="navbar-button-container"
                           >
                             <Image src={SharePortfolioIconWhite} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                               Share
                             </Button>
                           </span>
-
-                          {isDarkMode ? (
-                            <span
-                              onClick={handleDarkMode}
-                              onMouseOver={(e) => {
-                                e.currentTarget.children[1].classList.add(
-                                  "navbar-button-two-active"
-                                );
-                                e.currentTarget.children[0].src =
-                                  LightModeBlackIcon;
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.children[1].classList.remove(
-                                  "navbar-button-two-active"
-                                );
-                                e.currentTarget.children[0].src = LightModeIcon;
-                              }}
-                            >
-                              <Image src={LightModeIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
-                                Light Mode
-                              </Button>
-                            </span>
-                          ) : (
-                            <span
-                              onClick={handleDarkMode}
-                              onMouseOver={(e) => {
-                                e.currentTarget.children[2].classList.add(
-                                  "navbar-button-two-active"
-                                );
-                                e.currentTarget.children[0].src =
-                                  DarkModeBlackIcon;
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.children[2].classList.remove(
-                                  "navbar-button-two-active"
-                                );
-                                e.currentTarget.children[0].src = DarkModeIcon;
-                              }}
-                            >
-                              <Image src={DarkModeIcon} />
-                              <span />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
-                                Dark Mode
-                              </Button>
-                            </span>
-                          )}
+                          {!(
+                            lochUser &&
+                            (lochUser.email ||
+                              lochUser.first_name ||
+                              lochUser.last_name)
+                          ) ? (
+                            <>
+                              {isDarkMode ? (
+                                <span
+                                  onClick={handleDarkMode}
+                                  className="navbar-button-container"
+                                >
+                                  <Image src={LightModeIcon} />
+                                  <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                    Light Mode
+                                  </Button>
+                                </span>
+                              ) : (
+                                <span
+                                  onClick={handleDarkMode}
+                                  className="navbar-button-container"
+                                >
+                                  <Image src={DarkModeIcon} />
+                                  <span />
+                                  <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                    Dark Mode
+                                  </Button>
+                                </span>
+                              )}
+                            </>
+                          ) : null}
                         </li>
+                        {lochUser &&
+                        (lochUser.email ||
+                          lochUser.first_name ||
+                          lochUser.last_name) ? (
+                          <li>
+                            {isDarkMode ? (
+                              <span
+                                onClick={handleDarkMode}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.children[1].classList.add(
+                                    "navbar-button-two-active"
+                                  );
+                                  e.currentTarget.children[0].src =
+                                    LightModeBlackIcon;
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.children[1].classList.remove(
+                                    "navbar-button-two-active"
+                                  );
+                                  e.currentTarget.children[0].src =
+                                    LightModeIcon;
+                                }}
+                              >
+                                <Image src={LightModeIcon} />
+                                <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                  Light Mode
+                                </Button>
+                              </span>
+                            ) : (
+                              <span
+                                onClick={handleDarkMode}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.children[2].classList.add(
+                                    "navbar-button-two-active"
+                                  );
+                                  e.currentTarget.children[0].src =
+                                    DarkModeBlackIcon;
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.children[2].classList.remove(
+                                    "navbar-button-two-active"
+                                  );
+                                  e.currentTarget.children[0].src =
+                                    DarkModeIcon;
+                                }}
+                              >
+                                <Image src={DarkModeIcon} />
+                                <span />
+                                <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                  Dark Mode
+                                </Button>
+                              </span>
+                            )}
+                          </li>
+                        ) : null}
 
                         {/* <li>
                     <span
@@ -1918,11 +1942,11 @@ function Sidebar(props) {
                       {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
-                      <p className="inter-display-medium f-s-15 grey-CAC lh-19">
+                      <p className="interDisplayMediumText f-s-15 secondaryTextLighter lh-19">
                         {quotes[currentIndex]}
                       </p>
                     </div>
-                    <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo">
+                    <div className="interDisplaySemiBoldText f-s-15 secondaryText lh-19 footer-divTwo">
                       {authors[currentIndex]}
                     </div>
 

@@ -238,7 +238,7 @@
             padding: 1.2rem 1.6rem;
             cursor: pointer;
             user-select: none;
-
+            opacity: 0.7;
             .rotateUp {
               transform: rotate(180deg);
               margin-left: 1rem;
@@ -249,7 +249,8 @@
             }
           }
           .sortByTitle:hover {
-            filter: brightness(0.5) var(--invertColor);
+            opacity: 1;
+            filter: var(--hoverBrightness);
           }
         }
       }

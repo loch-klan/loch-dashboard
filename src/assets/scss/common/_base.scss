@@ -2218,8 +2218,9 @@ textarea {
   width: 2rem;
   cursor: pointer;
   filter: brightness(1.5);
+  transition-duration: 300ms;
   &:hover {
-    filter: brightness(1);
+    filter: var(--hoverBrightness);
   }
 }
 

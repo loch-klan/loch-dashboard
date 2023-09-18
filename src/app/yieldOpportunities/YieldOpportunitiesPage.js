@@ -670,7 +670,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Asset
             </span>
             <Image
@@ -685,7 +685,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
+        headerClassName:
+          "yeildOppYourPortfolioContainer yeildOppYourPortfolioContainerTopLeftCurve",
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
             return (
@@ -705,7 +706,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="usdValue"
             onClick={() => this.handleTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Value (USD)
             </span>
             <Image
@@ -737,7 +738,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="interDisplayMediumText f-s-13 lh-16">
                       {CurrencyType(false)}
                       {numToCurrency(rowData.value * this.state.currency?.rate)}
                     </span>
@@ -755,7 +756,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="project"
             onClick={() => this.handleTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Project
             </span>
             <Image
@@ -772,7 +773,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "project") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="interDisplayMediumText f-s-13 lh-16 ellipsis-div">
                 {rowData.project ? rowData.project : "-"}
               </div>
             );
@@ -786,7 +787,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="pool"
             onClick={() => this.handleTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               Pool
             </span>
             <Image
@@ -803,7 +804,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "pool") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="interDisplayMediumText f-s-13 lh-16 ellipsis-div">
                 {rowData.pool ? rowData.pool : "-"}
               </div>
             );
@@ -817,7 +818,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="tvl"
             onClick={() => this.handleTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkText f-s-13 lh-16">
               TVL
             </span>
             <Image
@@ -848,7 +849,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="interDisplayMediumText f-s-13 lh-16">
                       {CurrencyType(false)}
                       {numToCurrency(rowData.tvl * this.state.currency?.rate)}
                     </span>
@@ -866,7 +867,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="apy"
             onClick={() => this.handleTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText secondaryDarkTextf-s-13 lh-16">
               APY
             </span>
             <Image
@@ -891,7 +892,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.apy ? rowData.apy : "-"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="interDisplayMediumText f-s-13 lh-16 ellipsis-div">
                   {rowData.apy
                     ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
                       "%"
