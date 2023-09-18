@@ -179,6 +179,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -216,8 +217,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.props.getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -699,6 +700,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
+    console.log("assetPriceList ", assetPriceList);
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1290,10 +1292,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
                 <Image src={rowData.asset.symbol} className="asset-symbol" />
               </CustomOverlay>
             );
@@ -1549,6 +1547,22 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -1560,6 +1574,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1736,6 +1752,8 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   OnboardingState: state.OnboardingState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1745,6 +1763,8 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  getUser,
+  GetAllPlan,
 };
 
 TransactionHistoryPage.propTypes = {};

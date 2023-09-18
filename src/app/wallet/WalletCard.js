@@ -165,6 +165,16 @@ export default function WalletCard(props) {
               )}
               {!props.protocol && (
                 <div className="accountDetails">
+                  {props.nameTag && (
+                    <>
+                      <span
+                        className="interDisplayMediumText interDisplaySubText f-s-13 lh-16 mr-4"
+                        id="account_number"
+                      >
+                        {props.nameTag}
+                      </span>
+                    </>
+                  )}
                   {props.display_address && (
                     <>
                       <span className="interDisplayMediumText interDisplaySubText f-s-13 lh-16">

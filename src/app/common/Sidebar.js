@@ -88,6 +88,7 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import { NewspaperIcon } from "../../assets/images/icons";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
@@ -305,7 +306,7 @@ function Sidebar(props) {
     }
     // Discover section
     else if (
-      ["/whale-watch", "/watchlist"].includes(activeTab) ||
+      ["/whale-watch", "/watchlist", "/transaction-feed"].includes(activeTab) ||
       activeTab.includes("/whale-watch")
     ) {
       let obj = {
@@ -1539,9 +1540,101 @@ function Sidebar(props) {
                               Watchlist
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  // ProfileMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/transaction-feed"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={NewspaperIcon}
+                                style={
+                                  activeTab === "/transaction-feed"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                              />
+                              Transaction feed
+                            </NavLink>
+                          </li>
                         </>
                       )}
                       {/* <li>
+                        <li>
+                          <NavLink
+                            className={`nav-link`}
+                            to="/watchlist"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWatchlist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={EyeIcon}
+                              style={
+                                activeTab === "/watchlist"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Watchlist
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/transaction-feed"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={NewspaperIcon}
+                              style={
+                                activeTab === "/transaction-feed"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Transaction feed
+                          </NavLink>
+                        </li>
+                      </>
+                    )}
+                    {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
