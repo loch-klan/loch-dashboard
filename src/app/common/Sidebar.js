@@ -1737,47 +1737,21 @@ function Sidebar(props) {
                             {isDarkMode ? (
                               <span
                                 onClick={handleDarkMode}
-                                onMouseOver={(e) => {
-                                  e.currentTarget.children[1].classList.add(
-                                    "navbar-button-two-active"
-                                  );
-                                  e.currentTarget.children[0].src =
-                                    LightModeBlackIcon;
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.children[1].classList.remove(
-                                    "navbar-button-two-active"
-                                  );
-                                  e.currentTarget.children[0].src =
-                                    LightModeIcon;
-                                }}
+                                className="navbar-button-container"
                               >
                                 <Image src={LightModeIcon} />
-                                <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                                   Light Mode
                                 </Button>
                               </span>
                             ) : (
                               <span
                                 onClick={handleDarkMode}
-                                onMouseOver={(e) => {
-                                  e.currentTarget.children[2].classList.add(
-                                    "navbar-button-two-active"
-                                  );
-                                  e.currentTarget.children[0].src =
-                                    DarkModeBlackIcon;
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.children[2].classList.remove(
-                                    "navbar-button-two-active"
-                                  );
-                                  e.currentTarget.children[0].src =
-                                    DarkModeIcon;
-                                }}
+                                className="navbar-button-container"
                               >
                                 <Image src={DarkModeIcon} />
                                 <span />
-                                <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                                   Dark Mode
                                 </Button>
                               </span>
