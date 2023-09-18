@@ -2557,7 +2557,7 @@ form .radio-wrapper.inline .radio-control {
 }
 .transaction-table-section .ReactVirtualized__Table__headerRow {
   height: auto;
-  border-bottom: 0.1rem solid #e5e5e6;
+  border-bottom: 0.1rem solid var(--cardSeperator);
 }
 .transaction-table-section
   .ReactVirtualized__Table__headerRow

@@ -38,6 +38,8 @@
 
   //Table
   --tableNumberCover: rgba(229, 229, 230, 0.5);
+  --tablePersonalTint: #e5e5e640;
+  --tableHeadingLightBorder: #e5e5e6;
 }
 [data-theme="dark"] {
   // UPDATED
@@ -79,4 +81,6 @@
 
   //Table
   --tableNumberCover: #313233;
+  --tablePersonalTint: rgba(16, 16, 16, 0.6);
+  --tableHeadingLightBorder: #313233;
 }

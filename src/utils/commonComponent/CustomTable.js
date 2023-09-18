@@ -121,7 +121,7 @@ class CustomTable extends BaseReactComponent {
                     rowHeight={60}
                     rowCount={tableData.length}
                     rowGetter={({ index }) => tableData[index]}
-                    className={`custom-table ${className}`}
+                    // className={`custom-table ${className}`}
                     gridClassName={`${
                       this.props.addWatermark ? "tableWatermark" : ""
                     } ${
