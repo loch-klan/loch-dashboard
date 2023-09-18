@@ -1,5 +1,6 @@
 :root {
   // UPDATED
+  --sidebarBackgroud: white;
   --primaryBackgroud: #f2f2f2;
   --cardBackgroud: white;
   --cardBorder: #cacbcc;
@@ -13,15 +14,18 @@
   --primaryDropdownBorder: #0d0d0d;
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
+  --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
   --primaryFilter: #f2f2f2;
   --primaryActiveFilter: #fff;
-  // UPDATED
+
+  // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0%);
   --hoverBrightness: brightness(50%);
 
   // Secondary
   --secondaryTextColor: #adadad;
+  --secondaryLightColor: #cacbcc;
   --secondaryDarkTextColor: #4f4f4f;
 
   //TEMP
@@ -40,9 +44,17 @@
   --tableNumberCover: rgba(229, 229, 230, 0.5);
   --tablePersonalTint: #e5e5e640;
   --tableHeadingLightBorder: #e5e5e6;
+
+  //Sidebar
+  --currenyConvertorBorder: #e5e5e6;
+  --currenyConvertorText: #96979a;
+  --sidebarTextColor: #636467;
+  --sidebarActivePageColor: #e5e5e680;
+  --sidebarBottomOptions: #b0b1b3;
 }
 [data-theme="dark"] {
   // UPDATED
+  --sidebarBackgroud: #141414;
   --primaryBackgroud: #101010;
   --cardBackgroud: #181818;
   --cardBorder: #313233;
@@ -55,16 +67,19 @@
   --primaryDropdownBackground: #313233;
   --primaryDropdownBorder: white;
   --primaryDropdownSelectedItem: #313233;
-  --primaryBoxShadowColor: hsla(240, 2%, 90%, 0.05);
+  --primaryBoxShadowColor: #2a2a2a;
+  --primaryBoxShadowDarkerColor: #2a2a2a;
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
-  // UPDATED
+
+  // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
   --hoverBrightness: brightness(200%);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
+  --secondaryLightColor: #545558;
   --secondaryDarkTextColor: #cacbcc;
 
   //TEMP
@@ -83,4 +98,11 @@
   --tableNumberCover: #313233;
   --tablePersonalTint: rgba(16, 16, 16, 0.6);
   --tableHeadingLightBorder: #313233;
+
+  //Sidebar
+  --currenyConvertorBorder: #7c7d81;
+  --currenyConvertorText: #7c7d81;
+  --sidebarTextColor: #636467;
+  --sidebarActivePageColor: #2a2a2a;
+  --sidebarBottomOptions: #96979a;
 }
