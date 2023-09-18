@@ -4,7 +4,13 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: #e5e5e640;
+  background-color: var(--tablePersonalTint);
+}
+.yeildOppYourPortfolioContainerTopLeftCurve {
+  border-top-left-radius: 1.2rem;
+}
+.yeildOppYourPortfolioContainerBottomLeftCurve {
+  border-bottom-left-radius: 1.2rem;
 }
 .yeildOppTitleContainer {
   display: flex;
@@ -17,13 +23,14 @@
     align-items: center;
     justify-content: center;
     border-bottom: 0.3rem solid;
+    color: var(--primaryTextColor);
   }
   .yeildOppTitleLeft {
     width: 32%;
-    border-color: #cacbcc;
+    border-color: var(--scrollBarThumb);
   }
   .yeildOppTitleRight {
     width: 68%;
-    border-color: #e5e5e6;
+    border-color: var(--tableHeadingLightBorder);
   }
 }

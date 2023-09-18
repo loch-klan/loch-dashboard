@@ -3,6 +3,14 @@ import { Image } from "react-bootstrap";
 import { API_LIMIT } from "./Constant";
 import moment from "moment";
 
+export const switchToDarkMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "dark");
+  localStorage.setItem("isDarkTheme", true);
+};
+export const switchToLightMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "light");
+  localStorage.setItem("isDarkTheme", false);
+};
 // TruncateText
 
 export const TruncateText = (string) => {

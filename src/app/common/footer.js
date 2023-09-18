@@ -9,7 +9,7 @@ class Footer extends Component {
   render() {
     return (
       <>
-        <hr className="m-t-60" />
+        <div className="footerLine m-t-60" />
         <div
           className="m-t-30 m-b-28"
           style={{
@@ -19,7 +19,7 @@ class Footer extends Component {
           }}
         >
           <div style={{ width: "50%" }}>
-            <p className="inter-display-medium f-s-15 lh-19 grey-ADA">
+            <p className="interDisplayMediumText f-s-15 lh-19 secondaryText">
               Loch, Inc. © {moment().format("YYYY")}
             </p>
           </div>
@@ -77,7 +77,7 @@ class Footer extends Component {
             />
           </div>
         </div>
-        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA">
+        <p className="interDisplayMediumText f-s-13 lh-16 m-b-40 secondaryText">
           The content made available on this web page and our mobile
           applications ("Platform") is for informational purposes only. You
           should not construe any such information or other material as
