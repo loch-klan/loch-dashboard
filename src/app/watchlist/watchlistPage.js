@@ -64,11 +64,7 @@ import {
   updateAddToWatchList,
   getWatchListLoading,
 } from "./redux/WatchListApi";
-import {
-  TruncateText,
-  switchToDarkMode,
-  switchToLightMode,
-} from "../../utils/ReusableFunctions";
+import { TruncateText } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class WatchListPage extends BaseReactComponent {
@@ -763,29 +759,6 @@ class WatchListPage extends BaseReactComponent {
                 pname="treansaction history"
               />
             )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "2rem",
-              }}
-            >
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToDarkMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Dark Mode
-              </Button>
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToLightMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Light Mode
-              </Button>
-            </div>
             <PageHeader
               title={"Watchlist"}
               subTitle={"Addresses to watch"}

@@ -17,3 +17,7 @@ export { default as CloseIcon } from "./dummyX.svg";
 export { default as DeleteIcon } from "./delete-icon.png";
 export { default as CheckIcon } from "./check.svg";
 export { default as CompassWhiteIcon } from "./compassWhite.svg";
+export { default as DarkModeIcon } from "./darkMode.svg";
+export { default as DarkModeBlackIcon } from "./darkModeBlack.svg";
+export { default as LightModeIcon } from "./lightMode.svg";
+export { default as LightModeBlackIcon } from "./lightModeBlack.svg";

@@ -44,8 +44,6 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   CurrencyType,
   noExponents,
-  switchToDarkMode,
-  switchToLightMode,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -1602,29 +1600,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 updateTimer={this.updateTimer}
               />
             )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "2rem",
-              }}
-            >
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToDarkMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Dark Mode
-              </Button>
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToLightMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Light Mode
-              </Button>
-            </div>
+
             <PageHeader
               title={"Transaction history"}
               subTitle={

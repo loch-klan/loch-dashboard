@@ -13,8 +13,6 @@ import {
   amountFormat,
   CurrencyType,
   numToCurrency,
-  switchToDarkMode,
-  switchToLightMode,
 } from "../../utils/ReusableFunctions";
 import { getAllWalletListApi } from "../wallet/Api";
 import { Button, Col, Image, Row } from "react-bootstrap";
@@ -463,29 +461,6 @@ class Defi extends Component {
         </div>
         <div className="defiPageContainer m-t-80">
           <div className="defiPage page">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "2rem",
-              }}
-            >
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToDarkMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Dark Mode
-              </Button>
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToLightMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Light Mode
-              </Button>
-            </div>
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}

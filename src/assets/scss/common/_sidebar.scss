@@ -730,6 +730,16 @@
         li {
           // margin-bottom: 2.8rem;
           margin-bottom: 1.6rem;
+          .navbar-button-two {
+            background: none;
+            border: none;
+            color: $grey-B0B;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          .navbar-button-two-active {
+            color: $primary;
+          }
           .navbar-button {
             background: none;
             border: none;
