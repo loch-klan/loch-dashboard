@@ -27,15 +27,9 @@ import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import {
-  ProfileGlobeIcon,
-  ProfileProfileIcon,
-} from "../../assets/images/icons";
+import { ProfileProfileIcon } from "../../assets/images/icons";
 import ProfileBundles from "./ProfileBundles";
-import {
-  switchToDarkMode,
-  switchToLightMode,
-} from "../../utils/ReusableFunctions";
+
 import "./_profilePage.scss";
 
 class Profile extends Component {
@@ -560,29 +554,6 @@ class Profile extends Component {
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
         />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: "2rem",
-          }}
-        >
-          <Button
-            className="primary-btn white-bg"
-            onClick={switchToDarkMode}
-            style={{ transform: "scale(0.5)" }}
-          >
-            Dark Mode
-          </Button>
-          <Button
-            className="primary-btn white-bg"
-            onClick={switchToLightMode}
-            style={{ transform: "scale(0.5)" }}
-          >
-            Light Mode
-          </Button>
-        </div>
       </div>
     );
   }

@@ -38,10 +38,7 @@ import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import "./intelligenceScss/_insightsPage.scss";
-import {
-  switchToDarkMode,
-  switchToLightMode,
-} from "../../utils/ReusableFunctions";
+
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
@@ -420,29 +417,7 @@ class InsightsPage extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "2rem",
-              }}
-            >
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToDarkMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Dark Mode
-              </Button>
-              <Button
-                className="primary-btn white-bg"
-                onClick={switchToLightMode}
-                style={{ transform: "scale(0.5)" }}
-              >
-                Light Mode
-              </Button>
-            </div>
+
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
