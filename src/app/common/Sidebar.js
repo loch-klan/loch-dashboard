@@ -16,7 +16,13 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import { CoinsIcon } from "../../assets/images/icons";
+import {
+  CoinsIcon,
+  DarkModeBlackIcon,
+  DarkModeIcon,
+  LightModeBlackIcon,
+  LightModeIcon,
+} from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -82,10 +88,15 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import { NewspaperIcon } from "../../assets/images/icons";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
+import {
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -111,6 +122,7 @@ function Sidebar(props) {
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(localStorage.getItem("currency"))
   );
@@ -289,7 +301,7 @@ function Sidebar(props) {
     }
     // Discover section
     else if (
-      ["/whale-watch", "/watchlist"].includes(activeTab) ||
+      ["/whale-watch", "/watchlist", "/transaction-feed"].includes(activeTab) ||
       activeTab.includes("/whale-watch")
     ) {
       let obj = {
@@ -373,6 +385,32 @@ function Sidebar(props) {
   const handleLeaveChild = (e) => {
     e.stopPropagation();
     handleLeave();
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      const darkOrLightTheme = document
+        .querySelector("body")
+        .getAttribute("data-theme");
+      console.log("darkOrLightTheme? ", darkOrLightTheme);
+      if (darkOrLightTheme && darkOrLightTheme === "dark") {
+        setIsDarkMode(true);
+      } else {
+        setIsDarkMode(false);
+      }
+    }, 50);
+  }, []);
+
+  const handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      setIsDarkMode(false);
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      setIsDarkMode(true);
+    }
   };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
@@ -1497,9 +1535,101 @@ function Sidebar(props) {
                               Watchlist
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  // ProfileMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/transaction-feed"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={NewspaperIcon}
+                                style={
+                                  activeTab === "/transaction-feed"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                              />
+                              Transaction feed
+                            </NavLink>
+                          </li>
                         </>
                       )}
                       {/* <li>
+                        <li>
+                          <NavLink
+                            className={`nav-link`}
+                            to="/watchlist"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWatchlist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={EyeIcon}
+                              style={
+                                activeTab === "/watchlist"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Watchlist
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/transaction-feed"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={NewspaperIcon}
+                              style={
+                                activeTab === "/transaction-feed"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Transaction feed
+                          </NavLink>
+                        </li>
+                      </>
+                    )}
+                    {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -1652,7 +1782,12 @@ function Sidebar(props) {
                             </span>
                           */}
                         </li>
-                        <li>
+                        <li
+                          style={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
                           <span
                             onMouseOver={(e) =>
                               (e.currentTarget.children[0].src =
@@ -1670,6 +1805,53 @@ function Sidebar(props) {
                               Share
                             </Button>
                           </span>
+
+                          {isDarkMode ? (
+                            <span
+                              onClick={handleDarkMode}
+                              onMouseOver={(e) => {
+                                e.currentTarget.children[1].classList.add(
+                                  "navbar-button-two-active"
+                                );
+                                e.currentTarget.children[0].src =
+                                  LightModeBlackIcon;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.children[1].classList.remove(
+                                  "navbar-button-two-active"
+                                );
+                                e.currentTarget.children[0].src = LightModeIcon;
+                              }}
+                            >
+                              <Image src={LightModeIcon} />
+                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                Light Mode
+                              </Button>
+                            </span>
+                          ) : (
+                            <span
+                              onClick={handleDarkMode}
+                              onMouseOver={(e) => {
+                                e.currentTarget.children[2].classList.add(
+                                  "navbar-button-two-active"
+                                );
+                                e.currentTarget.children[0].src =
+                                  DarkModeBlackIcon;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.children[2].classList.remove(
+                                  "navbar-button-two-active"
+                                );
+                                e.currentTarget.children[0].src = DarkModeIcon;
+                              }}
+                            >
+                              <Image src={DarkModeIcon} />
+                              <span />
+                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button-two">
+                                Dark Mode
+                              </Button>
+                            </span>
+                          )}
                         </li>
 
                         {/* <li>
