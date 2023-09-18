@@ -534,7 +534,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "account",
-        coumnWidth: 0.2,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -618,7 +618,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "nametag",
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "nametag") {
@@ -721,7 +721,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        coumnWidth: 0.33,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
@@ -742,9 +742,18 @@ class WatchListPage extends BaseReactComponent {
         },
       },
       {
-        labelName: "",
+        labelName: (
+          <div
+            className="cp history-table-header-col goToCenter no-hover"
+            id="Accounts"
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Delete
+            </span>
+          </div>
+        ),
         dataKey: "deleteCol",
-        coumnWidth: 0.12,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "deleteCol") {
