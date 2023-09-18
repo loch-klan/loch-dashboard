@@ -456,14 +456,29 @@ class AddWallet extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      this.props.detectNameTag(
-        {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
           id: name,
           address: value,
-        },
-        this,
-        false
-      );
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -662,15 +677,25 @@ class AddWallet extends BaseReactComponent {
       addWalletTemp?.forEach((w, i) => {
         w.id = `wallet${i + 1}`;
       });
-      if (addWalletTemp) {
-        setTimeout(() => {
-          let holder = [];
-          const pulledTempWalletData = this.props.HeaderState.wallet;
-          if (pulledTempWalletData) {
-            holder = pulledTempWalletData.filter((res) => res.isExchange);
+      if (addWalletTemp && addWalletTemp.length > 0) {
+        var mySet = new Set();
+
+        const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+          if (filData.address !== "") {
+            if (mySet.has(filData.address)) {
+              return false;
+            } else {
+              mySet.add(filData.address);
+              return true;
+            }
           }
-          this.props.setHeaderReducer([...holder, ...addWalletTemp]);
-        }, 500);
+          return false;
+        });
+        if (filteredAddWalletTemp) {
+          setTimeout(() => {
+            this.props.setHeaderReducer(filteredAddWalletTemp);
+          }, 500);
+        }
       }
       let finalArr = [];
 
@@ -995,7 +1020,10 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                <div className="awLable">Private Nametag</div>
+                                {c.nickname && c.nickname !== "" ? (
+                                  <div className="awLable">Private Nametag</div>
+                                ) : null}
+                                {/* <div className="awLable">Private Nametag</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}

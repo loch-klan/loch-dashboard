@@ -640,7 +640,7 @@ class Cohort extends Component {
                 handleAddModal={this.handleAddModal}
                 // handleUpdate={this.handleUpdateWallet}
                 updateTimer={this.updateTimer}
-                hideButton={true}
+                hideButton
               />
             </div>
           </div>

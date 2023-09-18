@@ -404,14 +404,29 @@ class FixAddModal extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      this.props.detectNameTag(
-        {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
           id: name,
           address: value,
-        },
-        this,
-        false
-      );
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
 
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
@@ -1272,12 +1287,29 @@ class FixAddModal extends BaseReactComponent {
                     elem.showAddress ? "mt-2" : ""
                   }`}
                 >
+                  {elem.showAddress && elem.loadingNameTag ? (
+                    <div className="awBlockContainer">
+                      <div className="awLable">Public Nametag</div>
+                      <CustomCoin isStatic coins={null} isLoaded={false} />
+                    </div>
+                  ) : null}
+                  {elem.showAddress &&
+                  elem.showNameTag &&
+                  elem.nameTag &&
+                  !elem.loadingNameTag ? (
+                    <div className="awBlockContainer">
+                      <div className="awLable">Public Nametag</div>
+                      <div className="awNameTag">{elem.nameTag}</div>
+                    </div>
+                  ) : null}
+
                   <div className="awInputContainer">
                     {(elem.showAddress &&
                       elem.showNameTag &&
                       elem.nameTag &&
                       !elem.loadingNameTag) ||
-                    (elem.showAddress && elem.loadingNameTag) ? (
+                    (elem.showAddress && elem.loadingNameTag) ||
+                    (elem.nickname && elem.nickname !== "") ? (
                       <div className="awLable">Private Nametag</div>
                     ) : null}
                     <input
@@ -1355,21 +1387,6 @@ class FixAddModal extends BaseReactComponent {
                         return "";
                       }
                     })}
-                  {elem.showAddress && elem.loadingNameTag ? (
-                    <div className="awBlockContainer">
-                      <div className="awLable">Public Nametag</div>
-                      <CustomCoin isStatic coins={null} isLoaded={false} />
-                    </div>
-                  ) : null}
-                  {elem.showAddress &&
-                  elem.showNameTag &&
-                  elem.nameTag &&
-                  !elem.loadingNameTag ? (
-                    <div className="awBlockContainer">
-                      <div className="awLable">Public Nametag</div>
-                      <div className="awNameTag">{elem.nameTag}</div>
-                    </div>
-                  ) : null}
                 </div>
               )}
           </div>
