@@ -46,7 +46,11 @@ export const GraphHeader = (props) => {
           >
             {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
           </h4>
-          <p className="inter-display-medium f-s-13 lh-16 m-b-26 grey-ADA ">
+          <p
+            className={`inter-display-medium f-s-13 lh-16 grey-ADA ${
+              props.noSubtitleBottomPadding ? "" : "m-b-26"
+            }`}
+          >
             {props.subtitle}
           </p>
         </div>
