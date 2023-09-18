@@ -166,7 +166,13 @@ class Intelligence extends Component {
         const id = this.props.location.hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView();
+          window.scrollTo({
+            top:
+              element.getBoundingClientRect().top -
+              document.body.getBoundingClientRect().top -
+              15,
+          });
+          // element.scrollIntoView();
         }
       }, 0);
     } else {
@@ -252,7 +258,12 @@ class Intelligence extends Component {
           const id = this.props.location.hash.replace("#", "");
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView();
+            window.scrollTo({
+              top:
+                element.getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                15,
+            });
           }
         }, 0);
       } else {
