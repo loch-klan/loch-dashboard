@@ -98,8 +98,8 @@ class AssetValueGraph extends Component {
     this.props.getAllCoins();
     // this.getGraphData();
     this.setState({});
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -278,6 +278,22 @@ class AssetValueGraph extends Component {
 
     // console.log("share pod", shareLink);
   };
+  getTotalAssetValue = () => {
+    if (this.props.portfolioState) {
+      const tempWallet = this.props.portfolioState.walletTotal
+        ? this.props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = this.props.defiState.totalYield
+        ? this.props.defiState.totalYield
+        : 0;
+      const tempDebt = this.props.defiState.totalDebt
+        ? this.props.defiState.totalDebt
+        : 0;
+
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
 
   render() {
     return (
@@ -291,6 +307,8 @@ class AssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={this.getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -327,7 +345,7 @@ class AssetValueGraph extends Component {
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
@@ -372,6 +390,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+  defiState: state.DefiState,
 });
 
 const mapDispatchToProps = {
@@ -381,6 +400,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  getUser,
+  GetAllPlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

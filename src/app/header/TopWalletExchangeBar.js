@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import WalletIcon from "../../assets/images/icons/wallet_icon.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
 import {
@@ -10,6 +11,10 @@ import {
   AddWalletAddressModalOpen,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import Onboard from "@web3-onboard/core";
+import injectedModule, { ProviderLabel } from "@web3-onboard/injected-wallets";
+import { LochLogoNameIcon } from "../../assets/images/icons";
+import { setHeaderReducer } from "./HeaderAction";
 
 class TopBar extends Component {
   constructor(props) {
@@ -19,7 +24,6 @@ class TopBar extends Component {
       firstWallet: "",
       walletList: [],
       exchangeList: [],
-      exchangeListImages: [],
       firstExchange: "",
     };
   }
@@ -67,20 +71,30 @@ class TopBar extends Component {
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
+
       const tempWalletList = [];
       const tempExchangeList = [];
-      const tempExchangeListImages = [];
+
+      const tempWalletListToPush = [];
+      const tempExchangeListToPush = [];
       if (walletList) {
         walletList.map((data) => {
           if (data?.chains.length === 0) {
             if (data.protocol) {
               if (data.protocol.code) {
-                tempExchangeList.push(data.protocol.code);
-              }
-              if (data.protocol.symbol) {
-                tempExchangeListImages.push(data.protocol.symbol);
+                tempExchangeList.push({
+                  name: data.protocol.code,
+                  symbol: data.protocol.symbol,
+                });
               }
             }
+            const sendThis = {
+              exchangeCode: data.protocol.code,
+              exchangeSymbol: data.protocol.symbol,
+              isExchange: true,
+            };
+
+            tempExchangeListToPush.push(sendThis);
           } else {
             if (data?.nickname) {
               tempWalletList.push(data.nickname);
@@ -91,6 +105,14 @@ class TopBar extends Component {
             } else if (data?.address) {
               tempWalletList.push(this.TruncateText(data.address));
             }
+
+            const sendThis = {
+              nickname: data.nickname,
+              displayAddress: data.display_address,
+              address: data.address,
+              nameTag: data.tag,
+            };
+            tempWalletListToPush.push(sendThis);
           }
           return null;
         });
@@ -100,27 +122,44 @@ class TopBar extends Component {
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+        tempExchangeList.sort(function (a, b) {
+          var keyA = a.name,
+            keyB = b.name;
+          // Compare the 2 dates
+          if (keyA > keyB) return -1;
+          if (keyA < keyB) return 1;
+          return 0;
+        });
+
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
-          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-          exchangeListImages: tempExchangeListImages,
+          firstExchange:
+            tempExchangeList.length > 0 ? tempExchangeList[0].name : "",
         });
+        const passDataHeader = [
+          ...tempWalletListToPush,
+          ...tempExchangeListToPush,
+        ];
+        this.props.setHeaderReducer(passDataHeader);
       }
     }
   };
   applyTempWalletList = () => {
-    if (this.props.HeaderState?.wallet?.length > 0) {
+    if (this.props.HeaderState?.wallet) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
+      const tempExchangeList = [];
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
           let tempAddress = "";
           if (data?.nickname) {
             tempAddress = data.nickname;
+          } else if (data?.nameTag) {
+            tempAddress = data.nameTag;
           } else if (data?.displayAddress) {
             tempAddress = data.displayAddress;
             if (!regex.test(tempAddress)) {
@@ -131,13 +170,27 @@ class TopBar extends Component {
             if (!regex.test(tempAddress)) {
               tempAddress = this.TruncateText(tempAddress);
             }
-          } else if (data?.apiAddress) {
-            tempAddress = data.apiAddress;
-            if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+          } else {
+            let tempAddress = "";
+            if (data?.nickname && data?.nickname !== "") {
+              tempAddress = data.nickname;
+            } else if (data?.displayAddress) {
+              tempAddress = data.displayAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.address) {
+              tempAddress = data.address;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
+            } else if (data?.apiAddress) {
+              tempAddress = data.apiAddress;
+              if (!regex.test(tempAddress)) {
+                tempAddress = this.TruncateText(tempAddress);
+              }
             }
           }
-
           tempWalletList.push(tempAddress);
         });
         tempWalletList.sort().reverse();
@@ -146,10 +199,22 @@ class TopBar extends Component {
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+
+        tempExchangeList.sort(function (a, b) {
+          var keyA = a.name,
+            keyB = b.name;
+          // Compare the 2 dates
+          if (keyA > keyB) return -1;
+          if (keyA < keyB) return 1;
+          return 0;
+        });
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
+          exchangeList: tempExchangeList,
+          firstExchange:
+            tempExchangeList.length > 0 ? tempExchangeList[0].name : "",
         });
       }
     }
@@ -171,6 +236,44 @@ class TopBar extends Component {
       page: pathName,
     });
     this.props.handleConnectModal();
+  };
+
+  connectWalletBlockNative = async () => {
+    const MAINNET_RPC_URL =
+      "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
+    const injected = injectedModule({
+      displayUnavailable: [
+        ProviderLabel.MetaMask,
+        ProviderLabel.Coinbase,
+        ProviderLabel.Phantom,
+      ],
+    });
+    const onboard = Onboard({
+      wallets: [injected],
+      chains: [
+        {
+          id: "0x1",
+          token: "ETH",
+          label: "Ethereum Mainnet",
+          rpcUrl: MAINNET_RPC_URL,
+        },
+        {
+          id: "0x2105",
+          token: "ETH",
+          label: "Base",
+          rpcUrl: "https://mainnet.base.org",
+        },
+      ],
+      appMetadata: {
+        name: "Loch",
+        icon: LochLogoNameIcon,
+        description: "A loch app",
+      },
+    });
+    if (onboard && onboard.connectWallet) {
+      const wallets = onboard.connectWallet();
+      // console.log("wallets ", wallets);
+    }
   };
 
   render() {
@@ -202,30 +305,47 @@ class TopBar extends Component {
         )}
 
         <div
-          onClick={this.passConnectExchangeClick}
-          className="topbar-btn ml-2 maxWidth50"
+          style={{
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
         >
-          {this.state.exchangeList.length > 0 ? (
-            <>
-              <span className="mr-2">
-                {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                  <Image className="topBarExchangeIcons" src={imgUrl} />
-                ))}
-              </span>
-              <span className="dotDotText">
-                <span className="captilasideText">
-                  {this.state.firstExchange?.toLowerCase()}{" "}
+          <div
+            onClick={this.connectWalletBlockNative}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            <Image className="topBarWalletAdd " src={WalletIcon} />
+            <span className="dotDotText">Connect wallet</span>
+          </div>
+          <div
+            onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
                 </span>
-                {this.state.exchangeList.length > 1 ? "and others " : ""}
-                {"connected"}
-              </span>
-            </>
-          ) : (
-            <>
-              <Image className="topBarWalletAdd " src={LinkIconBtn} />
-              <span className="dotDotText">Connect exchange</span>
-            </>
-          )}
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -237,6 +357,8 @@ const mapStateToProps = (state) => ({
   HeaderState: state.HeaderState,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setHeaderReducer,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
