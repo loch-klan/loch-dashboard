@@ -3,16 +3,10 @@ import { connect } from "react-redux";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-import {
-  IntlAssetValueDay,
-  IntlAssetValueYear,
-  IntlAssetValueMonth,
-} from "../../utils/AnalyticsFunctions.js";
 import Loading from "../common/Loading";
 import GraphLogo from "../../assets/images/graph-logo.svg";
 import handle from "../../assets/images/handle.svg";
 import { GraphHeader } from "../common/GraphHeader";
-import { getCurrentUser } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import {
   CurrencyType,
@@ -24,6 +18,7 @@ import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
 } from "../../assets/images/icons/index.js";
+import { DropDownWithIcons } from "../common/index.js";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -38,7 +33,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       plotLineHide: 0,
       steps: 1,
       xAxisNames: [],
-      title: "week",
+      title: "",
+      activeAssetTab: "",
+      assetList: [],
     };
   }
   componentDidMount() {
@@ -47,8 +44,39 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         inflowOutflowData: this.props.inflowOutflowData,
       });
     }
+    if (this.props.activeTimeTab) {
+      this.setState({
+        title: this.props.activeTimeTab,
+      });
+    }
+
+    if (this.props.activeAssetTab) {
+      this.setState({
+        activeAssetTab: this.props.activeAssetTab,
+      });
+    }
+    if (this.props.assetList) {
+      this.setState({
+        assetList: this.props.assetList,
+      });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.assetList !== this.props.assetList) {
+      this.setState({
+        assetList: this.props.assetList,
+      });
+    }
+    if (prevProps.activeAssetTab !== this.props.activeAssetTab) {
+      this.setState({
+        activeAssetTab: this.props.activeAssetTab,
+      });
+    }
+    if (prevProps.activeTimeTab !== this.props.activeTimeTab) {
+      this.setState({
+        title: this.props.activeTimeTab,
+      });
+    }
     if (prevProps.inflowOutflowData !== this.props.inflowOutflowData) {
       this.setState({
         inflowOutflowData: this.props.inflowOutflowData,
@@ -144,26 +172,26 @@ class InflowOutflowChartSlider extends BaseReactComponent {
   }
 
   handleSelect = (opt) => {
-    let tempTitle = "week";
+    let tempTitle = "1 Week";
     if (opt.target.id === 0 || opt.target.id === "0") {
-      tempTitle = "max";
+      tempTitle = "Max";
     } else if (opt.target.id === 1 || opt.target.id === "1") {
-      tempTitle = "fiveyears";
+      tempTitle = "5 Years";
     } else if (opt.target.id === 2 || opt.target.id === "2") {
-      tempTitle = "oneyear";
+      tempTitle = "1 Year";
     } else if (opt.target.id === 3 || opt.target.id === "3") {
-      tempTitle = "sixmonths";
+      tempTitle = "6 Months";
     } else if (opt.target.id === 4 || opt.target.id === "4") {
-      tempTitle = "onemonth";
-    } else {
-      tempTitle = "week";
+      tempTitle = "1 Month";
     }
     this.setState({
-      title: tempTitle,
       steps: 1,
       rangeSelected: 1,
     });
     this.props.handleGroupBy(tempTitle);
+  };
+  handleAssetSelect = (opt) => {
+    this.props.onAssetSelect(opt);
   };
   render() {
     let parent = this;
@@ -292,8 +320,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           margin: 20,
           minWidth: 0,
         },
-        // min: 50,
-        // max: 55,
+        min: 0,
+        max: 10,
         // plotLines: plotLines,
         // plotLines: updatedPlotLine,
       },
@@ -482,7 +510,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         },
       },
     };
-
     return (
       <div className="welcome-card-section lineChartSlider">
         <>
@@ -552,21 +579,20 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                 )}
                 <div
                   // className="chart-y-selection"
-                  style={
-                    this.props.hideTimeFilter
-                      ? {
-                          width: "100%",
-                        }
-                      : {
-                          width: "100%",
-                          paddingBottom: "1rem",
-                          paddingTop: "0.5rem",
-                        }
-                  }
+
+                  className="inflowOutflowChartTopInfo"
                 >
-                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
+                  <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
-                  </span>
+                  </div>
+                  <div className="dropdownWithImages">
+                    <DropDownWithIcons
+                      list={this.state.assetList}
+                      onSelect={this.handleAssetSelect}
+                      activetab={this.state.activeAssetTab}
+                      showChain
+                    />
+                  </div>
                 </div>
 
                 <HighchartsReact

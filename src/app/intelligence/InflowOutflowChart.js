@@ -5,43 +5,66 @@ import { InflowOutflowIcon } from "../../assets/images/icons";
 
 import PageHeader from "../common/PageHeader";
 import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
-import { GROUP_BY_YEAR, GroupByOptions } from "../../utils/Constant";
-import { ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
-import { getInflowsAndOutflowsGraphDataApi } from "./Api";
-import InflowOutflowChartSliderOld from "./InflowOutflowChartSliderOld";
-
+import { TimeFilterInflowOutflowType } from "../../utils/Constant";
+import {
+  getInflowsAndOutflowsGraphDataApi,
+  getInflowsAndOutflowsAssetsApi,
+} from "./Api";
+import "./intelligenceScss/_inflowOutflowChart.scss";
 class InflowOutflowChart extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       graphLoading: false,
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
-      tab: "day",
+      timeTab: "1 Week",
+      selectedAsset: "",
       inflowsOutflowsList: [],
+      assetList: [],
     };
   }
   componentDidMount() {
-    this.getGraphData();
+    let groupByValue = TimeFilterInflowOutflowType.getText(this.state.timeTab);
+    this.getGraphData(groupByValue, this.state.selectedAsset);
+    this.props.getInflowsAndOutflowsAssetsApi(this);
   }
-  getGraphData = () => {
-    let ActionType = ASSET_VALUE_GRAPH_YEAR;
-    this.setState({
-      tab: "year",
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.timeTab !== this.state.timeTab ||
+      prevState.selectedAsset !== this.state.selectedAsset
+    ) {
+      let groupByValue = TimeFilterInflowOutflowType.getText(
+        this.state.timeTab
+      );
+      if (groupByValue) {
+        this.getGraphData(groupByValue, this.state.selectedAsset);
+      }
+    }
+  }
+  getGraphData = (timeFilter, assetFilter) => {
     this.setState({ graphLoading: true });
-    let addressList = [];
-    this.state.userWalletList?.map((wallet) =>
-      addressList.push(wallet.address)
-    );
-    this.props.getInflowsAndOutflowsGraphDataApi(this, ActionType);
+    let data = new URLSearchParams();
+    if (timeFilter) {
+      data.append("days", timeFilter);
+    }
+    if (assetFilter) {
+      data.append("asset", assetFilter);
+    }
+    this.props.getInflowsAndOutflowsGraphDataApi(data, this);
   };
   handleGroupBy = (value) => {
-    let groupByValue = GroupByOptions.getGroupBy(value);
-    this.getGraphData(groupByValue);
+    this.setState({
+      timeTab: value,
+    });
+  };
+  onAssetSelect = (selectedItem) => {
+    this.setState({
+      selectedAsset: selectedItem,
+    });
   };
   render() {
     return (
-      <>
+      <div className="inflowOutflowBlock">
         <PageHeader title="Inflows and Outflows" showImg={InflowOutflowIcon} />
         <div className="graph-container" style={{ marginBottom: "5rem" }}>
           <InflowOutflowChartSlider
@@ -50,22 +73,19 @@ class InflowOutflowChart extends BaseReactComponent {
                 ? this.state.inflowsOutflowsList
                 : []
             }
-            externalEvents={
-              this.props.portfolioState.externalEvents &&
-              this.props.portfolioState.externalEvents
-            }
-            coinLists={this.props.OnboardingState.coinsLists}
             isScrollVisible={false}
             handleGroupBy={this.handleGroupBy}
             graphLoading={this.state.graphLoading}
-            isUpdate={this.state.isUpdate}
             isPage={true}
             dataLoaded={this.state.assetValueDataLoaded}
             updateTimer={this.updateTimer}
-            activeTab={this.state.tab}
+            activeTimeTab={this.state.timeTab}
+            activeAssetTab={this.state.selectedAsset}
+            assetList={this.state.assetList}
+            onAssetSelect={this.onAssetSelect}
           />
         </div>
-      </>
+      </div>
     );
   }
 }
@@ -76,5 +96,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   getInflowsAndOutflowsGraphDataApi,
+  getInflowsAndOutflowsAssetsApi,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InflowOutflowChart);

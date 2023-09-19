@@ -637,7 +637,6 @@ class TopPortfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
-      console.log("asset");
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({

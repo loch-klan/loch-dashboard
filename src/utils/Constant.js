@@ -426,3 +426,18 @@ export const TimeFilterType = {
     return this._presentable[value];
   },
 };
+export const TimeFilterInflowOutflowType = {
+  _presentable: {
+    Max: 5000,
+    "1 Week": 7,
+    "2 Weeks": 14,
+    "1 Month": 30,
+    "6 Months": 183,
+    "1 Year": 365,
+    "3 Years": 1096,
+    "5 Years": 1825,
+  },
+  getText: function (value) {
+    return this._presentable[value];
+  },
+};
