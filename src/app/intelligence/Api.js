@@ -22,13 +22,29 @@ import {
 
 export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
   return async function (dispatch, getState) {
+    let currency = JSON.parse(localStorage.getItem("currency"));
+    let currencyRate = currency?.rate || 1;
     postLoginInstance
       .post("wallet/user-wallet/get-buy-sell", data)
       .then((res) => {
         if (!res.data.error) {
+          const tempConvertedValue = res.data.data.data.map((resData) => {
+            return {
+              price: resData.price ? resData.price * currencyRate : 0,
+              received: resData.received ? resData.received : 0,
+              received_value: resData.received_value
+                ? resData.received_value * currencyRate
+                : 0,
+              send: resData.send ? resData.send : 0,
+              send_value: resData.send_value
+                ? resData.send_value * currencyRate
+                : 0,
+              timestamp: resData.timestamp ? resData.timestamp : 0,
+            };
+          });
           ctx.setState({
             graphLoading: false,
-            inflowsOutflowsList: res.data.data.data,
+            inflowsOutflowsList: tempConvertedValue,
           });
         } else {
           ctx.setState({
