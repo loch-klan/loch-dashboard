@@ -20,43 +20,48 @@ import {
   TOP_TRANSACTION_FILTER,
 } from "../topAccount/ActionTypes";
 
-export const getInflowsAndOutflowsGraphDataApi = (ctx, ActionType) => {
-  // console.log("before",data, ctx, ActionType);
+export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      .post("wallet/user-wallet/get-buy-sell")
+      .post("wallet/user-wallet/get-buy-sell", data)
       .then((res) => {
         if (!res.data.error) {
           ctx.setState({
-            //  assetValueData: res.data.data.asset_value_data,
             graphLoading: false,
             inflowsOutflowsList: res.data.data.data,
           });
-          // ctx.props.getExternalEventsApi(ctx);
-          if (!res.data.data.data_loaded) {
-            //   if (ActionType === "ASSET_VALUE_GRAPH_DAY") {
-            //     ctx.setState({ assetValueDataLoaded: false });
-            //   }
-            //   setTimeout(() => {
-            //     ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
-            //   }, 15000);
-          } else {
-            // ctx.setState({ assetValueDataLoaded: true });
-            // let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
-            // if (obj) {
-            //   localStorage.setItem(
-            //     "assetValueLoader",
-            //     JSON.stringify({
-            //       me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
-            //       topaccount: ctx?.state?.isTopAccountPage
-            //         ? false
-            //         : obj?.topaccount,
-            //     })
-            //   );
-            // }
-          }
         } else {
+          ctx.setState({
+            graphLoading: false,
+          });
           toast.error(res.data.message || "Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
+        console.log("Catch", err);
+      });
+  };
+};
+export const getInflowsAndOutflowsAssetsApi = (ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/transaction/get-transaction-asset-filter")
+      .then((res) => {
+        if (!res.data.error) {
+          if (res.data.data.assets.length > 0) {
+            let tempName = "";
+            if (res.data.data.assets[0].asset?.name) {
+              tempName = res.data.data.assets[0].asset?.name;
+            }
+            console.log("setting it ", tempName);
+            ctx.setState({
+              assetList: res.data.data.assets,
+              assetTab: tempName,
+            });
+          }
         }
       })
       .catch((err) => {
