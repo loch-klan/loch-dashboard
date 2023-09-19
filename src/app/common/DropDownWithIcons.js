@@ -65,12 +65,12 @@ export default function DropDown(props) {
         <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
           <div
             style={{
-              backgroundColor: li.asset.color,
+              backgroundColor: li.asset.color ? li.asset.color : "white",
               marginRight: "1rem",
               borderRadius: "0.4rem",
               padding: "0.4rem",
               border: `0.5px solid ${lightenDarkenColor(
-                li.asset.color,
+                li.asset.color ? li.asset.color : "white",
                 -0.15
               )}`,
             }}
@@ -116,12 +116,16 @@ export default function DropDown(props) {
               {selectedItem.asset.symbol ? (
                 <div
                   style={{
-                    backgroundColor: selectedItem.asset.color,
+                    backgroundColor: selectedItem.asset.color
+                      ? selectedItem.asset.color
+                      : "white",
                     marginRight: "1rem",
                     borderRadius: "0.4rem",
                     padding: "0.4rem",
                     border: `0.5px solid ${lightenDarkenColor(
-                      selectedItem.asset.color,
+                      selectedItem.asset.color
+                        ? selectedItem.asset.color
+                        : "white",
                       -0.15
                     )}`,
                   }}
