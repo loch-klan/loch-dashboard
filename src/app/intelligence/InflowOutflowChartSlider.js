@@ -28,14 +28,15 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     this.state = {
       currency: JSON.parse(localStorage.getItem("currency")),
       inflowOutflowData: [],
-      inflowOutflowLineData: [],
       buySellList: [],
       plotLineHide: 0,
       steps: 1,
-      xAxisNames: [],
       title: "",
       activeAssetTab: "",
       assetList: [],
+      formattedXAxis: [],
+      formattedOverallData: {},
+      formattedPointList: [],
     };
   }
   componentDidMount() {
@@ -83,19 +84,64 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       });
     }
     if (prevState.inflowOutflowData !== this.state.inflowOutflowData) {
+      const formattedOverallData = {};
+      const formattedXAxis = [];
+      const timestampList = [];
+      let currentTimeFormat = "Year";
+
+      if (this.state.title === "1 Year" || this.state.title === "6 Months") {
+        currentTimeFormat = "Month";
+      } else if (
+        this.state.title === "1 Week" ||
+        this.state.title === "1 Month"
+      ) {
+        currentTimeFormat = "Days";
+      }
+      this.state.inflowOutflowData.forEach((resData) => {
+        let formattedTimeStamp = "";
+        if (currentTimeFormat === "Year") {
+          formattedTimeStamp = moment(resData.timestamp).format("YYYY");
+        } else if (currentTimeFormat === "Month") {
+          formattedTimeStamp = moment(resData.timestamp).format("MMMM YYYY");
+        } else {
+          formattedTimeStamp = moment(resData.timestamp).format("DD/MM/YYYY");
+        }
+        if (!timestampList.includes(formattedTimeStamp)) {
+          // Add to time stamp list
+          timestampList.push(formattedTimeStamp);
+          formattedXAxis.push(formattedTimeStamp);
+
+          // Add to overall data
+          formattedOverallData[formattedTimeStamp] = resData;
+        } else {
+          const tempVar = formattedOverallData[formattedTimeStamp];
+          formattedOverallData[formattedTimeStamp] = {
+            price: resData.price,
+            received: resData.received + tempVar.received,
+            received_value: resData.received_value + tempVar.received_value,
+            send: resData.send + tempVar.send,
+            send_value: resData.send_value + tempVar.send_value,
+            timestamp: resData.timestamp,
+          };
+        }
+      });
+
+      const formattedPointList = [];
       const tempAnnotationArr = [];
-      this.state.inflowOutflowData.forEach((curPoint, index) => {
+      let index = 0;
+      for (let curItem in formattedOverallData) {
+        formattedPointList.push(formattedOverallData[curItem].price);
         let tempHolder = {
           point: {
             xAxis: 0,
             yAxis: 0,
             x: index,
-            y: curPoint.price,
+            y: formattedOverallData[curItem].price,
           },
           useHTML: true,
           formatter: function () {
-            const receivedVal = curPoint.received_value;
-            const sendVal = curPoint.send_value;
+            const receivedVal = formattedOverallData[curItem].received_value;
+            const sendVal = formattedOverallData[curItem].send_value;
 
             if (receivedVal > 0) {
               return `<div class="inflowOutflowChartAnnotationContainer">
@@ -134,7 +180,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           },
           backgroundColor: "transparent",
           borderColor: "transparent",
-          className: "highcharts-no-tooltip",
+          className: "highchartsAnnotationTooltip",
           x: 0,
           y: 0,
           padding: 0,
@@ -142,31 +188,13 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           verticalAlign: "bottom",
         };
         tempAnnotationArr.push(tempHolder);
-      });
-      this.setState({
-        buySellList: tempAnnotationArr,
-      });
-      const myData = this.state.inflowOutflowData.map(
-        (resData) => resData.price
-      );
-      let myCustomXaxis = [];
-      if (this.state.title === "week") {
-        myCustomXaxis = this.state.inflowOutflowData.map((resData) =>
-          moment(resData.timestamp).format("DD/MM/YY")
-        );
-      } else if (
-        this.state.title === "onemonth" ||
-        this.state.title === "sixmonths"
-      ) {
-        myCustomXaxis = this.state.inflowOutflowData.map((resData) =>
-          moment(resData.timestamp).format("MMMM YYYY")
-        );
+        index++;
       }
       this.setState({
-        xAxisNames: myCustomXaxis,
-      });
-      this.setState({
-        inflowOutflowLineData: myData,
+        formattedPointList: formattedPointList,
+        formattedXAxis: formattedXAxis,
+        formattedOverallData: formattedOverallData,
+        buySellList: tempAnnotationArr,
       });
     }
   }
@@ -195,10 +223,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
   };
   render() {
     let parent = this;
-    let amountOfItems = 0;
-    if (this.state.inflowOutflowLineData.length > 0) {
-      amountOfItems = this.state.inflowOutflowLineData.length;
-    }
+
     const options = {
       title: {
         text: null,
@@ -279,26 +304,22 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           },
         },
 
-        // categories: categories,
-        type: "category", // Other types are "logarithmic", "datetime" and "category",
-        // labels: {
-        //   formatter: function () {
-        //     // console.log("categories", categories);
-        //     // console.log("value", categories[this.pos]);
-        //     // console.log("this", this);
-        //     return parent.state.title === "Day" &&
-        //       categories[this.pos] !== undefined
-        //       ? moment(categories[this.pos], "DD/MM/YYYY").format("MM/DD/YY")
-        //       : categories[this.pos];
-        //   },
-        //   autoRotation: false,
-        //   step: parent.state.steps,
-        //   // autoRotationLimit: 0,
-        //   // style: {
-        //   //   whiteSpace: "nowrap",
-        //   //   textOverflow: "none",
-        //   // },
-        // },
+        categories: this.state.formattedXAxis ? this.state.formattedXAxis : [],
+        type: "category",
+        labels: {
+          formatter: function () {
+            if (
+              parent.state.formattedXAxis &&
+              this.pos < parent.state.formattedXAxis.length &&
+              parent.state.formattedXAxis[this.pos]
+            ) {
+              return parent.state.formattedXAxis[this.pos];
+            }
+            return "";
+          },
+          autoRotation: false,
+          step: parent.state.steps,
+        },
         crosshair: {
           width: 1,
           color: "#B0B1B3",
@@ -320,8 +341,12 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           margin: 20,
           minWidth: 0,
         },
-        min: 0,
-        max: 10,
+        min:
+          this.state.formattedXAxis && this.state.formattedXAxis.length > 4
+            ? this.state.formattedXAxis.length - 5
+            : 0,
+        max:
+          this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5,
         // plotLines: plotLines,
         // plotLines: updatedPlotLine,
       },
@@ -370,11 +395,11 @@ class InflowOutflowChartSlider extends BaseReactComponent {
 
         formatter: function () {
           if (
-            parent.state.inflowOutflowData &&
-            parent.state.inflowOutflowData.length > 0 &&
-            this.x < parent.state.inflowOutflowData.length
+            parent.state.formattedOverallData &&
+            Object.keys(parent.state.formattedOverallData).length > 0
           ) {
-            const curItem = parent.state.inflowOutflowData[this.x];
+            const curItem = parent.state.formattedOverallData[this.x];
+
             const dateTitle = moment(curItem.timestamp).format("DD MMMM YYYY");
             if (curItem.received_value > 0) {
               return `
@@ -438,7 +463,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       series: [
         {
           name: "Ethereum",
-          data: this.state.inflowOutflowLineData,
+          data: this.state.formattedPointList,
           type: "area",
           fillOpacity: 0.1,
           color: "#5ABE7E",

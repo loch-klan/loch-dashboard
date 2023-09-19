@@ -52,15 +52,17 @@ export const getInflowsAndOutflowsAssetsApi = (ctx) => {
       .then((res) => {
         if (!res.data.error) {
           if (res.data.data.assets.length > 0) {
-            let tempName = "";
-            if (res.data.data.assets[0].asset?.name) {
-              tempName = res.data.data.assets[0].asset?.name;
-            }
-            console.log("setting it ", tempName);
             ctx.setState({
               assetList: res.data.data.assets,
-              assetTab: tempName,
             });
+            let isEth = res.data.data.assets.findIndex((resRes) => {
+              return resRes.asset.code === "ETH";
+            });
+            if (isEth > -1) {
+              ctx.setState({
+                selectedAsset: res.data.data.assets[isEth]._id,
+              });
+            }
           }
         }
       })
