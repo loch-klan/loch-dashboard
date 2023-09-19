@@ -714,7 +714,6 @@ class Intelligence extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-            <InflowOutflowChart />
             <PageHeader
               title="Intelligence"
               subTitle="Automated and personalized financial intelligence"
@@ -975,6 +974,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
+              <InflowOutflowChart />
               {/* footer */}
               <Footer />
             </div>
