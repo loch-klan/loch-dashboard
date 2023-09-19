@@ -2350,3 +2350,10 @@ textarea {
     }
   }
 }
+.highchartsAnnotationTooltip {
+  pointer-events: none;
+  cursor: pointer;
+}
+.highcharts-area {
+  cursor: pointer;
+}
