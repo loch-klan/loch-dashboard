@@ -140,8 +140,20 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           },
           useHTML: true,
           formatter: function () {
-            const receivedVal = formattedOverallData[curItem].received_value;
-            const sendVal = formattedOverallData[curItem].send_value;
+            let receivedVal = formattedOverallData[curItem].received_value;
+            let sendVal = formattedOverallData[curItem].send_value;
+
+            const finalVal = receivedVal - sendVal;
+            if (finalVal > 0) {
+              receivedVal = finalVal;
+              sendVal = 0;
+            } else if (finalVal < 0) {
+              receivedVal = 0;
+              sendVal = Math.abs(finalVal);
+            } else {
+              receivedVal = 0;
+              sendVal = 0;
+            }
 
             if (receivedVal > 0) {
               return `<div class="inflowOutflowChartAnnotationContainer">
@@ -401,7 +413,21 @@ class InflowOutflowChartSlider extends BaseReactComponent {
             const curItem = parent.state.formattedOverallData[this.x];
 
             const dateTitle = moment(curItem.timestamp).format("DD MMMM YYYY");
-            if (curItem.received_value > 0) {
+            let receivedVal = curItem.received_value;
+            let sendVal = curItem.send_value;
+
+            const finalVal = receivedVal - sendVal;
+            if (finalVal > 0) {
+              receivedVal = finalVal;
+              sendVal = 0;
+            } else if (finalVal < 0) {
+              receivedVal = 0;
+              sendVal = Math.abs(finalVal);
+            } else {
+              receivedVal = 0;
+              sendVal = 0;
+            }
+            if (receivedVal > 0) {
               return `
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
@@ -421,13 +447,13 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                     <div>
                     <span style="color:${"#16182B"}"> ${CurrencyType(
                 false
-              )}${numToCurrency(curItem.received_value)}</span>
+              )}${numToCurrency(receivedVal)}</span>
                     </div>
                     </div>
                 </div>
               </div>
               `;
-            } else if (curItem.send_value > 0) {
+            } else if (sendVal > 0) {
               return `
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
@@ -447,7 +473,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                     <div>
                     <span style="color:${"#16182B"}"> ${CurrencyType(
                 false
-              )}${numToCurrency(curItem.send_value)}</span>
+              )}${numToCurrency(sendVal)}</span>
                     </div>
                     </div>
                 </div>
