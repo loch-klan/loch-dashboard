@@ -27,6 +27,7 @@ import moment from "moment";
 import Loading from "../common/Loading";
 import {
   CurrencyType,
+  TruncateText,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
@@ -256,7 +257,7 @@ class LineChartSlider extends BaseReactComponent {
                   moment(assetData.timestamp).format("MMMM YYYY") ===
                     currentDate
                 ? data.count
-                : data.max_count;
+                : data.count;
 
             //     if (
             //       (this.state.title === "Year" &&
@@ -384,6 +385,7 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.push({
         // linkedTo: key,
         name: value.assetDetails.code,
+        code: value.assetDetails.name,
         id: key,
         type: "area",
         // type: "areaspline",
@@ -547,7 +549,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (current == value) {
             // selectedEvents.push(item);
-            item.event?.map((a) => {
+            item.event?.map((a, index) => {
               let e_usd =
                 a.asset.value *
                 (a.asset_price * (this.state.currency?.rate || 1));
@@ -579,13 +581,17 @@ class LineChartSlider extends BaseReactComponent {
                 e_text = "to";
               }
               e_full_address = e_address;
-              if (e_address.length > 16) {
-                e_address =
-                  '"' +
-                  e_address.substr(0, e_text === "from" ? 7 : 9) +
-                  "..." +
-                  e_address.substr(e_address.length - 7, e_address.length) +
-                  '"';
+              // if (e_address.length > 16) {
+              //   e_address =
+              //     '"' +
+              //     e_address.substr(0, e_text === "from" ? 7 : 9) +
+              //     "..." +
+              //     e_address.substr(e_address.length - 7, e_address.length) +
+              //     '"';
+              // }
+              let temp_e_address = e_address.toString();
+              if (e_address.toString().length > 4) {
+                temp_e_address = e_address.toString().slice(0, 5);
               }
               // console.log("internal", a);
               selectedEvents.push({
@@ -594,7 +600,8 @@ class LineChartSlider extends BaseReactComponent {
                 assetCode: e_assetCode,
                 tooltip: e_tooltipData,
                 text: e_text,
-                address: e_address,
+                // address: e_address,
+                address: temp_e_address,
                 fulladdress: e_full_address,
               });
             });
@@ -659,8 +666,8 @@ class LineChartSlider extends BaseReactComponent {
 
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
-      seriesData?.map((e) => {
-        AllLegends.push({ label: e.name, value: e.id });
+      seriesData?.forEach((e) => {
+        AllLegends.push({ label: e.name, value: e.id, code: e.code });
       });
 
     let topLegends =
@@ -1195,9 +1202,15 @@ backdrop-filter: blur(15px);">
       },
     };
 
-    const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" };
+    const minVersion = {
+      padding: "3.2rem 3.2rem 0rem 3.2rem",
+      height: "32rem",
+    };
+    const minGraphVersion = {
+      style: { height: "75%" },
+    };
     const minVersionSection = {
-      minHeight: "51rem",
+      minHeight: "32rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
@@ -1218,7 +1231,7 @@ backdrop-filter: blur(15px);">
                 ? {
                     padding: "0rem 4.8rem",
                   }
-                : minVersion
+                : { ...minVersion, display: "flex", flexDirection: "column" }
             }
             // onMouseLeave={() => {
             //   this.resetEvent();
@@ -1231,6 +1244,7 @@ backdrop-filter: blur(15px);">
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
+                noSubtitleBottomPadding={this.props.noSubtitleBottomPadding}
                 // loader={true}
                 // loaderText="Don't worry we're still loading all your data"
               />
@@ -1239,10 +1253,11 @@ backdrop-filter: blur(15px);">
             {this.props.graphLoading ? (
               <div
                 style={{
-                  height: "30rem",
+                  height: this.props.hideTimeFilter ? "15.5rem" : "30rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <Loading />
@@ -1310,8 +1325,16 @@ backdrop-filter: blur(15px);">
                   className="chart-y-selection"
                   style={
                     this.props.hideTimeFilter
-                      ? { width: "100%", marginTop: "0.5rem" }
-                      : { width: "100%" }
+                      ? {
+                          width: "100%",
+                          marginTop: "0.5rem",
+                          paddingTop: this.props.noSubtitleBottomPadding
+                            ? "2rem"
+                            : "",
+                        }
+                      : {
+                          width: "100%",
+                        }
                   }
                 >
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
@@ -1370,6 +1393,9 @@ backdrop-filter: blur(15px);">
                   options={options}
                   // options={options2}
                   constructorType={"stockChart"}
+                  containerProps={
+                    this.props.hideTimeFilter ? minGraphVersion : null
+                  }
                   // allowChartUpdate={true}
                   // updateArgs={[true]}
                 />
@@ -1431,6 +1457,17 @@ backdrop-filter: blur(15px);">
                     style={this.props.hideTimeFilter ? { width: "100%" } : {}}
                   >
                     {this.state.selectedEvents?.length > 0 &&
+                    this.state.selectedEvents?.filter((e) => e.text === "from")
+                      .length > 0 ? (
+                      <h5 className="inter-display-bold f-s-13 lh-16 black-191 m-b-10">
+                        <Image
+                          style={{ marginRight: "0.5rem" }}
+                          src={DoubleArrow}
+                        />
+                        <span>Received</span>
+                      </h5>
+                    ) : null}
+                    {this.state.selectedEvents?.length > 0 &&
                       this.state.selectedEvents
                         ?.filter((e) => e.text === "from")
                         .map((event, i) => {
@@ -1455,23 +1492,19 @@ backdrop-filter: blur(15px);">
                                 //   }`,
                                 // }}
                               >
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  {event.text === "from" ? "Received" : "Sent"}
-                                </h5>
-
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
-                                    {event.assetCode}
-                                    {` or `}
                                     <span className="inter-display-semi-bold">
                                       {CurrencyType(false)}
                                       {numToCurrency(event.usd)}
                                     </span>
-                                    {event.text === "from"
-                                      ? " received from "
-                                      : " sent to "}
+                                    <span>
+                                      {" ("}
+                                      {event.assetValue.toFixed(count)}{" "}
+                                      {event.assetCode}
+                                      {")"}
+                                    </span>
+                                    {event.text === "from" ? " from " : " to "}
                                   </span>
                                   <CustomOverlay
                                     position="top"
@@ -1507,6 +1540,17 @@ backdrop-filter: blur(15px);">
                     style={this.props.hideTimeFilter ? { width: "100%" } : {}}
                   >
                     {this.state.selectedEvents?.length > 0 &&
+                    this.state.selectedEvents?.filter((e) => e.text === "to")
+                      .length > 0 ? (
+                      <h5 className="inter-display-bold f-s-13 lh-16 black-191 m-b-10">
+                        <Image
+                          style={{ marginRight: "0.5rem" }}
+                          src={DoubleArrow}
+                        />
+                        <span>Sent</span>
+                      </h5>
+                    ) : null}
+                    {this.state.selectedEvents?.length > 0 &&
                       this.state.selectedEvents
                         ?.filter((e) => e.text === "to")
                         .map((event, i) => {
@@ -1531,23 +1575,19 @@ backdrop-filter: blur(15px);">
                                 //   }`,
                                 // }}
                               >
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  {event.text === "from" ? "Received" : "Sent"}
-                                </h5>
-
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
-                                    {event.assetCode}
-                                    {` or `}
                                     <span className="inter-display-semi-bold">
                                       {CurrencyType(false)}
                                       {numToCurrency(event.usd)}
                                     </span>
-                                    {event.text === "from"
-                                      ? " received from "
-                                      : " sent to "}
+                                    <span>
+                                      {" ("}
+                                      {event.assetValue.toFixed(count)}{" "}
+                                      {event.assetCode}
+                                      {")"}
+                                    </span>
+                                    {event.text === "from" ? " from " : " to "}
                                   </span>
                                   <CustomOverlay
                                     position="top"

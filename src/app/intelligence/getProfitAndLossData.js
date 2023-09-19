@@ -6,10 +6,12 @@ import {
 import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
 import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
 import {
+  homeInflowHover,
+  homeNetHover,
+  homeOutflowHover,
   netflowInflowHover,
   netflowNetHover,
   netflowOutflowHover,
-  ProfitLossHover,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { useHistory } from "react-router-dom";
@@ -124,12 +126,45 @@ export const getProfitAndLossData = (arr, parentctx) => {
             if (
               parentctx.props.history.location.pathname.substring(1) === "home"
             ) {
-              ProfitLossHover({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-                hover_value: CurrencyType(false) + numToCurrency(ctx.raw),
-              });
+              if (parentctx.state.waitForMixpannelCall) {
+                return [label];
+              }
+              if (parentctx.waitForMixpannelCallOn) {
+                parentctx.waitForMixpannelCallOn();
+              }
+
+              if (ctx.label === "Net") {
+                homeNetHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
+                });
+              } else if (ctx.label === "Outflows") {
+                homeOutflowHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
+                });
+              } else if (ctx.label === "Inflows") {
+                homeInflowHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
+                });
+              }
+              if (parentctx.waitForMixpannelCallOff) {
+                setTimeout(() => {
+                  parentctx.waitForMixpannelCallOff();
+                }, 2000);
+              }
             } else {
+              if (parentctx.state.waitForMixpannelCall) {
+                return [label];
+              }
+              if (parentctx.waitForMixpannelCallOn) {
+                parentctx.waitForMixpannelCallOn();
+              }
+
               if (ctx.label === "Net") {
                 netflowNetHover({
                   session_id: getCurrentUser().id,
@@ -148,6 +183,11 @@ export const getProfitAndLossData = (arr, parentctx) => {
                   email_address: getCurrentUser().email,
                   hovered: CurrencyType(false) + numToCurrency(ctx.raw),
                 });
+              }
+              if (parentctx.waitForMixpannelCallOff) {
+                setTimeout(() => {
+                  parentctx.waitForMixpannelCallOff();
+                }, 500);
               }
             }
 
@@ -168,10 +208,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
       image: GraphLogoImage,
 
       x: 0,
-      y:
-        parentctx.props.history.location.pathname.substring(1) === "home"
-          ? 41
-          : 22,
+      y: 0,
 
       width: 104,
       height: 39,

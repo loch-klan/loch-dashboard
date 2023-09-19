@@ -315,8 +315,8 @@ class CohortPage extends BaseReactComponent {
     this.getNotificationApi();
     this.props.getAllCoins();
     this.getAssetFilter();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -842,6 +842,22 @@ class CohortPage extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -853,12 +869,15 @@ class CohortPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
                 updateTimer={this.updateTimer}
+                hideButton
               />
             </div>
           </div>
@@ -1083,12 +1102,7 @@ class CohortPage extends BaseReactComponent {
             </h2>
             <div style={{}} className="balance-sheet-card">
               <div className="balance-dropdown">
-                <div
-                  className="balance-list-content"
-                  style={
-                    this.state.DefiLoader ? { marginBottom: "2.5rem" } : {}
-                  }
-                >
+                <div className="balance-list-content">
                   {/* For yeild */}
                   <Row>
                     {!this.state.DefiLoader ? (
@@ -1097,26 +1111,23 @@ class CohortPage extends BaseReactComponent {
                           <div
                             className="balance-sheet-title"
                             onClick={this.toggleYield}
-                            style={
-                              // !this.state.isYeildToggle || !this.state.isDebtToggle
-                              //   ? { marginBottom: "0.5rem" }
-                              //   : { marginBottom: "0.5rem" }
-                              { marginBottom: "0.5rem" }
-                            }
                           >
                             <div>
                               <span
-                                className="inter-display-semi-bold f-s-16 lh-19"
-                                style={{
-                                  color: "#636467",
-                                  marginRight: "0.8rem",
-                                }}
+                                className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
+                                  this.state.isYeildToggle
+                                    ? "balance-sheet-title-text-selected"
+                                    : ""
+                                }`}
                               >
                                 Credit
                               </span>
                               <span
-                                className="inter-display-medium f-s-16 lh-19"
-                                style={{ marginRight: "0.8rem" }}
+                                className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
+                                  this.state.isYeildToggle
+                                    ? "balance-sheet-title-text-selected"
+                                    : ""
+                                }`}
                               >
                                 {CurrencyType(false)}
                                 {this.state.totalYield &&
@@ -1128,67 +1139,71 @@ class CohortPage extends BaseReactComponent {
                             </div>
                             <Image
                               src={arrowUp}
+                              className="defiMenu"
                               style={
                                 this.state.isYeildToggle
-                                  ? { transform: "rotate(180deg)" }
+                                  ? {
+                                      transform: "rotate(180deg)",
+                                      filter: "opacity(1)",
+                                    }
                                   : {}
                               }
                             />
                           </div>
-                          {this.state.YieldValues?.length !== 0 &&
-                            this.state.isYeildToggle &&
-                            this.state.YieldValues?.sort(
-                              (a, b) => b.totalPrice - a.totalPrice
-                            )?.map((item, i) => {
-                              return (
-                                <div
-                                  className="balance-sheet-list"
-                                  style={
-                                    i === this.state.YieldValues?.length - 1
-                                      ? { paddingBottom: "0.3rem" }
-                                      : {}
-                                  }
-                                >
-                                  <span className="inter-display-medium f-s-16 lh-19">
-                                    {item.name}
-                                  </span>
-                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                    {CurrencyType(false)}
-                                    {amountFormat(
-                                      item.totalPrice.toFixed(2) *
-                                        (this.state.currency?.rate || 1),
-                                      "en-US",
-                                      "USD"
-                                    )}
-                                  </span>
-                                </div>
-                              );
-                            })}
+                          {this.state.isYeildToggle ? (
+                            <div className="balance-sheet-list-container">
+                              {this.state.YieldValues?.length !== 0 &&
+                                this.state.YieldValues?.sort(
+                                  (a, b) => b.totalPrice - a.totalPrice
+                                )?.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="balance-sheet-list"
+                                      style={
+                                        i === this.state.YieldValues?.length - 1
+                                          ? { paddingBottom: "0.3rem" }
+                                          : {}
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-16 lh-19">
+                                        {item.name}
+                                      </span>
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {amountFormat(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          ) : null}
                         </Col>
                         <Col md={6}>
                           <div
                             className="balance-sheet-title"
                             onClick={this.toggleDebt}
-                            style={
-                              // !this.state.isYeildToggle || !this.state.isDebtToggle
-                              //   ? { marginBottom: "0.5rem" }
-                              //   : { marginBottom: "0.5rem" }
-                              { marginBottom: "0.5rem" }
-                            }
                           >
                             <div>
                               <span
-                                className="inter-display-semi-bold f-s-16 lh-19"
-                                style={{
-                                  color: "#636467",
-                                  marginRight: "0.8rem",
-                                }}
+                                className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
+                                  this.state.isDebtToggle
+                                    ? "balance-sheet-title-text-selected"
+                                    : ""
+                                }`}
                               >
                                 Debt
                               </span>
                               <span
-                                className="inter-display-medium f-s-16 lh-19"
-                                style={{ marginRight: "0.8rem" }}
+                                className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
+                                  this.state.isDebtToggle
+                                    ? "balance-sheet-title-text-selected"
+                                    : ""
+                                }`}
                               >
                                 {CurrencyType(false)}
                                 {this.state.totalDebt &&
@@ -1200,55 +1215,62 @@ class CohortPage extends BaseReactComponent {
                             </div>
                             <Image
                               src={arrowUp}
+                              className="defiMenu"
                               style={
                                 this.state.isDebtToggle
-                                  ? { transform: "rotate(180deg)" }
+                                  ? {
+                                      transform: "rotate(180deg)",
+                                      filter: "opacity(1)",
+                                    }
                                   : {}
                               }
                             />
                           </div>
-
-                          {this.state.DebtValues &&
-                            this.state.DebtValues?.length !== 0 &&
-                            this.state.isDebtToggle &&
-                            this.state.DebtValues.sort(
-                              (a, b) => b.totalPrice - a.totalPrice
-                            )?.map((item, i) => {
-                              return (
-                                <div
-                                  className="balance-sheet-list"
-                                  style={
-                                    i === this.state.DebtValues?.length - 1
-                                      ? { paddingBottom: "0.3rem" }
-                                      : {}
-                                  }
-                                >
-                                  <span className="inter-display-medium f-s-16 lh-19">
-                                    {item.name}
-                                  </span>
-                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                    {CurrencyType(false)}
-                                    {amountFormat(
-                                      item.totalPrice.toFixed(2) *
-                                        (this.state.currency?.rate || 1),
-                                      "en-US",
-                                      "USD"
-                                    )}
-                                  </span>
-                                </div>
-                              );
-                            })}
+                          {this.state.isDebtToggle ? (
+                            <div className="balance-sheet-list-container">
+                              {this.state.DebtValues &&
+                                this.state.DebtValues?.length !== 0 &&
+                                this.state.DebtValues.sort(
+                                  (a, b) => b.totalPrice - a.totalPrice
+                                )?.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="balance-sheet-list"
+                                      style={
+                                        i === this.state.DebtValues?.length - 1
+                                          ? { paddingBottom: "0.3rem" }
+                                          : {}
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-16 lh-19">
+                                        {item.name}
+                                      </span>
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {amountFormat(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          ) : null}
                         </Col>
                       </>
                     ) : (
                       <Col md={12}>
-                        <div className="">
+                        <div
+                          style={{ paddingBottom: "3rem", paddingTop: "3rem" }}
+                        >
                           <Loading />
                         </div>
                       </Col>
                     )}
                   </Row>
-
                   {/* For debt */}
                 </div>
               </div>
@@ -2204,6 +2226,8 @@ class CohortPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   commonState: state.CommonState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 
 const mapDispatchToProps = {
@@ -2211,6 +2235,8 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   updateWalletListFlag,
   TopsetPageFlagDefault,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortPage);

@@ -21,7 +21,7 @@ import LPWhale from "./app/home/landing-page-whale";
 import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount";
-import TopAccount from "./app/discover/topAccount";
+import TopAccount from "./app/discover/topAccounts/topAccountsPage";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import WatchList from "./app/watchlist/watchlistPage";
 import appFeature from "./app/common/appFeature";
@@ -33,6 +33,8 @@ import topInsights from "./app/topAccount/top-insights";
 import topCosts from "./app/topAccount/top-costs";
 import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
+import TransactionFeedPage from "./app/transactionFeed/TransactionFeedPage";
+import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 const routes = [
   {
     path: "/",
@@ -172,6 +174,18 @@ const routes = [
     name: "Decentralized Finance",
     type: PrivateRoute,
     component: topDefi,
+  },
+  {
+    path: "/transaction-feed",
+    name: "Transaction feed",
+    type: PrivateRoute,
+    component: TransactionFeedPage,
+  },
+  {
+    path: "/yield-opportunities",
+    name: "Yield Opportunities",
+    type: PrivateRoute,
+    component: YieldOpportunitiesPage,
   },
   {
     path: "/twitter-influencers",

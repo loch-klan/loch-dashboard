@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CustomOverlay from "../commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
+import "./formScss/_customDropdownBlock.scss";
 class CustomDropdown extends Component {
   constructor(props) {
     super(props);
-
-    // console.log(props.options, "props option");
-    //  console.log(state.options, "state option");
 
     this.state = {
       showMenu: false,
@@ -29,13 +25,13 @@ class CustomDropdown extends Component {
     //  );
     if (this.props.isLineChart) {
       if (this.props.selectedTokens?.length !== 0) {
-        // console.log("found array");
         //is already selected then this run
         let options = [];
         this.props.options.map((e) =>
           options.push({
             label: e.label,
             value: e.value,
+            code: e.code ? e.code : "",
             isSelected: this.props.selectedTokens.includes(e.value)
               ? true
               : false,
@@ -48,14 +44,13 @@ class CustomDropdown extends Component {
             .sort((a, b) => (a.label > b.label ? 1 : -1))
             .sort((a, b) => b.isSelected - a.isSelected),
         ];
-        // console.log("option constructor", this.state.options);
       } else {
-        // console.log("empty array");
         let options = [];
         this.props.options.map((e, i) =>
           options.push({
             label: e.label,
             value: e.value,
+            code: e.code ? e.code : "",
             isSelected: i < 5 && i !== 0 ? true : false,
           })
         );
@@ -68,13 +63,13 @@ class CustomDropdown extends Component {
         ];
       }
     } else {
-      // console.log("transaction", this.props.options);
       this.props.options.map((e, i) =>
         this.state.options.push({
           label:
             this.props.isChain || this.props.isGreyChain ? e.name : e.label,
           value: this.props.isChain || this.props.isGreyChain ? e.id : e.value,
           // isSelected: i === 0 && !this.props.isChain ? true : false,
+          code: e.code ? e.code : "",
           isSelected: true,
         })
       );
@@ -89,7 +84,6 @@ class CustomDropdown extends Component {
     this.dropDownRef = React.createRef();
     // this.handleClickOutside = this.handleClickOutside.bind(this);
   }
-
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -97,14 +91,12 @@ class CustomDropdown extends Component {
   componentDidUpdate(prevProps) {
     // if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
     //   this.selectedAll(true);
-    //   console.log("in")
     // }
     if (
       prevProps.options?.length === 0 ||
       prevProps.options?.length !== this.props.options?.length
     ) {
       if (this.props.isLineChart) {
-        // console.log("in line chart");
         this.setState(
           {
             options: [],
@@ -112,13 +104,13 @@ class CustomDropdown extends Component {
           () => {
             if (this.props.selectedTokens?.length !== 0) {
               //is already selected then this run
-              // console.log("in selected token");
               let options = [];
               Promise.all(
                 this.props.options.map((e) =>
                   options.push({
                     label: e.label,
                     value: e.value,
+                    code: e.code ? e.code : "",
                     isSelected: this.props.selectedTokens.includes(e.value)
                       ? true
                       : false,
@@ -143,15 +135,14 @@ class CustomDropdown extends Component {
 
               //  this.getSelected();
               //  this.Apply();
-              // console.log("op",options)
             } else {
-              // console.log("in line chart empty");
               let options = [];
               Promise.all(
                 this.props.options.map((e, i) =>
                   options.push({
                     label: e.label,
                     value: e.value,
+                    code: e.code ? e.code : "",
                     isSelected: i < 5 && i !== 0 ? true : false,
                   })
                 )
@@ -166,15 +157,12 @@ class CustomDropdown extends Component {
                   ],
                 });
               });
-
-              //  console.log("op else", options);
             }
             this.getSelected();
             this.Apply();
           }
         );
       } else {
-        // console.log("in transaction");
         // this.props.options.map((e, i) =>
         //   this.state.options.push({
         //     label: e.label,
@@ -183,7 +171,6 @@ class CustomDropdown extends Component {
         //   })
         // );
 
-        // console.log("transaction", this.props.options);
         this.state.options = [];
         this.props.options.map((e, i) =>
           this.state.options.push({
@@ -191,6 +178,7 @@ class CustomDropdown extends Component {
               this.props.isChain || this.props.isGreyChain ? e.name : e.label,
             value:
               this.props.isChain || this.props.isGreyChain ? e.id : e.value,
+            code: e.code ? e.code : "",
             // isSelected: i === 0 && !this.props.isChain ? true : false,
             isSelected: true,
           })
@@ -212,7 +200,6 @@ class CustomDropdown extends Component {
   }
 
   dropdownClicked = (e) => {
-    // console.log(e.target, this.dropDownRef.current);
     let showMenu = this.state.showMenu;
     this.setState({ showMenu: !showMenu });
     e.stopPropagation();
@@ -232,12 +219,10 @@ class CustomDropdown extends Component {
   };
 
   onSelect = (option) => {
-    // console.log("option",option)
     if (
       option.value === this.state.options[0].value &&
       !this.props.isLineChart
     ) {
-      // console.log("all clicked")
       if (this.state.options[0].isSelected) {
         this.selectedAll(false);
       } else {
@@ -277,13 +262,10 @@ class CustomDropdown extends Component {
               this.getSelected().selected?.length
           ) {
             this.selectedAll(true);
-            // console.log("in");
           }
         }
       );
     }
-
-    // console.log("option", option, "updated Option", this.state.options);
   };
 
   getSelected = () => {
@@ -315,18 +297,26 @@ class CustomDropdown extends Component {
       count = selected?.length;
     }
 
-    // console.log(selected, "selected", count, "count");
-    //   console.log(this.state.options);
     return { selected: selected, length: count };
   };
 
   copyToFilteredItems = () => {
     const filteredItems = this.state.options.filter((item) => {
       const tempValue = item.label.toString();
-      if (isNaN(tempValue)) {
-        return tempValue
+      const tempCode = item.code ? item.code.toString() : undefined;
+      if (isNaN(tempValue) || (tempCode && isNaN(tempCode))) {
+        let result = tempValue
           .toLowerCase()
           .includes(this.state.search.toLowerCase());
+        if (result) {
+          return result;
+        }
+        if (tempCode) {
+          result = tempCode
+            .toLowerCase()
+            .includes(this.state.search.toLowerCase());
+        }
+        return result;
       } else {
         return tempValue.includes(this.state.search.toLowerCase());
       }
@@ -339,6 +329,7 @@ class CustomDropdown extends Component {
       options.push({
         label: e.label,
         value: e.value,
+        code: e.code ? e.code : "",
         isSelected: value,
       });
     });
@@ -373,15 +364,14 @@ class CustomDropdown extends Component {
         }
       );
     } else {
-      // console.log("clear", this.state.options[0]);
       // this.onSelect(this.state.options[0]);//
       this.selectedAll(false);
     }
 
     //   this.props.handleClick(this.props.action, this.getSelected().selected);
-    // //    console.log(this.props.action, this.getSelected().selected, "apply");
+
     //     this.setState({ showMenu: false });
-    //  console.log(this.props.action, this.getSelected().selected, "apply");
+
     // this.props.isLineChart || this.props.isChain
     //   ? this.props.handleClick(this.getSelected().selected)
     //   : this.props.handleClick(this.props.action, this.getSelected().selected);
@@ -389,8 +379,6 @@ class CustomDropdown extends Component {
   };
 
   Apply = () => {
-    // console.log(this.getSelected()?.selected, "apply");
-    // console.log(this.props.action, this.getSelected().selected, "apply");
     if (this.getSelected()?.selected?.length !== 0) {
       this.props.isLineChart || this.props.isChain || this.props.isGreyChain
         ? this.props.handleClick(this.getSelected()?.selected)
@@ -439,7 +427,7 @@ class CustomDropdown extends Component {
   render() {
     return (
       <div
-        className={`custom-dropdown cp ${
+        className={`customDropdownBlock cp ${
           this.props.isLineChart || this.props.isChain || this.props.LightTheme
             ? "lineChart"
             : this.props.isTopaccount
@@ -450,7 +438,7 @@ class CustomDropdown extends Component {
         onBlur={this.handleClickOutside}
       >
         <div
-          className={`placeholder ${
+          className={`placeholder interDisplayMediumText ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme
@@ -512,25 +500,42 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content ${this.state.showMenu ? "show" : ""}`}
+          className={`dropdownContent ${this.state.showMenu ? "show" : ""}`}
           style={{
             minWidth: `${
               this.props.isLineChart || this.props.isChain ? "100%" : "130px"
             }`,
           }}
         >
-          <div className="dropdown-search-wrapper">
-            <Image src={SearchIcon} />
+          <div className="dropdownSearchWrapper">
+            <Image
+              className={
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "dropdownSearchWrapperImage dropdownSearchWrapperImageSmall"
+                  : "dropdownSearchWrapperImage"
+              }
+              src={SearchIcon}
+            />
             <input
               value={this.state.search}
               type="text"
-              placeholder="Search"
+              placeholder={
+                this.props.filtername.toLowerCase() === "all assets" ||
+                this.props.filtername.toLowerCase() === "all assets selected" ||
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "Name or symbol"
+                  : "Search"
+              }
               onChange={this.handleSearch}
-              className="dropdown-search-input"
+              className={`dropdownSearchInput ${
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "dropdownSearchInputSmaller"
+                  : ""
+              }`}
             />
           </div>
           <div
-            className="dropdown-list"
+            className="dropdownList"
             style={{
               overflowY: `${
                 this.state.options?.length < 5 ? "hidden" : "scroll"
@@ -548,9 +553,9 @@ class CustomDropdown extends Component {
               ).map((e, i) => {
                 return (
                   <span
-                    className={`${e?.isSelected ? "active" : ""} ${
-                      this.props.isCaptialised ? "text-capitalize" : ""
-                    } `}
+                    className={`interDisplayMediumText ${
+                      e?.isSelected ? "active" : ""
+                    } ${this.props.isCaptialised ? "text-capitalize" : ""} `}
                     // title={e.label}
                     key={i}
                     onClick={() => {
@@ -595,7 +600,7 @@ class CustomDropdown extends Component {
             )}
           </div>
 
-          <div className="dropdown-footer">
+          <div className="dropdownFooter">
             <span
               className="secondary-btn dropdown-btn"
               onClick={this.ClearAll}

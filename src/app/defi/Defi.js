@@ -15,10 +15,8 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { getAllWalletListApi } from "../wallet/Api";
-import { Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
-import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
@@ -34,6 +32,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { toast } from "react-toastify";
+import "./_defiPage.scss";
 
 class Defi extends Component {
   constructor(props) {
@@ -440,24 +439,24 @@ class Defi extends Component {
     this.updateTimer();
   };
   render() {
-    const chips = [
-      {
-        chain: {
-          symbol: Coin2,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-      {
-        chain: {
-          symbol: Coin3,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-    ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
-      <>
+      <div className="defiFullPage">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -467,6 +466,8 @@ class Defi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -476,8 +477,8 @@ class Defi extends Component {
             </div>
           </div>
         </div>
-        <div className="cohort-page-section m-t-80">
-          <div className="cohort-section page">
+        <div className="defiPageContainer m-t-80">
+          <div className="defiPage page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -522,34 +523,35 @@ class Defi extends Component {
             />
 
             {/* Balance sheet */}
-            <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
+            <h2 className="interDisplayMediumText f-s-20 lh-24 m-t-40">
               Balance sheet
             </h2>
-            <div style={{}} className="balance-sheet-card">
-              <div className="balance-dropdown">
-                <div className="balance-list-content">
+            <div style={{}} className="balanceSheetCard">
+              <div className="balanceDropdown">
+                <div className="balanceListContent">
                   {/* For yeild */}
                   <Row>
                     <Col md={6}>
                       <div
-                        className="balance-sheet-title"
+                        className="balanceSheetTitle"
                         onClick={this.toggleYield}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : { marginBottom: "1rem" }
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleText inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             Credit
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleAmount interDisplayMediumText f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.defiState.totalYield &&
@@ -560,64 +562,66 @@ class Defi extends Component {
                           </span>
                         </div>
                         <Image
+                          className={`defiMenu ${
+                            this.state.isYeildToggle ? "defiMenuSelected" : ""
+                          }`}
                           src={arrowUp}
-                          style={
-                            this.state.isYeildToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
                         />
                       </div>
-                      {this.props.defiState.YieldValues?.length !== 0 &&
-                        this.state.isYeildToggle &&
-                        this.props.defiState.YieldValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.defiState.YieldValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                              key={`defiYEildValue-${i}`}
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                      {this.state.isYeildToggle ? (
+                        <div className="balanceSheetListContainer">
+                          {this.props.defiState.YieldValues?.length !== 0 &&
+                            this.props.defiState.YieldValues?.map((item, i) => {
+                              return (
+                                <div
+                                  className="balanceSheetList"
+                                  style={
+                                    i ===
+                                    this.props.defiState.YieldValues?.length - 1
+                                      ? { paddingBottom: "0.3rem" }
+                                      : {}
+                                  }
+                                  key={`defiYeildValue-${i}`}
+                                >
+                                  <span className="interDisplayMediumText f-s-16 lh-19">
+                                    {item.name}
+                                  </span>
+                                  <span className="interDisplayMediumText f-s-15 lh-19 balanceAmt">
+                                    {CurrencyType(false)}
+                                    {amountFormat(
+                                      item.totalPrice.toFixed(2) *
+                                        (this.state.currency?.rate || 1),
+                                      "en-US",
+                                      "USD"
+                                    )}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      ) : null}
                     </Col>
                     <Col md={6}>
                       <div
-                        className="balance-sheet-title"
+                        className="balanceSheetTitle"
                         onClick={this.toggleDebt}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : {}
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleText inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             Debt
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleAmount interDisplayMediumText f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.defiState.totalDebt &&
@@ -628,44 +632,44 @@ class Defi extends Component {
                           </span>
                         </div>
                         <Image
+                          className={`defiMenu ${
+                            this.state.isDebtToggle ? "defiMenuSelected" : ""
+                          }`}
                           src={arrowUp}
-                          style={
-                            this.state.isDebtToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
                         />
                       </div>
-
-                      {this.props.defiState.DebtValues?.length !== 0 &&
-                        this.state.isDebtToggle &&
-                        this.props.defiState.DebtValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.defiState.DebtValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                              key={`defiDebtValue-${i}`}
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                      {this.state.isDebtToggle ? (
+                        <div className="balanceSheetListContainer">
+                          {this.props.defiState.DebtValues?.length !== 0 &&
+                            this.props.defiState.DebtValues?.map((item, i) => {
+                              return (
+                                <div
+                                  className="balanceSheetList"
+                                  style={
+                                    i ===
+                                    this.props.defiState.DebtValues?.length - 1
+                                      ? { paddingBottom: "0.3rem" }
+                                      : {}
+                                  }
+                                  key={`defiDebtValue-${i}`}
+                                >
+                                  <span className="interDisplayMediumText f-s-16 lh-19">
+                                    {item.name}
+                                  </span>
+                                  <span className="interDisplayMediumText f-s-15 lh-19  balanceAmt">
+                                    {CurrencyType(false)}
+                                    {amountFormat(
+                                      item.totalPrice.toFixed(2) *
+                                        (this.state.currency?.rate || 1),
+                                      "en-US",
+                                      "USD"
+                                    )}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      ) : null}
                     </Col>
                   </Row>
 
@@ -675,19 +679,19 @@ class Defi extends Component {
             </div>
 
             {/* filter */}
-            <div className="m-b-16 sortby-section">
-              <div className="dropdown-section">
-                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+            <div className="m-b-16 sortbySection">
+              <div className="dropdownSection">
+                <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 naming">
                   Sort by
                 </span>
                 {this.state.sortBy.map((e, index) => {
                   return (
                     <span
-                      className="sort-by-title"
+                      className="sortByTitle"
                       onClick={() => this.handleSort(e)}
                       key={`sortBy-${index}`}
                     >
-                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                      <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 ">
                         {e.title}
                       </span>{" "}
                       {/* <Image src={sort} style={{ width: "1rem" }} /> */}
@@ -709,23 +713,20 @@ class Defi extends Component {
             this.props.defiState.defiList.length !== 0 ? (
               this.props.defiState?.defiList?.map((card, index) => {
                 return (
-                  <div
-                    key={`sortedList-${index}`}
-                    className="defi-card-wrapper"
-                  >
-                    <div className="top-title-wrapper">
-                      <div className="heading-image">
+                  <div key={`sortedList-${index}`} className="defiCardWrapper">
+                    <div className="topTitleWrapper">
+                      <div className="headingImage">
                         <Image src={card?.logoUrl} />
-                        <h3 className="inter-display-medium f-s-16 lh-19">
+                        <h3 className="interDisplayMediumText f-s-16 lh-19">
                           {card?.name}
                         </h3>
                       </div>
-                      <h3 className="inter-display-medium f-s-16 lh-19">
+                      <h3 className="interDisplayMediumText f-s-16 lh-19">
                         {CurrencyType(false)}
                         {numToCurrency(
                           card?.netBalance * (this.state.currency?.rate || 1)
                         )}{" "}
-                        <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
+                        <span className="interDisplayMediumText f-s-10 lh-19 grey-ADA">
                           {CurrencyType(true)}
                         </span>
                       </h3>
@@ -736,10 +737,10 @@ class Defi extends Component {
                       ? card.items.map((groupComp, i) => {
                           return (
                             <>
-                              <Row key={`carItem-${i}`} className="table-head">
+                              <Row key={`carItem-${i}`} className="tableHead">
                                 <Col md={4}>
-                                  <div className="cp header-col">
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                  <div className="cp headerCol">
+                                    <span className="interDisplayMediumText f-s-13 lh-15 secondaryDarkText">
                                       {groupComp.type}
                                     </span>
                                   </div>
@@ -749,9 +750,9 @@ class Defi extends Component {
                                     style={{
                                       justifyContent: "center",
                                     }}
-                                    className="cp header-col"
+                                    className="cp headerCol"
                                   >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                    <span className="interDisplayMediumText f-s-13 lh-15 secondaryDarkText">
                                       Balance
                                     </span>
                                   </div>
@@ -761,9 +762,9 @@ class Defi extends Component {
                                     style={{
                                       justifyContent: "flex-end",
                                     }}
-                                    className="cp header-col"
+                                    className="cp headerCol"
                                   >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                    <span className="interDisplayMediumText f-s-13 lh-15 secondaryDarkText">
                                       USD Value
                                     </span>
                                   </div>
@@ -776,11 +777,11 @@ class Defi extends Component {
                                       return (
                                         <Row
                                           key={`defiTableRows-${i}-${index}-${indexTwo}`}
-                                          className="table-content-row"
+                                          className="tableContentRow"
                                         >
                                           <Col md={4}>
                                             <div className="d-flex align-items-center h-100">
-                                              <div className="overlap-img">
+                                              <div className="overlapImg">
                                                 {rowData.logos?.length > 0
                                                   ? rowData.logos?.map(
                                                       (e, indexThree) => {
@@ -805,7 +806,7 @@ class Defi extends Component {
                                                   : null}
                                               </div>
                                               {rowData.asset ? (
-                                                <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
+                                                <h3 className="overflowValueContainer interDisplayMediumText f-s-13 lh-13 ml-2">
                                                   {rowData.asset}
                                                 </h3>
                                               ) : null}
@@ -823,7 +824,7 @@ class Defi extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } gray-chip inter-display-medium f-s-15 lh-15`}
+                                                          } grayChip interDisplayMediumText f-s-15 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e}
@@ -837,7 +838,7 @@ class Defi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer gray-chip inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer grayChip interDisplayMediumText f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
                                                     rowData.usdValue.toFixed(2),
@@ -865,22 +866,22 @@ class Defi extends Component {
               // <Col md={12}>
 
               <div
-                className="defi animation-wrapper"
+                className="animationWrapper"
                 style={{ padding: "3rem", textAlign: "center" }}
               >
-                <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                <h3 className="interDisplayMediumText f-s-16 lh-19 secondaryDarkText">
                   No data found
                 </h3>
               </div>
             ) : (
               // </Col>
-              <div className="defi animation-wrapper">
+              <div className="animationWrapper">
                 <Loading />
               </div>
             )}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
@@ -888,6 +889,7 @@ class Defi extends Component {
 const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   commonState: state.CommonState,
+  portfolioState: state.PortfolioState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
