@@ -840,7 +840,11 @@ class Intelligence extends Component {
               </div>
             </div>
             <div className="portfolio-bar-graph" id="netflow">
-              <PageHeader showExplainers title="Net flows" showImg={eyeIcon} />
+              <PageHeader
+                showNetflowExplainers
+                title="Net flows"
+                showImg={eyeIcon}
+              />
               {/* Netflow Info Start */}
 
               {/* Second */}

@@ -18,7 +18,7 @@ function CustomOverlay({
   isLeftText,
   heading,
   subHeading,
-  showExplainers,
+  showNetflowExplainers,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -31,7 +31,7 @@ function CustomOverlay({
     >
       {isInfo ? (
         <>
-          {showExplainers ? (
+          {showNetflowExplainers ? (
             <div
               style={{
                 textAlign: "left",
