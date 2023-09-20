@@ -32,7 +32,8 @@ class InflowOutflowChart extends BaseReactComponent {
     }
     if (
       prevState.timeTab !== this.state.timeTab ||
-      prevState.selectedAsset !== this.state.selectedAsset
+      prevState.selectedAsset !== this.state.selectedAsset ||
+      prevState.isDust !== this.state.isDust
     ) {
       let groupByValue = TimeFilterInflowOutflowType.getText(
         this.state.timeTab
@@ -56,7 +57,7 @@ class InflowOutflowChart extends BaseReactComponent {
     if (assetFilter) {
       data.append("asset", assetFilter);
     }
-    // data.append("dust_value", this.state.isDust);
+    data.append("dust_value", this.state.isDust);
 
     let addressList = [];
     const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
