@@ -42,7 +42,6 @@ export default function DropDown(props) {
     setSearch(event.target.value);
   };
   const list = localList.map((li, index) => {
-    // console.log(li)
     const onSelectPass = () => {
       props.onSelect(li._id);
     };

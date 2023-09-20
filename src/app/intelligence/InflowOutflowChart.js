@@ -11,6 +11,7 @@ import {
   getInflowsAndOutflowsAssetsApi,
 } from "./Api";
 import "./intelligenceScss/_inflowOutflowChart.scss";
+import InflowOutflowChartSliderContainer from "./InflowOutflowChartSliderContainer";
 class InflowOutflowChart extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -24,10 +25,12 @@ class InflowOutflowChart extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    this.props.getInflowsAndOutflowsAssetsApi(this);
     this.makeApiCall();
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userWalletList !== this.props.userWalletList) {
+      this.props.getInflowsAndOutflowsAssetsApi(this);
       this.makeApiCall();
     }
     if (
@@ -64,7 +67,6 @@ class InflowOutflowChart extends BaseReactComponent {
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     data.append("wallet_addresses", JSON.stringify(addressList));
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);
-    this.props.getInflowsAndOutflowsAssetsApi(this);
   };
   handleGroupBy = (value) => {
     this.setState({
@@ -98,7 +100,7 @@ class InflowOutflowChart extends BaseReactComponent {
           showImg={InflowOutflowIcon}
         />
         <div className="graph-container" style={{ marginBottom: "5rem" }}>
-          <InflowOutflowChartSlider
+          <InflowOutflowChartSliderContainer
             inflowOutflowData={
               this.state.inflowsOutflowsList
                 ? this.state.inflowsOutflowsList

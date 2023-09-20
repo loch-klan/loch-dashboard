@@ -28,24 +28,31 @@ export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
       .post("wallet/user-wallet/get-buy-sell", data)
       .then((res) => {
         if (!res.data.error) {
-          const tempConvertedValue = res.data.data.data.map((resData) => {
-            return {
-              price: resData.price ? resData.price * currencyRate : 0,
-              received: resData.received ? resData.received : 0,
-              received_value: resData.received_value
-                ? resData.received_value * currencyRate
-                : 0,
-              send: resData.send ? resData.send : 0,
-              send_value: resData.send_value
-                ? resData.send_value * currencyRate
-                : 0,
-              timestamp: resData.timestamp ? resData.timestamp : 0,
-            };
-          });
-          ctx.setState({
-            graphLoading: false,
-            inflowsOutflowsList: tempConvertedValue,
-          });
+          if (res.data.data.data && res.data.data.data.length > 0) {
+            const tempConvertedValue = res.data.data.data.map((resData) => {
+              return {
+                price: resData.price ? resData.price * currencyRate : 0,
+                received: resData.received ? resData.received : 0,
+                received_value: resData.received_value
+                  ? resData.received_value * currencyRate
+                  : 0,
+                send: resData.send ? resData.send : 0,
+                send_value: resData.send_value
+                  ? resData.send_value * currencyRate
+                  : 0,
+                timestamp: resData.timestamp ? resData.timestamp : 0,
+              };
+            });
+            ctx.setState({
+              graphLoading: false,
+              inflowsOutflowsList: tempConvertedValue,
+            });
+          } else {
+            ctx.setState({
+              graphLoading: false,
+              inflowsOutflowsList: [],
+            });
+          }
         } else {
           ctx.setState({
             graphLoading: false,
