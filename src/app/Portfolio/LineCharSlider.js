@@ -622,7 +622,7 @@ class LineChartSlider extends BaseReactComponent {
         generatePlotLines(abc);
       }
       if (this.state.title === "Month") {
-        abc = moment(dummy).format("MMMM YY");
+        abc = moment(dummy).format("MMM YY");
 
         categories.push(abc);
         generatePlotLines(abc);
