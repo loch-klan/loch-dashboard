@@ -389,6 +389,12 @@ class InflowOutflowChartSlider extends BaseReactComponent {
             color: "#B0B1B3",
           },
         },
+        crosshair: {
+          width: 1,
+          color: "#B0B1B3",
+          dashStyle: "Dash",
+          cursor: "pointer",
+        },
       },
 
       tooltip: {
