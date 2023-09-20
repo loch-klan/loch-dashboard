@@ -2156,6 +2156,13 @@ textarea {
     }
   }
 }
+.revealDustInflow {
+  width: fit-content;
+  cursor: pointer;
+  &:hover {
+    color: $primary;
+  }
+}
 
 .MobileComingSoon {
   form {

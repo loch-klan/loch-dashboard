@@ -16,19 +16,20 @@ class InflowOutflowChart extends BaseReactComponent {
     super(props);
     this.state = {
       graphLoading: false,
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       timeTab: "1 Week",
       selectedAsset: "",
       inflowsOutflowsList: [],
       assetList: [],
+      isDust: 1,
     };
   }
   componentDidMount() {
-    let groupByValue = TimeFilterInflowOutflowType.getText(this.state.timeTab);
-    this.getGraphData(groupByValue, this.state.selectedAsset);
-    this.props.getInflowsAndOutflowsAssetsApi(this);
+    this.makeApiCall();
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.userWalletList !== this.props.userWalletList) {
+      this.makeApiCall();
+    }
     if (
       prevState.timeTab !== this.state.timeTab ||
       prevState.selectedAsset !== this.state.selectedAsset
@@ -37,12 +38,17 @@ class InflowOutflowChart extends BaseReactComponent {
         this.state.timeTab
       );
       if (groupByValue) {
-        this.getGraphData(groupByValue, this.state.selectedAsset);
+        this.makeApiCall();
       }
     }
   }
-  getGraphData = (timeFilter, assetFilter) => {
+
+  makeApiCall = () => {
     this.setState({ graphLoading: true });
+
+    const timeFilter = TimeFilterInflowOutflowType.getText(this.state.timeTab);
+    const assetFilter = this.state.selectedAsset;
+
     let data = new URLSearchParams();
     if (timeFilter) {
       data.append("days", timeFilter);
@@ -50,7 +56,14 @@ class InflowOutflowChart extends BaseReactComponent {
     if (assetFilter) {
       data.append("asset", assetFilter);
     }
+    // data.append("dust_value", this.state.isDust);
+
+    let addressList = [];
+    const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    userWalletList?.map((wallet) => addressList.push(wallet.address));
+    data.append("wallet_addresses", JSON.stringify(addressList));
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);
+    this.props.getInflowsAndOutflowsAssetsApi(this);
   };
   handleGroupBy = (value) => {
     this.setState({
@@ -61,6 +74,18 @@ class InflowOutflowChart extends BaseReactComponent {
     this.setState({
       selectedAsset: selectedItem,
     });
+  };
+  toggleDust = () => {
+    if (this.state.isDust === 0) {
+      this.setState({
+        isDust: 1,
+      });
+    }
+    if (this.state.isDust === 1) {
+      this.setState({
+        isDust: 0,
+      });
+    }
   };
   render() {
     return (
@@ -89,6 +114,14 @@ class InflowOutflowChart extends BaseReactComponent {
             assetList={this.state.assetList}
             onAssetSelect={this.onAssetSelect}
           />
+          <div
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
+            onClick={this.toggleDust}
+          >
+            {this.state.isDust === 0
+              ? "Hide dust (less than $1)"
+              : "Reveal dust (less than $1)"}
+          </div>
         </div>
       </div>
     );
