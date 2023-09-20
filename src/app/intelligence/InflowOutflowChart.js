@@ -65,7 +65,7 @@ class InflowOutflowChart extends BaseReactComponent {
   render() {
     return (
       <div className="inflowOutflowBlock">
-        <PageHeader title="Inflows and Outflows" showImg={InflowOutflowIcon} />
+        <PageHeader title="Price" showImg={InflowOutflowIcon} />
         <div className="graph-container" style={{ marginBottom: "5rem" }}>
           <InflowOutflowChartSlider
             inflowOutflowData={
