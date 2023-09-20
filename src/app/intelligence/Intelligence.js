@@ -918,7 +918,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <InflowOutflowChart />
+              <InflowOutflowChart userWalletList={this.state.userWalletList} />
               {/* footer */}
               <Footer />
             </div>

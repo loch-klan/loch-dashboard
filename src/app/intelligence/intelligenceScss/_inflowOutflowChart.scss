@@ -7,6 +7,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .inflowOutflowChartTopInfoLeft {
+        display: flex;
+        align-items: center;
+        .ioPriceContainer {
+          padding-left: 5rem;
+          .ioPrice {
+            font-size: 2rem;
+          }
+          .ioDate {
+            font-size: 1rem;
+          }
+        }
+      }
       .dropdownWithImages {
         .dropdown {
           .dropdown-toggle {

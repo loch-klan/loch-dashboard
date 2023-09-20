@@ -42,7 +42,6 @@ export default function DropDown(props) {
     setSearch(event.target.value);
   };
   const list = localList.map((li, index) => {
-    // console.log(li)
     const onSelectPass = () => {
       props.onSelect(li._id);
     };
@@ -63,7 +62,7 @@ export default function DropDown(props) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
-          <div
+          {/* <div
             style={{
               backgroundColor: li.asset.color ? li.asset.color : "white",
               marginRight: "1rem",
@@ -79,7 +78,7 @@ export default function DropDown(props) {
               style={{ height: "2rem", width: "2rem" }}
               src={li.asset.symbol}
             />
-          </div>
+          </div> */}
           <div>{li.asset.name}</div>
         </div>
         {isSelected ? (
@@ -113,7 +112,7 @@ export default function DropDown(props) {
                 justifyContent: "center",
               }}
             >
-              {selectedItem.asset.symbol ? (
+              {/* {selectedItem.asset.symbol ? (
                 <div
                   style={{
                     backgroundColor: selectedItem.asset.color
@@ -138,7 +137,7 @@ export default function DropDown(props) {
                     src={selectedItem.asset.symbol}
                   />
                 </div>
-              ) : null}
+              ) : null} */}
               {selectedItem.asset.name ? (
                 <div>{selectedItem.asset.name}</div>
               ) : null}
