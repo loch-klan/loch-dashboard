@@ -108,7 +108,7 @@ class InflowOutflowChart extends BaseReactComponent {
           title="Price"
           showImg={InflowOutflowIcon}
         />
-        <div className="graph-container" style={{ marginBottom: "5rem" }}>
+        <div className="graph-container">
           <InflowOutflowChartSliderContainer
             inflowOutflowData={
               this.state.inflowsOutflowsList
@@ -127,7 +127,7 @@ class InflowOutflowChart extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
           />
           <div
-            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5 mb-5"
             onClick={this.toggleDust}
           >
             {this.state.isDust === 0
