@@ -24,13 +24,22 @@ class InflowOutflowChart extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    this.props.getInflowsAndOutflowsAssetsApi(this);
-    this.makeApiCall();
+    let addressList = [];
+    const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    userWalletList?.map((wallet) => addressList.push(wallet.address));
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.getInflowsAndOutflowsAssetsApi(data, this);
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userWalletList !== this.props.userWalletList) {
-      this.props.getInflowsAndOutflowsAssetsApi(this);
-      this.makeApiCall();
+      let addressList = [];
+      const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      userWalletList?.map((wallet) => addressList.push(wallet.address));
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      this.props.getInflowsAndOutflowsAssetsApi(data, this);
     }
     if (
       prevState.timeTab !== this.state.timeTab ||
