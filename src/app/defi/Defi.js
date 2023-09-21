@@ -838,7 +838,7 @@ class Defi extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } gray-chip inter-display-medium f-s-15 lh-15`}
+                                                          } inter-display-medium f-s-15 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e}
@@ -852,7 +852,7 @@ class Defi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer gray-chip inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
                                                     rowData.usdValue.toFixed(2),
