@@ -92,6 +92,20 @@ class CustomDropdown extends Component {
 
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
+    if (this.props.options && this.props.singleSelect) {
+      const tempHolder = [];
+      this.props.options.forEach((e, i) => {
+        tempHolder.push({
+          label: e.asset?.name ? e.asset?.name : "",
+          value: e._id ? e._id : "",
+          isSelected: this.props.selectedTokens.includes(e._id) ? true : false,
+          code: e.asset?.code ? e.asset?.code : "",
+        });
+      });
+      this.setState({
+        options: tempHolder,
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -99,6 +113,20 @@ class CustomDropdown extends Component {
     //   this.selectedAll(true);
     //   console.log("in")
     // }
+    if (prevProps.options !== this.props.options && this.props.singleSelect) {
+      const tempHolder = [];
+      this.props.options.forEach((e, i) => {
+        tempHolder.push({
+          label: e.asset?.name ? e.asset?.name : "",
+          value: e._id ? e._id : "",
+          isSelected: this.props.selectedTokens.includes(e._id) ? true : false,
+          code: e.asset?.code ? e.asset?.code : "",
+        });
+      });
+      this.setState({
+        options: tempHolder,
+      });
+    }
     if (
       prevProps.options?.length === 0 ||
       prevProps.options?.length !== this.props.options?.length
@@ -182,26 +210,27 @@ class CustomDropdown extends Component {
         //     isSelected: i === 0 ? true : false,
         //   })
         // );
+        if (!this.props.singleSelect) {
+          // console.log("transaction", this.props.options);
+          this.state.options = [];
+          this.props.options.map((e, i) =>
+            this.state.options.push({
+              label:
+                this.props.isChain || this.props.isGreyChain ? e.name : e.label,
+              value:
+                this.props.isChain || this.props.isGreyChain ? e.id : e.value,
+              // isSelected: i === 0 && !this.props.isChain ? true : false,
+              isSelected: true,
+            })
+          );
 
-        // console.log("transaction", this.props.options);
-        this.state.options = [];
-        this.props.options.map((e, i) =>
-          this.state.options.push({
-            label:
-              this.props.isChain || this.props.isGreyChain ? e.name : e.label,
-            value:
-              this.props.isChain || this.props.isGreyChain ? e.id : e.value,
-            // isSelected: i === 0 && !this.props.isChain ? true : false,
-            isSelected: true,
-          })
-        );
-
-        // for chain
-        if (this.props.isChain || this.props.isGreyChain) {
-          this.state.options = [
-            { label: "All", value: "", isSelected: true },
-            ...this.state.options,
-          ];
+          // for chain
+          if (this.props.isChain || this.props.isGreyChain) {
+            this.state.options = [
+              { label: "All", value: "", isSelected: true },
+              ...this.state.options,
+            ];
+          }
         }
       }
     }
@@ -231,6 +260,9 @@ class CustomDropdown extends Component {
     }
   };
 
+  onSingleSelect = (option) => {
+    this.props.handleClick(option.value);
+  };
   onSelect = (option) => {
     // console.log("option",option)
     if (
@@ -323,13 +355,39 @@ class CustomDropdown extends Component {
   copyToFilteredItems = () => {
     const filteredItems = this.state.options.filter((item) => {
       const tempValue = item.label.toString();
+      let isTrue = false;
       if (isNaN(tempValue)) {
-        return tempValue
+        const tempAns = tempValue
           .toLowerCase()
           .includes(this.state.search.toLowerCase());
+        if (tempAns) {
+          isTrue = true;
+        }
       } else {
-        return tempValue.includes(this.state.search.toLowerCase());
+        const tempAns = tempValue.includes(this.state.search.toLowerCase());
+        if (tempAns) {
+          isTrue = true;
+        }
       }
+      if (item.code) {
+        const tempCodeValue = item.code ? item.code.toString() : "";
+        if (isNaN(tempCodeValue)) {
+          const tempAns = tempCodeValue
+            .toLowerCase()
+            .includes(this.state.search.toLowerCase());
+          if (tempAns) {
+            isTrue = true;
+          }
+        } else {
+          const tempAns = tempCodeValue.includes(
+            this.state.search.toLowerCase()
+          );
+          if (tempAns) {
+            isTrue = true;
+          }
+        }
+      }
+      return isTrue;
     });
     this.setState({ filteredItems });
   };
@@ -464,7 +522,11 @@ class CustomDropdown extends Component {
               : {}
           }
         >
-          {this.getSelected()?.length === 0
+          {this.props.singleSelect
+            ? this.props.selectedTokenName
+              ? this.props.selectedTokenName
+              : ""
+            : this.getSelected()?.length === 0
             ? this.state.name
             : this.props.isLineChart
             ? this.getSelected()?.length + "/4 Selected"
@@ -555,7 +617,9 @@ class CustomDropdown extends Component {
                     key={i}
                     onClick={() => {
                       // this.onSelect(e);
-                      if (
+                      if (this.props.singleSelect) {
+                        this.onSingleSelect(e);
+                      } else if (
                         this.getSelected()?.length < 4 &&
                         this.props.isLineChart
                       ) {
@@ -595,63 +659,67 @@ class CustomDropdown extends Component {
             )}
           </div>
 
-          <div className="dropdown-footer">
-            <span
-              className="secondary-btn dropdown-btn"
-              onClick={this.ClearAll}
-              onMouseEnter={() => {
-                this.setState({
-                  clearAll: true,
-                });
-              }}
-              onMouseLeave={() => {
-                this.setState({
-                  clearAll: false,
-                });
-              }}
-            >
-              {this.props.isLineChart ? (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path
-                    d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                    fill={`${this.state.clearAll ? "#fff" : "#000"}`}
-                  />
-                </svg>
-              ) : (
-                "Clear"
-              )}
-            </span>
-            <span
-              className="primary-btn dropdown-btn"
-              onClick={this.Apply}
-              onMouseEnter={() => {
-                this.setState({
-                  apply: true,
-                });
-              }}
-              onMouseLeave={() => {
-                this.setState({
-                  apply: false,
-                });
-              }}
-            >
-              {this.props.isLineChart ? (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-                  <rect width="256" height="256" fill="none" />
-                  <polyline
-                    fill="none"
-                    stroke={`${this.state.apply ? "#000" : "#fff"}`}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="16"
-                    points="216 72.005 104 184 48 128.005"
-                  />
-                </svg>
-              ) : (
-                "Apply"
-              )}
-            </span>
-          </div>
+          {!this.props.singleSelect ? (
+            <div className="dropdown-footer">
+              <span
+                className="secondary-btn dropdown-btn"
+                onClick={this.ClearAll}
+                onMouseEnter={() => {
+                  this.setState({
+                    clearAll: true,
+                  });
+                }}
+                onMouseLeave={() => {
+                  this.setState({
+                    clearAll: false,
+                  });
+                }}
+              >
+                {this.props.isLineChart ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                      d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
+                      fill={`${this.state.clearAll ? "#fff" : "#000"}`}
+                    />
+                  </svg>
+                ) : (
+                  "Clear"
+                )}
+              </span>
+              <span
+                className="primary-btn dropdown-btn"
+                onClick={this.Apply}
+                onMouseEnter={() => {
+                  this.setState({
+                    apply: true,
+                  });
+                }}
+                onMouseLeave={() => {
+                  this.setState({
+                    apply: false,
+                  });
+                }}
+              >
+                {this.props.isLineChart ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                    <rect width="256" height="256" fill="none" />
+                    <polyline
+                      fill="none"
+                      stroke={`${this.state.apply ? "#000" : "#fff"}`}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="16"
+                      points="216 72.005 104 184 48 128.005"
+                    />
+                  </svg>
+                ) : (
+                  "Apply"
+                )}
+              </span>
+            </div>
+          ) : (
+            <div className="mt-2" />
+          )}
         </div>
       </div>
     );

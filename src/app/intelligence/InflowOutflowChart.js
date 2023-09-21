@@ -29,7 +29,7 @@ class InflowOutflowChart extends BaseReactComponent {
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
-
+    this.setState({ graphLoading: true });
     this.props.getInflowsAndOutflowsAssetsApi(data, this);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -39,6 +39,7 @@ class InflowOutflowChart extends BaseReactComponent {
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
+      this.setState({ graphLoading: true });
       this.props.getInflowsAndOutflowsAssetsApi(data, this);
     }
     if (

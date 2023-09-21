@@ -73,6 +73,9 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
     postLoginInstance
       .post("wallet/transaction/get-transaction-asset-filter", data)
       .then((res) => {
+        ctx.setState({
+          graphLoading: false,
+        });
         if (!res.data.error) {
           if (res.data.data.assets.length > 0) {
             ctx.setState({
@@ -106,6 +109,9 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
         }
       })
       .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
         console.log("Catch", err);
       });
   };
