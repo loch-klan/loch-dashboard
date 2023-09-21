@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
+import "./formScss/_customDropdownBlock.scss";
 class CustomDropdown extends Component {
   constructor(props) {
     super(props);
@@ -426,7 +427,7 @@ class CustomDropdown extends Component {
   render() {
     return (
       <div
-        className={`custom-dropdown cp ${
+        className={`customDropdownBlock cp ${
           this.props.isLineChart || this.props.isChain || this.props.LightTheme
             ? "lineChart"
             : this.props.isTopaccount
@@ -437,7 +438,7 @@ class CustomDropdown extends Component {
         onBlur={this.handleClickOutside}
       >
         <div
-          className={`placeholder ${
+          className={`placeholder interDisplayMediumText ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme
@@ -499,19 +500,19 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content ${this.state.showMenu ? "show" : ""}`}
+          className={`dropdownContent ${this.state.showMenu ? "show" : ""}`}
           style={{
             minWidth: `${
               this.props.isLineChart || this.props.isChain ? "100%" : "130px"
             }`,
           }}
         >
-          <div className="dropdown-search-wrapper">
+          <div className="dropdownSearchWrapper">
             <Image
               className={
                 this.props.filtername.toLowerCase() === "tokens"
-                  ? "dropdown-search-wrapper-image-small"
-                  : ""
+                  ? "dropdownSearchWrapperImage dropdownSearchWrapperImageSmall"
+                  : "dropdownSearchWrapperImage"
               }
               src={SearchIcon}
             />
@@ -526,15 +527,15 @@ class CustomDropdown extends Component {
                   : "Search"
               }
               onChange={this.handleSearch}
-              className={`dropdown-search-input ${
+              className={`dropdownSearchInput ${
                 this.props.filtername.toLowerCase() === "tokens"
-                  ? "dropdown-search-input-smaller"
+                  ? "dropdownSearchInputSmaller"
                   : ""
               }`}
             />
           </div>
           <div
-            className="dropdown-list"
+            className="dropdownList"
             style={{
               overflowY: `${
                 this.state.options?.length < 5 ? "hidden" : "scroll"
@@ -552,9 +553,9 @@ class CustomDropdown extends Component {
               ).map((e, i) => {
                 return (
                   <span
-                    className={`${e?.isSelected ? "active" : ""} ${
-                      this.props.isCaptialised ? "text-capitalize" : ""
-                    } `}
+                    className={`interDisplayMediumText ${
+                      e?.isSelected ? "active" : ""
+                    } ${this.props.isCaptialised ? "text-capitalize" : ""} `}
                     // title={e.label}
                     key={i}
                     onClick={() => {
@@ -599,7 +600,7 @@ class CustomDropdown extends Component {
             )}
           </div>
 
-          <div className="dropdown-footer">
+          <div className="dropdownFooter">
             <span
               className="secondary-btn dropdown-btn"
               onClick={this.ClearAll}

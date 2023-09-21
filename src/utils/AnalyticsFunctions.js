@@ -4032,7 +4032,19 @@ export const TimeSpentTransactionHistory = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Transaction History: time spent on transaction history page");
 };
-
+export const TimeSpentTransactionFeed = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Transaction Feed: time spent on transaction history page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 //46.Transaction history: share - done
 export const TransactionHistoryShare = ({ session_id, email_address }) => {
   const event_name = "Transaction history: share";
