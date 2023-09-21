@@ -453,7 +453,8 @@ class AddWallet extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      for (let i = 0; i < parentCoinList.length; i++) {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
         this.props.detectNameTag(
           {
             id: name,
@@ -462,6 +463,20 @@ class AddWallet extends BaseReactComponent {
           this,
           false
         );
+      } else {
+        this.handleSetNameTagLoadingFalse({
+          id: name,
+          address: value,
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
+      for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
             id: name,
@@ -671,10 +686,25 @@ class AddWallet extends BaseReactComponent {
       addWalletTemp?.forEach((w, i) => {
         w.id = `wallet${i + 1}`;
       });
-      if (addWalletTemp) {
-        setTimeout(() => {
-          this.props.setHeaderReducer(addWalletTemp);
-        }, 500);
+      if (addWalletTemp && addWalletTemp.length > 0) {
+        var mySet = new Set();
+
+        const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+          if (filData.address !== "") {
+            if (mySet.has(filData.address)) {
+              return false;
+            } else {
+              mySet.add(filData.address);
+              return true;
+            }
+          }
+          return false;
+        });
+        if (filteredAddWalletTemp) {
+          setTimeout(() => {
+            this.props.setHeaderReducer(filteredAddWalletTemp);
+          }, 500);
+        }
       }
       let finalArr = [];
 
@@ -995,12 +1025,15 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                {/* <div className="awLable">Nickname</div> */}
+                                {c.nickname && c.nickname !== "" ? (
+                                  <div className="awLable">Private Nametag</div>
+                                ) : null}
+                                {/* <div className="awLable">Private Nametag</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Enter nickname"
+                                  placeholder="Enter Private Nametag"
                                   title={c.nickname || ""}
                                   onChange={(e) => {
                                     this.nicknameOnChain(e);

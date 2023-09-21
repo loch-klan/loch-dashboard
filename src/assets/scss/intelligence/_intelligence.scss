@@ -73,7 +73,7 @@
               .lightpurple {
                 background-color: $purple-E3C;
               }
-              .lightgreen{
+              .lightgreen {
                 background-color: #b1ffde;
               }
               .info-detail {
@@ -126,6 +126,26 @@
         padding: 3.4rem 3.2rem;
         .chartArea {
           height: 37rem;
+        }
+        .bottomExplainersContainer {
+          display: flex;
+          align-items: center;
+          .bottomExplainersLeftText {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            opacity: 0;
+            cursor: default;
+          }
+          .bottomExplainers {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            .infoIcon {
+              cursor: pointer;
+            }
+          }
         }
         .bar-graph-footer {
           .row {
@@ -240,34 +260,31 @@
           flex-direction: column;
           padding: 2rem;
 
-          .RightSection{
+          .RightSection {
             width: 100%;
             margin-top: 2rem;
           }
         }
 
+        .InfoCard {
+          justify-content: center;
 
-        .InfoCard{
-             justify-content: center;
+          .InfoItem {
+            display: flex;
+            align-items: start;
+            justify-content: start;
+            flex-direction: column;
 
-             .InfoItem {
-          display: flex;
-          align-items: start;
-          justify-content: start;
-          flex-direction: column;
+            .title {
+              width: 100%;
+            }
 
-          .title {
-            width: 100%;
-          }
-
-          .description {
-            margin-top: 1rem;
-            width: 100%;
+            .description {
+              margin-top: 1rem;
+              width: 100%;
+            }
           }
         }
-        }
-        
-
       }
     }
     .insights-image {
