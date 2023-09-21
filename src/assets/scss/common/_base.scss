@@ -94,11 +94,13 @@
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
-  background-color: $grey-F2F;
+}
+body {
+  background-color: var(--primaryBackgroud);
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
 }
 
 h1,
@@ -1075,6 +1077,7 @@ form {
   text-overflow: ellipsis;
 }
 .table-wrapper {
+  background-color: var(--cardBackgroud) !important;
   .form-group {
     width: 8rem;
     margin-left: 3rem;
@@ -1512,6 +1515,9 @@ form {
       img {
         margin-right: 0.8rem;
       }
+      .text-tooltip-subheading {
+        color: #96979a;
+      }
     }
 
     &::-webkit-scrollbar {
@@ -1756,7 +1762,7 @@ form {
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
-    border-bottom: 0.1rem solid $grey-E5E;
+    border-bottom: 0.1rem solid var(--cardSeperator);
 
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
@@ -1778,17 +1784,17 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: brightness(0.5) var(--invertColor);
             }
           }
 
           &.no-hover {
             &:hover {
               span {
-                color: $grey-4F4;
+                color: var(--secondaryDarkTextColor);
               }
               img {
                 filter: none;
@@ -1805,6 +1811,14 @@ form {
     }
   }
 
+  .tableWatermark {
+    background: url(../../images/graph-logo.svg) no-repeat center center;
+    background-size: 104px 39px;
+    background-position-y: 48%;
+  }
+  .tableWatermarkMoveUp {
+    background-position-y: 35%;
+  }
   .ReactVirtualized__Table__Grid {
     border-radius: 1.2rem;
 
@@ -1903,7 +1917,7 @@ form {
               border-radius: 0.4rem;
               padding: 0.6rem;
               width: fit-content;
-              background: rgba(229, 229, 230, 0.5);
+              background: var(--tableNumberCover);
             }
           }
 
@@ -1943,11 +1957,16 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--primaryGainColor);
           }
 
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--primaryLossColor);
+          }
+          .noGainNoLoss {
+            span {
+              color: var(--primaryTextColor);
+            }
           }
         }
       }
@@ -2014,7 +2033,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightness);
   }
 }
 
@@ -2195,13 +2214,20 @@ textarea {
     }
   }
 }
-
+.footerContainer {
+  padding-left: 13.4rem;
+  padding-right: 13.2rem;
+}
+.footerLine {
+  border-bottom: 1px solid var(--cardBorder);
+}
 .social-media-icon {
   width: 2rem;
   cursor: pointer;
   filter: brightness(1.5);
+  transition-duration: 300ms;
   &:hover {
-    filter: brightness(1);
+    filter: var(--hoverBrightness);
   }
 }
 
@@ -2264,7 +2290,7 @@ textarea {
   // right: 2rem;
   cursor: pointer;
   user-select: none;
-  border: 1px solid rgba(29, 29, 31, 0.14);
+  border: 1px solid var(--primarySubTextColor);
   &:hover {
     // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
     // border: 0.1rem solid rgba(229, 229, 230, 1);
@@ -2291,34 +2317,43 @@ textarea {
     input {
       @include font($primary, "Inter-Regular", 1.3rem, normal, 1.5rem);
       // padding: 1rem !important;
+      background-color: var(--cardBackgroud);
       min-height: 3rem;
       width: 100%;
       border-radius: 6px;
-      border: 1px solid #d4d4d4;
-
+      border: 1px solid var(--cardBorder);
+      color: var(--primaryTextColor);
       &::placeholder {
         font-size: 1.3rem;
         line-height: 1.5rem;
-        color: #b0b1b3;
+        color: var(--secondaryTextColor);
       }
 
       &:focus {
-        border: 1px solid $primary !important;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
-    .form-control.is-valid {
+    .form-control {
       box-shadow: none;
-      border: 1px solid #d4d4d4;
+      border: 1px solid var(--cardBorder);
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor) !important;
+      }
+    }
+    .form-control.is-valid {
+      box-shadow: none;
+      border: 1px solid var(--cardBorder);
+
+      &:hover {
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
     .done {
       // box-shadow: 0 0 0.4rem  $grey-D3D;
-      border: 0.1rem solid $black-191 !important;
+      border: 0.1rem solid var(--cardBorder) !important;
     }
   }
 }
@@ -2329,7 +2364,7 @@ textarea {
 .highcharts-area {
   cursor: pointer;
 }
-.page-header {
+.pageHeaderBlock {
   margin-bottom: 1.5rem;
   h4 {
     font-size: 2rem;

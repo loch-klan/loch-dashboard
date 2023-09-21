@@ -12,7 +12,7 @@
       margin-bottom: 2rem;
       padding: 0;
       background-color: #fff;
-      padding: 2rem 2rem 4rem;
+      padding: 2rem 4rem;
       border-radius: 1.2rem;
     }
     // sortby section begin
@@ -200,7 +200,7 @@
       background-repeat: no-repeat;
       background-size: 100%;
 
-      .loading-animation {
+      .loadingAnimationBlock {
         backdrop-filter: blur(10px);
         border-radius: 1.2rem;
         width: 100%;

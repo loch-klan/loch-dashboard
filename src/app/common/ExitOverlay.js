@@ -10,6 +10,7 @@ import { Modal, Image, Button } from "react-bootstrap";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import BackIcon from "../../assets/images/icons/backIcon.svg";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
@@ -80,6 +81,7 @@ import { updateUser } from "../profile/Api";
 import UpgradeModal from "./upgradeModal";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import { Form as FormB } from "react-bootstrap";
+
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -613,7 +615,7 @@ class ExitOverlay extends BaseReactComponent {
       data.append("last_name", this.state.lastName);
       data.append("email", this.state.email);
       data.append("mobile", this.state.mobileNumber);
-      updateUser(data, this);
+      this.props.updateUser(data, this);
     } else {
       // signUpProperties({
       //   userId: getCurrentUser().id,
@@ -918,6 +920,12 @@ class ExitOverlay extends BaseReactComponent {
             centered
             aria-labelledby="contained-modal-title-vcenter"
             backdropClassName="exitoverlaymodal"
+            animation={
+              this.props.modalAnimation !== undefined ||
+              this.props.modalAnimation !== null
+                ? this.props.modalAnimation
+                : true
+            }
           >
             {this.state.showRedirection &&
               toast.success(
@@ -1008,6 +1016,13 @@ class ExitOverlay extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
+              {this.props.goToSignIn ? (
+                <Image
+                  className="back-icon cp"
+                  src={BackIcon}
+                  onClick={this.props.goToSignIn}
+                />
+              ) : null}
               <div
                 className="closebtn"
                 onClick={() => {
@@ -1069,6 +1084,8 @@ class ExitOverlay extends BaseReactComponent {
                               Export data from{" "}
                             </span>
                             <FormElement
+                              hideOnblur={this.props.hideOnblur}
+                              showHiddenError={this.props.showHiddenError}
                               valueLink={this.linkState(
                                 this,
                                 "fromDate",
@@ -1117,6 +1134,8 @@ class ExitOverlay extends BaseReactComponent {
                               to
                             </span>
                             <FormElement
+                              hideOnblur={this.props.hideOnblur}
+                              showHiddenError={this.props.showHiddenError}
                               valueLink={this.linkState(
                                 this,
                                 "toDate",
@@ -1237,6 +1256,8 @@ class ExitOverlay extends BaseReactComponent {
                           <Form onValidSubmit={this.handleCohortSave}>
                             <div style={{ position: "relative" }}>
                               <FormElement
+                                hideOnblur={this.props.hideOnblur}
+                                showHiddenError={this.props.showHiddenError}
                                 valueLink={this.linkState(this, "cohort_name")}
                                 label="Pod Name"
                                 required
@@ -1558,6 +1579,10 @@ class ExitOverlay extends BaseReactComponent {
                                           onValidSubmit={this.EmailNotification}
                                         >
                                           <FormElement
+                                            hideOnblur={this.props.hideOnblur}
+                                            showHiddenError={
+                                              this.props.showHiddenError
+                                            }
                                             valueLink={this.linkState(
                                               this,
                                               "email_notification"
@@ -1666,6 +1691,8 @@ class ExitOverlay extends BaseReactComponent {
                   <div className="email-section">
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
+                        hideOnblur={this.props.hideOnblur}
+                        showHiddenError={this.props.showHiddenError}
                         valueLink={this.linkState(this, "email")}
                         // label="Email Info"
                         required
@@ -1730,7 +1757,7 @@ class ExitOverlay extends BaseReactComponent {
               ) : (
                 <div className="exit-overlay-body">
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    Don’t lose your data
+                    {this.props.signup ? "Sign up" : " Don’t lose your data"}
                   </h6>
                   {!this.props?.signup ? (
                     <>
@@ -1753,6 +1780,8 @@ class ExitOverlay extends BaseReactComponent {
                   <div className="email-section">
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
+                        hideOnblur={this.props.hideOnblur}
+                        showHiddenError={this.props.showHiddenError}
                         valueLink={this.linkState(this, "email")}
                         // label="Email Info"
                         required
@@ -1787,25 +1816,25 @@ class ExitOverlay extends BaseReactComponent {
                   </div>
                   {!this.props?.signup && (
                     <>
-                      <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                      {/* <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
                         or
                       </p>
                       <div className="m-b-24 links">
                         <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
                           {this.state.sharelink}
                         </div>
-                        {/* <div className='edit-options'>
-                                <Image src={EditBtnImage} className="m-r-8"/>
-                                <Dropdown
-                                    id="edit-option-dropdown"
-                                    title={this.state.dropdowntitle}
-                                    list={["View and edit" , "View only"]}
-                                    onSelect={this.handleSelect}
-                                    activetab = {this.state.activeli}
-                                />
-                            </div> */}
-                      </div>
-                      <div className="copy-link-section">
+                        // <div className='edit-options'>
+                                // <Image src={EditBtnImage} className="m-r-8"/>
+                                // <Dropdown
+                                    // id="edit-option-dropdown"
+                                    // title={this.state.dropdowntitle}
+                                    // list={["View and edit" , "View only"]}
+                                    // onSelect={this.handleSelect}
+                                    // activetab = {this.state.activeli}
+                                // />
+                            // </div>
+                      </div> */}
+                      <div className="copy-link-section mt-4">
                         <div className="link" onClick={this.copyLink}>
                           <Image src={CopyLink} className="m-r-8" />
                           <h3 className="inter-display-medium f-s-16 lh-19 black-191">
@@ -1896,6 +1925,7 @@ const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
   getAllParentChains,
+  updateUser,
 };
 
 ExitOverlay.propTypes = {};

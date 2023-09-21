@@ -39,6 +39,7 @@ import {
 } from "../../assets/images/icons";
 import LinkIconBtn from "../../assets/images/link.svg";
 import { AppFeaturesCreateUser } from "../onboarding/Api";
+import { setHeaderReducer } from "../header/HeaderAction";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -235,6 +236,7 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
+    this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     // DiscountEmailPage();
     let isEmailadded = JSON.parse(localStorage.getItem("discountEmail"));
@@ -541,6 +543,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   setPageFlagDefault,
+  setHeaderReducer,
 };
 Home.propTypes = {
   // getPosts: PropTypes.func

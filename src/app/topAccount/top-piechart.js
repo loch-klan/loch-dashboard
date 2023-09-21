@@ -25,6 +25,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import arrowUp from "../../assets/images/arrow-up.svg";
+import { PieChartWatermarkIcon } from "../../assets/images/icons";
 import {
   getUserWallet,
   getProtocolBalanceApi,
@@ -744,13 +745,16 @@ class TopPieChart extends BaseReactComponent {
               seriesCenter = series.center,
               x = seriesCenter[0] + this.plotLeft,
               y = seriesCenter[1] + this.plotTop,
-              text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${CurrencyType(
-                false
-              )}${numToCurrency(
-                self.state.assetTotal
-              )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(
-                true
-              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
+              text = `<div class="pie-chart-middle-text-container">
+              <img class="pie-chart-watermark-logo" src="${PieChartWatermarkIcon}"/><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${
+                CurrencyType(false) ? CurrencyType(false) : ""
+              }${
+                numToCurrency(self.state.assetTotal)
+                  ? numToCurrency(self.state.assetTotal)
+                  : ""
+              }  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${
+                CurrencyType(true) ? CurrencyType(true) : ""
+              }</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
             series.data?.map((e, i) => {
               e.dataLabel
@@ -1193,6 +1197,7 @@ class TopPieChart extends BaseReactComponent {
                       justifyContent: "space-between",
                       cursor: "pointer",
                     }}
+                    className="chain-card-child"
                     onClick={this.toggleChain}
                   >
                     <div
@@ -1240,14 +1245,20 @@ class TopPieChart extends BaseReactComponent {
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Image
+                        className="defiMenu"
                         src={arrowUp}
-                        style={{
-                          height: "1.25rem",
-                          width: "1.25rem",
-                          transform: "rotate(180deg)",
-                        }}
+                        style={
+                          this.state.isChainToggle
+                            ? {
+                                transform: "rotate(180deg)",
+                                filter: "opacity(1)",
+                                height: "1.25rem",
+                                width: "1.25rem",
+                              }
+                            : { height: "1.25rem", width: "1.25rem" }
+                        }
                       />
-                      {this.props.chainLoader && (
+                      {this.state.chainLoader && (
                         <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
                           {loadingAnimation()}
                         </div>
@@ -1351,61 +1362,75 @@ class TopPieChart extends BaseReactComponent {
                         // style={
                         //   this.state.isYeildToggle ? {  } : {}
                         // }
+                        className="balance-sheet-card-credit"
                       >
-                        <span
-                          className="inter-display-semi-bold f-s-16 lh-19"
-                          style={
-                            this.state.isYeildToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }
-                              : { color: "#636467", marginRight: "0.8rem" }
-                          }
-                        >
-                          Credit
-                        </span>
-                        <span
-                          className="inter-display-regular f-s-16 lh-19"
-                          style={
-                            this.state.isYeildToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }
-                              : { color: "#B0B1B3", marginRight: "0.8rem" }
-                          }
-                        >
-                          {CurrencyType(false)}
-                          {this.props.topAccountState.YieldValues &&
-                            numToCurrency(
-                              this.props.topAccountState.totalYield
-                            )}
-                        </span>
+                        <div>
+                          <span
+                            className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                            ${
+                              this.state.isYeildToggle
+                                ? "balance-sheet-card-credit-title-selected"
+                                : ""
+                            }
+                            `}
+                          >
+                            Credit
+                          </span>
+                          <span
+                            className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                            ${
+                              this.state.isYeildToggle
+                                ? "balance-sheet-card-credit-amount-selected"
+                                : ""
+                            }
+                            `}
+                          >
+                            {CurrencyType(false)}
+                            {this.props.topAccountState.YieldValues &&
+                              numToCurrency(
+                                this.props.topAccountState.totalYield
+                              )}
+                          </span>
 
-                        <Image
-                          src={arrowUp}
-                          style={
-                            this.state.isYeildToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
-                        />
+                          <Image
+                            className="defiMenu"
+                            src={arrowUp}
+                            style={
+                              this.state.isYeildToggle
+                                ? {
+                                    transform: "rotate(180deg)",
+                                    filter: "opacity(1)",
+                                  }
+                                : {}
+                            }
+                          />
+                        </div>
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <div onClick={this.toggleDebt}>
+                      <div
+                        onClick={this.toggleDebt}
+                        className="balance-sheet-card-debt"
+                      >
+                        <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={
-                              this.state.isDebtToggle
-                                ? { color: "#000000", marginRight: "0.8rem" }
-                                : { color: "#636467", marginRight: "0.8rem" }
-                            }
+                            className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                             ${
+                               this.state.isDebtToggle
+                                 ? "balance-sheet-card-credit-title-selected"
+                                 : ""
+                             }
+                             `}
                           >
                             Debt
                           </span>
                           <span
-                            className="inter-display-regular f-s-16 lh-19"
-                            style={
+                            className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                            ${
                               this.state.isDebtToggle
-                                ? { color: "#000000", marginRight: "0.8rem" }
-                                : { color: "#B0B1B3", marginRight: "0.8rem" }
+                                ? "balance-sheet-card-credit-amount-selected"
+                                : ""
                             }
+                            `}
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.DebtValues &&
@@ -1415,10 +1440,14 @@ class TopPieChart extends BaseReactComponent {
                           </span>
 
                           <Image
+                            className="defiMenu"
                             src={arrowUp}
                             style={
                               this.state.isDebtToggle
-                                ? { transform: "rotate(180deg)" }
+                                ? {
+                                    transform: "rotate(180deg)",
+                                    filter: "opacity(1)",
+                                  }
                                 : {}
                             }
                           />
@@ -1432,78 +1461,90 @@ class TopPieChart extends BaseReactComponent {
                     </div>
                     {(this.state.isYeildToggle || this.state.isDebtToggle) && (
                       <div className="balance-dropdown">
-                        <div className="balance-list-content">
-                          {/* For yeild */}
-                          {this.state.isYeildToggle && (
-                            <div>
-                              {this.props.topAccountState.YieldValues &&
-                                this.props.topAccountState.YieldValues.map(
-                                  (item, i) => {
-                                    return (
-                                      <div
-                                        className="balance-sheet-list"
-                                        style={
-                                          i ===
-                                          this.props.topAccountState.YieldValues
-                                            .length -
-                                            1
-                                            ? { paddingBottom: "0.3rem" }
-                                            : {}
-                                        }
-                                      >
-                                        <span className="inter-display-medium f-s-16 lh-19">
-                                          {item.name}
-                                        </span>
-                                        <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                          {CurrencyType(false)}
-                                          {amountFormat(
-                                            item.totalPrice.toFixed(2),
-                                            "en-US",
-                                            "USD"
-                                          )}
-                                        </span>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                            </div>
-                          )}
+                        <div className="balance-dropdown-top-fake">
+                          <div
+                            onClick={this.toggleYield}
+                            className="balance-dropdown-top-fake-left"
+                          />
+                          <div
+                            onClick={this.toggleDebt}
+                            className="balance-dropdown-top-fake-right"
+                          />
+                        </div>
+                        <div className="balance-list-content-parent">
+                          <div className="balance-list-content">
+                            {/* For yeild */}
+                            {this.state.isYeildToggle && (
+                              <div>
+                                {this.props.topAccountState.YieldValues &&
+                                  this.props.topAccountState.YieldValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.topAccountState
+                                              .YieldValues.length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                              </div>
+                            )}
 
-                          {/* For debt */}
-                          {this.state.isDebtToggle && (
-                            <div>
-                              {this.props.topAccountState.DebtValues &&
-                                this.props.topAccountState.DebtValues.map(
-                                  (item, i) => {
-                                    return (
-                                      <div
-                                        className="balance-sheet-list"
-                                        style={
-                                          i ===
-                                          this.props.topAccountState.DebtValues
-                                            .length -
-                                            1
-                                            ? { paddingBottom: "0.3rem" }
-                                            : {}
-                                        }
-                                      >
-                                        <span className="inter-display-medium f-s-16 lh-19">
-                                          {item.name}
-                                        </span>
-                                        <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                          {CurrencyType(false)}
-                                          {amountFormat(
-                                            item.totalPrice.toFixed(2),
-                                            "en-US",
-                                            "USD"
-                                          )}
-                                        </span>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                            </div>
-                          )}
+                            {/* For debt */}
+                            {this.state.isDebtToggle && (
+                              <div>
+                                {this.props.topAccountState.DebtValues &&
+                                  this.props.topAccountState.DebtValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.topAccountState
+                                              .DebtValues.length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}

@@ -11,25 +11,34 @@ import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from "../app/wallet/WalletReducer";
 import IntelligenceReducer from "../app/intelligence/IntelligenceReducer";
 import TopAccountReducer from "../app/topAccount/TopAccountReducer";
+
 import {
   TopAccountsInWatchListReducer,
   WatchListLoadingReducer,
   WatchListReducer,
 } from "../app/watchlist/redux/WatchListReducer";
+import LochUserReducer from "../app/profile/LochUserReducer";
+import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
+import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
   DefiState: DefiReducer,
   HeaderState: HeaderReducer,
+  LochUserState: LochUserReducer,
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
+  YieldOpportunitiesState: YieldOpportunitiesReducer,
+  YieldPoolState: YieldPoolReducer,
   CommonState: CommonReducer,
+  LochUserState: LochUserReducer,
   HomeState: HomeReducer,
   OnboardingState: OnboardingReducer,
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
   TopAccountState: TopAccountReducer,
+  YieldOpportunitiesState: YieldOpportunitiesReducer,
   WatchListState: WatchListReducer,
   TopAccountsInWatchListState: TopAccountsInWatchListReducer,
   WatchListLoadingState: WatchListLoadingReducer,

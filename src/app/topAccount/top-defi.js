@@ -27,6 +27,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import { toast } from "react-toastify";
 import { Buffer } from "buffer";
+import "../defi/_defiPage.scss";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -408,9 +409,25 @@ class TopDefi extends Component {
     });
     this.updateTimer();
   };
+  getTotalAssetValue = () => {
+    if (this.props.topAccountState) {
+      const tempWallet = this.props.topAccountState.walletTotal
+        ? this.props.topAccountState.walletTotal
+        : 0;
+      const tempCredit = this.props.topAccountState.totalYield
+        ? this.props.topAccountState.totalYield
+        : 0;
+      const tempDebt = this.props.topAccountState.totalDebt
+        ? this.props.topAccountState.totalDebt
+        : 0;
+
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   render() {
     return (
-      <>
+      <div className="defiFullPage">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -420,6 +437,8 @@ class TopDefi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.topAccountState.yesterdayBalance}
+                assetTotal={this.getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -429,8 +448,8 @@ class TopDefi extends Component {
             </div>
           </div>
         </div>
-        <div className="cohort-page-section m-t-80">
-          <div className="cohort-section page">
+        <div className="defiPageContainer m-t-80">
+          <div className="defiPage page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -476,35 +495,36 @@ class TopDefi extends Component {
               onClick={() => {
                 this.updateTimer();
               }}
-              className="inter-display-medium f-s-20 lh-24 m-t-40"
+              className="interDisplayMediumText f-s-20 lh-24 m-t-40"
             >
               Balance sheet
             </h2>
-            <div style={{}} className="balance-sheet-card">
-              <div className="balance-dropdown">
-                <div className="balance-list-content">
+            <div style={{}} className="balanceSheetCard">
+              <div className="balanceDropdown">
+                <div className="balanceListContent">
                   {/* For yeild */}
                   <Row>
                     <Col md={6}>
                       <div
-                        className="balance-sheet-title"
+                        className="balanceSheetTitle"
                         onClick={this.toggleYield}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : { marginBottom: "1rem" }
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleText inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             Credit
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleAmount interDisplayMediumText f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.totalYield &&
@@ -516,66 +536,69 @@ class TopDefi extends Component {
                         </div>
                         <Image
                           src={arrowUp}
-                          style={
-                            this.state.isYeildToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
+                          className={`defiMenu ${
+                            this.state.isYeildToggle ? "defiMenuSelected" : ""
+                          }`}
                         />
                       </div>
-                      {this.props.topAccountState.YieldValues?.length !== 0 &&
-                        this.state.isYeildToggle &&
-                        this.props.topAccountState.YieldValues?.map(
-                          (item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i ===
-                                  this.props.topAccountState.YieldValues
-                                    ?.length -
-                                    1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
+                      {this.state.isYeildToggle ? (
+                        <div className="balanceSheetListContainer">
+                          {this.props.topAccountState.YieldValues?.length !==
+                            0 &&
+                            this.props.topAccountState.YieldValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balanceSheetList"
+                                    style={
+                                      i ===
+                                      this.props.topAccountState.YieldValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
+                                    }
+                                  >
+                                    <span className="interDisplayMediumText f-s-16 lh-19">
+                                      {item.name}
+                                    </span>
+                                    <span className="interDisplayMediumText f-s-15 lh-19 balanceAmt">
+                                      {CurrencyType(false)}
+                                      {amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                        </div>
+                      ) : null}
                     </Col>
                     <Col md={6}>
                       <div
-                        className="balance-sheet-title"
+                        className="balanceSheetTitle"
                         onClick={this.toggleDebt}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : {}
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleText inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             Debt
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balanceSheetTitleAmount interDisplayMediumText f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balanceSheetTitleTextSelected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.totalDebt &&
@@ -587,46 +610,47 @@ class TopDefi extends Component {
                         </div>
                         <Image
                           src={arrowUp}
-                          style={
-                            this.state.isDebtToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
+                          className={`defiMenu ${
+                            this.state.isDebtToggle ? "defiMenuSelected" : ""
+                          }`}
                         />
                       </div>
-
-                      {this.props.topAccountState.DebtValues?.length !== 0 &&
-                        this.state.isDebtToggle &&
-                        this.props.topAccountState.DebtValues?.map(
-                          (item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i ===
-                                  this.props.topAccountState.DebtValues
-                                    ?.length -
-                                    1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
+                      {this.state.isDebtToggle ? (
+                        <div className="balanceSheetListContainer">
+                          {this.props.topAccountState.DebtValues?.length !==
+                            0 &&
+                            this.props.topAccountState.DebtValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balanceSheetList"
+                                    style={
+                                      i ===
+                                      this.props.topAccountState.DebtValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
+                                    }
+                                  >
+                                    <span className="interDisplayMediumText f-s-16 lh-19">
+                                      {item.name}
+                                    </span>
+                                    <span className="interDisplayMediumText f-s-15 lh-19 balanceAmt">
+                                      {CurrencyType(false)}
+                                      {amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                        </div>
+                      ) : null}
                     </Col>
                   </Row>
 
@@ -636,19 +660,19 @@ class TopDefi extends Component {
             </div>
 
             {/* filter */}
-            <div className="m-b-16 sortby-section">
-              <div className="dropdown-section">
-                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+            <div className="m-b-16 sortbySection">
+              <div className="dropdownSection">
+                <span className="interDisplayMediumText f-s-13 lh-16 m-r-12 naming">
                   Sort by
                 </span>
                 {this.state.sortBy.map((e, index) => {
                   return (
                     <span
-                      className="sort-by-title"
+                      className="sortByTitle"
                       key={`sortBy-${index}`}
                       onClick={() => this.handleSort(e)}
                     >
-                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                      <span className="interDisplayMediumText f-s-13 lh-16 m-r-12">
                         {e.title}
                       </span>{" "}
                       {/* <Image src={sort} style={{ width: "1rem" }} /> */}
@@ -670,23 +694,20 @@ class TopDefi extends Component {
             this.props.topAccountState?.defiList !== "" ? (
               this.props.topAccountState?.defiList?.map((card, index) => {
                 return (
-                  <div
-                    key={`sortedList-${index}`}
-                    className="defi-card-wrapper"
-                  >
-                    <div className="top-title-wrapper">
-                      <div className="heading-image">
+                  <div key={`sortedList-${index}`} className="defiCardWrapper">
+                    <div className="topTitleWrapper">
+                      <div className="headingImage">
                         <Image src={card?.logoUrl} />
-                        <h3 className="inter-display-medium f-s-16 lh-19">
+                        <h3 className="interDisplayMediumText f-s-16 lh-19">
                           {card?.name}
                         </h3>
                       </div>
-                      <h3 className="inter-display-medium f-s-16 lh-19">
+                      <h3 className="interDisplayMediumText f-s-16 lh-19">
                         {CurrencyType(false)}
                         {numToCurrency(
                           card?.netBalance * (this.state.currency?.rate || 1)
                         )}{" "}
-                        <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
+                        <span className="interDisplayMediumText f-s-10 lh-19 grey-ADA">
                           {CurrencyType(true)}
                         </span>
                       </h3>
@@ -697,10 +718,10 @@ class TopDefi extends Component {
                       ? card.items.map((groupComp, i) => {
                           return (
                             <>
-                              <Row key={`carItem-${i}`} className="table-head">
+                              <Row key={`carItem-${i}`} className="tableHead">
                                 <Col md={4}>
-                                  <div className="cp header-col">
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                  <div className="cp headerCol">
+                                    <span className="interDisplayMediumText f-s-13 secondaryDarkText">
                                       {groupComp.type}
                                     </span>
                                   </div>
@@ -710,9 +731,9 @@ class TopDefi extends Component {
                                     style={{
                                       justifyContent: "center",
                                     }}
-                                    className="cp header-col"
+                                    className="cp headerCol"
                                   >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                    <span className="interDisplayMediumText f-s-13 secondaryDarkText">
                                       Balance
                                     </span>
                                   </div>
@@ -722,9 +743,9 @@ class TopDefi extends Component {
                                     style={{
                                       justifyContent: "flex-end",
                                     }}
-                                    className="cp header-col"
+                                    className="cp headerCol"
                                   >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                    <span className="interDisplayMediumText f-s-13 lh-15 secondaryDarkText">
                                       USD Value
                                     </span>
                                   </div>
@@ -737,11 +758,11 @@ class TopDefi extends Component {
                                       return (
                                         <Row
                                           key={`defiTableRows-${i}-${index}-${indexTwo}`}
-                                          className="table-content-row"
+                                          className="tableContentRow"
                                         >
                                           <Col md={4}>
                                             <div className="d-flex align-items-center h-100">
-                                              <div className="overlap-img">
+                                              <div className="overlapImg">
                                                 {rowData.logos?.length > 0
                                                   ? rowData.logos?.map(
                                                       (e, indexThree) => {
@@ -766,7 +787,7 @@ class TopDefi extends Component {
                                                   : null}
                                               </div>
                                               {rowData.asset ? (
-                                                <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
+                                                <h3 className="overflowValueContainer interDisplayMediumText f-s-13 lh-13 ml-2">
                                                   {rowData.asset}
                                                 </h3>
                                               ) : null}
@@ -784,7 +805,7 @@ class TopDefi extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } gray-chip inter-display-medium f-s-15 lh-15`}
+                                                          } interDisplayMediumText f-s-15 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e}
@@ -798,7 +819,7 @@ class TopDefi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer gray-chip inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer interDisplayMediumText f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
                                                     rowData.usdValue.toFixed(2),
@@ -826,22 +847,22 @@ class TopDefi extends Component {
               // <Col md={12}>
 
               <div
-                className="defi animation-wrapper"
+                className="animationWrapper"
                 style={{ padding: "3rem", textAlign: "center" }}
               >
-                <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                <h3 className="interDisplayMediumText f-s-16 lh-19 secondaryDarkText">
                   No data found
                 </h3>
               </div>
             ) : (
               // </Col>
-              <div className="defi animation-wrapper">
+              <div className="animationWrapper">
                 <Loading />
               </div>
             )}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

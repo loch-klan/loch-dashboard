@@ -596,7 +596,14 @@ export const CostsMenu = ({ session_id, email_address }) => {
   //console.log("Menu:costs menu");
 };
 
-//33. Menu:profile menu
+export const YieldOpportunitiesMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu:yield opportunities menu";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const ProfileMenu = ({ session_id, email_address }) => {
   const event_name = "Menu:profile menu";
   const eventProperties = {
@@ -1501,18 +1508,6 @@ export const ProfitLossEV = ({ session_id, email_address }) => {
   //console.log("Home Page:Profit and Loss expanded view");
 };
 
-//97.Home Page:Profit and Loss hover
-export const ProfitLossHover = ({ session_id, email_address, hover_value }) => {
-  const event_name = "Home:Profit and Loss hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "bar hovered": hover_value,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Home Page:Profit and Loss hover");
-};
-
 //97.Home Page:counterparty fees hover
 export const HomeCounterPartyHover = ({
   session_id,
@@ -1723,6 +1718,14 @@ export const TransactionHistoryPageView = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Transaction History");
+};
+export const YieldOpportunitiesPageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: Yield opportunities";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Page View: Asset Value
@@ -2615,6 +2618,13 @@ export const SigninMenu = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const SignupMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign up";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //  Menu: Sign in: email added - done
 export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
@@ -2810,8 +2820,37 @@ export const topNetflowAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 
-// Intelligence:netflows: inflows hover - done
+export const homeInflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: inflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "inflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
+export const homeOutflowHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: outflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "outflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const homeNetHover = ({ session_id, email_address, hovered }) => {
+  const event_name = "Home Page: netflows: net hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "net hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+// Intelligence:netflows: inflows hover - done
 export const netflowInflowHover = ({ session_id, email_address, hovered }) => {
   const event_name = "Intelligence:netflows: inflows hover";
   const eventProperties = {
@@ -2895,6 +2934,19 @@ export const TransactionHistorySearch = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const YieldOpportunitiesSearch = ({
+  session_id,
+  email_address,
+  searched,
+}) => {
+  const event_name = "Yield opportunities: search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    searched: searched,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Transaction History: years filter - done
 export const TransactionHistoryYearFilter = ({
@@ -2967,6 +3019,100 @@ export const TransactionHistoryMethodFilter = ({
 };
 
 // Transaction History: sort date - done
+export const YieldOpportunitiesSortAsset = ({ session_id, email_address }) => {
+  const event_name = "Yield opportunities: sort asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesSortUSDvalue = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Yield opportunities: sort USD value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesSortProject = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Yield opportunities: sort project";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesSortPool = ({ session_id, email_address }) => {
+  const event_name = "Yield opportunities: sort pool";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesSortTVL = ({ session_id, email_address }) => {
+  const event_name = "Yield opportunities: sort tvl";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesSortAPY = ({ session_id, email_address }) => {
+  const event_name = "Yield opportunities: sort apy";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesAssetFilter = ({
+  session_id,
+  email_address,
+  asset_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Yield opportunities: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": asset_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+export const YieldOpportunitiesNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Yield opportunities: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
 export const TransactionHistorySortDate = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort date";
   const eventProperties = {
@@ -3074,6 +3220,33 @@ export const TransactionHistoryHideDust = ({ session_id, email_address }) => {
 
 // Transaction History: page next - done
 
+export const YieldOpportunitiesPageNext = ({
+  session_id,
+  email_address,
+  page_no,
+}) => {
+  const event_name = "Yield opportunities: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const YieldOpportunitiesPageBack = ({
+  session_id,
+  email_address,
+  page_no,
+}) => {
+  const event_name = "Yield opportunities: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryPageNext = ({
   session_id,
   email_address,
@@ -3120,6 +3293,19 @@ export const TransactionHistoryPageSearch = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
+};
+export const YieldOpportunitiesPageSearch = ({
+  session_id,
+  email_address,
+  page_search,
+}) => {
+  const event_name = "Yield opportunities: page search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page search": page_search,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Transaction History: add wallet - done
@@ -3817,6 +4003,20 @@ export const IntShare = ({ session_id, email_address }) => {
 };
 
 //8.Transaction History: time spent on transaction history page
+export const TimeSpentYieldOpportunities = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Yield opportunities: time spent on yield opportunities page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TimeSpentTransactionHistory = ({
   session_id,
   email_address,
@@ -3832,7 +4032,19 @@ export const TimeSpentTransactionHistory = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Transaction History: time spent on transaction history page");
 };
-
+export const TimeSpentTransactionFeed = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Transaction Feed: time spent on transaction history page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 //46.Transaction history: share - done
 export const TransactionHistoryShare = ({ session_id, email_address }) => {
   const event_name = "Transaction history: share";
@@ -3842,6 +4054,14 @@ export const TransactionHistoryShare = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Transaction history: share");
+};
+export const YieldOpportunitiesShare = ({ session_id, email_address }) => {
+  const event_name = "Yield opportunities: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Asset value: time spent on asset value page - done
@@ -4569,6 +4789,36 @@ export const WatchlistSearch = ({ session_id, email_address, search }) => {
     "session id": session_id,
     "email address": email_address,
     searched: search,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistDeleteAddress = ({
+  session_id,
+  email_address,
+  address,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: address deleted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nametag: name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistAddAddress = ({
+  session_id,
+  email_address,
+  address,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nametag: name_tag,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

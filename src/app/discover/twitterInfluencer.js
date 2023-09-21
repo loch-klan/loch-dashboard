@@ -30,13 +30,16 @@ import {
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
   SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
+import {
+  searchTransactionApi,
+  getFilters,
+  getTransactionAsset,
+} from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -66,7 +69,12 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  TopsetPageFlagDefault,
+  getUser,
+  setPageFlagDefault,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
@@ -156,8 +164,8 @@ class TwitterInflucencePage extends BaseReactComponent {
     this.props.getAllCoins();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
   }
 
   assetList = () => {
@@ -693,7 +701,22 @@ class TwitterInflucencePage extends BaseReactComponent {
       //   },
       // },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
 
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -705,6 +728,8 @@ class TwitterInflucencePage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -871,6 +896,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p
@@ -897,6 +923,8 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -905,6 +933,8 @@ const mapDispatchToProps = {
   getFilters,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  getUser,
+  GetAllPlan,
 };
 
 TwitterInflucencePage.propTypes = {};

@@ -1,0 +1,263 @@
+.insightsPageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .insightsSection {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    .insightsPage {
+      margin-top: 5rem;
+      flex: 1;
+    }
+    .insights-image {
+      img {
+        width: 100%;
+      }
+    }
+    .insights-feed {
+      display: flex;
+      flex-direction: column;
+      margin: 2rem 0 0 -1rem;
+      .img {
+        width: 89.6rem;
+        height: 8.7rem;
+      }
+    }
+    .insightsFilter {
+      background-color: var(--cardBackgroud);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+      margin-bottom: 2.4rem;
+      .filter {
+        background-color: var(--primaryFilter);
+        padding: 1.2rem;
+        text-align: center;
+        margin: 0 1rem;
+        width: 100%;
+        border-radius: 8px;
+        // @include font($black-191, "Inter-Medium", 1.3rem, 500, 16px);
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 16px;
+        color: vaR(--primaryTextColor);
+        cursor: pointer;
+        &.active {
+          background-color: var(--primaryActiveFilter);
+          box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+            0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+        }
+
+        &:hover {
+          background-color: var(--primaryActiveFilter);
+          box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+            0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+        }
+      }
+    }
+    .insightDropdown {
+      text-align: left !important;
+      margin-top: 0rem;
+
+      .dropdown-menu {
+        width: auto;
+        padding: 0.4rem;
+        height: 16rem;
+        overflow-y: scroll;
+        background-color: var(--cardBackgroud);
+        border-color: var(--cardBorder);
+        .dropdown-item {
+          padding: 0.8rem;
+          font-size: 1.3rem;
+          font-weight: 500;
+          font-family: "Inter-Medium";
+          color: var(--primaryTextColor);
+        }
+      }
+
+      .btn-primary:not(:disabled):not(.disabled):active {
+        background-color: var(--primaryBackgroud);
+        border: 0.1rem solid transparent;
+        color: var(--primaryTextColor);
+        padding: 1.2rem 1.6rem;
+        border-radius: 0.8rem;
+      }
+
+      .btn-primary.dropdown-toggle {
+        background-color: var(--primaryBackgroud);
+        border: 0.1rem solid transparent;
+        padding: 1.2rem 1.6rem;
+        border-radius: 0.8rem;
+        color: var(--primaryTextColor);
+
+        &:hover {
+          border: 0.1rem solid var(--primaryTextColor);
+        }
+      }
+
+      .btn-primary.dropdown-toggle:focus {
+        box-shadow: none;
+        border: 0.1rem solid var(--primaryTextColor);
+        color: var(--primaryTextColor);
+      }
+
+      .dropdown-toggle {
+        background-color: var(--primaryBackgroud);
+        color: var(--primaryTextColor);
+        padding: 1.2rem 1.6rem;
+        border-radius: 0.8rem;
+        min-width: 15rem;
+        transition-duration: 0ms;
+      }
+
+      .dropdown-toggle::after {
+        margin-left: 0.6rem;
+        display: inline-block;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.35em solid;
+        border-right: 0.35em solid transparent;
+        border-bottom: 0;
+        border-left: 0.35em solid transparent;
+      }
+    }
+  }
+
+  .Insight-upgrade-wrapper {
+    position: relative;
+    margin-bottom: 8rem;
+
+    .Insight-upgrade {
+      background-color: #ffffff;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      border-radius: 12px;
+      // background-image: url('../../../image/insight-upgrade.png');
+      //  background-repeat: no-repeat;
+      //       background-position: top center;
+      //       background-size: cover;
+      padding: 4.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 3;
+
+      button {
+        z-index: 1;
+        background-color: #ffffff;
+
+        &:hover {
+          // background-color: $primary;
+        }
+      }
+
+      img {
+        opacity: 0.5;
+        position: absolute;
+        bottom: 0;
+        width: 70rem;
+        z-index: 0;
+      }
+    }
+
+    .inner-box {
+      width: 95%;
+      background: #ffffff;
+      box-shadow: 0px 3.8px 9.5px rgba(0, 0, 0, 0.04),
+        0px 0.95px 0.95px rgba(0, 0, 0, 0.04);
+      border-radius: 11.4px;
+      height: 10rem;
+      position: absolute;
+      bottom: -1.8rem;
+      transform: translateX(-50%);
+      left: 50%;
+      z-index: 2;
+    }
+
+    .inner-box2 {
+      width: 90%;
+      background: #ffffff;
+      box-shadow: 0px 3.8px 9.5px rgba(0, 0, 0, 0.04),
+        0px 0.95px 0.95px rgba(0, 0, 0, 0.04);
+      border-radius: 11.4px;
+      height: 10rem;
+      position: absolute;
+      bottom: -3.6rem;
+      transform: translateX(-50%);
+      left: 50%;
+      z-index: 1;
+    }
+  }
+}
+.insightsWrapper {
+  h2 {
+    margin-bottom: 2rem;
+  }
+  .insightBlankCard {
+    min-height: 30rem;
+    .insightBlankCardBlurBackground {
+      position: absolute;
+      width: 16rem;
+      height: 16rem;
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        var(--insightBlurColorOne) 0%,
+        var(--insightBlurColorTwo) 100%
+      );
+      filter: blur(50px);
+      border-radius: 10rem;
+      z-index: 0;
+    }
+  }
+  .insightsCard {
+    background-color: var(--cardBackgroud);
+    width: 100%;
+    padding: 1.6rem 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+      0px 1px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    .insightIcon {
+      width: 4.4rem;
+      height: 4.4rem;
+      margin-right: 1.6rem;
+    }
+    .insightsContent {
+      .chipsWrapper {
+        display: flex;
+        align-items: center;
+
+        .titleChip {
+          width: max-content;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background-color: var(--greyCardBackgroud);
+        }
+        .riskChip {
+          width: max-content;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background-color: var(--primaryTextColor);
+          margin-left: 0.8rem;
+          color: var(--cardBackgroud);
+          text-transform: uppercase;
+        }
+      }
+      p {
+        margin: 8px 0;
+      }
+    }
+  }
+  .text-center {
+    width: 70%;
+    margin: 0 auto 4rem;
+  }
+}

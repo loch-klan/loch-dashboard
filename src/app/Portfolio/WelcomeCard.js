@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { Button, Image } from "react-bootstrap";
 import arrowUpRight from "../../assets/images/icons/green-arrow.svg";
@@ -239,15 +239,7 @@ export default function WelcomeCard(props) {
     // </div>
     <div className="welcome-card-section-topbar">
       <div className="welcome-card-topbar">
-        <div
-          className="row-div"
-          style={{
-            width: "calc(60% - 3rem)",
-            // position: "absolute",
-            // left: "calc(50% - 13rem)",
-            // transform: "translateX(-50%)",
-          }}
-        >
+        <div className="row-div" style={{ width: "calc(70% - 3rem)" }}>
           {props?.isPreviewing ? (
             <div
               className="Preview-topbar-btn"
@@ -316,7 +308,8 @@ export default function WelcomeCard(props) {
           // </div>
           null}
         </div>
-        {props.showNetworth && (
+
+        {!props?.hideButton ? (
           <div
             className="row-div"
             style={{
@@ -324,7 +317,8 @@ export default function WelcomeCard(props) {
               // // left: "50%",
               // // transform: "translateX(-50%)",
               // right: 0,
-              marginRight: !lochUser ? "8.2rem" : "0rem",
+              marginRight: "0rem",
+              opacity: props.showNetworth ? 1 : 0,
             }}
           >
             <div
@@ -336,7 +330,9 @@ export default function WelcomeCard(props) {
               <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
               {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
             </div>
-            {props.assetTotal !== null && !props.isLoading ? (
+            {props.assetTotal !== null &&
+            props.assetTotal !== undefined &&
+            !props.isLoading ? (
               <CustomOverlay
                 position="bottom"
                 isIcon={false}
@@ -360,48 +356,7 @@ export default function WelcomeCard(props) {
               </div>
             )}
           </div>
-        )}
-        {!lochUser && (
-          <div
-            style={{
-              position: "absolute",
-              right: "29rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <span onClick={handleSigninModal} className="signin">
-              {/* <Image src={SignInIcon} /> */}
-              <Button
-                className="inter-display-medium f-s-16 lh-19 navbar-button"
-                style={{
-                  paddingTop: "0rem",
-                  paddingBottom: "0rem",
-                }}
-              >
-                Sign in
-              </Button>
-            </span>
-            {/* <span className="inter-display-medium f-s-16 lh-19 navbar-button">
-              /
-            </span> */}
-            <span
-              onClick={handleSignUpModal}
-              // style={{ position: "absolute", right: "29rem" }}
-              className="signin"
-            >
-              <Button
-                className="inter-display-medium f-s-16 lh-19 navbar-button"
-                style={{
-                  paddingTop: "0rem",
-                  paddingBottom: "0rem",
-                }}
-              >
-                Sign up
-              </Button>
-            </span>
-          </div>
-        )}
+        ) : null}
       </div>
       {connectModal ? (
         <ConnectModal
