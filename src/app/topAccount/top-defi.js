@@ -814,7 +814,7 @@ class TopDefi extends Component {
                                           </Col>
                                           <Col md={4}>
                                             {rowData.usdValue ? (
-                                              <div className="d-flex align-ite`ms-center justify-content-end h-100">
+                                              <div className="d-flex align-items-center justify-content-end h-100">
                                                 <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
