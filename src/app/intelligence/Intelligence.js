@@ -159,7 +159,12 @@ class Intelligence extends Component {
         const id = this.props.location.hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView();
+          window.scrollTo({
+            top:
+              element.getBoundingClientRect().top -
+              document.body.getBoundingClientRect().top -
+              15,
+          });
         }
       }, 0);
     } else {
@@ -245,7 +250,38 @@ class Intelligence extends Component {
           const id = this.props.location.hash.replace("#", "");
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView();
+            window.scrollTo({
+              top:
+                element.getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                15,
+            });
+          }
+        }, 0);
+      } else {
+        window.scrollTo(0, 0);
+      }
+      setTimeout(() => {
+        this.props.history.replace("/intelligence");
+      }, 1000);
+    }
+    if (
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/intelligence#price" ||
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/top-accounts/intelligence#price"
+    ) {
+      if (this.props.location.hash !== "") {
+        setTimeout(() => {
+          const id = this.props.location.hash.replace("#", "");
+          const element = document.getElementById(id);
+          if (element) {
+            window.scrollTo({
+              top:
+                element.getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                15,
+            });
           }
         }, 0);
       } else {
@@ -802,8 +838,10 @@ class Intelligence extends Component {
                 </div>
               </div>
             </div>
-            <div className="portfolio-bar-graph" id="netflow">
-              <PageHeader title="Net flows" showImg={eyeIcon} />
+            <div className="portfolio-bar-graph">
+              <div id="netflow">
+                <PageHeader title="Net flows" showImg={eyeIcon} />
+              </div>
               {/* Netflow Info Start */}
 
               <Row
@@ -974,7 +1012,11 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <InflowOutflowChart userWalletList={this.state.userWalletList} />
+              <div id="price">
+                <InflowOutflowChart
+                  userWalletList={this.state.userWalletList}
+                />
+              </div>
               {/* footer */}
               <Footer />
             </div>

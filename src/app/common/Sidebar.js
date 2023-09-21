@@ -84,6 +84,7 @@ import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 function Sidebar(props) {
   // console.log('props',props);
 
+  let originalActiveTab = window.location.pathname;
   let activeTab = window.location.pathname;
 
   if (window.location.hash) {
@@ -254,6 +255,7 @@ function Sidebar(props) {
       [
         "/intelligence",
         "/intelligence#netflow",
+        "/intelligence#price",
         "/intelligence/transaction-history",
         "/intelligence/asset-value",
         "/intelligence/insights",
@@ -308,6 +310,7 @@ function Sidebar(props) {
       [
         "/top-accounts/intelligence/transaction-history",
         "/top-accounts/intelligence#netflow",
+        "/top-accounts/intelligence#price",
         "/top-accounts/intelligence",
         "/top-accounts/intelligence/volume-traded-by-counterparty",
         "/top-accounts/intelligence/insights",
@@ -568,6 +571,7 @@ function Sidebar(props) {
   let isMeActive = [
     "/intelligence/transaction-history",
     "/intelligence#netflow",
+    "/intelligence#price",
     "/intelligence",
     "/intelligence/volume-traded-by-counterparty",
     "/intelligence/insights",
@@ -589,6 +593,7 @@ function Sidebar(props) {
     "/top-accounts/home",
     "/top-accounts/intelligence/transaction-history",
     "/top-accounts/intelligence#netflow",
+    "/top-accounts/intelligence#price",
     "/top-accounts/intelligence",
     "/top-accounts/intelligence/volume-traded-by-counterparty",
     "/top-accounts/intelligence/insights",
@@ -814,12 +819,38 @@ function Sidebar(props) {
                                   }
                                 }}
                                 className={`nav-link ${
-                                  activeTab === "/intelligence" ? "none" : ""
+                                  originalActiveTab === "/intelligence"
+                                    ? "none"
+                                    : ""
                                 }`}
                                 to="/intelligence#netflow"
                                 activeclassname="active"
                               >
                                 Net flows
+                              </NavLink>
+                            </li>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                    MenuIntNetflow({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }
+                                }}
+                                className={`nav-link ${
+                                  originalActiveTab === "/intelligence"
+                                    ? "none"
+                                    : ""
+                                }`}
+                                to="/intelligence#price"
+                                activeclassname="active"
+                              >
+                                Price
                               </NavLink>
                             </li>
                             <li className="sub-menu">
@@ -1197,7 +1228,8 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className={`nav-link ${
-                                      activeTab === "/top-accounts/intelligence"
+                                      originalActiveTab ===
+                                      "/top-accounts/intelligence"
                                         ? "none"
                                         : ""
                                     }`}
