@@ -805,7 +805,7 @@ class TopDefi extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } grayChip interDisplayMediumText f-s-15 lh-15`}
+                                                          } interDisplayMediumText f-s-15 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e}
@@ -819,7 +819,7 @@ class TopDefi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer grayChip interDisplayMediumText f-s-15 lh-15">
+                                                <div className="overflowValueContainer interDisplayMediumText f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
                                                     rowData.usdValue.toFixed(2),
