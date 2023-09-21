@@ -62,6 +62,7 @@ class AddWallet extends BaseReactComponent {
               apiAddress: "",
               showNameTag: true,
               nameTag: "",
+              loadingNameTag: false,
             },
           ],
       loading: false,
@@ -156,6 +157,7 @@ class AddWallet extends BaseReactComponent {
             apiAddress: "",
             showNameTag: true,
             nameTag: "",
+            loadingNameTag: false,
           },
         ],
         uploadStatus: "Uploading",
@@ -199,6 +201,7 @@ class AddWallet extends BaseReactComponent {
               apiAddress: e[0],
               showNameTag: true,
               nameTag: "",
+              loadingNameTag: false,
             });
           });
 
@@ -489,20 +492,6 @@ class AddWallet extends BaseReactComponent {
           },
           this
         );
-        // this.props.detectNameTag(
-        //   {
-        //     id: name,
-        //     coinCode: parentCoinList[i].code,
-        //     coinSymbol: parentCoinList[i].symbol,
-        //     coinName: parentCoinList[i].name,
-        //     address: value,
-        //     coinColor: parentCoinList[i].color,
-        //     subChains: parentCoinList[i].sub_chains,
-        //   },
-        //   this,
-        //   false,
-        //   i
-        // );
       }
     }
   };
@@ -585,6 +574,7 @@ class AddWallet extends BaseReactComponent {
       newAddress[index] = {
         ...this.state.walletInput[index],
         nameTag: nameTag,
+        loadingNameTag: false,
       };
     }
     this.setState({
@@ -607,6 +597,7 @@ class AddWallet extends BaseReactComponent {
         showNickname: true,
         showNameTag: true,
         nameTag: "",
+        loadingNameTag: false,
       });
       this.setState({
         walletInput: this.state.walletInput,
@@ -803,7 +794,12 @@ class AddWallet extends BaseReactComponent {
         w.id = `wallet${i + 1}`;
       });
       if (addWallet) {
-        this.props.setHeaderReducer(addWallet);
+        let holder = [];
+        const pulledTempWalletData = this.props.HeaderState.wallet;
+        if (pulledTempWalletData) {
+          holder = pulledTempWalletData.filter((res) => res.isExchange);
+        }
+        this.props.setHeaderReducer([...holder, ...addWallet]);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
@@ -813,7 +809,6 @@ class AddWallet extends BaseReactComponent {
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
-      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
       yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
       this.props.updateUserWalletApi(data, this, yieldData);
@@ -1098,12 +1093,6 @@ class AddWallet extends BaseReactComponent {
                                     return "";
                                   }
                                 })}
-                              {/* {c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null} */}
                             </div>
                           )}
                         </>
@@ -1353,6 +1342,7 @@ class AddWallet extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  HeaderState: state.HeaderState,
 });
 const mapDispatchToProps = {
   getAllCoins,
