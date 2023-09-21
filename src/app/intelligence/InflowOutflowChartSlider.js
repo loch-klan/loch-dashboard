@@ -33,6 +33,16 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    if (this.props.assetList) {
+      this.setState({
+        assetList: this.props.assetList,
+      });
+    }
+    if (this.props.activeAssetTab) {
+      this.setState({
+        activeAssetTab: this.props.activeAssetTab,
+      });
+    }
     if (this.props.steps) {
       this.setState({
         steps: this.props.steps,
@@ -60,6 +70,16 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.assetList !== this.props.assetList) {
+      this.setState({
+        assetList: this.props.assetList,
+      });
+    }
+    if (prevProps.activeAssetTab !== this.props.activeAssetTab) {
+      this.setState({
+        activeAssetTab: this.props.activeAssetTab,
+      });
+    }
     if (prevProps.steps !== this.props.steps) {
       this.setState({
         steps: this.props.steps,
@@ -289,8 +309,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               let receivedVal = curItem.received_value;
               let sendVal = curItem.send_value;
 
-              const tempIndex = parent.props.assetList.findIndex(
-                (resData) => resData._id === parent.props.activeAssetTab
+              const tempIndex = parent.state.assetList.findIndex(
+                (resData) => resData._id === parent.state.activeAssetTab
               );
               let assetCode = "ETH";
               if (

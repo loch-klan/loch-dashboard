@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { InflowOutflowIcon } from "../../assets/images/icons";
 
 import PageHeader from "../common/PageHeader";
-import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
 import { TimeFilterInflowOutflowType } from "../../utils/Constant";
 import {
   getInflowsAndOutflowsGraphDataApi,

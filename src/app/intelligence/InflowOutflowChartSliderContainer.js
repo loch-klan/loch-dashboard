@@ -357,10 +357,14 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           {CurrencyType(false)}
                           {this.state.currentPriceValue
                             ? numToCurrency(this.state.currentPriceValue)
-                            : 0}
+                            : "0.00"}
                         </span>
                       </div>
-                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
+
+                      <div
+                        style={{ opacity: this.state.currentPriceDate ? 1 : 0 }}
+                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                      >
                         {this.state.currentPriceDate
                           ? this.state.currentPriceDate
                           : 0}
@@ -386,6 +390,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   buySellList={this.state.buySellList}
                   steps={this.state.steps}
                   changeThePrice={this.changeThePrice}
+                  activeAssetTab={this.state.activeAssetTab}
                   assetList={this.props.assetList}
                 />
               </>
