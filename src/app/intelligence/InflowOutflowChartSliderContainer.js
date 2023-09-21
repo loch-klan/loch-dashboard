@@ -11,6 +11,8 @@ import {
   AssetChartOutflowIcon,
 } from "../../assets/images/icons/index.js";
 import { DropDownWithIcons } from "../common/index.js";
+import CustomDropdown from "../../utils/form/CustomDropdown";
+
 import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
 
 require("highcharts/modules/annotations")(Highcharts);
@@ -25,7 +27,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
       steps: 1,
       title: "",
       activeAssetTab: "",
-
+      activeAssetTabName: "",
       assetList: [],
       formattedXAxis: [],
       formattedOverallData: {},
@@ -73,7 +75,23 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
         assetList: this.props.assetList,
       });
     }
-    if (prevProps.activeAssetTab !== this.props.activeAssetTab) {
+    if (
+      (prevProps.activeAssetTab !== this.props.activeAssetTab ||
+        prevProps.assetList !== this.props.assetList) &&
+      this.props.assetList &&
+      this.props.activeAssetTab
+    ) {
+      const tempIndex = this.props.assetList.findIndex(
+        (resData) => resData._id === this.props.activeAssetTab
+      );
+
+      if (tempIndex !== -1) {
+        if (this.props.assetList[tempIndex]?.asset?.name) {
+          this.setState({
+            activeAssetTabName: this.props.assetList[tempIndex].asset.name,
+          });
+        }
+      }
       this.setState({
         activeAssetTab: this.props.activeAssetTab,
       });
@@ -271,6 +289,10 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     this.props.onAssetSelect(opt);
   };
   render() {
+    console.log(
+      "this.state.activeAssetTabName is ",
+      this.state.activeAssetTabName
+    );
     return (
       <div className="welcome-card-section lineChartSlider">
         <>
@@ -357,10 +379,14 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           {CurrencyType(false)}
                           {this.state.currentPriceValue
                             ? numToCurrency(this.state.currentPriceValue)
-                            : 0}
+                            : "0.00"}
                         </span>
                       </div>
-                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
+
+                      <div
+                        style={{ opacity: this.state.currentPriceDate ? 1 : 0 }}
+                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                      >
                         {this.state.currentPriceDate
                           ? this.state.currentPriceDate
                           : 0}
@@ -368,14 +394,34 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     </div>
                   </div>
 
-                  <div className="dropdownWithImages">
+                  <div
+                    style={{
+                      width: "100%",
+                      minWidth: "18rem",
+                      maxWidth: "20rem",
+                      marginLeft: "1rem",
+                      zIndex: 4,
+                    }}
+                  >
+                    <CustomDropdown
+                      filtername="All chains selected"
+                      options={this.state.assetList}
+                      action={null}
+                      handleClick={this.handleAssetSelect}
+                      isChain={true}
+                      selectedTokens={[this.state.activeAssetTab]}
+                      selectedTokenName={this.state.activeAssetTabName}
+                      singleSelect
+                    />
+                  </div>
+                  {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}
                       onSelect={this.handleAssetSelect}
                       activetab={this.state.activeAssetTab}
                       showChain
                     />
-                  </div>
+                  </div> */}
                 </div>
 
                 <InflowOutflowChartSlider
@@ -386,6 +432,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   buySellList={this.state.buySellList}
                   steps={this.state.steps}
                   changeThePrice={this.changeThePrice}
+                  activeAssetTab={this.state.activeAssetTab}
                   assetList={this.props.assetList}
                 />
               </>

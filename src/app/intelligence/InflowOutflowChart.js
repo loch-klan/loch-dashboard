@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { InflowOutflowIcon } from "../../assets/images/icons";
 
 import PageHeader from "../common/PageHeader";
-import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
 import { TimeFilterInflowOutflowType } from "../../utils/Constant";
 import {
   getInflowsAndOutflowsGraphDataApi,
@@ -25,13 +24,23 @@ class InflowOutflowChart extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    this.props.getInflowsAndOutflowsAssetsApi(this);
-    this.makeApiCall();
+    let addressList = [];
+    const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    userWalletList?.map((wallet) => addressList.push(wallet.address));
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    this.setState({ graphLoading: true });
+    this.props.getInflowsAndOutflowsAssetsApi(data, this);
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userWalletList !== this.props.userWalletList) {
-      this.props.getInflowsAndOutflowsAssetsApi(this);
-      this.makeApiCall();
+      let addressList = [];
+      const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      userWalletList?.map((wallet) => addressList.push(wallet.address));
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      this.setState({ graphLoading: true });
+      this.props.getInflowsAndOutflowsAssetsApi(data, this);
     }
     if (
       prevState.timeTab !== this.state.timeTab ||
@@ -99,7 +108,7 @@ class InflowOutflowChart extends BaseReactComponent {
           title="Price"
           showImg={InflowOutflowIcon}
         />
-        <div className="graph-container" style={{ marginBottom: "5rem" }}>
+        <div className="graph-container">
           <InflowOutflowChartSliderContainer
             inflowOutflowData={
               this.state.inflowsOutflowsList
@@ -118,7 +127,7 @@ class InflowOutflowChart extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
           />
           <div
-            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5 mb-5"
             onClick={this.toggleDust}
           >
             {this.state.isDust === 0

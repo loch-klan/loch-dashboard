@@ -90,7 +90,7 @@ export default function PageHeader(props) {
   );
   return (
     <div
-      className={`m-b-40 pageHeaderBlock ${
+      className={`pageHeaderBlock ${
         props.showpath || props?.topaccount ? "historyHeader" : ""
       }`}
       style={

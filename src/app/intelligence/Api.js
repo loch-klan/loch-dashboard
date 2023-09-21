@@ -68,11 +68,14 @@ export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
       });
   };
 };
-export const getInflowsAndOutflowsAssetsApi = (ctx) => {
+export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      .post("wallet/transaction/get-transaction-asset-filter")
+      .post("wallet/transaction/get-transaction-asset-filter", data)
       .then((res) => {
+        ctx.setState({
+          graphLoading: false,
+        });
         if (!res.data.error) {
           if (res.data.data.assets.length > 0) {
             ctx.setState({
@@ -85,11 +88,30 @@ export const getInflowsAndOutflowsAssetsApi = (ctx) => {
               ctx.setState({
                 selectedAsset: res.data.data.assets[isEth]._id,
               });
+            } else {
+              let isBtc = res.data.data.assets.findIndex((resRes) => {
+                return resRes.asset.code === "BTC";
+              });
+              if (isBtc > -1) {
+                ctx.setState({
+                  selectedAsset: res.data.data.assets[isBtc]._id,
+                });
+              } else {
+                const firstItem = res.data.data.assets[0]._id;
+                if (firstItem) {
+                  ctx.setState({
+                    selectedAsset: firstItem,
+                  });
+                }
+              }
             }
           }
         }
       })
       .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
         console.log("Catch", err);
       });
   };

@@ -14524,12 +14524,13 @@ textarea {
           filter: brightness(100);
 }
 
-.profile-page-section .profile-section .profile-form-section .plan-card-wrapper .plan-card .feature-list-wrapper .feature-list.soverign-plan .label h3 {
-  color: #fff;
-}
-
-.profile-page-section .profile-section .profile-form-section .plan-card-wrapper .plan-card .feature-list-wrapper .feature-list.soverign-plan h4 {
-  color: #fff;
+.intelligence-page-section
+  .intelligence-section
+  .portfolio-bar-graph
+  .page-header
+  h4 {
+  font-size: 2rem;
+  line-height: 2.4;
 }
 
 .profile-page-section .profile-section .profile-form-section .plan-card-wrapper .primary-btn {
