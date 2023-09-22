@@ -29,8 +29,9 @@ class InflowOutflowChart extends BaseReactComponent {
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
-    this.setState({ graphLoading: true });
-    this.props.getInflowsAndOutflowsAssetsApi(data, this);
+    this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+      this.props.getInflowsAndOutflowsAssetsApi(data, this);
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userWalletList !== this.props.userWalletList) {
@@ -39,8 +40,9 @@ class InflowOutflowChart extends BaseReactComponent {
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
-      this.setState({ graphLoading: true });
-      this.props.getInflowsAndOutflowsAssetsApi(data, this);
+      this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+        this.props.getInflowsAndOutflowsAssetsApi(data, this);
+      });
     }
     if (
       prevState.timeTab !== this.state.timeTab ||
@@ -52,6 +54,10 @@ class InflowOutflowChart extends BaseReactComponent {
       );
       if (groupByValue) {
         this.makeApiCall();
+      } else {
+        this.setState({
+          graphLoading: false,
+        });
       }
     }
   }
