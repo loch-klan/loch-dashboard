@@ -359,7 +359,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
             // ctx.props.getProfitAndLossApi(ctx, false, false, false);
             //  ctx.props.getAllInsightsApi(ctx);
             //        GetAllPlan();
-            // getUser(ctx);
+            // this.props.getUser(ctx);
             ctx.props.setPageFlagDefault();
           }
         } else {

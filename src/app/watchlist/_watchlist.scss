@@ -36,7 +36,7 @@
       padding-bottom: 0.5rem;
       &:hover {
         .watchListDelete {
-          filter: brightness(0.5);
+          filter: var(--hoverBrightness);
         }
       }
     }
