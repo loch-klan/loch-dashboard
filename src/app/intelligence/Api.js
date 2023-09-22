@@ -20,6 +20,102 @@ import {
   TOP_TRANSACTION_FILTER,
 } from "../topAccount/ActionTypes";
 
+export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
+  return async function (dispatch, getState) {
+    let currency = JSON.parse(localStorage.getItem("currency"));
+    let currencyRate = currency?.rate || 1;
+    postLoginInstance
+      .post("wallet/user-wallet/get-buy-sell", data)
+      .then((res) => {
+        if (!res.data.error) {
+          if (res.data.data.data && res.data.data.data.length > 0) {
+            const tempConvertedValue = res.data.data.data.map((resData) => {
+              return {
+                price: resData.price ? resData.price * currencyRate : 0,
+                received: resData.received ? resData.received : 0,
+                received_value: resData.received_value
+                  ? resData.received_value * currencyRate
+                  : 0,
+                send: resData.send ? resData.send : 0,
+                send_value: resData.send_value
+                  ? resData.send_value * currencyRate
+                  : 0,
+                timestamp: resData.timestamp ? resData.timestamp : 0,
+              };
+            });
+            ctx.setState({
+              graphLoading: false,
+              inflowsOutflowsList: tempConvertedValue,
+            });
+          } else {
+            ctx.setState({
+              graphLoading: false,
+              inflowsOutflowsList: [],
+            });
+          }
+        } else {
+          ctx.setState({
+            graphLoading: false,
+          });
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
+        console.log("Catch", err);
+      });
+  };
+};
+export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/transaction/get-transaction-asset-filter", data)
+      .then((res) => {
+        ctx.setState({
+          graphLoading: false,
+        });
+        if (!res.data.error) {
+          if (res.data.data.assets.length > 0) {
+            ctx.setState({
+              assetList: res.data.data.assets,
+            });
+            let isEth = res.data.data.assets.findIndex((resRes) => {
+              return resRes.asset.code === "ETH";
+            });
+            if (isEth > -1) {
+              ctx.setState({
+                selectedAsset: res.data.data.assets[isEth]._id,
+              });
+            } else {
+              let isBtc = res.data.data.assets.findIndex((resRes) => {
+                return resRes.asset.code === "BTC";
+              });
+              if (isBtc > -1) {
+                ctx.setState({
+                  selectedAsset: res.data.data.assets[isBtc]._id,
+                });
+              } else {
+                const firstItem = res.data.data.assets[0]._id;
+                if (firstItem) {
+                  ctx.setState({
+                    selectedAsset: firstItem,
+                  });
+                }
+              }
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
+        console.log("Catch", err);
+      });
+  };
+};
 export const searchTransactionApi = (data, ctx, page = 0) => {
   return async function (dispatch, getState) {
     postLoginInstance

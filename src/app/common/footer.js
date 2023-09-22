@@ -9,7 +9,7 @@ class Footer extends Component {
   render() {
     return (
       <>
-        <hr className="m-t-60" />
+        <hr />
         <div
           className="m-t-30 m-b-28"
           style={{

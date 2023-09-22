@@ -89,7 +89,7 @@ export default function PageHeader(props) {
   );
   return (
     <div
-      className={`m-b-40 page-header ${
+      className={`page-header ${
         props.showpath || props?.topaccount ? "history-header" : ""
       }`}
       style={
