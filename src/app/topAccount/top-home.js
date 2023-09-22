@@ -1710,6 +1710,9 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
+                        paddingBottom: this.state.AvgCostLoading
+                          ? "0rem"
+                          : "1.6rem",
                         height: "32rem",
                         minHeight: "32rem",
                         marginBottom: 0,
@@ -1792,6 +1795,9 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
+                        paddingBottom: this.state.tableLoading
+                          ? "0rem"
+                          : "1.6rem",
                         height: "32rem",
                         minHeight: "32rem",
                         marginBottom: 0,
