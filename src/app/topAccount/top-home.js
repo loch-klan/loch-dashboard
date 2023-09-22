@@ -1840,7 +1840,7 @@ class TopPortfolio extends BaseReactComponent {
                     >
                       <TransactionTable
                         isMiniversion
-                        title="Transaction History"
+                        title="Transactions"
                         handleClick={() => {
                           // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {

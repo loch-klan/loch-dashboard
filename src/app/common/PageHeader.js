@@ -74,7 +74,9 @@ export default function PageHeader(props) {
             active={e === props.currentPage}
             key={key}
           >
-            {e.replace(/-/g, " ")}
+            {e === "transaction-history"
+              ? "transactions"
+              : e.replace(/-/g, " ")}
           </Breadcrumb.Item>
         </>
       )
