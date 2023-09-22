@@ -207,6 +207,7 @@ class CustomDropdown extends Component {
                 this.props.isChain || this.props.isGreyChain ? e.name : e.label,
               value:
                 this.props.isChain || this.props.isGreyChain ? e.id : e.value,
+              code: e.code ? e.code : "",
               // isSelected: i === 0 && !this.props.isChain ? true : false,
               isSelected: true,
             })

@@ -167,8 +167,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         events: {
           setExtremes(e) {
             let diff = Math.round(e.max - e.min);
-            if (parent.props.hideTimeFilter) {
-            } else {
+            if (!parent.props.hideTimeFilter) {
               if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
                   plotLineHide: 1,
@@ -180,14 +179,142 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                   });
                 }
               }
-              if (diff <= 11 && parent.state.steps !== 1) {
-                parent.setState({
-                  steps: 1,
-                });
-              } else {
-                if (diff > 20 && parent.state.steps !== 3) {
+              if (diff > 200) {
+                if (parent.state.steps !== 23) {
+                  parent.setState({
+                    steps: 23,
+                  });
+                }
+              } else if (diff > 190) {
+                if (parent.state.steps !== 22) {
+                  parent.setState({
+                    steps: 22,
+                  });
+                }
+              } else if (diff > 180) {
+                if (parent.state.steps !== 21) {
+                  parent.setState({
+                    steps: 21,
+                  });
+                }
+              } else if (diff > 170) {
+                if (parent.state.steps !== 20) {
+                  parent.setState({
+                    steps: 20,
+                  });
+                }
+              } else if (diff > 160) {
+                if (parent.state.steps !== 19) {
+                  parent.setState({
+                    steps: 19,
+                  });
+                }
+              } else if (diff > 150) {
+                if (parent.state.steps !== 18) {
+                  parent.setState({
+                    steps: 18,
+                  });
+                }
+              } else if (diff > 140) {
+                if (parent.state.steps !== 17) {
+                  parent.setState({
+                    steps: 17,
+                  });
+                }
+              } else if (diff > 130) {
+                if (parent.state.steps !== 16) {
+                  parent.setState({
+                    steps: 16,
+                  });
+                }
+              } else if (diff > 120) {
+                if (parent.state.steps !== 15) {
+                  parent.setState({
+                    steps: 15,
+                  });
+                }
+              } else if (diff > 110) {
+                if (parent.state.steps !== 14) {
+                  parent.setState({
+                    steps: 14,
+                  });
+                }
+              } else if (diff > 100) {
+                if (parent.state.steps !== 13) {
+                  parent.setState({
+                    steps: 13,
+                  });
+                }
+              } else if (diff > 90) {
+                if (parent.state.steps !== 12) {
+                  parent.setState({
+                    steps: 12,
+                  });
+                }
+              } else if (diff > 80) {
+                if (parent.state.steps !== 11) {
+                  parent.setState({
+                    steps: 11,
+                  });
+                }
+              } else if (diff > 70) {
+                if (parent.state.steps !== 10) {
+                  parent.setState({
+                    steps: 10,
+                  });
+                }
+              } else if (diff > 60) {
+                if (parent.state.steps !== 9) {
+                  parent.setState({
+                    steps: 9,
+                  });
+                }
+              } else if (diff > 50) {
+                if (parent.state.steps !== 8) {
+                  parent.setState({
+                    steps: 8,
+                  });
+                }
+              } else if (diff > 40) {
+                if (parent.state.steps !== 7) {
+                  parent.setState({
+                    steps: 7,
+                  });
+                }
+              } else if (diff > 30) {
+                if (parent.state.steps !== 6) {
+                  parent.setState({
+                    steps: 6,
+                  });
+                }
+              } else if (diff > 20) {
+                if (parent.state.steps !== 5) {
+                  parent.setState({
+                    steps: 5,
+                  });
+                }
+              } else if (diff > 15) {
+                if (parent.state.steps !== 4) {
+                  parent.setState({
+                    steps: 4,
+                  });
+                }
+              } else if (diff > 10) {
+                if (parent.state.steps !== 3) {
                   parent.setState({
                     steps: 3,
+                  });
+                }
+              } else if (diff > 7) {
+                if (parent.state.steps !== 2) {
+                  parent.setState({
+                    steps: 2,
+                  });
+                }
+              } else if (diff <= 7) {
+                if (parent.state.steps !== 1) {
+                  parent.setState({
+                    steps: 1,
                   });
                 }
               }

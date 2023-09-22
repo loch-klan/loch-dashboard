@@ -1362,7 +1362,7 @@ function Sidebar(props) {
                                         }
                                       }}
                                       className={`nav-link ${
-                                        activeTab ===
+                                        originalActiveTab ===
                                         "/top-accounts/intelligence"
                                           ? "none"
                                           : ""
