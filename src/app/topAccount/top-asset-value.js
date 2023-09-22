@@ -71,8 +71,8 @@ class TopAssetValueGraph extends Component {
   };
   componentDidMount() {
     this.props.getAllCoins();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
     this.setState({
@@ -303,7 +303,7 @@ class TopAssetValueGraph extends Component {
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               topaccount={true}
-              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
             />
@@ -356,6 +356,8 @@ const mapDispatchToProps = {
   getExternalEventsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  getUser,
+  GetAllPlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopAssetValueGraph);

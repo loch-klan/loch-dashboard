@@ -152,6 +152,7 @@ class TopAccountPage extends BaseReactComponent {
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
       walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
+      goToBottom: false,
     };
     this.delayTimer = 0;
   }
@@ -185,8 +186,8 @@ class TopAccountPage extends BaseReactComponent {
     this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.startPageView();
     this.updateTimer(true);
   }
@@ -244,8 +245,26 @@ class TopAccountPage extends BaseReactComponent {
       getTopAccounts(data, this);
     }, 300);
   };
-
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     // chain detection
     // if (prevState?.walletInput !== this.state.walletInput) {
     // }
@@ -464,7 +483,9 @@ class TopAccountPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
     this.setState({
       sort: obj,
       tableSortOpt: sort,
@@ -708,7 +729,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Name tag
+            Nametag
             </span>
             <Image
               src={sortByIcon}
@@ -1178,7 +1199,7 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top accounts"}
+              title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
@@ -1331,6 +1352,8 @@ class TopAccountPage extends BaseReactComponent {
                     location={this.props.location}
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
+                    addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p
@@ -1371,6 +1394,8 @@ const mapDispatchToProps = {
   getWatchListByUser,
   removeFromWatchList,
   updateAddToWatchList,
+  getUser,
+  GetAllPlan,
 };
 
 TopAccountPage.propTypes = {};

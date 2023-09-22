@@ -107,8 +107,8 @@ class InsightsPage extends Component {
   };
   componentDidMount() {
     // this.props.getAllInsightsApi(this);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.setState({});
 
     const search = this.props.location.search;
@@ -617,6 +617,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);

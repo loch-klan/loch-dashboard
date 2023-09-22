@@ -89,22 +89,6 @@ class Login extends BaseReactComponent {
     }
   }
 
-  componentWillUnmount() {
-    // window.hj("identify", );
-    let baseToken = localStorage.getItem("baseToken");
-    // console.log("access code", baseToken);
-    window.hj("identify", null, {
-      "access code": baseToken,
-      // Add your own custom attributes here. Some EXAMPLES:
-      // 'Signed up': '2019—06-20Z', // Signup date in ISO-8601 format.
-      // 'Last purchase category': 'Electronics', // Send strings with quotes around them.
-      // 'Total purchases': 15, // Send numbers without quotes.
-      // 'Last purchase date': '2019-06-20Z', // Send dates in ISO-8601 format.
-      // 'Last refund date': null, // Send null when no value exists for a user.
-    });
-    // window.hj("user.set", "access code", baseToken);
-  }
-
   onValidSubmit = () => {
     const data = new URLSearchParams();
     data.append("password", this.state.password);
@@ -124,7 +108,7 @@ class Login extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify([]));
       // data.append("link", this.state.id);
-      createAnonymousUserApi(data, this, [], null);
+      this.props.createAnonymousUserApi(data, this, [], null);
     } else {
       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
       // console.log('Heyyyy',addWallet);
@@ -141,7 +125,7 @@ class Login extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(AddressList));
       data.append("link", this.state.id);
-      createAnonymousUserApi(data, this, addWallet, null);
+      this.props.createAnonymousUserApi(data, this, addWallet, null);
     }
   };
 
@@ -208,6 +192,7 @@ const mapDispatchToProps = {
   // getPosts: fetchPosts
   getDetailsByLinkApi,
   getAllCoins,
+  createAnonymousUserApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

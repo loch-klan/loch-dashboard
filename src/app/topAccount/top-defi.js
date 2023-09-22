@@ -489,22 +489,23 @@ class TopDefi extends Component {
                       <div
                         className="balance-sheet-title"
                         onClick={this.toggleYield}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : { marginBottom: "1rem" }
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balance-sheet-title-text-selected"
+                                : ""
+                            }`}
                           >
                             Credit
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
+                              this.state.isYeildToggle
+                                ? "balance-sheet-title-text-selected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.totalYield &&
@@ -516,66 +517,75 @@ class TopDefi extends Component {
                         </div>
                         <Image
                           src={arrowUp}
+                          className="defiMenu"
                           style={
                             this.state.isYeildToggle
-                              ? { transform: "rotate(180deg)" }
+                              ? {
+                                  transform: "rotate(180deg)",
+                                  filter: "opacity(1)",
+                                }
                               : {}
                           }
                         />
                       </div>
-                      {this.props.topAccountState.YieldValues?.length !== 0 &&
-                        this.state.isYeildToggle &&
-                        this.props.topAccountState.YieldValues?.map(
-                          (item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i ===
-                                  this.props.topAccountState.YieldValues
-                                    ?.length -
-                                    1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
+                      {this.state.isYeildToggle ? (
+                        <div className="balance-sheet-list-container">
+                          {this.props.topAccountState.YieldValues?.length !==
+                            0 &&
+                            this.props.topAccountState.YieldValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balance-sheet-list"
+                                    style={
+                                      i ===
+                                      this.props.topAccountState.YieldValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
+                                    }
+                                  >
+                                    <span className="inter-display-medium f-s-16 lh-19">
+                                      {item.name}
+                                    </span>
+                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                      {CurrencyType(false)}
+                                      {amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                        </div>
+                      ) : null}
                     </Col>
                     <Col md={6}>
                       <div
                         className="balance-sheet-title"
                         onClick={this.toggleDebt}
-                        style={
-                          !this.state.isYeildToggle || !this.state.isDebtToggle
-                            ? { marginBottom: "0.5rem" }
-                            : {}
-                        }
                       >
                         <div>
                           <span
-                            className="inter-display-semi-bold f-s-16 lh-19"
-                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                            className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balance-sheet-title-text-selected"
+                                : ""
+                            }`}
                           >
                             Debt
                           </span>
                           <span
-                            className="inter-display-medium f-s-16 lh-19"
-                            style={{ marginRight: "0.8rem" }}
+                            className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
+                              this.state.isDebtToggle
+                                ? "balance-sheet-title-text-selected"
+                                : ""
+                            }`}
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.totalDebt &&
@@ -587,46 +597,53 @@ class TopDefi extends Component {
                         </div>
                         <Image
                           src={arrowUp}
+                          className="defiMenu"
                           style={
                             this.state.isDebtToggle
-                              ? { transform: "rotate(180deg)" }
+                              ? {
+                                  transform: "rotate(180deg)",
+                                  filter: "opacity(1)",
+                                }
                               : {}
                           }
                         />
                       </div>
-
-                      {this.props.topAccountState.DebtValues?.length !== 0 &&
-                        this.state.isDebtToggle &&
-                        this.props.topAccountState.DebtValues?.map(
-                          (item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i ===
-                                  this.props.topAccountState.DebtValues
-                                    ?.length -
-                                    1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
+                      {this.state.isDebtToggle ? (
+                        <div className="balance-sheet-list-container">
+                          {this.props.topAccountState.DebtValues?.length !==
+                            0 &&
+                            this.props.topAccountState.DebtValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balance-sheet-list"
+                                    style={
+                                      i ===
+                                      this.props.topAccountState.DebtValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
+                                    }
+                                  >
+                                    <span className="inter-display-medium f-s-16 lh-19">
+                                      {item.name}
+                                    </span>
+                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                      {CurrencyType(false)}
+                                      {amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                        </div>
+                      ) : null}
                     </Col>
                   </Row>
 
@@ -784,7 +801,7 @@ class TopDefi extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } gray-chip inter-display-medium f-s-15 lh-15`}
+                                                          } inter-display-medium f-s-15 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e}
@@ -798,7 +815,7 @@ class TopDefi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer gray-chip inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
                                                   {CurrencyType(false)}
                                                   {amountFormat(
                                                     rowData.usdValue.toFixed(2),

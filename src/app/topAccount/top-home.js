@@ -26,6 +26,7 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
@@ -69,6 +70,7 @@ import Loading from "../common/Loading";
 import {
   CurrencyType,
   noExponents,
+  TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
@@ -217,9 +219,19 @@ class TopPortfolio extends BaseReactComponent {
 
       // netflow switch
       isSwitch: false,
+      waitForMixpannelCall: false,
     };
   }
-
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   // get token
   getToken = () => {
     // console.log(this.state.lochToken)
@@ -504,11 +516,11 @@ class TopPortfolio extends BaseReactComponent {
 
       // for chain detect
       setTimeout(() => {
-        getDetectedChainsApi(this);
+        this.props.getDetectedChainsApi(this);
       }, 1000);
 
-      GetAllPlan();
-      getUser(this);
+      this.props.GetAllPlan();
+      this.props.getUser(this);
     } else if (prevState.sort !== this.state.sort) {
       // sort table
       this.getTableData();
@@ -759,7 +771,16 @@ class TopPortfolio extends BaseReactComponent {
     });
     this.updateTimer();
   };
-
+  copyContent = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+  };
   render() {
     const { table_home, assetPriceList_home } = this.props.topAccountState;
     const { userWalletList, currency } = this.state;
@@ -870,7 +891,7 @@ class TopPortfolio extends BaseReactComponent {
         ),
         dataKey: "time",
         // coumnWidth: 73,
-        coumnWidth: 0.2,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
@@ -904,7 +925,7 @@ class TopPortfolio extends BaseReactComponent {
         ),
         dataKey: "from",
         // coumnWidth: 61,
-        coumnWidth: 0.17,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -931,117 +952,103 @@ class TopPortfolio extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <Image
-                    src={
-                      rowData.from.metaData?.wallet_metaData?.symbol ||
-                      unrecognizedIcon
-                    }
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      // //console.log("address", rowData.from.metaData);
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.from.address,
-                      //   display_name: rowData.from.wallet_metaData?.text
-                      //     ? rowData.from.wallet_metaData?.text
-                      //     : rowData.from.metaData?.displayAddress,
-                      // });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={
+                        rowData.from.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 ) : rowData.from.wallet_metaData.symbol ||
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <Image
-                      src={rowData.from.wallet_metaData.symbol}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        //  //console.log(
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.from.address,
-                        //   display_name: rowData.from.wallet_metaData?.text
-                        //     ? rowData.from.wallet_metaData?.text
-                        //     : rowData.from.metaData?.displayAddress,
-                        // });
-                      }}
-                    />
+                    <span>
+                      <Image
+                        src={rowData.from.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          this.updateTimer();
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        //  //console.log(
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.from.address,
-                        //   display_name: rowData.from.wallet_metaData?.text
-                        //     ? rowData.from.wallet_metaData?.text
-                        //     : rowData.from.metaData?.displayAddress,
-                        // });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.from.metaData?.nickname}
+                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        //  //console.log(
-                        //    "address",
-                        //    rowData.from.metaData
-                        //  );
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.from.address,
-                        //   display_name: rowData.from.wallet_metaData?.text
-                        //     ? rowData.from.wallet_metaData?.text
-                        //     : rowData.from.metaData?.displayAddress,
-                        // });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.from.wallet_metaData.text}
+                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   )
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.from.address,
-                      //   display_name: rowData.from.wallet_metaData?.text
-                      //     ? rowData.from.wallet_metaData?.text
-                      //     : rowData.from.metaData?.displayAddress,
-                      // });
+                      this.updateTimer();
                     }}
                   >
-                    {rowData.from.metaData?.displayAddress}
+                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.from.address,
-                      //   display_name: rowData.from.wallet_metaData?.text
-                      //     ? rowData.from.wallet_metaData?.text
-                      //     : rowData.from.metaData?.displayAddress,
-                      // });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 )}
-                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
               </CustomOverlay>
             );
           }
@@ -1072,7 +1079,7 @@ class TopPortfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.17,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -1082,7 +1089,6 @@ class TopPortfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                // text={rowData.to.address}
                 text={
                   (rowData.to.metaData?.nickname
                     ? rowData.to.metaData?.nickname + ": "
@@ -1098,102 +1104,102 @@ class TopPortfolio extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <Image
-                    src={
-                      rowData.to.metaData?.wallet_metaData?.symbol ||
-                      unrecognizedIcon
-                    }
-                    className="history-table-icon heyyyy"
-                    onMouseEnter={() => {
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.to.address,
-                      //   display_name: rowData.to.wallet_metaData?.text
-                      //     ? rowData.to.wallet_metaData?.text
-                      //     : rowData.to.metaData?.displayAddress,
-                      // });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={
+                        rowData.to.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 ) : rowData.to.wallet_metaData.symbol ||
                   rowData.to.wallet_metaData.text ||
                   rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
-                    <Image
-                      src={rowData.to.wallet_metaData.symbol}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.to.address,
-                        //   display_name: rowData.to.wallet_metaData?.text
-                        //     ? rowData.to.wallet_metaData?.text
-                        //     : rowData.to.metaData?.displayAddress,
-                        // });
-                      }}
-                    />
+                    <span>
+                      <Image
+                        src={rowData.to.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          this.updateTimer();
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
                   ) : rowData.to.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.to.address,
-                        //   display_name: rowData.to.wallet_metaData?.text
-                        //     ? rowData.to.wallet_metaData?.text
-                        //     : rowData.to.metaData?.displayAddress,
-                        // });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.to.metaData?.nickname}
+                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.to.address,
-                        //   display_name: rowData.to.wallet_metaData?.text
-                        //     ? rowData.to.wallet_metaData?.text
-                        //     : rowData.to.metaData?.displayAddress,
-                        // });
+                        this.updateTimer();
                       }}
                     >
-                      {rowData.to.wallet_metaData.text}
+                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
                     </span>
                   )
                 ) : rowData.to.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.to.address,
-                      //   display_name: rowData.to.wallet_metaData?.text
-                      //     ? rowData.to.wallet_metaData?.text
-                      //     : rowData.to.metaData?.displayAddress,
-                      // });
+                      this.updateTimer();
                     }}
                   >
-                    {rowData.to.metaData?.displayAddress}
+                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      // TransactionHistoryAddress({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   address_hovered: rowData.to.address,
-                      //   display_name: rowData.to.wallet_metaData?.text
-                      //     ? rowData.to.wallet_metaData?.text
-                      //     : rowData.to.metaData?.displayAddress,
-                      // });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        this.updateTimer();
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.to.address)}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                  </span>
                 )}
               </CustomOverlay>
             );
@@ -1225,7 +1231,7 @@ class TopPortfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.2,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1243,68 +1249,68 @@ class TopPortfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="usdValue"
-            onClick={() => {
-              this.handleTableSort("usdValue");
-              // TransactionHistoryUSD({
-              //   session_id: getCurrentUser().id,
-              //   email_address: getCurrentUser().email,
-              // });
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              {CurrencyType(true)} Value
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "usdValue",
-        coumnWidth: 0.25,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "usdValue") {
-            let chain = Object.entries(assetPriceList_home);
-            let value;
-            chain.find((chain) => {
-              // if (chain[0] === rowData.usdValueToday.id) {
-              //   value =
-              //     rowData.usdValueToday.value *
-              //       chain[1].quote.USD.price *
-              //       currency?.rate || DEFAULT_PRICE;
-              //   return;
-              // }
-              if (chain[0] === rowData.usdValueThen.id) {
-                value =
-                  rowData.usdValueThen.value *
-                  rowData.usdValueThen.assetPrice *
-                  (currency?.rate || 1);
-              }
-            });
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(value?.toFixed(2)).toLocaleString("en-US")}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(value?.toFixed(2)).toLocaleString("en-US")}
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="usdValue"
+      //       onClick={() => {
+      //         this.handleTableSort("usdValue");
+      //         // TransactionHistoryUSD({
+      //         //   session_id: getCurrentUser().id,
+      //         //   email_address: getCurrentUser().email,
+      //         // });
+      //       }}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         {CurrencyType(true)} Value
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={
+      //           !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "usdValue",
+      //   coumnWidth: 0.25,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "usdValue") {
+      //       let chain = Object.entries(assetPriceList_home);
+      //       let value;
+      //       chain.find((chain) => {
+      //         // if (chain[0] === rowData.usdValueToday.id) {
+      //         //   value =
+      //         //     rowData.usdValueToday.value *
+      //         //       chain[1].quote.USD.price *
+      //         //       currency?.rate || DEFAULT_PRICE;
+      //         //   return;
+      //         // }
+      //         if (chain[0] === rowData.usdValueThen.id) {
+      //           value =
+      //             rowData.usdValueThen.value *
+      //             rowData.usdValueThen.assetPrice *
+      //             (currency?.rate || 1);
+      //         }
+      //       });
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={Number(value?.toFixed(2)).toLocaleString("en-US")}
+      //         >
+      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+      //             {Number(value?.toFixed(2)).toLocaleString("en-US")}
+      //           </div>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
       // {
       //   labelName: (
       //     <div
@@ -1704,13 +1710,13 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
+                        height: "32rem",
+                        minHeight: "32rem",
                         marginBottom: 0,
                       }}
                     >
                       <TransactionTable
+                        isMiniversion
                         title="Average cost basis"
                         handleClick={() => {
                           if (this.state.lochToken) {
@@ -1720,17 +1726,20 @@ class TopPortfolio extends BaseReactComponent {
                           }
                         }}
                         subTitle="Understand your average entry price"
-                        tableData={tableDataCostBasis.slice(0, 6)}
+                        tableData={tableDataCostBasis.slice(0, 3)}
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
+                        addWatermark
                       />
                     </div>
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
+                        noSubtitleBottomPadding
+                        loaderHeight={15.5}
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
@@ -1783,13 +1792,13 @@ class TopPortfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
+                        height: "32rem",
+                        minHeight: "32rem",
                         marginBottom: 0,
                       }}
                     >
                       <TransactionTable
+                        isMiniversion
                         title="Transaction History"
                         handleClick={() => {
                           // console.log("wallet", this.state.userWalletList);
@@ -1804,11 +1813,13 @@ class TopPortfolio extends BaseReactComponent {
                           }
                         }}
                         subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData.slice(0, 6)}
+                        tableData={tableData.slice(0, 3)}
                         columnList={columnList}
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.tableLoading}
+                        addWatermark
+                        addWatermarkMoveUp
                       />
                     </div>
                   </Col>
@@ -1818,6 +1829,7 @@ class TopPortfolio extends BaseReactComponent {
                       // style={{ paddingBottom: "1.15rem" }}
                     >
                       <LineChartSlider
+                        noSubtitleBottomPadding
                         assetValueData={
                           this.props.topAccountState.assetValueDay &&
                           this.props.topAccountState.assetValueDay
@@ -1907,8 +1919,10 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
-  getAllParentChains,
+  getDetectedChainsApi,
   getAssetProfitLoss,
+  GetAllPlan,
+  getUser,
 };
 TopPortfolio.propTypes = {};
 

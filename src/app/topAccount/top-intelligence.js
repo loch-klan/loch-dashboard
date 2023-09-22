@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import IntelWelcomeCard from "../intelligence/IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import BarGraphSection from "../common/BarGraphSection";
@@ -85,8 +84,19 @@ class TopIntelligence extends Component {
       isTopAccountPage: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
+      waitForMixpannelCall: false,
     };
   }
+  waitForMixpannelCallOn = () => {
+    this.setState({
+      waitForMixpannelCall: true,
+    });
+  };
+  waitForMixpannelCallOff = () => {
+    this.setState({
+      waitForMixpannelCall: false,
+    });
+  };
   chainSearchIsUsed = () => {
     this.setState({ isChainSearchUsed: true });
   };
@@ -142,8 +152,8 @@ class TopIntelligence extends Component {
     this.timeFilter(0, true);
     this.startPageView();
     this.updateTimer(true);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
     this.assetList();
 
     let obj = UpgradeTriggered();
@@ -669,11 +679,6 @@ class TopIntelligence extends Component {
               handleShare={this.handleShare}
             />
 
-            <IntelWelcomeCard
-              history={this.props.history}
-              isTopAccount={true}
-            />
-
             <div className="portfolio-bar-graph" id="netflow">
               <PageHeader title="Net Flows" showImg={eyeIcon} />
               {/* Netflow Info Start */}
@@ -887,6 +892,8 @@ const mapDispatchToProps = {
   getAssetProfitLoss,
   updateWalletListFlag,
   setPageFlagDefault,
+  getUser,
+  GetAllPlan,
 };
 
 // const mapDispatchToProps = {

@@ -104,8 +104,8 @@ class Cohort extends Component {
 
     this.props.getAllCoins();
     this.makeApiCall();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     let obj = UpgradeTriggered();
 
@@ -623,6 +623,7 @@ class Cohort extends Component {
                 handleAddModal={this.handleAddModal}
                 // handleUpdate={this.handleUpdateWallet}
                 updateTimer={this.updateTimer}
+                hideButton
               />
             </div>
           </div>
@@ -855,6 +856,8 @@ const mapDispatchToProps = {
   TopsetPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  getUser,
+  GetAllPlan,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

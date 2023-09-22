@@ -69,8 +69,8 @@ class Wallet extends Component {
 
     this.props.getAllCoins();
     this.makeApiCall();
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
   }
 
   componentWillUnmount() {
@@ -353,6 +353,7 @@ class Wallet extends Component {
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
                     display_address={wallet.display_address}
+                    nameTag={wallet.tag}
                     wallet_amount={wallet.total_value * currency?.rate}
                     wallet_coins={wallet?.chains}
                     makeApiCall={this.makeApiCall}
@@ -389,6 +390,8 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   getAllWalletApi,
   setPageFlagDefault,
+  GetAllPlan,
+  getUser,
   // getCoinRate,
 };
 Wallet.propTypes = {

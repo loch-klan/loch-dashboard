@@ -117,7 +117,7 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
   };
 };
 export const searchTransactionApi = (data, ctx, page = 0) => {
-  return function (dispatch, getState) {
+  return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {
@@ -167,6 +167,7 @@ export const getFilters = (ctx) => {
           let obj = {
             value: item._id,
             label: item.asset.name,
+            code: item.asset.code,
           };
           assetFilter.push(obj);
         });
@@ -380,10 +381,11 @@ export const getTransactionAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         let assetFilter = [{ value: "allAssets", label: "All assets" }];
-        res?.data?.data?.assets?.map((e) => {
+        res?.data?.data?.assets?.forEach((e) => {
           assetFilter.push({
             value: e._id,
             label: e.asset.name,
+            code: e.asset?.code ? e.asset.code : "",
           });
         });
         ctx.setState({

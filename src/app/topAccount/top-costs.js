@@ -121,8 +121,8 @@ class TopCost extends Component {
     this.getBlockchainFee(0, true);
     this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = localStorage.getItem(
@@ -875,6 +875,7 @@ class TopCost extends Component {
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"
+                  addWatermark
                 />
               </div>
             </div>
@@ -1003,6 +1004,8 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
+  GetAllPlan,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopCost);

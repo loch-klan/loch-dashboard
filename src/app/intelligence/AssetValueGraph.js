@@ -98,8 +98,8 @@ class AssetValueGraph extends Component {
     this.props.getAllCoins();
     // this.getGraphData();
     this.setState({});
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -327,7 +327,7 @@ class AssetValueGraph extends Component {
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
@@ -381,6 +381,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
   getAllWalletListApi,
+  getUser,
+  GetAllPlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

@@ -12,7 +12,13 @@ import { TransactionHistoryHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 function TransactionTable(props) {
   return (
-    <div className="transaction-table-section">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+      className="transaction-table-section h-100"
+    >
       {props.title ? (
         <GraphHeader
           title={props.title}
@@ -30,6 +36,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"
         }`}
@@ -52,6 +59,10 @@ function TransactionTable(props) {
             : "No transactions found"
         }
         isLoading={props.isLoading}
+        addWatermark={props.addWatermark}
+        addWatermarkMoveUp={props.addWatermarkMoveUp}
+        onPageChange={props.onPageChange}
+        isMiniversion={props.isMiniversion}
         // isStickyHead={props?.isStickyHead}
       />
     </div>

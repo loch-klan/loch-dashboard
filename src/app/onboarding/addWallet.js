@@ -12,10 +12,10 @@ import {
 import {
   createAnonymousUserApi,
   getAllParentChains,
-  detectNameTag,
   getAllCoins,
   detectCoin,
 } from "./Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -331,7 +331,7 @@ class AddWallet extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
 
-    GetAllPlan();
+    this.props.GetAllPlan();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -453,6 +453,29 @@ class AddWallet extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
+          id: name,
+          address: value,
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -522,6 +545,34 @@ class AddWallet extends BaseReactComponent {
 
     newAddress[i].apiAddress = data?.apiaddress;
 
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
     this.setState({
       walletInput: newAddress,
     });
@@ -635,10 +686,25 @@ class AddWallet extends BaseReactComponent {
       addWalletTemp?.forEach((w, i) => {
         w.id = `wallet${i + 1}`;
       });
-      if (addWalletTemp) {
-        setTimeout(() => {
-          this.props.setHeaderReducer(addWalletTemp);
-        }, 500);
+      if (addWalletTemp && addWalletTemp.length > 0) {
+        var mySet = new Set();
+
+        const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+          if (filData.address !== "") {
+            if (mySet.has(filData.address)) {
+              return false;
+            } else {
+              mySet.add(filData.address);
+              return true;
+            }
+          }
+          return false;
+        });
+        if (filteredAddWalletTemp) {
+          setTimeout(() => {
+            this.props.setHeaderReducer(filteredAddWalletTemp);
+          }, 500);
+        }
       }
       let finalArr = [];
 
@@ -673,7 +739,7 @@ class AddWallet extends BaseReactComponent {
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       // data.append("link", );
-      createAnonymousUserApi(data, this, finalArr, null);
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
 
       const address = finalArr?.map((e) => e.address);
 
@@ -743,11 +809,14 @@ class AddWallet extends BaseReactComponent {
 
       // this.state?.onHide();
       const data = new URLSearchParams();
+      const yieldData = new URLSearchParams();
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
+      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
-      updateUserWalletApi(data, this);
+      this.props.updateUserWalletApi(data, this, yieldData);
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -956,12 +1025,15 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                {/* <div className="awLable">Nickname</div> */}
+                                {c.nickname && c.nickname !== "" ? (
+                                  <div className="awLable">Private Nametag</div>
+                                ) : null}
+                                {/* <div className="awLable">Private Nametag</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Enter nickname"
+                                  placeholder="Enter Private Nametag"
                                   title={c.nickname || ""}
                                   onChange={(e) => {
                                     this.nicknameOnChain(e);
@@ -1289,6 +1361,8 @@ const mapDispatchToProps = {
   createAnonymousUserApi,
   getAllParentChains,
   setHeaderReducer,
+  updateUserWalletApi,
+  GetAllPlan,
 };
 AddWallet.propTypes = {};
 

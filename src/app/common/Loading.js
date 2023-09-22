@@ -20,7 +20,7 @@ function Loading(props) {
     <div className="loading-animation">
       <Image src={lochClean} className="no-data" />
 
-      {!props.showIcon && (
+      {/* {!props.showIcon && (
         <>
           <div className="slick-text">
             <span>Indexing blockchains is </span>
@@ -40,7 +40,7 @@ function Loading(props) {
           </div>
           <span className="slick-text">Hang On. We got you.</span>
         </>
-      )}
+      )} */}
     </div>
   );
 }

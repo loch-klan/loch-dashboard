@@ -142,8 +142,8 @@ class Cost extends Component {
     this.getBlockchainFee(0, true);
     this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
-    GetAllPlan();
-    getUser();
+    this.props.GetAllPlan();
+    this.props.getUser();
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -989,7 +989,7 @@ class Cost extends Component {
                 <p className="inter-display-regular f-s-13 lh-16 black-191">
                   This feature is coming soon.
                 </p>
-              </div> */}
+                </div> */}
                 <TransactionTable
                   title="Average cost basis"
                   subTitle="Understand your average entry price"
@@ -1006,6 +1006,7 @@ class Cost extends Component {
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"
+                  addWatermark
                 />
               </div>
             </div>
@@ -1133,6 +1134,8 @@ const mapDispatchToProps = {
   updateAverageCostBasis,
   updateWalletListFlag,
   getAllWalletListApi,
+  getUser,
+  GetAllPlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);
