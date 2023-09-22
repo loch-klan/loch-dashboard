@@ -252,10 +252,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
       if (this.state.formattedOverallData[lastItem]) {
         const mostRecent = this.state.formattedOverallData[lastItem];
         const tempPrice = mostRecent.price ? mostRecent.price.toString() : 0;
-        const tempDate = moment(mostRecent.timestamp).format("DD MMMM YYYY");
         this.setState({
           currentPriceValue: tempPrice,
-          currentPriceDate: tempDate,
+          currentPriceDate: "",
         });
       }
     }
