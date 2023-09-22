@@ -132,7 +132,7 @@ export default function PageHeader(props) {
               >
                 {props.title}
               </h4>
-              {props.showExplainers ? (
+              {props.showNetflowExplainers ? (
                 <div
                   style={{
                     marginLeft: "1rem",
@@ -142,13 +142,37 @@ export default function PageHeader(props) {
                   }}
                 >
                   <CustomOverlay
-                    showExplainers={props.showExplainers}
+                    showNetflowExplainers={props.showNetflowExplainers}
                     position="top"
                     isIcon={false}
                     isInfo={true}
                     isText={true}
                     className={"fix-width"}
                     isLeftText
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="infoIcon"
+                      style={{ cursor: "pointer", height: "1.6rem" }}
+                    />
+                  </CustomOverlay>
+                </div>
+              ) : props.showExplainers && props.explainerText ? (
+                <div
+                  style={{
+                    marginLeft: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    className={"fix-width"}
+                    text={props.explainerText}
                   >
                     <Image
                       src={InfoIcon}
