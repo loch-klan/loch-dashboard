@@ -460,6 +460,7 @@ class AuthModal extends BaseReactComponent {
                       email_address: this.state.email,
                     });
                   }}
+                  style={{cursor: "pointer",}}
                 />
               </CustomOverlay>
             </div>

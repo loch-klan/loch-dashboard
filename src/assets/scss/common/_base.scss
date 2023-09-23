@@ -1584,6 +1584,9 @@ form {
   &.bs-tooltip-top {
     padding-bottom: 0.8rem;
   }
+  &.bs-tooltip-bottom {
+    padding-top: 0.8rem;
+  }
 
   .arrow::before {
     border-top-color: $grey-E5E;
@@ -1612,7 +1615,13 @@ form {
     }
   }
 }
-
+.tool-tip-container-bottom-arrow {
+  .arrow::before {
+    border-bottom-color: $grey-E5E;
+    position: relative;
+    top: -7px;
+  }
+}
 .chip-container-dual {
   right: 13rem;
 }

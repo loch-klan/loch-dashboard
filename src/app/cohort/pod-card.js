@@ -250,6 +250,7 @@ class PodCard extends Component {
                     width: "1.2rem",
                     marginTop: "-2.5px",
                     marginLeft: "0.4rem",
+                    cursor: "pointer",
                   }}
                   // onMouseEnter={this.privacymessage}
                 />
