@@ -16,7 +16,7 @@ class InflowOutflowChart extends BaseReactComponent {
     super(props);
     this.state = {
       graphLoading: false,
-      timeTab: "1 Week",
+      timeTab: "1 Year",
       selectedAsset: "",
       inflowsOutflowsList: [],
       assetList: [],
