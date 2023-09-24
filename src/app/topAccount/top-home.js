@@ -938,6 +938,26 @@ class TopPortfolio extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
+                  // rowData.from.wallet_metaData?.text
+                  //   ? rowData.from.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.displayAddress &&
+                  //     rowData.from.metaData?.displayAddress !==
+                  //       rowData.from.address
+                  //   ? rowData.from.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.nickname
+                  //   ? rowData.from.metaData?.nickname +
+                  //     ": " +
+                  //     (rowData.from.wallet_metaData?.text ?
+                  //       (rowData.from.wallet_metaData?.text + ": "):"") +
+                  //     ((rowData.from.metaData?.displayAddress &&
+                  //       rowData.from.metaData?.displayAddress !==
+                  //         rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
+                  //     rowData.from.address
+                  //   : rowData.from.address
                   (rowData.from.metaData?.nickname
                     ? rowData.from.metaData?.nickname + ": "
                     : "") +
@@ -1101,6 +1121,27 @@ class TopPortfolio extends BaseReactComponent {
                     ? rowData.to.metaData?.displayAddress + ": "
                     : "") +
                   rowData.to.address
+                  // rowData.to.wallet_metaData?.text
+                  //   ? rowData.to.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //   ? rowData.to.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.nickname
+                  //   ? (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
+                  //     ": " : "") +
+                  //     (rowData.to.wallet_metaData?.text
+                  //       ? rowData.to.wallet_metaData?.text + ": "
+                  //       : "") +
+                  //     (rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //       ? rowData.to.metaData?.displayAddress + ": "
+                  //       : "") +
+                  //     rowData.to.address
+                  //   : rowData.to.address
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
@@ -1799,7 +1840,7 @@ class TopPortfolio extends BaseReactComponent {
                     >
                       <TransactionTable
                         isMiniversion
-                        title="Transaction History"
+                        title="Transactions"
                         handleClick={() => {
                           // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {

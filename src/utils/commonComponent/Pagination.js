@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 import { Image } from "react-bootstrap";
 import pagePrev from "../../assets/images/page-prev.svg";
 import pageNext from "../../assets/images/page-next.svg";
-import {
-  TransactionHistoryPageBack,
-  TransactionHistoryPageNext,
-} from "../AnalyticsFunctions";
-import { getCurrentUser } from "../ManageToken";
+import "./commonComponentScss/_paginationBlock.scss";
 
 const Pagination = (props) => {
   React.useEffect(() => {
@@ -93,13 +89,13 @@ const Pagination = (props) => {
   };
 
   return (
-    <div className="pagination-wrapper">
+    <div className="paginationWrapper">
       <Image
         src={props.pagePrev ? props.pagePrev : pagePrev}
         onClick={() => onLeftClick(props)}
-        className="left-arrow"
+        className={`leftArrow ${props.page > 1 ? "leftArrowPrev" : ""}`}
       />
-      <h5 className="inter-display-medium f-s-14">
+      <h5 className="interDisplayMediumText f-s-14">
         <input
           type="number"
           name="pagenumber"
@@ -115,7 +111,7 @@ const Pagination = (props) => {
       <Image
         src={props.pageNext ? props.pageNext : pageNext}
         onClick={() => onNextClick(props)}
-        className="right-arrow"
+        className="rightArrow"
       />
     </div>
   );

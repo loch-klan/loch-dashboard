@@ -1,0 +1,289 @@
+.walletBlock {
+  display: flex;
+
+  .wallet-section {
+    margin-top: 5rem;
+    min-width: 90rem; //solve overflow issue
+    overflow: hidden; //solve overflow issue
+    // sortby section begin
+    .sortbySection {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .dropdownSection {
+        display: flex;
+        .naming {
+          padding: 1.2rem 0;
+        }
+        .sortByTitle {
+          display: flex;
+          align-items: center;
+          padding: 1.2rem 1.6rem;
+          cursor: pointer;
+          user-select: none;
+
+          .rotateUp {
+            transform: rotate(180deg);
+            margin-left: 1rem;
+          }
+          .rotateDown {
+            transform: rotate(0deg);
+            margin-left: 1rem;
+          }
+        }
+        .sortByTitle:hover {
+          filter: brightness(0.5) var(--invertColor);
+        }
+        // .dropdown {
+        //     margin-right: 3.6rem;
+
+        //     .dropdown-toggle {
+        //         border: none;
+        //         background: none;
+        //         color: $grey-7C7;
+        //         padding: 0px;
+        //     }
+        // }
+      }
+    }
+
+    // sortby section ends
+
+    .netWorthWrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+      background-color: var(--cardBackgroud);
+      border-radius: 1.2rem;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      margin-bottom: 2.4rem;
+      .left {
+        display: flex;
+        align-items: center;
+        h3 {
+          padding-left: 1.2rem;
+        }
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        h3 {
+          display: flex;
+          align-items: center;
+
+          span {
+            margin-left: 0.4rem;
+          }
+        }
+      }
+      .netWorthIcon {
+        border: 0.1rem solid var(--cardSeperator);
+        border-radius: 12px;
+        filter: var(--invertColor);
+      }
+    }
+
+    // walletcard section begin
+    .cards {
+      .walletcard {
+        padding: 2.4rem 2.4rem 1.4rem;
+        background-color: var(--cardBackgroud);
+        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+          0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+        border-radius: 1.6rem;
+        margin-bottom: 2rem;
+
+        .wallet-details {
+          display: flex;
+          justify-content: space-between;
+
+          .wallet-account-details {
+            display: flex;
+            align-items: center;
+            // margin-right: 4.9rem;
+            width: 85%;
+            .wallet-img {
+              box-shadow: 0rem 0.4rem 0.8rem var(--primaryBackgroud),
+                0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+              border-radius: 0.8rem;
+              img {
+                border-radius: 0.8rem;
+                width: 4.3rem;
+              }
+            }
+
+            .delete-icon {
+              &:hover {
+                filter: brightness(0.5);
+              }
+            }
+
+            // .wallet-name-details {
+            // display: flex;
+            // align-items: center;
+            h6 {
+              color: var(--primaryTextColor);
+            }
+            .wallet-name {
+              padding: 0.8rem 1.2rem;
+              background: var(--cardBackgroud);
+              border: 0.1rem solid var(--cardSeperator);
+              border-radius: 0.8rem;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              width: max-content;
+              max-width: 20rem;
+            }
+            // }
+
+            .accountDetails {
+              display: flex;
+              align-items: center;
+              // margin-left: 1.6rem;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              span {
+                /////////////////////REMENBER THIS/////////////////////
+                // color: red;
+                // width: 92%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: max-content;
+                max-width: 20rem;
+              }
+
+              img:hover {
+                filter: brightness(0.5) var(--invertColor);
+              }
+            }
+          }
+
+          .amount-details {
+            display: flex;
+            align-items: center;
+
+            h6 {
+              margin-right: 0.6rem;
+              color: var(--primaryTextColor);
+            }
+
+            span {
+              letter-spacing: 0.125rem;
+              color: var(--primarySubTextColor);
+            }
+          }
+        }
+
+        .coinsChip {
+          display: flex;
+          padding-top: 2rem;
+          border-top: 1px solid var(--cardSeperator);
+          justify-content: space-between;
+          align-items: center;
+          .chipsSection {
+            display: flex;
+            // cursor: pointer;
+            width: 100%;
+            overflow-x: auto;
+            margin-right: 2rem;
+            padding-bottom: 1rem;
+            .coin-chip {
+              margin-right: 1.2rem;
+              display: flex;
+              border-radius: 0.6rem;
+              border: 0.1rem solid var(--cardBorder);
+              background-color: var(--greyCardBackgroud);
+              cursor: default;
+              width: -webkit-max-content;
+              width: -moz-max-content;
+              width: max-content;
+              img {
+                width: 2.6rem;
+                height: 2.6rem;
+                border-top-left-radius: 0.55rem;
+                border-bottom-left-radius: 0.55rem;
+                position: relative;
+                // left: -1px;
+                // // top: -1px;
+                left: -0.1rem;
+                top: 0;
+              }
+              img:hover {
+                filter: none;
+              }
+              .coinPercent {
+                padding: 0.5rem 0.6rem;
+              }
+            }
+            &:hover {
+              &::-webkit-scrollbar {
+                height: 0.4rem;
+              }
+              &::-webkit-scrollbar-thumb {
+                // border-radius: 2rem;
+                border-radius: 0.8rem;
+                background-color: var(--scrollBarThumb);
+                // background: rgb(90, 90, 90);
+              }
+              &::-webkit-scrollbar-track {
+                background-color: rgba(229, 229, 230, 0.5);
+                // background-color: transparent;
+                // background-color: $grey-E5E;
+
+                border-radius: 0.8rem;
+              }
+            }
+          }
+          .secondary-btn {
+            padding: 1.65rem 2.7rem;
+            border-color: var(--grey636);
+            color: var(--grey636);
+            &:hover {
+              color: var(--cardBackgroud);
+            }
+          }
+          img:hover {
+            filter: brightness(0.5);
+          }
+        }
+      }
+      .loadingContainer {
+        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+          0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+        margin-bottom: 2rem;
+        padding: 0;
+        background-color: var(--cardBackgroud);
+        padding: 2rem;
+        border-radius: 1.2rem;
+        .animationWrapper {
+          width: 100%;
+          // background-image: url("../../images/walletCardLoadingBackground.png");
+          background-position: top center;
+          background-repeat: no-repeat;
+          background-size: 100%;
+
+          .loadingAnimationBlock {
+            backdrop-filter: blur(10px);
+            border-radius: 1.2rem;
+            width: 100%;
+            padding-bottom: 1rem;
+
+            // img{
+            //     width: 10rem;
+            // }
+          }
+        }
+      }
+      .noDataContainer {
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    //  walletcard section end
+  }
+}
