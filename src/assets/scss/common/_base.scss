@@ -1592,7 +1592,7 @@ form {
   }
 
   .arrow::before {
-    border-top-color: $grey-E5E;
+    border-top-color: var(--cardBorder);
     position: relative;
     top: -2px;
   }
@@ -1620,9 +1620,9 @@ form {
 }
 .tool-tip-container-bottom-arrow {
   .arrow::before {
-    border-bottom-color: $grey-E5E;
-    position: relative;
-    top: -7px;
+    border-bottom-color: var(--cardBorder) !important;
+    position: relative !important;
+    top: -11px !important;
   }
 }
 .chip-container-dual {

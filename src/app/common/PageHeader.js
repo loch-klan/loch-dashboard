@@ -165,7 +165,7 @@ export default function PageHeader(props) {
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    className={"fixWidth tool-tip-container-bottom-arrow"}
                     isLeftText
                   >
                     <Image
@@ -189,7 +189,7 @@ export default function PageHeader(props) {
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    className={"fixWidth tool-tip-container-bottom-arrow"}
                     text={props.explainerText}
                   >
                     <Image
