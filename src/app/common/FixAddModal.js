@@ -1719,6 +1719,7 @@ class FixAddModal extends BaseReactComponent {
                       <Image
                         src={InfoIcon}
                         className="info-icon"
+                        style={{cursor: "pointer",}}
                         onMouseEnter={() => {
                           AnonymityWalletConnection({
                             session_id: getCurrentUser().id,
