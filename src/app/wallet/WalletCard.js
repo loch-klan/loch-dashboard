@@ -120,7 +120,7 @@ export default function WalletCard(props) {
         <>
           <div className={`${!props?.protocol ? "m-b-32" : ""} wallet-details`}>
             <div className="wallet-account-details">
-              <div className="m-r-16 wallet-img">
+              <div className="m-r-16  wallet-img">
                 <Image
                   src={
                     props.wallet_metadata
@@ -130,7 +130,7 @@ export default function WalletCard(props) {
                 />
               </div>
               <h6
-                className={`inter-display-medium f-s-20 lh-24 ${
+                className={`interDisplayMediumText f-s-20 lh-24 ${
                   props.wallet_metadata && props.wallet_metadata.name
                     ? "m-r-16"
                     : ""
@@ -151,7 +151,7 @@ export default function WalletCard(props) {
                   isText={true}
                   text={props.nickname}
                 >
-                  <div className="inter-display-medium f-s-16 lh-19 wallet-name m-r-16">
+                  <div className="interDisplayMediumText f-s-16 lh-19 wallet-name m-r-16">
                     {props.nickname}
                   </div>
                 </CustomOverlay>
@@ -164,13 +164,20 @@ export default function WalletCard(props) {
                 />
               )}
               {!props.protocol && (
-                <div className="account-details">
-                  {props.display_address && (
+                <div className="accountDetails">
+                  {props.nameTag && (
                     <>
                       <span
-                        className="inter-display-regular f-s-13 lh-16"
+                        className="interDisplayMediumText interDisplaySubText f-s-13 lh-16 mr-4"
                         id="account_number"
                       >
+                        {props.nameTag}
+                      </span>
+                    </>
+                  )}
+                  {props.display_address && (
+                    <>
+                      <span className="interDisplayMediumText interDisplaySubText f-s-13 lh-16">
                         {props.display_address}
                       </span>
                       {!props.protocol && (
@@ -182,22 +189,9 @@ export default function WalletCard(props) {
                       )}
                     </>
                   )}
-                  {props.nameTag && (
-                    <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16 mr-4"
-                        id="account_number"
-                      >
-                        {props.nameTag}
-                      </span>
-                    </>
-                  )}
                   {props.wallet_account_number && (
                     <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
+                      <span className="interDisplayMediumText interDisplaySubText f-s-13 lh-16">
                         {props.wallet_account_number}
                       </span>
                       {!props.protocol && (
@@ -216,24 +210,24 @@ export default function WalletCard(props) {
               {/* </div> */}
             </div>
             <div className="amount-details">
-              <h6 className="inter-display-medium f-s-20 lh-24">
+              <h6 className="interDisplayMediumText f-s-20 lh-24">
                 {numToCurrency(props.wallet_amount)}
               </h6>
-              <span className="inter-display-semi-bold f-s-10 lh-12">
+              <div className="interDisplaySemiBoldText interDisplaySubText f-s-10 lh-12">
                 {CurrencyType(true)}
-              </span>
+              </div>
             </div>
           </div>
           {!props?.protocol && (
-            <div className="coins-chip">
+            <div className="coinsChip">
               {props.wallet_coins.length > 0 ? (
                 <>
-                  <div className="chips-section">{chips}</div>
+                  <div className="chipsSection">{chips}</div>
                   <Image src={EditIcon} className="cp" onClick={handleShow} />
                 </>
               ) : (
                 <>
-                  <h6 className="inter-display-medium f-s-16 lh-19 grey-B0B">
+                  <h6 className="interDisplayMediumText f-s-16 lh-19 grey-B0B">
                     This wallet address is not detected. Please fix it now.
                   </h6>
                   <Button

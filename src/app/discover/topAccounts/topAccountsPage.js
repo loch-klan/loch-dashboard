@@ -1,12 +1,12 @@
 import React from "react";
-import { Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
+import { Button, Image } from "react-bootstrap";
+import PageHeader from "../../common/PageHeader";
+import searchIcon from "../../../assets/images/icons/search-icon.svg";
+import GainIcon from "../../../assets/images/icons/GainIcon.svg";
+import LossIcon from "../../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
-import { getWatchListByUser } from "../watchlist/redux/WatchListApi";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { getWatchListByUser } from "../../watchlist/redux/WatchListApi";
+import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
 import {
   Method,
   API_LIMIT,
@@ -19,45 +19,48 @@ import {
   SORT_BY_LARGEST_SOLD,
   SORT_BY_NET_FLOW,
   SEARCH_BY_NETWORTH,
-} from "../../utils/Constant";
+} from "../../../utils/Constant";
 import {
   searchTransactionApi,
   getFilters,
   getTransactionAsset,
-} from "../intelligence/Api";
+} from "../../intelligence/Api";
 import {
   FormElement,
   Form,
   CustomTextControl,
   BaseReactComponent,
-} from "../../utils/form";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
+} from "../../../utils/form";
+import sortByIcon from "../../../assets/images/icons/triangle-down.svg";
+import CustomDropdown from "../../../utils/form/CustomDropdown";
 import {
   amountFormat,
   CurrencyType,
   numToCurrency,
-} from "../../utils/ReusableFunctions";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
-import Loading from "../common/Loading";
+} from "../../../utils/ReusableFunctions";
+import {
+  getCurrentUser,
+  resetPreviewAddress,
+} from "../../../utils/ManageToken";
+import Loading from "../../common/Loading";
 import { toast } from "react-toastify";
-import FixAddModal from "../common/FixAddModal";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import FixAddModal from "../../common/FixAddModal";
+import AddWalletModalIcon from "../../../assets/images/icons/wallet-icon.svg";
+import { getAllCoins, getAllParentChains } from "../../onboarding/Api.js";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
   getUser,
   setPageFlagDefault,
-} from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import TransactionTable from "../intelligence/TransactionTable";
-import { getTopAccounts } from "./Api";
-import DropDown from "../common/DropDown";
-import { SORT_BY_NAME } from "../../utils/Constant";
-import WelcomeCard from "../Portfolio/WelcomeCard";
-import { TimeFilterType } from "../../utils/Constant";
+} from "../../common/Api";
+import UpgradeModal from "../../common/upgradeModal";
+import TransactionTable from "../../intelligence/TransactionTable";
+import { getTopAccounts } from "../Api";
+import DropDown from "../../common/DropDown";
+import { SORT_BY_NAME } from "../../../utils/Constant";
+import WelcomeCard from "../../Portfolio/WelcomeCard";
+import { TimeFilterType } from "../../../utils/Constant";
 import {
   TopAccountAddAccountToWatchList,
   TopAccountClickedAccount,
@@ -78,12 +81,23 @@ import {
   TopAccountSortByTag,
   TopAccountTimeFilter,
   TopAccountTimeSpent,
-} from "../../utils/AnalyticsFunctions";
-import CheckboxCustomTable from "../common/customCheckboxTable";
+} from "../../../utils/AnalyticsFunctions";
+import CheckboxCustomTable from "../../common/customCheckboxTable";
 import {
   updateAddToWatchList,
   removeFromWatchList,
-} from "../watchlist/redux/WatchListApi";
+} from "../../watchlist/redux/WatchListApi";
+import AddCommunityTopAccountsModal from "./addCommunityTopAccountsModal";
+import "./_topAccounts.scss";
+import {
+  GlobeIcon,
+  GreyGlobeIcon,
+  GreyLochLogoIcon,
+  LochLogoIcon,
+  TrophyCelebrationGreyIcon,
+  TrophyCelebrationIcon,
+} from "../../../assets/images/icons";
+
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -153,10 +167,24 @@ class TopAccountPage extends BaseReactComponent {
       topAccountPage: true,
       walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
       goToBottom: false,
+      addTopAccountsModal: false,
+      communityLeaderboardSelected: false,
     };
     this.delayTimer = 0;
   }
-
+  selectComunityLeaderboard = () => {
+    this.setState({
+      communityLeaderboardSelected: true,
+    });
+  };
+  selectLochTopAccounts = () => {
+    this.setState({
+      communityLeaderboardSelected: false,
+    });
+  };
+  handleAddTopAccounts = () => {
+    this.setState({ addTopAccountsModal: !this.state.addTopAccountsModal });
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -653,7 +681,7 @@ class TopAccountPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Account
             </span>
             {/* <Image
@@ -678,7 +706,7 @@ class TopAccountPage extends BaseReactComponent {
               //   isText={true}
               //   text={rowData.account}
               // >
-              //   <div className="inter-display-medium f-s-13 lh-16 grey-313">
+              //   <div className="interDisplayMediumText f-s-13 lh-16 grey-313">
 
               //   </div>
               // </CustomOverlay>
@@ -713,7 +741,7 @@ class TopAccountPage extends BaseReactComponent {
                   this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
-                className="top-account-address"
+                className="top-account-address interDisplayMediumText"
               >
                 {this.TruncateText(rowData.account)}
               </span>
@@ -728,8 +756,8 @@ class TopAccountPage extends BaseReactComponent {
             id="tagName"
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-            Nametag
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
+              Nametag
             </span>
             <Image
               src={sortByIcon}
@@ -762,6 +790,7 @@ class TopAccountPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
+                  className="interDisplayMediumText"
                 >
                   {rowData.tagName}
                 </span>
@@ -779,7 +808,7 @@ class TopAccountPage extends BaseReactComponent {
             id="networth"
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Net worth{" (" + CurrencyType(false) + ")"}
             </span>
             <Image
@@ -810,7 +839,7 @@ class TopAccountPage extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="interDisplayMediumText f-s-13 lh-16 ">
                       {numToCurrency(
                         rowData.networth * this.state.currency?.rate
                       )}
@@ -829,7 +858,7 @@ class TopAccountPage extends BaseReactComponent {
             id="netflows"
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Net flows {"(" + CurrencyType(false) + ")"}
             </span>
             <Image
@@ -869,7 +898,7 @@ class TopAccountPage extends BaseReactComponent {
                       rowData.netflows[type] < 0
                         ? "loss"
                         : rowData.netflows[type] === 0
-                        ? "cost-common"
+                        ? "noGainNoLoss"
                         : "gain"
                     }`}
                     onMouseEnter={() => {
@@ -885,10 +914,12 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <Image
-                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
-                    />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                    {rowData.netflows && rowData.netflows[type] !== 0 ? (
+                      <Image
+                        src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="interDisplayMediumText f-s-13 lh-16 grey-313 ml-2">
                       {(rowData.netflows[type] < 0 ? "-" : "") +
                         numToCurrency(
                           rowData.netflows[type] * this.state.currency?.rate
@@ -908,7 +939,7 @@ class TopAccountPage extends BaseReactComponent {
             id="largestBought"
             // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               <div>Largest inflows</div>
               <div>{inflowOutflowTimePeriod()}</div>
             </span>
@@ -992,7 +1023,7 @@ class TopAccountPage extends BaseReactComponent {
             id="largestSold"
             // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               <div>Largest outflows</div>
               <div>{inflowOutflowTimePeriod()}</div>
             </span>
@@ -1073,7 +1104,7 @@ class TopAccountPage extends BaseReactComponent {
             id="isAddedToWatchList"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="interDisplayMediumText f-s-13 lh-16 secondaryDarkText">
               Watchlist
             </span>
             {/* <Image
@@ -1115,7 +1146,7 @@ class TopAccountPage extends BaseReactComponent {
       //       id="Gain loss"
       //       onClick={() => this.handleSort(this.state.sortBy[6])}
       //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //       <span className="interDisplayMediumText f-s-13 lh-16 grey-4F4">
       //         % Gain / Loss
       //       </span>
       //       <Image
@@ -1139,7 +1170,7 @@ class TopAccountPage extends BaseReactComponent {
       //           }`}
       //         >
       //           <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313">
+      //           <div className="interDisplayMediumText f-s-13 lh-16 grey-313">
       //             {rowData.GainLoss.toFixed(2) + "%"}
       //           </div>
       //         </div>
@@ -1148,7 +1179,22 @@ class TopAccountPage extends BaseReactComponent {
       //   },
       // },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
 
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <>
         {/* topbar */}
@@ -1160,6 +1206,8 @@ class TopAccountPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                assetTotal={getTotalAssetValue()}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1171,6 +1219,13 @@ class TopAccountPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.addTopAccountsModal ? (
+              <AddCommunityTopAccountsModal
+                show={this.state.addTopAccountsModal}
+                onHide={this.handleAddTopAccounts}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1198,6 +1253,7 @@ class TopAccountPage extends BaseReactComponent {
                 pname="treansaction history"
               />
             )}
+
             <PageHeader
               title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
@@ -1205,11 +1261,51 @@ class TopAccountPage extends BaseReactComponent {
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
+              btnText={
+                this.state.communityLeaderboardSelected ? "Add address" : ""
+              }
+              handleBtn={this.handleAddTopAccounts}
               ShareBtn={true}
               handleShare={this.handleShare}
             />
+            <div className="topAccountsLochCommunityContainer">
+              <div
+                className={`topAccountsLochCommunity interDisplayMediumText f-s-16 lh-19 ${
+                  this.state.communityLeaderboardSelected
+                    ? ""
+                    : "topAccountsLochCommunitySelected"
+                }`}
+                onClick={this.selectLochTopAccounts}
+              >
+                <Image
+                  className="topAccountsLochCommunityImage"
+                  src={
+                    this.state.communityLeaderboardSelected
+                      ? GreyLochLogoIcon
+                      : LochLogoIcon
+                  }
+                />
+                Loch’s Leaderboard
+              </div>
+              <div
+                className={`topAccountsLochCommunity interDisplayMediumText f-s-16 lh-19 ${
+                  this.state.communityLeaderboardSelected
+                    ? "topAccountsLochCommunitySelected"
+                    : ""
+                }`}
+                onClick={this.selectComunityLeaderboard}
+              >
+                <Image
+                  className="topAccountsLochCommunityImage"
+                  src={
+                    this.state.communityLeaderboardSelected
+                      ? GlobeIcon
+                      : GreyGlobeIcon
+                  }
+                />
+                Community Leaderboard
+              </div>
+            </div>
 
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
@@ -1236,7 +1332,7 @@ class TopAccountPage extends BaseReactComponent {
                     isTopaccount={true}
                   /> */}
                     <DropDown
-                      class="cohort-dropdown"
+                      class="topAccountsDropDown"
                       list={[
                         // "All time",
                         "2 weeks",
@@ -1353,12 +1449,14 @@ class TopAccountPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
+                    topAccountBlur={this.state.communityLeaderboardSelected}
+                    blurButtonClick={this.handleAddTopAccounts}
                     addWatermark
                   />
                   {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
-                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                    className="interDisplayMediumText f-s-16 lh-19 cp grey-ADA"
                   >
                     {this.state.showDust
                       ? "Reveal dust (less than $1)"
@@ -1381,6 +1479,8 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
   TopAccountsInWatchListState: state.TopAccountsInWatchListState,
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
