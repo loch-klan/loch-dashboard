@@ -115,6 +115,7 @@ function SharePortfolio(props) {
                   src={InfoIcon}
                   className="info-icon"
                   // onMouseEnter={this.leavePrivacy}
+                  style={{ cursor: "pointer" }}
                 />
               </CustomOverlay>
             </div>

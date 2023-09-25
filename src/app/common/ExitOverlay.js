@@ -1891,6 +1891,7 @@ class ExitOverlay extends BaseReactComponent {
                         src={InfoIcon}
                         className="info-icon"
                         onMouseEnter={this.leavePrivacy}
+                        style={{cursor: "pointer",}}
                       />
                     </CustomOverlay>
                   </div>
