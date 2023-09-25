@@ -2167,6 +2167,13 @@ textarea {
     }
   }
 }
+.revealDustInflow {
+  width: fit-content;
+  cursor: pointer;
+  &:hover {
+    color: $primary;
+  }
+}
 
 .MobileComingSoon {
   form {
@@ -2324,5 +2331,19 @@ textarea {
       // box-shadow: 0 0 0.4rem  $grey-D3D;
       border: 0.1rem solid $black-191 !important;
     }
+  }
+}
+.highchartsAnnotationTooltip {
+  pointer-events: none;
+  cursor: pointer;
+}
+.highcharts-area {
+  cursor: pointer;
+}
+.page-header {
+  margin-bottom: 1.5rem;
+  h4 {
+    font-size: 2rem;
+    line-height: 2.4;
   }
 }

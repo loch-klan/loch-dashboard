@@ -1,3 +1,4 @@
+export { default as TriangleArrowDownIcon } from "./triangleArrowDown.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as LoaderIcon } from "./loader.svg";
 export { default as BellOffIcon } from "./bellOff.svg";
@@ -5,6 +6,9 @@ export { default as BellAssetIcon } from "./bellAsset.svg";
 export { default as RoundedArrowDownIcon } from "./roundedArrowDown.svg";
 export { default as ProfileVectorWhiteIcon } from "./profileVectorWhite.svg";
 export { default as LinkVectorWhiteIcon } from "./linkVectorWhite.svg";
+export { default as InflowOutflowIcon } from "./inflowOutflow.svg";
+export { default as AssetChartInflowIcon } from "./assetChartInflow.svg";
+export { default as AssetChartOutflowIcon } from "./assetChartOutflow.svg";
 export { default as BinVectorIcon } from "./binVector.svg";
 export { default as CoinsIcon } from "./coins.svg";
 export { default as CheckGreenIcon } from "./checkGreen.svg";
