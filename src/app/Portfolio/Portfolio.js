@@ -127,7 +127,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
-      doChange: true,
+      doChange: false,
       settings,
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
