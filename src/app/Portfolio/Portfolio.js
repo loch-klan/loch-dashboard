@@ -2233,6 +2233,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        disableOnLoading
                         isMiniversion
                         title="Average cost basis"
                         handleClick={() => {
@@ -2258,6 +2259,7 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
+                        disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
                         headerTitle="Net flows"
@@ -2316,6 +2318,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        disableOnLoading
                         isMiniversion
                         title="Transactions"
                         handleClick={() => {
@@ -2480,6 +2483,7 @@ class Portfolio extends BaseReactComponent {
                       // style={{ paddingBottom: "1.15rem" }}
                     >
                       <LineChartSlider
+                        disableOnLoading
                         noSubtitleBottomPadding
                         assetValueData={
                           this.props.portfolioState.assetValueDay &&
