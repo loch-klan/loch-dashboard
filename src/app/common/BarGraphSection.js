@@ -400,7 +400,7 @@ class BarGraphSection extends Component {
                 {showSwitch && (
                   <div className="showBreakdownContainer">
                     <div
-                      className={`inter-display-medium f-s-13 lh-16 ${
+                      className={`inter-display-medium f-s-13 lh-16 hideShowBreakdownToggle ${
                         this.state.isSmallerToggle
                           ? "smaller-toggle grey-ADA"
                           : "primary-color"
@@ -409,7 +409,11 @@ class BarGraphSection extends Component {
                       <Form.Check
                         type="switch"
                         id="custom-switch"
-                        label="Click to show breakdown"
+                        label={
+                          this.state.switchselected
+                            ? "Hide breakdown"
+                            : "Show breakdown"
+                        }
                         checked={this.state.switchselected}
                         onChange={(e) => {
                           this.setState({
