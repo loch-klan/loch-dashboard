@@ -127,6 +127,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      doChange: true,
       settings,
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
@@ -465,7 +466,11 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
     this.props.ResetAverageCostBasis();
   }
-
+  showGetBalanceResponse = () => {
+    this.setState({
+      doChange: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.portfolioState?.assetValueDataLoaded !==
@@ -511,16 +516,32 @@ class Portfolio extends BaseReactComponent {
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
+        this.setState({
+          doChange: false,
+        });
         this.state.userWalletList?.map((wallet, i) => {
           if (wallet.coinFound) {
             isFound = true;
-            wallet.coins.map((coin) => {
+            wallet.coins.map((coin, index) => {
+              let doChange = false;
+              if (
+                index === wallet.coins.length - 1 &&
+                i === this.state.userWalletList.length - 1
+              ) {
+                doChange = true;
+              }
               if (coin.chain_detected) {
                 let userCoinWallet = {
                   address: wallet.address,
                   coinCode: coin.coinCode,
                 };
-                this.props.getUserWallet(userCoinWallet, this, false, i);
+                this.props.getUserWallet(
+                  userCoinWallet,
+                  this,
+                  false,
+                  i,
+                  doChange
+                );
               }
             });
           }
@@ -2161,6 +2182,7 @@ class Portfolio extends BaseReactComponent {
                   getProtocolTotal={this.getProtocolTotal}
                   updateTimer={this.updateTimer}
                 />
+                {this.state.doChange ? <div>Response completed</div> : null}
                 {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
                 ) > -1 && this.state.userWalletList[0]?.address !== "" ? (

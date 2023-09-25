@@ -47,7 +47,7 @@ export const getCoinRate = () => {
   };
 };
 
-export const getUserWallet = (wallet, ctx, isRefresh, index) => {
+export const getUserWallet = (wallet, ctx, isRefresh, index, doChange) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     data.append("chain", wallet.coinCode);
@@ -86,17 +86,19 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         isRefresh && ctx.getCurrentTime();
 
         // }
-
-        dispatch({
-          type: ctx?.state?.isTopAccountPage
-            ? TOP_USER_WALLET_LIST
-            : USER_WALLET_LIST,
-          payload: {
-            address: wallet.address,
-            userWalletList: userWalletList,
-            assetPrice: res.data?.data.asset_prices,
-          },
-        });
+        if (ctx.showGetBalanceResponse && doChange) {
+          ctx.showGetBalanceResponse();
+        }
+        // dispatch({
+        //   type: ctx?.state?.isTopAccountPage
+        //     ? TOP_USER_WALLET_LIST
+        //     : USER_WALLET_LIST,
+        //   payload: {
+        //     address: wallet.address,
+        //     userWalletList: userWalletList,
+        //     assetPrice: res.data?.data.asset_prices,
+        //   },
+        // });
         // dispatch({
         //   type: COIN_RATE_LIST,
         //   payload: res.data?.data.asset_prices,
@@ -123,6 +125,9 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         }
       })
       .catch((err) => {
+        if (ctx.showGetBalanceResponse && doChange) {
+          ctx.showGetBalanceResponse();
+        }
         console.log("Catch", err);
       });
   };
