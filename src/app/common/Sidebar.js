@@ -1768,22 +1768,6 @@ function Sidebar(props) {
                               Export
                             </Button>
                           </span>
-                          {!(
-                            lochUser &&
-                            (lochUser.email ||
-                              lochUser.first_name ||
-                              lochUser.last_name)
-                          ) ? (
-                            <span
-                              onClick={handleLeave}
-                              className="navbar-button-container"
-                            >
-                              <Image src={LeaveIcon} />
-                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
-                            </span>
-                          ) : null}
 
                           {/*                   
                                 <span
@@ -1804,13 +1788,6 @@ function Sidebar(props) {
                               </Button>
                             </span>
                           */}
-                        </li>
-                        <li
-                          style={{
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
                           <span
                             onClick={handleShareModal}
                             className="navbar-button-container"
@@ -1820,6 +1797,13 @@ function Sidebar(props) {
                               Share
                             </Button>
                           </span>
+                        </li>
+                        <li
+                          style={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
                           {!(
                             lochUser &&
                             (lochUser.email ||
