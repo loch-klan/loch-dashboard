@@ -1804,67 +1804,29 @@ function Sidebar(props) {
                             alignItems: "center",
                           }}
                         >
-                          {!(
-                            lochUser &&
-                            (lochUser.email ||
-                              lochUser.first_name ||
-                              lochUser.last_name)
-                          ) ? (
-                            <>
-                              {isDarkMode ? (
-                                <span
-                                  onClick={handleDarkMode}
-                                  className="navbar-button-container"
-                                >
-                                  <Image src={LightModeIcon} />
-                                  <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                                    Light Mode
-                                  </Button>
-                                </span>
-                              ) : (
-                                <span
-                                  onClick={handleDarkMode}
-                                  className="navbar-button-container"
-                                >
-                                  <Image src={DarkModeIcon} />
-                                  <span />
-                                  <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                                    Dark Mode
-                                  </Button>
-                                </span>
-                              )}
-                            </>
-                          ) : null}
+                          {isDarkMode ? (
+                            <span
+                              onClick={handleDarkMode}
+                              className="navbar-button-container"
+                            >
+                              <Image src={LightModeIcon} />
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                Light Mode
+                              </Button>
+                            </span>
+                          ) : (
+                            <span
+                              onClick={handleDarkMode}
+                              className="navbar-button-container"
+                            >
+                              <Image src={DarkModeIcon} />
+                              <span />
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                Dark Mode
+                              </Button>
+                            </span>
+                          )}
                         </li>
-                        {lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name) ? (
-                          <li>
-                            {isDarkMode ? (
-                              <span
-                                onClick={handleDarkMode}
-                                className="navbar-button-container"
-                              >
-                                <Image src={LightModeIcon} />
-                                <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                                  Light Mode
-                                </Button>
-                              </span>
-                            ) : (
-                              <span
-                                onClick={handleDarkMode}
-                                className="navbar-button-container"
-                              >
-                                <Image src={DarkModeIcon} />
-                                <span />
-                                <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                                  Dark Mode
-                                </Button>
-                              </span>
-                            )}
-                          </li>
-                        ) : null}
 
                         {/* <li>
                     <span
