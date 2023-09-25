@@ -21,6 +21,7 @@ import {
   TOP_COUNTER_PARTY_VOLUME,
   TOP_GAS_FEES,
 } from "../topAccount/ActionTypes";
+import { getAllWalletListApi } from "../wallet/Api";
 
 export const getAllFeeApi = (ctx, startDate, endDate) => {
   return async function (dispatch, getState) {
@@ -198,6 +199,12 @@ export const addUpdateAccount = (data, ctx) => {
             ctx.props.openPopup();
           }, 1000);
         }
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        getAllWalletListApi(tempData, this);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

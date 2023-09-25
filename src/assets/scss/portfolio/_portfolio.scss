@@ -63,7 +63,7 @@
       height: 9rem;
       box-sizing: border-box;
       // padding: 2.05rem 0rem;
-      z-index: 99;
+      z-index: 10;
       box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.04),
         6px 1px 1px rgba(0, 0, 0, 0.04);
 
@@ -317,6 +317,9 @@
           font-size: 2.4rem;
           line-height: 3rem;
           color: $black-1D2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .growth-div {
@@ -324,6 +327,9 @@
           background: $green-E3F;
           border-radius: 8px;
           box-shadow: none;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           img {
             margin-right: 0.4rem;
             width: 1.85rem;
@@ -764,7 +770,7 @@
       width: 100%;
     }
 
-    .loading-animation {
+    .loadingAnimationBlock {
       width: 76.5rem;
       height: 36.5rem;
     }
@@ -871,7 +877,7 @@
       .loading-wrapper {
         height: 32rem;
         margin: 0;
-        .loading-animation {
+        .loadingAnimationBlock {
           height: 100%;
         }
       }
@@ -1261,6 +1267,16 @@
     }
   }
   .chain-card {
+    .chain-card-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 1.6rem 2rem;
+      .portfolioNetworksText {
+        color: #636467;
+      }
+    }
     background-color: #ffffff;
     box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
       0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -1277,9 +1293,11 @@
       .defiMenu {
         filter: opacity(1);
       }
-    }
-    .chain-card-child {
-      padding: 1.6rem 2rem;
+      .chain-card-child {
+        .portfolioNetworksText {
+          color: #000000;
+        }
+      }
     }
 
     .chain-list {
@@ -1339,6 +1357,32 @@
       }
     }
   }
+  .chain-card-loading {
+    cursor: default;
+    .chain-card-child {
+      cursor: default;
+    }
+    &:hover {
+      .defiMenu {
+        filter: opacity(0.5);
+      }
+      .chain-card-child {
+        .portfolioNetworksText {
+          color: #636467;
+        }
+      }
+    }
+  }
+  .chain-card-active {
+    .defiMenu {
+      filter: opacity(1);
+    }
+    .chain-card-child {
+      .portfolioNetworksText {
+        color: #000000;
+      }
+    }
+  }
   .balance-sheet-card {
     background-color: #ffffff;
     box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -1385,6 +1429,20 @@
           }
         }
       }
+      .balance-sheet-card-credit-loading {
+        cursor: default;
+        &:hover {
+          .defiMenu {
+            filter: opacity(0.5);
+          }
+          .balance-sheet-card-credit-title {
+            color: #636467;
+          }
+          .balance-sheet-card-credit-amount {
+            color: #b0b1b3;
+          }
+        }
+      }
       .balance-sheet-card-debt {
         margin: 0;
         padding: 2rem 2rem 1.6rem;
@@ -1403,6 +1461,20 @@
           }
           .balance-sheet-card-credit-amount {
             color: #000000;
+          }
+        }
+      }
+      .balance-sheet-card-debt-loading {
+        cursor: default;
+        &:hover {
+          .defiMenu {
+            filter: opacity(0.5);
+          }
+          .balance-sheet-card-credit-title {
+            color: #636467;
+          }
+          .balance-sheet-card-credit-amount {
+            color: #b0b1b3;
           }
         }
       }

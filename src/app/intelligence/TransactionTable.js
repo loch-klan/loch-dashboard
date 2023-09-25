@@ -21,6 +21,8 @@ function TransactionTable(props) {
     >
       {props.title ? (
         <GraphHeader
+          isLoading={props.isLoading}
+          disableOnLoading={props.disableOnLoading}
           title={props.title}
           subtitle={props.subTitle}
           isArrow={props.isArrow}
@@ -63,6 +65,8 @@ function TransactionTable(props) {
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
         isMiniversion={props.isMiniversion}
+        topAccountBlur={props.topAccountBlur}
+        blurButtonClick={props.blurButtonClick}
         // isStickyHead={props?.isStickyHead}
       />
     </div>
