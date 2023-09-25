@@ -284,12 +284,8 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     if (opt.target.id === 0 || opt.target.id === "0") {
       tempTitle = "Max";
     } else if (opt.target.id === 1 || opt.target.id === "1") {
-      tempTitle = "5 Years";
-    } else if (opt.target.id === 2 || opt.target.id === "2") {
       tempTitle = "1 Year";
-    } else if (opt.target.id === 3 || opt.target.id === "3") {
-      tempTitle = "6 Months";
-    } else if (opt.target.id === 4 || opt.target.id === "4") {
+    } else if (opt.target.id === 2 || opt.target.id === "2") {
       tempTitle = "1 Month";
     }
     this.setState({
@@ -355,14 +351,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         <BarGraphFooter
                           handleFooterClick={this.handleSelect}
                           active={this.state.title}
-                          footerLabels={[
-                            "Max",
-                            "5 Years",
-                            "1 Year",
-                            "6 Months",
-                            "1 Month",
-                            "1 Week",
-                          ]}
+                          footerLabels={["Max", "1 Year", "1 Month", "1 Week"]}
                           lineChart={true}
                         />
                       </div>

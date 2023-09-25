@@ -7,6 +7,9 @@ import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { BASE_GA_KEY } from "./utils/Constant";
+import "./assets/scss/common/_commonClasses.scss";
+import "./assets/scss/common/_colorVariables.scss";
+import { switchToDarkMode, switchToLightMode } from "./utils/ReusableFunctions";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -38,6 +41,15 @@ function App() {
   }, []);
   useEffect(() => {
     ReactGA.initialize(BASE_GA_KEY);
+  }, []);
+
+  useEffect(() => {
+    let isDarkTheme = localStorage.getItem("isDarkTheme");
+    if (isDarkTheme && isDarkTheme === "true") {
+      switchToDarkMode();
+    } else {
+      switchToLightMode();
+    }
   }, []);
 
   return isMobile ? (

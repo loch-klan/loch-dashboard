@@ -5,8 +5,6 @@ import WelcomeCard from "./WelcomeCard";
 import LineChartSlider from "./LineCharSlider";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import LightBulb from "../../assets/images/icons/lightbulb.svg";
-import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 
@@ -50,15 +48,11 @@ import {
   SORT_BY_METHOD,
   GroupByOptions,
   GROUP_BY_DATE,
-  InsightType,
-  DEFAULT_PRICE,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
-import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
+
 import {
   ManageWallets,
   AverageCostBasisEView,
@@ -68,10 +62,8 @@ import {
   TransactionHistoryFrom,
   TransactionHistoryTo,
   TransactionHistoryAsset,
-  TransactionHistoryUSD,
   ProfitLossEV,
   HomePage,
-  HomeInsightsExpand,
   AddMoreAddres,
   AssetValueExpandview,
   HomeCostSortByAsset,
@@ -98,9 +90,7 @@ import {
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
-import { GraphHeader } from "../common/GraphHeader";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
-import Slider from "react-slick";
 
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
@@ -514,7 +504,7 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList?.map((wallet, i) => {
           if (wallet.coinFound) {
             isFound = true;
-            wallet.coins.map((coin) => {
+            wallet.coins.forEach((coin) => {
               if (coin.chain_detected) {
                 let userCoinWallet = {
                   address: wallet.address,
@@ -765,7 +755,7 @@ class Portfolio extends BaseReactComponent {
       // GetAllPlan();
 
       // // get users current plan
-      // getUser(this);
+      // this.props.getUser(this);
     }
   };
 
@@ -802,6 +792,7 @@ class Portfolio extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
+    console.log("address are ", address);
     let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
@@ -1187,6 +1178,26 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
+                  // rowData.from.wallet_metaData?.text
+                  //   ? rowData.from.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.displayAddress &&
+                  //     rowData.from.metaData?.displayAddress !==
+                  //       rowData.from.address
+                  //   ? rowData.from.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.nickname
+                  //   ? rowData.from.metaData?.nickname +
+                  //     ": " +
+                  //     (rowData.from.wallet_metaData?.text ?
+                  //       (rowData.from.wallet_metaData?.text + ": "):"") +
+                  //     ((rowData.from.metaData?.displayAddress &&
+                  //       rowData.from.metaData?.displayAddress !==
+                  //         rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
+                  //     rowData.from.address
+                  //   : rowData.from.address
                   (rowData.from.metaData?.nickname
                     ? rowData.from.metaData?.nickname + ": "
                     : "") +
@@ -1401,6 +1412,27 @@ class Portfolio extends BaseReactComponent {
                     ? rowData.to.metaData?.displayAddress + ": "
                     : "") +
                   rowData.to.address
+                  // rowData.to.wallet_metaData?.text
+                  //   ? rowData.to.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //   ? rowData.to.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.nickname
+                  //   ? (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
+                  //     ": " : "") +
+                  //     (rowData.to.wallet_metaData?.text
+                  //       ? rowData.to.wallet_metaData?.text + ": "
+                  //       : "") +
+                  //     (rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //       ? rowData.to.metaData?.displayAddress + ": "
+                  //       : "") +
+                  //     rowData.to.address
+                  //   : rowData.to.address
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
