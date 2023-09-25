@@ -1261,6 +1261,16 @@
     }
   }
   .chain-card {
+    .chain-card-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 1.6rem 2rem;
+      .portfolioNetworksText {
+        color: #636467;
+      }
+    }
     background-color: #ffffff;
     box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
       0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -1277,9 +1287,11 @@
       .defiMenu {
         filter: opacity(1);
       }
-    }
-    .chain-card-child {
-      padding: 1.6rem 2rem;
+      .chain-card-child {
+        .portfolioNetworksText {
+          color: #000000;
+        }
+      }
     }
 
     .chain-list {
@@ -1339,6 +1351,32 @@
       }
     }
   }
+  .chain-card-loading {
+    cursor: default;
+    .chain-card-child {
+      cursor: default;
+    }
+    &:hover {
+      .defiMenu {
+        filter: opacity(0.5);
+      }
+      .chain-card-child {
+        .portfolioNetworksText {
+          color: #636467;
+        }
+      }
+    }
+  }
+  .chain-card-active {
+    .defiMenu {
+      filter: opacity(1);
+    }
+    .chain-card-child {
+      .portfolioNetworksText {
+        color: #000000;
+      }
+    }
+  }
   .balance-sheet-card {
     background-color: #ffffff;
     box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -1385,6 +1423,20 @@
           }
         }
       }
+      .balance-sheet-card-credit-loading {
+        cursor: default;
+        &:hover {
+          .defiMenu {
+            filter: opacity(0.5);
+          }
+          .balance-sheet-card-credit-title {
+            color: #636467;
+          }
+          .balance-sheet-card-credit-amount {
+            color: #b0b1b3;
+          }
+        }
+      }
       .balance-sheet-card-debt {
         margin: 0;
         padding: 2rem 2rem 1.6rem;
@@ -1403,6 +1455,20 @@
           }
           .balance-sheet-card-credit-amount {
             color: #000000;
+          }
+        }
+      }
+      .balance-sheet-card-debt-loading {
+        cursor: default;
+        &:hover {
+          .defiMenu {
+            filter: opacity(0.5);
+          }
+          .balance-sheet-card-credit-title {
+            color: #636467;
+          }
+          .balance-sheet-card-credit-amount {
+            color: #b0b1b3;
           }
         }
       }

@@ -19,15 +19,33 @@ export const GraphHeader = (props) => {
       props.handleDust(showDust);
     }, 200);
   };
+  const handleClickPass = () => {
+    if (props.disableOnLoading) {
+      if (!props.isLoading) {
+        props.handleClick();
+      }
+    } else {
+      props.handleClick();
+    }
+  };
   return (
     <div className="graph-header">
       <div className="header">
         <div>
           <h4
             className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
-              props.handleClick ? "active-pointer" : ""
+              props.handleClick && !(props.disableOnLoading && props.isLoading)
+                ? "active-pointer"
+                : ""
             }`}
-            onClick={props.handleClick}
+            style={{
+              opacity: props.disableOnLoading && props.isLoading ? 0.5 : 1,
+              cursor:
+                props.disableOnLoading && props.isLoading
+                  ? "default"
+                  : "pointer",
+            }}
+            onClick={handleClickPass}
             onMouseEnter={() => {
               if (props.isAnalytics === "Asset Value") {
                 TitleAssetValueHover({
