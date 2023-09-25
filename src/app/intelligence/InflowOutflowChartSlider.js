@@ -70,6 +70,12 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.formattedXAxis !== this.state.formattedXAxis) {
+      let diff = Math.round(
+        this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5
+      );
+      this.applySteps(diff);
+    }
     if (prevProps.assetList !== this.props.assetList) {
       this.setState({
         assetList: this.props.assetList,
@@ -110,6 +116,158 @@ class InflowOutflowChartSlider extends BaseReactComponent {
   changeThePricePass = (tempPriceValue, tempPriceDate) => {
     const priceValue = tempPriceValue.toString();
     this.props.changeThePrice(priceValue, tempPriceDate);
+  };
+  applySteps = (diff) => {
+    if (diff >= 9 && diff < 11 && this.state.plotLineHide !== 1) {
+      this.setState({
+        plotLineHide: 1,
+      });
+    } else {
+      if (diff < 9 && this.state.plotLineHide !== 0) {
+        this.setState({
+          plotLineHide: 0,
+        });
+      }
+    }
+    if (diff > 200) {
+      if (this.state.steps !== 23) {
+        this.setState({
+          steps: 23,
+        });
+      }
+    } else if (diff > 190) {
+      if (this.state.steps !== 22) {
+        this.setState({
+          steps: 22,
+        });
+      }
+    } else if (diff > 180) {
+      if (this.state.steps !== 21) {
+        this.setState({
+          steps: 21,
+        });
+      }
+    } else if (diff > 170) {
+      if (this.state.steps !== 20) {
+        this.setState({
+          steps: 20,
+        });
+      }
+    } else if (diff > 160) {
+      if (this.state.steps !== 19) {
+        this.setState({
+          steps: 19,
+        });
+      }
+    } else if (diff > 150) {
+      if (this.state.steps !== 18) {
+        this.setState({
+          steps: 18,
+        });
+      }
+    } else if (diff > 140) {
+      if (this.state.steps !== 17) {
+        this.setState({
+          steps: 17,
+        });
+      }
+    } else if (diff > 130) {
+      if (this.state.steps !== 16) {
+        this.setState({
+          steps: 16,
+        });
+      }
+    } else if (diff > 120) {
+      if (this.state.steps !== 15) {
+        this.setState({
+          steps: 15,
+        });
+      }
+    } else if (diff > 110) {
+      if (this.state.steps !== 14) {
+        this.setState({
+          steps: 14,
+        });
+      }
+    } else if (diff > 100) {
+      if (this.state.steps !== 13) {
+        this.setState({
+          steps: 13,
+        });
+      }
+    } else if (diff > 90) {
+      if (this.state.steps !== 12) {
+        this.setState({
+          steps: 12,
+        });
+      }
+    } else if (diff > 80) {
+      if (this.state.steps !== 11) {
+        this.setState({
+          steps: 11,
+        });
+      }
+    } else if (diff > 70) {
+      if (this.state.steps !== 10) {
+        this.setState({
+          steps: 10,
+        });
+      }
+    } else if (diff > 60) {
+      if (this.state.steps !== 9) {
+        this.setState({
+          steps: 9,
+        });
+      }
+    } else if (diff > 50) {
+      if (this.state.steps !== 8) {
+        this.setState({
+          steps: 8,
+        });
+      }
+    } else if (diff > 40) {
+      if (this.state.steps !== 7) {
+        this.setState({
+          steps: 7,
+        });
+      }
+    } else if (diff > 30) {
+      if (this.state.steps !== 6) {
+        this.setState({
+          steps: 6,
+        });
+      }
+    } else if (diff > 20) {
+      if (this.state.steps !== 5) {
+        this.setState({
+          steps: 5,
+        });
+      }
+    } else if (diff > 15) {
+      if (this.state.steps !== 4) {
+        this.setState({
+          steps: 4,
+        });
+      }
+    } else if (diff > 10) {
+      if (this.state.steps !== 3) {
+        this.setState({
+          steps: 3,
+        });
+      }
+    } else if (diff > 7) {
+      if (this.state.steps !== 2) {
+        this.setState({
+          steps: 2,
+        });
+      }
+    } else if (diff <= 7) {
+      if (this.state.steps !== 1) {
+        this.setState({
+          steps: 1,
+        });
+      }
+    }
   };
 
   render() {
@@ -167,30 +325,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         events: {
           setExtremes(e) {
             let diff = Math.round(e.max - e.min);
-            if (parent.props.hideTimeFilter) {
-            } else {
-              if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
-                parent.setState({
-                  plotLineHide: 1,
-                });
-              } else {
-                if (diff < 9 && parent.state.plotLineHide !== 0) {
-                  parent.setState({
-                    plotLineHide: 0,
-                  });
-                }
-              }
-              if (diff <= 11 && parent.state.steps !== 1) {
-                parent.setState({
-                  steps: 1,
-                });
-              } else {
-                if (diff > 20 && parent.state.steps !== 3) {
-                  parent.setState({
-                    steps: 3,
-                  });
-                }
-              }
+            if (!parent.props.hideTimeFilter) {
+              parent.applySteps(diff);
             }
           },
         },
@@ -232,10 +368,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           margin: 20,
           minWidth: 0,
         },
-        min:
-          this.state.formattedXAxis && this.state.formattedXAxis.length > 4
-            ? this.state.formattedXAxis.length - 5
-            : 0,
+        min: 0,
         max:
           this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5,
         // plotLines: plotLines,

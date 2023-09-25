@@ -110,14 +110,8 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
       const formattedOverallData = {};
       const formattedXAxis = [];
       const timestampList = [];
-      let currentTimeFormat = "Year";
-
-      if (this.state.title === "1 Year" || this.state.title === "6 Months") {
-        currentTimeFormat = "Month";
-      } else if (
-        this.state.title === "1 Week" ||
-        this.state.title === "1 Month"
-      ) {
+      let currentTimeFormat = "Month";
+      if (this.state.title === "1 Week" || this.state.title === "1 Month") {
         currentTimeFormat = "Days";
       }
       this.state.inflowOutflowData.forEach((resData) => {
@@ -162,6 +156,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             y: formattedOverallData[curItem].price,
           },
           useHTML: true,
+          allowOverlap: true,
           formatter: function () {
             let initialReceivedVal =
               formattedOverallData[curItem].received_value;
@@ -307,10 +302,6 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     this.props.onAssetSelect(opt);
   };
   render() {
-    console.log(
-      "this.state.activeAssetTabName is ",
-      this.state.activeAssetTabName
-    );
     return (
       <div className="welcome-card-section lineChartSlider">
         <>
