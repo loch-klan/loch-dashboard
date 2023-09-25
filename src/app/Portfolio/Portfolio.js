@@ -2285,7 +2285,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <TransactionTable
                         isMiniversion
-                        title="Transaction History"
+                        title="Transactions"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push(
