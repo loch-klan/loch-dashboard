@@ -1639,28 +1639,6 @@ function Sidebar(props) {
                               Export
                             </Button>
                           </span>
-                          {!(
-                            lochUser &&
-                            (lochUser.email ||
-                              lochUser.first_name ||
-                              lochUser.last_name)
-                          ) ? (
-                            <span
-                              onClick={handleLeave}
-                              onMouseOver={(e) =>
-                                (e.currentTarget.children[0].src =
-                                  LeaveBlackIcon)
-                              }
-                              onMouseLeave={(e) =>
-                                (e.currentTarget.children[0].src = LeaveIcon)
-                              }
-                            >
-                              <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
-                            </span>
-                          ) : null}
 
                           {/*                   
                                 <span
@@ -1681,8 +1659,6 @@ function Sidebar(props) {
                               </Button>
                             </span>
                           */}
-                        </li>
-                        <li>
                           <span
                             onMouseOver={(e) =>
                               (e.currentTarget.children[0].src =
