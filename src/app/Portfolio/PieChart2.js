@@ -572,46 +572,52 @@ class PieChart2 extends BaseReactComponent {
   };
 
   toggleChain = () => {
-    this.setState({
-      isChainToggle: !this.state.isChainToggle,
-    });
-    this.props.undetectedWallet(!this.state.isChainToggle);
+    if (!this.props.chainLoader) {
+      this.setState({
+        isChainToggle: !this.state.isChainToggle,
+      });
+      this.props.undetectedWallet(!this.state.isChainToggle);
 
-    NetworkTab({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    if (this.props.updateTimer) {
-      this.props.updateTimer();
+      NetworkTab({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     }
   };
 
   toggleYield = () => {
-    this.setState({
-      isYeildToggle: !this.state.isYeildToggle,
-      isDebtToggle: false,
-    });
-    HomeDefiDebt({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    if (this.props.updateTimer) {
-      this.props.updateTimer();
+    if (!this.state.defiLoader) {
+      this.setState({
+        isYeildToggle: !this.state.isYeildToggle,
+        isDebtToggle: false,
+      });
+      HomeDefiDebt({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     }
   };
 
   toggleDebt = () => {
-    this.setState({
-      isDebtToggle: !this.state.isDebtToggle,
-      isYeildToggle: false,
-    });
+    if (!this.state.defiLoader) {
+      this.setState({
+        isDebtToggle: !this.state.isDebtToggle,
+        isYeildToggle: false,
+      });
 
-    HomeDefiYield({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    if (this.props.updateTimer) {
-      this.props.updateTimer();
+      HomeDefiYield({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     }
   };
   handleAddWalletClick = () => {
@@ -1174,17 +1180,12 @@ class PieChart2 extends BaseReactComponent {
                       : "hours ago"}
                   </h2>
                 </div>
-                <div className="chain-card">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      cursor: "pointer",
-                    }}
-                    className="chain-card-child"
-                    onClick={this.toggleChain}
-                  >
+                <div
+                  className={`chain-card ${
+                    this.props.chainLoader ? "chain-card-loading" : ""
+                  } ${this.state.isChainToggle ? "chain-card-active" : ""}`}
+                >
+                  <div className="chain-card-child" onClick={this.toggleChain}>
                     <div
                       style={{
                         display: "flex",
@@ -1217,7 +1218,7 @@ class PieChart2 extends BaseReactComponent {
                         })}
 
                       <span
-                        className="inter-display-medium f-s-16 lh-19 grey-233"
+                        className="inter-display-medium f-s-16 lh-19 portfolioNetworksText"
                         style={{
                           marginLeft:
                             this.state.chainList?.length === 0 ? 0 : "1.2rem",
@@ -1354,7 +1355,11 @@ class PieChart2 extends BaseReactComponent {
                         // style={
                         //   this.state.isYeildToggle ? {  } : {}
                         // }
-                        className="balance-sheet-card-credit"
+                        className={`balance-sheet-card-credit ${
+                          this.state.defiLoader
+                            ? "balance-sheet-card-credit-loading"
+                            : ""
+                        }`}
                       >
                         <div>
                           <span
@@ -1399,7 +1404,11 @@ class PieChart2 extends BaseReactComponent {
 
                       <div
                         onClick={this.toggleDebt}
-                        className="balance-sheet-card-debt"
+                        className={`balance-sheet-card-debt ${
+                          this.state.defiLoader
+                            ? "balance-sheet-card-debt-loading"
+                            : ""
+                        }`}
                       >
                         <div>
                           <span

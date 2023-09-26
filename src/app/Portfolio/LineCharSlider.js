@@ -1354,6 +1354,8 @@ backdrop-filter: blur(15px);">
           >
             {!this.props.isPage && (
               <GraphHeader
+                isLoading={this.props.graphLoading}
+                disableOnLoading={this.props.disableOnLoading}
                 title="Asset value"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}

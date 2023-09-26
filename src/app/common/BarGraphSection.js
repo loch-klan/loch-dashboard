@@ -260,6 +260,8 @@ class BarGraphSection extends Component {
       >
         {headerTitle || headerSubTitle ? (
           <GraphHeader
+            isLoading={this.props.isLoading}
+            disableOnLoading={this.props.disableOnLoading}
             title={headerTitle}
             subtitle={headerSubTitle}
             isArrow={isArrow}
