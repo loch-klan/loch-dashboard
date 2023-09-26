@@ -501,7 +501,10 @@ class Portfolio extends BaseReactComponent {
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
-        this.state.userWalletList?.map((wallet, i) => {
+        const tempUserWalletList = localStorage.getItem("addWallet")
+          ? JSON.parse(localStorage.getItem("addWallet"))
+          : this.state.userWalletList;
+        tempUserWalletList?.forEach((wallet, i) => {
           if (wallet.coinFound) {
             isFound = true;
             wallet.coins.forEach((coin) => {
@@ -515,7 +518,7 @@ class Portfolio extends BaseReactComponent {
             });
           }
 
-          if (i === this.state.userWalletList?.length - 1) {
+          if (i === tempUserWalletList?.length - 1) {
             // run this api if itws value 0
             this.props.getYesterdaysBalanceApi(this);
 
@@ -764,9 +767,10 @@ class Portfolio extends BaseReactComponent {
     let ActionType = ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
       let addressList = [];
-      this.state.userWalletList.map((wallet) =>
-        addressList.push(wallet.address)
-      );
+      const tempUserWalletList = localStorage.getItem("addWallet")
+        ? JSON.parse(localStorage.getItem("addWallet"))
+        : this.state.userWalletList;
+      tempUserWalletList.map((wallet) => addressList.push(wallet.address));
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
@@ -788,7 +792,9 @@ class Portfolio extends BaseReactComponent {
   // transaction history table data
   getTableData = () => {
     this.setState({ tableLoading: true });
-    let arr = this.state.userWalletList;
+    const arr = localStorage.getItem("addWallet")
+      ? JSON.parse(localStorage.getItem("addWallet"))
+      : this.state.userWalletList;
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
