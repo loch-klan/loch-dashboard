@@ -930,7 +930,7 @@ function Sidebar(props) {
                                   to="/intelligence/transaction-history"
                                   activeclassname="active"
                                 >
-                                  Transaction history
+                                  Transactions
                                 </NavLink>
                               </li>
                               <li className="sub-menu">
@@ -1348,7 +1348,7 @@ function Sidebar(props) {
                                       to="/top-accounts/intelligence/transaction-history"
                                       activeclassname="active"
                                     >
-                                      Transaction history
+                                      Transactions
                                     </NavLink>
                                   </li>
                                   <li className="sub-menu-level-tow">

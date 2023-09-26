@@ -1585,7 +1585,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Transaction history"}
+              title={"Transactions"}
               subTitle={
                 "Sort, filter, and dissect all your transactions from one place"
               }

@@ -130,6 +130,7 @@ class OnBoarding extends Component {
                     src={InfoIcon}
                     className="info-icon"
                     onMouseEnter={this.privacymessage}
+                    style={{ cursor: "pointer" }}
                   />
                 </CustomOverlay>
               </p>

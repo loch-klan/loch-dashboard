@@ -73,7 +73,9 @@ export default function PageHeader(props) {
             active={e === props.currentPage}
             key={key}
           >
-            {e.replace(/-/g, " ")}
+            {e === "transaction-history"
+              ? "transactions"
+              : e.replace(/-/g, " ")}
           </Breadcrumb.Item>
         </>
       )
@@ -143,11 +145,11 @@ export default function PageHeader(props) {
                 >
                   <CustomOverlay
                     showNetflowExplainers={props.showNetflowExplainers}
-                    position="top"
+                    position="bottom"
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width"}
+                    className={"fix-width tool-tip-container-bottom-arrow"}
                     isLeftText
                   >
                     <Image
@@ -167,11 +169,11 @@ export default function PageHeader(props) {
                   }}
                 >
                   <CustomOverlay
-                    position="top"
+                    position="bottom"
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width"}
+                    className={"fix-width tool-tip-container-bottom-arrow"}
                     text={props.explainerText}
                   >
                     <Image
@@ -188,17 +190,21 @@ export default function PageHeader(props) {
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
-                    position="top"
+                    position="bottom"
                     isIcon={false}
                     isInfo={true}
                     isText={true}
                     text={props.hoverText}
-                    className={"fix-width"}
+                    className={"fix-width tool-tip-container-bottom-arrow"}
                   >
                     <Image
                       src={InfoIcon}
                       className="info-icon"
-                      style={{ width: "1.6rem", marginTop: "-3px" }}
+                      style={{
+                        width: "1.6rem",
+                        marginTop: "-3px",
+                        cursor: "pointer",
+                      }}
                       onMouseEnter={() => {
                         AssetValueExplainer({
                           session_id: getCurrentUser().id,
