@@ -214,6 +214,58 @@ class LineChartSlider extends BaseReactComponent {
       EmailModal: !this.state.EmailModal,
     });
   };
+  getSteps = (catLength) => {
+    let diff = Math.round(catLength);
+    if (diff <= 7) {
+      return 1 + (this.props.hideTimeFilter ? 1 : 0);
+    } else {
+      if (diff > 200) {
+        return 23 + (this.props.hideTimeFilter ? 23 : 0);
+      } else if (diff > 190) {
+        return 22 + (this.props.hideTimeFilter ? 22 : 0);
+      } else if (diff > 180) {
+        return 21 + (this.props.hideTimeFilter ? 21 : 0);
+      } else if (diff > 170) {
+        return 20 + (this.props.hideTimeFilter ? 20 : 0);
+      } else if (diff > 160) {
+        return 19 + (this.props.hideTimeFilter ? 19 : 0);
+      } else if (diff > 150) {
+        return 18 + (this.props.hideTimeFilter ? 18 : 0);
+      } else if (diff > 140) {
+        return 17 + (this.props.hideTimeFilter ? 17 : 0);
+      } else if (diff > 130) {
+        return 16 + (this.props.hideTimeFilter ? 16 : 0);
+      } else if (diff > 120) {
+        return 15 + (this.props.hideTimeFilter ? 15 : 0);
+      } else if (diff > 110) {
+        return 14 + (this.props.hideTimeFilter ? 14 : 0);
+      } else if (diff > 100) {
+        return 13 + (this.props.hideTimeFilter ? 13 : 0);
+      } else if (diff > 90) {
+        return 12 + (this.props.hideTimeFilter ? 12 : 0);
+      } else if (diff > 80) {
+        return 11 + (this.props.hideTimeFilter ? 11 : 0);
+      } else if (diff > 70) {
+        return 10 + (this.props.hideTimeFilter ? 10 : 0);
+      } else if (diff > 60) {
+        return 9 + (this.props.hideTimeFilter ? 9 : 0);
+      } else if (diff > 50) {
+        return 8 + (this.props.hideTimeFilter ? 8 : 0);
+      } else if (diff > 40) {
+        return 7 + (this.props.hideTimeFilter ? 7 : 0);
+      } else if (diff > 30) {
+        return 6 + (this.props.hideTimeFilter ? 6 : 0);
+      } else if (diff > 20) {
+        return 5 + (this.props.hideTimeFilter ? 5 : 0);
+      } else if (diff > 15) {
+        return 4 + (this.props.hideTimeFilter ? 4 : 0);
+      } else if (diff > 10) {
+        return 3 + (this.props.hideTimeFilter ? 3 : 0);
+      } else if (diff > 7) {
+        return 2 + (this.props.hideTimeFilter ? 2 : 0);
+      }
+    }
+  };
   render() {
     const { assetValueData, externalEvents } = this.props;
     // console.log("test")
@@ -402,7 +454,6 @@ class LineChartSlider extends BaseReactComponent {
         // lastValue: Math.max(...graphData),
       });
     }
-
     let yaxis_max = 0;
     let max = 0;
     let plotdata;
@@ -415,6 +466,7 @@ class LineChartSlider extends BaseReactComponent {
     }
 
     let categories = [];
+    let mySteps = 1;
     let plotLines = [];
     let UniqueEvents = 0;
     let isLast = false;
@@ -641,7 +693,7 @@ class LineChartSlider extends BaseReactComponent {
         generatePlotLines(abc);
       }
     });
-
+    mySteps = this.getSteps(categories.length);
     // console.log("category", categories);
     let updatedPlotLine = [];
     let count = 0;
@@ -874,153 +926,6 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               }
-
-              if (diff <= 7 && parent.state.steps !== 1) {
-                parent.setState({
-                  steps: 1,
-                });
-                IntlAssetValueNavigator({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
-                if (parent.props.updateTimer) {
-                  parent.props.updateTimer();
-                }
-              } else {
-                if (diff > 200) {
-                  if (parent.state.steps !== 23) {
-                    parent.setState({
-                      steps: 23,
-                    });
-                  }
-                } else if (diff > 190) {
-                  if (parent.state.steps !== 22) {
-                    parent.setState({
-                      steps: 22,
-                    });
-                  }
-                } else if (diff > 180) {
-                  if (parent.state.steps !== 21) {
-                    parent.setState({
-                      steps: 21,
-                    });
-                  }
-                } else if (diff > 170) {
-                  if (parent.state.steps !== 20) {
-                    parent.setState({
-                      steps: 20,
-                    });
-                  }
-                } else if (diff > 160) {
-                  if (parent.state.steps !== 19) {
-                    parent.setState({
-                      steps: 19,
-                    });
-                  }
-                } else if (diff > 150) {
-                  if (parent.state.steps !== 18) {
-                    parent.setState({
-                      steps: 18,
-                    });
-                  }
-                } else if (diff > 140) {
-                  if (parent.state.steps !== 17) {
-                    parent.setState({
-                      steps: 17,
-                    });
-                  }
-                } else if (diff > 130) {
-                  if (parent.state.steps !== 16) {
-                    parent.setState({
-                      steps: 16,
-                    });
-                  }
-                } else if (diff > 120) {
-                  if (parent.state.steps !== 15) {
-                    parent.setState({
-                      steps: 15,
-                    });
-                  }
-                } else if (diff > 110) {
-                  if (parent.state.steps !== 14) {
-                    parent.setState({
-                      steps: 14,
-                    });
-                  }
-                } else if (diff > 100) {
-                  if (parent.state.steps !== 13) {
-                    parent.setState({
-                      steps: 13,
-                    });
-                  }
-                } else if (diff > 90) {
-                  if (parent.state.steps !== 12) {
-                    parent.setState({
-                      steps: 12,
-                    });
-                  }
-                } else if (diff > 80) {
-                  if (parent.state.steps !== 11) {
-                    parent.setState({
-                      steps: 11,
-                    });
-                  }
-                } else if (diff > 70) {
-                  if (parent.state.steps !== 10) {
-                    parent.setState({
-                      steps: 10,
-                    });
-                  }
-                } else if (diff > 60) {
-                  if (parent.state.steps !== 9) {
-                    parent.setState({
-                      steps: 9,
-                    });
-                  }
-                } else if (diff > 50) {
-                  if (parent.state.steps !== 8) {
-                    parent.setState({
-                      steps: 8,
-                    });
-                  }
-                } else if (diff > 40) {
-                  if (parent.state.steps !== 7) {
-                    parent.setState({
-                      steps: 7,
-                    });
-                  }
-                } else if (diff > 30) {
-                  if (parent.state.steps !== 6) {
-                    parent.setState({
-                      steps: 6,
-                    });
-                  }
-                } else if (diff > 20) {
-                  if (parent.state.steps !== 5) {
-                    parent.setState({
-                      steps: 5,
-                    });
-                  }
-                } else if (diff > 15) {
-                  if (parent.state.steps !== 4) {
-                    parent.setState({
-                      steps: 4,
-                    });
-                  }
-                } else if (diff > 10) {
-                  if (parent.state.steps !== 3) {
-                    parent.setState({
-                      steps: 3,
-                    });
-                  }
-                } else if (diff > 7) {
-                  if (parent.state.steps !== 2) {
-                    parent.setState({
-                      steps: 2,
-                    });
-                  }
-                }
-              }
             }
           },
         },
@@ -1038,7 +943,7 @@ class LineChartSlider extends BaseReactComponent {
               : categories[this.pos];
           },
           autoRotation: false,
-          step: parent.state.steps,
+          step: mySteps,
           // autoRotationLimit: 0,
           // style: {
           //   whiteSpace: "nowrap",
@@ -1066,7 +971,7 @@ class LineChartSlider extends BaseReactComponent {
           margin: 20,
           minWidth: 0,
         },
-        min: categories.length > 4 ? categories.length - 5 : 0,
+        min: 0,
         max: categories.length - 0.5,
         // plotLines: plotLines,
         plotLines: updatedPlotLine,
