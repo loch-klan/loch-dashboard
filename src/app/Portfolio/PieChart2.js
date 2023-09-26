@@ -1360,6 +1360,7 @@ class PieChart2 extends BaseReactComponent {
                             ? "balance-sheet-card-credit-loading"
                             : ""
                         }`}
+                        style={{ whiteSpace: "nowrap" }}
                       >
                         <div>
                           <span

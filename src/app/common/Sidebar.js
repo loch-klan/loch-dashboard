@@ -16,7 +16,13 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import { CoinsIcon } from "../../assets/images/icons";
+import {
+  CoinsIcon,
+  DarkModeBlackIcon,
+  DarkModeIcon,
+  LightModeBlackIcon,
+  LightModeIcon,
+} from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -82,10 +88,15 @@ import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
 import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
+import { NewspaperIcon } from "../../assets/images/icons";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
+import {
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -111,6 +122,12 @@ function Sidebar(props) {
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.querySelector("body").getAttribute("data-theme") &&
+      document.querySelector("body").getAttribute("data-theme") === "dark"
+      ? true
+      : false
+  );
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(localStorage.getItem("currency"))
   );
@@ -290,7 +307,7 @@ function Sidebar(props) {
     }
     // Discover section
     else if (
-      ["/whale-watch", "/watchlist"].includes(activeTab) ||
+      ["/whale-watch", "/watchlist", "/transaction-feed"].includes(activeTab) ||
       activeTab.includes("/whale-watch")
     ) {
       let obj = {
@@ -375,6 +392,32 @@ function Sidebar(props) {
   const handleLeaveChild = (e) => {
     e.stopPropagation();
     handleLeave();
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      const darkOrLightTheme = document
+        .querySelector("body")
+        .getAttribute("data-theme");
+      console.log("darkOrLightTheme? ", darkOrLightTheme);
+      if (darkOrLightTheme && darkOrLightTheme === "dark") {
+        setIsDarkMode(true);
+      } else {
+        setIsDarkMode(false);
+      }
+    }, 10);
+  }, []);
+
+  const handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      setIsDarkMode(false);
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      setIsDarkMode(true);
+    }
   };
   const handleLeave = () => {
     const isDummy = localStorage.getItem("lochDummyUser");
@@ -733,7 +776,7 @@ function Sidebar(props) {
                       onClick={handleDiscoverSubmenu}
                     >
                       <Image src={CompassIcon} />
-                      <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      <h4 className="interDisplayBoldText f-s-13 lh-16 secondaryText">
                         Discover
                       </h4>
                     </div>
@@ -742,7 +785,7 @@ function Sidebar(props) {
                       onClick={handleMeSubmenu}
                     >
                       <Image src={ProfileIcon} />
-                      <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      <h4 className="interDisplayBoldText f-s-13 lh-16 secondaryText">
                         Me
                       </h4>
                     </div>
@@ -1527,9 +1570,101 @@ function Sidebar(props) {
                               Watchlist
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  // ProfileMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/transaction-feed"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={NewspaperIcon}
+                                style={
+                                  activeTab === "/transaction-feed"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                              />
+                              Transaction feed
+                            </NavLink>
+                          </li>
                         </>
                       )}
                       {/* <li>
+                        <li>
+                          <NavLink
+                            className={`nav-link`}
+                            to="/watchlist"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWatchlist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={EyeIcon}
+                              style={
+                                activeTab === "/watchlist"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Watchlist
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/transaction-feed"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={NewspaperIcon}
+                              style={
+                                activeTab === "/transaction-feed"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Transaction feed
+                          </NavLink>
+                        </li>
+                      </>
+                    )}
+                    {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -1625,17 +1760,11 @@ function Sidebar(props) {
                           }}
                         >
                           <span
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src =
-                                ExportIconWhite)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src = ExportIcon)
-                            }
                             onClick={handleExportModal}
+                            className="navbar-button-container"
                           >
                             <Image src={ExportIcon} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                               Export
                             </Button>
                           </span>
@@ -1654,28 +1783,49 @@ function Sidebar(props) {
                               className="signin"
                             >
                               <Image src={SignInIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                                 Sign in
                               </Button>
                             </span>
                           */}
                           <span
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src =
-                                SharePortfolioIcon)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src =
-                                SharePortfolioIconWhite)
-                            }
                             onClick={handleShareModal}
-                            style={{ marginRight: "1rem" }}
+                            className="navbar-button-container"
                           >
                             <Image src={SharePortfolioIconWhite} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
                               Share
                             </Button>
                           </span>
+                        </li>
+                        <li
+                          style={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          {isDarkMode ? (
+                            <span
+                              onClick={handleDarkMode}
+                              className="navbar-button-container"
+                            >
+                              <Image src={LightModeIcon} />
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                Light Mode
+                              </Button>
+                            </span>
+                          ) : (
+                            <span
+                              onClick={handleDarkMode}
+                              className="navbar-button-container"
+                            >
+                              <Image src={DarkModeIcon} />
+                              <span />
+                              <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                                Dark Mode
+                              </Button>
+                            </span>
+                          )}
                         </li>
 
                         {/* <li>
@@ -1742,11 +1892,11 @@ function Sidebar(props) {
                       {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
-                      <p className="inter-display-medium f-s-15 grey-CAC lh-19">
+                      <p className="interDisplayMediumText f-s-15 secondaryTextLighter lh-19">
                         {quotes[currentIndex]}
                       </p>
                     </div>
-                    <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo">
+                    <div className="interDisplaySemiBoldText f-s-15 secondaryText lh-19 footer-divTwo">
                       {authors[currentIndex]}
                     </div>
 

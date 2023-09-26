@@ -1,5 +1,7 @@
 import React from "react";
 import DropDown from "./DropDown";
+import "./commonScss/_coinBadges.scss";
+
 export default function CoinBadges(props) {
   // const dropList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
   // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple","Avalanche" ,"Unicoin","Maker","Matic","Render","Flow","Cosmos","Luna","Algorand","Aurora","Cardano","Fantom","Polygon","Near","Tron","Optimism","Polkadot","Filecoin","Binance"]
@@ -22,16 +24,16 @@ export default function CoinBadges(props) {
     props.handleFunction(currentBadge);
   };
   return (
-    <div className="coin-badges">
+    <div className="coinBadgesBlock">
       <div
-        className={`badge-list ${
+        className={`badgeList ${
           props.isScrollVisible === false ? "white-scroll" : ""
         }`}
       >
         {badgeList?.map((badge, index) => {
           const className = props.activeBadge.some((e) => e.name === badge.name)
-            ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active"
-            : "inter-display-medium f-s-13 lh-16 m-r-16 black-191 badge-name";
+            ? "interDisplayMediumText f-s-13 lh-16 m-r-16 badgeName badgeActive"
+            : "interDisplayMediumText f-s-13 lh-16 m-r-16 badgeName";
           return (
             <div
               id={index}

@@ -14,6 +14,7 @@ import {
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import "./commonScss/_pageHeaderBlock.scss";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -69,7 +70,7 @@ export default function PageHeader(props) {
                   ? `/${nav_list[1]}/${e}`
                   : `/${e}`,
             }}
-            className="inter-display-medium f-s-13 lh-16"
+            className="interDisplayMediumText f-s-13 lh-16"
             active={e === props.currentPage}
             key={key}
           >
@@ -91,8 +92,8 @@ export default function PageHeader(props) {
   );
   return (
     <div
-      className={`page-header ${
-        props.showpath || props?.topaccount ? "history-header" : ""
+      className={`pageHeaderBlock ${
+        props.showpath || props?.topaccount ? "historyHeader" : ""
       }`}
       style={
         props?.bottomPadding
@@ -100,16 +101,18 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      {props.showpath ? breadCrumb : ""}
+      <div className="breadcrumbsContainer">
+        {props.showpath ? breadCrumb : ""}
+      </div>
 
-      <div className="header">
-        <div className="header-left">
+      <div className="headerBlock">
+        <div className="headerBlockLeft">
           {props.showImg ? (
-            <div className="m-r-16 show-img">
+            <div className="m-r-16 showImg">
               <Image src={props.showImg} />
             </div>
           ) : props?.multipleImg ? (
-            <div className="multiple-img m-r-16">
+            <div className="multipleImg m-r-16">
               {props.multipleImg.map((e, i) => {
                 return (
                   <Image
@@ -126,11 +129,24 @@ export default function PageHeader(props) {
             ""
           )}
           <div>
-            <div style={{ display: "flex" }}>
+            <div
+              className={`d-flex justify-content-start align-items-center ${
+                props.showImg || props.multipleImg ? "" : "m-b-8"
+              }`}
+            >
+              {props.titleImageUrl ? (
+                <img
+                  src={props.titleImageUrl}
+                  alt="TitleLogo"
+                  className={`pageHeaderTitleImg ${
+                    props.titleImageClass ? props.titleImageClass : ""
+                  } `}
+                />
+              ) : null}
               <h4
-                className={`inter-display-medium f-s-24 lh-30 ${
-                  props.showImg || props.multipleImg ? "" : "m-b-8"
-                }`}
+                className={` ${
+                  props.titleClass ? props.titleClass : ""
+                }  interDisplayMediumText f-s-24 lh-30`}
               >
                 {props.title}
               </h4>
@@ -149,7 +165,7 @@ export default function PageHeader(props) {
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    className={"fixWidth tool-tip-container-bottom-arrow"}
                     isLeftText
                   >
                     <Image
@@ -173,7 +189,7 @@ export default function PageHeader(props) {
                     isIcon={false}
                     isInfo={true}
                     isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    className={"fixWidth tool-tip-container-bottom-arrow"}
                     text={props.explainerText}
                   >
                     <Image
@@ -186,7 +202,7 @@ export default function PageHeader(props) {
               ) : null}
             </div>
             {props.subTitle ? (
-              <p className="inter-display-medium f-s-16 lh-19">
+              <div className="interDisplayMediumText interDisplaySubText f-s-16 lh-19">
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
@@ -195,11 +211,11 @@ export default function PageHeader(props) {
                     isInfo={true}
                     isText={true}
                     text={props.hoverText}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    className={"fixWidth tool-tip-container-bottom-arrow"}
                   >
                     <Image
                       src={InfoIcon}
-                      className="info-icon"
+                      className="infoIcon"
                       style={{
                         width: "1.6rem",
                         marginTop: "-3px",
@@ -219,7 +235,7 @@ export default function PageHeader(props) {
                 ) : (
                   ""
                 )}
-              </p>
+              </div>
             ) : (
               ""
             )}
@@ -227,7 +243,7 @@ export default function PageHeader(props) {
         </div>
         <div>
           {props.showData && !props.isLoading && (
-            <span className="space-grotesk-medium f-s-32 lh-38 m-r-24 va-m">
+            <span className="spaceGroteskMedium f-s-32 lh-38 m-r-24 va-m">
               {CurrencyType(false)} {numToCurrency(props.showData)}{" "}
               {CurrencyType(true)}
             </span>
@@ -239,7 +255,7 @@ export default function PageHeader(props) {
           <div>
             {props.SecondaryBtn && (
               <Button
-                className="secondary-btn white-bg"
+                className="secondary-btn invertFilter white-bg"
                 onClick={handleConnectModal}
               >
                 Connect exchange
@@ -254,8 +270,12 @@ export default function PageHeader(props) {
                 text={"Click to copy link"}
               >
                 <Button
-                  className="secondary-btn white-bg"
-                  style={!props.btnText ? { marginRight: "0rem" } : {}}
+                  className="secondary-btn invertFilter white-bg"
+                  style={
+                    !props.btnText
+                      ? { marginRight: "0rem" }
+                      : { marginRight: "2rem" }
+                  }
                   onClick={props.handleShare}
                 >
                   Share
@@ -265,7 +285,9 @@ export default function PageHeader(props) {
             {props.btnText && (
               <Button
                 className={`${
-                  props.btnOutline ? "secondary-btn" : "primary-btn"
+                  props.btnOutline
+                    ? "secondary-btn invertFilter"
+                    : "primary-btn"
                 }`}
                 onClick={props.handleBtn}
               >
