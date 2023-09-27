@@ -6,12 +6,8 @@ import moment from "moment";
 // TruncateText
 
 export const TruncateText = (string) => {
-  if (string.length > 6) {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
+  if (string.length > 3) {
+    return string.substring(0, 4);
   }
   return string;
 };
