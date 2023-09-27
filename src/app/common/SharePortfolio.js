@@ -27,7 +27,7 @@ function SharePortfolio(props) {
     userWallet?.length === 1
       ? userWallet[0].displayAddress || userWallet[0].address
       : lochUser;
-  let shareLink = BASE_URL_S3 + "home/" + slink;
+  let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
 
   useEffect(() => {
     localStorage.setItem("isPopupActive", true);
