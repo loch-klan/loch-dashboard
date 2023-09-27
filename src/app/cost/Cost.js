@@ -112,24 +112,32 @@ class Cost extends Component {
   }
 
   feesOverTimeOn = () => {
-    this.setState({
-      callFeesOverTime: true,
-    });
+    if (!this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: true,
+      });
+    }
   };
   feesOverTimeOff = () => {
-    this.setState({
-      callFeesOverTime: false,
-    });
+    if (this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: false,
+      });
+    }
   };
   counterpartyVolumeOverTimeOn = () => {
-    this.setState({
-      callCounterpartyVolumeOverTime: true,
-    });
+    if (!this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: true,
+      });
+    }
   };
   counterpartyVolumeOverTimeOff = () => {
-    this.setState({
-      callCounterpartyVolumeOverTime: false,
-    });
+    if (this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: false,
+      });
+    }
   };
   feesChainSearchIsUsed = () => {
     this.setState({ isFeesChainSearchUsed: true });
