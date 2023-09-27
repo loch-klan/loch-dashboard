@@ -49,6 +49,7 @@ class RemarkInput extends BaseReactComponent {
                 placeholder: "What do you think of this address?",
               },
             }}
+            customOnblur={this.onSubmit}
           />
         </Form>
       </div>

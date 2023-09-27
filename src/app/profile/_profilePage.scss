@@ -1,0 +1,148 @@
+.profileFullPage {
+  .profilePageSection {
+    display: flex;
+    .profileSection {
+      margin-top: 5rem;
+      // Address Bundle
+      .addressBundleListContainer {
+        margin-bottom: 4rem;
+        .addressBundleListItem {
+          background-color: var(--cardBackgroud);
+          box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
+            0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
+          border-radius: 1.6rem;
+          cursor: pointer;
+          transition-duration: 300ms;
+          border: 1px solid transparent;
+          height: 100%;
+
+          &:hover {
+            border-color: var(--scrollBarThumb);
+          }
+          .bundleWalletName {
+            padding: 2rem;
+            padding-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .bundleWalletEditIcon {
+              width: 3rem;
+              transition-duration: 300ms;
+              padding: 0.5rem;
+              &:hover {
+                filter: brightness(30%);
+              }
+            }
+            .bundleWalletNameRight {
+              display: flex;
+              align-items: center;
+              .bundleWalletNameRightCurrent {
+                background-color: black;
+                color: white;
+                font-size: 12px;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                margin-right: 0.5rem;
+              }
+            }
+          }
+          .bundleWalletRow {
+            padding: 2rem 2rem;
+            border-bottom: 1px solid #e5e5e680;
+          }
+          .bundleWalletRowEnd {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+          }
+        }
+        .addressBundleListItemSelected {
+          border-color: var(--primaryTextColor);
+          &:hover {
+            border-color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+    .profileFormSection {
+      background-color: var(--cardBackgroud);
+      padding: 3.2rem;
+      box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
+        0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
+      border-radius: 1.6rem;
+      margin-bottom: 4rem;
+      width: 100%;
+
+      .profileFormBlock {
+        .form-title {
+          display: flex;
+          align-items: center;
+          margin-bottom: 2rem;
+        }
+        .form {
+          .formBtnContainer {
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            .submitButton {
+              padding: 1.55rem 2.8rem;
+              border: none;
+              border-radius: 0.8rem;
+              background-color: var(--greyCardBackgroud);
+              color: var(--primaryTextColor);
+              box-shadow: none;
+            }
+            .submitButton:hover {
+              background-color: var(--primaryTextColor);
+              color: var(--cardBackgroud);
+            }
+          }
+          .form-group {
+            label {
+              //   @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+              margin-bottom: 1.2rem;
+              span {
+                display: none;
+              }
+            }
+            .form-control {
+              padding: 1.2rem 1.6rem;
+              min-height: 4.3rem;
+              border: 0.1rem solid var(--cardBorder);
+              background-color: var(--cardBackgroud);
+              color: var(--primaryTextColor);
+              &:hover {
+                border-color: var(--primaryTextColor);
+              }
+              &:focus {
+                border-color: var(--primaryTextColor);
+              }
+              &::-webkit-input-placeholder {
+                color: var(--primarySubTextColor);
+              }
+              &:-ms-input-placeholder {
+                color: var(--primarySubTextColor);
+              }
+              &::placeholder {
+                color: var(--primarySubTextColor);
+              }
+              //   border: 0.1rem solid $grey-D4D;
+            }
+            .form-control:hover {
+              //   border: 0.1rem solid $black-191;
+            }
+            .is-valid {
+              box-shadow: none;
+            }
+            .done {
+              //   box-shadow: 0 0 0.4rem $grey-D3D;
+              //   border: 0.1rem solid $black-191;
+            }
+          }
+        }
+      }
+    }
+  }
+}

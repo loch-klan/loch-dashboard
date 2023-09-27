@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { RoundedArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import { EyeIconBold } from "../../assets/images/icons";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const list = props.list.map((li, index) => {
@@ -88,7 +88,7 @@ export default function TopBarDropDown(props) {
                   ? "topBarWalletChainSingle"
                   : ""
               }`}
-              src={AddWalletAddress}
+              src={EyeIconBold}
             />
             <div className="hideText">
               {props.totalWallets && props.totalWallets > 1 ? (

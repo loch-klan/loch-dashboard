@@ -78,6 +78,7 @@ class FormElementComponent extends BaseReactComponent {
       helpText,
       toolTipText,
       isValid,
+      customOnblur,
       isInvalid,
       isCancel = false,
       hideOnblur = this.props.hideOnblur ? true : false,
@@ -113,7 +114,13 @@ class FormElementComponent extends BaseReactComponent {
           ))}
         <FormElementControl
           valueLink={valueLink}
-          onBlur={hideOnblur ? this.hideOnblur : this.validate}
+          onBlur={
+            customOnblur
+              ? customOnblur
+              : hideOnblur
+              ? this.hideOnblur
+              : this.validate
+          }
           failedValidation={this.state.failedValidation}
           classes={classes}
           disabled={disabled}

@@ -1,3 +1,40 @@
+.viewBundleWallets {
+  max-height: 30rem;
+  overflow: auto;
+  padding-right: 1rem;
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $scrollBar-thumb;
+    border-radius: 0.8rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(229, 229, 230, 0.5);
+    border-radius: 0.8rem;
+  }
+  .viewBundleWalletItem {
+    padding: 2rem 0;
+    border-bottom: 1px solid #e5e5e680;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .viewBundleWalletAddressContainer {
+      display: flex;
+      align-items: center;
+
+      .viewBundleCopyIcon {
+        width: 1rem;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
+.secondary-btn-no-border {
+  border-color: transparent;
+}
 .profile-page-section {
   display: flex;
   .profile-section {
@@ -137,6 +174,66 @@
 
       // transform: scale(1.03);
       //     }
+    }
+    .addressBundleListContainer {
+      margin-bottom: 4rem;
+      .addressBundleListItem {
+        background-color: $secondary;
+        box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
+          0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
+        border-radius: 1.6rem;
+        cursor: pointer;
+        transition-duration: 300ms;
+        border: 1px solid transparent;
+        height: 100%;
+
+        &:hover {
+          border-color: #19191a2f;
+        }
+        .bundleWalletName {
+          padding: 2rem;
+          padding-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .bundleWalletEditIcon {
+            width: 3rem;
+            transition-duration: 300ms;
+            padding: 0.5rem;
+            &:hover {
+              filter: brightness(30%);
+            }
+          }
+          .bundleWalletNameRight {
+            display: flex;
+            align-items: center;
+            .bundleWalletNameRightCurrent {
+              background-color: black;
+              color: white;
+              font-size: 12px;
+              padding: 0.5rem 1rem;
+              border-radius: 0.5rem;
+              margin-right: 0.5rem;
+            }
+          }
+        }
+        .bundleWalletRow {
+          padding: 2rem 2rem;
+          border-bottom: 1px solid #e5e5e680;
+        }
+        .bundleWalletRowEnd {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem 0;
+        }
+      }
+      .addressBundleListItemSelected {
+        border-color: #19191a;
+        &:hover {
+          border-color: #19191a;
+        }
+      }
     }
     .profile-form-section {
       background-color: $secondary;
