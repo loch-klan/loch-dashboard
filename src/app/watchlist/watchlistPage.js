@@ -404,14 +404,6 @@ class WatchListPage extends BaseReactComponent {
     });
   };
 
-  TruncateText = (string) => {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
-  };
-
   handleTime = (e) => {
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
@@ -540,7 +532,7 @@ class WatchListPage extends BaseReactComponent {
               const regex = /\.eth$/;
               let tempAddress = rowData.address;
               if (!regex.test(rowData.address)) {
-                tempAddress = this.TruncateText(rowData.address);
+                tempAddress = TruncateText(rowData.address);
               }
               return tempAddress;
             };

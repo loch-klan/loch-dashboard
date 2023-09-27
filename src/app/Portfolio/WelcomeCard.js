@@ -4,7 +4,11 @@ import { Button, Image } from "react-bootstrap";
 import arrowUpRight from "../../assets/images/icons/green-arrow.svg";
 import arrowDownRight from "../../assets/images/icons/red-arrow.svg";
 import CustomLoader from "../common/CustomLoader";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { amountFormat } from "../../utils/ReusableFunctions";
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
@@ -90,14 +94,6 @@ export default function WelcomeCard(props) {
         }
       }, 200);
     }
-  };
-
-  const TruncateText = (string) => {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
   };
 
   let difference =
