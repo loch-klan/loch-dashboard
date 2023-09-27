@@ -265,12 +265,7 @@ class InsightsPage extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    let slink = lochUser;
     let shareLink =
       BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/insights";
     navigator.clipboard.writeText(shareLink);

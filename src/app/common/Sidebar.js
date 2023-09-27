@@ -459,17 +459,6 @@ function Sidebar(props) {
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
   };
-  const handleShare = () => {
-    const user = JSON.parse(localStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : getCurrentUser().id;
-    const link = `${BASE_URL_S3}home/${slink}`;
-    navigator.clipboard.writeText(link);
-    toast.success("Share link has been copied");
-  };
 
   React.useEffect(() => {
     let currency = JSON.parse(localStorage.getItem("currency"));

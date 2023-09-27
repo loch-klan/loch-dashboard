@@ -537,11 +537,7 @@ class TopAccountPage extends BaseReactComponent {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    let slink = lochUser;
     let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=top-accounts";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
@@ -729,7 +725,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-            Nametag
+              Nametag
             </span>
             <Image
               src={sortByIcon}

@@ -91,11 +91,7 @@ class ExitOverlay extends BaseReactComponent {
     // console.log("props add", props?.walletaddress);
 
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : getCurrentUser().id;
+    let slink = getCurrentUser().id;
 
     this.state = {
       // create account for cohort
@@ -1891,7 +1887,7 @@ class ExitOverlay extends BaseReactComponent {
                         src={InfoIcon}
                         className="info-icon"
                         onMouseEnter={this.leavePrivacy}
-                        style={{cursor: "pointer",}}
+                        style={{ cursor: "pointer" }}
                       />
                     </CustomOverlay>
                   </div>
