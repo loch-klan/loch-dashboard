@@ -64,6 +64,8 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      callFeesOverTime: true,
+      callCounterpartyVolumeOverTime: true,
       durationgraphdata: {
         data: info[0],
         options: info[1],
@@ -108,6 +110,27 @@ class Cost extends Component {
       ],
     };
   }
+
+  feesOverTimeOn = () => {
+    this.setState({
+      callFeesOverTime: true,
+    });
+  };
+  feesOverTimeOff = () => {
+    this.setState({
+      callFeesOverTime: false,
+    });
+  };
+  counterpartyVolumeOverTimeOn = () => {
+    this.setState({
+      callCounterpartyVolumeOverTime: true,
+    });
+  };
+  counterpartyVolumeOverTimeOff = () => {
+    this.setState({
+      callCounterpartyVolumeOverTime: false,
+    });
+  };
   feesChainSearchIsUsed = () => {
     this.setState({ isFeesChainSearchUsed: true });
   };

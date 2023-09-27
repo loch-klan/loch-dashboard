@@ -21,11 +21,13 @@ export const GraphHeader = (props) => {
   };
   const handleClickPass = () => {
     if (props.disableOnLoading) {
-      if (!props.isLoading) {
+      if (!props.isLoading && props.handleClick) {
         props.handleClick();
       }
     } else {
-      props.handleClick();
+      if (props.handleClick) {
+        props.handleClick();
+      }
     }
   };
   return (
