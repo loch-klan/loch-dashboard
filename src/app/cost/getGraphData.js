@@ -84,11 +84,23 @@ export const getGraphData = (apidata, parentCtx) => {
               numToCurrency(
                 ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate
               );
-            FeesSpecificBar({
-              session_id: getCurrentUser().id,
-              email_address: getCurrentUser().email,
-              blockchain_selected: [label00, label1, label0],
-            });
+
+            if (parentCtx.state.callFeesOverTime) {
+              FeesSpecificBar({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                blockchain_selected: [label00, label1, label0],
+              });
+              if (parentCtx.feesOverTimeOff) {
+                parentCtx.feesOverTimeOff();
+              }
+            } else {
+              if (parentCtx.feesOverTimeOn) {
+                setTimeout(() => {
+                  parentCtx.feesOverTimeOn();
+                }, 2000);
+              }
+            }
             return [label00, label1, label0];
           },
           labelColor: function (context) {
@@ -348,17 +360,28 @@ export const getCounterGraphData = (arr, parentCtx) => {
               "Volume: " +
               CurrencyType(false) +
               numToCurrency(ctx.raw * currency.rate);
-            parentCtx.state.currentPage === "Home"
-              ? HomeCounterPartyHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  counterparty_selected: [label00, label1, label0],
-                })
-              : CounterpartyFeesSpecificBar({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  counterparty_selected: [label00, label1, label0],
-                });
+            if (parentCtx.state.callCounterpartyVolumeOverTime) {
+              parentCtx.state.currentPage === "Home"
+                ? HomeCounterPartyHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    counterparty_selected: [label00, label1, label0],
+                  })
+                : CounterpartyFeesSpecificBar({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    counterparty_selected: [label00, label1, label0],
+                  });
+              if (parentCtx.counterpartyVolumeOverTimeOff) {
+                parentCtx.counterpartyVolumeOverTimeOff();
+              }
+            } else {
+              if (parentCtx.feesOverTimeOn) {
+                setTimeout(() => {
+                  parentCtx.counterpartyVolumeOverTimeOn();
+                }, 2000);
+              }
+            }
             return [label00, label1, label0];
           },
           labelColor: function (context) {

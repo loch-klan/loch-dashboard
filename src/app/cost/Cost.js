@@ -28,6 +28,7 @@ import {
   SortByGainLoss,
   costFeesChainFilter,
   costVolumeChainFilter,
+  CostAssetHover,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
@@ -63,6 +64,8 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      callFeesOverTime: true,
+      callCounterpartyVolumeOverTime: true,
       durationgraphdata: {
         data: info[0],
         options: info[1],
@@ -107,6 +110,35 @@ class Cost extends Component {
       ],
     };
   }
+
+  feesOverTimeOn = () => {
+    if (!this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: true,
+      });
+    }
+  };
+  feesOverTimeOff = () => {
+    if (this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: false,
+      });
+    }
+  };
+  counterpartyVolumeOverTimeOn = () => {
+    if (!this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: true,
+      });
+    }
+  };
+  counterpartyVolumeOverTimeOff = () => {
+    if (this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: false,
+      });
+    }
+  };
   feesChainSearchIsUsed = () => {
     this.setState({ isFeesChainSearchUsed: true });
   };
@@ -614,11 +646,34 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <CoinChip
-                coin_img_src={rowData.Asset}
-                coin_code={rowData.AssetCode}
-                chain={rowData?.chain}
-              />
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.AssetCode}
+              >
+                <div
+                  onMouseEnter={() => {
+                    CostAssetHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      asset_hover: rowData.AssetCode,
+                    });
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                  }}
+                >
+                  <CoinChip
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                  />
+                </div>
+              </CustomOverlay>
             );
           }
         },
