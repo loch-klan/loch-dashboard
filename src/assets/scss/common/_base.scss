@@ -2128,6 +2128,13 @@ textarea {
     }
   }
 }
+.hideShowBreakdownToggle {
+  .custom-switch {
+    .custom-control-label {
+      cursor: pointer;
+    }
+  }
+}
 
 .ob-connect-exchange {
   display: block;
