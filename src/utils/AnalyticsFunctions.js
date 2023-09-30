@@ -1586,6 +1586,23 @@ export const IntlAssetValueFilter = ({
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
+export const PriceChartFilter = ({
+  session_id,
+  email_address,
+  filter_clicked,
+  isSearchUsed,
+}) => {
+  const event_name = "Intelligence:price chart filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "filter clicked": filter_clicked,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
 //Intelligence:asset value chart hover
 export const IntlAssetValueHover = ({
   session_id,
@@ -3413,6 +3430,43 @@ export const IntlAssetValueMonth = ({ session_id, email_address }) => {
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
+//14. Price chart: Month
+export const PriceChartMax = ({ session_id, email_address }) => {
+  const event_name = "Price chart: max";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const PriceChartYear = ({ session_id, email_address }) => {
+  const event_name = "Price chart: one year";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const PriceChartMonth = ({ session_id, email_address }) => {
+  const event_name = "Price chart: one month";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const PriceChartWeek = ({ session_id, email_address }) => {
+  const event_name = "Price chart: week";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 //14. General pop up - done
 export const GeneralPopup = ({ session_id, from }) => {
   const event_name = "General pop up";
@@ -3928,6 +3982,15 @@ export const SortByGainLoss = ({ session_id, email_address }) => {
 // Menu: Intelligence submenu: netflow - done
 export const MenuIntNetflow = ({ session_id, email_address }) => {
   const event_name = "Menu: Intelligence submenu: netflow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: netflow");
+};
+export const MenuIntPrice = ({ session_id, email_address }) => {
+  const event_name = "Menu: Intelligence submenu: price";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
