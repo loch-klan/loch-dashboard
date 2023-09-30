@@ -14,6 +14,14 @@ import { DropDownWithIcons } from "../common/index.js";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 
 import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
+import {
+  PriceChartFilter,
+  PriceChartMax,
+  PriceChartMonth,
+  PriceChartWeek,
+  PriceChartYear,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -34,6 +42,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
       formattedPointList: [],
       currentPriceValue: "",
       currentPriceDate: "",
+      isChainSearchUsed: false,
     };
   }
   componentDidMount() {
@@ -283,10 +292,27 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     let tempTitle = "1 Week";
     if (opt.target.id === 0 || opt.target.id === "0") {
       tempTitle = "Max";
+      PriceChartMax({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (opt.target.id === 1 || opt.target.id === "1") {
       tempTitle = "1 Year";
+      PriceChartYear({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (opt.target.id === 2 || opt.target.id === "2") {
       tempTitle = "1 Month";
+      PriceChartMonth({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else {
+      PriceChartWeek({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     }
     this.setState({
       steps: 1,
@@ -295,7 +321,25 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     this.props.handleGroupBy(tempTitle);
   };
   handleAssetSelect = (opt) => {
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
+    let tempName = "";
+    const tempIndex = this.state.assetList.findIndex(
+      (resRes) => resRes._id === opt
+    );
+    if (tempIndex !== -1) {
+      tempName = this.state.assetList[tempIndex].asset?.name;
+    }
+    PriceChartFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      filter_clicked: tempName,
+      isSearchUsed: tempIsSearchUsed,
+    });
     this.props.onAssetSelect(opt);
+    this.setState({ isChainSearchUsed: false });
+  };
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
   };
   render() {
     return (
@@ -410,6 +454,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       selectedTokens={[this.state.activeAssetTab]}
                       selectedTokenName={this.state.activeAssetTabName}
                       singleSelect
+                      searchIsUsed={this.chainSearchIsUsed}
                     />
                   </div>
                   {/* <div className="dropdownWithImages">

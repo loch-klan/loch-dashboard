@@ -74,6 +74,7 @@ import {
   MenuTopAccountsNetflow,
   SignupMenu,
   YieldOpportunitiesMenu,
+  MenuIntPrice,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
@@ -896,7 +897,7 @@ function Sidebar(props) {
                                     if (!isWallet) {
                                       e.preventDefault();
                                     } else {
-                                      MenuIntNetflow({
+                                      MenuIntPrice({
                                         session_id: getCurrentUser().id,
                                         email_address: getCurrentUser().email,
                                       });
