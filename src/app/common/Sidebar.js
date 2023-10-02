@@ -911,7 +911,7 @@ function Sidebar(props) {
                                   to="/intelligence#price"
                                   activeclassname="active"
                                 >
-                                  Price
+                                  Price Guage
                                 </NavLink>
                               </li>
                               <li className="sub-menu">
