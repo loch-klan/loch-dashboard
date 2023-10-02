@@ -327,7 +327,7 @@ class AssetValueGraph extends Component {
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              hoverText={`This chart reflects the final balance on the last day, month, or year.`}
+              hoverText={`This chart reflects the final balance on last day, month, or year. It includes spot positions only, not DeFi positions.`}
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
