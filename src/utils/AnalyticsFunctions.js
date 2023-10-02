@@ -3467,6 +3467,22 @@ export const PriceChartWeek = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+export const PriceChartHoverInflow = ({ session_id, email_address }) => {
+  const event_name = "Price chart: hover inflow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PriceChartHoverOutflow = ({ session_id, email_address }) => {
+  const event_name = "Price chart: hover outflow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 //14. General pop up - done
 export const GeneralPopup = ({ session_id, from }) => {
   const event_name = "General pop up";
