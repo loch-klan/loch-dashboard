@@ -116,18 +116,19 @@ export default function WelcomeCard(props) {
       props?.history.push("/top-accounts");
     }
   };
-  const tempFullReturn =
+  const tempReturn =
     numToCurrency(difference) + "(" + Math.round(percent) + "%)";
-  let tempReturn = "";
-  if (tempFullReturn.length > 12) {
+  const tempFullReturn = difference + "(" + Math.round(percent) + "%)";
+  let finalReturn = "";
+  if (tempReturn.length > 12) {
     const tempAns = Math.round(percent).toString();
     if (tempAns.length > 7) {
-      tempReturn = tempAns.substring(0, 5) + "...%";
+      finalReturn = tempAns.substring(0, 5) + "...%";
     } else {
-      tempReturn = Math.round(percent) + "%";
+      finalReturn = Math.round(percent) + "%";
     }
   } else {
-    tempReturn = tempFullReturn;
+    finalReturn = tempReturn;
   }
   return (
     // <div className="welcome-card-section">
@@ -359,7 +360,7 @@ export default function WelcomeCard(props) {
                 }}
               >
                 <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
-                {tempReturn}
+                {finalReturn}
               </div>
             </CustomOverlay>
             {props.assetTotal !== null && !props.isLoading ? (
