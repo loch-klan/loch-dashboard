@@ -116,6 +116,20 @@ export default function WelcomeCard(props) {
       props?.history.push("/top-accounts");
     }
   };
+  const tempReturn =
+    numToCurrency(difference) + "(" + Math.round(percent) + "%)";
+  const tempFullReturn = difference + "(" + Math.round(percent) + "%)";
+  let finalReturn = "";
+  if (tempReturn.length > 12) {
+    const tempAns = Math.round(percent).toString();
+    if (tempAns.length > 7) {
+      finalReturn = tempAns.substring(0, 5) + "...%";
+    } else {
+      finalReturn = Math.round(percent) + "%";
+    }
+  } else {
+    finalReturn = tempReturn;
+  }
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -327,15 +341,28 @@ export default function WelcomeCard(props) {
               marginRight: !lochUser ? "8.2rem" : "0rem",
             }}
           >
-            <div
-              className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
-                difference < 0 ? "downfall" : ""
-              }`}
-              style={{ marginRight: "1.2rem" }}
+            <CustomOverlay
+              position="bottom"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={tempFullReturn}
+              className="tool-tip-container-bottom-arrow"
             >
-              <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
-              {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
-            </div>
+              <div
+                className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
+                  difference < 0 ? "downfall" : ""
+                }`}
+                style={{
+                  marginRight: "1.2rem",
+                  whiteSpace: "nowrap",
+                  cursor: "pointer",
+                }}
+              >
+                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
+                {finalReturn}
+              </div>
+            </CustomOverlay>
             {props.assetTotal !== null && !props.isLoading ? (
               <CustomOverlay
                 position="bottom"
@@ -347,8 +374,12 @@ export default function WelcomeCard(props) {
                   amountFormat(props.assetTotal, "en-US", "USD") +
                   CurrencyType(true)
                 }
+                className="tool-tip-container-bottom-arrow"
               >
-                <h3 className="space-grotesk-medium wallet-amount">
+                <h3
+                  style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                  className="space-grotesk-medium wallet-amount"
+                >
                   {CurrencyType(false)}
                   {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
                   {numToCurrency(props?.assetTotal)} {CurrencyType(true)}
