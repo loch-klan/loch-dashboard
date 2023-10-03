@@ -93,6 +93,10 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               ? value.USD.price
               : DEFAULT_PRICE) *
             currencyRate;
+
+          if (currentPrice > 100000000000) {
+            continue;
+          }
           // Get coin asset index
           // let assetIndex = updatedChainWallet.findIndex(
           //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
@@ -106,7 +110,9 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 : DEFAULT_PRICE) *
               currencyRate
             : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE;
-
+          if (assetValue > 100000000000) {
+            continue;
+          }
           if (action.payload.userWalletList?.chain) {
             chainPortfolio[action.payload.userWalletList?.chain?.id].total =
               chainPortfolio[action.payload.userWalletList?.chain?.id].total +
