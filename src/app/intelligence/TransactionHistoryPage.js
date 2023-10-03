@@ -44,6 +44,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   CurrencyType,
   noExponents,
+  TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -650,12 +651,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     // toggleCopied(true)
   };
 
-  TruncateText = (string) => {
-    if (string?.length > 4) {
-      return string.substring(0, 3) + "..";
-    }
-    return string;
-  };
+  
 
   showDust = () => {
     this.setState(
@@ -949,7 +945,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {this.TruncateText(rowData.from.metaData?.nickname)}
+                      {TruncateText(rowData.from.metaData?.nickname)}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -971,7 +967,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {this.TruncateText(rowData.from.wallet_metaData.text)}
+                      {TruncateText(rowData.from.wallet_metaData.text)}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -994,7 +990,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {this.TruncateText(rowData.from.metaData?.displayAddress)}
+                    {TruncateText(rowData.from.metaData?.displayAddress)}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1165,7 +1161,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {this.TruncateText(rowData.to.metaData?.nickname)}
+                      {TruncateText(rowData.to.metaData?.nickname)}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1187,7 +1183,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {this.TruncateText(rowData.to.wallet_metaData.text)}
+                      {TruncateText(rowData.to.wallet_metaData.text)}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1210,7 +1206,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {this.TruncateText(rowData.to.metaData?.displayAddress)}
+                    {TruncateText(rowData.to.metaData?.displayAddress)}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}

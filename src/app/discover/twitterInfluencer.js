@@ -309,14 +309,6 @@ class TwitterInflucencePage extends BaseReactComponent {
     });
   };
 
-  TruncateText = (string) => {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
-  };
-
   handleTime = (e) => {
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
