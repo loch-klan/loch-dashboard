@@ -63,7 +63,7 @@ export const getGraphData = (apidata, parentCtx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
             let label0 =
-              "Fees Today (Then): " +
+              "Fees: " +
               CurrencyType(false) +
               amountFormat(
                 (
