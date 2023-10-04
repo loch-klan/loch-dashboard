@@ -35,7 +35,11 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import Coin from "../../assets/images/coin-ava.svg";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -420,13 +424,7 @@ class PodCard extends Component {
                   : e?.wallet_address;
               let address = fulladdress;
               if (fulladdress.length > 13) {
-                address =
-                  fulladdress.substr(0, 5) +
-                  "..." +
-                  fulladdress.substr(
-                    fulladdress.length - 4,
-                    fulladdress.length
-                  );
+                address = TruncateText(fulladdress);
               }
               return (
                 <div

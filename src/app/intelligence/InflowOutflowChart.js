@@ -16,7 +16,7 @@ class InflowOutflowChart extends BaseReactComponent {
     super(props);
     this.state = {
       graphLoading: false,
-      timeTab: "1 Year",
+      timeTab: "Max",
       selectedAsset: "",
       inflowsOutflowsList: [],
       assetList: [],
@@ -111,7 +111,7 @@ class InflowOutflowChart extends BaseReactComponent {
         <PageHeader
           showExplainers
           explainerText="This chart reflects prices at the end of the day, month, or year."
-          title="Price"
+          title="Price Guage"
           showImg={InflowOutflowIcon}
         />
         <div className="graph-container">

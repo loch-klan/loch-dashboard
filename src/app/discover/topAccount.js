@@ -37,6 +37,7 @@ import {
   amountFormat,
   CurrencyType,
   numToCurrency,
+  TruncateText,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import Loading from "../common/Loading";
@@ -492,13 +493,7 @@ class TopAccountPage extends BaseReactComponent {
     });
   };
 
-  TruncateText = (string) => {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
-  };
+  
 
   handleTime = (e) => {
     let title = e.split(" ")[1];
@@ -715,7 +710,7 @@ class TopAccountPage extends BaseReactComponent {
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
                 className="top-account-address"
               >
-                {this.TruncateText(rowData.account)}
+                {TruncateText(rowData.account)}
               </span>
             );
           }

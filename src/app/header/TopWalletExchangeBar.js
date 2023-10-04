@@ -11,6 +11,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { setHeaderReducer } from "./HeaderAction";
+import { TruncateText } from "../../utils/ReusableFunctions";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -42,13 +43,6 @@ class TopBar extends Component {
       this.applyTempWalletList();
     }
   }
-  TruncateText = (string) => {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
-  };
   applyLocalStorageWalletList = () => {
     let tempWalletAdd = window.sessionStorage.getItem(
       "topBarLocalStorageWalletAddresses"
@@ -90,7 +84,7 @@ class TopBar extends Component {
             } else if (data?.display_address) {
               tempWalletList.push(data.display_address);
             } else if (data?.address) {
-              tempWalletList.push(this.TruncateText(data.address));
+              tempWalletList.push(TruncateText(data.address));
             }
 
             const sendThis = {
@@ -137,17 +131,17 @@ class TopBar extends Component {
           } else if (data?.displayAddress) {
             tempAddress = data.displayAddress;
             if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+              tempAddress = TruncateText(tempAddress);
             }
           } else if (data?.address) {
             tempAddress = data.address;
             if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+              tempAddress = TruncateText(tempAddress);
             }
           } else if (data?.apiAddress) {
             tempAddress = data.apiAddress;
             if (!regex.test(tempAddress)) {
-              tempAddress = this.TruncateText(tempAddress);
+              tempAddress = TruncateText(tempAddress);
             }
           }
 

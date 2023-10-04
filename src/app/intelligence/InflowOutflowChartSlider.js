@@ -15,6 +15,11 @@ import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
 } from "../../assets/images/icons/index.js";
+import {
+  PriceChartHoverInflow,
+  PriceChartHoverOutflow,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -30,6 +35,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       formattedXAxis: [],
       formattedOverallData: {},
       formattedPointList: [],
+      startHoverInflow: true,
+      startHoverOutflow: true,
     };
   }
   componentDidMount() {
@@ -269,6 +276,46 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       }
     }
   };
+  hoverOnInflow = () => {
+    if (this.state.startHoverInflow) {
+      PriceChartHoverInflow({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.setState(
+        {
+          startHoverInflow: false,
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({
+              startHoverInflow: true,
+            });
+          }, 2000);
+        }
+      );
+    }
+  };
+  hoverOnOutflow = () => {
+    if (this.state.startHoverOutflow) {
+      PriceChartHoverOutflow({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.setState(
+        {
+          startHoverOutflow: false,
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({
+              startHoverOutflow: true,
+            });
+          }, 2000);
+        }
+      );
+    }
+  };
 
   render() {
     let parent = this;
@@ -454,6 +501,11 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                 assetCode = parent.props.assetList[tempIndex].asset?.code;
               }
               if (receivedVal > 0 || sendVal > 0) {
+                if (receivedVal - sendVal >= 0) {
+                  parent.hoverOnInflow();
+                } else {
+                  parent.hoverOnOutflow();
+                }
                 return `
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
