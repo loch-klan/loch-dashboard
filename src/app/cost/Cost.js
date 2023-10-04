@@ -28,6 +28,13 @@ import {
   SortByGainLoss,
   costFeesChainFilter,
   costVolumeChainFilter,
+  CostAssetHover,
+  CostAverageCostPriceHover,
+  CostCurrentPriceHover,
+  CostAmountHover,
+  CostCostBasisHover,
+  CostCurrentValueHover,
+  CostGainLossHover,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
@@ -63,6 +70,8 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      callFeesOverTime: true,
+      callCounterpartyVolumeOverTime: true,
       durationgraphdata: {
         data: info[0],
         options: info[1],
@@ -107,6 +116,35 @@ class Cost extends Component {
       ],
     };
   }
+
+  feesOverTimeOn = () => {
+    if (!this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: true,
+      });
+    }
+  };
+  feesOverTimeOff = () => {
+    if (this.state.callFeesOverTime) {
+      this.setState({
+        callFeesOverTime: false,
+      });
+    }
+  };
+  counterpartyVolumeOverTimeOn = () => {
+    if (!this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: true,
+      });
+    }
+  };
+  counterpartyVolumeOverTimeOff = () => {
+    if (this.state.callCounterpartyVolumeOverTime) {
+      this.setState({
+        callCounterpartyVolumeOverTime: false,
+      });
+    }
+  };
   feesChainSearchIsUsed = () => {
     this.setState({ isFeesChainSearchUsed: true });
   };
@@ -614,11 +652,33 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <CoinChip
-                coin_img_src={rowData.Asset}
-                coin_code={rowData.AssetCode}
-                chain={rowData?.chain}
-              />
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.AssetCode}
+              >
+                <div
+                  onMouseEnter={() => {
+                    CostAssetHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      asset_hover: rowData.AssetCode,
+                    });
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CoinChip
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                  />
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -660,7 +720,15 @@ class Cost extends Component {
                       ).toLocaleString("en-US")
                 }
               >
-                <div className="cost-common-container">
+                <div
+                  onMouseEnter={() => {
+                    CostAverageCostPriceHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                  className="cost-common-container"
+                >
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
@@ -712,7 +780,15 @@ class Cost extends Component {
                   ).toLocaleString("en-US")
                 }
               >
-                <div className="cost-common-container">
+                <div
+                  onMouseEnter={() => {
+                    CostCurrentPriceHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                  className="cost-common-container"
+                >
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
@@ -759,7 +835,14 @@ class Cost extends Component {
                   "en-US"
                 )}
               >
-                <span>
+                <span
+                  onMouseEnter={() => {
+                    CostAmountHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                >
                   {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -804,7 +887,14 @@ class Cost extends Component {
                       ).toLocaleString("en-US")
                 }
               >
-                <span>
+                <span
+                  onMouseEnter={() => {
+                    CostCostBasisHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                >
                   {rowData.CostBasis === 0
                     ? "N/A"
                     : CurrencyType(false) +
@@ -852,7 +942,14 @@ class Cost extends Component {
                   ).toLocaleString("en-US")
                 }
               >
-                <span>
+                <span
+                  onMouseEnter={() => {
+                    CostCurrentValueHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                >
                   {CurrencyType(false) +
                     Number(
                       noExponents(rowData.CurrentValue.toFixed(2))
@@ -898,7 +995,15 @@ class Cost extends Component {
                 }
                 colorCode="#000"
               >
-                <div className="gainLossContainer">
+                <div
+                  onMouseEnter={() => {
+                    CostGainLossHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                  className="gainLossContainer"
+                >
                   <div
                     className={`gainLoss ${
                       rowData.GainLoss < 0 ? "loss" : "gain"
