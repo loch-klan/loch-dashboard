@@ -401,20 +401,21 @@ class LineChartSlider extends BaseReactComponent {
       }
 
       timestampList = [...months.reverse(), ...timestampList];
-    } else if (this.state.title === "Day" && timestampList.length != 0) {
-      let dates = [];
-      const endDay = 30 - timestampList.length;
-      const currentDay = moment(timestampList[0]);
-      // console.log("tets",endDay);
-      for (let day = 0; day < endDay; day++) {
-        const date = currentDay.subtract(1, "days").valueOf();
-        dates.push(date);
-      }
-      // dates = dates.reverse;
-      timestampList = [...dates.reverse(), ...timestampList];
-      // console.log("dates update", dates);
-      // console.log("l", timestampList);
     }
+    // else if (this.state.title === "Day" && timestampList.length != 0) {
+    //   let dates = [];
+    //   const endDay = 30 - timestampList.length;
+    //   const currentDay = moment(timestampList[0]);
+    //   // console.log("tets",endDay);
+    //   for (let day = 0; day < endDay; day++) {
+    //     const date = currentDay.subtract(1, "days").valueOf();
+    //     dates.push(date);
+    //   }
+    //   // dates = dates.reverse;
+    //   timestampList = [...dates.reverse(), ...timestampList];
+    //   // console.log("dates update", dates);
+    //   // console.log("l", timestampList);
+    // }
 
     // console.log("assetmaster", assetMaster);
 
