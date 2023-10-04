@@ -42,7 +42,7 @@ class Defi extends Component {
       // store current currency
       currency: JSON.parse(localStorage.getItem("currency")),
       sortBy: [
-        { title: "Amount", down: true },
+        { title: "Amount", down: false },
         { title: "Name", down: true },
       ],
       start: 0,
@@ -709,7 +709,7 @@ class Defi extends Component {
                       <Image
                         src={sortByIcon}
                         // style={{ width: "1.6rem" }}
-                        className={e.down ? "rotateDown" : "rotateUp"}
+                        className={!e.down ? "rotateDown" : "rotateUp"}
                       />
                     </span>
                   );

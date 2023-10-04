@@ -113,23 +113,23 @@ class TopAccountPage extends BaseReactComponent {
         },
         {
           title: "networth",
-          up: false,
+          up: true,
         },
         {
           title: "netflows",
-          up: true,
+          up: false,
         },
         {
           title: "largestbought",
-          up: true,
+          up: false,
         },
         {
           title: "largestsold",
-          up: true,
+          up: false,
         },
         {
           title: "tagName",
-          up: true,
+          up: false,
         },
       ],
       showDust: false,
@@ -493,8 +493,6 @@ class TopAccountPage extends BaseReactComponent {
     });
   };
 
-  
-
   handleTime = (e) => {
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
@@ -654,7 +652,7 @@ class TopAccountPage extends BaseReactComponent {
             {/* <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
             /> */}
           </div>
@@ -724,12 +722,12 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-            Nametag
+              Nametag
             </span>
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -780,7 +778,7 @@ class TopAccountPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -830,7 +828,7 @@ class TopAccountPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -910,7 +908,7 @@ class TopAccountPage extends BaseReactComponent {
             {/* <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
             /> */}
           </div>
@@ -994,7 +992,7 @@ class TopAccountPage extends BaseReactComponent {
             {/* <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
               }
             /> */}
           </div>
@@ -1074,7 +1072,7 @@ class TopAccountPage extends BaseReactComponent {
             {/* <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             /> */}
           </div>
