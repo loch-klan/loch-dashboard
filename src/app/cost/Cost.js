@@ -111,7 +111,7 @@ class Cost extends Component {
         { title: "Current price", down: true },
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
-        { title: "Current value", down: true },
+        { title: "Current value", down: false },
         { title: "Gain loss", down: true },
       ],
     };
@@ -200,7 +200,6 @@ class Cost extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
@@ -641,7 +640,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -695,7 +694,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -757,7 +756,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -815,7 +814,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -862,7 +861,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -919,7 +918,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -972,7 +971,7 @@ class Cost extends Component {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),

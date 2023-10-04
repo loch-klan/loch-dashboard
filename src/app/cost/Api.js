@@ -415,9 +415,19 @@ export const getAvgCostBasis = (ctx) => {
               totalPercentage: totalPercentage,
             },
           });
-          ctx.setState({
-            AvgCostLoading: false,
-          });
+
+          ctx.setState(
+            {
+              AvgCostLoading: false,
+            },
+            () => {
+              setTimeout(() => {
+                if (ctx.sortArray) {
+                  ctx.sortArray("CurrentValue", false);
+                }
+              }, 100);
+            }
+          );
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
