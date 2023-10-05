@@ -3913,6 +3913,64 @@ export const HomeCostAssetHover = ({
   //console.log("Home Page: Average cost basis: asset hover");
 };
 
+export const CostAssetHover = ({ session_id, email_address, asset_hover }) => {
+  const event_name = "Costs: Average cost basis: asset hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset hovered": asset_hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostAverageCostPriceHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: average cost price hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostCurrentPriceHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: current price hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostAmountHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: amount hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostCostBasisHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: cost basis hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostCurrentValueHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: current value hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostGainLossHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: gain/loss hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
 // ------
 
 //75. Costs: Average Cost Basis: sort cost basis - done

@@ -364,7 +364,6 @@ class BarGraphSection extends Component {
                 )}
               </div>
             }
-
             {showPercentage || showSwitch ? (
               <div
                 className="show-percentage-div"
