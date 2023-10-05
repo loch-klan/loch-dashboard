@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { getAllWalletList } from "./WalletAction";
 import { addYieldPools } from "../onboarding/Api";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { addLocalWalletList } from "../common/Api";
 
 export const getAllWalletListApi = (data, ctx) => {
   return async function (dispatch, getState) {
@@ -147,6 +148,7 @@ export const updateWalletApi = (ctx, data) => {
           }
         });
         localStorage.setItem("addWallet", JSON.stringify(addWallet));
+        addLocalWalletList(JSON.stringify(addWallet));
         ctx.props.onHide();
         ctx.props.makeApiCall();
         toast.success(
@@ -201,6 +203,7 @@ export const deleteWallet = (ctx, data) => {
           });
         }
         localStorage.setItem("addWallet", JSON.stringify(newArr));
+        addLocalWalletList(JSON.stringify(newArr));
         ctx.props.onHide();
         ctx.props.makeApiCall();
       } else {
