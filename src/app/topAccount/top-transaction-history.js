@@ -101,7 +101,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       tableSortOpt: [
         {
           title: "time",
-          up: false,
+          up: true,
         },
         {
           title: "from",
@@ -520,7 +520,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
     this.setState({
       sort: obj,
       tableSortOpt: sort,
@@ -683,7 +685,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -711,7 +713,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -921,7 +923,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1131,7 +1133,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1173,7 +1175,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1218,7 +1220,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1291,7 +1293,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1362,7 +1364,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>

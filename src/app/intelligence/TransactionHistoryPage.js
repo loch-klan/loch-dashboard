@@ -126,7 +126,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       tableSortOpt: [
         {
           title: "time",
-          up: false,
+          up: true,
         },
         {
           title: "from",
@@ -651,8 +651,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     // toggleCopied(true)
   };
 
-  
-
   showDust = () => {
     this.setState(
       {
@@ -797,7 +795,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -825,7 +823,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1041,7 +1039,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1257,7 +1255,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1299,7 +1297,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1344,7 +1342,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1418,7 +1416,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1489,7 +1487,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>

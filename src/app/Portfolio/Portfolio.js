@@ -167,7 +167,7 @@ class Portfolio extends BaseReactComponent {
       tableSortOpt: [
         {
           title: "time",
-          up: false,
+          up: true,
         },
         {
           title: "from",
@@ -259,7 +259,7 @@ class Portfolio extends BaseReactComponent {
         { title: "Current price", down: true },
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
-        { title: "Current value", down: true },
+        { title: "Current value", down: false },
         { title: "Gain loss", down: true },
       ],
       AvgCostLoading: false,
@@ -886,7 +886,9 @@ class Portfolio extends BaseReactComponent {
         el.up = false;
       }
     });
-
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
     this.setState({
       sort: obj,
       tableSortOpt: sort,
@@ -1136,7 +1138,7 @@ class Portfolio extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1172,7 +1174,7 @@ class Portfolio extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1376,7 +1378,7 @@ class Portfolio extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1579,7 +1581,7 @@ class Portfolio extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -1625,7 +1627,7 @@ class Portfolio extends BaseReactComponent {
       //       <Image
       //         src={sortByIcon}
       //         className={
-      //           !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+      //           this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
       //         }
       //       />
       //     </div>
@@ -1674,7 +1676,7 @@ class Portfolio extends BaseReactComponent {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -1747,7 +1749,7 @@ class Portfolio extends BaseReactComponent {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -1804,7 +1806,7 @@ class Portfolio extends BaseReactComponent {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -1857,7 +1859,7 @@ class Portfolio extends BaseReactComponent {
       //       </span>
       //       <Image
       //         src={sortByIcon}
-      //         className={this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
+      //         className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
       //       />
       //     </div>
       //   ),
@@ -1897,7 +1899,7 @@ class Portfolio extends BaseReactComponent {
       //       </span>
       //       <Image
       //         src={sortByIcon}
-      //         className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+      //         className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
       //       />
       //     </div>
       //   ),
@@ -1947,7 +1949,7 @@ class Portfolio extends BaseReactComponent {
       //       </span>
       //       <Image
       //         src={sortByIcon}
-      //         className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+      //         className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
       //       />
       //     </div>
       //   ),
@@ -1993,7 +1995,7 @@ class Portfolio extends BaseReactComponent {
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),

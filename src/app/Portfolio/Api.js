@@ -820,6 +820,11 @@ export const getProtocolBalanceApi = (ctx, data) => {
                 totalDebt: totalBorrowedPrice + totalDebt,
               },
             });
+            setTimeout(() => {
+              if (ctx.sortArray) {
+                ctx.sortArray("netBalance", false);
+              }
+            }, 100);
           }, 100);
         } else {
           toast.error(res.data.message || "Something Went Wrong");
