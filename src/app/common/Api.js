@@ -19,6 +19,7 @@ import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
+  LOCAL_ADD_WALLET_LIST,
   PAGE_POPUP,
   SET_DEFAULT_VALUE,
   TOP_SET_DEFAULT_VALUE,
@@ -65,6 +66,14 @@ export const loginApi = (ctx, data) => {
     });
 };
 
+export const addLocalWalletList = (passedData) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: LOCAL_ADD_WALLET_LIST,
+      payload: passedData,
+    });
+  };
+};
 export const fixWalletApi = (ctx, info) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
@@ -162,6 +171,7 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               }
               // console.log('newAddWallet',newAddWallet);
               localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+              addLocalWalletList(JSON.stringify(newAddWallet));
               ctx.state.changeList && ctx.state.changeList(newAddWallet);
               if (ctx.props.apiResponse) {
                 // ctx.setState({
@@ -363,6 +373,7 @@ export const getUserAddresses = (ctx) => {
       // console.log('newAddWallet',newAddWallet);
 
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
         ctx.props.history.push({
           pathname: "/home",
@@ -456,6 +467,7 @@ export const sendWhopCode = (ctx, data) => {
         }
         // console.log('newAddWallet',newAddWallet);
         localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+        addLocalWalletList(JSON.stringify(newAddWallet));
 
         // localStorage.setItem("addWallet", JSON.stringify(walletAddress));
         localStorage.setItem("stopClick", true);
@@ -633,6 +645,7 @@ export const getDetectedChainsApi = (ctx) => {
           addWallet &&
             addWallet.length > 0 &&
             localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          addLocalWalletList(JSON.stringify(addWallet));
         } else {
           toast.error(res.data.message || "Something went wrong");
         }
@@ -1005,6 +1018,7 @@ export const VerifyEmail = (data, ctx) => {
                 addWallet.push(obj);
               }
               localStorage.setItem("addWallet", JSON.stringify(addWallet));
+              addLocalWalletList(JSON.stringify(addWallet));
               //  console.log("only sign");
               setTimeout(() => {
                 ctx.state.onHide();
@@ -1726,6 +1740,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             addWallet.push(obj);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          addLocalWalletList(JSON.stringify(addWallet));
 
           setTimeout(() => {
             ctx.state.onHide();
@@ -1829,6 +1844,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               }
 
               localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+              addLocalWalletList(JSON.stringify(newAddWallet));
             }
 
             if (userFunction) {
