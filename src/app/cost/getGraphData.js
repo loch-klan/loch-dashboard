@@ -73,11 +73,7 @@ export const getGraphData = (apidata, parentCtx) => {
                 )?.toFixed(2) * currency.rate,
                 "en-US",
                 "USD"
-              ) +
-              " (" +
-              CurrencyType(false) +
-              numToCurrency(ctx.raw) +
-              ")";
+              );
             let label1 =
               "Volume: " +
               CurrencyType(false) +
