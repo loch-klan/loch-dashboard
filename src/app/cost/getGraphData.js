@@ -63,7 +63,7 @@ export const getGraphData = (apidata, parentCtx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
             let label0 =
-              "Fees Today (Then): " +
+              "Fees: " +
               CurrencyType(false) +
               amountFormat(
                 (
@@ -73,11 +73,7 @@ export const getGraphData = (apidata, parentCtx) => {
                 )?.toFixed(2) * currency.rate,
                 "en-US",
                 "USD"
-              ) +
-              " (" +
-              CurrencyType(false) +
-              numToCurrency(ctx.raw) +
-              ")";
+              );
             let label1 =
               "Volume: " +
               CurrencyType(false) +
