@@ -954,7 +954,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Yield Opportunities"}
+              title={"Yield opportunities"}
               subTitle={
                 "Yield bearing opportunties personalized for your portfolio"
               }
@@ -1021,10 +1021,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             </div>
             <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 grey-4F4">
               <div className="yeildOppTitleItems yeildOppTitleLeft">
-                Your Portfolio
+                Your portfolio
               </div>
               <div className="yeildOppTitleItems yeildOppTitleRight">
-                Yield Opportunities
+                Yield opportunities
               </div>
             </div>
             <div className="transaction-history-table">
