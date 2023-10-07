@@ -446,7 +446,7 @@ class Home extends BaseReactComponent {
                 <div className="overlay-bg"></div>
                 <Image src={Banner} className="overlay-banner" />
                 <div className="overLayHeader">
-                  <div
+                  {/* <div
                     onClick={this.goToDiscover}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
                   >
@@ -456,7 +456,7 @@ class Home extends BaseReactComponent {
                       alt="ProfileVectorIcon"
                     />
                     <div>Discover</div>
-                  </div>
+                  </div> */}
                   <div
                     onClick={this.onboardingShowConnectModal}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"

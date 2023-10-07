@@ -320,7 +320,7 @@ class AssetValueGraph extends Component {
               />
             )}
             <PageHeader
-              title={"Asset Value"}
+              title={"Historic performance"}
               subTitle={"Analyze your portfolio value over time"}
               showpath={true}
               currentPage={"asset-value"}
