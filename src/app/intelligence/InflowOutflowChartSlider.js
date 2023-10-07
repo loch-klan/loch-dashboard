@@ -583,6 +583,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
 
           return "";
         },
+        style: {
+          zIndex: 100,
+        },
       },
       series: [
         {
