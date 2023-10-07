@@ -58,6 +58,16 @@ export default function PageHeader(props) {
 
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
+    let linkName = e;
+    if (linkName === "transaction-history") {
+      linkName = "transactions";
+    } else if (linkName === "intelligence") {
+      linkName = "portfolio";
+    } else if (linkName === "asset-value") {
+      linkName = "historic performance";
+    } else if (linkName === "top-accounts") {
+      linkName = "leaderboard";
+    }
     return (
       e && (
         <>
@@ -73,9 +83,7 @@ export default function PageHeader(props) {
             active={e === props.currentPage}
             key={key}
           >
-            {e === "transaction-history"
-              ? "transactions"
-              : e.replace(/-/g, " ")}
+            {linkName ? linkName.replace(/-/g, " ") : e.replace(/-/g, " ")}
           </Breadcrumb.Item>
         </>
       )
