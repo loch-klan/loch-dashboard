@@ -188,50 +188,14 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             if (receivedVal > 0) {
               return `<div class="inflowOutflowChartAnnotationContainer">
                 <img class="inflowOutflowChartAnnotation" src="${AssetChartInflowIcon}" />
-                <div class="inflowOutflowChartAnnotationBox top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-                backdrop-filter: blur(15px);">
-                  <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                    <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>13 March 22</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">$200</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
-                    <div class="inter-display-medium f-s-13 w-100 pt-3 px-4" style="display:flex; justify-content:space-between" >
-                    <div>
-                      <img style='width:20px; height: 20px; display: inline-block; margin-right: 0.6rem' src="${AssetChartInflowIcon}" />
-                      Inflow
-                    </div>
-                    <div style="color:#16182B">$5</div>
-                    </div>
-                  </div>
                 </div>`;
             } else if (sendVal > 0) {
               return `<div class="inflowOutflowChartAnnotationContainer">
                 <img class="inflowOutflowChartAnnotation" src="${AssetChartOutflowIcon}" />
-                <div class="inflowOutflowChartAnnotationBox top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-                backdrop-filter: blur(15px);">
-                  <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                    <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>13 March 22</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">$200</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
-                    <div class="inter-display-medium f-s-13 w-100 pt-3 px-4" style="display:flex; justify-content:space-between" >
-                    <div>
-                      <img style='width:20px; height: 20px; display: inline-block; margin-right: 0.6rem' src="${AssetChartOutflowIcon}" />
-                      Inflow
-                    </div>
-                    <div style="color:#16182B">$5</div>
-                    </div>
-                  </div>
                 </div>`;
             } else if (initialReceivedVal > 0 || initialSendVal > 0) {
               return `<div class="inflowOutflowChartAnnotationContainer">
                 <img class="inflowOutflowChartAnnotation" src="${AssetChartInflowIcon}" />
-                <div class="inflowOutflowChartAnnotationBox top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-                backdrop-filter: blur(15px);">
-                  <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                    <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>13 March 22</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">$200</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
-                    <div class="inter-display-medium f-s-13 w-100 pt-3 px-4" style="display:flex; justify-content:space-between" >
-                    <div>
-                      <img style='width:20px; height: 20px; display: inline-block; margin-right: 0.6rem' src="${AssetChartInflowIcon}" />
-                      Inflow
-                    </div>
-                    <div style="color:#16182B">$5</div>
-                    </div>
-                  </div>
                 </div>`;
             }
             return "";
