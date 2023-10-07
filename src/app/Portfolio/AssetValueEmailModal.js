@@ -39,7 +39,7 @@ class AssetValueEmailModal extends BaseReactComponent {
     // set popup active
     localStorage.setItem("isPopupActive", true);
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    if (userDetails.email) {
+    if (userDetails && userDetails.email) {
       this.setState({
         email: userDetails.email,
         isUserEmail: true,

@@ -101,7 +101,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [],
+      sort: [{ key: SORT_BY_TVL, value: false }],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
@@ -134,7 +134,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
         {
           title: "tvl",
-          up: false,
+          up: true,
         },
         {
           title: "apy",
@@ -675,7 +675,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -710,7 +710,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -760,7 +760,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -791,7 +791,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -822,7 +822,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
@@ -871,7 +871,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"
+                this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
