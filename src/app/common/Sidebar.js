@@ -1319,31 +1319,6 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
-                                        MenuTopAccountsNetflow({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                        });
-                                      }
-                                    }}
-                                    className={`nav-link ${
-                                      originalActiveTab ===
-                                      "/top-accounts/intelligence"
-                                        ? "none"
-                                        : ""
-                                    }`}
-                                    to="/top-accounts/intelligence#netflow"
-                                    activeclassname="active"
-                                  >
-                                    Net flows
-                                  </NavLink>
-                                </li>
-                                <li className="sub-menu-level-tow">
-                                  <NavLink
-                                    exact={true}
-                                    onClick={(e) => {
-                                      if (!isWallet) {
-                                        e.preventDefault();
-                                      } else {
                                         MenuTopAccountsTH({
                                           session_id: getCurrentUser().id,
                                           email_address: getCurrentUser().email,
@@ -1364,6 +1339,26 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
+                                        MenuTopAccountsCosts({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                        });
+                                      }
+                                    }}
+                                    className="nav-link"
+                                    to="/top-accounts/intelligence/costs"
+                                    activeclassname="active"
+                                  >
+                                    Costs
+                                  </NavLink>
+                                </li>
+                                <li className="sub-menu-level-tow">
+                                  <NavLink
+                                    exact={true}
+                                    onClick={(e) => {
+                                      if (!isWallet) {
+                                        e.preventDefault();
+                                      } else {
                                         MenuTopAccountsAssetValue({
                                           session_id: getCurrentUser().id,
                                           email_address: getCurrentUser().email,
@@ -1375,6 +1370,31 @@ function Sidebar(props) {
                                     activeclassname="active"
                                   >
                                     Historic performance
+                                  </NavLink>
+                                </li>
+                                <li className="sub-menu-level-tow">
+                                  <NavLink
+                                    exact={true}
+                                    onClick={(e) => {
+                                      if (!isWallet) {
+                                        e.preventDefault();
+                                      } else {
+                                        MenuTopAccountsNetflow({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                        });
+                                      }
+                                    }}
+                                    className={`nav-link ${
+                                      originalActiveTab ===
+                                      "/top-accounts/intelligence"
+                                        ? "none"
+                                        : ""
+                                    }`}
+                                    to="/top-accounts/intelligence#netflow"
+                                    activeclassname="active"
+                                  >
+                                    Net flows
                                   </NavLink>
                                 </li>
                                 {/* <li className="sub-menu-level-tow">
@@ -1398,26 +1418,6 @@ function Sidebar(props) {
                                       Insights
                                     </NavLink>
                                   </li> */}
-                                <li className="sub-menu-level-tow">
-                                  <NavLink
-                                    exact={true}
-                                    onClick={(e) => {
-                                      if (!isWallet) {
-                                        e.preventDefault();
-                                      } else {
-                                        MenuTopAccountsCosts({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                        });
-                                      }
-                                    }}
-                                    className="nav-link"
-                                    to="/top-accounts/intelligence/costs"
-                                    activeclassname="active"
-                                  >
-                                    Costs
-                                  </NavLink>
-                                </li>
                               </>
                             )}
 
