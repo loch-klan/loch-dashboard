@@ -7,6 +7,11 @@ import { getProfitLossAsset } from "./stackGrapgh";
 
 import {
   ALL_TRANSACTION_HISTORY_HOME,
+  INFLOW_OUTFLOW_CHART_ASSET_LIST,
+  INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
+  INFLOW_OUTFLOW_CHART_DATA,
+  INFLOW_OUTFLOW_TIME_TAB,
+  INFLOW_OUTFLOW_WALLET,
   INSIGHT_DATA,
   NETFLOW_GRAPH,
   PORTFOLIO_ASSET,
@@ -45,12 +50,20 @@ export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
             });
             ctx.setState({
               graphLoading: false,
-              inflowsOutflowsList: tempConvertedValue,
+              // inflowsOutflowsList: tempConvertedValue,
+            });
+            dispatch({
+              type: INFLOW_OUTFLOW_CHART_DATA,
+              payload: tempConvertedValue,
             });
           } else {
             ctx.setState({
               graphLoading: false,
-              inflowsOutflowsList: [],
+              // inflowsOutflowsList: [],
+            });
+            dispatch({
+              type: INFLOW_OUTFLOW_CHART_DATA,
+              payload: [],
             });
           }
         } else {
@@ -68,6 +81,30 @@ export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
       });
   };
 };
+export const setInflowsAndOutflowsTimeTab = (data) => {
+  return async function (dispatch, getState) {
+    dispatch({
+      type: INFLOW_OUTFLOW_TIME_TAB,
+      payload: data,
+    });
+  };
+};
+export const setInflowsAndOutflowsWalletList = (data) => {
+  return async function (dispatch, getState) {
+    dispatch({
+      type: INFLOW_OUTFLOW_WALLET,
+      payload: data,
+    });
+  };
+};
+export const setSelectedInflowOutflowsAssetBlank = () => {
+  return async function (dispatch, getState) {
+    dispatch({
+      type: INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
+      payload: "",
+    });
+  };
+};
 export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
@@ -75,29 +112,42 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
       .then((res) => {
         if (!res.data.error) {
           if (res.data.data.assets.length > 0) {
-            ctx.setState({
-              assetList: res.data.data.assets,
+            dispatch({
+              type: INFLOW_OUTFLOW_CHART_ASSET_LIST,
+              payload: res.data.data.assets,
             });
+
             let isEth = res.data.data.assets.findIndex((resRes) => {
               return resRes.asset.code === "ETH";
             });
             if (isEth > -1) {
-              ctx.setState({
-                selectedAsset: res.data.data.assets[isEth]._id,
+              const tempAsset = res.data.data.assets[isEth]._id
+                ? res.data.data.assets[isEth]._id
+                : "";
+              dispatch({
+                type: INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
+                payload: tempAsset,
               });
             } else {
               let isBtc = res.data.data.assets.findIndex((resRes) => {
                 return resRes.asset.code === "BTC";
               });
               if (isBtc > -1) {
-                ctx.setState({
-                  selectedAsset: res.data.data.assets[isBtc]._id,
+                const tempAsset = res.data.data.assets[isBtc]._id
+                  ? res.data.data.assets[isBtc]._id
+                  : "";
+                dispatch({
+                  type: INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
+                  payload: tempAsset,
                 });
               } else {
-                const firstItem = res.data.data.assets[0]._id;
+                const firstItem = res.data.data.assets[0]._id
+                  ? res.data.data.assets[0]._id
+                  : "";
                 if (firstItem) {
-                  ctx.setState({
-                    selectedAsset: firstItem,
+                  dispatch({
+                    type: INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
+                    payload: firstItem,
                   });
                 } else {
                   ctx.setState({

@@ -23,6 +23,7 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
   detectNameTag,
+  addLocalWalletList,
 } from "./Api";
 import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
@@ -721,7 +722,7 @@ class FixAddModal extends BaseReactComponent {
             this.props.setHeaderReducer(addWallet);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
-
+          addLocalWalletList(JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -1006,6 +1007,7 @@ class FixAddModal extends BaseReactComponent {
         this.props.setHeaderReducer(walletList);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
+      addLocalWalletList(JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1709,7 +1711,7 @@ class FixAddModal extends BaseReactComponent {
                       <Image
                         src={InfoIcon}
                         className="info-icon"
-                        style={{cursor: "pointer",}}
+                        style={{ cursor: "pointer" }}
                         onMouseEnter={() => {
                           AnonymityWalletConnection({
                             session_id: getCurrentUser().id,

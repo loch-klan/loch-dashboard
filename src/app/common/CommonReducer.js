@@ -1,4 +1,5 @@
 import {
+  LOCAL_ADD_WALLET_LIST,
   PAGE_POPUP,
   SET_COMMON_REDUCER,
   SET_DEFAULT_VALUE,
@@ -28,7 +29,7 @@ const INITIAL_STATE = {
   top_defi: false,
 };
 
-const CommonReducer = (state = INITIAL_STATE, action) => {
+export const CommonReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_COMMON_REDUCER:
       return {
@@ -67,4 +68,11 @@ const CommonReducer = (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-export default CommonReducer;
+export const AddLocalAddWalletReducer = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case LOCAL_ADD_WALLET_LIST:
+      return action.payload;
+    default:
+      return state;
+  }
+};
