@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   asset_value: false,
   insight: false,
   defi: false,
+  yieldOpportunities: false,
   defi_home: false,
 
   // top account
@@ -49,6 +50,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         asset_value: false,
         insight: false,
         defi: false,
+        yieldOpportunities: false,
         transactionHistory: false,
         whaleWatch: false,
         whaleWatchIndividual: false,
