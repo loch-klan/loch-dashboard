@@ -78,9 +78,34 @@
         position: relative;
       }
     }
+    .pageHeaderShareContainer {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .pageHeaderShareImg {
+        width: 1.6rem;
+        margin-right: 0.6rem;
+      }
+      .pageHeaderShareBtn {
+        background: transparent;
+        border: none;
+        color: $grey-B0B;
+        outline: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      &:hover {
+        .pageHeaderShareBtn {
+          color: $primary;
+        }
+        .pageHeaderShareImg {
+          filter: brightness(0);
+        }
+      }
+    }
   }
-
- 
 
   button {
     // padding: 1.3rem 2.6rem;

@@ -65,11 +65,17 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import ExitOverlay from "../common/ExitOverlay";
+import { ExportIconWhite } from "../../assets/images/icons";
 
 class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      exportHeaderTitle: "Download all costs",
+      exportHeaderSubTitle: "Export your average cost basis from Loch",
+      exportSelectExportOption: 4,
+      exportModal: false,
       callFeesOverTime: true,
       callCounterpartyVolumeOverTime: true,
       durationgraphdata: {
@@ -116,7 +122,55 @@ class Cost extends Component {
       ],
     };
   }
-
+  history = this.props;
+  handleExportModal = () => {
+    this.setState({
+      exportModal: !this.state.exportModal,
+    });
+  };
+  setAverageCostExportModal = () => {
+    this.setState(
+      {
+        exportHeaderTitle: "Download all costs",
+        exportHeaderSubTitle: "Export your average cost basis from Loch",
+        exportSelectExportOption: 4,
+      },
+      () => {
+        this.setState({
+          exportModal: true,
+        });
+      }
+    );
+  };
+  setBlockChainFeesExportModal = () => {
+    this.setState(
+      {
+        exportHeaderTitle: "Download all blockchain fees",
+        exportHeaderSubTitle: "Export your blockchain fees over time from Loch",
+        exportSelectExportOption: 2,
+      },
+      () => {
+        this.setState({
+          exportModal: true,
+        });
+      }
+    );
+  };
+  setCounterpartyVolumeExportModal = () => {
+    this.setState(
+      {
+        exportHeaderTitle: "Download counterparty volume",
+        exportHeaderSubTitle:
+          "Export your counterparty volume over time from Loch",
+        exportSelectExportOption: 3,
+      },
+      () => {
+        this.setState({
+          exportModal: true,
+        });
+      }
+    );
+  };
   feesOverTimeOn = () => {
     if (!this.state.callFeesOverTime) {
       this.setState({
@@ -1058,6 +1112,18 @@ class Cost extends Component {
             ""
           )}
           <div className="m-t-30 cost-section page">
+            {this.state.exportModal ? (
+              <ExitOverlay
+                show={this.state.exportModal}
+                onHide={this.handleExportModal}
+                history={this.history}
+                headerTitle={this.state.exportHeaderTitle}
+                headerSubTitle={this.state.exportHeaderSubTitle}
+                modalType={"exportModal"}
+                iconImage={ExportIconWhite}
+                selectExportOption={this.state.exportSelectExportOption}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1083,6 +1149,9 @@ class Cost extends Component {
               showpath={true}
               currentPage={"costs"}
               ShareBtn={true}
+              ExportBtn
+              exportBtnTxt="Click to export costs"
+              handleExportModal={this.setAverageCostExportModal}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
@@ -1122,6 +1191,9 @@ class Cost extends Component {
               }}
             >
               <BarGraphSection
+                ExportBtn
+                exportBtnTxt="Click to export blockchain fees"
+                handleExportModal={this.setBlockChainFeesExportModal}
                 headerTitle="Blockchain fees over time"
                 headerSubTitle="Understand your gas costs"
                 data={
@@ -1173,6 +1245,9 @@ class Cost extends Component {
             </div> */}
 
               <BarGraphSection
+                ExportBtn
+                exportBtnTxt="Click to export counterparty volume"
+                handleExportModal={this.setCounterpartyVolumeExportModal}
                 headerTitle="Counterparty volume over time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={

@@ -42,7 +42,10 @@ import {
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
-import { PieChartWatermarkIcon } from "../../assets/images/icons";
+import {
+  PieChartWatermarkIcon,
+  SharePortfolioIconWhite,
+} from "../../assets/images/icons";
 import { toast } from "react-toastify";
 
 class PieChart2 extends BaseReactComponent {
@@ -1114,751 +1117,733 @@ class PieChart2 extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     };
+
     return (
-      <>
-        <div
-          style={{
-            paddingTop: "2rem",
-            paddingBottom: "2rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
-            Overview
-          </h1>
-          <CustomOverlay
-            position="top"
-            isIcon={false}
-            isInfo={true}
-            isText={true}
-            text={"Click to copy link"}
-          >
-            <Button className="secondary-btn white-bg" onClick={handleShare}>
-              Share
-            </Button>
-          </CustomOverlay>
-        </div>
-        <div
-          className={`portfolio-over-container ${
-            Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
-          }`}
-          style={{
-            overflow: "visible",
-          }}
-        >
-          <>
-            <Row style={{ width: "100%" }}>
-              <Col
-                md={7}
-                className="piechart-column"
-                style={{
-                  padding: 0,
-                  zIndex: 2,
-                  alignItems: this.props.isLoading ? "center" : "inherit",
-                }}
-              >
-                {this.state?.assetData.length !== 0 && !this.props.isLoading ? (
-                  <div className="chart-section">
-                    <HighchartsReact
-                      highcharts={Highcharts}
-                      options={chartOptions}
-                      updateArgs={[this.state.chartUpdate]}
-                      oneToOne={true}
-                      allowChartUpdate={this.state.chartUpdate}
-                      containerProps={{ className: "custom-highchart" }}
-                      immutable={true}
-                    />
-                  </div> //  this.state.piechartisLoading === true && this.state.assetData === null
-                ) : this.props.isLoading ? (
-                  <div style={{ marginTop: "-8rem" }}>
-                    <Loading />
-                  </div>
-                ) : (
-                  <div className="no-data-piechart">
-                    <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
-                      {CurrencyType(false)} 0.00
-                    </h3>
-                    <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
-                      {CurrencyType(true)}
-                    </h3>
-                    <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
-                      Total Assets
-                    </h3>
-                  </div>
-                )}
-              </Col>
-              <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
-                <div>
-                  {/* Chains */}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "end",
-                    }}
+      <div
+        className={`portfolio-over-container p-b-20`}
+        style={{
+          overflow: "visible",
+        }}
+      >
+        {/* // <div className={`portfolio-over-container m-b-32`} > */}
+        <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
+          Overview
+        </h1>
+        <>
+          <Row style={{ width: "100%" }}>
+            <Col
+              md={7}
+              className="piechart-column"
+              style={{
+                padding: 0,
+                zIndex: 2,
+                alignItems: this.props.isLoading ? "center" : "inherit",
+              }}
+            >
+              {this.state?.assetData.length !== 0 && !this.props.isLoading ? (
+                <div className="chart-section">
+                  <HighchartsReact
+                    highcharts={Highcharts}
+                    options={chartOptions}
+                    updateArgs={[this.state.chartUpdate]}
+                    oneToOne={true}
+                    allowChartUpdate={this.state.chartUpdate}
+                    containerProps={{ className: "custom-highchart" }}
+                    immutable={true}
+                  />
+                </div> //  this.state.piechartisLoading === true && this.state.assetData === null
+              ) : this.props.isLoading ? (
+                <div style={{ marginTop: "-8rem" }}>
+                  <Loading />
+                </div>
+              ) : (
+                <div className="no-data-piechart">
+                  <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
+                    {CurrencyType(false)} 0.00
+                  </h3>
+                  <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
+                    {CurrencyType(true)}
+                  </h3>
+                  <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
+                    Total Assets
+                  </h3>
+                </div>
+              )}
+            </Col>
+            <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
+              <div>
+                {/* Chains */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "end",
+                  }}
+                >
+                  <h2
+                    className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                    onClick={this.RefreshButton}
                   >
-                    <h2
-                      className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
-                      onClick={this.RefreshButton}
+                    <Image src={refreshIcon} />
+                    Updated{" "}
+                    <span
+                      style={{ margin: "0px 3px" }}
+                      className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
-                      <Image src={refreshIcon} />
-                      Updated{" "}
-                      <span
-                        style={{ margin: "0px 3px" }}
-                        className="inter-display-bold f-s-13 lh-15 grey-969"
-                      >
-                        {this.state.timeNumber === null
-                          ? "3"
-                          : this.state.timeNumber === 0
-                          ? " just now"
-                          : this.state.timeNumber}
-                      </span>{" "}
-                      {" " + this.state.timeUnit !== "" &&
-                      this.state.timeNumber !== 0
-                        ? this.state.timeUnit
-                        : this.state.timeNumber == 0
-                        ? ""
-                        : "hours ago"}
-                    </h2>
-                  </div>
-                  <div
-                    className={`chain-card ${
-                      this.props.chainLoader ? "chain-card-loading" : ""
-                    } ${this.state.isChainToggle ? "chain-card-active" : ""}`}
+                      {this.state.timeNumber === null
+                        ? "3"
+                        : this.state.timeNumber === 0
+                        ? " just now"
+                        : this.state.timeNumber}
+                    </span>{" "}
+                    {" " + this.state.timeUnit !== "" &&
+                    this.state.timeNumber !== 0
+                      ? this.state.timeUnit
+                      : this.state.timeNumber == 0
+                      ? ""
+                      : "hours ago"}
+                  </h2>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={"Click to copy link"}
                   >
                     <div
-                      className="chain-card-child"
-                      onClick={this.toggleChain}
+                      onClick={handleShare}
+                      className="pageHeaderShareContainer"
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        {this.state.chainList &&
-                          this.state.chainList.slice(0, 3).map((item, i) => {
-                            return (
-                              <Image
-                                src={item.symbol}
-                                style={{
-                                  position: "relative",
-                                  marginLeft: `${i === 0 ? "0" : "-10"}px`,
-                                  width: "2.6rem",
-                                  height: "2.6rem",
-                                  borderRadius: "6px",
-                                  zIndex: `${
-                                    i === 0 ? "3" : i === 1 ? "2" : "1"
-                                  }`,
-                                  objectFit: "cover",
-                                  border: `1px solid ${lightenDarkenColor(
-                                    item.color,
-                                    -0.15
-                                  )}`,
-                                }}
-                                key={`chainList-${i}`}
-                              />
-                            );
-                          })}
-
-                        <span
-                          className="inter-display-medium f-s-16 lh-19 portfolioNetworksText"
-                          style={{
-                            marginLeft:
-                              this.state.chainList?.length === 0 ? 0 : "1.2rem",
-                          }}
-                        >
-                          {this.state.chainList &&
-                          this.state.chainList?.length <= 1
-                            ? this.state.chainList?.length + 1 + " Network"
-                            : this.state.chainList?.length + 1 + " Networks"}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        <Image
-                          className="defiMenu"
-                          src={arrowUp}
-                          style={
-                            this.state.isChainToggle
-                              ? {
-                                  transform: "rotate(180deg)",
-                                  filter: "opacity(1)",
-                                  height: "1.25rem",
-                                  width: "1.25rem",
-                                }
-                              : { height: "1.25rem", width: "1.25rem" }
-                          }
-                        />
-                        {this.props.chainLoader && (
-                          <div
-                            style={{ marginTop: "-6px", marginRight: "1rem" }}
-                          >
-                            {loadingAnimation()}
-                          </div>
-                        )}
+                      <Image
+                        className="pageHeaderShareImg"
+                        src={SharePortfolioIconWhite}
+                      />
+                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                        Share
                       </div>
                     </div>
+                  </CustomOverlay>
+                </div>
+                <div
+                  className={`chain-card ${
+                    this.props.chainLoader ? "chain-card-loading" : ""
+                  } ${this.state.isChainToggle ? "chain-card-active" : ""}`}
+                >
+                  <div className="chain-card-child" onClick={this.toggleChain}>
                     <div
-                      className="chain-list"
                       style={{
-                        display: `${
-                          this.state.isChainToggle ? "block" : "none"
-                        }`,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      <div className="chain-content">
-                        {this.state.chainList &&
-                          this.state.chainList?.map((chain, i) => {
-                            return (
-                              <div
-                                className="chain-list-item"
-                                key={`chainContentChainList-${i}`}
-                                style={{
-                                  paddingBottom: "1rem",
-                                }}
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  <Image
-                                    src={chain?.symbol}
-                                    style={{
-                                      width: "2.6rem",
-                                      height: "2.6rem",
-                                      borderRadius: "6px",
-                                      objectFit: "cover",
-                                      border: `1px solid ${lightenDarkenColor(
-                                        chain?.color,
-                                        -0.15
-                                      )}`,
-                                    }}
-                                  />
-                                  {chain?.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    chain?.total.toFixed(2),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        <div
-                          className="chain-list-item"
-                          // key={this.state.chainList.length + 1}
-                          style={{
-                            paddingBottom: "0rem",
-                          }}
-                        >
-                          <span className="inter-display-medium f-s-16 lh-19">
+                      {this.state.chainList &&
+                        this.state.chainList.slice(0, 3).map((item, i) => {
+                          return (
                             <Image
-                              src={LinkIcon}
+                              src={item.symbol}
                               style={{
+                                position: "relative",
+                                marginLeft: `${i === 0 ? "0" : "-10"}px`,
                                 width: "2.6rem",
                                 height: "2.6rem",
-                                padding: "0.55rem",
                                 borderRadius: "6px",
+                                zIndex: `${
+                                  i === 0 ? "3" : i === 1 ? "2" : "1"
+                                }`,
                                 objectFit: "cover",
                                 border: `1px solid ${lightenDarkenColor(
-                                  "#000000",
+                                  item.color,
                                   -0.15
                                 )}`,
                               }}
+                              key={`chainList-${i}`}
                             />
-                            Centralized Exchanges
-                          </span>
-                          <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                            {CurrencyType(false)}
-                            {amountFormat(
-                              this.props.portfolioState?.centralizedExchanges.toFixed(
-                                2
-                              ),
-                              "en-US",
-                              "USD"
-                            )}
-                          </span>
+                          );
+                        })}
+
+                      <span
+                        className="inter-display-medium f-s-16 lh-19 portfolioNetworksText"
+                        style={{
+                          marginLeft:
+                            this.state.chainList?.length === 0 ? 0 : "1.2rem",
+                        }}
+                      >
+                        {this.state.chainList &&
+                        this.state.chainList?.length <= 1
+                          ? this.state.chainList?.length + 1 + " Network"
+                          : this.state.chainList?.length + 1 + " Networks"}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Image
+                        className="defiMenu"
+                        src={arrowUp}
+                        style={
+                          this.state.isChainToggle
+                            ? {
+                                transform: "rotate(180deg)",
+                                filter: "opacity(1)",
+                                height: "1.25rem",
+                                width: "1.25rem",
+                              }
+                            : { height: "1.25rem", width: "1.25rem" }
+                        }
+                      />
+                      {this.props.chainLoader && (
+                        <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
+                          {loadingAnimation()}
                         </div>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    className="chain-list"
+                    style={{
+                      display: `${this.state.isChainToggle ? "block" : "none"}`,
+                    }}
+                  >
+                    <div className="chain-content">
+                      {this.state.chainList &&
+                        this.state.chainList?.map((chain, i) => {
+                          return (
+                            <div
+                              className="chain-list-item"
+                              key={`chainContentChainList-${i}`}
+                              style={{
+                                paddingBottom: "1rem",
+                              }}
+                            >
+                              <span className="inter-display-medium f-s-16 lh-19">
+                                <Image
+                                  src={chain?.symbol}
+                                  style={{
+                                    width: "2.6rem",
+                                    height: "2.6rem",
+                                    borderRadius: "6px",
+                                    objectFit: "cover",
+                                    border: `1px solid ${lightenDarkenColor(
+                                      chain?.color,
+                                      -0.15
+                                    )}`,
+                                  }}
+                                />
+                                {chain?.name}
+                              </span>
+                              <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                                {CurrencyType(false)}
+                                {amountFormat(
+                                  chain?.total.toFixed(2),
+                                  "en-US",
+                                  "USD"
+                                )}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      <div
+                        className="chain-list-item"
+                        // key={this.state.chainList.length + 1}
+                        style={{
+                          paddingBottom: "0rem",
+                        }}
+                      >
+                        <span className="inter-display-medium f-s-16 lh-19">
+                          <Image
+                            src={LinkIcon}
+                            style={{
+                              width: "2.6rem",
+                              height: "2.6rem",
+                              padding: "0.55rem",
+                              borderRadius: "6px",
+                              objectFit: "cover",
+                              border: `1px solid ${lightenDarkenColor(
+                                "#000000",
+                                -0.15
+                              )}`,
+                            }}
+                          />
+                          Centralized Exchanges
+                        </span>
+                        <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                          {CurrencyType(false)}
+                          {amountFormat(
+                            this.props.portfolioState?.centralizedExchanges.toFixed(
+                              2
+                            ),
+                            "en-US",
+                            "USD"
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
-                  {/* Balance sheet */}
-                  {/* {this.state.userPlan?.defi_enabled && (
+                </div>
+                {/* Balance sheet */}
+                {/* {this.state.userPlan?.defi_enabled && (
                    
                   )} */}
-                  <>
-                    <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                      DeFi balance sheet
-                    </h2>
-                    <div style={{}} className="balance-sheet-card ">
-                      <div className="balance-card-header cp">
-                        <div
-                          onClick={this.toggleYield}
-                          // style={
-                          //   this.state.isYeildToggle ? {  } : {}
-                          // }
-                          className={`balance-sheet-card-credit ${
-                            this.state.defiLoader
-                              ? "balance-sheet-card-credit-loading"
-                              : ""
-                          }`}
-                        >
-                          <div>
-                            <span
-                              className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                <>
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                    DeFi balance sheet
+                  </h2>
+                  <div style={{}} className="balance-sheet-card ">
+                    <div className="balance-card-header cp">
+                      <div
+                        onClick={this.toggleYield}
+                        // style={
+                        //   this.state.isYeildToggle ? {  } : {}
+                        // }
+                        className={`balance-sheet-card-credit ${
+                          this.state.defiLoader
+                            ? "balance-sheet-card-credit-loading"
+                            : ""
+                        }`}
+                      >
+                        <div>
+                          <span
+                            className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-title-selected"
                                 : ""
                             }
                             `}
-                            >
-                              Credit
-                            </span>
-                            <span
-                              className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                          >
+                            Credit
+                          </span>
+                          <span
+                            className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-amount-selected"
                                 : ""
                             }
                             `}
-                            >
-                              {CurrencyType(false)}
-                              {this.props.defiState.YieldValues &&
-                                numToCurrency(this.props.defiState.totalYield)}
-                            </span>
+                          >
+                            {CurrencyType(false)}
+                            {this.props.defiState.YieldValues &&
+                              numToCurrency(this.props.defiState.totalYield)}
+                          </span>
 
-                            <Image
-                              className="defiMenu"
-                              src={arrowUp}
-                              style={
-                                this.state.isYeildToggle
-                                  ? {
-                                      transform: "rotate(180deg)",
-                                      filter: "opacity(1)",
-                                    }
-                                  : {}
-                              }
-                            />
-                          </div>
+                          <Image
+                            className="defiMenu"
+                            src={arrowUp}
+                            style={
+                              this.state.isYeildToggle
+                                ? {
+                                    transform: "rotate(180deg)",
+                                    filter: "opacity(1)",
+                                  }
+                                : {}
+                            }
+                          />
                         </div>
+                      </div>
 
-                        <div
-                          onClick={this.toggleDebt}
-                          className={`balance-sheet-card-debt ${
-                            this.state.defiLoader
-                              ? "balance-sheet-card-debt-loading"
-                              : ""
-                          }`}
-                        >
-                          <div>
-                            <span
-                              className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                      <div
+                        onClick={this.toggleDebt}
+                        className={`balance-sheet-card-debt ${
+                          this.state.defiLoader
+                            ? "balance-sheet-card-debt-loading"
+                            : ""
+                        }`}
+                      >
+                        <div>
+                          <span
+                            className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
                              ${
                                this.state.isDebtToggle
                                  ? "balance-sheet-card-credit-title-selected"
                                  : ""
                              }
                              `}
-                            >
-                              Debt
-                            </span>
-                            <span
-                              className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                          >
+                            Debt
+                          </span>
+                          <span
+                            className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
                             ${
                               this.state.isDebtToggle
                                 ? "balance-sheet-card-credit-amount-selected"
                                 : ""
                             }
                             `}
-                            >
-                              {CurrencyType(false)}
-                              {this.props.defiState.DebtValues &&
-                                numToCurrency(this.props.defiState.totalDebt)}
-                            </span>
+                          >
+                            {CurrencyType(false)}
+                            {this.props.defiState.DebtValues &&
+                              numToCurrency(this.props.defiState.totalDebt)}
+                          </span>
 
-                            <Image
-                              className="defiMenu"
-                              src={arrowUp}
-                              style={
-                                this.state.isDebtToggle
-                                  ? {
-                                      transform: "rotate(180deg)",
-                                      filter: "opacity(1)",
-                                    }
-                                  : {}
-                              }
-                            />
+                          <Image
+                            className="defiMenu"
+                            src={arrowUp}
+                            style={
+                              this.state.isDebtToggle
+                                ? {
+                                    transform: "rotate(180deg)",
+                                    filter: "opacity(1)",
+                                  }
+                                : {}
+                            }
+                          />
+                        </div>
+                        {this.state.defiLoader && (
+                          <div style={{ marginTop: "-6px" }}>
+                            {loadingAnimation()}
                           </div>
-                          {this.state.defiLoader && (
-                            <div style={{ marginTop: "-6px" }}>
-                              {loadingAnimation()}
-                            </div>
-                          )}
+                        )}
+                      </div>
+                    </div>
+                    {(this.state.isYeildToggle || this.state.isDebtToggle) && (
+                      <div className="balance-dropdown">
+                        <div className="balance-dropdown-top-fake">
+                          <div
+                            onClick={this.toggleYield}
+                            className="balance-dropdown-top-fake-left"
+                          />
+                          <div
+                            onClick={this.toggleDebt}
+                            className="balance-dropdown-top-fake-right"
+                          />
+                        </div>
+                        <div className="balance-list-content-parent">
+                          <div className="balance-list-content">
+                            {/* For yeild */}
+                            {this.state.isYeildToggle && (
+                              <div>
+                                {this.props.defiState.YieldValues &&
+                                  this.props.defiState.YieldValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          key={`defiState-${i}`}
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.defiState.YieldValues
+                                              .length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                              </div>
+                            )}
+
+                            {/* For debt */}
+                            {this.state.isDebtToggle && (
+                              <div>
+                                {this.props.defiState.DebtValues &&
+                                  this.props.defiState.DebtValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          key={`debtDefiState-${i}`}
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.defiState.DebtValues
+                                              .length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      {(this.state.isYeildToggle ||
-                        this.state.isDebtToggle) && (
-                        <div className="balance-dropdown">
-                          <div className="balance-dropdown-top-fake">
-                            <div
-                              onClick={this.toggleYield}
-                              className="balance-dropdown-top-fake-left"
-                            />
-                            <div
-                              onClick={this.toggleDebt}
-                              className="balance-dropdown-top-fake-right"
-                            />
-                          </div>
-                          <div className="balance-list-content-parent">
-                            <div className="balance-list-content">
-                              {/* For yeild */}
-                              {this.state.isYeildToggle && (
-                                <div>
-                                  {this.props.defiState.YieldValues &&
-                                    this.props.defiState.YieldValues.map(
-                                      (item, i) => {
-                                        return (
-                                          <div
-                                            key={`defiState-${i}`}
-                                            className="balance-sheet-list"
-                                            style={
-                                              i ===
-                                              this.props.defiState.YieldValues
-                                                .length -
-                                                1
-                                                ? { paddingBottom: "0.3rem" }
-                                                : {}
-                                            }
-                                          >
-                                            <span className="inter-display-medium f-s-16 lh-19">
-                                              {item.name}
-                                            </span>
-                                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                              {CurrencyType(false)}
-                                              {amountFormat(
-                                                item.totalPrice.toFixed(2),
-                                                "en-US",
-                                                "USD"
-                                              )}
-                                            </span>
-                                          </div>
-                                        );
-                                      }
-                                    )}
-                                </div>
-                              )}
+                    )}
+                  </div>
+                </>
+              </div>
+            </Col>
+            <Col
+              md={chainList.length > 1 ? 12 : 7}
+              style={
+                chainList.length > 1
+                  ? { padding: 0 }
+                  : {
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      padding: 0,
+                      flexWrap: "wrap",
+                    }
+              }
+            >
+              {pieSectionDataEnabled &&
+              Object.keys(pieSectionDataEnabled).length > 0 ? (
+                <div
+                  className="coin-hover-display"
+                  style={chainList.length > 1 ? { width: "100%" } : {}}
+                >
+                  <div
+                    className="coin-hover-display-text"
+                    style={
+                      {
+                        // marginRight: "5.5rem",
+                      }
+                    }
+                  >
+                    <div className="coin-hover-display-text-icon">
+                      <Image
+                        className="coin-hover-display-icon"
+                        src={
+                          pieSectionDataEnabled &&
+                          Object.keys(pieSectionDataEnabled).length > 0
+                            ? pieSectionDataEnabled.assetSymbol || unrecognized
+                            : null
+                        }
+                      />
+                    </div>
+                    {pieSectionDataEnabled &&
+                      Object.keys(pieSectionDataEnabled).length > 0 && (
+                        <div className="coin-hover-display-text1">
+                          <div className="coin-hover-display-text1-upper">
+                            <span className="inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin">
+                              {pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? pieSectionDataEnabled.name
+                                : null}
+                            </span>
+                            <span
+                              className="inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent"
+                              style={{
+                                color:
+                                  pieSectionDataEnabled.borderColor ===
+                                  "#ffffff"
+                                    ? "#19191A"
+                                    : pieSectionDataEnabled.borderColor,
+                              }}
+                            >
+                              {pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? pieSectionDataEnabled.y?.toFixed(2)
+                                : 0}
+                              %
+                            </span>
 
-                              {/* For debt */}
-                              {this.state.isDebtToggle && (
-                                <div>
-                                  {this.props.defiState.DebtValues &&
-                                    this.props.defiState.DebtValues.map(
-                                      (item, i) => {
-                                        return (
-                                          <div
-                                            key={`debtDefiState-${i}`}
-                                            className="balance-sheet-list"
-                                            style={
-                                              i ===
-                                              this.props.defiState.DebtValues
-                                                .length -
-                                                1
-                                                ? { paddingBottom: "0.3rem" }
-                                                : {}
-                                            }
-                                          >
-                                            <span className="inter-display-medium f-s-16 lh-19">
-                                              {item.name}
-                                            </span>
-                                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                              {CurrencyType(false)}
-                                              {amountFormat(
-                                                item.totalPrice.toFixed(2),
-                                                "en-US",
-                                                "USD"
-                                              )}
-                                            </span>
-                                          </div>
-                                        );
-                                      }
-                                    )}
-                                </div>
-                              )}
-                            </div>
+                            {pieSectionDataEnabled.assetType === 20 && (
+                              <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
+                                "Staked"
+                              </span>
+                            )}
+                          </div>
+                          <div className="coin-hover-display-text1-lower">
+                            <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
+                              {pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? numToCurrency(pieSectionDataEnabled.count)
+                                : null}
+                            </span>
+                            <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode">
+                              {pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? pieSectionDataEnabled.assetCode
+                                : null}
+                            </span>
+                            <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue">
+                              {CurrencyType(false)}
+                              {pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? pieSectionDataEnabled.usd
+                                : null}
+                            </span>
+                            <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency">
+                              {CurrencyType(true)}
+                            </span>
                           </div>
                         </div>
                       )}
-                    </div>
-                  </>
-                </div>
-              </Col>
-              <Col
-                md={chainList.length > 1 ? 12 : 7}
-                style={
-                  chainList.length > 1
-                    ? { padding: 0 }
-                    : {
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        padding: 0,
-                        flexWrap: "wrap",
-                      }
-                }
-              >
-                {pieSectionDataEnabled &&
-                Object.keys(pieSectionDataEnabled).length > 0 ? (
-                  <div
-                    className="coin-hover-display"
-                    style={chainList.length > 1 ? { width: "100%" } : {}}
-                  >
-                    <div
-                      className="coin-hover-display-text"
-                      style={
-                        {
-                          // marginRight: "5.5rem",
-                        }
-                      }
-                    >
-                      <div className="coin-hover-display-text-icon">
-                        <Image
-                          className="coin-hover-display-icon"
-                          src={
-                            pieSectionDataEnabled &&
-                            Object.keys(pieSectionDataEnabled).length > 0
-                              ? pieSectionDataEnabled.assetSymbol ||
-                                unrecognized
-                              : null
-                          }
-                        />
-                      </div>
-                      {pieSectionDataEnabled &&
-                        Object.keys(pieSectionDataEnabled).length > 0 && (
-                          <div className="coin-hover-display-text1">
-                            <div className="coin-hover-display-text1-upper">
-                              <span className="inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin">
-                                {pieSectionDataEnabled &&
-                                Object.keys(pieSectionDataEnabled).length > 0
-                                  ? pieSectionDataEnabled.name
-                                  : null}
-                              </span>
-                              <span
-                                className="inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent"
-                                style={{
-                                  color:
-                                    pieSectionDataEnabled.borderColor ==
-                                    "#ffffff"
-                                      ? "#19191A"
-                                      : pieSectionDataEnabled.borderColor,
-                                }}
-                              >
-                                {pieSectionDataEnabled &&
-                                Object.keys(pieSectionDataEnabled).length > 0
-                                  ? pieSectionDataEnabled.y?.toFixed(2)
-                                  : 0}
-                                %
-                              </span>
-
-                              {pieSectionDataEnabled.assetType === 20 && (
-                                <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
-                                  "Staked"
-                                </span>
-                              )}
-                            </div>
-                            <div className="coin-hover-display-text1-lower">
-                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
-                                {pieSectionDataEnabled &&
-                                Object.keys(pieSectionDataEnabled).length > 0
-                                  ? numToCurrency(pieSectionDataEnabled.count)
-                                  : null}
-                              </span>
-                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode">
-                                {pieSectionDataEnabled &&
-                                Object.keys(pieSectionDataEnabled).length > 0
-                                  ? pieSectionDataEnabled.assetCode
-                                  : null}
-                              </span>
-                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue">
-                                {CurrencyType(false)}
-                                {pieSectionDataEnabled &&
-                                Object.keys(pieSectionDataEnabled).length > 0
-                                  ? pieSectionDataEnabled.usd
-                                  : null}
-                              </span>
-                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency">
-                                {CurrencyType(true)}
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                    </div>
-                    <div
-                      style={
-                        chainList.length > 1
-                          ? {
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "space-evenly",
-                              alignItem: "center",
-                            }
-                          : {
-                              display: "flex",
-                              justifyContent: "space-evenly",
-                              alignItem: "center",
-                            }
-                      }
-                    >
-                      {chainList &&
-                        chainList.slice(0, 3).map((data, index) => {
-                          // console.log(data);
-                          let isQuote =
-                            this.state.assetPrice &&
-                            this.state.assetPrice[
-                              this.state.selectedSection[0].assetId
-                            ].quote;
-                          if (index < 2) {
-                            return (
-                              <>
-                                <div
-                                  style={{
-                                    width: "1px",
-                                    height: "6.8rem",
-                                    backgroundColor: "#E5E5E6",
-                                  }}
-                                ></div>
-                                <div className="coin-hover-display-text2">
-                                  <div className="coin-hover-display-text2-upper">
-                                    <CustomOverlay
-                                      position="top"
-                                      className={"coin-hover-tooltip"}
-                                      isIcon={false}
-                                      isInfo={true}
-                                      isText={true}
-                                      text={
-                                        data?.displayAddress || data?.address
-                                      }
-                                    >
-                                      <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                        {data?.protocalName ||
-                                          data?.nickname ||
-                                          data?.displayAddress ||
-                                          data?.address}
-                                      </span>
-                                    </CustomOverlay>
-                                    <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
-                                      {(
-                                        (100 * data.totalAssetCount) /
-                                        pieSectionDataEnabled.count
-                                      ).toFixed(2) + "%"}
-                                    </span>
-                                  </div>
-                                  <div className="coin-hover-display-text2-lower">
-                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
-                                      {numToCurrency(data.totalAssetCount)}
-                                    </span>
-
-                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
-                                      {pieSectionDataEnabled.assetCode}
-                                    </span>
-
-                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
-                                      {isQuote == null
-                                        ? DEFAULT_PRICE
-                                        : numToCurrency(
-                                            data.totalAssetCount *
-                                              isQuote?.USD.price *
-                                              currency?.rate
-                                          )}
-                                    </span>
-
-                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
-                                      {CurrencyType(true)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          } else {
-                            return (
-                              <>
-                                <div
-                                  style={{
-                                    width: "1px",
-                                    height: "6.8rem",
-                                    backgroundColor: "#E5E5E6",
-                                  }}
-                                ></div>
-                                <div className="coin-hover-display-text2">
-                                  <div className="coin-hover-display-text2-upper">
-                                    <CustomOverlay
-                                      position="top"
-                                      className={"coin-hover-tooltip"}
-                                      isIcon={false}
-                                      isInfo={true}
-                                      isText={true}
-                                      text={
-                                        data?.displayAddress || data?.address
-                                      }
-                                    >
-                                      <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                        Other
-                                      </span>
-                                    </CustomOverlay>
-                                    <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
-                                      {(
-                                        (100 * totalCount) /
-                                        pieSectionDataEnabled.count
-                                      ).toFixed(2) + "%"}
-                                    </span>
-                                  </div>
-                                  <div className="coin-hover-display-text2-lower">
-                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
-                                      {numToCurrency(totalCount)}
-                                    </span>
-
-                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
-                                      {pieSectionDataEnabled.assetCode}
-                                    </span>
-
-                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
-                                      {numToCurrency(
-                                        totalCount *
-                                          this.props.portfolioState
-                                            .coinRateList[
-                                            this.state.selectedSection[0]
-                                              .assetId
-                                          ].quote?.USD.price *
-                                          currency?.rate
-                                      ) || DEFAULT_PRICE}
-                                    </span>
-                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
-                                      {CurrencyType(true)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          }
-                        })}
-                    </div>
                   </div>
-                ) : null}
-              </Col>
-            </Row>
-          </>
-        </div>
-      </>
+                  <div
+                    style={
+                      chainList.length > 1
+                        ? {
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                            alignItem: "center",
+                          }
+                        : {
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                            alignItem: "center",
+                          }
+                    }
+                  >
+                    {chainList &&
+                      chainList.slice(0, 3).map((data, index) => {
+                        // console.log(data);
+                        let isQuote =
+                          this.state.assetPrice &&
+                          this.state.assetPrice[
+                            this.state.selectedSection[0].assetId
+                          ].quote;
+                        if (index < 2) {
+                          return (
+                            <>
+                              <div
+                                style={{
+                                  width: "1px",
+                                  height: "6.8rem",
+                                  backgroundColor: "#E5E5E6",
+                                }}
+                              ></div>
+                              <div className="coin-hover-display-text2">
+                                <div className="coin-hover-display-text2-upper">
+                                  <CustomOverlay
+                                    position="top"
+                                    className={"coin-hover-tooltip"}
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={data?.displayAddress || data?.address}
+                                  >
+                                    <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                      {data?.protocalName ||
+                                        data?.nickname ||
+                                        data?.displayAddress ||
+                                        data?.address}
+                                    </span>
+                                  </CustomOverlay>
+                                  <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                    {(
+                                      (100 * data.totalAssetCount) /
+                                      pieSectionDataEnabled.count
+                                    ).toFixed(2) + "%"}
+                                  </span>
+                                </div>
+                                <div className="coin-hover-display-text2-lower">
+                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                    {numToCurrency(data.totalAssetCount)}
+                                  </span>
+
+                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                    {pieSectionDataEnabled.assetCode}
+                                  </span>
+
+                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                    {isQuote == null
+                                      ? DEFAULT_PRICE
+                                      : numToCurrency(
+                                          data.totalAssetCount *
+                                            isQuote?.USD.price *
+                                            currency?.rate
+                                        )}
+                                  </span>
+
+                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                    {CurrencyType(true)}
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <div
+                                style={{
+                                  width: "1px",
+                                  height: "6.8rem",
+                                  backgroundColor: "#E5E5E6",
+                                }}
+                              ></div>
+                              <div className="coin-hover-display-text2">
+                                <div className="coin-hover-display-text2-upper">
+                                  <CustomOverlay
+                                    position="top"
+                                    className={"coin-hover-tooltip"}
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={data?.displayAddress || data?.address}
+                                  >
+                                    <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                      Other
+                                    </span>
+                                  </CustomOverlay>
+                                  <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                    {(
+                                      (100 * totalCount) /
+                                      pieSectionDataEnabled.count
+                                    ).toFixed(2) + "%"}
+                                  </span>
+                                </div>
+                                <div className="coin-hover-display-text2-lower">
+                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                    {numToCurrency(totalCount)}
+                                  </span>
+
+                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                    {pieSectionDataEnabled.assetCode}
+                                  </span>
+
+                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                    {numToCurrency(
+                                      totalCount *
+                                        this.props.portfolioState.coinRateList[
+                                          this.state.selectedSection[0].assetId
+                                        ].quote?.USD.price *
+                                        currency?.rate
+                                    ) || DEFAULT_PRICE}
+                                  </span>
+                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                    {CurrencyType(true)}
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        }
+                      })}
+                  </div>
+                </div>
+              ) : null}
+            </Col>
+          </Row>
+        </>
+      </div>
     );
   }
 }
