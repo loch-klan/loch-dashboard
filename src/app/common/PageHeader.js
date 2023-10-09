@@ -14,6 +14,7 @@ import {
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { ExportIcon, SharePortfolioIconWhite } from "../../assets/images/icons";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -253,33 +254,62 @@ export default function PageHeader(props) {
                 Connect exchange
               </Button>
             )}
-            {props.ShareBtn && (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={"Click to copy link"}
-              >
-                <Button
-                  className="secondary-btn white-bg"
-                  style={!props.btnText ? { marginRight: "0rem" } : {}}
-                  onClick={props.handleShare}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {props.ExportBtn && (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    props.exportBtnTxt ? props.exportBtnTxt : "Click to export"
+                  }
                 >
-                  Share
+                  <div
+                    onClick={props.handleExportModal}
+                    className="pageHeaderShareContainer"
+                    style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
+                  >
+                    <Image className="pageHeaderShareImg" src={ExportIcon} />
+                    <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                      Export
+                    </div>
+                  </div>
+                </CustomOverlay>
+              )}
+              {props.ShareBtn && (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={"Click to copy link"}
+                >
+                  <div
+                    onClick={props.handleShare}
+                    className="pageHeaderShareContainer"
+                  >
+                    <Image
+                      className="pageHeaderShareImg"
+                      src={SharePortfolioIconWhite}
+                    />
+                    <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                      Share
+                    </div>
+                  </div>
+                </CustomOverlay>
+              )}
+              {props.btnText && (
+                <Button
+                  className={`${
+                    props.btnOutline ? "secondary-btn" : "primary-btn"
+                  }`}
+                  onClick={props.handleBtn}
+                >
+                  {props.btnText}
                 </Button>
-              </CustomOverlay>
-            )}
-            {props.btnText && (
-              <Button
-                className={`${
-                  props.btnOutline ? "secondary-btn" : "primary-btn"
-                }`}
-                onClick={props.handleBtn}
-              >
-                {props.btnText}
-              </Button>
-            )}
+              )}
+            </div>
           </div>
         )}
 

@@ -11,8 +11,14 @@ import {
   loadingAnimation,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
+
 import unrecognized from "../../image/unrecognized.svg";
-import { AssetType, DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
+import {
+  AssetType,
+  BASE_URL_S3,
+  DEFAULT_COLOR,
+  DEFAULT_PRICE,
+} from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
 import {
@@ -21,11 +27,15 @@ import {
   HomeRefreshButton,
   NetworkTab,
   PiechartChainName,
+  TopHomeShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import { PieChartWatermarkIcon } from "../../assets/images/icons";
+import {
+  PieChartWatermarkIcon,
+  SharePortfolioIconWhite,
+} from "../../assets/images/icons";
 import {
   getUserWallet,
   getProtocolBalanceApi,
@@ -34,6 +44,7 @@ import {
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
+import { toast } from "react-toastify";
 
 class TopPieChart extends BaseReactComponent {
   constructor(props) {
@@ -734,7 +745,6 @@ class TopPieChart extends BaseReactComponent {
 
     // getUserWallet(this);
   };
-
   render() {
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
@@ -1108,19 +1118,16 @@ class TopPieChart extends BaseReactComponent {
 
     return (
       <div
-        className={`portfolio-over-container ${
-          Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
-        }`}
+        className={`portfolio-over-container p-b-20`}
         style={{
           overflow: "visible",
-          paddingTop: 0,
           paddingBottom: "4rem",
         }}
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
-        {/* <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
+        <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
           Overview
-        </h1> */}
+        </h1>
         <>
           <Row style={{ width: "100%" }}>
             <Col
@@ -1173,14 +1180,14 @@ class TopPieChart extends BaseReactComponent {
                   }}
                 >
                   <h2
-                    className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
+                    className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
                   >
                     <Image src={refreshIcon} />
                     Updated{" "}
                     <span
                       style={{ margin: "0px 3px" }}
-                      className="inter-display-bold f-s-13 lh-15 grey-969"
+                      className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
                       {this.state.timeNumber === null
                         ? "3"
@@ -1195,6 +1202,30 @@ class TopPieChart extends BaseReactComponent {
                       ? ""
                       : "hours ago"}
                   </h2>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={"Click to copy link"}
+                  >
+                    <div
+                      onClick={
+                        this.props.handleShare
+                          ? this.props.handleShare
+                          : () => null
+                      }
+                      className="pageHeaderShareContainer"
+                    >
+                      <Image
+                        className="pageHeaderShareImg"
+                        src={SharePortfolioIconWhite}
+                      />
+                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                        Share
+                      </div>
+                    </div>
+                  </CustomOverlay>
                 </div>
                 <div
                   className={`chain-card ${

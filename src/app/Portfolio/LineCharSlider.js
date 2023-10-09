@@ -1262,7 +1262,7 @@ backdrop-filter: blur(15px);">
               <GraphHeader
                 isLoading={this.props.graphLoading}
                 disableOnLoading={this.props.disableOnLoading}
-                title="Asset value"
+                title="Historic performance"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
