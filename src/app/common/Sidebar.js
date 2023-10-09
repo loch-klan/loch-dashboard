@@ -1974,65 +1974,78 @@ function Sidebar(props) {
                       </li> */}
                   </ul>
                 </nav>
-                <div className="sidebar-footer">
-                  {!isSubmenu.discover && (
-                    <ul>
-                      {lochUser &&
-                      (lochUser.email ||
-                        lochUser.first_name ||
-                        lochUser.last_name) ? (
-                        <div
-                          onClick={handleGoToProfile}
-                          className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
-                        >
-                          <div className="sideBarFooterSignInData">
-                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
-                              <Image
-                                className="sideBarFooterSignInIcon"
-                                src={BlackManIcon}
-                              />
+              </div>
+
+              {/* {props.ownerName &&
+                        <div className="nav-addwallet">
+                            <Image fluid src={bgImg} />
+                            <div className='wallet-info-para'>
+                                <p>Viewing in Demo Mode</p>
+                                <p>Showing sample data based
+                                    on <span>{props.ownerName}</span> wallet</p>
+                                <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
-                            <div className="dotDotText">
-                              {lochUser.first_name || lochUser.last_name
-                                ? `${lochUser.first_name} ${
-                                    lochUser.last_name
-                                      ? lochUser.last_name.slice(0, 1) + "."
-                                      : ""
-                                  }`
-                                : "Signed In"}
-                            </div>
-                          </div>
-                          <span
-                            onClick={handleLeaveChild}
-                            onMouseOver={(e) =>
-                              (e.currentTarget.children[0].src = LeaveBlackIcon)
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.children[0].src = LeaveIcon)
-                            }
-                            className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
-                          >
-                            <Image src={LeaveIcon} />
-                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                              Leave
-                            </Button>
-                          </span>
+                        </div> } */}
+            </div>
+            <div className="sidebar-footer">
+              {!isSubmenu.discover && (
+                <ul>
+                  {lochUser &&
+                  (lochUser.email ||
+                    lochUser.first_name ||
+                    lochUser.last_name) ? (
+                    <div
+                      onClick={handleGoToProfile}
+                      className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
+                    >
+                      <div className="sideBarFooterSignInData">
+                        <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                          <Image
+                            className="sideBarFooterSignInIcon"
+                            src={BlackManIcon}
+                          />
                         </div>
-                      ) : (
-                        <div
-                          onClick={openSigninModal}
-                          className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
-                        >
-                          <div className="sideBarFooterSignInIconContainer">
-                            <Image
-                              className="sideBarFooterSignInIcon"
-                              src={GreyManIcon}
-                            />
-                          </div>
-                          <div>Sign in / up</div>
+                        <div className="dotDotText">
+                          {lochUser.first_name || lochUser.last_name
+                            ? `${lochUser.first_name} ${
+                                lochUser.last_name
+                                  ? lochUser.last_name.slice(0, 1) + "."
+                                  : ""
+                              }`
+                            : "Signed In"}
                         </div>
-                      )}
-                      {/* <li
+                      </div>
+                      <span
+                        onClick={handleLeaveChild}
+                        onMouseOver={(e) =>
+                          (e.currentTarget.children[0].src = LeaveBlackIcon)
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.children[0].src = LeaveIcon)
+                        }
+                        className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
+                      >
+                        <Image src={LeaveIcon} />
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                          Leave
+                        </Button>
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={openSigninModal}
+                      className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="sideBarFooterSignInIconContainer">
+                        <Image
+                          className="sideBarFooterSignInIcon"
+                          src={GreyManIcon}
+                        />
+                      </div>
+                      <div>Sign in / up</div>
+                    </div>
+                  )}
+                  {/* <li
                         style={{
                           justifyContent: "space-between",
                           alignItems: "center",
@@ -2053,7 +2066,7 @@ function Sidebar(props) {
                           </Button>
                         </span> */}
 
-                      {/*                   
+                  {/*                   
                                 <span
                               // onMouseOver={(e) =>
                               //   (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -2072,7 +2085,7 @@ function Sidebar(props) {
                               </Button>
                             </span>
                           */}
-                      {/* <span
+                  {/* <span
                           onMouseOver={(e) =>
                             (e.currentTarget.children[0].src =
                               SharePortfolioIcon)
@@ -2091,7 +2104,7 @@ function Sidebar(props) {
                         </span>
                       </li> */}
 
-                      {/* <li>
+                  {/* <li>
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = ApiBlackIcon)
@@ -2107,7 +2120,7 @@ function Sidebar(props) {
                       </Button>
                     </span>
                   </li> */}
-                      {/* {JSON.parse(localStorage.getItem("lochUser")) && (
+                  {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -2124,9 +2137,9 @@ function Sidebar(props) {
                       Share Profile
                     </Button>
                   </li>
-                )} */}
+                  )} */}
 
-                      {/* {!lochUser && activeTab !== "/home" && (
+                  {/* {!lochUser && activeTab !== "/home" && (
                           <span
                             onMouseOver={(e) =>
                               (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -2144,41 +2157,28 @@ function Sidebar(props) {
                             </Button>
                           </span>
                         )} */}
-                      {/* </li> */}
-                    </ul>
-                  )}
+                  {/* </li> */}
+                </ul>
+              )}
 
-                  <div
-                    className="m-b-12 footer-divOne"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
+              <div
+                className="m-b-12 footer-divOne"
+                style={{ fontStyle: "italic" }}
+              >
+                {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
-                    <p className="inter-display-medium f-s-15 grey-CAC lh-19">
-                      {quotes[currentIndex]}
-                    </p>
-                  </div>
-                  <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo">
-                    {authors[currentIndex]}
-                  </div>
-
-                  {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
-                        <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
-                        <p className='inter-display-semi-bold f-s-15 grey-B0B lh-19'>Sir Francis Drake</p> */}
-                </div>
+                <p className="inter-display-medium f-s-15 grey-CAC lh-19">
+                  {quotes[currentIndex]}
+                </p>
+              </div>
+              <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo">
+                {authors[currentIndex]}
               </div>
 
-              {/* {props.ownerName &&
-                        <div className="nav-addwallet">
-                            <Image fluid src={bgImg} />
-                            <div className='wallet-info-para'>
-                                <p>Viewing in Demo Mode</p>
-                                <p>Showing sample data based
-                                    on <span>{props.ownerName}</span> wallet</p>
-                                <Button className='addwallet-btn'>Add wallet</Button>
-                            </div>
-                        </div> } */}
+              {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                        <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
+                        <p className='inter-display-semi-bold f-s-15 grey-B0B lh-19'>Sir Francis Drake</p> */}
             </div>
           </div>
         </Container>
