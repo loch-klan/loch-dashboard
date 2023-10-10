@@ -810,7 +810,7 @@ class TopCost extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section m-t-80">
+        <div className="cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -823,7 +823,7 @@ class TopCost extends Component {
           ) : (
             ""
           )}
-          <div className="m-t-50 cost-section page">
+          <div className="cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -851,7 +851,7 @@ class TopCost extends Component {
               handleShare={this.handleShare}
               topaccount={true}
             />
-            <div className="m-b-43 cost-table-section">
+            <div className="m-b-30 cost-table-section">
               <div style={{ position: "relative" }}>
                 {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -860,7 +860,7 @@ class TopCost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average Cost Basis"
+                  title="Average cost basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
                   columnList={columnData}
@@ -882,12 +882,12 @@ class TopCost extends Component {
             <div
               style={{
                 position: "relative",
-                minHeight: "66.25rem",
+                // minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
             >
               <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
+                headerTitle="Blockchain fees over time"
                 headerSubTitle="Understand your gas costs"
                 data={
                   this.props.topAccountState.graphfeeValue &&
@@ -927,7 +927,7 @@ class TopCost extends Component {
               id="cp"
               style={{
                 position: "relative",
-                minHeight: "66.5rem",
+                // minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >
@@ -939,7 +939,7 @@ class TopCost extends Component {
             </div> */}
 
               <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
+                headerTitle="Counterparty volume over time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
                   this.props.topAccountState.counterPartyValue &&
@@ -956,7 +956,6 @@ class TopCost extends Component {
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-30"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}

@@ -300,7 +300,10 @@ class AssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal
@@ -332,7 +335,7 @@ class AssetValueGraph extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-            <div className="graph-container" style={{ marginBottom: "5rem" }}>
+            <div className="graph-container">
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"

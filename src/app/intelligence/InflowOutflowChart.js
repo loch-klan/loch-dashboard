@@ -204,7 +204,7 @@ class InflowOutflowChart extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
           />
           <div
-            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5 mb-5"
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
             onClick={this.toggleDust}
           >
             {this.state.isDust === 0

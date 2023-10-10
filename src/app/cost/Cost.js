@@ -1043,7 +1043,7 @@ class Cost extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section m-t-80">
+        <div className="cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -1057,7 +1057,7 @@ class Cost extends Component {
           ) : (
             ""
           )}
-          <div className="m-t-30 cost-section page">
+          <div className="cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1086,7 +1086,7 @@ class Cost extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-            <div className="m-b-43 cost-table-section">
+            <div className="m-b-30 cost-table-section">
               <div style={{ position: "relative" }}>
                 {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -1117,7 +1117,7 @@ class Cost extends Component {
             <div
               style={{
                 position: "relative",
-                minHeight: "66.25rem",
+                // minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
             >
@@ -1161,7 +1161,7 @@ class Cost extends Component {
               id="cp"
               style={{
                 position: "relative",
-                minHeight: "66.5rem",
+                // minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >
@@ -1170,7 +1170,7 @@ class Cost extends Component {
               <p className="inter-display-regular f-s-13 lh-16 black-191">
                 This feature is coming soon.
               </p>
-            </div> */}
+              </div> */}
 
               <BarGraphSection
                 headerTitle="Counterparty volume over time"
@@ -1190,7 +1190,6 @@ class Cost extends Component {
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-30"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}
