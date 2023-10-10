@@ -1134,9 +1134,14 @@ class ExitOverlay extends BaseReactComponent {
                       <div className="export-timeline">
                         <Form onValidSubmit={this.submit}>
                           <div className="timeline-wrapper">
-                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                            <div
+                              style={{
+                                marginRight: "1rem",
+                              }}
+                              className="inter-display-medium f-s-16 lh-19 black-191"
+                            >
                               Export data from{" "}
-                            </span>
+                            </div>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
                               showHiddenError={this.props.showHiddenError}
@@ -1184,9 +1189,15 @@ class ExitOverlay extends BaseReactComponent {
                                 },
                               }}
                             />
-                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                            <div
+                              style={{
+                                marginLeft: "1rem",
+                                marginRight: "1rem",
+                              }}
+                              className="inter-display-medium f-s-16 lh-19 black-191"
+                            >
                               to
-                            </span>
+                            </div>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
                               showHiddenError={this.props.showHiddenError}

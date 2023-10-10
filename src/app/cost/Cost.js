@@ -35,6 +35,9 @@ import {
   CostCostBasisHover,
   CostCurrentValueHover,
   CostGainLossHover,
+  CostAvgCostBasisExport,
+  CostBlockchainFeesExport,
+  CostCounterpartyFeesExport,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
@@ -129,6 +132,10 @@ class Cost extends Component {
     });
   };
   setAverageCostExportModal = () => {
+    CostAvgCostBasisExport({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState(
       {
         exportHeaderTitle: "Download all costs",
@@ -143,6 +150,10 @@ class Cost extends Component {
     );
   };
   setBlockChainFeesExportModal = () => {
+    CostBlockchainFeesExport({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState(
       {
         exportHeaderTitle: "Download all blockchain fees",
@@ -157,6 +168,10 @@ class Cost extends Component {
     );
   };
   setCounterpartyVolumeExportModal = () => {
+    CostCounterpartyFeesExport({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState(
       {
         exportHeaderTitle: "Download counterparty volume",
