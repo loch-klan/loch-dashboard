@@ -31,7 +31,7 @@ class Footer extends Component {
               alignItems: "center",
             }}
           >
-            <Image
+            {/* <Image
               src={mediumIcon}
               style={{
                 width: "2.2rem",
@@ -45,7 +45,7 @@ class Footer extends Component {
                   "noreferrer"
                 );
               }}
-            />
+            /> */}
             <Image
               src={TelegramIcon}
               style={{
