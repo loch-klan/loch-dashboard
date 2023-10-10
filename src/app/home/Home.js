@@ -88,6 +88,7 @@ class Home extends BaseReactComponent {
       onboardingShowEmailPopup: true,
     };
   }
+
   // Onboarding
   onboardingHandleUpgradeModal = () => {
     this.setState(
@@ -180,6 +181,13 @@ class Home extends BaseReactComponent {
         });
       }
     );
+  };
+  onboardingHandleUpdateConnect = (
+    exchanges = this.state.onboardingExchanges
+  ) => {
+    this.setState({
+      onboardingExchanges: exchanges,
+    });
   };
   onboardingOnClose = () => {
     this.setState({ onboardingShowModal: false });
@@ -506,6 +514,9 @@ class Home extends BaseReactComponent {
                   onboardingShowConnectModal={this.onboardingShowConnectModal}
                   onboardingHideConnectModal={this.onboardingHideConnectModal}
                   onboardingHandleBackConnect={this.onboardingHandleBackConnect}
+                  onboardingHandleUpdateConnect={
+                    this.onboardingHandleUpdateConnect
+                  }
                   onboardingHandleStateChange={this.onboardingHandleStateChange}
                   onboardingSwitchSignIn={this.onboardingSwitchSignIn}
                   onboardingOnClose={this.onboardingOnClose}
