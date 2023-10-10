@@ -52,6 +52,7 @@ import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
   TransactionHistoryAssetFilter,
+  TransactionHistoryExport,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
@@ -190,6 +191,10 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
   history = this.props;
   handleExportModal = () => {
+    TransactionHistoryExport({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState({
       exportModal: !this.state.exportModal,
     });

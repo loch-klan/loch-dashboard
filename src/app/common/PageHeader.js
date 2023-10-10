@@ -256,26 +256,16 @@ export default function PageHeader(props) {
             )}
             <div style={{ display: "flex", alignItems: "center" }}>
               {props.ExportBtn && (
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    props.exportBtnTxt ? props.exportBtnTxt : "Click to export"
-                  }
+                <div
+                  onClick={props.handleExportModal}
+                  className="pageHeaderShareContainer"
+                  style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
                 >
-                  <div
-                    onClick={props.handleExportModal}
-                    className="pageHeaderShareContainer"
-                    style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
-                  >
-                    <Image className="pageHeaderShareImg" src={ExportIcon} />
-                    <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
-                      Export
-                    </div>
+                  <Image className="pageHeaderShareImg" src={ExportIcon} />
+                  <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                    Export
                   </div>
-                </CustomOverlay>
+                </div>
               )}
               {props.ShareBtn && (
                 <CustomOverlay
