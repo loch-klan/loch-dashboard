@@ -1370,7 +1370,7 @@ class ConnectModal extends BaseReactComponent {
       });
     }
     let passingData = new URLSearchParams();
-    passingData.append("user_account", theExchangeData);
+    passingData.append("user_account", JSON.stringify(theExchangeData));
 
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {

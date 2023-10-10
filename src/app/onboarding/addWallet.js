@@ -696,7 +696,7 @@ class AddWallet extends BaseReactComponent {
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
-      // this.props.addExchangeTransaction(passingData);
+      // this.props.addExchangeTransaction(JSON.stringify(passingData));
     } else {
       let walletAddress = [];
       let addWallet = this.state.walletInput;
