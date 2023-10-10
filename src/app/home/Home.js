@@ -88,6 +88,7 @@ class Home extends BaseReactComponent {
       onboardingShowEmailPopup: true,
     };
   }
+
   // Onboarding
   onboardingHandleUpgradeModal = () => {
     this.setState(
@@ -180,6 +181,13 @@ class Home extends BaseReactComponent {
         });
       }
     );
+  };
+  onboardingHandleUpdateConnect = (
+    exchanges = this.state.onboardingExchanges
+  ) => {
+    this.setState({
+      onboardingExchanges: exchanges,
+    });
   };
   onboardingOnClose = () => {
     this.setState({ onboardingShowModal: false });
@@ -446,7 +454,7 @@ class Home extends BaseReactComponent {
                 <div className="overlay-bg"></div>
                 <Image src={Banner} className="overlay-banner" />
                 <div className="overLayHeader">
-                  <div
+                  {/* <div
                     onClick={this.goToDiscover}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
                   >
@@ -456,7 +464,7 @@ class Home extends BaseReactComponent {
                       alt="ProfileVectorIcon"
                     />
                     <div>Discover</div>
-                  </div>
+                  </div> */}
                   <div
                     onClick={this.onboardingShowConnectModal}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
@@ -506,6 +514,9 @@ class Home extends BaseReactComponent {
                   onboardingShowConnectModal={this.onboardingShowConnectModal}
                   onboardingHideConnectModal={this.onboardingHideConnectModal}
                   onboardingHandleBackConnect={this.onboardingHandleBackConnect}
+                  onboardingHandleUpdateConnect={
+                    this.onboardingHandleUpdateConnect
+                  }
                   onboardingHandleStateChange={this.onboardingHandleStateChange}
                   onboardingSwitchSignIn={this.onboardingSwitchSignIn}
                   onboardingOnClose={this.onboardingOnClose}

@@ -4138,6 +4138,15 @@ export const IntShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");
 };
+export const HomeShare = ({ session_id, email_address }) => {
+  const event_name = "Home: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
 
 //8.Transaction History: time spent on transaction history page
 export const TimeSpentYieldOpportunities = ({

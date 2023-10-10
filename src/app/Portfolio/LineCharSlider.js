@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -1262,7 +1262,7 @@ backdrop-filter: blur(15px);">
               <GraphHeader
                 isLoading={this.props.graphLoading}
                 disableOnLoading={this.props.disableOnLoading}
-                title="Asset value"
+                title="Historic performance"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"

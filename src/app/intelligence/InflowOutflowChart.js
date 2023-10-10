@@ -182,7 +182,7 @@ class InflowOutflowChart extends BaseReactComponent {
         <PageHeader
           showExplainers
           explainerText="This chart reflects prices at the end of the day, month, or year."
-          title="Price Gauge"
+          title="Price gauge"
           showImg={InflowOutflowIcon}
         />
         <div className="graph-container">

@@ -88,6 +88,8 @@ import {
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import ExitOverlay from "../common/ExitOverlay";
+import { ExportIconWhite } from "../../assets/images/icons";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -106,6 +108,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      exportModal: false,
       goToBottom: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
@@ -116,6 +119,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -180,9 +184,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
+  history = this.props;
+  handleExportModal = () => {
+    this.setState({
+      exportModal: !this.state.exportModal,
+    });
+  };
   timeSearchIsUsed = () => {
     this.setState({ isTimeSearchUsed: true });
   };
@@ -295,6 +306,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1498,27 +1518,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
+                {actualMethod &&
+                (actualMethod === "send" || actualMethod === "receive") ? (
                   <div className="gainLossContainer">
                     <div
                       className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
+                        actualMethod === "send" ? "loss" : "gain"
                       }`}
                     >
                       <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
+                        {actualMethod}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </>
@@ -1549,6 +1587,18 @@ class TransactionHistoryPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.exportModal ? (
+              <ExitOverlay
+                show={this.state.exportModal}
+                onHide={this.handleExportModal}
+                history={this.history}
+                headerTitle={"Download all transactions"}
+                headerSubTitle={"Export your transaction history from Loch"}
+                modalType={"exportModal"}
+                iconImage={ExportIconWhite}
+                selectExportOption={1}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1589,6 +1639,9 @@ class TransactionHistoryPage extends BaseReactComponent {
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
+              ExportBtn
+              exportBtnTxt="Click to export transactions"
+              handleExportModal={this.handleExportModal}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
