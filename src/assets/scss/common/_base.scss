@@ -1671,8 +1671,7 @@ form {
 }
 
 .page {
-  padding-left: 13.4rem;
-  padding-right: 13.2rem;
+  padding: 0 13.4rem;
   overflow-x: hidden;
   width: 100%;
 }
@@ -2359,6 +2358,9 @@ textarea {
   margin-bottom: 1.5rem;
   h4 {
     font-size: 2rem;
-    line-height: 2.4;
+    // line-height: 2.4;
+  }
+  .pageHeaderSubtitles {
+    margin-top: 1.2rem;
   }
 }
