@@ -47,6 +47,7 @@ import {
   createAnonymousUserApi,
   getAllParentChains,
 } from "../onboarding/Api";
+import { addExchangeTransaction } from "../home/Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -77,6 +78,9 @@ class ConnectModal extends BaseReactComponent {
               icon: BinanceIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -159,6 +163,9 @@ class ConnectModal extends BaseReactComponent {
               icon: CoinbaseIcon,
               isActive: false,
               isOAuth: true,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -255,6 +262,9 @@ class ConnectModal extends BaseReactComponent {
               icon: krakanIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -335,6 +345,9 @@ class ConnectModal extends BaseReactComponent {
               icon: KuCoinIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -417,6 +430,9 @@ class ConnectModal extends BaseReactComponent {
               icon: OkxIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -504,6 +520,9 @@ class ConnectModal extends BaseReactComponent {
               icon: BitstampIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -596,6 +615,9 @@ class ConnectModal extends BaseReactComponent {
               icon: BybitIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -689,6 +711,9 @@ class ConnectModal extends BaseReactComponent {
               icon: GeminiIcon,
               isActive: false,
               isOAuth: true,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -757,6 +782,9 @@ class ConnectModal extends BaseReactComponent {
               icon: HuobiIcon,
               isActive: false,
               isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -911,7 +939,6 @@ class ConnectModal extends BaseReactComponent {
 
   // only for home page
   handleUpdateList = () => {
-    // console.log("update exchange status")
     let name = this.state.selection?.name;
     this.setState((prevState) => {
       const connectExchangesList = prevState.connectExchangesList.map(
@@ -1151,7 +1178,34 @@ class ConnectModal extends BaseReactComponent {
           data.append("account_name", this.state.connectionName);
           data.append("api_secret", this.state.apiSecret);
           data.append("api_key", this.state.apiKey);
-
+          if (this.state.connectExchangesList?.length > 0) {
+            this.setState(
+              (prevState) => {
+                const connectExchangesList = prevState.connectExchangesList.map(
+                  (resExchange) => {
+                    if (
+                      resExchange.name?.toLowerCase() ===
+                      this.state.selection?.name?.toLowerCase()
+                    ) {
+                      return {
+                        ...resExchange,
+                        apiKey: this.state.apiKey,
+                        apiSecretKey: this.state.apiSecret,
+                        connectionName: this.state.connectionName,
+                      };
+                    }
+                    return resExchange;
+                  }
+                );
+                return { connectExchangesList };
+              },
+              () => {
+                this.props.onboardingHandleUpdateConnect(
+                  this.state.connectExchangesList
+                );
+              }
+            );
+          }
           if (
             this.state.selection.name.toLowerCase() === "kucoin" ||
             this.state.selection.name.toLowerCase() === "okx"
@@ -1301,8 +1355,26 @@ class ConnectModal extends BaseReactComponent {
   };
 
   handleGo = () => {
+    const theExchangeData = [];
+    if (this.props.exchanges) {
+      this.props.exchanges.forEach((exchangeEle) => {
+        if (exchangeEle.apiKey) {
+          const newObj = {
+            apiKey: exchangeEle.apiKey,
+            apiSecretKey: exchangeEle.apiSecretKey,
+            connectionName: exchangeEle.connectionName,
+            exchangeCode: exchangeEle.code,
+          };
+          theExchangeData.push(newObj);
+        }
+      });
+    }
+    let passingData = new URLSearchParams();
+    passingData.append("user_account", theExchangeData);
+
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
+      this.props.addExchangeTransaction(passingData);
       // already login go to ho page
       //  console.log("user found go to home");
       this.props.history.push("/home");
@@ -1675,6 +1747,7 @@ const mapDispatchToProps = {
   getExchangeBalance,
   setPageFlagDefault,
   createAnonymousUserApi,
+  addExchangeTransaction,
 };
 ConnectModal.propTypes = {};
 
