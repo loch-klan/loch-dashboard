@@ -180,7 +180,10 @@ export const addUpdateAccount = (data, ctx) => {
           isLoadingbtn: false,
         });
         if (ctx.props.ishome) {
-          toast.success(ctx.state.selection.name + " connected to loch");
+          toast.success(
+            ctx.state.selection.name +
+              ` connected to loch. It may take a few seconds for all the transactions to load.`
+          );
           ctx.handleUpdateList();
 
           setTimeout(() => {
@@ -188,7 +191,10 @@ export const addUpdateAccount = (data, ctx) => {
             ctx.handleBack();
           }, 200);
         } else {
-          toast.success(ctx.state.selection.name + " connected to loch");
+          toast.success(
+            ctx.state.selection.name +
+              " connected to loch. It may take a few seconds for all the transactions to load."
+          );
           ctx.state.onHide();
           // window.location.reload();
           setTimeout(() => {
