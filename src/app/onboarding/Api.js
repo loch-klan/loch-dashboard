@@ -14,6 +14,7 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { addLocalWalletList } from "../common/Api";
 export const getAllCoins = (handleShareLinkUser = null) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -325,6 +326,7 @@ export const verifyUser = (ctx, info) => {
           });
           // console.log("addWallet", addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          addLocalWalletList(JSON.stringify(addWallet));
           ctx.props.history.push({
             pathname: "/home",
             state: { addWallet },
@@ -518,6 +520,7 @@ export const createAnonymousUserApi = (
           }
           if (ctx.state.podName) {
             localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+            addLocalWalletList(JSON.stringify(addWallet));
           } else {
             localStorage.setItem(
               "addWallet",
@@ -718,6 +721,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
         newAddWallet.push(obj);
       }
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      addLocalWalletList(JSON.stringify(newAddWallet));
       if (userFunction) {
         setTimeout(() => {
           userFunction();

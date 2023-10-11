@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import { DefiReducer } from "../app/defi";
 import { CohortReducer } from "../app/cohort";
 import { ProfileReducer } from "../app/profile";
-import { CommonReducer } from "../app/common";
+
 import { HomeReducer } from "../app/home";
 import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 import HeaderReducer from "../app//header/HeaderReducer";
@@ -19,6 +19,17 @@ import {
 import LochUserReducer from "../app/profile/LochUserReducer";
 import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
 import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
+import {
+  InflowOutflowSelectedAssetReducer,
+  InflowOutflowChartReducer,
+  InflowOutflowAssetListReducer,
+  InflowOutflowTimeTabReducer,
+  InflowOutflowWalletReducer,
+} from "../app/intelligence/InflowOutflowReducer";
+import {
+  CommonReducer,
+  AddLocalAddWalletReducer,
+} from "../app/common/CommonReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -35,6 +46,12 @@ export default combineReducers({
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
+  InflowOutflowSelectedAssetState: InflowOutflowSelectedAssetReducer,
+  InflowOutflowAssetListState: InflowOutflowAssetListReducer,
+  InflowOutflowChartState: InflowOutflowChartReducer,
+  InflowOutflowWalletState: InflowOutflowWalletReducer,
+  InflowOutflowTimeTabState: InflowOutflowTimeTabReducer,
+  AddLocalAddWalletState: AddLocalAddWalletReducer,
   TopAccountState: TopAccountReducer,
   WatchListState: WatchListReducer,
   TopAccountsInWatchListState: TopAccountsInWatchListReducer,
