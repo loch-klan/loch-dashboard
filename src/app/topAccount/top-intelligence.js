@@ -679,7 +679,7 @@ class TopIntelligence extends Component {
               />
             )}
             <PageHeader
-              title="Intelligence"
+              title="Portfolio"
               subTitle="Automated and personalized financial intelligence"
               showpath={true}
               currentPage={"intelligence"}

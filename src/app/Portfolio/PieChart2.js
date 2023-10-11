@@ -13,13 +13,19 @@ import {
   TruncateText,
 } from "../../utils/ReusableFunctions";
 import unrecognized from "../../image/unrecognized.svg";
-import { AssetType, DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
-import { Col, Image, Row } from "react-bootstrap";
+import {
+  AssetType,
+  BASE_URL_S3,
+  DEFAULT_COLOR,
+  DEFAULT_PRICE,
+} from "../../utils/Constant";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
 import {
   HomeDefiDebt,
   HomeDefiYield,
   HomeRefreshButton,
+  HomeShare,
   NetworkTab,
   PiechartChainName,
 } from "../../utils/AnalyticsFunctions";
@@ -37,7 +43,11 @@ import {
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
-import { PieChartWatermarkIcon } from "../../assets/images/icons";
+import {
+  PieChartWatermarkIcon,
+  SharePortfolioIconWhite,
+} from "../../assets/images/icons";
+import { toast } from "react-toastify";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -1092,12 +1102,26 @@ class PieChart2 extends BaseReactComponent {
     const { pieSectionDataEnabled, currency } = this.state;
     // console.log("chainlist", chainList);
     // console.log("uniquelist", uniqueList);
+    const handleShare = () => {
+      let lochUser = getCurrentUser().id;
+      let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let slink =
+        userWallet?.length === 1
+          ? userWallet[0].displayAddress || userWallet[0].address
+          : lochUser;
+      let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      navigator.clipboard.writeText(shareLink);
+      toast.success("Link copied");
+
+      HomeShare({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    };
 
     return (
       <div
-        className={`portfolio-over-container ${
-          Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
-        }`}
+        className={`portfolio-over-container p-b-20`}
         style={{
           overflow: "visible",
         }}
@@ -1158,14 +1182,14 @@ class PieChart2 extends BaseReactComponent {
                   }}
                 >
                   <h2
-                    className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
+                    className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
                   >
                     <Image src={refreshIcon} />
                     Updated{" "}
                     <span
                       style={{ margin: "0px 3px" }}
-                      className="inter-display-bold f-s-13 lh-15 grey-969"
+                      className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
                       {this.state.timeNumber === null
                         ? "3"
@@ -1180,6 +1204,26 @@ class PieChart2 extends BaseReactComponent {
                       ? ""
                       : "hours ago"}
                   </h2>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={"Click to copy link"}
+                  >
+                    <div
+                      onClick={handleShare}
+                      className="pageHeaderShareContainer"
+                    >
+                      <Image
+                        className="pageHeaderShareImg"
+                        src={SharePortfolioIconWhite}
+                      />
+                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                        Share
+                      </div>
+                    </div>
+                  </CustomOverlay>
                 </div>
                 <div
                   className={`chain-card ${
@@ -1606,7 +1650,8 @@ class PieChart2 extends BaseReactComponent {
                               className="inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent"
                               style={{
                                 color:
-                                  pieSectionDataEnabled.borderColor == "#ffffff"
+                                  pieSectionDataEnabled.borderColor ===
+                                  "#ffffff"
                                     ? "#19191A"
                                     : pieSectionDataEnabled.borderColor,
                               }}

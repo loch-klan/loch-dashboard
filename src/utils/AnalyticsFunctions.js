@@ -4138,6 +4138,15 @@ export const IntShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");
 };
+export const HomeShare = ({ session_id, email_address }) => {
+  const event_name = "Home: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
 
 //8.Transaction History: time spent on transaction history page
 export const TimeSpentYieldOpportunities = ({
@@ -4179,6 +4188,14 @@ export const TransactionHistoryShare = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Transaction history: share");
+};
+export const TransactionHistoryExport = ({ session_id, email_address }) => {
+  const event_name = "Transaction history: export";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 export const YieldOpportunitiesShare = ({ session_id, email_address }) => {
   const event_name = "Yield opportunities: share";
@@ -4508,6 +4525,30 @@ export const CostShare = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
+};
+export const CostAvgCostBasisExport = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average Cost Basis: export";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostBlockchainFeesExport = ({ session_id, email_address }) => {
+  const event_name = "Costs: blockchain fees: export";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CostCounterpartyFeesExport = ({ session_id, email_address }) => {
+  const event_name = "Costs: counterparty fees: export";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Costs: Add wallet - done
