@@ -22,8 +22,10 @@
       }
       .breadcrumb-item {
         padding-left: 1.4rem;
-        text-transform: capitalize;
         cursor: pointer;
+        &:first-letter {
+          text-transform: capitalize;
+        }
         a {
           color: $grey-ADA;
 
