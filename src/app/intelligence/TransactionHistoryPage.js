@@ -52,6 +52,7 @@ import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
   TransactionHistoryAssetFilter,
+  TransactionHistoryExport,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
@@ -88,6 +89,8 @@ import {
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import ExitOverlay from "../common/ExitOverlay";
+import { ExportIconWhite } from "../../assets/images/icons";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -106,6 +109,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      exportModal: false,
       goToBottom: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
@@ -183,6 +187,16 @@ class TransactionHistoryPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
+  history = this.props;
+  handleExportModal = () => {
+    TransactionHistoryExport({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      exportModal: !this.state.exportModal,
+    });
+  };
   timeSearchIsUsed = () => {
     this.setState({ isTimeSearchUsed: true });
   };
@@ -1549,6 +1563,18 @@ class TransactionHistoryPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.exportModal ? (
+              <ExitOverlay
+                show={this.state.exportModal}
+                onHide={this.handleExportModal}
+                history={this.history}
+                headerTitle={"Download all transactions"}
+                headerSubTitle={"Export your transaction history from Loch"}
+                modalType={"exportModal"}
+                iconImage={ExportIconWhite}
+                selectExportOption={1}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1589,6 +1615,9 @@ class TransactionHistoryPage extends BaseReactComponent {
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
+              ExportBtn
+              exportBtnTxt="Click to export transactions"
+              handleExportModal={this.handleExportModal}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />

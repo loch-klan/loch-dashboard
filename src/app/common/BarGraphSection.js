@@ -260,6 +260,9 @@ class BarGraphSection extends Component {
       >
         {headerTitle || headerSubTitle ? (
           <GraphHeader
+            ExportBtn={this.props.ExportBtn}
+            exportBtnTxt={this.props.exportBtnTxt}
+            handleExportModal={this.props.handleExportModal}
             isLoading={this.props.isLoading}
             disableOnLoading={this.props.disableOnLoading}
             title={headerTitle}

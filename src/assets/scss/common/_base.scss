@@ -2229,7 +2229,9 @@ textarea {
     filter: brightness(1);
   }
 }
-
+.footerText {
+  text-align: justify;
+}
 .page-search-wrapper {
   padding: 0.4rem 0.4rem 0.1rem;
   // margin-right: 1.6rem;

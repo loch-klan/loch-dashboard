@@ -760,7 +760,7 @@ class Intelligence extends Component {
             )}
             <div className="m-b-32">
               <PageHeader
-                title="Intelligence"
+                title="Portfolio"
                 subTitle="Automated and personalized financial intelligence"
                 // btnText={"Add wallet"}
                 // handleBtn={this.handleAddModal}

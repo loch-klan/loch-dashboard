@@ -9,6 +9,8 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
 import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { ExportIcon } from "../../assets/images/icons";
 export const GraphHeader = (props) => {
   const [showDust, setDust] = useState(false);
 
@@ -34,38 +36,60 @@ export const GraphHeader = (props) => {
     <div className="graph-header">
       <div className="header">
         <div>
-          <h4
-            className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
-              props.handleClick && !(props.disableOnLoading && props.isLoading)
-                ? "active-pointer"
-                : ""
-            }`}
+          <div
             style={{
-              opacity: props.disableOnLoading && props.isLoading ? 0.5 : 1,
-              cursor:
-                props.disableOnLoading && props.isLoading
-                  ? "default"
-                  : "pointer",
-            }}
-            onClick={handleClickPass}
-            onMouseEnter={() => {
-              if (props.isAnalytics === "Asset Value") {
-                TitleAssetValueHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
-              }
-
-              if (props.isAnalytics === "Transaction Table") {
-                TransactionHistoryHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
-              }
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
-          </h4>
+            <h4
+              className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
+                props.handleClick &&
+                !(props.disableOnLoading && props.isLoading)
+                  ? "active-pointer"
+                  : ""
+              }`}
+              style={{
+                opacity: props.disableOnLoading && props.isLoading ? 0.5 : 1,
+                cursor:
+                  props.disableOnLoading && props.isLoading
+                    ? "default"
+                    : "pointer",
+              }}
+              onClick={handleClickPass}
+              onMouseEnter={() => {
+                if (props.isAnalytics === "Asset Value") {
+                  TitleAssetValueHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }
+
+                if (props.isAnalytics === "Transaction Table") {
+                  TransactionHistoryHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }
+              }}
+            >
+              {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
+            </h4>
+            {props.ExportBtn ? (
+              <div
+                onClick={props.handleExportModal}
+                className="pageHeaderShareContainer"
+                style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
+              >
+                <Image className="pageHeaderShareImg" src={ExportIcon} />
+                <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                  Export
+                </div>
+              </div>
+            ) : null}
+          </div>
+
           <p
             className={`inter-display-medium f-s-13 lh-16 grey-ADA ${
               props.noSubtitleBottomPadding ? "" : "m-b-26"

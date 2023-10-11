@@ -6,12 +6,18 @@ import moment from "moment";
 // TruncateText
 
 export const ShorterText = (string) => {
+  if (string === undefined || string === null) {
+    return "";
+  }
   if (string.length > 15) {
     return string.substring(0, 15) + "...";
   }
   return string;
 };
 export const TruncateText = (string) => {
+  if (string === undefined || string === null) {
+    return "";
+  }
   if (string.length > 3) {
     return string.substring(0, 4);
   }
@@ -75,6 +81,9 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 };
 
 export const numToCurrency = (num) => {
+  if (num === undefined || num === null) {
+    return "";
+  }
   num = num.toString().replace(/[^0-9.]/g, "");
 
   if (num < 1000) {
