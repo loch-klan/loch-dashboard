@@ -476,7 +476,16 @@ class InsightsPage extends Component {
                   this.state.updatedInsightList.length > 0 ? (
                   this.state.updatedInsightList?.map((insight, key) => {
                     return (
-                      <div className="insights-card" key={key}>
+                      <div
+                        style={{
+                          marginBottom:
+                            key === this.state.updatedInsightList.length - 1
+                              ? "1rem"
+                              : "",
+                        }}
+                        className="insights-card"
+                        key={key}
+                      >
                         <Image
                           src={
                             insight.insight_type === InsightType.COST_REDUCTION

@@ -8,6 +8,9 @@ import { TimeFilterInflowOutflowType } from "../../utils/Constant";
 import {
   getInflowsAndOutflowsGraphDataApi,
   getInflowsAndOutflowsAssetsApi,
+  setInflowsAndOutflowsTimeTab,
+  setInflowsAndOutflowsWalletList,
+  setSelectedInflowOutflowsAssetBlank,
 } from "./Api";
 import "./intelligenceScss/_inflowOutflowChart.scss";
 import InflowOutflowChartSliderContainer from "./InflowOutflowChartSliderContainer";
@@ -21,26 +24,90 @@ class InflowOutflowChart extends BaseReactComponent {
       inflowsOutflowsList: [],
       assetList: [],
       isDust: 1,
+      callApi: false,
     };
   }
   componentDidMount() {
     let addressList = [];
     const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
     userWalletList?.map((wallet) => addressList.push(wallet.address));
+    const tempAdd = JSON.stringify(addressList);
     let data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(addressList));
-    this.setState({ graphLoading: true, selectedAsset: "" }, () => {
-      this.props.getInflowsAndOutflowsAssetsApi(data, this);
-    });
+    data.append("wallet_addresses", tempAdd);
+
+    if (
+      this.props.InflowOutflowSelectedAssetState === null ||
+      this.props.InflowOutflowChartState.length === 0 ||
+      this.props.InflowOutflowAssetListState.length === 0 ||
+      this.props.InflowOutflowWalletState !== tempAdd
+    ) {
+      this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+        this.props.setSelectedInflowOutflowsAssetBlank();
+        this.props.getInflowsAndOutflowsAssetsApi(data, this);
+        this.setState({
+          callApi: true,
+        });
+      });
+    } else {
+      this.setState({
+        selectedAsset: this.props.InflowOutflowSelectedAssetState,
+        inflowsOutflowsList: this.props.InflowOutflowChartState,
+        assetList: this.props.InflowOutflowAssetListState,
+        timeTab: this.props.InflowOutflowTimeTabState,
+        graphLoading: false,
+      });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.userWalletList !== this.props.userWalletList) {
+    if (
+      prevProps.InflowOutflowSelectedAssetState !==
+      this.props.InflowOutflowSelectedAssetState
+    ) {
+      this.setState({
+        selectedAsset: this.props.InflowOutflowSelectedAssetState,
+      });
+    }
+    if (
+      prevProps.InflowOutflowChartState !== this.props.InflowOutflowChartState
+    ) {
+      this.setState({
+        inflowsOutflowsList: this.props.InflowOutflowChartState,
+        graphLoading: false,
+      });
+    }
+    if (
+      prevProps.InflowOutflowAssetListState !==
+      this.props.InflowOutflowAssetListState
+    ) {
       let addressList = [];
       const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
       userWalletList?.map((wallet) => addressList.push(wallet.address));
+      const tempAdd = JSON.stringify(addressList);
+      this.props.setInflowsAndOutflowsWalletList(tempAdd);
+      this.setState({
+        assetList: this.props.InflowOutflowAssetListState,
+      });
+    }
+    if (
+      prevProps.InflowOutflowTimeTabState !==
+      this.props.InflowOutflowTimeTabState
+    ) {
+      this.setState({
+        timeTab: this.props.InflowOutflowTimeTabState,
+      });
+    }
+    if (
+      prevProps.userWalletList !== this.props.userWalletList ||
+      prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
+    ) {
+      let addressList = [];
+      const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      userWalletList?.map((wallet) => addressList.push(wallet.address));
+      const tempAdd = JSON.stringify(addressList);
       let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("wallet_addresses", tempAdd);
       this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+        this.props.setSelectedInflowOutflowsAssetBlank();
         this.props.getInflowsAndOutflowsAssetsApi(data, this);
       });
     }
@@ -49,14 +116,20 @@ class InflowOutflowChart extends BaseReactComponent {
       prevState.selectedAsset !== this.state.selectedAsset ||
       prevState.isDust !== this.state.isDust
     ) {
-      let groupByValue = TimeFilterInflowOutflowType.getText(
-        this.state.timeTab
-      );
-      if (groupByValue) {
-        this.makeApiCall();
+      if (this.state.callApi) {
+        let groupByValue = TimeFilterInflowOutflowType.getText(
+          this.state.timeTab
+        );
+        if (groupByValue) {
+          this.makeApiCall();
+        } else {
+          this.setState({
+            graphLoading: false,
+          });
+        }
       } else {
         this.setState({
-          graphLoading: false,
+          callApi: true,
         });
       }
     }
@@ -84,9 +157,7 @@ class InflowOutflowChart extends BaseReactComponent {
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);
   };
   handleGroupBy = (value) => {
-    this.setState({
-      timeTab: value,
-    });
+    this.props.setInflowsAndOutflowsTimeTab(value);
   };
   onAssetSelect = (selectedItem) => {
     this.setState({
@@ -133,7 +204,7 @@ class InflowOutflowChart extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
           />
           <div
-            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5 mb-5"
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
             onClick={this.toggleDust}
           >
             {this.state.isDust === 0
@@ -149,9 +220,18 @@ class InflowOutflowChart extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  InflowOutflowSelectedAssetState: state.InflowOutflowSelectedAssetState,
+  InflowOutflowAssetListState: state.InflowOutflowAssetListState,
+  InflowOutflowChartState: state.InflowOutflowChartState,
+  InflowOutflowTimeTabState: state.InflowOutflowTimeTabState,
+  AddLocalAddWalletState: state.AddLocalAddWalletState,
+  InflowOutflowWalletState: state.InflowOutflowWalletState,
 });
 const mapDispatchToProps = {
   getInflowsAndOutflowsGraphDataApi,
   getInflowsAndOutflowsAssetsApi,
+  setInflowsAndOutflowsTimeTab,
+  setInflowsAndOutflowsWalletList,
+  setSelectedInflowOutflowsAssetBlank,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InflowOutflowChart);

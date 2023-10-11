@@ -12,7 +12,7 @@ import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 import moment from "moment";
 import { getAllCounterFeeApi } from "../cost/Api";
 import { getAllInsightsApi, getProfitAndLossApi } from "../intelligence/Api";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, addLocalWalletList, getUser } from "../common/Api";
 import { GET_DEFI_DATA } from "../defi/ActionTypes";
 import {
   TOP_DEFAULT_VALUES,
@@ -323,6 +323,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
           }
           // console.log('addWallet',addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          addLocalWalletList(JSON.stringify(addWallet));
           // sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           ctx.setState({
             // isLoading: false,

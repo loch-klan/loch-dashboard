@@ -1,7 +1,7 @@
 import { receivedPosts } from "./HomeAction";
-import { preLoginInstance } from "../../utils";
+import { postLoginInstance, preLoginInstance } from "../../utils";
 
-const fetchPosts = (cityName) => {
+export const fetchPosts = (cityName) => {
   return function (dispatch, getState) {
     // dispatch(requestPosts());
     console.log("clicked", getState());
@@ -15,5 +15,17 @@ const fetchPosts = (cityName) => {
       });
   };
 };
+export const addExchangeTransaction = (data) => {
+  return async function () {
+    console.log("add-exchange-transactions called");
+    postLoginInstance
 
-export default fetchPosts;
+      .post("wallet/user-wallet/add-exchange-transactions", data)
+      .then((response) => {
+        console.log("add-exchange-transactions response is ", response);
+      })
+      .catch((error) => {
+        console.log("add-exchange-transactions error is ", error);
+      });
+  };
+};

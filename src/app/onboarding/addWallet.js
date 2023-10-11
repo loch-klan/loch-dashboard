@@ -15,7 +15,7 @@ import {
   getAllCoins,
   detectCoin,
 } from "./Api";
-import { detectNameTag } from "../common/Api";
+import { addLocalWalletList, detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -39,6 +39,7 @@ import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
+// import { addExchangeTransaction } from "../home/Api";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -676,9 +677,26 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
+    // const theExchangeData = [];
+    // if (this.props.exchanges) {
+    //   this.props.exchanges.forEach((exchangeEle) => {
+    //     if (exchangeEle.apiKey) {
+    //       const newObj = {
+    //         apiKey: exchangeEle.apiKey,
+    //         apiSecretKey: exchangeEle.apiSecretKey,
+    //         connectionName: exchangeEle.connectionName,
+    //         exchangeCode: exchangeEle.code,
+    //       };
+    //       theExchangeData.push(newObj);
+    //     }
+    //   });
+    // }
+    // let passingData = new URLSearchParams();
+    // passingData.append("user_account", theExchangeData);
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
+      // this.props.addExchangeTransaction(JSON.stringify(passingData));
     } else {
       let walletAddress = [];
       let addWallet = this.state.walletInput;
@@ -806,6 +824,7 @@ class AddWallet extends BaseReactComponent {
         this.props.setHeaderReducer(addWallet);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
+      addLocalWalletList(JSON.stringify(walletList));
 
       // this.state?.onHide();
       const data = new URLSearchParams();
@@ -1363,6 +1382,7 @@ const mapDispatchToProps = {
   setHeaderReducer,
   updateUserWalletApi,
   GetAllPlan,
+  // addExchangeTransaction,
 };
 AddWallet.propTypes = {};
 

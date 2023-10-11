@@ -304,12 +304,14 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.walletState !== this.props.walletState) {
+    if (
+      prevProps.walletState?.walletList !== this.props.walletState?.walletList
+    ) {
       this.callApi();
     }
-    if (prevProps.yieldPoolState !== this.props.yieldPoolState) {
-      this.callApi();
-    }
+    // if (prevProps.yieldPoolState !== this.props.yieldPoolState) {
+    //   this.callApi();
+    // }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -390,25 +392,25 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
 
     // add wallet
-    if (prevState.apiResponse != this.state.apiResponse) {
-      const address = this.state.walletList?.map((wallet) => {
-        return wallet.address;
-      });
-      const cond = [
-        {
-          key: SEARCH_BY_WALLET_ADDRESS_IN,
-          value: address,
-        },
-      ];
-      this.props.getFilters();
-      this.props.getAllCoins();
-      this.setState({
-        condition: cond ? cond : [],
-        apiResponse: false,
-      });
+    // if (prevState.apiResponse != this.state.apiResponse) {
+    //   const address = this.state.walletList?.map((wallet) => {
+    //     return wallet.address;
+    //   });
+    //   const cond = [
+    //     {
+    //       key: SEARCH_BY_WALLET_ADDRESS_IN,
+    //       value: address,
+    //     },
+    //   ];
+    //   this.props.getFilters();
+    //   this.props.getAllCoins();
+    //   this.setState({
+    //     condition: cond ? cond : [],
+    //     apiResponse: false,
+    //   });
 
-      this.callApi(this.state.currentPage || START_INDEX);
-    }
+    //   this.callApi(this.state.currentPage || START_INDEX);
+    // }
   }
 
   // For add new address

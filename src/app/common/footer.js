@@ -9,9 +9,9 @@ class Footer extends Component {
   render() {
     return (
       <>
-        <hr />
+        <hr className="m-t-30 m-b-30" />
         <div
-          className="m-t-30 m-b-28"
+          className="m-b-30"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -19,7 +19,7 @@ class Footer extends Component {
           }}
         >
           <div style={{ width: "50%" }}>
-            <p className="inter-display-medium f-s-15 lh-19 grey-ADA">
+            <p className="inter-display-medium f-s-15 grey-ADA">
               Loch, Inc. © {moment().format("YYYY")}
             </p>
           </div>
@@ -31,7 +31,7 @@ class Footer extends Component {
               alignItems: "center",
             }}
           >
-            <Image
+            {/* <Image
               src={mediumIcon}
               style={{
                 width: "2.2rem",
@@ -45,7 +45,7 @@ class Footer extends Component {
                   "noreferrer"
                 );
               }}
-            />
+            /> */}
             <Image
               src={TelegramIcon}
               style={{
@@ -77,7 +77,7 @@ class Footer extends Component {
             />
           </div>
         </div>
-        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA">
+        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA text-center">
           The content made available on this web page and our mobile
           applications ("Platform") is for informational purposes only. You
           should not construe any such information or other material as
