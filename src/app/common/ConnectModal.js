@@ -1200,9 +1200,13 @@ class ConnectModal extends BaseReactComponent {
                 return { connectExchangesList };
               },
               () => {
-                this.props.onboardingHandleUpdateConnect(
-                  this.state.connectExchangesList
-                );
+                if (this.props.onboardingHandleUpdateConnect) {
+                  this.props.onboardingHandleUpdateConnect(
+                    this.state.connectExchangesList
+                  );
+                } else {
+                  this.handleSubmitAfterWelcomePage();
+                }
               }
             );
           }
@@ -1382,6 +1386,25 @@ class ConnectModal extends BaseReactComponent {
       //  console.log("user not found create user then go to home");
       this.onValidSubmit(true);
     }
+  };
+  handleSubmitAfterWelcomePage = () => {
+    const theExchangeData = [];
+    if (this.state.connectExchangesList) {
+      this.state.connectExchangesList.forEach((exchangeEle) => {
+        if (exchangeEle.apiKey) {
+          const newObj = {
+            apiKey: exchangeEle.apiKey,
+            apiSecretKey: exchangeEle.apiSecretKey,
+            connectionName: exchangeEle.connectionName,
+            exchangeCode: exchangeEle.code,
+          };
+          theExchangeData.push(newObj);
+        }
+      });
+    }
+    let passingData = new URLSearchParams();
+    passingData.append("user_account", JSON.stringify(theExchangeData));
+    this.props.addExchangeTransaction(passingData);
   };
 
   render() {
