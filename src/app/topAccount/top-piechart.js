@@ -10,6 +10,7 @@ import {
   lightenDarkenColor,
   loadingAnimation,
   numToCurrency,
+  TruncateText,
 } from "../../utils/ReusableFunctions";
 
 import unrecognized from "../../image/unrecognized.svg";
@@ -1740,7 +1741,7 @@ class TopPieChart extends BaseReactComponent {
                                       {data?.protocalName ||
                                         data?.nickname ||
                                         data?.displayAddress ||
-                                        data?.address}
+                                        TruncateText(data?.address)}
                                     </span>
                                   </CustomOverlay>
                                   <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
