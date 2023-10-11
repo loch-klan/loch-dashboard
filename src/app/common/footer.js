@@ -77,7 +77,7 @@ class Footer extends Component {
             />
           </div>
         </div>
-        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA text-center">
+        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText">
           The content made available on this web page and our mobile
           applications ("Platform") is for informational purposes only. You
           should not construe any such information or other material as
