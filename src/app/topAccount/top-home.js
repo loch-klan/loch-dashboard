@@ -1725,7 +1725,7 @@ class TopPortfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Net Flows"
+                        headerTitle="Net flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {
