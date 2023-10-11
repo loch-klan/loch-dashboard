@@ -1103,7 +1103,7 @@ function Sidebar(props) {
                                 to="/decentralized-finance"
                                 activeclassname="active"
                               >
-                                DeFi balance sheet
+                                Balance sheet
                               </NavLink>
                             </li>
                             <li className="sub-menu">

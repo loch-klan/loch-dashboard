@@ -142,7 +142,12 @@ class TopIntelligence extends Component {
         const id = this.props.location.hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView();
+          window.scrollTo({
+            top:
+              element.getBoundingClientRect().top -
+              document.body.getBoundingClientRect().top -
+              15,
+          });
         }
       }, 0);
     } else {
@@ -238,7 +243,12 @@ class TopIntelligence extends Component {
           const id = this.props.location.hash.replace("#", "");
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView();
+            window.scrollTo({
+              top:
+                element.getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                15,
+            });
           }
         }, 0);
       } else {
@@ -669,7 +679,7 @@ class TopIntelligence extends Component {
               />
             )}
             <PageHeader
-              title="Intelligence"
+              title="Portfolio"
               subTitle="Automated and personalized financial intelligence"
               showpath={true}
               currentPage={"intelligence"}
@@ -680,106 +690,12 @@ class TopIntelligence extends Component {
             />
 
             <div className="portfolio-bar-graph" id="netflow">
-              <PageHeader title="Net Flows" showImg={eyeIcon} />
+              <PageHeader
+                showNetflowExplainers
+                title="Net flows"
+                showImg={eyeIcon}
+              />
               {/* Netflow Info Start */}
-
-              <Row
-                style={
-                  this.state.RightShow || this.state.LeftShow
-                    ? { marginBottom: "2.6rem" }
-                    : {}
-                }
-              >
-                {/* 1st */}
-                {this.state.LeftShow && (
-                  <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
-                    <div className="InfoCard">
-                      <Image
-                        src={NetflowClose}
-                        className="CloseBtn"
-                        onClick={this.LeftClose}
-                      />
-                      <div className="m-b-30 InfoItem">
-                        <div className="title">
-                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                            Inflows
-                          </h3>
-                        </div>
-                        <div className="description">
-                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                            sum total of all assets received by your portfolio
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="m-b-30 InfoItem">
-                        <div className="title">
-                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                            Outflows
-                          </h3>
-                        </div>
-                        <div className="description">
-                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                            sum total of all assets and fees sent out by your
-                            portfolio
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="InfoItem">
-                        <div className="title">
-                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                            Net
-                          </h3>
-                        </div>
-                        <div className="description">
-                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                            outflows - inflows
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                )}
-
-                {/* Second */}
-                {this.state.RightShow && (
-                  <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
-                    <div className="InfoCardRight">
-                      <Image
-                        src={NetflowClose}
-                        className="CloseBtn"
-                        onClick={this.RightClose}
-                      />
-                      <div className="imageSection">
-                        <Image src={NetflowImg} />
-                        <h3 className="inter-display-bold f-s-10 lh-12 black-191 m-t-12 explainer-text">
-                          EXPLAINER
-                        </h3>
-                      </div>
-
-                      <div className="RightSection">
-                        <h3
-                          className="inter-display-medium f-s-16 lh-19 black-191 m-b-12"
-                          // style={{ width: "75px" }}
-                        >
-                          Inflows and Outflows might appear inflated if the same
-                          funds went in and out of a single wallet multiple
-                          times.
-                        </h3>
-                        <p
-                          className="inter-display-medium f-s-13 lh-15 grey-969"
-                          // style={{ width: "215px" }}
-                        >
-                          This chart is most accurate when all your wallet
-                          addresses are added to Loch. This way we don't double
-                          count funds.
-                        </p>
-                      </div>
-                    </div>
-                  </Col>
-                )}
-              </Row>
 
               {/* Netflow Info End */}
 

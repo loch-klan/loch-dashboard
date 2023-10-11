@@ -508,7 +508,7 @@ class Defi extends Component {
               />
             ) : null}
             <PageHeader
-              title="Decentralized Finance"
+              title="Decentralized finance"
               subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
