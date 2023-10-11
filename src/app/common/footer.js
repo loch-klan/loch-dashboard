@@ -9,9 +9,9 @@ class Footer extends Component {
   render() {
     return (
       <>
-        <hr />
+        <hr className="m-t-30 m-b-30" />
         <div
-          className="m-t-30 m-b-28"
+          className="m-b-30"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -19,7 +19,7 @@ class Footer extends Component {
           }}
         >
           <div style={{ width: "50%" }}>
-            <p className="inter-display-medium f-s-15 lh-19 grey-ADA">
+            <p className="inter-display-medium f-s-15 grey-ADA">
               Loch, Inc. © {moment().format("YYYY")}
             </p>
           </div>

@@ -744,7 +744,7 @@ class Intelligence extends Component {
             </div>
           </div>
         </div>
-        <div className="intelligence-page-section m-t-80">
+        <div className="intelligence-page-section">
           <div className="intelligence-section page">
             {this.state.upgradeModal && (
               <UpgradeModal
@@ -758,17 +758,19 @@ class Intelligence extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-            <PageHeader
-              title="Portfolio"
-              subTitle="Automated and personalized financial intelligence"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              ShareBtn={true}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
+            <div className="m-b-32">
+              <PageHeader
+                title="Portfolio"
+                subTitle="Automated and personalized financial intelligence"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                ShareBtn={true}
+                handleShare={this.handleShare}
+                updateTimer={this.updateTimer}
+              />
+            </div>
 
-            <div className="insights-image m-b-60">
+            <div className="insights-image m-b-32">
               <PageHeader
                 title="Insights"
                 showImg={insight}
@@ -795,7 +797,13 @@ class Intelligence extends Component {
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         return (
-                          <div className="insights-card" key={key}>
+                          <div
+                            style={{
+                              marginBottom: key === 1 ? "0rem" : "",
+                            }}
+                            className="insights-card"
+                            key={key}
+                          >
                             <Image
                               src={
                                 insight.insight_type ===
