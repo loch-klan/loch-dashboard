@@ -1205,6 +1205,7 @@ class Cost extends Component {
                 </p>
                 </div> */}
                 <TransactionTable
+                  noSubtitleBottomPadding
                   title="Unrealized gains"
                   subTitle="Understand your unrealized gains per token"
                   tableData={tableData}

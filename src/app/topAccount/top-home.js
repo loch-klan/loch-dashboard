@@ -1699,6 +1699,7 @@ class TopPortfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Unrealized gains"
@@ -1783,6 +1784,8 @@ class TopPortfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                    noSubtitleBottomPadding
+
                         disableOnLoading
                         isMiniversion
                         title="Transactions"

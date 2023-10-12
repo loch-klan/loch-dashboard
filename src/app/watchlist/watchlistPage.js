@@ -914,6 +914,7 @@ class WatchListPage extends BaseReactComponent {
                 ) : (
                   <>
                     <TransactionTable
+                      noSubtitleBottomPadding
                       showHeaderOnEmpty
                       tableData={this.state.tableData}
                       columnList={columnList}
