@@ -39,6 +39,7 @@ import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
+import { addExchangeTransaction } from "../home/Api";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -47,6 +48,7 @@ class AddWallet extends BaseReactComponent {
       signIn: false,
       addButtonVisible: false,
       pageName: "Landing Page",
+      disableGoBtn: false,
       walletInput: props?.walletAddress
         ? props.walletAddress
         : [
@@ -676,9 +678,31 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
+    this.setState({
+      disableGoBtn: true,
+    });
+    const theExchangeData = [];
+    if (this.props.exchanges) {
+      this.props.exchanges.forEach((exchangeEle) => {
+        if (exchangeEle.apiKey) {
+          const newObj = {
+            apiKey: exchangeEle.apiKey,
+            apiSecretKey: exchangeEle.apiSecretKey,
+            connectionName: exchangeEle.connectionName,
+            exchangeCode: exchangeEle.code,
+          };
+          theExchangeData.push(newObj);
+        }
+      });
+    }
+    let passingData = new URLSearchParams();
+    passingData.append("user_account", JSON.stringify(theExchangeData));
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
+      if (theExchangeData && theExchangeData.length > 0) {
+        this.props.addExchangeTransaction(passingData);
+      }
     } else {
       let walletAddress = [];
       let addWallet = this.state.walletInput;
@@ -1179,10 +1203,13 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  this.state.addButtonVisible ? this.isDisabled(true) : false
+                  (this.state.addButtonVisible
+                    ? this.isDisabled(true)
+                    : false) || this.state.disableGoBtn
                 }
                 isDisabled={
-                  this.state.addButtonVisible ? this.isDisabled() : true
+                  (this.state.addButtonVisible ? this.isDisabled() : true) ||
+                  this.state.disableGoBtn
                 }
                 buttonText="Go"
               />
@@ -1364,6 +1391,7 @@ const mapDispatchToProps = {
   setHeaderReducer,
   updateUserWalletApi,
   GetAllPlan,
+  addExchangeTransaction,
 };
 AddWallet.propTypes = {};
 
