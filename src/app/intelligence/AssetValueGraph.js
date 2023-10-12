@@ -335,7 +335,7 @@ class AssetValueGraph extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-            <div className="graph-container">
+            <div className="graph-container" style={{ marginBottom: "5rem" }}>
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"
