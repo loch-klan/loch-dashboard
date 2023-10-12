@@ -1634,35 +1634,16 @@ class TopPortfolio extends BaseReactComponent {
                   isPreviewing={true}
                 />
               </div>
-              <div
-                style={{
-                  marginTop: "10rem",
-                }}
-              >
-                <PageHeader
-                  title="Overview"
-                  // subTitle="Decipher all your DeFi data from one place"
-                  // btnText={"Add wallet"}
-                  // handleBtn={this.handleAddModal}
-                  // showpath={true}
-                  currentPage={"home"}
-                  // showData={totalWalletAmt}
-                  // isLoading={isLoading}
-                  ShareBtn={true}
-                  handleShare={this.handleShare}
-                  bottomPadding="0"
-                  updateTimer={this.updateTimer}
-                />
-              </div>
 
               <div
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  // marginTop: "9rem",
+                  marginTop: "9rem",
                 }}
               >
                 <TopPiechart
+                  handleShare={this.handleShare}
                   setLoader={this.setLoader}
                   chainLoader={this.state.chainLoader}
                   totalChainDetechted={this.state.totalChainDetechted}
@@ -1744,7 +1725,7 @@ class TopPortfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Net Flows"
+                        headerTitle="Net flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {

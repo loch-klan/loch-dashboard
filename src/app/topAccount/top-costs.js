@@ -860,7 +860,7 @@ class TopCost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average Cost Basis"
+                  title="Average cost basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
                   columnList={columnData}
@@ -887,7 +887,7 @@ class TopCost extends Component {
               }}
             >
               <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
+                headerTitle="Blockchain fees over time"
                 headerSubTitle="Understand your gas costs"
                 data={
                   this.props.topAccountState.graphfeeValue &&
@@ -939,7 +939,7 @@ class TopCost extends Component {
             </div> */}
 
               <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
+                headerTitle="Counterparty volume over time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
                   this.props.topAccountState.counterPartyValue &&

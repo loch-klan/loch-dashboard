@@ -272,6 +272,60 @@ class ExitOverlay extends BaseReactComponent {
     localStorage.setItem("isPopupActive", true);
     this.props.getAllCoins();
     this.props.getAllParentChains();
+    if (this.props.selectExportOption) {
+      const selectedItem = this.props.selectExportOption;
+      switch (selectedItem) {
+        case 1:
+          this.setState({
+            selectedExportItem: {
+              name: "Transaction History",
+              value: 10,
+              apiurl: "wallet/transaction/export-transactions",
+              fileName: "transaction-history-export",
+            },
+          });
+          break;
+        case 2:
+          this.setState({
+            selectedExportItem: {
+              name: "Blockchain Gas Costs",
+              value: 20,
+              apiurl: "wallet/transaction/export-gas-fee-overtime",
+              fileName: "blockchain-gas-costs-export",
+            },
+          });
+          break;
+        case 3:
+          this.setState({
+            selectedExportItem: {
+              name: "Counterparty Costs",
+              value: 30,
+              apiurl: "wallet/transaction/export-counter-party-volume-traded",
+              fileName: "counterparty-costs-export",
+            },
+          });
+          break;
+        case 4:
+          this.setState({
+            selectedExportItem: {
+              name: "Average Cost Basis",
+              value: 40,
+              apiurl: "wallet/user-wallet/export-average-cost-basis",
+              fileName: "average-cost-basis-export",
+            },
+          });
+          break;
+        default:
+          this.setState({
+            selectedExportItem: {
+              name: "Transaction History",
+              value: 10,
+              apiurl: "wallet/transaction/export-transactions",
+              fileName: "transaction-history-export",
+            },
+          });
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -1066,7 +1120,7 @@ class ExitOverlay extends BaseReactComponent {
                       ? this.props.isEdit
                         ? `added ${this.props.addedon}`
                         : "Track a pod of whales here"
-                      : "Export your exisiting data from Loch"}
+                      : this.props.headerSubTitle}
                   </p>
                   {this.props.modalType === "apiModal" ? (
                     <div className="api-modal-frame">
@@ -1080,9 +1134,14 @@ class ExitOverlay extends BaseReactComponent {
                       <div className="export-timeline">
                         <Form onValidSubmit={this.submit}>
                           <div className="timeline-wrapper">
-                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                            <div
+                              style={{
+                                marginRight: "1rem",
+                              }}
+                              className="inter-display-medium f-s-16 lh-19 black-191"
+                            >
                               Export data from{" "}
-                            </span>
+                            </div>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
                               showHiddenError={this.props.showHiddenError}
@@ -1130,9 +1189,15 @@ class ExitOverlay extends BaseReactComponent {
                                 },
                               }}
                             />
-                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                            <div
+                              style={{
+                                marginLeft: "1rem",
+                                marginRight: "1rem",
+                              }}
+                              className="inter-display-medium f-s-16 lh-19 black-191"
+                            >
                               to
-                            </span>
+                            </div>
                             <FormElement
                               hideOnblur={this.props.hideOnblur}
                               showHiddenError={this.props.showHiddenError}
@@ -1184,7 +1249,7 @@ class ExitOverlay extends BaseReactComponent {
                           </div>
                         </Form>
                       </div>
-                      <div className="export-item-wrapper">
+                      {/* <div className="export-item-wrapper">
                         {this.state.exportItem?.map((item) => {
                           return (
                             <span
@@ -1202,8 +1267,7 @@ class ExitOverlay extends BaseReactComponent {
                             </span>
                           );
                         })}
-                        {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
-                      </div>
+                      </div> */}
                       {/* <div
                         style={{
                           display: "flex",
@@ -1891,7 +1955,7 @@ class ExitOverlay extends BaseReactComponent {
                         src={InfoIcon}
                         className="info-icon"
                         onMouseEnter={this.leavePrivacy}
-                        style={{cursor: "pointer",}}
+                        style={{ cursor: "pointer" }}
                       />
                     </CustomOverlay>
                   </div>

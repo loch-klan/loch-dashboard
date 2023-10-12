@@ -759,7 +759,7 @@ class Intelligence extends Component {
               />
             )}
             <PageHeader
-              title="Intelligence"
+              title="Portfolio"
               subTitle="Automated and personalized financial intelligence"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
