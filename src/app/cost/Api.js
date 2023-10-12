@@ -182,7 +182,7 @@ export const addUpdateAccount = (data, ctx) => {
         if (ctx.props.ishome) {
           toast.success(
             <div className="custom-toast-msg" style={{ width: "43rem" }}>
-              <div>{ctx.state.selection.name + " connected to loch."}</div>
+              <div>{ctx.state.selection.name + " connected to Loch"}</div>
               <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
                 It may take a few seconds for all the transactions to load.
               </div>
@@ -197,7 +197,7 @@ export const addUpdateAccount = (data, ctx) => {
         } else {
           toast.success(
             <div className="custom-toast-msg" style={{ width: "43rem" }}>
-              <div>{ctx.state.selection.name + " connected to loch."}</div>
+              <div>{ctx.state.selection.name + " connected to Loch"}</div>
               <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
                 It may take a few seconds for all the transactions to load.
               </div>
