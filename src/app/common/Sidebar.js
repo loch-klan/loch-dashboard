@@ -162,7 +162,7 @@ function Sidebar(props) {
       me: true,
       discover: false,
       intelligence: !currentValue?.intelligence,
-      defi: false,
+      defi: currentValue?.defi,
       topAccount: false,
       topAccountintelligence: false,
     };
@@ -175,7 +175,7 @@ function Sidebar(props) {
     let obj = {
       me: true,
       discover: false,
-      intelligence: false,
+      intelligence: currentValue?.intelligence,
       defi: !currentValue?.defi,
       topAccount: false,
       topAccountintelligence: false,
