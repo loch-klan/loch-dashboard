@@ -1702,7 +1702,7 @@ class TopPortfolio extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        title="Average cost basis"
+                        title="Unrealized gains"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push(
@@ -1710,7 +1710,7 @@ class TopPortfolio extends BaseReactComponent {
                             );
                           }
                         }}
-                        subTitle="Understand your average entry price"
+                        subTitle="Understand your unrealized gains per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
                         columnList={CostBasisColumnData}
                         headerHeight={60}
@@ -1726,8 +1726,8 @@ class TopPortfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Net flows"
-                        headerSubTitle="Understand your portfolio's profitability"
+                        headerTitle="Realized gains"
+                        headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
                           if (this.state.lochToken) {

@@ -698,6 +698,29 @@ class Cost extends Component {
 
     const columnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.1,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+              >
+                <span>
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -715,7 +738,7 @@ class Cost extends Component {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -769,7 +792,7 @@ class Cost extends Component {
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -831,7 +854,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -889,7 +912,7 @@ class Cost extends Component {
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -936,7 +959,7 @@ class Cost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -993,7 +1016,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -1046,7 +1069,7 @@ class Cost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.25,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -1183,8 +1206,8 @@ class Cost extends Component {
                 </div> */}
                 <TransactionTable
                   noSubtitleBottomPadding
-                  title="Average cost basis"
-                  subTitle="Understand your average entry price"
+                  title="Unrealized gains"
+                  subTitle="Understand your unrealized gains per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}

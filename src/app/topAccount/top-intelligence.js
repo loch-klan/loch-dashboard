@@ -696,7 +696,7 @@ class TopIntelligence extends Component {
             >
               <PageHeader
                 showNetflowExplainers
-                title="Net flows"
+                title="Realized gains"
                 showImg={eyeIcon}
               />
               {/* Netflow Info Start */}

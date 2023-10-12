@@ -55,7 +55,7 @@ function TransactionTable(props) {
           props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
         }
         message={
-          props.title === "Average cost basis"
+          props.title === "Unrealized gains"
             ? "No average cost basis found"
             : props?.message
             ? props?.message
