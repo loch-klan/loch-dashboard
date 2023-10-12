@@ -181,8 +181,12 @@ export const addUpdateAccount = (data, ctx) => {
         });
         if (ctx.props.ishome) {
           toast.success(
-            ctx.state.selection.name +
-              ` connected to loch. It may take a few seconds for all the transactions to load.`
+            <div className="custom-toast-msg" style={{ width: "43rem" }}>
+              <div>{ctx.state.selection.name + " connected to Loch"}</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                It may take a few seconds for all the transactions to load.
+              </div>
+            </div>
           );
           ctx.handleUpdateList();
 
@@ -192,8 +196,12 @@ export const addUpdateAccount = (data, ctx) => {
           }, 200);
         } else {
           toast.success(
-            ctx.state.selection.name +
-              " connected to loch. It may take a few seconds for all the transactions to load."
+            <div className="custom-toast-msg" style={{ width: "43rem" }}>
+              <div>{ctx.state.selection.name + " connected to Loch"}</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                It may take a few seconds for all the transactions to load.
+              </div>
+            </div>
           );
           ctx.state.onHide();
           // window.location.reload();
