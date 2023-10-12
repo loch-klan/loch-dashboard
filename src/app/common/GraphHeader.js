@@ -42,45 +42,53 @@ export const GraphHeader = (props) => {
               alignItems: "center",
               justifyContent: "space-between",
             }}
+            className={`${props.noSubtitleBottomPadding ? "" : "m-b-26"}`}
           >
-            <h4
-              className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
-                props.handleClick &&
-                !(props.disableOnLoading && props.isLoading)
-                  ? "active-pointer"
-                  : ""
-              }`}
-              style={{
-                opacity: props.disableOnLoading && props.isLoading ? 0.5 : 1,
-                cursor:
-                  props.disableOnLoading && props.isLoading
-                    ? "default"
-                    : "pointer",
-              }}
-              onClick={handleClickPass}
-              onMouseEnter={() => {
-                if (props.isAnalytics === "Asset Value") {
-                  TitleAssetValueHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }
+            <div>
+              <h4
+                className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
+                  props.handleClick &&
+                  !(props.disableOnLoading && props.isLoading)
+                    ? "active-pointer"
+                    : ""
+                }`}
+                style={{
+                  opacity: props.disableOnLoading && props.isLoading ? 0.5 : 1,
+                  cursor:
+                    props.disableOnLoading && props.isLoading
+                      ? "default"
+                      : "pointer",
+                }}
+                onClick={handleClickPass}
+                onMouseEnter={() => {
+                  if (props.isAnalytics === "Asset Value") {
+                    TitleAssetValueHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }
 
-                if (props.isAnalytics === "Transaction Table") {
-                  TransactionHistoryHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }
-              }}
-            >
-              {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
-            </h4>
+                  if (props.isAnalytics === "Transaction Table") {
+                    TransactionHistoryHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }
+                }}
+              >
+                {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
+              </h4>
+              <p className={`inter-display-medium f-s-13 lh-16 grey-ADA`}>
+                {props.subtitle}
+              </p>
+            </div>
             {props.ExportBtn ? (
               <div
                 onClick={props.handleExportModal}
                 className="pageHeaderShareContainer"
-                style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
+                style={{
+                  marginRight: props.ShareBtn ? "0.5rem" : "",
+                }}
               >
                 <Image className="pageHeaderShareImg" src={ExportIcon} />
                 <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
@@ -89,14 +97,6 @@ export const GraphHeader = (props) => {
               </div>
             ) : null}
           </div>
-
-          <p
-            className={`inter-display-medium f-s-13 lh-16 grey-ADA ${
-              props.noSubtitleBottomPadding ? "" : "m-b-26"
-            }`}
-          >
-            {props.subtitle}
-          </p>
         </div>
 
         {/* {props.loader && (

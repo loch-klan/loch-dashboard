@@ -204,8 +204,9 @@ class InflowOutflowChart extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
           />
           <div
-            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow mt-5"
+            className="inter-display-medium f-s-15 lh-15 grey-ADA revealDustInflow"
             onClick={this.toggleDust}
+            style={{ marginTop: "2.8rem" }}
           >
             {this.state.isDust === 0
               ? "Hide dust (less than $1)"

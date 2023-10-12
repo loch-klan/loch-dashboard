@@ -1639,7 +1639,7 @@ class TopPortfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "13rem",
+                  marginTop: "11rem",
                 }}
               >
                 <TopPiechart
