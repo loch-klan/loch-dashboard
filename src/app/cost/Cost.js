@@ -1170,7 +1170,10 @@ class Cost extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-            <div className="m-b-30 cost-table-section">
+            <div
+              style={{ marginBottom: "2.8rem" }}
+              className="cost-table-section"
+            >
               <div style={{ position: "relative" }}>
                 {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -1228,7 +1231,7 @@ class Cost extends Component {
                 timeFunction={(e) => {
                   this.getBlockchainFee(e);
                 }}
-                marginBottom="m-b-30"
+                marginBottom="marginBot2point8"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}

@@ -854,7 +854,7 @@ class Intelligence extends Component {
               </div>
             </div>
             <div className="portfolio-bar-graph">
-              <div id="netflow">
+              <div id="netflow" style={{ paddingTop: "0.4rem" }}>
                 <PageHeader
                   showNetflowExplainers
                   title="Net flows"
@@ -866,7 +866,12 @@ class Intelligence extends Component {
               {/* Second */}
               {/* Netflow Info End */}
 
-              <div style={{ position: "relative", minWidth: "85rem" }}>
+              <div
+                style={{
+                  position: "relative",
+                  minWidth: "85rem",
+                }}
+              >
                 {this.props.intelligenceState.graphValue ? (
                   <BarGraphSection
                     isScrollVisible={false}
@@ -934,7 +939,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <div id="price">
+              <div id="price" style={{ paddingTop: "0.4rem" }}>
                 <InflowOutflowChart
                   userWalletList={this.state.userWalletList}
                 />

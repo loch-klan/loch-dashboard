@@ -9,7 +9,12 @@ class Footer extends Component {
   render() {
     return (
       <>
-        <hr className="m-t-30 m-b-30" />
+        <hr
+          style={{
+            marginTop: "3rem",
+            marginBottom: "2.6rem",
+          }}
+        />
         <div
           className="m-b-30"
           style={{

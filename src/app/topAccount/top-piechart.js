@@ -1119,14 +1119,14 @@ class TopPieChart extends BaseReactComponent {
 
     return (
       <div
-        className={`portfolio-over-container p-b-20`}
+        className={`portfolio-over-container`}
         style={{
           overflow: "visible",
-          paddingBottom: "4rem",
+          marginBottom: "1rem",
         }}
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
-        <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
+        <h1 className="inter-display-medium f-s-25 lh-25 overview-heading">
           Overview
         </h1>
         <>
@@ -1170,7 +1170,7 @@ class TopPieChart extends BaseReactComponent {
                 </div>
               )}
             </Col>
-            <Col md={5} style={{ padding: 0, zIndex: 1 }}>
+            <Col md={5} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
               <div>
                 {/* Chains */}
                 <div

@@ -2117,7 +2117,7 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "13rem",
+                  marginTop: "11rem",
                 }}
               >
                 <PieChart2
@@ -2282,7 +2282,12 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                 </Row>
               </div>
-              <div className="graph-table-section">
+              <div
+                style={{
+                  marginBottom: "-0.8rem",
+                }}
+                className="graph-table-section"
+              >
                 <Row>
                   <Col md={6}>
                     <div
