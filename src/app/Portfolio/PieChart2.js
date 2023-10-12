@@ -935,7 +935,7 @@ class PieChart2 extends BaseReactComponent {
                   zIndex: 10,
                 });
                 this.series.data?.map((data, i) => {
-                  if (currentData.assetCode !== data.assetCode) {
+                  if (currentData.assetId !== data.assetId) {
                     data.dataLabel
                       .css({
                         // opacity: 0,
