@@ -863,6 +863,7 @@ class TopCost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
+                  noSubtitleBottomPadding
                   title="Average cost basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
