@@ -863,8 +863,8 @@ class TopCost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average cost basis"
-                  subTitle="Understand your average entry price"
+                  title="Unrealized gains"
+                  subTitle="Understand your unrealized gains per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}

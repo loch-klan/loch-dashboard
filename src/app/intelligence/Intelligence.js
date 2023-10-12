@@ -857,7 +857,7 @@ class Intelligence extends Component {
               <div id="netflow" style={{ paddingTop: "0.4rem" }}>
                 <PageHeader
                   showNetflowExplainers
-                  title="Net flows"
+                  title="Realized gains"
                   showImg={eyeIcon}
                 />
               </div>
