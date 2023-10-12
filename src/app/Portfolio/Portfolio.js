@@ -2209,6 +2209,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Average cost basis"
@@ -2299,6 +2300,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Transactions"

@@ -21,6 +21,7 @@ function TransactionTable(props) {
     >
       {props.title ? (
         <GraphHeader
+          noSubtitleBottomPadding={props.noSubtitleBottomPadding}
           isLoading={props.isLoading}
           disableOnLoading={props.disableOnLoading}
           title={props.title}
