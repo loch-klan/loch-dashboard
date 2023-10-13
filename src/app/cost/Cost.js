@@ -452,8 +452,9 @@ class Cost extends Component {
       GraphfeeData.gas_fee_overtime &&
         GraphfeeData.gas_fee_overtime?.map((tempGraphData) => {
           if (
-            activeBadgeList.includes(tempGraphData?.chain?._id) ||
-            activeBadgeList.length === 0
+            activeBadgeList &&
+            (activeBadgeList.includes(tempGraphData?.chain?._id) ||
+              activeBadgeList.length === 0)
           ) {
             graphDataMaster.push(tempGraphData);
           }
@@ -482,8 +483,9 @@ class Cost extends Component {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
           if (
-            activeBadgeList.includes(tempGraphData?.chain?._id) ||
-            activeBadgeList.length === 0
+            activeBadgeList &&
+            (activeBadgeList.includes(tempGraphData?.chain?._id) ||
+              activeBadgeList.length === 0)
           ) {
             counterPartyDataMaster.push(tempGraphData);
           }
@@ -700,7 +702,7 @@ class Cost extends Component {
       {
         labelName: "",
         dataKey: "Numbering",
-        coumnWidth: 0.1,
+        coumnWidth: 0.05,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -712,7 +714,7 @@ class Cost extends Component {
                 isText={true}
                 text={Number(noExponents(index, 1)).toLocaleString("en-US")}
               >
-                <span>
+                <span className="inter-display-medium f-s-13">
                   {Number(noExponents(index + 1)).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -959,7 +961,7 @@ class Cost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.125,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -1016,7 +1018,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.125,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -1069,7 +1071,7 @@ class Cost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.15,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
