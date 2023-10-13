@@ -16,7 +16,7 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import { CoinsIcon } from "../../assets/images/icons";
+import { CoinsIcon, TwoPeopleIcon } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -1486,7 +1486,7 @@ function Sidebar(props) {
                             activeclassname="active"
                           >
                             <Image
-                              src={EyeIcon}
+                              src={TwoPeopleIcon}
                               style={
                                 activeTab === "/watchlist"
                                   ? {
@@ -1495,7 +1495,7 @@ function Sidebar(props) {
                                   : {}
                               }
                             />
-                            Watchlist
+                            Following
                           </NavLink>
                         </li>
                         {/* <li>
@@ -1943,7 +1943,7 @@ function Sidebar(props) {
                             activeclassname="active"
                           >
                             <Image
-                              src={EyeIcon}
+                              src={TwoPeopleIcon}
                               style={
                                 activeTab === "/watchlist"
                                   ? {
@@ -1952,7 +1952,7 @@ function Sidebar(props) {
                                   : {}
                               }
                             />
-                            Watchlist
+                            Following
                           </NavLink>
                         </li>
                       </>
