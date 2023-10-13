@@ -1337,7 +1337,7 @@ class TopAccountPage extends BaseReactComponent {
                 ) : (
                   <>
                     <TransactionTable
-                    noSubtitleBottomPadding
+                      noSubtitleBottomPadding
                       tableData={tableData}
                       columnList={columnList}
                       message={"No accounts found"}

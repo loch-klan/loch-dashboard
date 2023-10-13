@@ -930,8 +930,8 @@ class WatchListPage extends BaseReactComponent {
                   </>
                 )}
               </div>
+              {/* <FeedbackForm page={"Transaction History Page"} /> */}
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
       </>

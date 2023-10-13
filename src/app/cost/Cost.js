@@ -76,8 +76,8 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      exportHeaderTitle: "Download all costs",
-      exportHeaderSubTitle: "Export your average cost basis from Loch",
+      exportHeaderTitle: "Download all unrealized gains",
+      exportHeaderSubTitle: "Export your unrealized gains from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -139,8 +139,8 @@ class Cost extends Component {
     });
     this.setState(
       {
-        exportHeaderTitle: "Download all costs",
-        exportHeaderSubTitle: "Export your average cost basis from Loch",
+        exportHeaderTitle: "Download unrealized gains",
+        exportHeaderSubTitle: "Export your unrealized gains from Loch",
         exportSelectExportOption: 4,
       },
       () => {

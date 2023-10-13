@@ -1784,8 +1784,7 @@ class TopPortfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
-                    noSubtitleBottomPadding
-
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Transactions"

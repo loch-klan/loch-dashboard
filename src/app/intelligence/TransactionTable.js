@@ -56,7 +56,7 @@ function TransactionTable(props) {
         }
         message={
           props.title === "Unrealized gains"
-            ? "No average cost basis found"
+            ? "No unrealized gains found"
             : props?.message
             ? props?.message
             : "No transactions found"
