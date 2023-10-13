@@ -463,6 +463,29 @@ class TopCost extends Component {
 
     const columnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.05,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+              >
+                <span className="inter-display-medium f-s-13">
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -480,7 +503,7 @@ class TopCost extends Component {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -512,7 +535,7 @@ class TopCost extends Component {
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -566,7 +589,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -616,7 +639,7 @@ class TopCost extends Component {
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -656,7 +679,7 @@ class TopCost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.2,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -706,7 +729,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.2,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -737,6 +760,58 @@ class TopCost extends Component {
       {
         labelName: (
           <div
+            className="history-table-header-col no-hover"
+            id="Gainamount"
+            // onClick={() => this.handleSort(this.state.sortBy[6])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Gain
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+            /> */}
+          </div>
+        ),
+        dataKey: "GainAmount",
+        // coumnWidth: 128,
+        coumnWidth: 0.13,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "GainAmount") {
+            console.log("rowData ", rowData);
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(
+                  noExponents(rowData.GainAmount.toFixed(2))
+                ).toLocaleString("en-US")}
+                colorCode="#000"
+              >
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainAmount < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {Number(noExponents(rowData.GainAmount)).toLocaleString(
+                        "en-US"
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
             className="cp history-table-header-col"
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[6])}
@@ -752,7 +827,7 @@ class TopCost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.25,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -898,11 +973,11 @@ class TopCost extends Component {
                   this.props.topAccountState.graphfeeValue[0]
                 }
                 options={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[1]
                 }
                 options2={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[2]
                 }
                 digit={this.state.GraphDigit}
