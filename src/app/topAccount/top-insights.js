@@ -363,7 +363,7 @@ class TopInsightsPage extends Component {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: "2rem",
+                  marginBottom: "0.8rem",
                 }}
               >
                 <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
@@ -398,7 +398,16 @@ class TopInsightsPage extends Component {
                   this.state.updatedInsightList.length > 0 ? (
                   this.state.updatedInsightList?.map((insight, key) => {
                     return (
-                      <div className="insights-card" key={key}>
+                      <div
+                        style={{
+                          marginBottom:
+                            key === this.state.updatedInsightList.length - 1
+                              ? "3.5rem"
+                              : "",
+                        }}
+                        className="insights-card"
+                        key={key}
+                      >
                         <Image
                           src={
                             insight.insight_type === InsightType.COST_REDUCTION

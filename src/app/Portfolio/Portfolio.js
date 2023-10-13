@@ -2117,7 +2117,7 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "9rem",
+                  marginTop: "11rem",
                 }}
               >
                 <PieChart2
@@ -2209,6 +2209,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Unrealized gains"
@@ -2282,7 +2283,12 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                 </Row>
               </div>
-              <div className="m-b-22 graph-table-section">
+              <div
+                style={{
+                  marginBottom: "-0.8rem",
+                }}
+                className="graph-table-section"
+              >
                 <Row>
                   <Col md={6}>
                     <div
@@ -2294,6 +2300,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Transactions"

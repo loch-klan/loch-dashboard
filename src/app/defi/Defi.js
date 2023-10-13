@@ -692,11 +692,21 @@ class Defi extends Component {
             </div>
 
             {/* filter */}
-            <div className="m-b-16 sortby-section">
-              <div className="dropdown-section">
-                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+            <div
+              style={{
+                marginBottom: "1.6rem",
+              }}
+              className="sortby-section"
+            >
+              <div
+                style={{
+                  marginLeft: "-0.1rem",
+                }}
+                className="dropdown-section"
+              >
+                {/* <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
                   Sort by
-                </span>
+                </span> */}
                 {this.state.sortBy.map((e, index) => {
                   return (
                     <span

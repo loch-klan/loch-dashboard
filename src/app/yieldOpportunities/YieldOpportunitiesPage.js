@@ -1037,6 +1037,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}
                     message={"No yield opportunities found"}

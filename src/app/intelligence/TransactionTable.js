@@ -21,6 +21,7 @@ function TransactionTable(props) {
     >
       {props.title ? (
         <GraphHeader
+          noSubtitleBottomPadding={props.noSubtitleBottomPadding}
           isLoading={props.isLoading}
           disableOnLoading={props.disableOnLoading}
           title={props.title}
@@ -55,7 +56,7 @@ function TransactionTable(props) {
         }
         message={
           props.title === "Unrealized gains"
-            ? "No average cost basis found"
+            ? "No unrealized gains found"
             : props?.message
             ? props?.message
             : "No transactions found"

@@ -1639,7 +1639,7 @@ class TopPortfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "9rem",
+                  marginTop: "11rem",
                 }}
               >
                 <TopPiechart
@@ -1699,6 +1699,7 @@ class TopPortfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Unrealized gains"
@@ -1783,6 +1784,7 @@ class TopPortfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Transactions"
