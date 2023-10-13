@@ -304,11 +304,13 @@ class Defi extends Component {
   getYieldBalance = () => {
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
-      UserWallet?.map((e) => {
-        let data = new URLSearchParams();
-        data.append("wallet_address", e.address);
-        this.props.getProtocolBalanceApi(this, data);
+      const allAddresses = [];
+      UserWallet?.forEach((e) => {
+        allAddresses.push(e.address);
       });
+      let data = new URLSearchParams();
+      data.append("wallet_address", JSON.stringify(allAddresses));
+      this.props.getProtocolBalanceApi(this, data);
     } else {
       this.handleReset();
     }
