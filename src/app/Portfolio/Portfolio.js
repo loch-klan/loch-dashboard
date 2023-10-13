@@ -2117,7 +2117,7 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "9rem",
+                  marginTop: "11rem",
                 }}
               >
                 <PieChart2
@@ -2209,9 +2209,10 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        title="Average cost basis"
+                        title="Unrealized gains"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
@@ -2221,7 +2222,7 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="Understand your average entry price"
+                        subTitle="Understand your unrealized gains per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
                         columnList={CostBasisColumnData}
                         headerHeight={60}
@@ -2238,8 +2239,8 @@ class Portfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Net flows"
-                        headerSubTitle="Understand your portfolio's profitability"
+                        headerTitle="Realized gains"
+                        headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
                           if (this.state.lochToken) {
@@ -2282,7 +2283,12 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                 </Row>
               </div>
-              <div className="m-b-22 graph-table-section">
+              <div
+                style={{
+                  marginBottom: "-0.8rem",
+                }}
+                className="graph-table-section"
+              >
                 <Row>
                   <Col md={6}>
                     <div
@@ -2294,6 +2300,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
                         title="Transactions"
@@ -2498,7 +2505,7 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <BarGraphSection
                         headerTitle="Net Flows"
-                        headerSubTitle="Understand your portfolio's profitability"
+                        headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
                           if (this.state.lochToken) {

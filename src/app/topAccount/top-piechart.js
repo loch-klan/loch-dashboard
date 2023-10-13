@@ -275,12 +275,13 @@ class TopPieChart extends BaseReactComponent {
       : [];
 
     if (UserWallet?.length !== 0) {
-      // console.log("wallet_addres3s");
-      UserWallet?.map((e) => {
-        let data = new URLSearchParams();
-        data.append("wallet_address", e.address);
-        this.props.getProtocolBalanceApi(this, data);
+      const allAddresses = [];
+      UserWallet?.forEach((e) => {
+        allAddresses.push(e.address);
       });
+      let data = new URLSearchParams();
+      data.append("wallet_address", JSON.stringify(allAddresses));
+      this.props.getProtocolBalanceApi(this, data);
     } else {
       this.handleReset();
       this.setState({
@@ -947,7 +948,7 @@ class TopPieChart extends BaseReactComponent {
                   zIndex: 10,
                 });
                 this.series.data?.map((data, i) => {
-                  if (currentData.assetCode !== data.assetCode) {
+                  if (currentData.assetId !== data.assetId) {
                     data.dataLabel
                       .css({
                         // opacity: 0,
@@ -1119,14 +1120,14 @@ class TopPieChart extends BaseReactComponent {
 
     return (
       <div
-        className={`portfolio-over-container p-b-20`}
+        className={`portfolio-over-container`}
         style={{
           overflow: "visible",
-          paddingBottom: "4rem",
+          marginBottom: "1rem",
         }}
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
-        <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
+        <h1 className="inter-display-medium f-s-25 lh-25 overview-heading">
           Overview
         </h1>
         <>
@@ -1170,7 +1171,7 @@ class TopPieChart extends BaseReactComponent {
                 </div>
               )}
             </Col>
-            <Col md={5} style={{ padding: 0, zIndex: 1 }}>
+            <Col md={5} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
               <div>
                 {/* Chains */}
                 <div

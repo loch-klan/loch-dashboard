@@ -744,7 +744,7 @@ class Intelligence extends Component {
             </div>
           </div>
         </div>
-        <div className="intelligence-page-section m-t-80">
+        <div className="intelligence-page-section">
           <div className="intelligence-section page">
             {this.state.upgradeModal && (
               <UpgradeModal
@@ -758,17 +758,19 @@ class Intelligence extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-            <PageHeader
-              title="Portfolio"
-              subTitle="Automated and personalized financial intelligence"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              ShareBtn={true}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
+            <div className="m-b-32">
+              <PageHeader
+                title="Portfolio"
+                subTitle="Automated and personalized financial intelligence"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                ShareBtn={true}
+                handleShare={this.handleShare}
+                updateTimer={this.updateTimer}
+              />
+            </div>
 
-            <div className="insights-image m-b-60">
+            <div className="insights-image m-b-32">
               <PageHeader
                 title="Insights"
                 showImg={insight}
@@ -795,7 +797,13 @@ class Intelligence extends Component {
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         return (
-                          <div className="insights-card" key={key}>
+                          <div
+                            style={{
+                              marginBottom: key === 1 ? "0rem" : "",
+                            }}
+                            className="insights-card"
+                            key={key}
+                          >
                             <Image
                               src={
                                 insight.insight_type ===
@@ -846,10 +854,10 @@ class Intelligence extends Component {
               </div>
             </div>
             <div className="portfolio-bar-graph">
-              <div id="netflow">
+              <div id="netflow" style={{ paddingTop: "0.4rem" }}>
                 <PageHeader
                   showNetflowExplainers
-                  title="Net flows"
+                  title="Realized gains"
                   showImg={eyeIcon}
                 />
               </div>
@@ -858,7 +866,12 @@ class Intelligence extends Component {
               {/* Second */}
               {/* Netflow Info End */}
 
-              <div style={{ position: "relative", minWidth: "85rem" }}>
+              <div
+                style={{
+                  position: "relative",
+                  minWidth: "85rem",
+                }}
+              >
                 {this.props.intelligenceState.graphValue ? (
                   <BarGraphSection
                     isScrollVisible={false}
@@ -926,7 +939,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <div id="price">
+              <div id="price" style={{ paddingTop: "0.4rem" }}>
                 <InflowOutflowChart
                   userWalletList={this.state.userWalletList}
                 />

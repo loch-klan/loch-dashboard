@@ -833,7 +833,7 @@ class TopCost extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section m-t-80">
+        <div className="cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -846,7 +846,7 @@ class TopCost extends Component {
           ) : (
             ""
           )}
-          <div className="m-t-50 cost-section page">
+          <div className="cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -874,7 +874,10 @@ class TopCost extends Component {
               handleShare={this.handleShare}
               topaccount={true}
             />
-            <div className="m-b-43 cost-table-section">
+            <div
+              style={{ marginBottom: "2.8rem" }}
+              className="cost-table-section"
+            >
               <div style={{ position: "relative" }}>
                 {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -883,8 +886,9 @@ class TopCost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average cost basis"
-                  subTitle="Understand your average entry price"
+                  noSubtitleBottomPadding
+                  title="Unrealized gains"
+                  subTitle="Understand your unrealized gains per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}
@@ -905,7 +909,7 @@ class TopCost extends Component {
             <div
               style={{
                 position: "relative",
-
+                // minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
             >
@@ -929,7 +933,7 @@ class TopCost extends Component {
                 timeFunction={(e) => {
                   this.getBlockchainFee(e);
                 }}
-                marginBottom="m-b-30"
+                marginBottom="marginBot2point8"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}
@@ -950,6 +954,7 @@ class TopCost extends Component {
               id="cp"
               style={{
                 position: "relative",
+                // minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >
@@ -978,7 +983,6 @@ class TopCost extends Component {
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-30"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}

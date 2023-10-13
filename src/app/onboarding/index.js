@@ -162,6 +162,9 @@ class OnBoarding extends Component {
             walletAddress={this.props?.onboardingWalletAddress}
             exchanges={this.props.exchanges}
             handleBackConnect={this.props.onboardingHandleBackConnect}
+            onboardingHandleUpdateConnect={
+              this.props.onboardingHandleUpdateConnect
+            }
             modalAnimation={this.props.modalAnimation}
           />
         )}
