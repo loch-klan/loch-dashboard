@@ -702,7 +702,7 @@ class Cost extends Component {
       {
         labelName: "",
         dataKey: "Numbering",
-        coumnWidth: 0.05,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -740,7 +740,7 @@ class Cost extends Component {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.125,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -794,7 +794,7 @@ class Cost extends Component {
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.125,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -856,7 +856,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
-        coumnWidth: 0.125,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -914,7 +914,7 @@ class Cost extends Component {
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.125,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -961,7 +961,7 @@ class Cost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.14,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -1018,7 +1018,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.14,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -1071,7 +1071,7 @@ class Cost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.14,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -1226,7 +1226,6 @@ class Cost extends Component {
             <div
               style={{
                 position: "relative",
-                minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
             >
@@ -1273,7 +1272,6 @@ class Cost extends Component {
               id="cp"
               style={{
                 position: "relative",
-                minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >

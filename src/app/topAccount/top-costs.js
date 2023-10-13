@@ -463,6 +463,29 @@ class TopCost extends Component {
 
     const columnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.08,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+              >
+                <span className="inter-display-medium f-s-13">
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -882,7 +905,7 @@ class TopCost extends Component {
             <div
               style={{
                 position: "relative",
-                minHeight: "66.25rem",
+
                 minWidth: "85rem",
               }}
             >
@@ -927,7 +950,6 @@ class TopCost extends Component {
               id="cp"
               style={{
                 position: "relative",
-                minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >
