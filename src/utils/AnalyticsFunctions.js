@@ -3970,6 +3970,14 @@ export const CostGainLossHover = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CostGainHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: gain hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // ------
 

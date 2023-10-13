@@ -38,6 +38,7 @@ import {
   CostAvgCostBasisExport,
   CostBlockchainFeesExport,
   CostCounterpartyFeesExport,
+  CostGainHover,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
@@ -961,7 +962,7 @@ class Cost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.14,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -1018,7 +1019,7 @@ class Cost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.14,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -1056,6 +1057,66 @@ class Cost extends Component {
       {
         labelName: (
           <div
+            className="history-table-header-col no-hover"
+            id="Gainamount"
+            // onClick={() => this.handleSort(this.state.sortBy[6])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Gain
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+            /> */}
+          </div>
+        ),
+        dataKey: "GainAmount",
+        // coumnWidth: 128,
+        coumnWidth: 0.13,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "GainAmount") {
+            console.log("rowData ", rowData);
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(
+                  noExponents(rowData.GainAmount.toFixed(2))
+                ).toLocaleString("en-US")}
+                colorCode="#000"
+              >
+                <div
+                  onMouseEnter={() => {
+                    CostGainHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                  className="gainLossContainer"
+                >
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainAmount < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {Number(noExponents(rowData.GainAmount)).toLocaleString(
+                        "en-US"
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
             className="cp history-table-header-col"
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[6])}
@@ -1071,7 +1132,7 @@ class Cost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.14,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
