@@ -38,7 +38,7 @@ export const getProfitLossAsset = (arr) => {
   let totalOutflow = 0;
   outFlows?.map((e) => (totalOutflow = totalOutflow + e.total_volume));
 
-  let totalNetflow = totalOutflow + totalFees - totalInflow;
+  let totalNetflow = totalOutflow - totalInflow;
 
   let topInflow = inFlows?.slice(0, 4);
   let topInFlowTotal = 0;
