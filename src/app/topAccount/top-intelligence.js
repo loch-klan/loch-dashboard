@@ -692,7 +692,7 @@ class TopIntelligence extends Component {
             <div className="portfolio-bar-graph" id="netflow">
               <PageHeader
                 showNetflowExplainers
-                title="Net flows"
+                title="Realized gains"
                 showImg={eyeIcon}
               />
               {/* Netflow Info Start */}

@@ -943,7 +943,7 @@ function Sidebar(props) {
                                 to="/intelligence#netflow"
                                 activeclassname="active"
                               >
-                                Net flows
+                                Realized gains
                               </NavLink>
                             </li>
                             <li className="sub-menu">
@@ -1394,7 +1394,7 @@ function Sidebar(props) {
                                     to="/top-accounts/intelligence#netflow"
                                     activeclassname="active"
                                   >
-                                    Net flows
+                                    Realized gains
                                   </NavLink>
                                 </li>
                                 {/* <li className="sub-menu-level-tow">
@@ -1760,7 +1760,7 @@ function Sidebar(props) {
                                     to="/top-accounts/intelligence#netflow"
                                     activeclassname="active"
                                   >
-                                    Net flows
+                                    Realized gains
                                   </NavLink>
                                 </li>
                                 <li className="sub-menu-level-tow">
