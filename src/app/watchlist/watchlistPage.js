@@ -836,8 +836,8 @@ class WatchListPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Watchlist"}
-              subTitle={"Addresses to watch"}
+              title={"Following"}
+              subTitle={"Addresses you follow"}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
@@ -918,7 +918,7 @@ class WatchListPage extends BaseReactComponent {
                       showHeaderOnEmpty
                       tableData={this.state.tableData}
                       columnList={columnList}
-                      message="Start by adding an address to your watchlist. Click the icon in the top right corner or visit the Leaderboard page."
+                      message="Start by following an address. Click the icon in the top right corner or visit the Leaderboard page."
                       totalPage={this.state.totalPage}
                       history={this.props.history}
                       location={this.props.location}
@@ -930,7 +930,6 @@ class WatchListPage extends BaseReactComponent {
                   </>
                 )}
               </div>
-              {/* <FeedbackForm page={"Transaction History Page"} /> */}
             </div>
           </div>
         </div>
