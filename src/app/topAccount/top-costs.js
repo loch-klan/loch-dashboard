@@ -463,6 +463,29 @@ class TopCost extends Component {
 
     const columnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.05,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+              >
+                <span className="inter-display-medium f-s-13">
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -480,7 +503,7 @@ class TopCost extends Component {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -512,7 +535,7 @@ class TopCost extends Component {
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -566,7 +589,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -616,7 +639,7 @@ class TopCost extends Component {
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -656,7 +679,7 @@ class TopCost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.2,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -706,7 +729,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.2,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -752,7 +775,7 @@ class TopCost extends Component {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.25,
+        coumnWidth: 0.14,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -894,11 +917,11 @@ class TopCost extends Component {
                   this.props.topAccountState.graphfeeValue[0]
                 }
                 options={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[1]
                 }
                 options2={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[2]
                 }
                 digit={this.state.GraphDigit}
