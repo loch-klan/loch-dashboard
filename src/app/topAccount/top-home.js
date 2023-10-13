@@ -1388,36 +1388,8 @@ class TopPortfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData.AssetCode}
               >
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <div style={{ position: "relative", width: "fit-content" }}>
-                    <Image
-                      src={rowData.Asset}
-                      className="history-table-icon"
-                      style={{ width: "2rem", height: "2rem" }}
-                      onMouseEnter={() => {
-                        // HomeCostAssetHover({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   asset_hover: rowData.AssetCode,
-                        // });
-                      }}
-                    />
-                    {rowData.chain && (
-                      <Image
-                        src={rowData.chain.symbol}
-                        style={{
-                          width: "1rem",
-                          height: "1rem",
-                          border: "1px solid #ffffff",
-                          borderRadius: "50%",
-                          position: "absolute",
-                          top: "-1px",
-                          right: "-3px",
-                        }}
-                        className="chain-img"
-                      />
-                    )}
-                  </div>
+                <div className="dotDotText">
+                  {rowData.AssetCode ? rowData.AssetCode : ""}
                 </div>
               </CustomOverlay>
             );
@@ -1742,12 +1714,12 @@ class TopPortfolio extends BaseReactComponent {
                         }}
                         isScrollVisible={false}
                         data={
-                          this.props.topAccountState.graphValue &&
-                          this.props.topAccountState.graphValue[0]
+                          this.props.topAccountState?.graphValue &&
+                          this.props.topAccountState?.graphValue[0]
                         }
                         options={
-                          this.props.topAccountState.graphValue &&
-                          this.props.topAccountState.graphValue[1]
+                          this.props.topAccountState?.graphValue &&
+                          this.props.topAccountState?.graphValue[1]
                         }
                         coinsList={this.props.OnboardingState.coinsList}
                         marginBottom="m-b-32"
