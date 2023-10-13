@@ -577,7 +577,6 @@ export const getProtocolBalanceApi = (ctx, data) => {
             };
             const defiWalletItems = [];
             if (userWalletData?.items) {
-              console.log("overAll is ", userWalletData);
               userWalletData.items.map((walletItems) => {
                 let totalUsdValue = 0;
                 if (walletItems.usd_value) {
@@ -599,7 +598,6 @@ export const getProtocolBalanceApi = (ctx, data) => {
                   userWalletData?.tag?.toLowerCase() === "staked" &&
                   walletItems.pool
                 ) {
-                  console.log("Here ", walletItems);
                   totalStakedPrice = totalStakedPrice + totalUsdValue;
                   walletItems.pool.map((tempAssetText) => {
                     if (assetText) {
