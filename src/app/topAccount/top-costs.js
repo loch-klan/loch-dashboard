@@ -34,7 +34,11 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
-import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
@@ -85,7 +89,8 @@ class TopCost extends Component {
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
         { title: "Current value", down: false },
-        { title: "Gain loss", down: true },
+        { title: "Gain amount", down: true },
+        { title: "Gain percentage", down: true },
       ],
 
       // this is used in api to check api call fromt op acount page or not
@@ -391,11 +396,20 @@ class TopCost extends Component {
       this.setState({
         sortBy: sort,
       });
-    } else if (e.title === "Gain loss") {
+    } else if (e.title === "Gain amount") {
+      this.sortArray("GainAmount", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+
+      this.updateTimer();
+    } else if (e.title === "Gain percentage") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
+
+      this.updateTimer();
     }
   };
 
@@ -525,7 +539,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average cost price
+              Average cost price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -559,9 +573,8 @@ class TopCost extends Component {
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
-                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                        : numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
@@ -579,7 +592,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -609,10 +622,9 @@ class TopCost extends Component {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                      {numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -654,7 +666,7 @@ class TopCost extends Component {
                 )}
               >
                 <span>
-                  {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
+                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -669,7 +681,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Cost basis ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -701,9 +713,8 @@ class TopCost extends Component {
                 <span>
                   {rowData.CostBasis === 0
                     ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
+                    : numToCurrency(
+                        rowData.CostBasis.toFixed(2)
                       ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -719,7 +730,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current value ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -747,10 +758,9 @@ class TopCost extends Component {
                 }
               >
                 <span>
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentValue.toFixed(2))
-                    ).toLocaleString("en-US")}
+                  {numToCurrency(
+                    rowData.CurrentValue.toFixed(2)
+                  ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -760,17 +770,17 @@ class TopCost extends Component {
       {
         labelName: (
           <div
-            className="history-table-header-col no-hover"
+            className="cp history-table-header-col"
             id="Gainamount"
-            // onClick={() => this.handleSort(this.state.sortBy[6])}
+            onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Gain
+              Gain ({CurrencyType(false)})
             </span>
-            {/* <Image
+            <Image
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            /> */}
+            />
           </div>
         ),
         dataKey: "GainAmount",
@@ -779,16 +789,21 @@ class TopCost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
-            console.log("rowData ", rowData);
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(
-                  noExponents(rowData.GainAmount.toFixed(2))
-                ).toLocaleString("en-US")}
+                text={
+                  rowData.GainAmount
+                    ? CurrencyType(false) +
+                      Math.abs(
+                        Number(noExponents(rowData.GainAmount.toFixed(2)))
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0"
+                }
                 colorCode="#000"
               >
                 <div className="gainLossContainer">
@@ -797,10 +812,16 @@ class TopCost extends Component {
                       rowData.GainAmount < 0 ? "loss" : "gain"
                     }`}
                   >
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainAmount < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {Number(noExponents(rowData.GainAmount)).toLocaleString(
-                        "en-US"
-                      )}
+                      {tempDataHolder
+                        ? tempDataHolder.toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>
@@ -814,14 +835,14 @@ class TopCost extends Component {
           <div
             className="cp history-table-header-col"
             id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
+            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              %
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -831,6 +852,9 @@ class TopCost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
+            const tempDataHolder = Number(
+              noExponents(rowData.GainLoss.toFixed(2))
+            );
             return (
               <CustomOverlay
                 position="top"
@@ -838,9 +862,9 @@ class TopCost extends Component {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  tempDataHolder
+                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                    : "0%"
                 }
                 colorCode="#000"
               >
@@ -850,11 +874,16 @@ class TopCost extends Component {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>

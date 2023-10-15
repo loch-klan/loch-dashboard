@@ -44,6 +44,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   CurrencyType,
   noExponents,
+  numToCurrency,
   TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
@@ -1345,9 +1346,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 )}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(noExponents(rowData.amount.value)).toLocaleString(
-                    "en-US"
-                  )}
+                  {numToCurrency(rowData.amount.value).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -1404,10 +1403,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {numToCurrency(valueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1416,10 +1418,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? numToCurrency(valueThen).toLocaleString("en-US")
+                      : "0"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1475,10 +1482,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {valueToday
+                      ? numToCurrency(valueToday).toLocaleString("en-US")
+                      : "0"}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1487,10 +1499,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? numToCurrency(valueThen).toLocaleString("en-US")
+                      : "0"}
                   </div>
                 </CustomOverlay>
                 )

@@ -39,6 +39,7 @@ import {
   CostBlockchainFeesExport,
   CostCounterpartyFeesExport,
   CostGainHover,
+  SortByGainAmount,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
@@ -64,7 +65,11 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
@@ -122,7 +127,8 @@ class Cost extends Component {
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
         { title: "Current value", down: false },
-        { title: "Gain loss", down: true },
+        { title: "Gain amount", down: true },
+        { title: "Gain percentage", down: true },
       ],
     };
   }
@@ -616,7 +622,17 @@ class Cost extends Component {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-    } else if (e.title === "Gain loss") {
+    } else if (e.title === "Gain amount") {
+      this.sortArray("GainAmount", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      SortByGainAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
+    } else if (e.title === "Gain percentage") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
@@ -785,7 +801,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average cost price
+              Average cost price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -827,9 +843,8 @@ class Cost extends Component {
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
-                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                        : numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
@@ -847,7 +862,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -885,10 +900,9 @@ class Cost extends Component {
                 >
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                      {numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -937,7 +951,7 @@ class Cost extends Component {
                     });
                   }}
                 >
-                  {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
+                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -952,7 +966,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost basis
+              Cost basis ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -991,9 +1005,8 @@ class Cost extends Component {
                 >
                   {rowData.CostBasis === 0
                     ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
+                    : numToCurrency(
+                        rowData.CostBasis.toFixed(2)
                       ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -1009,7 +1022,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current value
+              Current value ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -1044,10 +1057,9 @@ class Cost extends Component {
                     });
                   }}
                 >
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentValue.toFixed(2))
-                    ).toLocaleString("en-US")}
+                  {numToCurrency(
+                    rowData.CurrentValue.toFixed(2)
+                  ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -1057,17 +1069,17 @@ class Cost extends Component {
       {
         labelName: (
           <div
-            className="history-table-header-col no-hover"
+            className="cp history-table-header-col"
             id="Gainamount"
-            // onClick={() => this.handleSort(this.state.sortBy[6])}
+            onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Gain
+              Gain ({CurrencyType(false)})
             </span>
-            {/* <Image
+            <Image
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            /> */}
+            />
           </div>
         ),
         dataKey: "GainAmount",
@@ -1076,16 +1088,21 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
-            console.log("rowData ", rowData);
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(
-                  noExponents(rowData.GainAmount.toFixed(2))
-                ).toLocaleString("en-US")}
+                text={
+                  rowData.GainAmount
+                    ? CurrencyType(false) +
+                      Math.abs(
+                        Number(noExponents(rowData.GainAmount.toFixed(2)))
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0"
+                }
                 colorCode="#000"
               >
                 <div
@@ -1102,10 +1119,16 @@ class Cost extends Component {
                       rowData.GainAmount < 0 ? "loss" : "gain"
                     }`}
                   >
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainAmount < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {Number(noExponents(rowData.GainAmount)).toLocaleString(
-                        "en-US"
-                      )}
+                      {tempDataHolder
+                        ? tempDataHolder.toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>
@@ -1119,14 +1142,14 @@ class Cost extends Component {
           <div
             className="cp history-table-header-col"
             id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
+            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              %
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
@@ -1136,6 +1159,9 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
+            const tempDataHolder = Number(
+              noExponents(rowData.GainLoss.toFixed(2))
+            );
             return (
               <CustomOverlay
                 position="top"
@@ -1143,9 +1169,9 @@ class Cost extends Component {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  tempDataHolder
+                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                    : "0%"
                 }
                 colorCode="#000"
               >
@@ -1163,11 +1189,16 @@ class Cost extends Component {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>
