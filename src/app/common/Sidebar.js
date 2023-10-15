@@ -1494,6 +1494,7 @@ function Sidebar(props) {
                                     }
                                   : {}
                               }
+                              className="followingImg"
                             />
                             Following
                           </NavLink>
