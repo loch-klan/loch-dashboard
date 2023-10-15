@@ -918,7 +918,7 @@ class WatchListPage extends BaseReactComponent {
                       showHeaderOnEmpty
                       tableData={this.state.tableData}
                       columnList={columnList}
-                      message="Start by following an address. Click the icon in the top right corner or visit the Leaderboard page."
+                      message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
                       totalPage={this.state.totalPage}
                       history={this.props.history}
                       location={this.props.location}
