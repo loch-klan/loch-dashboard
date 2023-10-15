@@ -21,6 +21,7 @@ function TransactionTable(props) {
     >
       {props.title ? (
         <GraphHeader
+          noSubtitleBottomPadding={props.noSubtitleBottomPadding}
           isLoading={props.isLoading}
           disableOnLoading={props.disableOnLoading}
           title={props.title}
@@ -54,8 +55,8 @@ function TransactionTable(props) {
           props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
         }
         message={
-          props.title === "Average cost basis"
-            ? "No average cost basis found"
+          props.title === "Unrealized gains"
+            ? "No unrealized gains found"
             : props?.message
             ? props?.message
             : "No transactions found"

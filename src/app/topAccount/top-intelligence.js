@@ -689,10 +689,14 @@ class TopIntelligence extends Component {
               handleShare={this.handleShare}
             />
 
-            <div className="portfolio-bar-graph" id="netflow">
+            <div
+              className="portfolio-bar-graph"
+              id="netflow"
+              style={{ paddingTop: "0.4rem" }}
+            >
               <PageHeader
                 showNetflowExplainers
-                title="Net flows"
+                title="Realized gains"
                 showImg={eyeIcon}
               />
               {/* Netflow Info Start */}

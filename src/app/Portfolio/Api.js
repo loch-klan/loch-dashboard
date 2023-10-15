@@ -576,7 +576,7 @@ export const getProtocolBalanceApi = (ctx, data) => {
               items: [],
             };
             const defiWalletItems = [];
-            if (userWalletData.items) {
+            if (userWalletData?.items) {
               userWalletData.items.map((walletItems) => {
                 let totalUsdValue = 0;
                 if (walletItems.usd_value) {
@@ -594,7 +594,27 @@ export const getProtocolBalanceApi = (ctx, data) => {
                     }
                   });
                 }
-
+                // if (
+                //   userWalletData?.tag?.toLowerCase() === "staked" &&
+                //   walletItems.pool
+                // ) {
+                //   totalStakedPrice = totalStakedPrice + totalUsdValue;
+                //   walletItems.pool.map((tempAssetText) => {
+                //     if (assetText) {
+                //       assetText = assetText + "+" + tempAssetText;
+                //     } else {
+                //       assetText = tempAssetText;
+                //     }
+                //     return null;
+                //   });
+                //   const tempWalletItem = {
+                //     balance: walletItems.balance ? walletItems.balance : [],
+                //     logos: tempAllLogos ? tempAllLogos : [],
+                //     usdValue: totalUsdValue,
+                //     asset: assetText,
+                //   };
+                //   stakedItems.walletItems.push(tempWalletItem);
+                // } else {
                 if (walletItems.supplied) {
                   totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
                   walletItems.supplied.map((tempAssetText) => {
@@ -698,6 +718,7 @@ export const getProtocolBalanceApi = (ctx, data) => {
                   };
                   borrowedItems.walletItems.push(tempWalletItem);
                 }
+                // }
                 return null;
               });
             }

@@ -75,8 +75,8 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      exportHeaderTitle: "Download all costs",
-      exportHeaderSubTitle: "Export your average cost basis from Loch",
+      exportHeaderTitle: "Download all unrealized gains",
+      exportHeaderSubTitle: "Export your unrealized gains from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -138,8 +138,8 @@ class Cost extends Component {
     });
     this.setState(
       {
-        exportHeaderTitle: "Download all costs",
-        exportHeaderSubTitle: "Export your average cost basis from Loch",
+        exportHeaderTitle: "Download unrealized gains",
+        exportHeaderSubTitle: "Export your unrealized gains from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -1112,7 +1112,7 @@ class Cost extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section m-t-80">
+        <div className="cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -1126,7 +1126,7 @@ class Cost extends Component {
           ) : (
             ""
           )}
-          <div className="m-t-30 cost-section page">
+          <div className="cost-section page">
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -1170,7 +1170,10 @@ class Cost extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-            <div className="m-b-43 cost-table-section">
+            <div
+              style={{ marginBottom: "2.8rem" }}
+              className="cost-table-section"
+            >
               <div style={{ position: "relative" }}>
                 {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -1179,8 +1182,9 @@ class Cost extends Component {
                 </p>
                 </div> */}
                 <TransactionTable
-                  title="Average cost basis"
-                  subTitle="Understand your average entry price"
+                  noSubtitleBottomPadding
+                  title="Unrealized gains"
+                  subTitle="Understand your unrealized gains per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}
@@ -1201,7 +1205,7 @@ class Cost extends Component {
             <div
               style={{
                 position: "relative",
-                minHeight: "66.25rem",
+                // minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
             >
@@ -1228,7 +1232,7 @@ class Cost extends Component {
                 timeFunction={(e) => {
                   this.getBlockchainFee(e);
                 }}
-                marginBottom="m-b-30"
+                marginBottom="marginBot2point8"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}
@@ -1248,7 +1252,7 @@ class Cost extends Component {
               id="cp"
               style={{
                 position: "relative",
-                minHeight: "66.5rem",
+                // minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
             >
@@ -1257,7 +1261,7 @@ class Cost extends Component {
               <p className="inter-display-regular f-s-13 lh-16 black-191">
                 This feature is coming soon.
               </p>
-            </div> */}
+              </div> */}
 
               <BarGraphSection
                 ExportBtn
@@ -1280,7 +1284,6 @@ class Cost extends Component {
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-30"
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}
