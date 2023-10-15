@@ -1432,7 +1432,7 @@ class TopPortfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Avg cost price
+              Avg cost price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -1466,8 +1466,7 @@ class TopPortfolio extends BaseReactComponent {
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
+                        : Number(
                             noExponents(rowData.AverageCostPrice.toFixed(2))
                           ).toLocaleString("en-US")}
                     </span>
@@ -1486,7 +1485,7 @@ class TopPortfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -1516,10 +1515,9 @@ class TopPortfolio extends BaseReactComponent {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                      {Number(
+                        noExponents(rowData.CurrentPrice.toFixed(2))
+                      ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -1536,7 +1534,7 @@ class TopPortfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              %
             </span>
             <Image
               src={sortByIcon}
@@ -1557,9 +1555,11 @@ class TopPortfolio extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  rowData.GainLoss
+                    ? Math.abs(
+                        Number(noExponents(rowData.GainLoss.toFixed(2)))
+                      ).toLocaleString("en-US") + "%"
+                    : "0%"
                 }
                 colorCode="#000"
               >
@@ -1571,9 +1571,11 @@ class TopPortfolio extends BaseReactComponent {
                   >
                     <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                      {rowData.GainLoss
+                        ? Math.abs(
+                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          ).toLocaleString("en-US") + "%"
+                        : "0%"}
                     </span>
                   </div>
                 </div>
