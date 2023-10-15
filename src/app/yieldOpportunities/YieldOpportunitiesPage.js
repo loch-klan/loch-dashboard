@@ -872,7 +872,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("apy")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              APY
+              APY (%)
             </span>
             <Image
               src={sortByIcon}
@@ -898,8 +898,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                   {rowData.apy
-                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
-                      "%"
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US")
                     : "-"}
                 </div>
               </CustomOverlay>

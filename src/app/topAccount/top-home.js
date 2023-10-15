@@ -1541,13 +1541,18 @@ class TopPortfolio extends BaseReactComponent {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.GainLoss
                         ? Math.abs(
                             Number(noExponents(rowData.GainLoss.toFixed(2)))
-                          ).toLocaleString("en-US") + "%"
-                        : "0%"}
+                          ).toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>
