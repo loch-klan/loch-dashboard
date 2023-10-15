@@ -1502,7 +1502,9 @@ class ExitOverlay extends BaseReactComponent {
                               })}
                             </div>
 
-                            {this.state.addWalletList[0]?.address !== "" && (
+                            {this.state.addWalletList[0]?.address !== "" && 
+                            this.state.addWalletList?.length < 10
+                            (
                               <div className="m-b-32 add-wallet-btn">
                                 <Button
                                   className="grey-btn"
