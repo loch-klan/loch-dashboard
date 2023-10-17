@@ -351,11 +351,9 @@ class AddWatchListAddressModal extends BaseReactComponent {
                   className="exit-overlay-body"
                   style={{ padding: "0rem 10.5rem" }}
                 >
-                  <h6 className="inter-display-medium f-s-25">
-                    Added to Watchlist
-                  </h6>
+                  <h6 className="inter-display-medium f-s-25">Following</h6>
                   <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                    Your address has been added to the Watchlist
+                    Your are now following this address
                   </p>
                 </div>
                 <Button className="primary-btn" onClick={this.hideModal}>
@@ -380,7 +378,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
               style={{ padding: "0rem 10.5rem" }}
             >
               <h6 className="inter-display-medium f-s-25">
-                Add an address to the Watchlist
+                Add an address to follow
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
                 Keep an eye on an address
