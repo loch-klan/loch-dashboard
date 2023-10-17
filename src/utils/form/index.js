@@ -11,3 +11,4 @@ export { default as SelectControl } from "./SelectControl";
 export { default as FileUploadControl } from "./FileUploadControl";
 export { default as BaseReactComponent } from "./BaseReactComponent";
 export { default as DatePickerControl } from "./DatePickerControl";
+export { default as CustomDropdownPrice } from "./CustomDropdownPrice";

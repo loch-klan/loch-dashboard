@@ -22,6 +22,7 @@ import {
   PriceChartYear,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { CustomDropdownPrice } from "../../utils/form";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -328,7 +329,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             {this.props.graphLoading ? (
               <div
                 style={{
-                  height: "30rem",
+                  height: "50rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -402,14 +403,10 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
 
                   <div
                     style={{
-                      width: "100%",
-                      minWidth: "18rem",
-                      maxWidth: "20rem",
-                      marginLeft: "1rem",
                       zIndex: 4,
                     }}
                   >
-                    <CustomDropdown
+                    <CustomDropdownPrice
                       filtername="All chains selected"
                       options={this.state.assetList}
                       action={null}

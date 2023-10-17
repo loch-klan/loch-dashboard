@@ -594,81 +594,12 @@ export const getProtocolBalanceApi = (ctx, data) => {
                     }
                   });
                 }
-                // if (
-                //   userWalletData?.tag?.toLowerCase() === "staked" &&
-                //   walletItems.pool
-                // ) {
-                //   totalStakedPrice = totalStakedPrice + totalUsdValue;
-                //   walletItems.pool.map((tempAssetText) => {
-                //     if (assetText) {
-                //       assetText = assetText + "+" + tempAssetText;
-                //     } else {
-                //       assetText = tempAssetText;
-                //     }
-                //     return null;
-                //   });
-                //   const tempWalletItem = {
-                //     balance: walletItems.balance ? walletItems.balance : [],
-                //     logos: tempAllLogos ? tempAllLogos : [],
-                //     usdValue: totalUsdValue,
-                //     asset: assetText,
-                //   };
-                //   stakedItems.walletItems.push(tempWalletItem);
-                // } else {
-                if (walletItems.supplied) {
-                  totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
-                  walletItems.supplied.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                  const tempWalletItem = {
-                    balance: walletItems.balance ? walletItems.balance : [],
-                    logos: tempAllLogos ? tempAllLogos : [],
-                    usdValue: totalUsdValue,
-                    asset: assetText,
-                  };
-                  suppliedItems.walletItems.push(tempWalletItem);
-                } else if (walletItems.lent) {
-                  totalLentPrice = totalLentPrice + totalUsdValue;
-                  walletItems.lent.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                  const tempWalletItem = {
-                    balance: walletItems.balance ? walletItems.balance : [],
-                    logos: tempAllLogos ? tempAllLogos : [],
-                    usdValue: totalUsdValue,
-                    asset: assetText,
-                  };
-                  lentItems.walletItems.push(tempWalletItem);
-                } else if (walletItems.reward) {
-                  totalRewardPrice = totalRewardPrice + totalUsdValue;
-                  walletItems.reward.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                  const tempWalletItem = {
-                    balance: walletItems.balance ? walletItems.balance : [],
-                    logos: tempAllLogos ? tempAllLogos : [],
-                    usdValue: totalUsdValue,
-                    asset: assetText,
-                  };
-                  rewardItems.walletItems.push(tempWalletItem);
-                } else if (walletItems.staked) {
+                if (
+                  userWalletData?.tag?.toLowerCase() === "staked" &&
+                  walletItems.pool
+                ) {
                   totalStakedPrice = totalStakedPrice + totalUsdValue;
-                  walletItems.staked.map((tempAssetText) => {
+                  walletItems.pool.map((tempAssetText) => {
                     if (assetText) {
                       assetText = assetText + "+" + tempAssetText;
                     } else {
@@ -683,42 +614,111 @@ export const getProtocolBalanceApi = (ctx, data) => {
                     asset: assetText,
                   };
                   stakedItems.walletItems.push(tempWalletItem);
-                } else if (walletItems.pool) {
-                  totalPoolPrice = totalPoolPrice + totalUsdValue;
-                  walletItems.pool.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + " + " + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                  const tempWalletItem = {
-                    balance: walletItems.balance ? walletItems.balance : [],
-                    logos: tempAllLogos ? tempAllLogos : [],
-                    usdValue: totalUsdValue,
-                    asset: assetText,
-                  };
-                  poolItems.walletItems.push(tempWalletItem);
-                } else if (walletItems.borrowed) {
-                  totalBorrowedPrice = totalBorrowedPrice + totalUsdValue;
-                  walletItems.borrowed.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                  const tempWalletItem = {
-                    balance: walletItems.balance ? walletItems.balance : [],
-                    logos: tempAllLogos ? tempAllLogos : [],
-                    usdValue: totalUsdValue,
-                    asset: assetText,
-                  };
-                  borrowedItems.walletItems.push(tempWalletItem);
+                } else {
+                  if (walletItems.supplied) {
+                    totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
+                    walletItems.supplied.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + "+" + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    suppliedItems.walletItems.push(tempWalletItem);
+                  } else if (walletItems.lent) {
+                    totalLentPrice = totalLentPrice + totalUsdValue;
+                    walletItems.lent.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + "+" + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    lentItems.walletItems.push(tempWalletItem);
+                  } else if (walletItems.reward) {
+                    totalRewardPrice = totalRewardPrice + totalUsdValue;
+                    walletItems.reward.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + "+" + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    rewardItems.walletItems.push(tempWalletItem);
+                  } else if (walletItems.staked) {
+                    totalStakedPrice = totalStakedPrice + totalUsdValue;
+                    walletItems.staked.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + "+" + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    stakedItems.walletItems.push(tempWalletItem);
+                  } else if (walletItems.pool) {
+                    totalPoolPrice = totalPoolPrice + totalUsdValue;
+                    walletItems.pool.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + " + " + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    poolItems.walletItems.push(tempWalletItem);
+                  } else if (walletItems.borrowed) {
+                    totalBorrowedPrice = totalBorrowedPrice + totalUsdValue;
+                    walletItems.borrowed.map((tempAssetText) => {
+                      if (assetText) {
+                        assetText = assetText + "+" + tempAssetText;
+                      } else {
+                        assetText = tempAssetText;
+                      }
+                      return null;
+                    });
+                    const tempWalletItem = {
+                      balance: walletItems.balance ? walletItems.balance : [],
+                      logos: tempAllLogos ? tempAllLogos : [],
+                      usdValue: totalUsdValue,
+                      asset: assetText,
+                    };
+                    borrowedItems.walletItems.push(tempWalletItem);
+                  }
                 }
-                // }
                 return null;
               });
             }
