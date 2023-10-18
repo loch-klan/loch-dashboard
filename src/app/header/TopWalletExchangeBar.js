@@ -12,6 +12,9 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import { setHeaderReducer } from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
+import { WalletIcon } from "../../assets/images/icons";
+import { ethers } from "ethers";
+import { updateUserWalletApi } from "../common/Api";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +37,11 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
+    ) {
+      this.applyWalletList();
+    }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
@@ -179,7 +187,90 @@ class TopBar extends Component {
     });
     this.props.handleConnectModal();
   };
+  connectWalletEthers = async () => {
+    // const MAINNET_RPC_URL =
+    //   "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
+    // const injected = injectedModule({
+    //   displayUnavailable: [
+    //     ProviderLabel.MetaMask,
+    //     ProviderLabel.Coinbase,
+    //     ProviderLabel.Phantom,
+    //   ],
+    // });
+    // const onboard = Onboard({
+    //   wallets: [injected],
+    //   chains: [
+    //     {
+    //       id: "0x1",
+    //       token: "ETH",
+    //       label: "Ethereum Mainnet",
+    //       rpcUrl: MAINNET_RPC_URL,
+    //     },
+    //     {
+    //       id: "0x2105",
+    //       token: "ETH",
+    //       label: "Base",
+    //       rpcUrl: "https://mainnet.base.org",
+    //     },
+    //   ],
+    //   appMetadata: {
+    //     name: "Loch",
+    //     icon: LochLogoNameIcon,
+    //     description: "A loch app",
+    //   },
+    // });
+    // if (onboard && onboard.connectWallet) {
+    //   const wallets = onboard.connectWallet();
+    //   // console.log("wallets ", wallets);
+    // }
 
+    //NEW
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
+
+    // async function connectMetamask() {
+    //     await provider.send("eth_requestAccounts", []);
+    //     signer = await provider.getSigner();
+    // }
+    //NEW
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    let signer = provider.getSigner();
+
+    const tempRes = await provider.send("eth_requestAccounts", []);
+
+    if (tempRes && tempRes.length > 0) {
+      this.addToList(tempRes);
+    }
+    // Leaver console log: full signer too"
+    console.log("signer is ", signer);
+    console.log("signer get address is ", await signer.getAddress());
+  };
+  addToList = (addThese) => {
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    console.log("walletAddress is ", walletAddress);
+    let addressList = [];
+    let nicknameArr = {};
+    walletAddress.forEach((loopEle) => {
+      if (loopEle.address) {
+        console.log(loopEle);
+        addressList.push(loopEle.address?.trim());
+        nicknameArr[loopEle.address?.trim()] = loopEle.nickname;
+      }
+    });
+    addThese.forEach((loopEle) => {
+      if (loopEle) {
+        addressList.push(loopEle?.trim());
+        nicknameArr[loopEle?.trim()] = "";
+      }
+    });
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData);
+  };
   render() {
     return (
       <div className="topBarContainer">
@@ -207,32 +298,48 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-
         <div
-          onClick={this.passConnectExchangeClick}
-          className="topbar-btn ml-2 maxWidth50"
+          style={{
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
         >
-          {this.state.exchangeList.length > 0 ? (
-            <>
-              <span className="mr-2">
-                {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                  <Image className="topBarExchangeIcons" src={imgUrl} />
-                ))}
-              </span>
-              <span className="dotDotText">
-                <span className="captilasideText">
-                  {this.state.firstExchange?.toLowerCase()}{" "}
+          <div
+            onClick={this.connectWalletEthers}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            <Image className="topBarWalletAdd " src={WalletIcon} />
+            <span className="dotDotText">Connect wallet</span>
+          </div>
+          <div
+            onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
                 </span>
-                {this.state.exchangeList.length > 1 ? "and others " : ""}
-                {"connected"}
-              </span>
-            </>
-          ) : (
-            <>
-              <Image className="topBarWalletAdd " src={LinkIconBtn} />
-              <span className="dotDotText">Connect exchange</span>
-            </>
-          )}
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -242,10 +349,13 @@ class TopBar extends Component {
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
+  OnboardingState: state.OnboardingState,
+  AddLocalAddWalletState: state.AddLocalAddWalletState,
 });
 
 const mapDispatchToProps = {
   setHeaderReducer,
+  updateUserWalletApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

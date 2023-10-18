@@ -305,6 +305,7 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              history={history}
               buttonRef={buttonRef}
               handleAddWalletClick={handleAddWalletClick}
               handleConnectModal={handleConnectModal}

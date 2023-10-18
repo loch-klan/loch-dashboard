@@ -1,3 +1,4 @@
+export { default as WalletIcon } from "./wallet_icon.svg";
 export { default as TriangleArrowDownIcon } from "./triangleArrowDown.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as LoaderIcon } from "./loader.svg";
