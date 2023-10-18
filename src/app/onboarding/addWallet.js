@@ -985,7 +985,7 @@ class AddWallet extends BaseReactComponent {
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Paste any wallet address here"
+                                  placeholder="Paste any wallet address or ENS here"
                                   title={c.address || ""}
                                   onChange={(e) => this.handleOnChange(e)}
                                   onKeyDown={this.handleTabPress}
