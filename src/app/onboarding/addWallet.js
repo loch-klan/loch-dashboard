@@ -984,7 +984,7 @@ class AddWallet extends BaseReactComponent {
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Paste any wallet address here"
+                                  placeholder="Paste any wallet address or ENS here"
                                   title={c.address || ""}
                                   onChange={(e) => this.handleOnChange(e)}
                                   onKeyDown={this.handleTabPress}
@@ -1138,7 +1138,8 @@ class AddWallet extends BaseReactComponent {
               </div>
             </div>
 
-            {this.state.addButtonVisible ? (
+            {this.state.addButtonVisible &&
+            this.state.walletInput?.length < 10 ? (
               <div className="addAnotherBtnContainer">
                 <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another
