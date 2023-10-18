@@ -34,6 +34,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { toast } from "react-toastify";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class Defi extends Component {
   constructor(props) {
@@ -593,15 +594,31 @@ class Defi extends Component {
                                   <span className="inter-display-medium f-s-16 lh-19">
                                     {item.name}
                                   </span>
-                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                    {CurrencyType(false)}
-                                    {amountFormat(
-                                      item.totalPrice.toFixed(2) *
-                                        (this.state.currency?.rate || 1),
-                                      "en-US",
-                                      "USD"
-                                    )}
-                                  </span>
+                                  <CustomOverlay
+                                    position="top"
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={
+                                      CurrencyType(false) +
+                                      amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )
+                                    }
+                                  >
+                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                      {CurrencyType(false)}
+                                      {numToCurrency(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </CustomOverlay>
                                 </div>
                               );
                             })}
@@ -669,15 +686,31 @@ class Defi extends Component {
                                   <span className="inter-display-medium f-s-16 lh-19">
                                     {item.name}
                                   </span>
-                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                    {CurrencyType(false)}
-                                    {amountFormat(
-                                      item.totalPrice.toFixed(2) *
-                                        (this.state.currency?.rate || 1),
-                                      "en-US",
-                                      "USD"
-                                    )}
-                                  </span>
+                                  <CustomOverlay
+                                    position="top"
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={
+                                      CurrencyType(false) +
+                                      amountFormat(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )
+                                    }
+                                  >
+                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                      {CurrencyType(false)}
+                                      {numToCurrency(
+                                        item.totalPrice.toFixed(2) *
+                                          (this.state.currency?.rate || 1),
+                                        "en-US",
+                                        "USD"
+                                      )}
+                                    </span>
+                                  </CustomOverlay>
                                 </div>
                               );
                             })}
@@ -845,16 +878,28 @@ class Defi extends Component {
                                                 ? rowData.balance.map(
                                                     (e, indexFour) => {
                                                       return (
-                                                        <div
-                                                          className={`${
-                                                            indexFour > 0
-                                                              ? "mt-3"
-                                                              : ""
-                                                          } inter-display-medium f-s-15 lh-15`}
-                                                          key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                        <CustomOverlay
+                                                          position="top"
+                                                          isIcon={false}
+                                                          isInfo={true}
+                                                          isText={true}
+                                                          text={e}
                                                         >
-                                                          {e}
-                                                        </div>
+                                                          <div
+                                                            className={`${
+                                                              indexFour > 0
+                                                                ? "mt-3"
+                                                                : ""
+                                                            } inter-display-medium f-s-15 lh-15`}
+                                                            key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                          >
+                                                            {numToCurrency(
+                                                              e.toFixed(2),
+                                                              "en-US",
+                                                              "USD"
+                                                            )}
+                                                          </div>
+                                                        </CustomOverlay>
                                                       );
                                                     }
                                                   )
@@ -864,14 +909,33 @@ class Defi extends Component {
                                           <Col md={4}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
-                                                  {CurrencyType(false)}
-                                                  {amountFormat(
-                                                    rowData.usdValue.toFixed(2),
-                                                    "en-US",
-                                                    "USD"
-                                                  )}
-                                                </div>
+                                                <CustomOverlay
+                                                  position="top"
+                                                  isIcon={false}
+                                                  isInfo={true}
+                                                  isText={true}
+                                                  text={
+                                                    CurrencyType(false) +
+                                                    amountFormat(
+                                                      rowData.usdValue.toFixed(
+                                                        2
+                                                      ),
+                                                      "en-US",
+                                                      "USD"
+                                                    )
+                                                  }
+                                                >
+                                                  <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                    {CurrencyType(false)}
+                                                    {numToCurrency(
+                                                      rowData.usdValue.toFixed(
+                                                        2
+                                                      ),
+                                                      "en-US",
+                                                      "USD"
+                                                    )}
+                                                  </div>
+                                                </CustomOverlay>
                                               </div>
                                             ) : null}
                                           </Col>

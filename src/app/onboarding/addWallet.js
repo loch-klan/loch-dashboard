@@ -1139,7 +1139,8 @@ class AddWallet extends BaseReactComponent {
               </div>
             </div>
 
-            {this.state.addButtonVisible ? (
+            {this.state.addButtonVisible &&
+            this.state.walletInput?.length < 10 ? (
               <div className="addAnotherBtnContainer">
                 <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another

@@ -1717,7 +1717,7 @@ class Portfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Avg cost price
+              Avg cost price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -1754,8 +1754,7 @@ class Portfolio extends BaseReactComponent {
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
+                        : Number(
                             noExponents(rowData.AverageCostPrice.toFixed(2))
                           ).toLocaleString("en-US")}
                     </span>
@@ -1774,7 +1773,7 @@ class Portfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current price ({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -1807,10 +1806,9 @@ class Portfolio extends BaseReactComponent {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                      {Number(
+                        noExponents(rowData.CurrentPrice.toFixed(2))
+                      ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -1963,7 +1961,7 @@ class Portfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              %
             </span>
             <Image
               src={sortByIcon}
@@ -1987,9 +1985,11 @@ class Portfolio extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  rowData.GainLoss
+                    ? Math.abs(
+                        Number(noExponents(rowData.GainLoss.toFixed(2)))
+                      ).toLocaleString("en-US") + "%"
+                    : "0%"
                 }
                 colorCode="#000"
               >
@@ -1999,11 +1999,18 @@ class Portfolio extends BaseReactComponent {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.GainLoss
+                        ? Math.abs(
+                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          ).toLocaleString("en-US")
+                        : "0"}
                     </span>
                   </div>
                 </div>
