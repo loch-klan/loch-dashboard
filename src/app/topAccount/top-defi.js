@@ -10,6 +10,7 @@ import { getProtocolBalanceApi } from "../Portfolio/Api";
 import { updateDefiData } from "../defi/Api";
 import {
   amountFormat,
+  convertNtoNumber,
   CurrencyType,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
@@ -834,7 +835,13 @@ class TopDefi extends Component {
                                                           isIcon={false}
                                                           isInfo={true}
                                                           isText={true}
-                                                          text={e}
+                                                          text={
+                                                            e
+                                                              ? convertNtoNumber(
+                                                                  e
+                                                                )
+                                                              : "0.00"
+                                                          }
                                                         >
                                                           <div
                                                             className={`${
@@ -844,11 +851,17 @@ class TopDefi extends Component {
                                                             } inter-display-medium f-s-15 lh-15`}
                                                             key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                           >
-                                                            {numToCurrency(
-                                                              e.toFixed(2),
-                                                              "en-US",
-                                                              "USD"
-                                                            )}
+                                                            {e
+                                                              ? isNaN(e)
+                                                                ? e
+                                                                : numToCurrency(
+                                                                    convertNtoNumber(
+                                                                      e
+                                                                    ),
+                                                                    "en-US",
+                                                                    "USD"
+                                                                  )
+                                                              : "0.00"}
                                                           </div>
                                                         </CustomOverlay>
                                                       );
