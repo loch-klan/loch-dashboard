@@ -32,13 +32,13 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import arrowUp from "../../assets/images/arrow-up.svg";
-
 import {
   getAllProtocol,
   getYieldBalanceApi,
   getUserWallet,
   getProtocolBalanceApi,
   getExchangeBalances,
+  isFollowedByUser,
 } from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
@@ -46,8 +46,10 @@ import { updateDefiData } from "../defi/Api";
 import {
   PieChartWatermarkIcon,
   SharePortfolioIconWhite,
+  TwoPeopleLightIcon,
 } from "../../assets/images/icons";
 import { toast } from "react-toastify";
+import { addAddressToWatchList } from "../watchlist/redux/WatchListApi";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -63,7 +65,8 @@ class PieChart2 extends BaseReactComponent {
       valueChanged: false,
       flag: false,
       isLoading: props.isLoading,
-
+      isFollowingAddress: false,
+      showFollowingAddress: true,
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
@@ -98,7 +101,8 @@ class PieChart2 extends BaseReactComponent {
 
   componentDidMount() {
     // for temp
-
+    this.isFollowedByUserFun();
+    this.showFollowOrNot();
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
@@ -298,6 +302,11 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
+    if (
+      prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
+    ) {
+      this.showFollowOrNot();
+    }
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
       // }
@@ -735,7 +744,82 @@ class PieChart2 extends BaseReactComponent {
 
     // getUserWallet(this);
   };
+  addAddressToWatchListFun = () => {
+    if (this.state.isFollowingAddress) {
+      return null;
+    }
 
+    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return { address: resData.address, nameTag: resData.nameTag };
+      });
+      if (tempListOfAdd && tempListOfAdd.length > 0) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const tempNameTag = tempListOfAdd[0].nameTag
+          ? tempListOfAdd[0].nameTag
+          : "";
+        this.setState({
+          loadAddBtn: true,
+        });
+        const data = new URLSearchParams();
+        data.append("wallet_address", tempWalletAddress);
+        data.append("type", "self");
+        data.append("name_tag", tempNameTag);
+        this.props.addAddressToWatchList(
+          data,
+          this,
+          tempWalletAddress,
+          tempNameTag
+        );
+      }
+    }
+  };
+  showAddressesAdded = () => {
+    this.setState({ isFollowingAddress: true });
+    toast.success(
+      <div className="custom-toast-msg" style={{ width: "43rem" }}>
+        <div>Following</div>
+        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          Your are now following this address
+        </div>
+      </div>
+    );
+  };
+  isFollowedByUserFun = () => {
+    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    console.log("What is it ", listJson);
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return { address: resData.address, nameTag: resData.nameTag };
+      });
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const data = new URLSearchParams();
+        data.append("wallet_address", tempWalletAddress);
+        this.props.isFollowedByUser(data, this);
+      }
+    }
+  };
+  showFollowOrNot = () => {
+    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    if (listJson && listJson.length > 0) {
+      if (listJson.length === 1) {
+        this.isFollowedByUserFun();
+        this.setState({
+          showFollowingAddress: true,
+        });
+      } else {
+        this.setState({
+          showFollowingAddress: false,
+        });
+      }
+    }
+  };
   render() {
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
@@ -1183,6 +1267,20 @@ class PieChart2 extends BaseReactComponent {
                     justifyContent: "end",
                   }}
                 >
+                  {this.state.showFollowingAddress ? (
+                    <div
+                      onClick={this.addAddressToWatchListFun}
+                      className="pageHeaderShareContainer"
+                    >
+                      <Image
+                        className="pageHeaderShareImg"
+                        src={TwoPeopleLightIcon}
+                      />
+                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                        {this.state.isFollowingAddress ? "Following" : "Follow"}
+                      </div>
+                    </div>
+                  ) : null}
                   <h2
                     className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
@@ -1889,6 +1987,7 @@ const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
   commonState: state.CommonState,
+  AddLocalAddWalletState: state.AddLocalAddWalletState,
 });
 
 const mapDispatchToProps = {
@@ -1897,7 +1996,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   updateDefiData,
   getProtocolBalanceApi,
-
+  addAddressToWatchList,
   getExchangeBalances,
+  isFollowedByUser,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);

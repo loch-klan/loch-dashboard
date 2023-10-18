@@ -722,7 +722,7 @@ class FixAddModal extends BaseReactComponent {
             this.props.setHeaderReducer(addWallet);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
-          addLocalWalletList(JSON.stringify(addWallet));
+          this.props.addLocalWalletList(JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -1007,7 +1007,7 @@ class FixAddModal extends BaseReactComponent {
         this.props.setHeaderReducer(walletList);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
-      addLocalWalletList(JSON.stringify(walletList));
+      this.props.addLocalWalletList(JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1761,6 +1761,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   getDetectedChainsApi,
   detectNameTag,
+  addLocalWalletList,
 };
 FixAddModal.propTypes = {};
 
