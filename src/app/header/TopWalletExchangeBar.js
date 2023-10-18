@@ -8,6 +8,7 @@ import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
+  ConnectWalletButtonClicked,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { setHeaderReducer } from "./HeaderAction";
@@ -37,11 +38,6 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
-    ) {
-      this.applyWalletList();
-    }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
@@ -188,6 +184,10 @@ class TopBar extends Component {
     this.props.handleConnectModal();
   };
   connectWalletEthers = async () => {
+    ConnectWalletButtonClicked({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
     // const MAINNET_RPC_URL =
     //   "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
     // const injected = injectedModule({
@@ -236,33 +236,66 @@ class TopBar extends Component {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = provider.getSigner();
 
-    const tempRes = await provider.send("eth_requestAccounts", []);
+    try {
+      const tempRes = await provider.send("eth_requestAccounts", []);
 
-    if (tempRes && tempRes.length > 0) {
-      this.addToList(tempRes);
+      if (tempRes && tempRes.length > 0) {
+        this.addToList(tempRes);
+      }
+      // Leaver console log: full signer too"
+      console.log("signer is ", signer);
+      console.log("signer get address is ", await signer.getAddress());
+    } catch (error) {
+      console.log("ethers error ", error);
     }
-    // Leaver console log: full signer too"
-    console.log("signer is ", signer);
-    console.log("signer get address is ", await signer.getAddress());
   };
   addToList = (addThese) => {
     let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
-    console.log("walletAddress is ", walletAddress);
     let addressList = [];
     let nicknameArr = {};
-    walletAddress.forEach((loopEle) => {
-      if (loopEle.address) {
-        console.log(loopEle);
-        addressList.push(loopEle.address?.trim());
-        nicknameArr[loopEle.address?.trim()] = loopEle.nickname;
+    let walletList = [];
+    let arr = [];
+    walletAddress.forEach((curr) => {
+      if (!arr.includes(curr.address?.trim()) && curr.address) {
+        walletList.push(curr);
+        arr.push(curr.address?.trim());
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        arr.push(curr.displayAddress?.trim());
+        arr.push(curr.address?.trim());
+        addressList.push(curr.address?.trim());
       }
     });
-    addThese.forEach((loopEle) => {
-      if (loopEle) {
-        addressList.push(loopEle?.trim());
-        nicknameArr[loopEle?.trim()] = "";
+    addThese.forEach((curr) => {
+      if (!arr.includes(curr?.trim()) && curr) {
+        walletList.push({
+          address: curr,
+          coinFound: true,
+          coins: [],
+          displayAddress: curr,
+          nameTag: "",
+          nickname: "",
+          showAddress: true,
+          showNameTag: false,
+          showNickname: false,
+          wallet_metadata: null,
+        });
+        arr.push(curr?.trim());
+        nicknameArr[curr?.trim()] = curr.nickname;
+        arr.push(curr?.trim());
+        arr.push(curr?.trim());
+        addressList.push(curr?.trim());
       }
     });
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -350,7 +383,6 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
   OnboardingState: state.OnboardingState,
-  AddLocalAddWalletState: state.AddLocalAddWalletState,
 });
 
 const mapDispatchToProps = {
