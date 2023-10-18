@@ -127,6 +127,15 @@ export const LPC_Go = ({
 };
 
 //3. Landing Page Conversion:privacy message
+export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
+  const event_name = "Top Bar: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:privacy message");
+};
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {};
