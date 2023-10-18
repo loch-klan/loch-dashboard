@@ -97,6 +97,8 @@ export const addAddressToWatchList = (
       .catch((err) => {
         if (ctx.hideModal) {
           ctx.hideModal();
+        }
+        if (ctx.refetchList) {
           ctx.refetchList();
         }
         console.log("addAddressToWatchList error", err);

@@ -23,3 +23,4 @@ export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as SharePortfolioIconWhite } from "./SharePortfolioIconWhite.svg";
 export { default as ExportIcon } from "./ExportIcon.svg";
 export { default as TwoPeopleIcon } from "./twoPeople.svg";
+export { default as TwoPeopleLightIcon } from "./twoPeopleLight.svg";
