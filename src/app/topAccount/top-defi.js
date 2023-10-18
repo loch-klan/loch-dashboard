@@ -901,7 +901,21 @@ class TopDefi extends Component {
                                                   </div>
                                                 </CustomOverlay>
                                               </div>
-                                            ) : null}
+                                            ) : (
+                                              <div className="d-flex align-items-center justify-content-end h-100">
+                                                <CustomOverlay
+                                                  position="top"
+                                                  isIcon={false}
+                                                  isInfo={true}
+                                                  isText={true}
+                                                  text={"$0.00"}
+                                                >
+                                                  <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                    $0.00
+                                                  </div>
+                                                </CustomOverlay>
+                                              </div>
+                                            )}
                                           </Col>
                                         </Row>
                                       );

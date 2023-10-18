@@ -872,9 +872,13 @@ class Defi extends Component {
                                                           isIcon={false}
                                                           isInfo={true}
                                                           isText={true}
-                                                          text={convertNtoNumber(
+                                                          text={
                                                             e
-                                                          )}
+                                                              ? convertNtoNumber(
+                                                                  e
+                                                                )
+                                                              : "0.00"
+                                                          }
                                                         >
                                                           <div
                                                             className={`${
@@ -884,15 +888,17 @@ class Defi extends Component {
                                                             } inter-display-medium f-s-15 lh-15`}
                                                             key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                           >
-                                                            {isNaN(e)
-                                                              ? e
-                                                              : numToCurrency(
-                                                                  convertNtoNumber(
-                                                                    e
-                                                                  ),
-                                                                  "en-US",
-                                                                  "USD"
-                                                                )}
+                                                            {e
+                                                              ? isNaN(e)
+                                                                ? e
+                                                                : numToCurrency(
+                                                                    convertNtoNumber(
+                                                                      e
+                                                                    ),
+                                                                    "en-US",
+                                                                    "USD"
+                                                                  )
+                                                              : "0.00"}
                                                           </div>
                                                         </CustomOverlay>
                                                       );
