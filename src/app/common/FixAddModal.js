@@ -1758,7 +1758,6 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   getDetectedChainsApi,
   detectNameTag,
-  addLocalWalletList,
 };
 FixAddModal.propTypes = {};
 
