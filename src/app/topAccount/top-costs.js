@@ -539,7 +539,8 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average cost price ({CurrencyType(false)})
+              Average cost price
+              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -592,7 +593,8 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price ({CurrencyType(false)})
+              Current price
+              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -681,7 +683,8 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost basis ({CurrencyType(false)})
+              Cost basis
+              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -730,7 +733,8 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current value ({CurrencyType(false)})
+              Current value
+              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -775,7 +779,8 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Gain ({CurrencyType(false)})
+              Gain
+              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}

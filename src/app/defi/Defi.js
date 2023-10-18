@@ -878,16 +878,28 @@ class Defi extends Component {
                                                 ? rowData.balance.map(
                                                     (e, indexFour) => {
                                                       return (
-                                                        <div
-                                                          className={`${
-                                                            indexFour > 0
-                                                              ? "mt-3"
-                                                              : ""
-                                                          } inter-display-medium f-s-15 lh-15`}
-                                                          key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                        <CustomOverlay
+                                                          position="top"
+                                                          isIcon={false}
+                                                          isInfo={true}
+                                                          isText={true}
+                                                          text={e}
                                                         >
-                                                          {e}
-                                                        </div>
+                                                          <div
+                                                            className={`${
+                                                              indexFour > 0
+                                                                ? "mt-3"
+                                                                : ""
+                                                            } inter-display-medium f-s-15 lh-15`}
+                                                            key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                          >
+                                                            {numToCurrency(
+                                                              e.toFixed(2),
+                                                              "en-US",
+                                                              "USD"
+                                                            )}
+                                                          </div>
+                                                        </CustomOverlay>
                                                       );
                                                     }
                                                   )
