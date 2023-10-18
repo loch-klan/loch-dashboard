@@ -1473,7 +1473,7 @@ class FixAddModal extends BaseReactComponent {
                       this.state.modalType === "addwallet" && (
                         <div className="addAnotherBtnContainer">
                           <Button
-                            className="grey-btn m-b-32 w-100"
+                            className="grey-btn w-100"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
