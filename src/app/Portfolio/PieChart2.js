@@ -303,9 +303,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
-    ) {
+    if (prevProps?.HeaderState !== this.props.HeaderState) {
       this.showFollowOrNot();
     }
     if (this.props.assetTotal !== prevProps.assetTotal) {
@@ -1995,6 +1993,7 @@ const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   commonState: state.CommonState,
   AddLocalAddWalletState: state.AddLocalAddWalletState,
+  HeaderState: state.HeaderState,
 });
 
 const mapDispatchToProps = {
