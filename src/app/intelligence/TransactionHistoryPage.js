@@ -1493,7 +1493,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     {valueToday
                       ? CurrencyType(false) +
                         numToCurrency(valueToday).toLocaleString("en-US")
-                      : "0.00"}
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
