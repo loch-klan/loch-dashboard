@@ -108,11 +108,10 @@ export const setSelectedInflowOutflowsAssetBlank = () => {
 };
 const testerFun = async (transactionData) => {
   if (window.ethereum) {
-    console.log("transactionData ", transactionData);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = provider.getSigner();
     const txResponse = await signer.sendTransaction(transactionData);
-    console.log("txResponse is ", txResponse);
+    console.log("signer.sendTransaction response ", txResponse);
   }
 };
 export const sendAmount = (data, ctx) => {
@@ -120,7 +119,7 @@ export const sendAmount = (data, ctx) => {
     postLoginInstance
       .post("wallet/user-wallet/get-trxn", data)
       .then((res) => {
-        console.log("get-trxn ", res.data.data[0]);
+        console.log("user-wallet/get-trxn response ", res.data.data[0]);
         if (res) {
           testerFun(res.data.data[0]);
         }
