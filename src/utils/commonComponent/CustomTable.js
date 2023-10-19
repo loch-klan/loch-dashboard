@@ -141,8 +141,8 @@ class CustomTable extends BaseReactComponent {
                             className={item.className}
                             label={item.labelName}
                             dataKey={item.dataKey}
-                            cellRenderer={({ rowData }) => {
-                              return item.cell(rowData, item.dataKey);
+                            cellRenderer={({ rowData, rowIndex }) => {
+                              return item.cell(rowData, item.dataKey, rowIndex);
                             }}
                             headerClassName={item.headerClassName}
                           />
@@ -183,8 +183,12 @@ class CustomTable extends BaseReactComponent {
                                 className={item.className}
                                 label={item.labelName}
                                 dataKey={item.dataKey}
-                                cellRenderer={({ rowData }) => {
-                                  return item.cell(rowData, item.dataKey);
+                                cellRenderer={({ rowData, rowIndex }) => {
+                                  return item.cell(
+                                    rowData,
+                                    item.dataKey,
+                                    rowIndex
+                                  );
                                 }}
                                 headerClassName={item.headerClassName}
                               />

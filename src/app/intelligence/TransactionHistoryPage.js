@@ -44,6 +44,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   CurrencyType,
   noExponents,
+  numToCurrency,
   TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
@@ -120,6 +121,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -184,6 +186,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -309,6 +312,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1334,9 +1346,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 )}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(noExponents(rowData.amount.value)).toLocaleString(
-                    "en-US"
-                  )}
+                  {numToCurrency(rowData.amount.value).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -1393,10 +1403,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {CurrencyType(false) +
+                      numToCurrency(valueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1405,10 +1419,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1464,10 +1484,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {valueToday
+                      ? CurrencyType(false) +
+                        numToCurrency(valueToday).toLocaleString("en-US")
+                      : "0.00"}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1476,10 +1502,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1512,27 +1544,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
+                {actualMethod &&
+                (actualMethod === "send" || actualMethod === "receive") ? (
                   <div className="gainLossContainer">
                     <div
                       className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
+                        actualMethod === "send" ? "loss" : "gain"
                       }`}
                     >
                       <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
+                        {actualMethod}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </>

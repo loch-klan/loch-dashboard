@@ -8,10 +8,18 @@ import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
+  ConnectWalletButtonClicked,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { setHeaderReducer } from "./HeaderAction";
+import { setHeaderReducer, setIsWalletConnectedReducer } from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  MetamaskIcon,
+  WalletIcon,
+  XCircleIcon,
+} from "../../assets/images/icons";
+import { ethers } from "ethers";
+import { updateUserWalletApi } from "../common/Api";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +30,42 @@ class TopBar extends Component {
       exchangeList: [],
       exchangeListImages: [],
       firstExchange: "",
+      showWalletConnected: false,
     };
   }
-
+  checkIsMetaMaskConnected = async () => {
+    if (window.ethereum) {
+      try {
+        window.ethereum
+          .request({ method: "eth_accounts" })
+          .then((metaRes) => {
+            console.log("metaRes ", metaRes);
+            if (metaRes && metaRes.length > 0) {
+              this.props.setIsWalletConnectedReducer(true);
+            } else {
+              this.props.setIsWalletConnectedReducer(false);
+            }
+          })
+          .catch((metaErr) => {
+            console.log("metaError ", metaErr);
+          });
+      } catch (passedError) {
+        console.log("Api issue ", passedError);
+      }
+    }
+  };
+  dissconnectFromMetaMask = async () => {};
   componentDidMount() {
     this.applyLocalStorageWalletList();
+    if (
+      this.props.IsWalletConnectedState === true ||
+      this.props.IsWalletConnectedState === false
+    ) {
+      this.setState({
+        showWalletConnected: this.props.IsWalletConnectedState,
+      });
+    }
+    this.checkIsMetaMaskConnected();
     if (this.props.walletState?.walletList) {
       this.applyWalletList();
     } else {
@@ -34,6 +73,13 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.IsWalletConnectedState !== this.props.IsWalletConnectedState
+    ) {
+      this.setState({
+        showWalletConnected: this.props.IsWalletConnectedState,
+      });
+    }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
@@ -179,7 +225,131 @@ class TopBar extends Component {
     });
     this.props.handleConnectModal();
   };
+  connectWalletEthers = async () => {
+    ConnectWalletButtonClicked({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    // const MAINNET_RPC_URL =
+    //   "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
+    // const injected = injectedModule({
+    //   displayUnavailable: [
+    //     ProviderLabel.MetaMask,
+    //     ProviderLabel.Coinbase,
+    //     ProviderLabel.Phantom,
+    //   ],
+    // });
+    // const onboard = Onboard({
+    //   wallets: [injected],
+    //   chains: [
+    //     {
+    //       id: "0x1",
+    //       token: "ETH",
+    //       label: "Ethereum Mainnet",
+    //       rpcUrl: MAINNET_RPC_URL,
+    //     },
+    //     {
+    //       id: "0x2105",
+    //       token: "ETH",
+    //       label: "Base",
+    //       rpcUrl: "https://mainnet.base.org",
+    //     },
+    //   ],
+    //   appMetadata: {
+    //     name: "Loch",
+    //     icon: LochLogoNameIcon,
+    //     description: "A loch app",
+    //   },
+    // });
+    // if (onboard && onboard.connectWallet) {
+    //   const wallets = onboard.connectWallet();
+    //   // console.log("wallets ", wallets);
+    // }
 
+    //NEW
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
+
+    // async function connectMetamask() {
+    //     await provider.send("eth_requestAccounts", []);
+    //     signer = await provider.getSigner();
+    // }
+    //NEW
+    console.log("window.ethereum ", window.ethereum);
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      let signer = provider.getSigner();
+
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
+
+        if (tempRes && tempRes.length > 0) {
+          this.addToList(tempRes);
+        }
+        // Leaver console log: full signer too"
+        console.log("signer is ", signer);
+        console.log("signer get address is ", await signer.getAddress());
+      } catch (error) {
+        console.log("ethers error ", error);
+      }
+    }
+  };
+  addToList = (addThese) => {
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    walletAddress.forEach((curr) => {
+      if (!arr.includes(curr.address?.trim()) && curr.address) {
+        walletList.push(curr);
+        arr.push(curr.address?.trim());
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        arr.push(curr.displayAddress?.trim());
+        arr.push(curr.address?.trim());
+        addressList.push(curr.address?.trim());
+      }
+    });
+    addThese.forEach((curr) => {
+      if (!arr.includes(curr?.trim()) && curr) {
+        walletList.push({
+          address: curr,
+          coinFound: true,
+          coins: [],
+          displayAddress: curr,
+          nameTag: "",
+          nickname: "",
+          showAddress: true,
+          showNameTag: false,
+          showNickname: false,
+          wallet_metadata: null,
+        });
+        arr.push(curr?.trim());
+        nicknameArr[curr?.trim()] = curr.nickname;
+        arr.push(curr?.trim());
+        arr.push(curr?.trim());
+        addressList.push(curr?.trim());
+      }
+    });
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData);
+    this.checkIsMetaMaskConnected();
+  };
   render() {
     return (
       <div className="topBarContainer">
@@ -207,32 +377,69 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-
         <div
-          onClick={this.passConnectExchangeClick}
-          className="topbar-btn ml-2 maxWidth50"
+          style={{
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
         >
-          {this.state.exchangeList.length > 0 ? (
-            <>
-              <span className="mr-2">
-                {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                  <Image className="topBarExchangeIcons" src={imgUrl} />
-                ))}
-              </span>
-              <span className="dotDotText">
-                <span className="captilasideText">
-                  {this.state.firstExchange?.toLowerCase()}{" "}
-                </span>
-                {this.state.exchangeList.length > 1 ? "and others " : ""}
-                {"connected"}
-              </span>
-            </>
+          {this.state.showWalletConnected ? (
+            <div
+              onClick={this.dissconnectFromMetaMask}
+              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
+            >
+              <Image
+                className="topBarWalletAdd noHoverEffect metaMaskImg"
+                src={MetamaskIcon}
+              />
+              <span className="dotDotText">Metamask</span>
+              <Image
+                className="topBarWalletAdd"
+                style={{
+                  margin: "0",
+                  marginLeft: "0.8rem",
+                }}
+                src={XCircleIcon}
+              />
+            </div>
           ) : (
-            <>
-              <Image className="topBarWalletAdd " src={LinkIconBtn} />
-              <span className="dotDotText">Connect exchange</span>
-            </>
+            <div
+              onClick={this.connectWalletEthers}
+              className="topbar-btn ml-2 maxWidth50"
+            >
+              <Image className="topBarWalletAdd " src={WalletIcon} />
+              <span className="dotDotText">Connect wallet</span>
+            </div>
           )}
+          <div
+            onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
+                </span>
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -242,10 +449,14 @@ class TopBar extends Component {
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
+  OnboardingState: state.OnboardingState,
+  IsWalletConnectedState: state.IsWalletConnectedState,
 });
 
 const mapDispatchToProps = {
   setHeaderReducer,
+  updateUserWalletApi,
+  setIsWalletConnectedReducer,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

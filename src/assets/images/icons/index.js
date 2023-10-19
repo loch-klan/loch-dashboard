@@ -1,3 +1,4 @@
+export { default as WalletIcon } from "./wallet_icon.svg";
 export { default as TriangleArrowDownIcon } from "./triangleArrowDown.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as LoaderIcon } from "./loader.svg";
@@ -23,4 +24,6 @@ export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as SharePortfolioIconWhite } from "./SharePortfolioIconWhite.svg";
 export { default as ExportIcon } from "./ExportIcon.svg";
 export { default as TwoPeopleIcon } from "./twoPeople.svg";
+export { default as MetamaskIcon } from "./metamask.svg";
+export { default as XCircleIcon } from "./xCircle.svg";
 export { default as TwoPeopleLightIcon } from "./twoPeopleLight.svg";

@@ -23,7 +23,6 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
   detectNameTag,
-  addLocalWalletList,
 } from "./Api";
 import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
@@ -722,7 +721,6 @@ class FixAddModal extends BaseReactComponent {
             this.props.setHeaderReducer(addWallet);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
-          this.props.addLocalWalletList(JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -1007,7 +1005,6 @@ class FixAddModal extends BaseReactComponent {
         this.props.setHeaderReducer(walletList);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
-      this.props.addLocalWalletList(JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1180,7 +1177,10 @@ class FixAddModal extends BaseReactComponent {
 
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+        <div
+          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+          style={index === 9 ? { marginBottom: "0rem" } : {}}
+        >
           {this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
@@ -1469,10 +1469,11 @@ class FixAddModal extends BaseReactComponent {
                     )}
 
                     {this.state.addWalletList.length >= 0 &&
+                      this.state.addWalletList?.length < 10 &&
                       this.state.modalType === "addwallet" && (
                         <div className="addAnotherBtnContainer">
                           <Button
-                            className="grey-btn m-b-32 w-100"
+                            className="grey-btn w-100"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
@@ -1760,7 +1761,6 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   getDetectedChainsApi,
   detectNameTag,
-  addLocalWalletList,
 };
 FixAddModal.propTypes = {};
 
