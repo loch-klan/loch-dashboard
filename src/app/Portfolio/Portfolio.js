@@ -1990,8 +1990,8 @@ class Portfolio extends BaseReactComponent {
                   rowData.GainLoss
                     ? Math.abs(
                         Number(noExponents(rowData.GainLoss.toFixed(2)))
-                      ).toLocaleString("en-US") + " %"
-                    : "0.00 %"
+                      ).toLocaleString("en-US") + "%"
+                    : "0.00%"
                 }
                 colorCode="#000"
               >
@@ -2011,8 +2011,8 @@ class Portfolio extends BaseReactComponent {
                       {rowData.GainLoss
                         ? Math.abs(
                             Number(noExponents(rowData.GainLoss.toFixed(2)))
-                          ).toLocaleString("en-US") + " %"
-                        : "0 %"}
+                          ).toLocaleString("en-US") + "%"
+                        : "0.00%"}
                     </span>
                   </div>
                 </div>
