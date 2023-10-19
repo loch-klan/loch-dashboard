@@ -24,6 +24,7 @@ import {
   TOP_PORTFOLIO_ASSET,
   TOP_TRANSACTION_FILTER,
 } from "../topAccount/ActionTypes";
+import { ethers } from "ethers";
 
 export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
   return async function (dispatch, getState) {
@@ -103,6 +104,33 @@ export const setSelectedInflowOutflowsAssetBlank = () => {
       type: INFLOW_OUTFLOW_CHART_ASSET_SELECTED,
       payload: "",
     });
+  };
+};
+const testerFun = async (transactionData) => {
+  if (window.ethereum) {
+    console.log("transactionData ", transactionData);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    let signer = provider.getSigner();
+    const txResponse = await signer.sendTransaction(transactionData);
+    console.log("txResponse is ", txResponse);
+  }
+};
+export const sendAmount = (data, ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/get-trxn", data)
+      .then((res) => {
+        console.log("get-trxn ", res.data.data[0]);
+        if (res) {
+          testerFun(res.data.data[0]);
+        }
+      })
+      .catch((err) => {
+        ctx.setState({
+          graphLoading: false,
+        });
+        console.log("get-trxn Catch", err);
+      });
   };
 };
 export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
