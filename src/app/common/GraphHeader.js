@@ -124,17 +124,7 @@ export const GraphHeader = (props) => {
                 props.totalPercentage >= 0 ? "inc" : "dec"
               }`}
             >
-              <Image
-                src={props.totalPercentage >= 0 ? arrowUpRight : arrowDownRight}
-                className="m-r-5"
-                style={{ position: "relative", top: "-2px" }}
-              />
-              {props.totalPercentage + "%"}{" "}
-              {props.totalPercentage == 0.0
-                ? "No Change"
-                : props.totalPercentage > 0
-                ? "Increase"
-                : "Decrease"}
+              {Math.abs(props.totalPercentage) + "%"}{" "}
             </div>
           )}
         </div>

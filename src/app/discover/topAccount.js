@@ -773,7 +773,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net worth{" (" + CurrencyType(false) + ")"}
+              Net worth
             </span>
             <Image
               src={sortByIcon}
@@ -807,9 +807,10 @@ class TopAccountPage extends BaseReactComponent {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(
-                        rowData.networth * this.state.currency?.rate
-                      )}
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.networth * this.state.currency?.rate
+                        )}
                     </span>
                   </div>
                 </div>
@@ -826,7 +827,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net flows {"(" + CurrencyType(false) + ")"}
+              Net flows
             </span>
             <Image
               src={sortByIcon}
@@ -887,9 +888,10 @@ class TopAccountPage extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {numToCurrency(
-                        rowData.netflows[type] * this.state.currency?.rate
-                      )}
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.netflows[type] * this.state.currency?.rate
+                        )}
                     </span>
                   </div>
                 </div>

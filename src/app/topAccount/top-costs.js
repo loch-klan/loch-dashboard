@@ -539,8 +539,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average cost price
-              <br />({CurrencyType(false)})
+              Avg cost price
             </span>
             <Image
               src={sortByIcon}
@@ -574,7 +573,8 @@ class TopCost extends Component {
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
-                        : numToCurrency(
+                        : CurrencyType(false) +
+                          numToCurrency(
                             rowData.AverageCostPrice.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
@@ -594,7 +594,6 @@ class TopCost extends Component {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Current price
-              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -624,9 +623,10 @@ class TopCost extends Component {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(
-                        rowData.CurrentPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentPrice.toFixed(2)
+                        ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -684,7 +684,6 @@ class TopCost extends Component {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Cost basis
-              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -716,7 +715,8 @@ class TopCost extends Component {
                 <span>
                   {rowData.CostBasis === 0
                     ? "N/A"
-                    : numToCurrency(
+                    : CurrencyType(false) +
+                      numToCurrency(
                         rowData.CostBasis.toFixed(2)
                       ).toLocaleString("en-US")}
                 </span>
@@ -734,7 +734,6 @@ class TopCost extends Component {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Current value
-              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -762,9 +761,10 @@ class TopCost extends Component {
                 }
               >
                 <span>
-                  {numToCurrency(
-                    rowData.CurrentValue.toFixed(2)
-                  ).toLocaleString("en-US")}
+                  {CurrencyType(false) +
+                    numToCurrency(
+                      rowData.CurrentValue.toFixed(2)
+                    ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -780,7 +780,6 @@ class TopCost extends Component {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Gain
-              <br />({CurrencyType(false)})
             </span>
             <Image
               src={sortByIcon}
@@ -807,7 +806,7 @@ class TopCost extends Component {
                       Math.abs(
                         Number(noExponents(rowData.GainAmount.toFixed(2)))
                       ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0"
+                    : CurrencyType(false) + "0.00"
                 }
                 colorCode="#000"
               >
@@ -825,8 +824,9 @@ class TopCost extends Component {
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {tempDataHolder
-                        ? tempDataHolder.toLocaleString("en-US")
-                        : "0"}
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : "0.00"}
                     </span>
                   </div>
                 </div>
@@ -843,7 +843,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              %
+              Return
             </span>
             <Image
               src={sortByIcon}
@@ -887,8 +887,9 @@ class TopCost extends Component {
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US")
-                        : "0"}
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                          " %"
+                        : "0.00 %"}
                     </span>
                   </div>
                 </div>
