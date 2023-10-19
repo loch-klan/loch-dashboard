@@ -171,7 +171,9 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               }
               // console.log('newAddWallet',newAddWallet);
               localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
-              addLocalWalletList(JSON.stringify(newAddWallet));
+              if (ctx.props.addLocalWalletList) {
+                ctx.props.addLocalWalletList(JSON.stringify(newAddWallet));
+              }
               ctx.state.changeList && ctx.state.changeList(newAddWallet);
               if (ctx.props.apiResponse) {
                 // ctx.setState({
