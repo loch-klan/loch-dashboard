@@ -164,6 +164,7 @@
 
         .topbar-btn {
           background: rgba(229, 229, 230, 0.5);
+          border: 1px solid #f2f2f3;
           border-radius: 8px;
           padding: 1.2rem 2rem;
           color: $black-191;
@@ -211,13 +212,23 @@
           img {
             transition-duration: 300ms;
           }
-
+          .metaMaskImg {
+            background-color: #ffe7bd;
+            border-radius: 0.65rem;
+            width: 1.8rem;
+            box-shadow: 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
+            transition-duration: 0ms;
+          }
           &:hover {
             background-color: $black-191;
+            border-color: $black-191;
             color: $secondary;
 
             img {
               filter: invert(1);
+            }
+            .noHoverEffect {
+              filter: invert(0);
             }
             .topBarExchangeIcons {
               filter: none;
@@ -232,6 +243,10 @@
               opacity: 1;
             }
           }
+        }
+        .topbar-btn-transparent {
+          background-color: transparent;
+          border-color: #f2f2f3;
         }
 
         .Preview-topbar-btn {

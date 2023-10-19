@@ -11,9 +11,13 @@ import {
   ConnectWalletButtonClicked,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { setHeaderReducer } from "./HeaderAction";
+import { setHeaderReducer, setIsWalletConnectedReducer } from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
-import { WalletIcon } from "../../assets/images/icons";
+import {
+  MetamaskIcon,
+  WalletIcon,
+  XCircleIcon,
+} from "../../assets/images/icons";
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 class TopBar extends Component {
@@ -26,11 +30,42 @@ class TopBar extends Component {
       exchangeList: [],
       exchangeListImages: [],
       firstExchange: "",
+      showWalletConnected: false,
     };
   }
-
+  checkIsMetaMaskConnected = async () => {
+    if (window.ethereum) {
+      try {
+        window.ethereum
+          .request({ method: "eth_accounts" })
+          .then((metaRes) => {
+            console.log("metaRes ", metaRes);
+            if (metaRes && metaRes.length > 0) {
+              this.props.setIsWalletConnectedReducer(true);
+            } else {
+              this.props.setIsWalletConnectedReducer(false);
+            }
+          })
+          .catch((metaErr) => {
+            console.log("metaError ", metaErr);
+          });
+      } catch (passedError) {
+        console.log("Api issue ", passedError);
+      }
+    }
+  };
+  dissconnectFromMetaMask = async () => {};
   componentDidMount() {
     this.applyLocalStorageWalletList();
+    if (
+      this.props.IsWalletConnectedState === true ||
+      this.props.IsWalletConnectedState === false
+    ) {
+      this.setState({
+        showWalletConnected: this.props.IsWalletConnectedState,
+      });
+    }
+    this.checkIsMetaMaskConnected();
     if (this.props.walletState?.walletList) {
       this.applyWalletList();
     } else {
@@ -38,6 +73,13 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.IsWalletConnectedState !== this.props.IsWalletConnectedState
+    ) {
+      this.setState({
+        showWalletConnected: this.props.IsWalletConnectedState,
+      });
+    }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
@@ -233,20 +275,23 @@ class TopBar extends Component {
     //     signer = await provider.getSigner();
     // }
     //NEW
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    let signer = provider.getSigner();
+    console.log("window.ethereum ", window.ethereum);
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      let signer = provider.getSigner();
 
-    try {
-      const tempRes = await provider.send("eth_requestAccounts", []);
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
 
-      if (tempRes && tempRes.length > 0) {
-        this.addToList(tempRes);
+        if (tempRes && tempRes.length > 0) {
+          this.addToList(tempRes);
+        }
+        // Leaver console log: full signer too"
+        console.log("signer is ", signer);
+        console.log("signer get address is ", await signer.getAddress());
+      } catch (error) {
+        console.log("ethers error ", error);
       }
-      // Leaver console log: full signer too"
-      console.log("signer is ", signer);
-      console.log("signer get address is ", await signer.getAddress());
-    } catch (error) {
-      console.log("ethers error ", error);
     }
   };
   addToList = (addThese) => {
@@ -303,6 +348,7 @@ class TopBar extends Component {
     yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
     this.props.updateUserWalletApi(data, this, yieldData);
+    this.checkIsMetaMaskConnected();
   };
   render() {
     return (
@@ -340,13 +386,34 @@ class TopBar extends Component {
             justifyContent: "flex-end",
           }}
         >
-          <div
-            onClick={this.connectWalletEthers}
-            className="topbar-btn ml-2 maxWidth50"
-          >
-            <Image className="topBarWalletAdd " src={WalletIcon} />
-            <span className="dotDotText">Connect wallet</span>
-          </div>
+          {this.state.showWalletConnected ? (
+            <div
+              onClick={this.dissconnectFromMetaMask}
+              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
+            >
+              <Image
+                className="topBarWalletAdd noHoverEffect metaMaskImg"
+                src={MetamaskIcon}
+              />
+              <span className="dotDotText">Metamask</span>
+              <Image
+                className="topBarWalletAdd"
+                style={{
+                  margin: "0",
+                  marginLeft: "0.8rem",
+                }}
+                src={XCircleIcon}
+              />
+            </div>
+          ) : (
+            <div
+              onClick={this.connectWalletEthers}
+              className="topbar-btn ml-2 maxWidth50"
+            >
+              <Image className="topBarWalletAdd " src={WalletIcon} />
+              <span className="dotDotText">Connect wallet</span>
+            </div>
+          )}
           <div
             onClick={this.passConnectExchangeClick}
             className="topbar-btn ml-2 maxWidth50"
@@ -383,11 +450,13 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
   OnboardingState: state.OnboardingState,
+  IsWalletConnectedState: state.IsWalletConnectedState,
 });
 
 const mapDispatchToProps = {
   setHeaderReducer,
   updateUserWalletApi,
+  setIsWalletConnectedReducer,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
