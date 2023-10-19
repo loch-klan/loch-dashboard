@@ -887,9 +887,8 @@ class TopCost extends Component {
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") +
-                          " %"
-                        : "0.00 %"}
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
                     </span>
                   </div>
                 </div>
