@@ -1180,7 +1180,10 @@ class FixAddModal extends BaseReactComponent {
 
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+        <div
+          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+          style={index === 9 ? { marginBottom: "0rem" } : {}}
+        >
           {this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
