@@ -24,6 +24,7 @@ import Loading from "../common/Loading";
 import {
   HomeDefiDebt,
   HomeDefiYield,
+  HomeFollow,
   HomeRefreshButton,
   HomeShare,
   NetworkTab,
@@ -765,6 +766,12 @@ class PieChart2 extends BaseReactComponent {
           loadAddBtn: true,
         });
         const data = new URLSearchParams();
+        HomeFollow({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          address: tempWalletAddress,
+          nameTag: tempNameTag,
+        });
         data.append("wallet_address", tempWalletAddress);
         data.append("type", "self");
         data.append("name_tag", tempNameTag);
