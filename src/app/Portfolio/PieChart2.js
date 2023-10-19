@@ -751,7 +751,12 @@ class PieChart2 extends BaseReactComponent {
     const listJson = JSON.parse(localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
-        return { address: resData.address, nameTag: resData.nameTag };
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
       });
       if (tempListOfAdd && tempListOfAdd.length > 0) {
         const tempWalletAddress = tempListOfAdd[0].address
@@ -795,7 +800,6 @@ class PieChart2 extends BaseReactComponent {
   };
   isFollowedByUserFun = () => {
     const listJson = JSON.parse(localStorage.getItem("addWallet"));
-    console.log("What is it ", listJson);
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return { address: resData.address, nameTag: resData.nameTag };
