@@ -952,7 +952,10 @@ class AddWallet extends BaseReactComponent {
               <div className="addWalletWrapperContainer">
                 {this.state.walletInput?.map((c, index) => {
                   return (
-                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                    <div
+                      style={index === 9 ? { marginBottom: "0rem" } : {}}
+                      className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+                    >
                       {this.state.walletInput.length > 1 ? (
                         <Image
                           key={index}
