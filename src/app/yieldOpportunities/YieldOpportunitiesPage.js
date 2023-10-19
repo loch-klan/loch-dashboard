@@ -742,7 +742,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(rowData.value * this.state.currency?.rate)}
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.value * this.state.currency?.rate
+                        )}
                     </span>
                   </div>
                 </div>
@@ -821,7 +824,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("tvl")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              TVL ({CurrencyType(false)})
+              TVL
             </span>
             <Image
               src={sortByIcon}
@@ -855,7 +858,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(rowData.tvl * this.state.currency?.rate)}
+                      {CurrencyType(false) +
+                        numToCurrency(rowData.tvl * this.state.currency?.rate)}
                     </span>
                   </div>
                 </div>
@@ -872,7 +876,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("apy")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              APY (%)
+              APY
             </span>
             <Image
               src={sortByIcon}
@@ -898,7 +902,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                   {rowData.apy
-                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US")
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
                     : "-"}
                 </div>
               </CustomOverlay>

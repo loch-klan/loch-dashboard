@@ -1398,7 +1398,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {numToCurrency(valueToday).toLocaleString("en-US")}
+                    {CurrencyType(false) +
+                      numToCurrency(valueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1414,8 +1415,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                     {valueThen
-                      ? numToCurrency(valueThen).toLocaleString("en-US")
-                      : "0"}
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1478,8 +1480,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                     {valueToday
-                      ? numToCurrency(valueToday).toLocaleString("en-US")
-                      : "0"}
+                      ? CurrencyType(false) +
+                        numToCurrency(valueToday).toLocaleString("en-US")
+                      : "0.00"}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1495,8 +1498,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                     {valueThen
-                      ? numToCurrency(valueThen).toLocaleString("en-US")
-                      : "0"}
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
