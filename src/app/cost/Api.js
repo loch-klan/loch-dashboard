@@ -403,6 +403,7 @@ export const getAvgCostBasis = (ctx) => {
               CurrentPrice: item.current_price * (currency?.rate || 1),
               Amount: item.count * (currency?.rate || 1),
               CostBasis: costBasis,
+              GainAmount: item.gain ? item.gain : 0,
               CurrentValue: current_price,
               GainLoss:
                 costBasis == 0

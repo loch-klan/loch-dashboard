@@ -795,11 +795,14 @@ class TopAccountPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={amountFormat(
-                  rowData.networth * this.state.currency?.rate,
-                  "en-US",
-                  "USD"
-                )}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(
+                    rowData.networth * this.state.currency?.rate,
+                    "en-US",
+                    "USD"
+                  )
+                }
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
@@ -850,20 +853,20 @@ class TopAccountPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={amountFormat(
-                  rowData.netflows[type] * this.state.currency?.rate,
-                  "en-US",
-                  "USD"
-                )}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(
+                    Math.abs(rowData.netflows[type]) *
+                      this.state.currency?.rate,
+                    "en-US",
+                    "USD"
+                  )
+                }
               >
                 <div className="gainLossContainer">
                   <div
                     className={`gainLoss ${
-                      rowData.netflows[type] < 0
-                        ? "loss"
-                        : rowData.netflows[type] === 0
-                        ? "cost-common"
-                        : "gain"
+                      rowData.netflows[type] < 0 ? "loss" : "gain"
                     }`}
                     onMouseEnter={() => {
                       TopAccountNetflowHover({
@@ -878,14 +881,15 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <Image
-                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
-                    />
+                    {rowData.netflows[type] !== 0 ? (
+                      <Image
+                        src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {(rowData.netflows[type] < 0 ? "-" : "") +
-                        numToCurrency(
-                          rowData.netflows[type] * this.state.currency?.rate
-                        )}
+                      {numToCurrency(
+                        rowData.netflows[type] * this.state.currency?.rate
+                      )}
                     </span>
                   </div>
                 </div>

@@ -115,7 +115,10 @@ export default function WalletCard(props) {
     <>
       <div
         className="walletcard"
-        style={props?.protocol ? { paddingBottom: "2.4rem" } : {}}
+        style={{
+          paddingBottom: props?.protocol ? "2.4rem" : "",
+          marginBottom: props.isLastEle ? "0.8rem" : "",
+        }}
       >
         <>
           <div className={`${!props?.protocol ? "m-b-32" : ""} wallet-details`}>
