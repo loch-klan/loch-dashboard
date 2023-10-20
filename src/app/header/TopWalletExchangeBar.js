@@ -354,7 +354,7 @@ class TopBar extends Component {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer ml-2 maxWidth50">
+          <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
