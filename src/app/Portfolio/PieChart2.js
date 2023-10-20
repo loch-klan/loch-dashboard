@@ -847,6 +847,10 @@ class PieChart2 extends BaseReactComponent {
           showFollowingAddress: false,
         });
       }
+    } else {
+      this.setState({
+        isFollowingAddress: false,
+      });
     }
   };
   render() {
