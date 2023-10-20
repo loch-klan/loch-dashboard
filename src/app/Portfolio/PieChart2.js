@@ -25,6 +25,7 @@ import {
   HomeDefiDebt,
   HomeDefiYield,
   HomeFollow,
+  HomeUnFollow,
   HomeRefreshButton,
   HomeShare,
   NetworkTab,
@@ -50,7 +51,10 @@ import {
   TwoPeopleLightIcon,
 } from "../../assets/images/icons";
 import { toast } from "react-toastify";
-import { addAddressToWatchList } from "../watchlist/redux/WatchListApi";
+import {
+  addAddressToWatchList,
+  removeAddressFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -744,10 +748,6 @@ class PieChart2 extends BaseReactComponent {
     // getUserWallet(this);
   };
   addAddressToWatchListFun = () => {
-    if (this.state.isFollowingAddress) {
-      return null;
-    }
-
     const listJson = JSON.parse(localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
@@ -765,6 +765,25 @@ class PieChart2 extends BaseReactComponent {
         const tempNameTag = tempListOfAdd[0].nameTag
           ? tempListOfAdd[0].nameTag
           : "";
+        if (this.state.isFollowingAddress) {
+          const firstData = new URLSearchParams();
+          firstData.append("address", tempWalletAddress);
+
+          this.props.removeAddressFromWatchList(
+            firstData,
+            this,
+            tempWalletAddress,
+            tempNameTag
+          );
+          HomeUnFollow({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            address: tempWalletAddress,
+            nameTag: tempNameTag,
+          });
+          return null;
+        }
+
         this.setState({
           loadAddBtn: true,
         });
@@ -789,21 +808,22 @@ class PieChart2 extends BaseReactComponent {
   };
   showAddressesAdded = () => {
     this.setState({ isFollowingAddress: true });
-    toast.success(
-      <div className="custom-toast-msg" style={{ width: "43rem" }}>
-        <div>Following</div>
-        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-          Your are now following this address
-        </div>
-      </div>
-    );
+  };
+  addressDeleted = () => {
+    this.setState({ isFollowingAddress: false });
   };
   isFollowedByUserFun = () => {
     const listJson = JSON.parse(localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
-        return { address: resData.address, nameTag: resData.nameTag };
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
       });
+
       if (tempListOfAdd && tempListOfAdd.length === 1) {
         const tempWalletAddress = tempListOfAdd[0].address
           ? tempListOfAdd[0].address
@@ -1975,5 +1995,6 @@ const mapDispatchToProps = {
   addAddressToWatchList,
   getExchangeBalances,
   isFollowedByUser,
+  removeAddressFromWatchList,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);
