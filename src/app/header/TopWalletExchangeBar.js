@@ -39,6 +39,7 @@ class TopBar extends Component {
       firstExchange: "",
       metamaskWalletConnected: "",
       currentMetamaskWallet: {},
+      changeList: props.changeWalletList,
     };
   }
 
