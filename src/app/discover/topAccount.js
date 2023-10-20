@@ -885,9 +885,10 @@ class TopAccountPage extends BaseReactComponent {
                     {rowData.netflows[type] !== 0 ? (
                       <Image
                         src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                        className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
                         numToCurrency(
                           rowData.netflows[type] * this.state.currency?.rate
