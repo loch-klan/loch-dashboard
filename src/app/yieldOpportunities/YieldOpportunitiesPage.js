@@ -707,7 +707,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("usdValue")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Value (USD)
+              Value
             </span>
             <Image
               src={sortByIcon}
