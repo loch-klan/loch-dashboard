@@ -497,7 +497,9 @@
               border-radius: 0.8rem;
               padding: 1rem;
               width: 100%;
-
+              &:hover {
+                border-color: #19191a;
+              }
               .awLable {
                 color: #b0b1b3;
                 font-size: 1.2rem;
