@@ -1078,7 +1078,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unrealized Gain
+              Unrealized gain
             </span>
             <Image
               src={sortByIcon}
