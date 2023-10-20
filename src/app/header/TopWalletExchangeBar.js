@@ -9,9 +9,15 @@ import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
   ConnectWalletButtonClicked,
+  DisconnectWalletButtonClicked,
+  TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { setHeaderReducer, setIsWalletConnectedReducer } from "./HeaderAction";
+import {
+  setHeaderReducer,
+  setIsWalletConnectedReducer,
+  setMetamaskConnectedReducer,
+} from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import {
   MetamaskIcon,
@@ -20,6 +26,7 @@ import {
 } from "../../assets/images/icons";
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
+import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -30,42 +37,27 @@ class TopBar extends Component {
       exchangeList: [],
       exchangeListImages: [],
       firstExchange: "",
-      showWalletConnected: false,
+      metamaskWalletConnected: "",
+      currentMetamaskWallet: {},
+      changeList: props.changeWalletList,
     };
   }
-  checkIsMetaMaskConnected = async () => {
-    if (window.ethereum) {
-      try {
-        window.ethereum
-          .request({ method: "eth_accounts" })
-          .then((metaRes) => {
-            console.log("metaRes ", metaRes);
-            if (metaRes && metaRes.length > 0) {
-              this.props.setIsWalletConnectedReducer(true);
-            } else {
-              this.props.setIsWalletConnectedReducer(false);
-            }
-          })
-          .catch((metaErr) => {
-            console.log("metaError ", metaErr);
-          });
-      } catch (passedError) {
-        console.log("Api issue ", passedError);
-      }
-    }
-  };
-  dissconnectFromMetaMask = async () => {};
+
   componentDidMount() {
     this.applyLocalStorageWalletList();
-    if (
-      this.props.IsWalletConnectedState === true ||
-      this.props.IsWalletConnectedState === false
-    ) {
+
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    if (ssItem && ssItem !== null) {
       this.setState({
-        showWalletConnected: this.props.IsWalletConnectedState,
+        metamaskWalletConnected: ssItem,
       });
+      this.props.setMetamaskConnectedReducer(ssItem);
     }
-    this.checkIsMetaMaskConnected();
+
     if (this.props.walletState?.walletList) {
       this.applyWalletList();
     } else {
@@ -74,11 +66,18 @@ class TopBar extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.IsWalletConnectedState !== this.props.IsWalletConnectedState
+      prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
     ) {
-      this.setState({
-        showWalletConnected: this.props.IsWalletConnectedState,
-      });
+      setTimeout(() => {
+        const ssItem = window.sessionStorage.getItem(
+          "setMetamaskConnectedSessionStorage"
+        );
+        if (ssItem !== undefined && ssItem !== null) {
+          this.setState({
+            metamaskWalletConnected: ssItem,
+          });
+        }
+      }, 100);
     }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
@@ -225,6 +224,59 @@ class TopBar extends Component {
     });
     this.props.handleConnectModal();
   };
+  dissconnectFromMetaMask = async () => {
+    DisconnectWalletButtonClicked({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    this.removeFromList(ssItem);
+    this.props.setMetamaskConnectedReducer("");
+    window.sessionStorage.setItem("setMetamaskConnectedSessionStorage", "");
+  };
+  removeFromList = (removeThis) => {
+    const curItem = removeThis;
+
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    walletAddress.forEach((curr) => {
+      if (
+        !arr.includes(curr.address?.trim()) &&
+        curr.address &&
+        curr.address !== curItem
+      ) {
+        walletList.push(curr);
+        arr.push(curr.address?.trim());
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        arr.push(curr.displayAddress?.trim());
+        arr.push(curr.address?.trim());
+        addressList.push(curr.address?.trim());
+      }
+    });
+
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData);
+  };
   connectWalletEthers = async () => {
     ConnectWalletButtonClicked({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
@@ -275,10 +327,8 @@ class TopBar extends Component {
     //     signer = await provider.getSigner();
     // }
     //NEW
-    console.log("window.ethereum ", window.ethereum);
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      let signer = provider.getSigner();
 
       try {
         const tempRes = await provider.send("eth_requestAccounts", []);
@@ -287,14 +337,110 @@ class TopBar extends Component {
           this.addToList(tempRes);
         }
         // Leaver console log: full signer too"
-        console.log("signer is ", signer);
-        console.log("signer get address is ", await signer.getAddress());
+        // console.log("signer is ", signer);
+        // console.log("signer get address is ", await signer.getAddress());
       } catch (error) {
         console.log("ethers error ", error);
       }
     }
   };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = this.state.currentMetamaskWallet;
+
+    data.address === newAddress.address &&
+      newAddress.coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress.id) {
+    //   newAddress.address = data.address;
+    // }
+
+    newAddress.coinFound =
+      newAddress.coins &&
+      newAddress.coins.some((e) => e.chain_detected === true);
+    newAddress.apiAddress = data?.apiaddress;
+
+    this.setState(
+      {
+        currentMetamaskWallet: newAddress,
+      },
+      () => {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.callUpdateApi(this.state.currentMetamaskWallet);
+        }, 500);
+      }
+    );
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          true
+        );
+      }
+    }
+  };
   addToList = (addThese) => {
+    const curItem = addThese[0];
+
+    if (curItem) {
+      this.setState(
+        {
+          currentMetamaskWallet: {
+            address: curItem,
+            coinFound: true,
+            coins: [],
+            displayAddress: curItem,
+            nameTag: "",
+            nickname: "",
+            showAddress: true,
+            showNameTag: false,
+            showNickname: false,
+            wallet_metadata: null,
+          },
+        },
+        () => {
+          this.getCoinBasedOnWalletAddress("randomName", curItem);
+        }
+      );
+    }
+  };
+  callUpdateApi = (passedItem) => {
     let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
@@ -310,27 +456,28 @@ class TopBar extends Component {
         addressList.push(curr.address?.trim());
       }
     });
-    addThese.forEach((curr) => {
-      if (!arr.includes(curr?.trim()) && curr) {
-        walletList.push({
-          address: curr,
-          coinFound: true,
-          coins: [],
-          displayAddress: curr,
-          nameTag: "",
-          nickname: "",
-          showAddress: true,
-          showNameTag: false,
-          showNickname: false,
-          wallet_metadata: null,
+    if (passedItem) {
+      if (passedItem.address) {
+        TopBarMetamaskWalletConnected({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          address: passedItem.address,
         });
-        arr.push(curr?.trim());
-        nicknameArr[curr?.trim()] = curr.nickname;
-        arr.push(curr?.trim());
-        arr.push(curr?.trim());
-        addressList.push(curr?.trim());
+        this.props.setMetamaskConnectedReducer(passedItem.address);
+        window.sessionStorage.setItem(
+          "setMetamaskConnectedSessionStorage",
+          passedItem.address
+        );
       }
-    });
+      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
+    }
     let addWallet = walletList.map((w, i) => {
       return {
         ...w,
@@ -348,13 +495,12 @@ class TopBar extends Component {
     yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
     this.props.updateUserWalletApi(data, this, yieldData);
-    this.checkIsMetaMaskConnected();
   };
   render() {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer ml-2 maxWidth50">
+          <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
@@ -386,7 +532,7 @@ class TopBar extends Component {
             justifyContent: "flex-end",
           }}
         >
-          {this.state.showWalletConnected ? (
+          {this.state.metamaskWalletConnected ? (
             <div
               onClick={this.dissconnectFromMetaMask}
               className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
@@ -395,7 +541,9 @@ class TopBar extends Component {
                 className="topBarWalletAdd noHoverEffect metaMaskImg"
                 src={MetamaskIcon}
               />
-              <span className="dotDotText">Metamask</span>
+              <span className="dotDotText">
+                {TruncateText(this.state.metamaskWalletConnected)}
+              </span>
               <Image
                 className="topBarWalletAdd"
                 style={{
@@ -451,12 +599,17 @@ const mapStateToProps = (state) => ({
   HeaderState: state.HeaderState,
   OnboardingState: state.OnboardingState,
   IsWalletConnectedState: state.IsWalletConnectedState,
+  MetamaskConnectedState: state.MetamaskConnectedState,
 });
 
 const mapDispatchToProps = {
   setHeaderReducer,
   updateUserWalletApi,
   setIsWalletConnectedReducer,
+  setMetamaskConnectedReducer,
+  detectCoin,
+  getAllParentChains,
+  getAllCoins,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

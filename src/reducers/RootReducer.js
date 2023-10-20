@@ -9,6 +9,7 @@ import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 import {
   HeaderReducer,
   IsWalletConnectedReducer,
+  MetamaskConnectedReducer,
 } from "../app//header/HeaderReducer";
 import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from "../app/wallet/WalletReducer";
@@ -39,6 +40,7 @@ export default combineReducers({
   DefiState: DefiReducer,
   HeaderState: HeaderReducer,
   IsWalletConnectedState: IsWalletConnectedReducer,
+  MetamaskConnectedState: MetamaskConnectedReducer,
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   YieldOpportunitiesState: YieldOpportunitiesReducer,
