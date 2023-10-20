@@ -1508,7 +1508,7 @@ class TopPortfolio extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              Return
             </span>
             <Image
               src={sortByIcon}
@@ -1529,9 +1529,11 @@ class TopPortfolio extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  rowData.GainLoss
+                    ? Math.abs(
+                        Number(noExponents(rowData.GainLoss.toFixed(2)))
+                      ).toLocaleString("en-US") + "%"
+                    : "0.00%"
                 }
                 colorCode="#000"
               >
@@ -1541,11 +1543,18 @@ class TopPortfolio extends BaseReactComponent {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.GainLoss
+                        ? Math.abs(
+                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          ).toLocaleString("en-US") + "%"
+                        : "0.00%"}
                     </span>
                   </div>
                 </div>

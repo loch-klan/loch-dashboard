@@ -26,3 +26,4 @@ export { default as ExportIcon } from "./ExportIcon.svg";
 export { default as TwoPeopleIcon } from "./twoPeople.svg";
 export { default as MetamaskIcon } from "./metamask.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
+export { default as TwoPeopleLightIcon } from "./twoPeopleLight.svg";
