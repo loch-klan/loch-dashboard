@@ -1,4 +1,8 @@
-import { LOCAL_WALLET, IS_WALLET_CONNECTED } from "./HeaderActionTypes";
+import {
+  LOCAL_WALLET,
+  IS_WALLET_CONNECTED,
+  CONNECTED_METAMASK,
+} from "./HeaderActionTypes";
 
 // returning promise so that it can be used as a callback
 export const setHeaderReducer = (payload) => (dispatch) => {
@@ -8,9 +12,14 @@ export const setHeaderReducer = (payload) => (dispatch) => {
   });
 };
 export const setIsWalletConnectedReducer = (payload) => (dispatch) => {
-  console.log("Action called?");
   dispatch({
     type: IS_WALLET_CONNECTED,
+    payload,
+  });
+};
+export const setMetamaskConnectedReducer = (payload) => (dispatch) => {
+  dispatch({
+    type: CONNECTED_METAMASK,
     payload,
   });
 };

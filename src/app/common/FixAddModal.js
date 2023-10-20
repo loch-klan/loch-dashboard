@@ -48,6 +48,7 @@ import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import Papa from "papaparse";
 import { CustomCoin } from "../../utils/commonComponent";
+import { MetamaskIcon } from "../../assets/images/icons";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -124,6 +125,7 @@ class FixAddModal extends BaseReactComponent {
       fileName: null,
       isChangeFile: false,
       total_unique_address: 0,
+      metamaskWalletConnected: "",
     };
     this.timeout = 0;
   }
@@ -538,6 +540,15 @@ class FixAddModal extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    if (ssItem && ssItem !== null) {
+      this.setState({
+        metamaskWalletConnected: ssItem,
+      });
+    }
+
     // set popup active
     localStorage.setItem("isPopupActive", true);
 
@@ -1178,11 +1189,14 @@ class FixAddModal extends BaseReactComponent {
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
         <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
-          {this.state.addWalletList.length > 1 ? (
+          {this.state.metamaskWalletConnected &&
+          (elem.displayAddress === this.state.metamaskWalletConnected ||
+            elem.address === this.state.metamaskWalletConnected) ? (
+            <Image key={index} className={`awOldDelBtn`} src={MetamaskIcon} />
+          ) : this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
               className={`awOldDelBtn`}
-              // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
               src={DeleteIcon}
               onClick={() => this.deleteAddress(index)}
             />
@@ -1745,6 +1759,7 @@ class FixAddModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  MetamaskConnectedState: state.MetamaskConnectedState,
 });
 const mapDispatchToProps = {
   getAllCoins,

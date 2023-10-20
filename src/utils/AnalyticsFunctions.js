@@ -134,7 +134,30 @@ export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
     "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:privacy message");
+};
+export const DisconnectWalletButtonClicked = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Top Bar: Disconnect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopBarMetamaskWalletConnected = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top Bar: Metamask wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
