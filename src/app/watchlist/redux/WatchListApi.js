@@ -123,6 +123,10 @@ export const removeAddressFromWatchList = (
             if (ctx.addressDeleted) {
               ctx.addressDeleted(passedAddress, passedNameTag);
             }
+          } else {
+            if (ctx.addressDeleted) {
+              ctx.addressDeleted(passedAddress, passedNameTag);
+            }
           }
         } else {
           toast.error("Something Went Wrong");
