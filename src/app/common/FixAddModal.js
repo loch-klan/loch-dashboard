@@ -1222,9 +1222,11 @@ class FixAddModal extends BaseReactComponent {
                 <div className="awInputContainer">
                   <input
                     disabled={
-                      elem.displayAddress ===
-                        this.state.metamaskWalletConnected ||
-                      elem.address === this.state.metamaskWalletConnected
+                      (elem.displayAddress &&
+                        elem.displayAddress ===
+                          this.state.metamaskWalletConnected) ||
+                      (elem.address &&
+                        elem.address === this.state.metamaskWalletConnected)
                     }
                     autoFocus
                     name={`wallet${index + 1}`}
