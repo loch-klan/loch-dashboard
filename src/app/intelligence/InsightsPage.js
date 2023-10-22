@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi } from "./Api";
+import { getAllInsightsApi, sendAmount } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -82,9 +82,18 @@ class InsightsPage extends Component {
 
       // start time for time spent on page
       startTime: "",
+      sendAdd: "",
+      receiveAdd: "",
+      amount: "",
     };
   }
-
+  sendAmountFun = () => {
+    let tempData = new URLSearchParams();
+    tempData.append("send_address", this.state.sendAdd);
+    tempData.append("receive_address", this.state.receiveAdd);
+    tempData.append("amount", this.state.amount);
+    this.props.sendAmount(tempData);
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -105,7 +114,30 @@ class InsightsPage extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  checkIsMetaMaskConnected = async () => {
+    if (window.ethereum) {
+      try {
+        window.ethereum
+          .request({ method: "eth_accounts" })
+          .then((metaRes) => {
+            console.log("metaRes ", metaRes);
+            if (metaRes && metaRes.length > 0) {
+              this.setState({
+                sendAdd: metaRes[0],
+              });
+            } else {
+            }
+          })
+          .catch((metaErr) => {
+            console.log("metaError ", metaErr);
+          });
+      } catch (passedError) {
+        console.log("Api issue ", passedError);
+      }
+    }
+  };
   componentDidMount() {
+    this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
     this.props.getUser();
@@ -357,6 +389,7 @@ class InsightsPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -605,7 +638,39 @@ class InsightsPage extends Component {
                 <div className="inner-box2"></div>
               </div>
             )}
-
+            <div>
+              <input
+                value={this.state.sendAdd}
+                onChange={(changed) => {
+                  this.setState({
+                    sendAdd: changed.target.value,
+                  });
+                }}
+                placeholder="send address"
+                type="text"
+              />
+              <input
+                onChange={(changed) => {
+                  this.setState({
+                    receiveAdd: changed.target.value,
+                  });
+                }}
+                value={this.state.receiveAdd}
+                placeholder="receive address"
+                type="text"
+              />
+              <input
+                onChange={(changed) => {
+                  this.setState({
+                    amount: changed.target.value,
+                  });
+                }}
+                value={this.state.amount}
+                placeholder="amount"
+                type="text"
+              />
+              <button onClick={this.sendAmountFun}>Send</button>
+            </div>
             {/* footer */}
             <Footer />
           </div>
@@ -628,6 +693,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   GetAllPlan,
   getUser,
+  sendAmount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);

@@ -15,7 +15,7 @@ import {
   getAllCoins,
   detectCoin,
 } from "./Api";
-import { addLocalWalletList, detectNameTag } from "../common/Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -830,7 +830,6 @@ class AddWallet extends BaseReactComponent {
         this.props.setHeaderReducer(addWallet);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
-      addLocalWalletList(JSON.stringify(walletList));
 
       // this.state?.onHide();
       const data = new URLSearchParams();

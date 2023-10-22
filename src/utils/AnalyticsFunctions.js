@@ -127,6 +127,49 @@ export const LPC_Go = ({
 };
 
 //3. Landing Page Conversion:privacy message
+export const ConnectWalletButtonClickedWelcome = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
+  const event_name = "Top Bar: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const DisconnectWalletButtonClicked = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Top Bar: Disconnect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopBarMetamaskWalletConnected = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top Bar: Metamask wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {};
@@ -4160,6 +4203,33 @@ export const HomeShare = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+export const HomeFollow = ({ session_id, email_address, address, nameTag }) => {
+  const event_name = "Home: follow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+export const HomeUnFollow = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Home: unfollow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");

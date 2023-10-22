@@ -698,6 +698,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+              apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -856,6 +857,7 @@ class TwitterInflucencePage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}
                     message={"No accounts found"}

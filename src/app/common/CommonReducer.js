@@ -70,7 +70,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-export const AddLocalAddWalletReducer = (state = INITIAL_STATE, action) => {
+export const AddLocalAddWalletReducer = (state = [], action) => {
   switch (action.type) {
     case LOCAL_ADD_WALLET_LIST:
       return action.payload;

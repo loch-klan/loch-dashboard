@@ -291,6 +291,7 @@ class AssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+              apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -300,7 +301,10 @@ class AssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal

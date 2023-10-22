@@ -171,7 +171,9 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
               }
               // console.log('newAddWallet',newAddWallet);
               localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
-              addLocalWalletList(JSON.stringify(newAddWallet));
+              if (ctx.props.addLocalWalletList) {
+                ctx.props.addLocalWalletList(JSON.stringify(newAddWallet));
+              }
               ctx.state.changeList && ctx.state.changeList(newAddWallet);
               if (ctx.props.apiResponse) {
                 // ctx.setState({
@@ -185,9 +187,9 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
                 ctx.props.handleUpdateWallet();
               }
               if (ctx.state.pageName == "Landing Page") {
-                ctx.props.history.push("/home");
+                ctx.props.history?.push("/home");
               } else {
-                ctx.props.history.push({
+                ctx.props.history?.push({
                   pathname: ctx.props.pathName,
                   state: {
                     addWallet: JSON.parse(localStorage.getItem("addWallet")),

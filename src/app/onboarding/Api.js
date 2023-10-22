@@ -58,7 +58,13 @@ export const getAllParentChains = () => {
   };
 };
 
-export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
+export const detectCoin = (
+  wallet,
+  ctx = null,
+  isCohort = false,
+  index = 0,
+  justDetect = false
+) => {
   return function (dispatch, getState) {
     let data = new URLSearchParams();
     data.append("chain", wallet.coinCode);
@@ -90,7 +96,7 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
             });
           }
 
-          if (!isCohort && !ctx?.topAccountPage) {
+          if (!isCohort && !ctx?.topAccountPage && !justDetect) {
             // wallet.address = res.data.data.wallet_address;
             dispatch({
               type: WALLET_LIST,
@@ -107,7 +113,6 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
               },
             });
           }
-
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
             ctx.handleSetCoin({
@@ -118,7 +123,9 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
 
             if (
               ctx?.state.isTopAccountPage &&
-              index === ctx?.props?.OnboardingState.parentCoinList?.length - 1
+              index ===
+                ctx?.props?.OnboardingState.parentCoinList?.length - 1 &&
+              !justDetect
             ) {
               setTimeout(() => {
                 ctx?.CalculateOverview && ctx?.CalculateOverview();

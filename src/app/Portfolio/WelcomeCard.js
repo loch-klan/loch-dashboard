@@ -252,7 +252,10 @@ export default function WelcomeCard(props) {
         <div
           className="row-div"
           style={{
-            width: "calc(60% - 3rem)",
+            display: "flex",
+            flex: 1,
+            marginRight: "1.7rem",
+            // width: "calc(60% - 3rem)",
             // position: "absolute",
             // left: "calc(50% - 13rem)",
             // transform: "translateX(-50%)",
@@ -305,6 +308,9 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              changeWalletList={props.changeWalletList}
+              apiResponse={props.apiResponse}
+              history={history}
               buttonRef={buttonRef}
               handleAddWalletClick={handleAddWalletClick}
               handleConnectModal={handleConnectModal}
@@ -329,13 +335,15 @@ export default function WelcomeCard(props) {
         {props.showNetworth && (
           <div
             className="row-div"
-            style={{
-              // position: "absolute",
-              // // left: "50%",
-              // // transform: "translateX(-50%)",
-              // right: 0,
-              marginRight: !lochUser ? "8.2rem" : "0rem",
-            }}
+            style={
+              {
+                // position: "absolute",
+                // // left: "50%",
+                // // transform: "translateX(-50%)",
+                // right: 0,
+                // marginRight: !lochUser ? "8.2rem" : "0rem",
+              }
+            }
           >
             <CustomOverlay
               position="bottom"
