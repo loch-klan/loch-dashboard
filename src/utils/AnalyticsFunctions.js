@@ -162,11 +162,12 @@ export const TopBarMetamaskWalletConnected = ({
   email_address,
   address,
 }) => {
-  const event_name = "Top Bar: Metamask wallet connected";
+  const event_name = "Wallet connected";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
     address: address,
+    wallet: "Metamask",
   };
   sendAmplitudeData(event_name, eventProperties);
 };
