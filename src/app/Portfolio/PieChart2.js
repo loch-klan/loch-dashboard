@@ -105,6 +105,17 @@ class PieChart2 extends BaseReactComponent {
   }
 
   componentDidMount() {
+    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+
+    if (whatIsIt === "true") {
+      this.setState({
+        isFollowingAddress: true,
+      });
+    } else {
+      this.setState({
+        isFollowingAddress: false,
+      });
+    }
     // for temp
     this.isFollowedByUserFun();
     this.showFollowOrNot();
@@ -808,9 +819,11 @@ class PieChart2 extends BaseReactComponent {
   };
   showAddressesAdded = () => {
     this.setState({ isFollowingAddress: true });
+    window.sessionStorage.setItem("isFollowingAddress", true);
   };
   addressDeleted = () => {
     this.setState({ isFollowingAddress: false });
+    window.sessionStorage.setItem("isFollowingAddress", false);
   };
   isFollowedByUserFun = () => {
     const listJson = JSON.parse(localStorage.getItem("addWallet"));
@@ -848,9 +861,7 @@ class PieChart2 extends BaseReactComponent {
         });
       }
     } else {
-      this.setState({
-        isFollowingAddress: false,
-      });
+      this.addressDeleted();
     }
   };
   render() {
@@ -1303,7 +1314,11 @@ class PieChart2 extends BaseReactComponent {
                   {this.state.showFollowingAddress ? (
                     <div
                       onClick={this.addAddressToWatchListFun}
-                      className="pageHeaderShareContainer"
+                      className={`pageHeaderShareContainer pageHeaderConnectWalletContainer ${
+                        this.state.isFollowingAddress
+                          ? "pageHeaderConnectWalletContainerSelected"
+                          : ""
+                      }`}
                     >
                       <Image
                         className="pageHeaderShareImg"
