@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
+import WalletIcon from "../../assets/images/icons/wallet-icon.png";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import Banner from "../../image/Frame.png";
@@ -1192,7 +1193,11 @@ class FixAddModal extends BaseReactComponent {
           {this.state.metamaskWalletConnected &&
           (elem.displayAddress === this.state.metamaskWalletConnected ||
             elem.address === this.state.metamaskWalletConnected) ? (
-            <Image key={index} className={`awOldDelBtn`} src={MetamaskIcon} />
+            <Image
+              key={index}
+              className={`awOldDelBtn awOldWalletBtn`}
+              src={WalletIcon}
+            />
           ) : this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
@@ -1216,6 +1221,11 @@ class FixAddModal extends BaseReactComponent {
               <div className="awTopInputWrapper">
                 <div className="awInputContainer">
                   <input
+                    disabled={
+                      elem.displayAddress ===
+                        this.state.metamaskWalletConnected ||
+                      elem.address === this.state.metamaskWalletConnected
+                    }
                     autoFocus
                     name={`wallet${index + 1}`}
                     value={elem.displayAddress || elem.address || ""}

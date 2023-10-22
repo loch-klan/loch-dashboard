@@ -23,6 +23,7 @@ import {
   MetamaskIcon,
   WalletIcon,
   XCircleIcon,
+  XCircleRedIcon,
 } from "../../assets/images/icons";
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
@@ -446,16 +447,18 @@ class TopBar extends Component {
     let nicknameArr = {};
     let walletList = [];
     let arr = [];
-    walletAddress.forEach((curr) => {
-      if (!arr.includes(curr.address?.trim()) && curr.address) {
-        walletList.push(curr);
-        arr.push(curr.address?.trim());
-        nicknameArr[curr.address?.trim()] = curr.nickname;
-        arr.push(curr.displayAddress?.trim());
-        arr.push(curr.address?.trim());
-        addressList.push(curr.address?.trim());
-      }
-    });
+    if (walletAddress) {
+      walletAddress.forEach((curr) => {
+        if (!arr.includes(curr.address?.trim()) && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      });
+    }
     if (passedItem) {
       if (passedItem.address) {
         TopBarMetamaskWalletConnected({
@@ -533,25 +536,32 @@ class TopBar extends Component {
           }}
         >
           {this.state.metamaskWalletConnected ? (
-            <div
-              onClick={this.dissconnectFromMetaMask}
-              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
-            >
-              <Image
-                className="topBarWalletAdd noHoverEffect metaMaskImg"
-                src={MetamaskIcon}
-              />
+            <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
+              <Image className="topBarWalletAdd" src={WalletIcon} />
               <span className="dotDotText">
                 {TruncateText(this.state.metamaskWalletConnected)}
               </span>
-              <Image
-                className="topBarWalletAdd"
+              <span
+                onMouseOver={(e) =>
+                  (e.currentTarget.children[0].src = XCircleRedIcon)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.children[0].src = XCircleIcon)
+                }
                 style={{
-                  margin: "0",
-                  marginLeft: "0.8rem",
+                  cursor: "pointer",
                 }}
-                src={XCircleIcon}
-              />
+                onClick={this.dissconnectFromMetaMask}
+              >
+                <Image
+                  className="topBarWalletAdd"
+                  style={{
+                    margin: "0",
+                    marginLeft: "0.8rem",
+                  }}
+                  src={XCircleIcon}
+                />
+              </span>
             </div>
           ) : (
             <div

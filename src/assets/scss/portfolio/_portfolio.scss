@@ -212,13 +212,6 @@
           img {
             transition-duration: 300ms;
           }
-          .metaMaskImg {
-            background-color: #ffe7bd;
-            border-radius: 0.65rem;
-            width: 1.8rem;
-            box-shadow: 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
-            transition-duration: 0ms;
-          }
           &:hover {
             background-color: $black-191;
             border-color: $black-191;
@@ -247,6 +240,15 @@
         .topbar-btn-transparent {
           background-color: transparent;
           border-color: #f2f2f3;
+          cursor: default;
+          &:hover {
+            border-color: #f2f2f3;
+            background-color: transparent;
+            color: $black-191;
+            img {
+              filter: invert(0);
+            }
+          }
         }
 
         .Preview-topbar-btn {

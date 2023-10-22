@@ -93,6 +93,14 @@
                   filter: brightness(0.965);
                 }
               }
+              .awOldWalletBtn {
+                cursor: default;
+                margin-right: 2rem;
+                margin-left: 1rem;
+                &:hover {
+                  filter: brightness(1);
+                }
+              }
               .fakeBtn {
                 opacity: 0;
                 cursor: default;
