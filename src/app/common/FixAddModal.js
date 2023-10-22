@@ -1191,8 +1191,10 @@ class FixAddModal extends BaseReactComponent {
       return (
         <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
           {this.state.metamaskWalletConnected &&
-          (elem.displayAddress === this.state.metamaskWalletConnected ||
-            elem.address === this.state.metamaskWalletConnected) ? (
+          ((elem.displayAddress &&
+            elem.displayAddress === this.state.metamaskWalletConnected) ||
+            (elem.address &&
+              elem.address === this.state.metamaskWalletConnected)) ? (
             <Image
               key={index}
               className={`awOldDelBtn awOldWalletBtn`}
@@ -1222,9 +1224,11 @@ class FixAddModal extends BaseReactComponent {
                 <div className="awInputContainer">
                   <input
                     disabled={
-                      elem.displayAddress ===
-                        this.state.metamaskWalletConnected ||
-                      elem.address === this.state.metamaskWalletConnected
+                      (elem.displayAddress &&
+                        elem.displayAddress ===
+                          this.state.metamaskWalletConnected) ||
+                      (elem.address &&
+                        elem.address === this.state.metamaskWalletConnected)
                     }
                     autoFocus
                     name={`wallet${index + 1}`}
