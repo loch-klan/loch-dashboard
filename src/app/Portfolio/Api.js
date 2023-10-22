@@ -29,16 +29,12 @@ export const isFollowedByUser = (data, ctx) => {
       .then((res) => {
         if (!res.data?.error) {
           if (res.data?.data.following) {
-            if (ctx) {
-              ctx.setState({
-                isFollowingAddress: true,
-              });
+            if (ctx.showAddressesAdded) {
+              ctx.showAddressesAdded();
             }
           } else {
-            if (ctx) {
-              ctx.setState({
-                isFollowingAddress: false,
-              });
+            if (ctx.addressDeleted) {
+              ctx.addressDeleted();
             }
           }
         }
