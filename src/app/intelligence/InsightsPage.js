@@ -638,7 +638,7 @@ class InsightsPage extends Component {
                 <div className="inner-box2"></div>
               </div>
             )}
-            <div>
+            {/* <div>
               <input
                 value={this.state.sendAdd}
                 onChange={(changed) => {
@@ -670,7 +670,7 @@ class InsightsPage extends Component {
                 type="text"
               />
               <button onClick={this.sendAmountFun}>Send</button>
-            </div>
+            </div> */}
             {/* footer */}
             <Footer />
           </div>

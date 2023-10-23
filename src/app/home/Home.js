@@ -249,7 +249,15 @@ class Home extends BaseReactComponent {
     let arr = [];
     if (walletAddress) {
       walletAddress.forEach((curr) => {
-        if (!arr.includes(curr.address?.trim()) && curr.address) {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
           walletList.push(curr);
           arr.push(curr.address?.trim());
           nicknameArr[curr.address?.trim()] = curr.nickname;
