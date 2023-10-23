@@ -15,7 +15,7 @@ import {
   getAllCoins,
   detectCoin,
 } from "./Api";
-import { addLocalWalletList, detectNameTag } from "../common/Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -811,7 +811,15 @@ class AddWallet extends BaseReactComponent {
         let curr = this.state.walletInput[i];
 
         // );
-        if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
           walletList.push(curr);
           arr.push(curr.address?.trim());
           nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -830,7 +838,6 @@ class AddWallet extends BaseReactComponent {
         this.props.setHeaderReducer(addWallet);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
-      addLocalWalletList(JSON.stringify(walletList));
 
       // this.state?.onHide();
       const data = new URLSearchParams();
@@ -953,7 +960,10 @@ class AddWallet extends BaseReactComponent {
               <div className="addWalletWrapperContainer">
                 {this.state.walletInput?.map((c, index) => {
                   return (
-                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                    <div
+                      style={index === 9 ? { marginBottom: "0rem" } : {}}
+                      className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+                    >
                       {this.state.walletInput.length > 1 ? (
                         <Image
                           key={index}
@@ -985,7 +995,7 @@ class AddWallet extends BaseReactComponent {
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                  placeholder="Paste any wallet address here"
+                                  placeholder="Paste any wallet address or ENS here"
                                   title={c.address || ""}
                                   onChange={(e) => this.handleOnChange(e)}
                                   onKeyDown={this.handleTabPress}
@@ -1139,7 +1149,8 @@ class AddWallet extends BaseReactComponent {
               </div>
             </div>
 
-            {this.state.addButtonVisible ? (
+            {this.state.addButtonVisible &&
+            this.state.walletInput?.length < 10 ? (
               <div className="addAnotherBtnContainer">
                 <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another

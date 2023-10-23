@@ -164,6 +164,7 @@
 
         .topbar-btn {
           background: rgba(229, 229, 230, 0.5);
+          border: 1px solid #f2f2f3;
           border-radius: 8px;
           padding: 1.2rem 2rem;
           color: $black-191;
@@ -211,13 +212,16 @@
           img {
             transition-duration: 300ms;
           }
-
           &:hover {
             background-color: $black-191;
+            border-color: $black-191;
             color: $secondary;
 
             img {
               filter: invert(1);
+            }
+            .noHoverEffect {
+              filter: invert(0);
             }
             .topBarExchangeIcons {
               filter: none;
@@ -230,6 +234,19 @@
             transition-duration: 300ms;
             &:hover {
               opacity: 1;
+            }
+          }
+        }
+        .topbar-btn-transparent {
+          background-color: transparent;
+          border-color: #f2f2f3;
+          cursor: default;
+          &:hover {
+            border-color: #f2f2f3;
+            background-color: transparent;
+            color: $black-191;
+            img {
+              filter: invert(0);
             }
           }
         }

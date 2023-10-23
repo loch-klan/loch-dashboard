@@ -34,7 +34,11 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
-import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
@@ -85,7 +89,8 @@ class TopCost extends Component {
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
         { title: "Current value", down: false },
-        { title: "Gain loss", down: true },
+        { title: "Gain amount", down: true },
+        { title: "Gain percentage", down: true },
       ],
 
       // this is used in api to check api call fromt op acount page or not
@@ -391,11 +396,20 @@ class TopCost extends Component {
       this.setState({
         sortBy: sort,
       });
-    } else if (e.title === "Gain loss") {
+    } else if (e.title === "Gain amount") {
+      this.sortArray("GainAmount", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+
+      this.updateTimer();
+    } else if (e.title === "Gain percentage") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
+
+      this.updateTimer();
     }
   };
 
@@ -463,6 +477,29 @@ class TopCost extends Component {
 
     const columnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.05,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+              >
+                <span className="inter-display-medium f-s-13">
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -480,7 +517,7 @@ class TopCost extends Component {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -502,7 +539,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average cost price
+              Avg cost price
             </span>
             <Image
               src={sortByIcon}
@@ -512,7 +549,7 @@ class TopCost extends Component {
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -537,8 +574,8 @@ class TopCost extends Component {
                       {rowData.AverageCostPrice === 0
                         ? "N/A"
                         : CurrencyType(false) +
-                          Number(
-                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
@@ -566,7 +603,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -587,8 +624,8 @@ class TopCost extends Component {
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
+                        numToCurrency(
+                          rowData.CurrentPrice.toFixed(2)
                         ).toLocaleString("en-US")}
                     </span>
                   </div>
@@ -616,7 +653,7 @@ class TopCost extends Component {
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.2,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -631,7 +668,7 @@ class TopCost extends Component {
                 )}
               >
                 <span>
-                  {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
+                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -646,7 +683,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
@@ -656,7 +693,7 @@ class TopCost extends Component {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.2,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -679,8 +716,8 @@ class TopCost extends Component {
                   {rowData.CostBasis === 0
                     ? "N/A"
                     : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
+                      numToCurrency(
+                        rowData.CostBasis.toFixed(2)
                       ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -696,7 +733,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current value
             </span>
             <Image
               src={sortByIcon}
@@ -706,7 +743,7 @@ class TopCost extends Component {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.2,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -725,8 +762,8 @@ class TopCost extends Component {
               >
                 <span>
                   {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentValue.toFixed(2))
+                    numToCurrency(
+                      rowData.CurrentValue.toFixed(2)
                     ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -738,11 +775,11 @@ class TopCost extends Component {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Gain loss"
+            id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              % Gain / Loss
+              Unrealized gain
             </span>
             <Image
               src={sortByIcon}
@@ -750,12 +787,13 @@ class TopCost extends Component {
             />
           </div>
         ),
-        dataKey: "GainLoss",
+        dataKey: "GainAmount",
         // coumnWidth: 128,
-        coumnWidth: 0.25,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "GainLoss") {
+          if (dataKey === "GainAmount") {
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
               <CustomOverlay
                 position="top"
@@ -763,9 +801,75 @@ class TopCost extends Component {
                 isInfo={true}
                 isText={true}
                 text={
-                  Number(
-                    noExponents(rowData.GainLoss.toFixed(2))
-                  ).toLocaleString("en-US") + "%"
+                  rowData.GainAmount
+                    ? CurrencyType(false) +
+                      Math.abs(
+                        Number(noExponents(rowData.GainAmount.toFixed(2)))
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"
+                }
+                colorCode="#000"
+              >
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainAmount < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainAmount < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : "0.00"}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gain loss"
+            onClick={() => this.handleSort(this.state.sortBy[7])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Return
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "GainLoss",
+        // coumnWidth: 128,
+        coumnWidth: 0.13,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "GainLoss") {
+            const tempDataHolder = Number(
+              noExponents(rowData.GainLoss.toFixed(2))
+            );
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  tempDataHolder
+                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                    : "0%"
                 }
                 colorCode="#000"
               >
@@ -775,11 +879,16 @@ class TopCost extends Component {
                       rowData.GainLoss < 0 ? "loss" : "gain"
                     }`}
                   >
-                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
-                      {Number(
-                        noExponents(rowData.GainLoss.toFixed(2))
-                      ).toLocaleString("en-US") + "%"}
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
                     </span>
                   </div>
                 </div>
@@ -801,6 +910,7 @@ class TopCost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -898,11 +1008,11 @@ class TopCost extends Component {
                   this.props.topAccountState.graphfeeValue[0]
                 }
                 options={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[1]
                 }
                 options2={
-                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState?.graphfeeValue &&
                   this.props.topAccountState.graphfeeValue[2]
                 }
                 digit={this.state.GraphDigit}

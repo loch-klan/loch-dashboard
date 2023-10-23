@@ -707,7 +707,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onClick={() => this.handleTableSort("usdValue")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Value (USD)
+              Value
             </span>
             <Image
               src={sortByIcon}
@@ -730,17 +730,22 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={amountFormat(
-                  rowData.value * this.state.currency?.rate,
-                  "en-US",
-                  "USD"
-                )}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(
+                    rowData.value * this.state.currency?.rate,
+                    "en-US",
+                    "USD"
+                  )
+                }
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false)}
-                      {numToCurrency(rowData.value * this.state.currency?.rate)}
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.value * this.state.currency?.rate
+                        )}
                     </span>
                   </div>
                 </div>
@@ -841,17 +846,20 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={amountFormat(
-                  rowData.tvl * this.state.currency?.rate,
-                  "en-US",
-                  "USD"
-                )}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(
+                    rowData.tvl * this.state.currency?.rate,
+                    "en-US",
+                    "USD"
+                  )
+                }
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false)}
-                      {numToCurrency(rowData.tvl * this.state.currency?.rate)}
+                      {CurrencyType(false) +
+                        numToCurrency(rowData.tvl * this.state.currency?.rate)}
                     </span>
                   </div>
                 </div>
@@ -890,7 +898,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.apy ? rowData.apy : "-"}
+                text={rowData.apy ? rowData.apy + "%" : "-"}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                   {rowData.apy
@@ -915,6 +923,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal

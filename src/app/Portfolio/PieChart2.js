@@ -1681,14 +1681,31 @@ class PieChart2 extends BaseReactComponent {
                                           <span className="inter-display-medium f-s-16 lh-19">
                                             {item.name}
                                           </span>
-                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                            {CurrencyType(false)}
-                                            {amountFormat(
-                                              item.totalPrice.toFixed(2),
-                                              "en-US",
-                                              "USD"
-                                            )}
-                                          </span>
+                                          <CustomOverlay
+                                            position="top"
+                                            isIcon={false}
+                                            isInfo={true}
+                                            isText={true}
+                                            text={
+                                              CurrencyType(false) +
+                                              amountFormat(
+                                                item.totalPrice.toFixed(2) *
+                                                  (this.state.currency?.rate ||
+                                                    1),
+                                                "en-US",
+                                                "USD"
+                                              )
+                                            }
+                                          >
+                                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                              {CurrencyType(false)}
+                                              {numToCurrency(
+                                                item.totalPrice.toFixed(2),
+                                                "en-US",
+                                                "USD"
+                                              )}
+                                            </span>
+                                          </CustomOverlay>
                                         </div>
                                       );
                                     }
@@ -1718,14 +1735,31 @@ class PieChart2 extends BaseReactComponent {
                                           <span className="inter-display-medium f-s-16 lh-19">
                                             {item.name}
                                           </span>
-                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                            {CurrencyType(false)}
-                                            {amountFormat(
-                                              item.totalPrice.toFixed(2),
-                                              "en-US",
-                                              "USD"
-                                            )}
-                                          </span>
+                                          <CustomOverlay
+                                            position="top"
+                                            isIcon={false}
+                                            isInfo={true}
+                                            isText={true}
+                                            text={
+                                              CurrencyType(false) +
+                                              amountFormat(
+                                                item.totalPrice.toFixed(2) *
+                                                  (this.state.currency?.rate ||
+                                                    1),
+                                                "en-US",
+                                                "USD"
+                                              )
+                                            }
+                                          >
+                                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                              {CurrencyType(false)}
+                                              {numToCurrency(
+                                                item.totalPrice.toFixed(2),
+                                                "en-US",
+                                                "USD"
+                                              )}
+                                            </span>
+                                          </CustomOverlay>
                                         </div>
                                       );
                                     }

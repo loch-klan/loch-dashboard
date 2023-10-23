@@ -41,6 +41,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   CurrencyType,
   noExponents,
+  numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -1198,9 +1199,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 )}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {Number(noExponents(rowData.amount.value)).toLocaleString(
-                    "en-US"
-                  )}
+                  {numToCurrency(rowData.amount.value).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -1216,7 +1215,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Amount (Then)`}</span>
+            )} amount (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1256,10 +1255,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {CurrencyType(false) +
+                      numToCurrency(valueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1268,10 +1271,16 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1289,7 +1298,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Fee (Then)`}</span>
+            )} fee (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1327,10 +1336,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                    {CurrencyType(false) +
+                      numToCurrency(valueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1339,10 +1352,16 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  text={
+                    CurrencyType(false) +
+                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                  }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                    {valueThen
+                      ? CurrencyType(false) +
+                        numToCurrency(valueThen).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
                 )
@@ -1415,6 +1434,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+              apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal

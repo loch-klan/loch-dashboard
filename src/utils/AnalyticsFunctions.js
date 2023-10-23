@@ -127,6 +127,50 @@ export const LPC_Go = ({
 };
 
 //3. Landing Page Conversion:privacy message
+export const ConnectWalletButtonClickedWelcome = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
+  const event_name = "Top Bar: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const DisconnectWalletButtonClicked = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Top Bar: Disconnect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopBarMetamaskWalletConnected = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+    wallet: "Metamask",
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {};
@@ -3970,6 +4014,14 @@ export const CostGainLossHover = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CostGainHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: gain hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // ------
 
@@ -4041,6 +4093,15 @@ export const SortByCurrentValue = ({ session_id, email_address }) => {
 };
 
 //83. Costs: Average Cost Basis: sort % gain loss - done
+export const SortByGainAmount = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average Cost Basis: sort gain amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort % gain loss");
+};
 export const SortByGainLoss = ({ session_id, email_address }) => {
   const event_name = "Costs: Average Cost Basis: sort % gain loss";
   const eventProperties = {

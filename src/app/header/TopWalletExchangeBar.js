@@ -8,10 +8,26 @@ import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
+  ConnectWalletButtonClicked,
+  DisconnectWalletButtonClicked,
+  TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { setHeaderReducer } from "./HeaderAction";
+import {
+  setHeaderReducer,
+  setIsWalletConnectedReducer,
+  setMetamaskConnectedReducer,
+} from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  MetamaskIcon,
+  WalletIcon,
+  XCircleIcon,
+  XCircleRedIcon,
+} from "../../assets/images/icons";
+import { ethers } from "ethers";
+import { updateUserWalletApi } from "../common/Api";
+import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +38,27 @@ class TopBar extends Component {
       exchangeList: [],
       exchangeListImages: [],
       firstExchange: "",
+      metamaskWalletConnected: "",
+      currentMetamaskWallet: {},
+      changeList: props.changeWalletList,
     };
   }
 
   componentDidMount() {
     this.applyLocalStorageWalletList();
+
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    if (ssItem && ssItem !== null) {
+      this.setState({
+        metamaskWalletConnected: ssItem,
+      });
+      this.props.setMetamaskConnectedReducer(ssItem);
+    }
+
     if (this.props.walletState?.walletList) {
       this.applyWalletList();
     } else {
@@ -34,6 +66,20 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
+    ) {
+      setTimeout(() => {
+        const ssItem = window.sessionStorage.getItem(
+          "setMetamaskConnectedSessionStorage"
+        );
+        if (ssItem !== undefined && ssItem !== null) {
+          this.setState({
+            metamaskWalletConnected: ssItem,
+          });
+        }
+      }, 100);
+    }
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
@@ -179,12 +225,293 @@ class TopBar extends Component {
     });
     this.props.handleConnectModal();
   };
+  dissconnectFromMetaMask = async () => {
+    DisconnectWalletButtonClicked({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    this.removeFromList(ssItem);
+    this.props.setMetamaskConnectedReducer("");
+    window.sessionStorage.setItem("setMetamaskConnectedSessionStorage", "");
+  };
+  removeFromList = (removeThis) => {
+    const curItem = removeThis;
 
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    walletAddress.forEach((curr) => {
+      if (
+        !arr.includes(curr.address?.trim()) &&
+        curr.address &&
+        curr.address !== curItem
+      ) {
+        walletList.push(curr);
+        arr.push(curr.address?.trim());
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        arr.push(curr.displayAddress?.trim());
+        arr.push(curr.address?.trim());
+        addressList.push(curr.address?.trim());
+      }
+    });
+
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData);
+  };
+  connectWalletEthers = async () => {
+    ConnectWalletButtonClicked({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    // const MAINNET_RPC_URL =
+    //   "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
+    // const injected = injectedModule({
+    //   displayUnavailable: [
+    //     ProviderLabel.MetaMask,
+    //     ProviderLabel.Coinbase,
+    //     ProviderLabel.Phantom,
+    //   ],
+    // });
+    // const onboard = Onboard({
+    //   wallets: [injected],
+    //   chains: [
+    //     {
+    //       id: "0x1",
+    //       token: "ETH",
+    //       label: "Ethereum Mainnet",
+    //       rpcUrl: MAINNET_RPC_URL,
+    //     },
+    //     {
+    //       id: "0x2105",
+    //       token: "ETH",
+    //       label: "Base",
+    //       rpcUrl: "https://mainnet.base.org",
+    //     },
+    //   ],
+    //   appMetadata: {
+    //     name: "Loch",
+    //     icon: LochLogoNameIcon,
+    //     description: "A loch app",
+    //   },
+    // });
+    // if (onboard && onboard.connectWallet) {
+    //   const wallets = onboard.connectWallet();
+    //   // console.log("wallets ", wallets);
+    // }
+
+    //NEW
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
+
+    // async function connectMetamask() {
+    //     await provider.send("eth_requestAccounts", []);
+    //     signer = await provider.getSigner();
+    // }
+    //NEW
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
+
+        if (tempRes && tempRes.length > 0) {
+          this.addToList(tempRes);
+        }
+        // Leaver console log: full signer too"
+        // console.log("signer is ", signer);
+        // console.log("signer get address is ", await signer.getAddress());
+      } catch (error) {
+        console.log("ethers error ", error);
+      }
+    }
+  };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = this.state.currentMetamaskWallet;
+
+    data.address === newAddress.address &&
+      newAddress.coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress.id) {
+    //   newAddress.address = data.address;
+    // }
+
+    newAddress.coinFound =
+      newAddress.coins &&
+      newAddress.coins.some((e) => e.chain_detected === true);
+    newAddress.apiAddress = data?.apiaddress;
+
+    this.setState(
+      {
+        currentMetamaskWallet: newAddress,
+      },
+      () => {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.callUpdateApi(this.state.currentMetamaskWallet);
+        }, 500);
+      }
+    );
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          true
+        );
+      }
+    }
+  };
+  addToList = (addThese) => {
+    const curItem = addThese[0];
+
+    if (curItem) {
+      this.setState(
+        {
+          currentMetamaskWallet: {
+            address: curItem,
+            coinFound: true,
+            coins: [],
+            displayAddress: curItem,
+            nameTag: "",
+            nickname: "",
+            showAddress: true,
+            showNameTag: false,
+            showNickname: false,
+            wallet_metadata: null,
+          },
+        },
+        () => {
+          this.getCoinBasedOnWalletAddress("randomName", curItem);
+        }
+      );
+    }
+  };
+  callUpdateApi = (passedItem) => {
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    if (walletAddress) {
+      walletAddress.forEach((curr) => {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      });
+    }
+    if (passedItem) {
+      if (passedItem.address) {
+        TopBarMetamaskWalletConnected({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          address: passedItem.address,
+        });
+        this.props.setMetamaskConnectedReducer(passedItem.address);
+        window.sessionStorage.setItem(
+          "setMetamaskConnectedSessionStorage",
+          passedItem.address
+        );
+      }
+      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
+    }
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData);
+  };
   render() {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer ml-2 maxWidth50">
+          <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
@@ -207,32 +534,78 @@ class TopBar extends Component {
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
-
         <div
-          onClick={this.passConnectExchangeClick}
-          className="topbar-btn ml-2 maxWidth50"
+          style={{
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
         >
-          {this.state.exchangeList.length > 0 ? (
-            <>
-              <span className="mr-2">
-                {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                  <Image className="topBarExchangeIcons" src={imgUrl} />
-                ))}
-              </span>
+          {this.state.metamaskWalletConnected ? (
+            <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
+              <Image className="topBarWalletAdd" src={WalletIcon} />
               <span className="dotDotText">
-                <span className="captilasideText">
-                  {this.state.firstExchange?.toLowerCase()}{" "}
-                </span>
-                {this.state.exchangeList.length > 1 ? "and others " : ""}
-                {"connected"}
+                {TruncateText(this.state.metamaskWalletConnected)}
               </span>
-            </>
+              <span
+                onMouseOver={(e) =>
+                  (e.currentTarget.children[0].src = XCircleRedIcon)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.children[0].src = XCircleIcon)
+                }
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={this.dissconnectFromMetaMask}
+              >
+                <Image
+                  className="topBarWalletAdd"
+                  style={{
+                    margin: "0",
+                    marginLeft: "0.8rem",
+                  }}
+                  src={XCircleIcon}
+                />
+              </span>
+            </div>
           ) : (
-            <>
-              <Image className="topBarWalletAdd " src={LinkIconBtn} />
-              <span className="dotDotText">Connect exchange</span>
-            </>
+            <div
+              onClick={this.connectWalletEthers}
+              className="topbar-btn ml-2 maxWidth50"
+            >
+              <Image className="topBarWalletAdd " src={WalletIcon} />
+              <span className="dotDotText">Connect wallet</span>
+            </div>
           )}
+          <div
+            onClick={this.passConnectExchangeClick}
+            className="topbar-btn ml-2 maxWidth50"
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
+                </span>
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -242,10 +615,19 @@ class TopBar extends Component {
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
+  OnboardingState: state.OnboardingState,
+  IsWalletConnectedState: state.IsWalletConnectedState,
+  MetamaskConnectedState: state.MetamaskConnectedState,
 });
 
 const mapDispatchToProps = {
   setHeaderReducer,
+  updateUserWalletApi,
+  setIsWalletConnectedReducer,
+  setMetamaskConnectedReducer,
+  detectCoin,
+  getAllParentChains,
+  getAllCoins,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

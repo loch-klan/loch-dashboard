@@ -93,6 +93,14 @@
                   filter: brightness(0.965);
                 }
               }
+              .awOldWalletBtn {
+                cursor: default;
+                margin-right: 2rem;
+                margin-left: 1rem;
+                &:hover {
+                  filter: brightness(1);
+                }
+              }
               .fakeBtn {
                 opacity: 0;
                 cursor: default;
@@ -102,7 +110,9 @@
                 border-radius: 0.8rem;
                 padding: 1rem;
                 width: 100%;
-
+                &:hover {
+                  border-color: #19191a;
+                }
                 .awLable {
                   color: #b0b1b3;
                   font-size: 1.2rem;
@@ -120,6 +130,9 @@
                     width: 100%;
                     padding: 0 !important;
                     font-size: 1.5rem;
+                    &:disabled {
+                      background-color: transparent;
+                    }
                     &:focus {
                       outline: none;
                     }
@@ -444,7 +457,8 @@
         }
 
         .btn-section {
-          margin-bottom: 2.3rem;
+          margin-top: 3rem;
+          margin-bottom: 3rem;
           .primary-btn.btn-primary:not(:disabled):not(:disabled):active,
           .primary-btn.btn-primary:not(:disabled):not(:disabled):active:focus,
           .primary-btn:active,
