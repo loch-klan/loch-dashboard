@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
+import WalletIcon from "../../assets/images/icons/wallet-icon.png";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import Banner from "../../image/Frame.png";
@@ -23,7 +24,6 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
   detectNameTag,
-  addLocalWalletList,
 } from "./Api";
 import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
@@ -49,6 +49,7 @@ import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import Papa from "papaparse";
 import { CustomCoin } from "../../utils/commonComponent";
+import { MetamaskIcon } from "../../assets/images/icons";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -125,6 +126,7 @@ class FixAddModal extends BaseReactComponent {
       fileName: null,
       isChangeFile: false,
       total_unique_address: 0,
+      metamaskWalletConnected: "",
     };
     this.timeout = 0;
   }
@@ -539,6 +541,15 @@ class FixAddModal extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    const ssItem = window.sessionStorage.getItem(
+      "setMetamaskConnectedSessionStorage"
+    );
+    if (ssItem && ssItem !== null) {
+      this.setState({
+        metamaskWalletConnected: ssItem,
+      });
+    }
+
     // set popup active
     localStorage.setItem("isPopupActive", true);
 
@@ -694,7 +705,15 @@ class FixAddModal extends BaseReactComponent {
             //   arr,
 
             // );
-            if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+            let isIncluded = false;
+            const whatIndex = arr.findIndex(
+              (resRes) =>
+                resRes?.toLowerCase() === curr?.apiAddress?.trim().toLowerCase()
+            );
+            if (whatIndex !== -1) {
+              isIncluded = true;
+            }
+            if (!isIncluded && curr.address) {
               walletList.push(curr);
               arr.push(curr.address?.trim());
               nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -722,7 +741,6 @@ class FixAddModal extends BaseReactComponent {
             this.props.setHeaderReducer(addWallet);
           }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
-          addLocalWalletList(JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -1007,7 +1025,6 @@ class FixAddModal extends BaseReactComponent {
         this.props.setHeaderReducer(walletList);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
-      addLocalWalletList(JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1180,15 +1197,21 @@ class FixAddModal extends BaseReactComponent {
 
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div
-          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
-          style={index === 9 ? { marginBottom: "0rem" } : {}}
-        >
-          {this.state.addWalletList.length > 1 ? (
+        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+          {this.state.metamaskWalletConnected &&
+          ((elem.displayAddress &&
+            elem.displayAddress === this.state.metamaskWalletConnected) ||
+            (elem.address &&
+              elem.address === this.state.metamaskWalletConnected)) ? (
+            <Image
+              key={index}
+              className={`awOldDelBtn awOldWalletBtn`}
+              src={WalletIcon}
+            />
+          ) : this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
               className={`awOldDelBtn`}
-              // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
               src={DeleteIcon}
               onClick={() => this.deleteAddress(index)}
             />
@@ -1208,6 +1231,13 @@ class FixAddModal extends BaseReactComponent {
               <div className="awTopInputWrapper">
                 <div className="awInputContainer">
                   <input
+                    disabled={
+                      (elem.displayAddress &&
+                        elem.displayAddress ===
+                          this.state.metamaskWalletConnected) ||
+                      (elem.address &&
+                        elem.address === this.state.metamaskWalletConnected)
+                    }
                     autoFocus
                     name={`wallet${index + 1}`}
                     value={elem.displayAddress || elem.address || ""}
@@ -1752,6 +1782,7 @@ class FixAddModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  MetamaskConnectedState: state.MetamaskConnectedState,
 });
 const mapDispatchToProps = {
   getAllCoins,

@@ -16,6 +16,7 @@ import {
   getAllCurrencyRatesApi,
   GetDefaultPlan,
   setPageFlagDefault,
+  updateUserWalletApi,
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import FormElement from "../../utils/form/FormElement";
@@ -31,15 +32,25 @@ import {
   TimeSpentOnboarding,
   LPConnectExchange,
   LPDiscover,
+  ConnectWalletButtonClickedWelcome,
 } from "../../utils/AnalyticsFunctions";
 import {
   CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
+  WalletWhiteIcon,
 } from "../../assets/images/icons";
 import LinkIconBtn from "../../assets/images/link.svg";
-import { AppFeaturesCreateUser } from "../onboarding/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
+import {
+  AppFeaturesCreateUser,
+  createAnonymousUserApi,
+  detectCoin,
+} from "../onboarding/Api";
+import {
+  setHeaderReducer,
+  setMetamaskConnectedReducer,
+} from "../header/HeaderAction";
+import { ethers } from "ethers";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -51,7 +62,7 @@ class Home extends BaseReactComponent {
       isStatic: true,
       triggerId: 0,
       selectedId: 0,
-
+      currentMetamaskWallet: {},
       showPrevModal: true,
 
       showEmailPopup: false,
@@ -115,16 +126,184 @@ class Home extends BaseReactComponent {
   handleRedirection = () => {
     this.props.history.push(`/top-accounts`);
   };
-  goToDiscover = () => {
-    LPDiscover({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
+  connectWalletEthers = async () => {
+    ConnectWalletButtonClickedWelcome({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify([]));
-    AppFeaturesCreateUser(data, this, this.handleRedirection);
-  };
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
+
+        if (tempRes && tempRes.length > 0) {
+          this.addToList(tempRes);
+        }
+      } catch (error) {
+        console.log("ethers error ", error);
+      }
+    }
+  };
+  addToList = (addThese) => {
+    const curItem = addThese[0];
+
+    if (curItem) {
+      this.setState(
+        {
+          currentMetamaskWallet: {
+            address: curItem,
+            coinFound: true,
+            coins: [],
+            displayAddress: curItem,
+            nameTag: "",
+            nickname: "",
+            showAddress: true,
+            showNameTag: false,
+            showNickname: false,
+            wallet_metadata: null,
+          },
+        },
+        () => {
+          this.getCoinBasedOnWalletAddress("randomName", curItem);
+        }
+      );
+    }
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = this.state.currentMetamaskWallet;
+
+    data.address === newAddress.address &&
+      newAddress.coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress.id) {
+    //   newAddress.address = data.address;
+    // }
+
+    newAddress.coinFound =
+      newAddress.coins &&
+      newAddress.coins.some((e) => e.chain_detected === true);
+    newAddress.apiAddress = data?.apiaddress;
+
+    this.setState(
+      {
+        currentMetamaskWallet: newAddress,
+      },
+      () => {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.callUpdateApi(this.state.currentMetamaskWallet);
+        }, 500);
+      }
+    );
+  };
+  callUpdateApi = (passedItem) => {
+    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    if (walletAddress) {
+      walletAddress.forEach((curr) => {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      });
+    }
+    if (passedItem) {
+      if (passedItem.address) {
+        // TopBarMetamaskWalletConnected({
+        //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        //   address: passedItem.address,
+        // });
+
+        this.props.setMetamaskConnectedReducer(passedItem.address);
+        window.sessionStorage.setItem(
+          "setMetamaskConnectedSessionStorage",
+          passedItem.address
+        );
+      }
+      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
+    }
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    console.log("addressList ", addressList);
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+
+    this.props.createAnonymousUserApi(data, this, addWallet, null);
+    // this.props.updateUserWalletApi(data, this, yieldData);
+  };
   onboardingShowConnectModal = (
     address = this.state.onboardingWalletAddress
   ) => {
@@ -454,17 +633,17 @@ class Home extends BaseReactComponent {
                 <div className="overlay-bg"></div>
                 <Image src={Banner} className="overlay-banner" />
                 <div className="overLayHeader">
-                  {/* <div
-                    onClick={this.goToDiscover}
+                  <div
+                    onClick={this.connectWalletEthers}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
                   >
                     <img
                       className="overLayHeaderOptionsIcons p-1"
-                      src={CompassWhiteIcon}
+                      src={WalletWhiteIcon}
                       alt="ProfileVectorIcon"
                     />
-                    <div>Discover</div>
-                  </div> */}
+                    <div>Connect wallet</div>
+                  </div>
                   <div
                     onClick={this.onboardingShowConnectModal}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
@@ -481,7 +660,7 @@ class Home extends BaseReactComponent {
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderWhiteOptions"
                   >
                     <img
-                      className="overLayHeaderOptionsIcons"
+                      className="overLayHeaderOptionsIcons p-1"
                       src={ProfileVectorWhiteIcon}
                       alt="ProfileVectorIcon"
                     />
@@ -555,6 +734,10 @@ const mapDispatchToProps = {
   // getPosts: fetchPosts
   setPageFlagDefault,
   setHeaderReducer,
+  detectCoin,
+  setMetamaskConnectedReducer,
+  updateUserWalletApi,
+  createAnonymousUserApi,
 };
 Home.propTypes = {
   // getPosts: PropTypes.func

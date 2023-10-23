@@ -15,7 +15,7 @@ import {
   getAllCoins,
   detectCoin,
 } from "./Api";
-import { addLocalWalletList, detectNameTag } from "../common/Api";
+import { detectNameTag } from "../common/Api";
 import {
   DeleteWalletAddress,
   LandingPageNickname,
@@ -811,7 +811,15 @@ class AddWallet extends BaseReactComponent {
         let curr = this.state.walletInput[i];
 
         // );
-        if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
           walletList.push(curr);
           arr.push(curr.address?.trim());
           nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -830,7 +838,6 @@ class AddWallet extends BaseReactComponent {
         this.props.setHeaderReducer(addWallet);
       }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
-      addLocalWalletList(JSON.stringify(walletList));
 
       // this.state?.onHide();
       const data = new URLSearchParams();
