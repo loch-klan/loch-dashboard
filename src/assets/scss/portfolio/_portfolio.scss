@@ -1595,6 +1595,7 @@
     }
   }
 }
+
 .pageHeaderShareContainer {
   padding: 1rem 1.5rem;
   cursor: pointer;
@@ -1620,5 +1621,34 @@
     .pageHeaderShareImg {
       filter: brightness(0);
     }
+  }
+}
+.pageHeaderConnectWalletContainer {
+  border-radius: 8px;
+  border: 0.1rem solid $grey-B0B;
+  margin-right: 2.2rem;
+  transition-duration: 300ms;
+  &:hover {
+    background-color: black;
+    border-color: black;
+    .pageHeaderShareBtn {
+      color: white;
+    }
+    .pageHeaderShareImg {
+      filter: brightness(2);
+    }
+  }
+}
+.pageHeaderConnectWalletContainerSelected {
+  background-color: black;
+  border-color: black;
+  .pageHeaderShareBtn {
+    color: white;
+  }
+  .pageHeaderShareImg {
+    filter: brightness(2);
+  }
+  &:hover {
+    filter: brightness(0.5);
   }
 }

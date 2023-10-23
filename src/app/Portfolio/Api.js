@@ -22,6 +22,26 @@ import {
   TOP_YESTERDAY_BALANCE,
 } from "../topAccount/ActionTypes";
 
+export const isFollowedByUser = (data, ctx) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/followed-by-user", data)
+      .then((res) => {
+        if (!res.data?.error) {
+          if (res.data?.data.following) {
+            if (ctx.showAddressesAdded) {
+              ctx.showAddressesAdded();
+            }
+          } else {
+            if (ctx.addressDeleted) {
+              ctx.addressDeleted();
+            }
+          }
+        }
+      })
+      .catch((err) => {});
+  };
+};
 export const getCoinRate = () => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
