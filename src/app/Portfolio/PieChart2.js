@@ -117,10 +117,10 @@ class PieChart2 extends BaseReactComponent {
       });
     }
     // for temp
-    this.isFollowedByUserFun();
-    this.showFollowOrNot();
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
+      this.isFollowedByUserFun();
+      this.showFollowOrNot();
       let assetData = [];
 
       if (
