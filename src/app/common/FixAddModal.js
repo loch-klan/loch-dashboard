@@ -1180,7 +1180,10 @@ class FixAddModal extends BaseReactComponent {
 
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+        <div
+          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+          style={index === 9 ? { marginBottom: "0rem" } : {}}
+        >
           {this.state.addWalletList.length > 1 ? (
             <Image
               key={index}
@@ -1469,10 +1472,11 @@ class FixAddModal extends BaseReactComponent {
                     )}
 
                     {this.state.addWalletList.length >= 0 &&
+                      this.state.addWalletList?.length < 10 &&
                       this.state.modalType === "addwallet" && (
                         <div className="addAnotherBtnContainer">
                           <Button
-                            className="grey-btn m-b-32 w-100"
+                            className="grey-btn w-100"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
