@@ -28,7 +28,7 @@ import { ethers } from "ethers";
 
 export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
   return async function (dispatch, getState) {
-    let currency = JSON.parse(localStorage.getItem("currency"));
+    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
     let currencyRate = currency?.rate || 1;
     postLoginInstance
       .post("wallet/user-wallet/get-buy-sell", data)
@@ -239,8 +239,8 @@ export const getFilters = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -319,8 +319,8 @@ export const getProfitAndLossApi = (
     }
 
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       // console.log("address", address);
@@ -357,8 +357,8 @@ export const getAllInsightsApi = (ctx) => {
     let data = new URLSearchParams();
     data.append("currency_code", CurrencyType(true));
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -426,8 +426,8 @@ export const getAssetProfitLoss = (
     }
 
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));

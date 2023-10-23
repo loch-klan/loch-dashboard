@@ -31,9 +31,10 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 class Profile extends Component {
   constructor(props) {
     super(props);
-    const Plans = JSON.parse(localStorage.getItem("Plans"));
+    const Plans = JSON.parse(window.sessionStorage.getItem("Plans"));
     let selectedPlan = {};
-    let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
+    let userPlan =
+      JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free";
     Plans?.map((plan) => {
       if (plan.name === userPlan.name) {
         let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
@@ -110,8 +111,8 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -148,18 +149,18 @@ class Profile extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "profilePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("profilePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("profilePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkProfileTimer);
-    localStorage.removeItem("profilePageExpiryTime");
+    window.sessionStorage.removeItem("profilePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -171,13 +172,17 @@ class Profile extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("profilePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "profilePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("profilePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "profilePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -185,7 +190,7 @@ class Profile extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -509,7 +514,7 @@ class Profile extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={0}
                 pname="profile"

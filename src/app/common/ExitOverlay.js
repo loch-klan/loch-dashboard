@@ -85,13 +85,13 @@ import { Form as FormB } from "react-bootstrap";
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
     let startDate = moment().subtract(1, "month").toDate();
 
     // console.log("props add", props?.walletaddress);
 
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -187,7 +187,7 @@ class ExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       hidePrevModal: false,
@@ -255,7 +255,7 @@ class ExitOverlay extends BaseReactComponent {
         total_unique_address: 0,
         showWarningMsg: false,
         uploadStatus: "Uploading",
-        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       },
       () => {
         // this.setState({
@@ -269,7 +269,7 @@ class ExitOverlay extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     if (this.props.selectExportOption) {
@@ -330,7 +330,7 @@ class ExitOverlay extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
 
   onDataSelected = () => {
@@ -562,7 +562,7 @@ class ExitOverlay extends BaseReactComponent {
           addWallet?.map((w, i) => {
             w.id = `wallet${i + 1}`;
           });
-          // localStorage.setItem("CohortWallet", addWallet);
+          // window.sessionStorage.setItem("CohortWallet", addWallet);
 
           // this.state.onHide();
           const data = new URLSearchParams();
@@ -689,7 +689,7 @@ class ExitOverlay extends BaseReactComponent {
         this.props.updateTimer();
       }
       let email_arr = [];
-      let data = JSON.parse(localStorage.getItem("addWallet"));
+      let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
       if (data) {
         data.map((info) => {
           email_arr.push(info.address);
@@ -750,7 +750,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleExportNow = () => {
     // console.log('Export');
-    let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
     // console.log("add", addWalletList)
     if (
       addWalletList.length <= this.state.userPlan?.export_address_limit ||
@@ -1502,18 +1502,18 @@ class ExitOverlay extends BaseReactComponent {
                               })}
                             </div>
 
-                            {this.state.addWalletList[0]?.address !== "" && 
-                            this.state.addWalletList?.length < 10
-                            (
-                              <div className="m-b-32 add-wallet-btn">
-                                <Button
-                                  className="grey-btn"
-                                  onClick={this.addAddress}
-                                >
-                                  <Image src={PlusIcon} /> Add another
-                                </Button>
-                              </div>
-                            )}
+                            {this.state.addWalletList[0]?.address !== "" &&
+                              this.state.addWalletList?.length <
+                                10(
+                                  <div className="m-b-32 add-wallet-btn">
+                                    <Button
+                                      className="grey-btn"
+                                      onClick={this.addAddress}
+                                    >
+                                      <Image src={PlusIcon} /> Add another
+                                    </Button>
+                                  </div>
+                                )}
 
                             <div className="save-btn-section">
                               <input
@@ -1921,7 +1921,7 @@ class ExitOverlay extends BaseReactComponent {
                             if (this.props.updateTimer) {
                               this.props.updateTimer();
                             }
-                            localStorage.setItem("refresh", false);
+                            window.sessionStorage.setItem("refresh", false);
                             this.props.history.push("/welcome");
                           }}
                           style={{ marginLeft: "4rem" }}
@@ -1972,7 +1972,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="ExitOverly"

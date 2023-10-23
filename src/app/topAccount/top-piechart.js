@@ -62,7 +62,7 @@ class TopPieChart extends BaseReactComponent {
       flag: false,
       isLoading: props.isLoading,
 
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
@@ -82,12 +82,13 @@ class TopPieChart extends BaseReactComponent {
       triggerId: 6,
       timeNumber: null,
       timeUnit: "",
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       defiLoader: false,
 
       // refresh
-      userWalletList: localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      userWalletList: window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [],
       isStopLoading: false,
 
@@ -172,8 +173,8 @@ class TopPieChart extends BaseReactComponent {
     });
     let chainList = [];
 
-    let UserWallet = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    let UserWallet = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
     let uniquechains = [];
     UserWallet &&
@@ -270,8 +271,8 @@ class TopPieChart extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    let UserWallet = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
 
     if (UserWallet?.length !== 0) {
@@ -422,10 +423,10 @@ class TopPieChart extends BaseReactComponent {
       //     });
       //   }
       // });
-      let UserWallet = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let UserWallet = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
-      // || JSON.parse(localStorage.getItem("addWallet"));
+      // || JSON.parse(window.sessionStorage.getItem("addWallet"));
       let uniquechains = [];
 
       UserWallet &&
@@ -652,7 +653,7 @@ class TopPieChart extends BaseReactComponent {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -722,9 +723,9 @@ class TopPieChart extends BaseReactComponent {
     this.props.topAccountState.yesterdayBalance = 0;
 
     // console.log("Refresh clicked");
-    // localStorage.setItem("refreshApiTime", currentTime);
-    let userWalletList = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    // window.sessionStorage.setItem("refreshApiTime", currentTime);
+    let userWalletList = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
 
     userWalletList?.map((wallet, i) => {
@@ -1019,9 +1020,9 @@ class TopPieChart extends BaseReactComponent {
       ],
     };
 
-    // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
-    let UserWallet = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    // console.log("wallet address", JSON.parse(window.sessionStorage.getItem("addWallet")))
+    let UserWallet = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
     let chainList = [];
     let uniqueAddress = [];

@@ -34,7 +34,7 @@ class PieChart extends BaseReactComponent {
       flag: false,
       isLoading: props.isLoading,
       piechartisLoading: true,
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
 

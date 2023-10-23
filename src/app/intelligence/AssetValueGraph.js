@@ -40,7 +40,7 @@ class AssetValueGraph extends Component {
     this.state = {
       graphLoading: false,
       // externalEvents: [],
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // add new wallet
 
       addModal: false,
@@ -154,18 +154,18 @@ class AssetValueGraph extends Component {
   }
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "assetValuePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("assetValuePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("assetValuePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkAssetValueTimer);
-    localStorage.removeItem("assetValuePageExpiryTime");
+    window.sessionStorage.removeItem("assetValuePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -177,13 +177,17 @@ class AssetValueGraph extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("assetValuePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "assetValuePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("assetValuePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "assetValuePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -260,7 +264,7 @@ class AssetValueGraph extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -291,7 +295,7 @@ class AssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal

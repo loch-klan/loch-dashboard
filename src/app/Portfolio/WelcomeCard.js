@@ -78,10 +78,10 @@ export default function WelcomeCard(props) {
       }
     }, 200);
   };
-  let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+  let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
       setTimeout(() => {
@@ -104,7 +104,7 @@ export default function WelcomeCard(props) {
     props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
   const changeCurrentAccount = () => {
     const temp = JSON.parse(
-      localStorage.getItem("previewAddressGoToWhaleWatch")
+      window.sessionStorage.getItem("previewAddressGoToWhaleWatch")
     );
     if (temp && temp.goToWhaleWatch) {
       props?.history.push("/whale-watch");
@@ -280,18 +280,20 @@ export default function WelcomeCard(props) {
                 <div className="accounNameId">
                   <span className="account-name grey-313">
                     {TruncateText(
-                      JSON.parse(localStorage.getItem("previewAddress"))
-                        ?.address
+                      JSON.parse(
+                        window.sessionStorage.getItem("previewAddress")
+                      )?.address
                     )}
                   </span>
-                  {JSON.parse(localStorage.getItem("previewAddress"))
+                  {JSON.parse(window.sessionStorage.getItem("previewAddress"))
                     ?.nameTag ? (
                     <span className="grey-313">
                       {" "}
                       (
                       {
-                        JSON.parse(localStorage.getItem("previewAddress"))
-                          ?.nameTag
+                        JSON.parse(
+                          window.sessionStorage.getItem("previewAddress")
+                        )?.nameTag
                       }
                       )
                     </span>

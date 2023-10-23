@@ -53,7 +53,7 @@ import { MetamaskIcon } from "../../assets/images/icons";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
     addWalletList =
       addWalletList && addWalletList?.length > 0
         ? addWalletList?.map((e) => {
@@ -100,7 +100,8 @@ class FixAddModal extends BaseReactComponent {
       walletNameList: [],
       deletedAddress: [],
       recievedResponse: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -318,7 +319,7 @@ class FixAddModal extends BaseReactComponent {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       hidePrevModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       // reset all
       isIndexed: false,
       fileName: null,
@@ -551,7 +552,7 @@ class FixAddModal extends BaseReactComponent {
     }
 
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
 
     this.props.getAllCoins();
     this.props.getAllParentChains();
@@ -559,7 +560,7 @@ class FixAddModal extends BaseReactComponent {
     getAllWalletApi(this);
     this.props.getDetectedChainsApi(this);
     const fixWallet = [];
-    JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
+    JSON.parse(window.sessionStorage.getItem("addWallet"))?.map((e) => {
       // console.log("e fix wallet", e);
       if (e.coinFound !== true) {
         fixWallet.push({
@@ -578,7 +579,7 @@ class FixAddModal extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     // //  this.makeApiCall();
@@ -705,7 +706,15 @@ class FixAddModal extends BaseReactComponent {
             //   arr,
 
             // );
-            if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+            let isIncluded = false;
+            const whatIndex = arr.findIndex(
+              (resRes) =>
+                resRes?.toLowerCase() === curr?.apiAddress?.trim().toLowerCase()
+            );
+            if (whatIndex !== -1) {
+              isIncluded = true;
+            }
+            if (!isIncluded && curr.address) {
               walletList.push(curr);
               arr.push(curr.address?.trim());
               nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -732,7 +741,7 @@ class FixAddModal extends BaseReactComponent {
           if (addWallet) {
             this.props.setHeaderReducer(addWallet);
           }
-          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -970,7 +979,7 @@ class FixAddModal extends BaseReactComponent {
 
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
-      let wallets = JSON.parse(localStorage.getItem("addWallet"));
+      let wallets = JSON.parse(window.sessionStorage.getItem("addWallet"));
       // console.log('wallet',wallets);
       let localArr = [];
       for (let i = 0; i < wallets.length; i++) {
@@ -1016,7 +1025,7 @@ class FixAddModal extends BaseReactComponent {
       if (walletList) {
         this.props.setHeaderReducer(walletList);
       }
-      localStorage.setItem("addWallet", JSON.stringify(walletList));
+      window.sessionStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1760,7 +1769,7 @@ class FixAddModal extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="fixAddModal"

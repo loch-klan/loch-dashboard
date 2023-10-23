@@ -25,7 +25,7 @@ export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as SharePortfolioIconWhite } from "./SharePortfolioIconWhite.svg";
 export { default as ExportIcon } from "./ExportIcon.svg";
 export { default as TwoPeopleIcon } from "./twoPeople.svg";
+export { default as TwoPeopleLightIcon } from "./twoPeopleLight.svg";
 export { default as MetamaskIcon } from "./metamask.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
 export { default as XCircleRedIcon } from "./xCircleRed.svg";
-export { default as TwoPeopleLightIcon } from "./twoPeopleLight.svg";

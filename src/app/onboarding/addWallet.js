@@ -67,7 +67,7 @@ class AddWallet extends BaseReactComponent {
             },
           ],
       loading: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -293,7 +293,7 @@ class AddWallet extends BaseReactComponent {
   //     let value = this.state.upgradeModal ? false : true;
   //     this.props.hideModal(value);
 
-  //     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+  //     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
   //     if (userDetails) {
   //       this.props.history.push("/home")
   //     }
@@ -330,7 +330,7 @@ class AddWallet extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.setState({
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
 
     this.props.GetAllPlan();
@@ -338,7 +338,9 @@ class AddWallet extends BaseReactComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.userPlan === null) {
-      this.state.userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+      this.state.userPlan = JSON.parse(
+        window.sessionStorage.getItem("currentPlan")
+      );
     }
     if (this.state.walletInput !== prevState.walletInput) {
       this.props.copyWalletAddress(this.state.walletInput);
@@ -697,7 +699,7 @@ class AddWallet extends BaseReactComponent {
     }
     let passingData = new URLSearchParams();
     passingData.append("user_account", JSON.stringify(theExchangeData));
-    const islochUser = localStorage.getItem("lochDummyUser");
+    const islochUser = window.sessionStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
       if (theExchangeData && theExchangeData.length > 0) {
@@ -811,7 +813,15 @@ class AddWallet extends BaseReactComponent {
         let curr = this.state.walletInput[i];
 
         // );
-        if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
           walletList.push(curr);
           arr.push(curr.address?.trim());
           nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -829,7 +839,7 @@ class AddWallet extends BaseReactComponent {
       if (addWallet) {
         this.props.setHeaderReducer(addWallet);
       }
-      localStorage.setItem("addWallet", JSON.stringify(addWallet));
+      window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
 
       // this.state?.onHide();
       const data = new URLSearchParams();
@@ -1373,7 +1383,7 @@ class AddWallet extends BaseReactComponent {
             onHide={this.upgradeModal}
             history={this.props.history}
             triggerId={this.state.triggerId}
-            // isShare={localStorage.getItem("share_id")}
+            // isShare={window.sessionStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />
         )}

@@ -9,7 +9,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 
 const SwitchButton = (props) => {
-  let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+  let obj = JSON.parse(window.sessionStorage.getItem("assetValueLoader"));
   let isChecked = props?.isTopAccount ? obj.topaccount : obj.me;
   const handleToggle = () => {
     if (!isChecked) {
