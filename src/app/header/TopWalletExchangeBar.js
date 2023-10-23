@@ -240,7 +240,7 @@ class TopBar extends Component {
   removeFromList = (removeThis) => {
     const curItem = removeThis;
 
-    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -269,7 +269,7 @@ class TopBar extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -442,7 +442,7 @@ class TopBar extends Component {
     }
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -498,7 +498,7 @@ class TopBar extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    localStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));

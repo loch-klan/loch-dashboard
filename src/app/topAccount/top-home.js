@@ -99,8 +99,8 @@ class TopPortfolio extends BaseReactComponent {
     this.state = {
       settings,
       id: props.match.params?.id,
-      userWalletList: localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      userWalletList: window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [],
 
       // page loader
@@ -133,7 +133,7 @@ class TopPortfolio extends BaseReactComponent {
       currentPage: "Home",
 
       // get currency
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
 
       // not used any where on this page
       counterGraphDigit: 3,
@@ -145,13 +145,14 @@ class TopPortfolio extends BaseReactComponent {
       apiResponse: false,
 
       // upgrade plan
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
 
       // get lock token
-      lochToken: JSON.parse(localStorage.getItem("stopClick")),
+      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
 
       // insight
       // updatedInsightList: "",
@@ -235,10 +236,10 @@ class TopPortfolio extends BaseReactComponent {
   // get token
   getToken = () => {
     // console.log(this.state.lochToken)
-    let token = localStorage.getItem("lochToken");
+    let token = window.sessionStorage.getItem("lochToken");
     if (!this.state.lochToken) {
       this.setState({
-        lochToken: JSON.parse(localStorage.getItem("stopClick")),
+        lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
       });
       setTimeout(() => {
         this.getToken();
@@ -246,7 +247,7 @@ class TopPortfolio extends BaseReactComponent {
     }
 
     if (token !== "jsk") {
-      localStorage.setItem("stopClick", true);
+      window.sessionStorage.setItem("stopClick", true);
       let obj = UpgradeTriggered();
 
       if (obj.trigger) {
@@ -279,7 +280,7 @@ class TopPortfolio extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -310,18 +311,18 @@ class TopPortfolio extends BaseReactComponent {
     this.getToken();
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topHomePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topHomePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("topHomePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkTopHomeTimer);
-    localStorage.removeItem("topHomePageExpiryTime");
+    window.sessionStorage.removeItem("topHomePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -333,7 +334,9 @@ class TopPortfolio extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("topHomePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topHomePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
@@ -447,8 +450,8 @@ class TopPortfolio extends BaseReactComponent {
         userWalletList: newAddress,
       },
       () => {
-        let obj = JSON.parse(localStorage.getItem("previewAddress"));
-        localStorage.setItem(
+        let obj = JSON.parse(window.sessionStorage.getItem("previewAddress"));
+        window.sessionStorage.setItem(
           "previewAddress",
           JSON.stringify({
             ...obj,
@@ -476,8 +479,8 @@ class TopPortfolio extends BaseReactComponent {
       //  get chain detect
 
       // current data
-      let addressObj = localStorage.getItem("previewAddress")
-        ? JSON.parse(localStorage.getItem("previewAddress"))
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
         : [];
       if (addressObj?.coinFound) {
         // console.log("coint found")
@@ -489,8 +492,8 @@ class TopPortfolio extends BaseReactComponent {
         // when user refresh then parent chain get empty so we are calling api to get parent chain
         this.props.getAllCoins();
         this.props.getAllParentChains();
-        let obj = JSON.parse(localStorage.getItem("previewAddress"));
-        localStorage.setItem(
+        let obj = JSON.parse(window.sessionStorage.getItem("previewAddress"));
+        window.sessionStorage.setItem(
           "previewAddress",
           JSON.stringify({
             ...obj,
@@ -560,7 +563,9 @@ class TopPortfolio extends BaseReactComponent {
   };
 
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("topHomePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topHomePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -758,8 +763,8 @@ class TopPortfolio extends BaseReactComponent {
     // console.log("switch")
   };
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"
@@ -1844,7 +1849,7 @@ class TopPortfolio extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="portfolio"

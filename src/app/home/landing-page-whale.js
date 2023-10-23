@@ -71,9 +71,9 @@ class LPWhale extends BaseReactComponent {
     // reset all token
     deleteToken();
 
-    localStorage.setItem("defi_access", true);
-    localStorage.setItem("isPopup", true);
-    localStorage.setItem(
+    window.sessionStorage.setItem("defi_access", true);
+    window.sessionStorage.setItem("isPopup", true);
+    window.sessionStorage.setItem(
       "whalepodview",
       JSON.stringify({ access: true, id: "" })
     );

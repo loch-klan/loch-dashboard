@@ -40,7 +40,7 @@ class Cohort extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       sortBy: [
         { title: "Amount", down: true },
         { title: "Date added", down: true },
@@ -69,7 +69,8 @@ class Cohort extends Component {
       RegisterModal: false,
       skip: false,
       chainImages: [],
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -133,18 +134,18 @@ class Cohort extends Component {
   }
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "whalePodPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("whalePodPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("whalePodPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkWhalePodTimer);
-    localStorage.removeItem("whalePodPageExpiryTime");
+    window.sessionStorage.removeItem("whalePodPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000;
@@ -157,14 +158,18 @@ class Cohort extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("whalePodPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "whalePodPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
 
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("whalePodPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "whalePodPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -200,14 +205,14 @@ class Cohort extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
   handleCohort = () => {
     // console.log("cohort click");
-    // const isDummy = localStorage.getItem("lochDummyUser");
-    // const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    // const isDummy = window.sessionStorage.getItem("lochDummyUser");
+    // const islochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
 
     // console.log(
     //   this.state.userPlan?.whale_pod_limit,
@@ -617,7 +622,7 @@ class Cohort extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -636,7 +641,7 @@ class Cohort extends Component {
               show={this.state.upgradeModal}
               onHide={this.upgradeModal}
               history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
+              isShare={window.sessionStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
               triggerId={this.state.triggerId}
               pname="cohort-page"

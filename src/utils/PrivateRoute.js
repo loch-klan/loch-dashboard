@@ -12,10 +12,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       const searchParams = new URLSearchParams(props.location.search);
       const redirectPath = searchParams.get("redirect");
 
-      let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+      let redirect = JSON.parse(window.sessionStorage.getItem("ShareRedirect"));
       //  console.log("redirect", redirect);
       if (!redirect && redirectPath) {
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "ShareRedirect",
           JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
         );

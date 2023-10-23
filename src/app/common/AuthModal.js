@@ -46,8 +46,8 @@ import { v4 as uuidv4 } from "uuid";
 class AuthModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -77,14 +77,14 @@ class AuthModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
   }
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -222,15 +222,18 @@ class AuthModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
 
-    if (!localStorage.getItem("deviceId")) {
+    if (!window.sessionStorage.getItem("deviceId")) {
       // console.log("no device id");
-      localStorage.setItem("deviceId", deviceId);
+      window.sessionStorage.setItem("deviceId", deviceId);
     }
 
-    if (!localStorage.getItem("connectWalletAddress")) {
-      localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+    if (!window.sessionStorage.getItem("connectWalletAddress")) {
+      window.sessionStorage.setItem(
+        "connectWalletAddress",
+        this.state.MetaAddress
+      );
     }
 
     let data = new URLSearchParams();
@@ -460,7 +463,7 @@ class AuthModal extends BaseReactComponent {
                       email_address: this.state.email,
                     });
                   }}
-                  style={{cursor: "pointer",}}
+                  style={{ cursor: "pointer" }}
                 />
               </CustomOverlay>
             </div>

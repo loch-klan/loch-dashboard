@@ -1,30 +1,30 @@
 const deleteToken = () => {
-  localStorage.removeItem("lochToken");
-  localStorage.removeItem("addWallet");
-  localStorage.removeItem("lochUser");
-  localStorage.removeItem("lochDummyUser");
-  localStorage.removeItem("currencyRates");
-  localStorage.removeItem("currency");
-  localStorage.removeItem("currentPlan");
-  localStorage.removeItem("share_id");
-  localStorage.removeItem("Plans");
-  localStorage.removeItem("stopClick");
-  localStorage.removeItem("defi_access");
-  localStorage.removeItem("isPopup");
-  localStorage.removeItem("stop_redirect");
-  localStorage.removeItem("connectWalletAddress");
-  localStorage.removeItem("gotShareProtfolio");
+  window.sessionStorage.removeItem("lochToken");
+  window.sessionStorage.removeItem("addWallet");
+  window.sessionStorage.removeItem("lochUser");
+  window.sessionStorage.removeItem("lochDummyUser");
+  window.sessionStorage.removeItem("currencyRates");
+  window.sessionStorage.removeItem("currency");
+  window.sessionStorage.removeItem("currentPlan");
+  window.sessionStorage.removeItem("share_id");
+  window.sessionStorage.removeItem("Plans");
+  window.sessionStorage.removeItem("stopClick");
+  window.sessionStorage.removeItem("defi_access");
+  window.sessionStorage.removeItem("isPopup");
+  window.sessionStorage.removeItem("stop_redirect");
+  window.sessionStorage.removeItem("connectWalletAddress");
+  window.sessionStorage.removeItem("gotShareProtfolio");
 };
 
 const getToken = () => {
-  const lochToken = localStorage.getItem("lochToken");
+  const lochToken = window.sessionStorage.getItem("lochToken");
   return lochToken;
 };
 
 const getCurrentUser = () => {
-  // const lochUser = localStorage.getItem("lochUser");
-  const lochUser = JSON.parse(localStorage.getItem("lochUser"));
-  const lochDummyUser = localStorage.getItem("lochDummyUser");
+  // const lochUser = window.sessionStorage.getItem("lochUser");
+  const lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+  const lochDummyUser = window.sessionStorage.getItem("lochDummyUser");
 
   //   console.log("Loch User",lochUser.email, "Loch ID", lochUser.id, lochUser);
   //   console.log("Loch Dummy User", lochDummyUser);
@@ -38,16 +38,16 @@ const getCurrentUser = () => {
 // set all the localstorage value when
 const setLocalStoraage = () => {
   // for defi access - check when plan is free
-  localStorage.setItem("defi_access", true);
+  window.sessionStorage.setItem("defi_access", true);
 
-  localStorage.setItem("isPopup", true);
-  localStorage.setItem(
+  window.sessionStorage.setItem("isPopup", true);
+  window.sessionStorage.setItem(
     "whalepodview",
     JSON.stringify({ access: true, id: "" })
   );
 
   // submenu for sidebar
-  localStorage.setItem(
+  window.sessionStorage.setItem(
     "isSubmenu",
     JSON.stringify({
       me: true,
@@ -58,7 +58,7 @@ const setLocalStoraage = () => {
     })
   );
 
-  localStorage.setItem(
+  window.sessionStorage.setItem(
     "assetValueLoader",
     JSON.stringify({ me: false, topaccount: false })
   );
@@ -67,7 +67,7 @@ const setLocalStoraage = () => {
 };
 
 const resetPreviewAddress = () => {
-  localStorage.setItem(
+  window.sessionStorage.setItem(
     "previewAddress",
     JSON.stringify({
       id: "wallet1",
