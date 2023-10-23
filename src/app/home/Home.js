@@ -239,7 +239,7 @@ class Home extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
           this.callUpdateApi(this.state.currentMetamaskWallet);
-        }, 500);
+        }, 2000);
       }
     );
   };
