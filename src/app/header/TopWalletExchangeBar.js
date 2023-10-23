@@ -394,7 +394,7 @@ class TopBar extends Component {
         }
         this.timeout = setTimeout(() => {
           this.callUpdateApi(this.state.currentMetamaskWallet);
-        }, 3000);
+        }, 2000);
       }
     );
   };
