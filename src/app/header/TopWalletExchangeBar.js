@@ -246,11 +246,15 @@ class TopBar extends Component {
     let walletList = [];
     let arr = [];
     walletAddress.forEach((curr) => {
-      if (
-        !arr.includes(curr.address?.trim()) &&
-        curr.address &&
-        curr.address !== curItem
-      ) {
+      let isIncluded = false;
+      const whatIndex = arr.findIndex(
+        (resRes) =>
+          resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+      );
+      if (whatIndex !== -1) {
+        isIncluded = true;
+      }
+      if (!isIncluded && curr.address && curr.address !== curItem) {
         walletList.push(curr);
         arr.push(curr.address?.trim());
         nicknameArr[curr.address?.trim()] = curr.nickname;
@@ -390,7 +394,7 @@ class TopBar extends Component {
         }
         this.timeout = setTimeout(() => {
           this.callUpdateApi(this.state.currentMetamaskWallet);
-        }, 500);
+        }, 2000);
       }
     );
   };
@@ -504,7 +508,6 @@ class TopBar extends Component {
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     data.append("wallet_addresses", JSON.stringify(addressList));
     yieldData.append("wallet_addresses", JSON.stringify(addressList));
-
     this.props.updateUserWalletApi(data, this, yieldData);
   };
   render() {
