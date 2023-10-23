@@ -1314,11 +1314,7 @@ class PieChart2 extends BaseReactComponent {
                   {this.state.showFollowingAddress ? (
                     <div
                       onClick={this.addAddressToWatchListFun}
-                      className={`pageHeaderShareContainer pageHeaderConnectWalletContainer ${
-                        this.state.isFollowingAddress
-                          ? "pageHeaderConnectWalletContainerSelected"
-                          : ""
-                      }`}
+                      className={`pageHeaderShareContainer pageHeaderConnectWalletContainer`}
                     >
                       <Image
                         className="pageHeaderShareImg"
