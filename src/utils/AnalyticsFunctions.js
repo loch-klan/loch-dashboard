@@ -4014,6 +4014,14 @@ export const CostGainLossHover = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CostGainHover = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average cost basis: gain hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // ------
 
@@ -4085,6 +4093,15 @@ export const SortByCurrentValue = ({ session_id, email_address }) => {
 };
 
 //83. Costs: Average Cost Basis: sort % gain loss - done
+export const SortByGainAmount = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average Cost Basis: sort gain amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort % gain loss");
+};
 export const SortByGainLoss = ({ session_id, email_address }) => {
   const event_name = "Costs: Average Cost Basis: sort % gain loss";
   const eventProperties = {

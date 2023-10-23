@@ -65,7 +65,7 @@
     }
 
     .btn-primary:not(:disabled):not(.disabled):active {
-      background-color: #f2f2f2 !important;
+      background-color: transparent !important;
       border: 0.1rem solid transparent !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
@@ -73,7 +73,7 @@
     }
 
     .btn-primary.dropdown-toggle {
-      background-color: #f2f2f2 !important;
+      background-color: transparent !important;
       border: 0.1rem solid transparent !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
@@ -86,13 +86,13 @@
 
     .btn-primary.dropdown-toggle:focus {
       box-shadow: none;
-      background-color: #f2f2f2 !important;
+      background-color: transparent !important;
       border: 0.1rem solid $primary !important;
       color: $black-191;
     }
 
     .dropdown-toggle {
-      background-color: #f2f2f2;
+      background-color: transparent;
       color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
