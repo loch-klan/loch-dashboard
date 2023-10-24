@@ -685,34 +685,43 @@ class TopAccountPage extends BaseReactComponent {
               <span
                 onClick={() => {
                   resetPreviewAddress();
+                  let lochUser = getCurrentUser().id;
                   TopAccountClickedAccount({
-                    session_id: getCurrentUser().id,
+                    session_id: lochUser,
                     email_address: getCurrentUser().email,
                     account: rowData.account ? rowData.account : "",
                     name_tag: rowData.tagName ? rowData.tagName : "",
                   });
-                  this.updateTimer();
-                  let obj = JSON.parse(
-                    window.sessionStorage.getItem("previewAddress")
-                  );
-                  window.sessionStorage.setItem(
-                    "previewAddress",
-                    JSON.stringify({
-                      ...obj,
-                      address: rowData.account,
-                      nameTag: rowData.tagName ? rowData.tagName : "",
-                    })
-                  );
-                  window.sessionStorage.setItem(
-                    "previewAddressGoToWhaleWatch",
-                    JSON.stringify({
-                      goToWhaleWatch: false,
-                    })
-                  );
-                  this.props?.TopsetPageFlagDefault();
 
-                  // this.getCoinBasedOnWalletAddress(rowData.account);
-                  this.props.history.push("/top-accounts/home");
+                  let slink = rowData.account;
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                  if (lochUser) {
+                    shareLink = shareLink + "&refrenceId=" + lochUser;
+                  }
+                  window.open(shareLink, "_blank", "noreferrer");
+                  // this.updateTimer();
+                  // let obj = JSON.parse(
+                  //   window.sessionStorage.getItem("previewAddress")
+                  // );
+                  // window.sessionStorage.setItem(
+                  //   "previewAddress",
+                  //   JSON.stringify({
+                  //     ...obj,
+                  //     address: rowData.account,
+                  //     nameTag: rowData.tagName ? rowData.tagName : "",
+                  //   })
+                  // );
+                  // window.sessionStorage.setItem(
+                  //   "previewAddressGoToWhaleWatch",
+                  //   JSON.stringify({
+                  //     goToWhaleWatch: false,
+                  //   })
+                  // );
+                  // this.props?.TopsetPageFlagDefault();
+
+                  // // this.getCoinBasedOnWalletAddress(rowData.account);
+                  // this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
                 className="top-account-address"
