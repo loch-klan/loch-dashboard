@@ -454,9 +454,16 @@ class TopBar extends Component {
     if (walletAddress) {
       walletAddress.forEach((curr) => {
         let isIncluded = false;
-        const whatIndex = arr.findIndex(
+        const whatIndex = walletAddress.findIndex(
           (resRes) =>
-            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase()
         );
         if (whatIndex !== -1) {
           isIncluded = true;
