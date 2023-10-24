@@ -714,11 +714,11 @@ class AddWallet extends BaseReactComponent {
         var mySet = new Set();
 
         const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
-          if (filData.address !== "") {
-            if (mySet.has(filData.address)) {
+          if (filData?.address !== "") {
+            if (mySet.has(filData.address.toLowerCase())) {
               return false;
             } else {
-              mySet.add(filData.address);
+              mySet.add(filData.address.toLowerCase());
               return true;
             }
           }
