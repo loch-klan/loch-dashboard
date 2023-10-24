@@ -714,11 +714,11 @@ class AddWallet extends BaseReactComponent {
         var mySet = new Set();
 
         const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
-          if (filData.address !== "") {
-            if (mySet.has(filData.address)) {
+          if (filData?.address !== "") {
+            if (mySet.has(filData.address.toLowerCase())) {
               return false;
             } else {
-              mySet.add(filData.address);
+              mySet.add(filData.address.toLowerCase());
               return true;
             }
           }
@@ -814,7 +814,12 @@ class AddWallet extends BaseReactComponent {
         let isIncluded = false;
         const whatIndex = arr.findIndex(
           (resRes) =>
-            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+            resRes?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.apiAddress?.trim()?.toLowerCase()
         );
         if (whatIndex !== -1) {
           isIncluded = true;

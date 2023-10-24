@@ -252,7 +252,14 @@ class Home extends BaseReactComponent {
         let isIncluded = false;
         const whatIndex = arr.findIndex(
           (resRes) =>
-            resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
+          resRes.address?.trim()?.toLowerCase() ===
+          curr?.address?.trim()?.toLowerCase() ||
+        resRes.displayAddress?.trim()?.toLowerCase() ===
+          curr?.address?.trim()?.toLowerCase() ||
+        resRes.displayAddress?.trim()?.toLowerCase() ===
+          curr?.displayAddress?.trim()?.toLowerCase() ||
+        resRes.address?.trim()?.toLowerCase() ===
+          curr?.displayAddress?.trim()?.toLowerCase()
         );
         if (whatIndex !== -1) {
           isIncluded = true;
