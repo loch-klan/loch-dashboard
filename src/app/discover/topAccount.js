@@ -697,7 +697,13 @@ class TopAccountPage extends BaseReactComponent {
                   let shareLink =
                     BASE_URL_S3 + "home/" + slink + "?redirect=home";
                   if (lochUser) {
-                    shareLink = shareLink + "&refrenceId=" + lochUser;
+                    const alreadyPassed =
+                      window.sessionStorage.getItem("PassedRefrenceId");
+                    if (alreadyPassed) {
+                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                    } else {
+                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    }
                   }
                   window.open(shareLink, "_blank", "noreferrer");
                   // this.updateTimer();
