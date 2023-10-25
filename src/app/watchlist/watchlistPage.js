@@ -547,41 +547,63 @@ class WatchListPage extends BaseReactComponent {
             return (
               <div
                 onClick={() => {
-                  this.updateWatchListAnalyzed(
-                    rowData.nameTag,
-                    rowData.address,
-                    true,
-                    false
-                  );
-                  setTimeout(() => {
-                    resetPreviewAddress();
-                    WatchlistClickedAccount({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      account: rowData.address ? rowData.address : "",
-                      name_tag: rowData.nameTag ? rowData.nameTag : "",
-                    });
-                    this.updateTimer();
-                    let obj = JSON.parse(
-                      window.sessionStorage.getItem("previewAddress")
-                    );
-                    window.sessionStorage.setItem(
-                      "previewAddress",
-                      JSON.stringify({
-                        ...obj,
-                        address: rowData.address,
-                        nameTag: rowData.nameTag ? rowData.nameTag : "",
-                      })
-                    );
-                    window.sessionStorage.setItem(
-                      "previewAddressGoToWhaleWatch",
-                      JSON.stringify({
-                        goToWhaleWatch: false,
-                      })
-                    );
-                    this.props?.TopsetPageFlagDefault();
-                    this.props.history.push("/top-accounts/home");
-                  }, 200);
+                  resetPreviewAddress();
+                  let lochUser = getCurrentUser().id;
+                  WatchlistClickedAccount({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    account: rowData.address ? rowData.address : "",
+                    name_tag: rowData.nameTag ? rowData.nameTag : "",
+                  });
+
+                  let slink = rowData.address;
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                  if (lochUser) {
+                    const alreadyPassed =
+                      window.sessionStorage.getItem("PassedRefrenceId");
+                    if (alreadyPassed) {
+                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                    } else {
+                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    }
+                  }
+                  window.open(shareLink, "_blank", "noreferrer");
+                  // this.updateWatchListAnalyzed(
+                  //   rowData.nameTag,
+                  //   rowData.address,
+                  //   true,
+                  //   false
+                  // );
+                  // setTimeout(() => {
+                  //   resetPreviewAddress();
+                  //   WatchlistClickedAccount({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //     account: rowData.address ? rowData.address : "",
+                  //     name_tag: rowData.nameTag ? rowData.nameTag : "",
+                  //   });
+                  //   this.updateTimer();
+                  //   let obj = JSON.parse(
+                  //     window.sessionStorage.getItem("previewAddress")
+                  //   );
+                  //   window.sessionStorage.setItem(
+                  //     "previewAddress",
+                  //     JSON.stringify({
+                  //       ...obj,
+                  //       address: rowData.address,
+                  //       nameTag: rowData.nameTag ? rowData.nameTag : "",
+                  //     })
+                  //   );
+                  //   window.sessionStorage.setItem(
+                  //     "previewAddressGoToWhaleWatch",
+                  //     JSON.stringify({
+                  //       goToWhaleWatch: false,
+                  //     })
+                  //   );
+                  //   this.props?.TopsetPageFlagDefault();
+                  //   this.props.history.push("/top-accounts/home");
+                  // }, 200);
                 }}
                 className="top-account-address dotDotText"
               >
