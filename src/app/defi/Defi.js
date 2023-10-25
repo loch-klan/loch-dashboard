@@ -42,7 +42,7 @@ class Defi extends Component {
     super(props);
     this.state = {
       // store current currency
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       sortBy: [
         { title: "Amount", down: false },
         { title: "Name", down: true },
@@ -51,15 +51,16 @@ class Defi extends Component {
       sorts: [],
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       upgradeModal: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
 
       // defi
 
@@ -75,7 +76,7 @@ class Defi extends Component {
     this.setState(
       {
         upgradeModal: !this.state.upgradeModal,
-        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       },
       () => {
         if (!this.state.upgradeModal) {
@@ -143,16 +144,17 @@ class Defi extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExistingExpiryTime =
+      window.sessionStorage.getItem("defiPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("defiPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("defiPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkDefiTimer);
-    localStorage.removeItem("defiPageExpiryTime");
+    window.sessionStorage.removeItem("defiPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -165,13 +167,13 @@ class Defi extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem("defiPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem("defiPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -213,7 +215,9 @@ class Defi extends Component {
         }
       );
     } else {
-      let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+      let defi_access = JSON.parse(
+        window.sessionStorage.getItem("defi_access")
+      );
       if (this.state.userPlan?.name === "Free" && defi_access) {
         setTimeout(() => {
           this.setState(
@@ -222,7 +226,7 @@ class Defi extends Component {
             },
             () => {
               this.upgradeModal();
-              localStorage.setItem("defi_access", false);
+              window.sessionStorage.setItem("defi_access", false);
             }
           );
         }, 10000);
@@ -304,7 +308,7 @@ class Defi extends Component {
   };
 
   getYieldBalance = () => {
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
       const allAddresses = [];
       UserWallet?.forEach((e) => {
@@ -324,7 +328,7 @@ class Defi extends Component {
           },
           () => {
             this.upgradeModal();
-            localStorage.setItem("defi_access", false);
+            window.sessionStorage.setItem("defi_access", false);
           }
         );
       }, 10000);
@@ -427,7 +431,7 @@ class Defi extends Component {
   };
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -471,7 +475,7 @@ class Defi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -505,7 +509,7 @@ class Defi extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 // isStatic={true}
                 triggerId={this.state.triggerId}
                 pname="defi"

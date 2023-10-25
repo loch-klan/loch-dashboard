@@ -23,14 +23,17 @@ import { updateUser } from "../profile/Api";
 class AskEmailModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       email: userDetails?.email || "",
       mobileNumber: userDetails?.mobile || "",
-      link: userDetails?.link || localStorage.getItem("lochDummyUser") || "",
+      link:
+        userDetails?.link ||
+        window.sessionStorage.getItem("lochDummyUser") ||
+        "",
       show: props.show,
       onHide: props.onHide,
       modalType: "Email",
@@ -39,12 +42,12 @@ class AskEmailModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
   componentDidUpdate() {}
 

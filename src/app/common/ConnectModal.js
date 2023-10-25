@@ -876,7 +876,7 @@ class ConnectModal extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
 
   handleApi = () => {
@@ -927,8 +927,8 @@ class ConnectModal extends BaseReactComponent {
       },
       () => {
         const islochUser =
-          localStorage.getItem("lochUser") ||
-          localStorage.getItem("lochDummyUser");
+          window.sessionStorage.getItem("lochUser") ||
+          window.sessionStorage.getItem("lochDummyUser");
         if (islochUser) {
           this.getUrl();
           this.getUserConnectExchange();
@@ -999,7 +999,7 @@ class ConnectModal extends BaseReactComponent {
   };
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
     this.applyWalletList();
 
     if (this.props.ishome) {
@@ -1054,13 +1054,13 @@ class ConnectModal extends BaseReactComponent {
     // console.log("Hey");
     // if (this.state.AuthUrl === "") {
     //    const islochUser =
-    //      localStorage.getItem("lochUser") ||
-    //      localStorage.getItem("lochDummyUser");
+    //      window.sessionStorage.getItem("lochUser") ||
+    //      window.sessionStorage.getItem("lochDummyUser");
     //    if (islochUser) {
     //      this.getUrl();
     //    }
     // }
-    const islochUser = localStorage.getItem("lochDummyUser");
+    const islochUser = window.sessionStorage.getItem("lochDummyUser");
     if (!islochUser && this.props.ishome) {
       // console.log("user not found create user then connect exchnage");
       if (
@@ -1376,7 +1376,7 @@ class ConnectModal extends BaseReactComponent {
     let passingData = new URLSearchParams();
     passingData.append("user_account", JSON.stringify(theExchangeData));
 
-    const islochUser = localStorage.getItem("lochDummyUser");
+    const islochUser = window.sessionStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.props.addExchangeTransaction(passingData);
       // already login go to ho page
