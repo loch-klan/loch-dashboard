@@ -712,8 +712,8 @@ class FixAddModal extends BaseReactComponent {
                 resRes?.trim()?.toLowerCase() ===
                   curr?.address?.trim()?.toLowerCase() ||
                 resRes?.trim()?.toLowerCase() ===
-                  curr?.displayAddress?.trim()?.toLowerCase()||
-                  resRes?.trim()?.toLowerCase() ===
+                  curr?.displayAddress?.trim()?.toLowerCase() ||
+                resRes?.trim()?.toLowerCase() ===
                   curr?.apiAddress?.trim()?.toLowerCase()
             );
             if (whatIndex !== -1) {
@@ -1206,9 +1206,11 @@ class FixAddModal extends BaseReactComponent {
         <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
           {this.state.metamaskWalletConnected &&
           ((elem.displayAddress &&
-            elem.displayAddress === this.state.metamaskWalletConnected) ||
+            elem.displayAddress?.toLowerCase() ===
+              this.state.metamaskWalletConnected?.toLowerCase()) ||
             (elem.address &&
-              elem.address === this.state.metamaskWalletConnected)) ? (
+              elem.address?.toLowerCase() ===
+                this.state.metamaskWalletConnected?.toLowerCase())) ? (
             <Image
               key={index}
               className={`awOldDelBtn awOldWalletBtn`}
