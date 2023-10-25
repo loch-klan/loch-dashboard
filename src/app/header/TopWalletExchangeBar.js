@@ -20,6 +20,7 @@ import {
 } from "./HeaderAction";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import {
+  EyeIcon,
   MetamaskIcon,
   WalletIcon,
   XCircleIcon,
@@ -552,7 +553,7 @@ class TopBar extends Component {
             id="address-button"
             onClick={this.passAddWalletClick}
           >
-            <Image className="topBarWalletAdd" src={AddWalletAddress} />
+            <Image className="topBarWalletAdd" src={EyeIcon} />
             <span className="dotDotText">Add wallet address</span>
           </div>
         )}
