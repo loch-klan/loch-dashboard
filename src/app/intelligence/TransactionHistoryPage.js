@@ -849,6 +849,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
+            let showThis = "";
+            if (rowData.from?.metaData?.nickname) {
+              showThis = TruncateText(rowData.from?.metaData?.nickname);
+            } else if (rowData.from?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.from?.wallet_metaData.text);
+            } else if (rowData.from?.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.from?.metaData?.displayAddress);
+            } else if (rowData.from?.address) {
+              showThis = TruncateText(rowData.from?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -891,25 +901,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.from.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
+
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -921,22 +927,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.from.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
+
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1012,22 +1017,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1065,6 +1068,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
+            let showThis = "";
+            if (rowData.to.metaData?.nickname) {
+              showThis = TruncateText(rowData.to?.metaData?.nickname);
+            } else if (rowData.to?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.to?.wallet_metaData?.text);
+            } else if (rowData.to.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.to.metaData?.displayAddress);
+            } else if (rowData.to?.address) {
+              showThis = TruncateText(rowData.to?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1107,25 +1120,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.to.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1137,22 +1145,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                   rowData.to.wallet_metaData.text ||
                   rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.to.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1228,22 +1234,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1573,7 +1577,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
