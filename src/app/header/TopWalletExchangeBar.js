@@ -247,11 +247,12 @@ class TopBar extends Component {
     let arr = [];
     walletAddress.forEach((curr) => {
       let isIncluded = false;
-      const whatIndex = arr.findIndex(
-        (resRes) =>
-          resRes?.toLowerCase() === curr?.apiAddress?.trim()?.toLowerCase()
-      );
-      if (whatIndex !== -1) {
+      if (
+        removeThis.trim()?.toLowerCase() ===
+          curr?.address?.trim()?.toLowerCase() ||
+        removeThis.trim()?.toLowerCase() ===
+          curr?.displayAddress?.trim()?.toLowerCase()
+      ) {
         isIncluded = true;
       }
       if (!isIncluded && curr.address && curr.address !== curItem) {
@@ -263,7 +264,6 @@ class TopBar extends Component {
         addressList.push(curr.address?.trim());
       }
     });
-
     let addWallet = walletList.map((w, i) => {
       return {
         ...w,
@@ -491,25 +491,26 @@ class TopBar extends Component {
           passedItem.address
         );
       }
+      let isIncluded = false;
       arr.forEach((resRes) => {
         if (
-          resRes.address?.trim()?.toLowerCase() ===
+          resRes.trim()?.toLowerCase() ===
             passedItem?.address?.trim()?.toLowerCase() ||
-          resRes.displayAddress?.trim()?.toLowerCase() ===
-            passedItem?.address?.trim()?.toLowerCase() ||
-          resRes.displayAddress?.trim()?.toLowerCase() ===
-            passedItem?.displayAddress?.trim()?.toLowerCase() ||
-          resRes.address?.trim()?.toLowerCase() ===
+          resRes.trim()?.toLowerCase() ===
             passedItem?.displayAddress?.trim()?.toLowerCase()
         ) {
-          walletList.push(passedItem);
-          arr.push(passedItem.address?.trim());
-          nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
-          arr.push(passedItem.displayAddress?.trim());
-          arr.push(passedItem.address?.trim());
-          addressList.push(passedItem.address?.trim());
+          isIncluded = true;
+          return;
         }
       });
+      if (!isIncluded) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
     }
     let addWallet = walletList.map((w, i) => {
       return {
