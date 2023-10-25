@@ -491,14 +491,25 @@ class TopBar extends Component {
           passedItem.address
         );
       }
-      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
-        walletList.push(passedItem);
-        arr.push(passedItem.address?.trim());
-        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
-        arr.push(passedItem.displayAddress?.trim());
-        arr.push(passedItem.address?.trim());
-        addressList.push(passedItem.address?.trim());
-      }
+      arr.forEach((resRes) => {
+        if (
+          resRes.address?.trim()?.toLowerCase() ===
+            passedItem?.address?.trim()?.toLowerCase() ||
+          resRes.displayAddress?.trim()?.toLowerCase() ===
+            passedItem?.address?.trim()?.toLowerCase() ||
+          resRes.displayAddress?.trim()?.toLowerCase() ===
+            passedItem?.displayAddress?.trim()?.toLowerCase() ||
+          resRes.address?.trim()?.toLowerCase() ===
+            passedItem?.displayAddress?.trim()?.toLowerCase()
+        ) {
+          walletList.push(passedItem);
+          arr.push(passedItem.address?.trim());
+          nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+          arr.push(passedItem.displayAddress?.trim());
+          arr.push(passedItem.address?.trim());
+          addressList.push(passedItem.address?.trim());
+        }
+      });
     }
     let addWallet = walletList.map((w, i) => {
       return {
