@@ -44,7 +44,7 @@ class InsightsPage extends Component {
     this.state = {
       // insightList: "",
       isLoading: false,
-      updatedInsightList: this.props.intelligenceState.updatedInsightList,
+      updatedInsightList: [],
       selected: "",
       insightFilter: [
         {
@@ -58,10 +58,6 @@ class InsightsPage extends Component {
         {
           name: "Reduce Risk",
           value: 20,
-        },
-        {
-          name: "Increase Yield",
-          value: 30,
         },
       ],
       selectedFilter: 1,
@@ -120,7 +116,6 @@ class InsightsPage extends Component {
         window.ethereum
           .request({ method: "eth_accounts" })
           .then((metaRes) => {
-            console.log("metaRes ", metaRes);
             if (metaRes && metaRes.length > 0) {
               this.setState({
                 sendAdd: metaRes[0],
@@ -137,6 +132,15 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
@@ -201,8 +205,13 @@ class InsightsPage extends Component {
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
     ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
       this.setState({
-        updatedInsightList: this.props.intelligenceState.updatedInsightList,
+        updatedInsightList: newTempHolder,
       });
     }
 
@@ -257,13 +266,19 @@ class InsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.props.intelligenceState.updatedInsightList;
+    let insightList = this.props.intelligenceState?.updatedInsightList
+      ? this.props.intelligenceState?.updatedInsightList
+      : [];
     insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
+    const newTempHolder = insightList.filter(
+      (resRes) => resRes.insight_type !== 30
+    );
+
     this.setState({
       selectedFilter: value,
-      updatedInsightList: insightList,
+      updatedInsightList: newTempHolder,
       riskType: "All risks",
     });
     this.updateTimer();
@@ -338,7 +353,9 @@ class InsightsPage extends Component {
         });
         this.updateTimer();
         let riskType = InsightType.getRiskNumber(this.state.riskType);
-        let insightList = this.props.intelligenceState.updatedInsightList;
+        let insightList = this.props.intelligenceState?.updatedInsightList
+          ? this.props.intelligenceState?.updatedInsightList
+          : [];
 
         if (riskType !== 0) {
           insightList =
@@ -356,9 +373,11 @@ class InsightsPage extends Component {
             );
           }
         }
-
+        const newTempHolder = insightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
         this.setState({
-          updatedInsightList: insightList,
+          updatedInsightList: newTempHolder,
         });
       }
     );
