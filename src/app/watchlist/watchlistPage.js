@@ -80,7 +80,7 @@ class WatchListPage extends BaseReactComponent {
       goToBottom: false,
       initialList: false,
       showAddWatchListAddress: false,
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -111,14 +111,15 @@ class WatchListPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // userWalletList: window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -134,7 +135,7 @@ class WatchListPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -163,18 +164,18 @@ class WatchListPage extends BaseReactComponent {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "watchlistPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("watchlistPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("watchlistPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkWatchlistTimer);
-    localStorage.removeItem("watchlistPageExpiryTime");
+    window.sessionStorage.removeItem("watchlistPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -186,13 +187,17 @@ class WatchListPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("watchlistPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "watchlistPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("watchlistPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "watchlistPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -443,7 +448,7 @@ class WatchListPage extends BaseReactComponent {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -542,41 +547,63 @@ class WatchListPage extends BaseReactComponent {
             return (
               <div
                 onClick={() => {
-                  this.updateWatchListAnalyzed(
-                    rowData.nameTag,
-                    rowData.address,
-                    true,
-                    false
-                  );
-                  setTimeout(() => {
-                    resetPreviewAddress();
-                    WatchlistClickedAccount({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      account: rowData.address ? rowData.address : "",
-                      name_tag: rowData.nameTag ? rowData.nameTag : "",
-                    });
-                    this.updateTimer();
-                    let obj = JSON.parse(
-                      localStorage.getItem("previewAddress")
-                    );
-                    localStorage.setItem(
-                      "previewAddress",
-                      JSON.stringify({
-                        ...obj,
-                        address: rowData.address,
-                        nameTag: rowData.nameTag ? rowData.nameTag : "",
-                      })
-                    );
-                    localStorage.setItem(
-                      "previewAddressGoToWhaleWatch",
-                      JSON.stringify({
-                        goToWhaleWatch: false,
-                      })
-                    );
-                    this.props?.TopsetPageFlagDefault();
-                    this.props.history.push("/top-accounts/home");
-                  }, 200);
+                  resetPreviewAddress();
+                  let lochUser = getCurrentUser().id;
+                  WatchlistClickedAccount({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    account: rowData.address ? rowData.address : "",
+                    name_tag: rowData.nameTag ? rowData.nameTag : "",
+                  });
+
+                  let slink = rowData.address;
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                  if (lochUser) {
+                    const alreadyPassed =
+                      window.sessionStorage.getItem("PassedRefrenceId");
+                    if (alreadyPassed) {
+                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                    } else {
+                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    }
+                  }
+                  window.open(shareLink, "_blank", "noreferrer");
+                  // this.updateWatchListAnalyzed(
+                  //   rowData.nameTag,
+                  //   rowData.address,
+                  //   true,
+                  //   false
+                  // );
+                  // setTimeout(() => {
+                  //   resetPreviewAddress();
+                  //   WatchlistClickedAccount({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //     account: rowData.address ? rowData.address : "",
+                  //     name_tag: rowData.nameTag ? rowData.nameTag : "",
+                  //   });
+                  //   this.updateTimer();
+                  //   let obj = JSON.parse(
+                  //     window.sessionStorage.getItem("previewAddress")
+                  //   );
+                  //   window.sessionStorage.setItem(
+                  //     "previewAddress",
+                  //     JSON.stringify({
+                  //       ...obj,
+                  //       address: rowData.address,
+                  //       nameTag: rowData.nameTag ? rowData.nameTag : "",
+                  //     })
+                  //   );
+                  //   window.sessionStorage.setItem(
+                  //     "previewAddressGoToWhaleWatch",
+                  //     JSON.stringify({
+                  //       goToWhaleWatch: false,
+                  //     })
+                  //   );
+                  //   this.props?.TopsetPageFlagDefault();
+                  //   this.props.history.push("/top-accounts/home");
+                  // }, 200);
                 }}
                 className="top-account-address dotDotText"
               >
@@ -830,7 +857,7 @@ class WatchListPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"

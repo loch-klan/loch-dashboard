@@ -74,8 +74,8 @@ class TopCost extends Component {
 
       // add new wallet
       userWalletList: [],
-      // localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   :
       addModal: false,
       isUpdate: 0,
@@ -130,18 +130,18 @@ class TopCost extends Component {
     this.props.getUser();
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topCostPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topCostPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("topCostPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkTopCostTimer);
-    localStorage.removeItem("topCostPageExpiryTime");
+    window.sessionStorage.removeItem("topCostPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -153,13 +153,17 @@ class TopCost extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topCostPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topCostPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -425,8 +429,8 @@ class TopCost extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"

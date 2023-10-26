@@ -610,9 +610,9 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
-            (e) => e.address
-          );
+          let walletAddress = JSON.parse(
+            window.sessionStorage.getItem("addWallet")
+          ).map((e) => e.address);
 
           let tooltipData = [];
 

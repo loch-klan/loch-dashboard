@@ -32,7 +32,7 @@ export const getAllWalletListApi = (data, ctx) => {
           let passAddress = walletdata?.map((wallet) => {
             return wallet.address;
           });
-          if (localStorage.getItem("lochToken")) {
+          if (window.sessionStorage.getItem("lochToken")) {
             const yieldData = new URLSearchParams();
             yieldData.append("wallet_addresses", JSON.stringify(passAddress));
             postLoginInstance
@@ -112,7 +112,7 @@ export const updateWalletApi = (ctx, data) => {
         let walletAddress = ctx.state.walletAddress;
         let displayAddress = ctx.state.displayAddress;
         // let nickname = ctx.state.walletNickname;
-        let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+        let addWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet) => {
           // console.log('walletAddress',walletAddress);
           if (
@@ -147,7 +147,7 @@ export const updateWalletApi = (ctx, data) => {
             return { ...wallet };
           }
         });
-        localStorage.setItem("addWallet", JSON.stringify(addWallet));
+        window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
         addLocalWalletList(JSON.stringify(addWallet));
         ctx.props.onHide();
         ctx.props.makeApiCall();
@@ -173,7 +173,7 @@ export const deleteWallet = (ctx, data) => {
     .then((res) => {
       if (!res.data.error) {
         let walletAddress = ctx.state.walletAddress;
-        let arr = JSON.parse(localStorage.getItem("addWallet"));
+        let arr = JSON.parse(window.sessionStorage.getItem("addWallet"));
         let newArr = [];
         // for (let i = 0; i < arr.length; i++) {
         //   if (arr[i].address !== walletAddress) {
@@ -202,7 +202,7 @@ export const deleteWallet = (ctx, data) => {
             coins: [],
           });
         }
-        localStorage.setItem("addWallet", JSON.stringify(newArr));
+        window.sessionStorage.setItem("addWallet", JSON.stringify(newArr));
         addLocalWalletList(JSON.stringify(newArr));
         ctx.props.onHide();
         ctx.props.makeApiCall();

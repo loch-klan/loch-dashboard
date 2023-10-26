@@ -23,7 +23,7 @@ export default function PageHeader(props) {
 
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 

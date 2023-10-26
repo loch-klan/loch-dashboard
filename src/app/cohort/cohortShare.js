@@ -56,8 +56,9 @@ class CohortSharePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -168,7 +169,7 @@ class CohortSharePage extends Component {
     this.setState(
       {
         upgradeModal: !this.state.upgradeModal,
-        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       },
       () => {
         if (!this.state.upgradeModal) {
@@ -195,7 +196,7 @@ class CohortSharePage extends Component {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="cohort-share"

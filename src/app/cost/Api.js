@@ -31,8 +31,8 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
     }
 
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -68,8 +68,8 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
       data.append("end_datetime", endDate);
     }
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -242,8 +242,8 @@ export const getAvgCostBasis = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -253,7 +253,7 @@ export const getAvgCostBasis = (ctx) => {
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;
-          let currency = JSON.parse(localStorage.getItem("currency"));
+          let currency = JSON.parse(window.sessionStorage.getItem("currency"));
           // let ApiResponse = [
           //   {
           //     asset: {

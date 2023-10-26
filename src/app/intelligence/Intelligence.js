@@ -76,8 +76,8 @@ class Intelligence extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -88,7 +88,8 @@ class Intelligence extends Component {
       selectedOption: 0,
       selectedActiveBadge: [],
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -118,7 +119,7 @@ class Intelligence extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -301,18 +302,18 @@ class Intelligence extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
-    localStorage.removeItem("intelligencePageExpiryTime");
+    window.sessionStorage.removeItem("intelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -324,13 +325,17 @@ class Intelligence extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "intelligencePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "intelligencePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -706,7 +711,7 @@ class Intelligence extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -752,7 +757,7 @@ class Intelligence extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"
