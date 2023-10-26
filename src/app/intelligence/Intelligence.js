@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PageHeader from "../common/PageHeader";
-import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
 import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
@@ -52,6 +51,7 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import InflowOutflowChart from "./InflowOutflowChart";
+import { EyeThinIcon } from "../../assets/images/icons";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -886,7 +886,7 @@ class Intelligence extends Component {
                 <PageHeader
                   showNetflowExplainers
                   title="Realized gains"
-                  showImg={eyeIcon}
+                  showImg={EyeThinIcon}
                 />
               </div>
               {/* Netflow Info Start */}
