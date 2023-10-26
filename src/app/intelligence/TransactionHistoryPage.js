@@ -113,6 +113,10 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      selectedTimes: [],
+      selectedAssets: [],
+      selectedMethods: [],
+      selectedNetworks: [],
       amountFilter: "Amount",
       exportModal: false,
       goToBottom: false,
@@ -232,35 +236,116 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    this.props.history.replace({
-      search: `?p=${this.state.currentPage}`,
-    });
-    this.callApi(this.state.currentPage || START_INDEX);
-    this.props.getFilters(this);
-    this.props.getAllCoins();
-    // this.props.getCoinRate();
-    this.props.GetAllPlan();
-    this.props.getUser();
+    const transHistoryPageNumber = window.sessionStorage.getItem(
+      "transHistoryPageNumber"
+    );
+    const transHistoryConditions = window.sessionStorage.getItem(
+      "transHistoryConditions"
+    );
+    const transHistorySorts =
+      window.sessionStorage.getItem("transHistorySorts");
 
-    let obj = UpgradeTriggered();
-
-    if (obj.trigger) {
+    if (transHistoryPageNumber || transHistoryConditions || transHistorySorts) {
       this.setState(
         {
-          triggerId: obj.id,
-          isStatic: true,
+          currentPage: transHistoryPageNumber
+            ? Number(transHistoryPageNumber)
+            : 0,
+          condition: transHistoryConditions
+            ? JSON.parse(transHistoryConditions)
+            : [],
+          sort: transHistorySorts
+            ? JSON.parse(transHistorySorts)
+            : [{ key: SORT_BY_TIMESTAMP, value: false }],
         },
         () => {
-          this.upgradeModal();
+          if (transHistoryPageNumber) {
+            window.sessionStorage.removeItem("transHistoryPageNumber");
+          }
+          if (transHistoryConditions) {
+            const tempHolder = JSON.parse(transHistoryConditions);
+            for (var key in tempHolder) {
+              if (tempHolder.hasOwnProperty(key)) {
+                const tempVar = tempHolder[key];
+                if (tempVar.key === SEARCH_BY_TIMESTAMP_IN) {
+                  this.setState({ selectedTimes: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_ASSETS_IN) {
+                  this.setState({ selectedAssets: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_METHOD_IN) {
+                  this.setState({ selectedMethods: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_CHAIN_IN) {
+                  this.setState({ selectedNetworks: tempVar.value });
+                }
+              }
+            }
+            window.sessionStorage.removeItem("transHistoryConditions");
+          }
+          if (transHistorySorts) {
+            window.sessionStorage.removeItem("transHistorySorts");
+          }
+
+          this.props.history.replace({
+            search: `?p=${this.state.currentPage}`,
+          });
+          this.callApi(this.state.currentPage || START_INDEX);
+          this.props.getFilters(this);
+          this.props.getAllCoins();
+          // this.props.getCoinRate();
+          this.props.GetAllPlan();
+          this.props.getUser();
+
+          let obj = UpgradeTriggered();
+
+          if (obj.trigger) {
+            this.setState(
+              {
+                triggerId: obj.id,
+                isStatic: true,
+              },
+              () => {
+                this.upgradeModal();
+              }
+            );
+          }
+          this.startPageView();
+          this.updateTimer(true);
+
+          return () => {
+            clearInterval(window.checkTransactionHistoryTimer);
+          };
         }
       );
-    }
-    this.startPageView();
-    this.updateTimer(true);
+    } else {
+      this.props.history.replace({
+        search: `?p=${this.state.currentPage}`,
+      });
+      this.callApi(this.state.currentPage || START_INDEX);
+      this.props.getFilters(this);
+      this.props.getAllCoins();
+      // this.props.getCoinRate();
+      this.props.GetAllPlan();
+      this.props.getUser();
 
-    return () => {
-      clearInterval(window.checkTransactionHistoryTimer);
-    };
+      let obj = UpgradeTriggered();
+
+      if (obj.trigger) {
+        this.setState(
+          {
+            triggerId: obj.id,
+            isStatic: true,
+          },
+          () => {
+            this.upgradeModal();
+          }
+        );
+      }
+      this.startPageView();
+      this.updateTimer(true);
+
+      return () => {
+        clearInterval(window.checkTransactionHistoryTimer);
+      };
+    }
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
@@ -513,7 +598,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsTimeUsed,
       });
       this.updateTimer();
-      this.setState({ isTimeSearchUsed: false });
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
 
@@ -537,8 +622,10 @@ class TransactionHistoryPage extends BaseReactComponent {
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
-        this.setState({ isAssetSearchUsed: false });
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
       });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
     } else if (key === "SEARCH_BY_CHAIN_IN") {
       const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
       TransactionHistoryNetworkFilter({
@@ -548,7 +635,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsNetworkUsed,
       });
       this.updateTimer();
-      this.setState({ isNetworkSearchUsed: false });
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
 
@@ -610,7 +697,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    console.log("tableSortOpt are ", this.state.tableSortOpt);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -776,6 +862,44 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
+  };
+  handleSpecificShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    TransactionHistoryShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    let BASE_URL_S3 = "http://localhost:3000/";
+    let shareLink =
+      BASE_URL_S3 +
+      "home/" +
+      slink +
+      "?redirect=intelligence/transaction-history";
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const page = params.get("p");
+    if (page !== undefined || page !== null) {
+      shareLink = shareLink + "&transHistoryPageNumber=" + page;
+    }
+    if (this.state.condition) {
+      shareLink =
+        shareLink +
+        "&transHistoryConditions=" +
+        JSON.stringify(this.state.condition);
+    }
+    if (this.state.sort) {
+      shareLink =
+        shareLink + "&transHistorySorts=" + JSON.stringify(this.state.sort);
+    }
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
     this.updateTimer();
   };
 
@@ -1749,7 +1873,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               ExportBtn
               exportBtnTxt="Click to export transactions"
               handleExportModal={this.handleExportModal}
-              handleShare={this.handleShare}
+              handleShare={this.handleSpecificShare}
               updateTimer={this.updateTimer}
               showHideDust
               showHideDustVal={this.state.showDust}
@@ -1827,6 +1951,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.addCondition(key, value)
                       }
                       searchIsUsed={this.timeSearchIsUsed}
+                      selectedTokens={this.state.selectedTimes}
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1838,6 +1963,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.addCondition(key, value)
                       }
                       searchIsUsed={this.assetSearchIsUsed}
+                      selectedTokens={this.state.selectedAssets}
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1850,6 +1976,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       searchIsUsed={this.methodSearchIsUsed}
                       isCaptialised
+                      selectedTokens={this.state.selectedMethods}
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1861,6 +1988,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       searchIsUsed={this.networkSearchIsUsed}
                       isCaptialised
                       isGreyChain
+                      selectedTokens={this.state.selectedNetworks}
                     />
                   </Col>
                   {/* {fillter_tabs} */}

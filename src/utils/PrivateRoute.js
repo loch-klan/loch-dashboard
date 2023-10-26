@@ -12,6 +12,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       const searchParams = new URLSearchParams(props.location.search);
       const redirectPath = searchParams.get("redirect");
       const passedRefrenceId = searchParams.get("refrenceId");
+      const transHistoryPageNumber = searchParams.get("transHistoryPageNumber");
+      const transHistoryConditions = searchParams.get("transHistoryConditions");
+      const transHistorySorts = searchParams.get("transHistorySorts");
 
       let redirect = JSON.parse(window.sessionStorage.getItem("ShareRedirect"));
       //  console.log("redirect", redirect);
@@ -22,6 +25,21 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         );
         if (passedRefrenceId) {
           window.sessionStorage.setItem("PassedRefrenceId", passedRefrenceId);
+        }
+        if (transHistoryPageNumber) {
+          window.sessionStorage.setItem(
+            "transHistoryPageNumber",
+            transHistoryPageNumber
+          );
+        }
+        if (transHistoryConditions) {
+          window.sessionStorage.setItem(
+            "transHistoryConditions",
+            transHistoryConditions
+          );
+        }
+        if (transHistorySorts) {
+          window.sessionStorage.setItem("transHistorySorts", transHistorySorts);
         }
       }
       return requireAuth() ? (
