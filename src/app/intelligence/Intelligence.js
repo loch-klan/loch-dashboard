@@ -66,7 +66,7 @@ class Intelligence extends Component {
       // },
 
       startTime: "",
-      updatedInsightList: "",
+      updatedInsightList: [],
       isLoading: false,
       // profit loss asset data
       ProfitLossAsset: [],
@@ -150,6 +150,15 @@ class Intelligence extends Component {
   };
 
   componentDidMount() {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     const tempLeftExplainerClosed = window.sessionStorage.getItem(
       "netFlowLeftExplainerClosed"
     );
@@ -217,6 +226,20 @@ class Intelligence extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
+    // used for filter
+    if (
+      prevProps.intelligenceState?.updatedInsightList !==
+      this.props.intelligenceState?.updatedInsightList
+    ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     if (prevProps.intelligenceState !== this.props.intelligenceState) {
       this.setState({ isGraphLoading: false });
     }
@@ -796,10 +819,9 @@ class Intelligence extends Component {
                   {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
-                  ) : this.props.intelligenceState.updatedInsightList &&
-                    this.props.intelligenceState.updatedInsightList.length >
-                      0 ? (
-                    this.props.intelligenceState.updatedInsightList
+                  ) : this.state.updatedInsightList &&
+                    this.state.updatedInsightList.length > 0 ? (
+                    this.state.updatedInsightList
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         return (
