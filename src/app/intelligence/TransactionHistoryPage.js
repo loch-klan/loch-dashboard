@@ -1646,6 +1646,9 @@ class TransactionHistoryPage extends BaseReactComponent {
               handleExportModal={this.handleExportModal}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
+              showHideDust
+              showHideDustVal={this.state.showDust}
+              showHideDustFun={this.showDust}
             />
 
             <div className="fillter_tabs_section">
@@ -1743,7 +1746,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     onPageChange={this.onPageChange}
                     addWatermark
                   />
-                  <div className="ShowDust">
+                  {/* <div className="ShowDust">
                     <p
                       onClick={this.showDust}
                       className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -1752,7 +1755,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         ? "Reveal dust (less than $1)"
                         : "Hide dust (less than $1)"}
                     </p>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
