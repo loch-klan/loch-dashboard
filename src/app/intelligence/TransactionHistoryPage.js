@@ -27,6 +27,7 @@ import {
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
   SEARCH_BY_CHAIN_IN,
+  SEARCH_BETWEEN_VALUE,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
 import { searchTransactionApi, getFilters } from "./Api";
@@ -52,6 +53,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
+  TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
   TransactionHistoryHideDust,
@@ -92,6 +94,7 @@ import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
 import { ExportIconWhite } from "../../assets/images/icons";
+import DropDown from "../common/DropDown";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -110,6 +113,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      amountFilter: "Amount",
       exportModal: false,
       goToBottom: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -435,6 +439,59 @@ class TransactionHistoryPage extends BaseReactComponent {
       );
     }
   };
+  handleAmount = (e) => {
+    let title = "";
+
+    if (e.split(" ")[1] !== undefined) {
+      title = title + " " + e.split(" ")[1];
+    }
+    if (e.split(" ")[2] !== undefined) {
+      title = title + " " + e.split(" ")[2];
+    }
+    if (e.split(" ")[3] !== "undefined") {
+      title = title + " " + e.split(" ")[3];
+    }
+    title = title.trim();
+    if (title === this.state.amountFilter) {
+      this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
+      this.setState({
+        amountFilter: "Amount",
+      });
+      return;
+    }
+    this.setState({
+      amountFilter: title,
+    });
+    TransactionHistoryAmountFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      amount_filter: title,
+    });
+    let min = 0;
+    let max = 0;
+
+    if (title === "10K or less") {
+      min = 0;
+      max = 10000;
+    } else if (title === "10K - 100K") {
+      min = 10000;
+      max = 100000;
+    } else if (title === "100K - 1M") {
+      min = 100000;
+      max = 1000000;
+    } else if (title === "1M - 10M") {
+      min = 1000000;
+      max = 10000000;
+    } else if (title === "10M - 100M") {
+      min = 10000000;
+      max = 100000000;
+    } else if (title === "100M or more") {
+      min = 100000000;
+      max = 10000000000;
+    }
+    const value = { min_value: min, max_value: max };
+    this.addCondition(SEARCH_BETWEEN_VALUE, value);
+  };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -493,14 +550,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allAssets" &&
       value !== "allMethod" &&
       value !== "allYear" &&
-      value !== "allNetworks"
+      value !== "allNetworks" &&
+      value !== "allAmounts"
     ) {
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear" ||
-      value === "allNetworks"
+      value === "allNetworks" ||
+      value === "allAmounts"
     ) {
       if (index !== -1) {
         arr.splice(index, 1);
@@ -1570,6 +1629,19 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+
+    // 0-10000
+    // 10000-100000
+    // 100000-1000000
+    // 1000000-10000000
+    // 10000000-100000000
+    // 100000000-10000000000
+    // 10k or less
+    // 10k-100k
+    // 100k-1M
+    // 1M-10M
+    // 10M-100M
+    // 100M or more
     return (
       <>
         {/* topbar */}
@@ -1658,6 +1730,65 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
+                  <Col className="transactionHistoryCol">
+                    {/* <CustomDropdown
+                      filtername="All amounts"
+                      options={[
+                        { value: "allAmounts", label: "All amounts" },
+                        {
+                          value: { min_value: 0, max_value: 10000 },
+                          label: "10k or less",
+                        },
+                        {
+                          value: { min_value: 10000, max_value: 100000 },
+                          label: "10k-100k",
+                        },
+                        {
+                          value: { min_value: 100000, max_value: 1000000 },
+                          label: "100k-1M",
+                        },
+                        {
+                          value: { min_value: 1000000, max_value: 10000000 },
+                          label: "1M-10M",
+                        },
+                        {
+                          value: { min_value: 10000000, max_value: 100000000 },
+                          label: "10M-100M",
+                        },
+                        {
+                          value: { min: 100000000, max: 10000000000 },
+                          label: "100M or more",
+                        },
+                      ]}
+                      action={SEARCH_BETWEEN_VALUE}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                      // searchIsUsed={this.timeSearchIsUsed}
+                    /> */}
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        // "All time",
+                        "10K or less",
+                        "10K - 100K",
+                        "100K - 1M",
+                        "1M - 10M",
+                        "10M - 100M",
+                        "100M or more",
+                      ]}
+                      onSelect={this.handleAmount}
+                      title={this.state.amountFilter}
+                      activetab={
+                        this.state.amountFilter === "Amount"
+                          ? ""
+                          : this.state.amountFilter
+                      }
+                      showChecked={true}
+                      customArrow={true}
+                      relative={true}
+                    />
+                  </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
                       filtername="All years"
