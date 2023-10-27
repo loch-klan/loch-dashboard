@@ -470,22 +470,22 @@ class TransactionHistoryPage extends BaseReactComponent {
     let min = 0;
     let max = 0;
 
-    if (title === "10K or less") {
+    if (title === "$10K or less") {
       min = 0;
       max = 10000;
-    } else if (title === "10K - 100K") {
+    } else if (title === "$10K - $100K") {
       min = 10000;
       max = 100000;
-    } else if (title === "100K - 1M") {
+    } else if (title === "$100K - $1M") {
       min = 100000;
       max = 1000000;
-    } else if (title === "1M - 10M") {
+    } else if (title === "$1M - $10M") {
       min = 1000000;
       max = 10000000;
-    } else if (title === "10M - 100M") {
+    } else if (title === "$10M - $100M") {
       min = 10000000;
       max = 100000000;
-    } else if (title === "100M or more") {
+    } else if (title === "$100M or more") {
       min = 100000000;
       max = 10000000000;
     }
@@ -1630,18 +1630,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
 
-    // 0-10000
-    // 10000-100000
-    // 100000-1000000
-    // 1000000-10000000
-    // 10000000-100000000
-    // 100000000-10000000000
-    // 10k or less
-    // 10k-100k
-    // 100k-1M
-    // 1M-10M
-    // 10M-100M
-    // 100M or more
     return (
       <>
         {/* topbar */}
@@ -1731,51 +1719,16 @@ class TransactionHistoryPage extends BaseReactComponent {
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
                   <Col className="transactionHistoryCol">
-                    {/* <CustomDropdown
-                      filtername="All amounts"
-                      options={[
-                        { value: "allAmounts", label: "All amounts" },
-                        {
-                          value: { min_value: 0, max_value: 10000 },
-                          label: "10k or less",
-                        },
-                        {
-                          value: { min_value: 10000, max_value: 100000 },
-                          label: "10k-100k",
-                        },
-                        {
-                          value: { min_value: 100000, max_value: 1000000 },
-                          label: "100k-1M",
-                        },
-                        {
-                          value: { min_value: 1000000, max_value: 10000000 },
-                          label: "1M-10M",
-                        },
-                        {
-                          value: { min_value: 10000000, max_value: 100000000 },
-                          label: "10M-100M",
-                        },
-                        {
-                          value: { min: 100000000, max: 10000000000 },
-                          label: "100M or more",
-                        },
-                      ]}
-                      action={SEARCH_BETWEEN_VALUE}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
-                      // searchIsUsed={this.timeSearchIsUsed}
-                    /> */}
                     <DropDown
                       class="cohort-dropdown"
                       list={[
                         // "All time",
-                        "10K or less",
-                        "10K - 100K",
-                        "100K - 1M",
-                        "1M - 10M",
-                        "10M - 100M",
-                        "100M or more",
+                        "$10K or less",
+                        "$10K - $100K",
+                        "$100K - $1M",
+                        "$1M - $10M",
+                        "$10M - $100M",
+                        "$100M or more",
                       ]}
                       onSelect={this.handleAmount}
                       title={this.state.amountFilter}
@@ -1787,6 +1740,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       showChecked={true}
                       customArrow={true}
                       relative={true}
+                      arrowClassName="singleArrowClassName"
                     />
                   </Col>
                   <Col className="transactionHistoryCol">

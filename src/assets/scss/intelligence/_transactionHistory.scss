@@ -33,7 +33,10 @@
           width: 16.67%;
           padding: 0;
           svg {
-            right: 1.3rem !important;
+            right: 1rem !important;
+          }
+          .singleArrowClassName {
+            right: 2rem;
           }
           .custom-dropdown {
             margin: 0rem 1rem 0rem 0rem;
@@ -45,6 +48,19 @@
             margin: 0rem 1rem 0rem 0rem;
             .dropdown-toggle {
               font-size: 1.1rem;
+              padding: 1.1rem 1.6rem;
+            }
+            .btn-primary:not(:disabled):not(.disabled):active {
+              border: 0.1rem solid red;
+              padding: 1.1rem 1.6rem;
+            }
+            .dropdown-menu {
+              .dropdown-item {
+                word-wrap: break-word;
+              }
+              &::-webkit-scrollbar {
+                height: 0.4rem;
+              }
             }
           }
         }
