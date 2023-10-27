@@ -41,13 +41,13 @@
           .custom-dropdown {
             margin: 0rem 1rem 0rem 0rem;
             .placeholder {
-              font-size: 1.1rem;
+              font-size: 1.2rem;
             }
           }
           .dropdown {
             margin: 0rem 1rem 0rem 0rem;
             .dropdown-toggle {
-              font-size: 1.1rem;
+              font-size: 1.2rem;
               padding: 1.1rem 1.6rem;
             }
             .btn-primary:not(:disabled):not(.disabled):active {
@@ -71,14 +71,14 @@
           }
           .form-group {
             .search-input {
-              font-size: 1.1rem;
+              font-size: 1.2rem;
               padding-left: 1rem;
               &::-ms-input-placeholder {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
               }
 
               &::placeholder {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
               }
             }
           }
