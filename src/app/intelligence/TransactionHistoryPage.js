@@ -807,7 +807,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    let BASE_URL_S3 = "http://localhost:3000/";
     let shareLink =
       BASE_URL_S3 +
       "home/" +
