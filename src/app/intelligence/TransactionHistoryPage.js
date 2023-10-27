@@ -850,6 +850,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
+
     let shareLink =
       BASE_URL_S3 +
       "home/" +
@@ -876,7 +877,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
     let shareLink =
       BASE_URL_S3 +
       "home/" +
@@ -1906,6 +1906,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       searchIsUsed={this.timeSearchIsUsed}
                       selectedTokens={this.state.selectedTimes}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1918,6 +1919,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       searchIsUsed={this.assetSearchIsUsed}
                       selectedTokens={this.state.selectedAssets}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1931,6 +1933,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       searchIsUsed={this.methodSearchIsUsed}
                       isCaptialised
                       selectedTokens={this.state.selectedMethods}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
@@ -1943,6 +1946,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       isCaptialised
                       isGreyChain
                       selectedTokens={this.state.selectedNetworks}
+                      transactionHistorySavedData
                     />
                   </Col>
                   {/* {fillter_tabs} */}
