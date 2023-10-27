@@ -136,16 +136,65 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         });
       }
     }
-    if (diff > 200) {
-      if (this.state.steps !== 23) {
+    console.log("diff ", diff);
+    if (diff > 1000) {
+      if (this.state.steps !== 140) {
         this.setState({
-          steps: 23,
+          steps: 100,
+        });
+      }
+    } else if (diff > 900) {
+      if (this.state.steps !== 120) {
+        this.setState({
+          steps: 120,
+        });
+      }
+    } else if (diff > 800) {
+      if (this.state.steps !== 100) {
+        this.setState({
+          steps: 100,
+        });
+      }
+    } else if (diff > 700) {
+      if (this.state.steps !== 90) {
+        this.setState({
+          steps: 90,
+        });
+      }
+    } else if (diff > 600) {
+      if (this.state.steps !== 70) {
+        this.setState({
+          steps: 70,
+        });
+      }
+    } else if (diff > 500) {
+      if (this.state.steps !== 60) {
+        this.setState({
+          steps: 60,
+        });
+      }
+    } else if (diff > 400) {
+      if (this.state.steps !== 50) {
+        this.setState({
+          steps: 50,
+        });
+      }
+    } else if (diff > 300) {
+      if (this.state.steps !== 40) {
+        this.setState({
+          steps: 40,
+        });
+      }
+    } else if (diff > 200) {
+      if (this.state.steps !== 28) {
+        this.setState({
+          steps: 28,
         });
       }
     } else if (diff > 190) {
-      if (this.state.steps !== 22) {
+      if (this.state.steps !== 25) {
         this.setState({
-          steps: 22,
+          steps: 25,
         });
       }
     } else if (diff > 180) {
@@ -478,6 +527,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
             const curItem = parent.state.formattedOverallData[this.x];
 
             if (curItem) {
+              console.log("curItem is ", curItem);
               const dateTitle = moment(curItem.timestamp).format(
                 "DD MMMM YYYY"
               );
@@ -494,6 +544,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               const tempIndex = parent.state.assetList.findIndex(
                 (resData) => resData._id === parent.state.activeAssetTab
               );
+              console.log("tempIndex is ", tempIndex);
               let assetCode = "ETH";
               if (
                 tempIndex !== -1 &&
@@ -508,6 +559,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                 } else {
                   parent.hoverOnOutflow();
                 }
+                console.log("receivedVal ", receivedVal);
+                console.log("sendVal ", sendVal);
                 return `
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
