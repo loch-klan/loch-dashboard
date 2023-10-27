@@ -30,10 +30,41 @@
       .row {
         margin: 0rem;
         .transactionHistoryCol {
-          width: 20%;
+          width: 16.67%;
           padding: 0;
           svg {
             right: 1.3rem !important;
+          }
+          .custom-dropdown {
+            margin: 0rem 1rem 0rem 0rem;
+            .placeholder {
+              font-size: 1.1rem;
+            }
+          }
+          .dropdown {
+            margin: 0rem 1rem 0rem 0rem;
+            .dropdown-toggle {
+              font-size: 1.1rem;
+            }
+          }
+        }
+        .searchBar {
+          .search-icon {
+            height: 1.3rem;
+            margin-left: 1rem;
+          }
+          .form-group {
+            .search-input {
+              font-size: 1rem;
+              padding-left: 1rem;
+              &::-ms-input-placeholder {
+                font-size: 1rem;
+              }
+
+              &::placeholder {
+                font-size: 1rem;
+              }
+            }
           }
         }
         .col-md-3 {
@@ -184,7 +215,6 @@
           color: $black-191;
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
-          min-width: 15rem;
         }
 
         .dropdown-toggle::after {

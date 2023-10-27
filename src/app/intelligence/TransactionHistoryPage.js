@@ -1791,7 +1791,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All years"
+                      filtername="Years"
                       options={this.props.intelligenceState.yearFilter}
                       action={SEARCH_BY_TIMESTAMP_IN}
                       handleClick={(key, value) =>
@@ -1802,7 +1802,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All assets"
+                      filtername="Assets"
                       options={this.props.intelligenceState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
@@ -1813,7 +1813,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All methods"
+                      filtername="Methods"
                       options={this.props.intelligenceState.methodFilter}
                       action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
@@ -1825,7 +1825,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All networks"
+                      filtername="Networks"
                       options={this.props.OnboardingState.coinsList}
                       action={SEARCH_BY_CHAIN_IN}
                       handleClick={this.handleFunction}
