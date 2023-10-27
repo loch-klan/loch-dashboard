@@ -138,27 +138,27 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
     console.log("diff ", diff);
     if (diff > 1000) {
-      if (this.state.steps !== 140) {
+      if (this.state.steps !== 130) {
         this.setState({
-          steps: 100,
+          steps: 130,
         });
       }
     } else if (diff > 900) {
-      if (this.state.steps !== 120) {
+      if (this.state.steps !== 110) {
         this.setState({
-          steps: 120,
+          steps: 110,
         });
       }
     } else if (diff > 800) {
-      if (this.state.steps !== 100) {
-        this.setState({
-          steps: 100,
-        });
-      }
-    } else if (diff > 700) {
       if (this.state.steps !== 90) {
         this.setState({
           steps: 90,
+        });
+      }
+    } else if (diff > 700) {
+      if (this.state.steps !== 80) {
+        this.setState({
+          steps: 80,
         });
       }
     } else if (diff > 600) {
