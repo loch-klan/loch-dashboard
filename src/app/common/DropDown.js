@@ -66,12 +66,9 @@ export default function DropDown(props) {
       </DropdownButton>
       {props?.customArrow && (
         <span
-          style={{
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            right: "3.5rem",
-          }}
+          className={`dropdownArrow ${
+            props.arrowClassName ? props.arrowClassName : ""
+          }`}
         >
           <svg
             height="20"
