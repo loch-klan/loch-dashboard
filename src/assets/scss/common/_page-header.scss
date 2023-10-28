@@ -97,10 +97,27 @@
         outline: none;
         box-shadow: none;
         padding: 0;
+        .custom-control {
+          .custom-control-label {
+            cursor: pointer;
+          }
+        }
       }
       &:hover {
         .pageHeaderShareBtn {
           color: $primary;
+          .custom-control {
+            color: $primary;
+            .custom-control-label {
+              color: $primary;
+              &::after {
+                background-color: $primary;
+              }
+              &::before {
+                border-color: $primary;
+              }
+            }
+          }
         }
         .pageHeaderShareImg {
           filter: brightness(0);
