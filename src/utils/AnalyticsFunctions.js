@@ -3028,6 +3028,19 @@ export const TransactionHistoryYearFilter = ({
 };
 
 // Transaction History: assets filter - done
+export const TransactionHistoryAmountFilter = ({
+  session_id,
+  email_address,
+  amount_filter,
+}) => {
+  const event_name = "Transaction History: amount filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "amount selected": amount_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryAssetFilter = ({
   session_id,
   email_address,

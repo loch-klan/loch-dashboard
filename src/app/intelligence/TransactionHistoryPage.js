@@ -27,6 +27,7 @@ import {
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
   SEARCH_BY_CHAIN_IN,
+  SEARCH_BETWEEN_VALUE,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
 import { searchTransactionApi, getFilters } from "./Api";
@@ -52,6 +53,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
+  TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
   TransactionHistoryHideDust,
@@ -92,6 +94,7 @@ import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
 import { ExportIconWhite } from "../../assets/images/icons";
+import DropDown from "../common/DropDown";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -114,6 +117,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       selectedAssets: [],
       selectedMethods: [],
       selectedNetworks: [],
+      amountFilter: "Amount",
       exportModal: false,
       goToBottom: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -269,6 +273,30 @@ class TransactionHistoryPage extends BaseReactComponent {
                   this.setState({ selectedMethods: tempVar.value });
                 } else if (tempVar.key === SEARCH_BY_CHAIN_IN) {
                   this.setState({ selectedNetworks: tempVar.value });
+                } else if (tempVar.key === SEARCH_BETWEEN_VALUE) {
+                  let tempAmount = "Amount";
+                  let min = tempVar.value?.min_value
+                    ? tempVar.value.min_value
+                    : 0;
+                  let max = tempVar.value?.max_value
+                    ? tempVar.value.max_value
+                    : 0;
+
+                  if (min === 0 && max === 10000) {
+                    tempAmount = "$10K or less";
+                  } else if (min === 10000 && max === 100000) {
+                    tempAmount = "$10K - $100K";
+                  } else if (min === 100000 && max === 1000000) {
+                    tempAmount = "$100K - $1M";
+                  } else if (min === 1000000 && max === 10000000) {
+                    tempAmount = "$1M - $10M";
+                  } else if (min === 10000000 && max === 100000000) {
+                    tempAmount = "$10M - $100M";
+                  } else if (min === 100000000 && max === 10000000000) {
+                    tempAmount = "$100M or more";
+                  }
+
+                  this.setState({ amountFilter: tempAmount });
                 }
               }
             }
@@ -520,6 +548,59 @@ class TransactionHistoryPage extends BaseReactComponent {
       );
     }
   };
+  handleAmount = (e) => {
+    let title = "";
+
+    if (e.split(" ")[1] !== undefined) {
+      title = title + " " + e.split(" ")[1];
+    }
+    if (e.split(" ")[2] !== undefined) {
+      title = title + " " + e.split(" ")[2];
+    }
+    if (e.split(" ")[3] !== "undefined") {
+      title = title + " " + e.split(" ")[3];
+    }
+    title = title.trim();
+    if (title === this.state.amountFilter) {
+      this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
+      this.setState({
+        amountFilter: "Amount",
+      });
+      return;
+    }
+    this.setState({
+      amountFilter: title,
+    });
+    TransactionHistoryAmountFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      amount_filter: title,
+    });
+    let min = 0;
+    let max = 0;
+
+    if (title === "$10K or less") {
+      min = 0;
+      max = 10000;
+    } else if (title === "$10K - $100K") {
+      min = 10000;
+      max = 100000;
+    } else if (title === "$100K - $1M") {
+      min = 100000;
+      max = 1000000;
+    } else if (title === "$1M - $10M") {
+      min = 1000000;
+      max = 10000000;
+    } else if (title === "$10M - $100M") {
+      min = 10000000;
+      max = 100000000;
+    } else if (title === "$100M or more") {
+      min = 100000000;
+      max = 10000000000;
+    }
+    const value = { min_value: min, max_value: max };
+    this.addCondition(SEARCH_BETWEEN_VALUE, value);
+  };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -580,14 +661,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allAssets" &&
       value !== "allMethod" &&
       value !== "allYear" &&
-      value !== "allNetworks"
+      value !== "allNetworks" &&
+      value !== "allAmounts"
     ) {
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear" ||
-      value === "allNetworks"
+      value === "allNetworks" ||
+      value === "allAmounts"
     ) {
       if (index !== -1) {
         arr.splice(index, 1);
@@ -1694,6 +1777,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+
     return (
       <>
         {/* topbar */}
@@ -1783,8 +1867,33 @@ class TransactionHistoryPage extends BaseReactComponent {
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
                   <Col className="transactionHistoryCol">
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        // "All time",
+                        "$10K or less",
+                        "$10K - $100K",
+                        "$100K - $1M",
+                        "$1M - $10M",
+                        "$10M - $100M",
+                        "$100M or more",
+                      ]}
+                      onSelect={this.handleAmount}
+                      title={this.state.amountFilter}
+                      activetab={
+                        this.state.amountFilter === "Amount"
+                          ? ""
+                          : this.state.amountFilter
+                      }
+                      showChecked={true}
+                      customArrow={true}
+                      relative={true}
+                      arrowClassName="singleArrowClassName"
+                    />
+                  </Col>
+                  <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All years"
+                      filtername="Years"
                       options={this.props.intelligenceState.yearFilter}
                       action={SEARCH_BY_TIMESTAMP_IN}
                       handleClick={(key, value) =>
@@ -1797,7 +1906,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All assets"
+                      filtername="Assets"
                       options={this.props.intelligenceState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
@@ -1810,7 +1919,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All methods"
+                      filtername="Methods"
                       options={this.props.intelligenceState.methodFilter}
                       action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
@@ -1824,7 +1933,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All networks"
+                      filtername="Networks"
                       options={this.props.OnboardingState.coinsList}
                       action={SEARCH_BY_CHAIN_IN}
                       handleClick={this.handleFunction}
