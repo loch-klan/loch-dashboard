@@ -126,7 +126,7 @@ class Home extends BaseReactComponent {
     this.setState({ onboardingWalletAddress: copyWallet });
   };
   handleRedirection = () => {
-    this.props.history.push(`/top-accounts`);
+    // this.props.history.push(`/top-accounts`);
   };
   connectWalletEthers = async () => {
     ConnectWalletButtonClickedWelcome({
@@ -254,14 +254,14 @@ class Home extends BaseReactComponent {
         let isIncluded = false;
         const whatIndex = arr.findIndex(
           (resRes) =>
-          resRes.address?.trim()?.toLowerCase() ===
-          curr?.address?.trim()?.toLowerCase() ||
-        resRes.displayAddress?.trim()?.toLowerCase() ===
-          curr?.address?.trim()?.toLowerCase() ||
-        resRes.displayAddress?.trim()?.toLowerCase() ===
-          curr?.displayAddress?.trim()?.toLowerCase() ||
-        resRes.address?.trim()?.toLowerCase() ===
-          curr?.displayAddress?.trim()?.toLowerCase()
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase()
         );
         if (whatIndex !== -1) {
           isIncluded = true;
