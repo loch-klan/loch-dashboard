@@ -259,7 +259,7 @@ export default function PageHeader(props) {
                 <div
                   onClick={props.showHideDustFun}
                   className="pageHeaderShareContainer"
-                  style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
+                  style={{ marginRight: props.ShareBtn ? "0.4rem" : "" }}
                 >
                   <div className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
                     <Form.Check
