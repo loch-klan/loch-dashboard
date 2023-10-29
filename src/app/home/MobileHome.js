@@ -47,7 +47,18 @@ class Home extends BaseReactComponent {
       showBorder: false,
       coinsLoading: false,
       coinsFound: false,
+      showCloseBtn: false,
     };
+  }
+  componentDidMount() {
+    const search = this.props?.location?.search;
+    const params = new URLSearchParams(search);
+    const IsFromMobileHome = params.get("FromMobileHome");
+    if (IsFromMobileHome) {
+      this.setState({
+        showCloseBtn: true,
+      });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.addWalletList !== this.state.addWalletList) {
@@ -194,7 +205,6 @@ class Home extends BaseReactComponent {
     }, 500);
   };
   onValidSubmit = () => {
-    console.log("Submitting");
     if (!this.state.coinsFound) {
       return null;
     }
@@ -219,10 +229,97 @@ class Home extends BaseReactComponent {
     passingData.append("user_account", JSON.stringify(theExchangeData));
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
-      this.updateWallet();
-      if (theExchangeData && theExchangeData.length > 0) {
-        this.props.addExchangeTransaction(passingData);
-      }
+      localStorage.removeItem("lochToken");
+      localStorage.removeItem("addWallet");
+      localStorage.removeItem("lochUser");
+      localStorage.removeItem("lochDummyUser");
+      localStorage.removeItem("currencyRates");
+      localStorage.removeItem("currency");
+      localStorage.removeItem("currentPlan");
+      localStorage.removeItem("share_id");
+      localStorage.removeItem("Plans");
+      localStorage.removeItem("stopClick");
+      localStorage.removeItem("defi_access");
+      localStorage.removeItem("isPopup");
+      localStorage.removeItem("stop_redirect");
+      localStorage.removeItem("connectWalletAddress");
+      localStorage.removeItem("gotShareProtfolio");
+      setTimeout(() => {
+        let walletAddress = [];
+        let addWallet = this.state.addWalletList;
+        let addWalletTemp = this.state.addWalletList;
+        addWalletTemp?.forEach((w, i) => {
+          w.id = `wallet${i + 1}`;
+        });
+        if (addWalletTemp && addWalletTemp.length > 0) {
+          var mySet = new Set();
+
+          const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+            if (filData?.address !== "") {
+              if (mySet.has(filData.address.toLowerCase())) {
+                return false;
+              } else {
+                mySet.add(filData.address.toLowerCase());
+                return true;
+              }
+            }
+            return false;
+          });
+          if (filteredAddWalletTemp) {
+            setTimeout(() => {
+              this.props.setHeaderReducer(filteredAddWalletTemp);
+            }, 500);
+          }
+        }
+        let finalArr = [];
+
+        let addressList = [];
+
+        let nicknameArr = {};
+
+        for (let i = 0; i < addWallet.length; i++) {
+          let curr = addWallet[i];
+          if (
+            !walletAddress.includes(curr.apiAddress?.trim()) &&
+            curr.address?.trim()
+          ) {
+            finalArr.push(curr);
+            walletAddress.push(curr.address?.trim());
+            walletAddress.push(curr.displayAddress?.trim());
+            walletAddress.push(curr.apiAddress?.trim());
+            let address = curr.address?.trim();
+            nicknameArr[address] = curr.nickname;
+            addressList.push(curr.address?.trim());
+          }
+        }
+
+        finalArr = finalArr?.map((item, index) => {
+          return {
+            ...item,
+            id: `wallet${index + 1}`,
+          };
+        });
+
+        const data = new URLSearchParams();
+        data.append("wallet_addresses", JSON.stringify(addressList));
+        data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+        // data.append("link", );
+        this.props.createAnonymousUserApi(data, this, finalArr, null);
+
+        const blockchainDetected = [];
+        const nicknames = [];
+        finalArr
+          .filter((e) => e.coinFound)
+          .map((obj) => {
+            let coinName = obj.coins
+              .filter((e) => e.chain_detected)
+              .map((name) => name.coinName);
+            let address = obj.address;
+            let nickname = obj.nickname;
+            blockchainDetected.push({ address: address, names: coinName });
+            nicknames.push({ address: address, nickname: nickname });
+          });
+      }, 500);
     } else {
       let walletAddress = [];
       let addWallet = this.state.addWalletList;
@@ -285,12 +382,6 @@ class Home extends BaseReactComponent {
       // data.append("link", );
       this.props.createAnonymousUserApi(data, this, finalArr, null);
 
-      const address = finalArr?.map((e) => e.address);
-
-      const unrecog_address = finalArr
-        .filter((e) => !e.coinFound)
-        .map((e) => e.address);
-
       const blockchainDetected = [];
       const nicknames = [];
       finalArr
@@ -314,6 +405,9 @@ class Home extends BaseReactComponent {
       //   nicknames: nicknames,
       // });
     }
+  };
+  goToHome = () => {
+    this.props.history.push("/home");
   };
   render() {
     const wallets = this.state.addWalletList?.map((elem, index) => {
@@ -343,7 +437,6 @@ class Home extends BaseReactComponent {
                     (elem.address &&
                       elem.address === this.state.metamaskWalletConnected)
                   }
-                  autoFocus
                   name={`wallet${index + 1}`}
                   value={elem.displayAddress || elem.address || ""}
                   placeholder="Search any address or ENS here"
@@ -356,59 +449,6 @@ class Home extends BaseReactComponent {
                   autocomplete="off"
                   onSubmit={this.onValidSubmit}
                 />
-
-                {/* {this.state.addWalletList?.map((e, i) => {
-                  if (
-                    this.state.addWalletList[index].address &&
-                    e.id === `wallet${index + 1}`
-                  ) {
-                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                    if (e.coinFound && e.coins.length > 0) {
-                      return (
-                        <>
-                          <div>1</div>
-                          <CustomCoin
-                            isStatic
-                            coins={e.coins.filter((c) => c.chain_detected)}
-                            key={i}
-                            isLoaded={true}
-                          />
-                        </>
-                      );
-                    } else {
-                      if (
-                        e.coins.length ===
-                        this.props.OnboardingState.coinsList.length
-                      ) {
-                        return (
-                          <>
-                            <div>2</div>
-                            <CustomCoin
-                              isStatic
-                              coins={null}
-                              key={i}
-                              isLoaded={true}
-                            />
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <div>3</div>
-                            <CustomCoin
-                              isStatic
-                              coins={null}
-                              key={i}
-                              isLoaded={false}
-                            />
-                          </>
-                        );
-                      }
-                    }
-                  } else {
-                    return "";
-                  }
-                })} */}
               </div>
             )}
           </div>
@@ -424,12 +464,14 @@ class Home extends BaseReactComponent {
             {/* <Image className="mbwBanner" src={MobileFrame} /> */}
             <div className="mbwBanner">
               <Image className="mbwBannerLochLogo " src={LochLogoWhiteIcon} />
-              <div
-                className="closebtn mbwBannerCrossLogoContainer"
-                onClick={this.state.onHide}
-              >
-                <Image src={CloseIcon} className="mbwBannerCrossLogo" />
-              </div>
+              {this.state.showCloseBtn ? (
+                <div
+                  className="closebtn mbwBannerCrossLogoContainer"
+                  onClick={this.goToHome}
+                >
+                  <Image src={CloseIcon} className="mbwBannerCrossLogo" />
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="mwbAddWalletWrapperContainer">
@@ -449,7 +491,12 @@ class Home extends BaseReactComponent {
             ) : null}
           </div>
 
-          <div className="mbwBottomDisclaimer">
+          <div
+            style={{
+              marginBottom: "5rem",
+            }}
+            className="mbwBottomDisclaimer"
+          >
             <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
               Don't worry.{" "}
               <CustomOverlay

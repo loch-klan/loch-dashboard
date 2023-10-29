@@ -90,7 +90,11 @@ import {
 } from "../cost/Api";
 import Loading from "../common/Loading";
 import {
+  amountFormat,
   CurrencyType,
+  lightenDarkenColor,
+  loadingAnimation,
+  mobileCheck,
   noExponents,
   TruncateText,
   UpgradeTriggered,
@@ -105,6 +109,10 @@ import Slider from "react-slick";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
 import { toast } from "react-toastify";
+import "./_mobilePortfolio.scss";
+import arrowUp from "../../assets/images/arrow-up.svg";
+import LinkIcon from "../../assets/images/link.svg";
+import PortfolioMobile from "./PortfolioMobile";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -127,6 +135,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isMobileDevice: false,
       settings,
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
@@ -383,6 +392,11 @@ class Portfolio extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -2038,6 +2052,28 @@ class Portfolio extends BaseReactComponent {
       }
       return 0;
     };
+    if (this.state.isMobileDevice) {
+      return (
+        <PortfolioMobile
+          chainLoader={this.state.chainLoader}
+          loader={this.state.loader}
+          totalChainDetechted={this.state.totalChainDetechted}
+          setLoader={this.setLoader}
+          getTotalAssetValue={getTotalAssetValue}
+          isLoading={this.state.isLoading}
+          isUpdate={this.state.isUpdate}
+          getProtocolTotal={this.getProtocolTotal}
+          updateTimer={this.updateTimer}
+          undetectedWallet={this.undetectedWallet}
+          userWalletList={this.state.userWalletList}
+          handleChangeList={this.handleChangeList}
+          CheckApiResponse={this.CheckApiResponse}
+          handleAddModal={this.handleAddModal}
+          isLoadingNet={this.state.isLoadingNet}
+          history={this.props.history}
+        />
+      );
+    }
     return (
       <div>
         {this.state.loader ? (
@@ -2151,6 +2187,7 @@ class Portfolio extends BaseReactComponent {
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
                   updateTimer={this.updateTimer}
+                  userWalletList={this.state.userWalletList}
                 />
                 {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
