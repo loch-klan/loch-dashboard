@@ -1333,7 +1333,7 @@ class PieChart2 extends BaseReactComponent {
                     <Image src={refreshIcon} />
                     Updated{" "}
                     <span
-                      style={{ margin: "0px 3px" }}
+                      style={{ marginLeft: "3px" }}
                       className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
                       {this.state.timeNumber === null
@@ -1342,11 +1342,13 @@ class PieChart2 extends BaseReactComponent {
                         ? " just now"
                         : this.state.timeNumber}
                     </span>
-                    {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      : this.state.timeNumber == 0
-                      ? ""
-                      : "h ago"}
+                    <span>
+                      {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber == 0
+                        ? ""
+                        : "h ago"}
+                    </span>
                   </h2>
                   <CustomOverlay
                     position="top"
