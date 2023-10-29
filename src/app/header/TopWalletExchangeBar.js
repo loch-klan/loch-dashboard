@@ -536,10 +536,7 @@ class TopBar extends Component {
   };
   render() {
     if (this.props.isMobileRender) {
-      if (
-        this.props.assetTotal ||
-        (this.state.walletList && this.state.walletList.length > 0)
-      ) {
+      if (this.state.walletList && this.state.walletList.length > 0) {
         return (
           <div className="accountsAmountContainer">
             <div className="eyeAndAccount">
