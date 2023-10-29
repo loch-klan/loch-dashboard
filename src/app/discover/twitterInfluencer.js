@@ -858,6 +858,7 @@ class TwitterInflucencePage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}
                     message={"No accounts found"}
