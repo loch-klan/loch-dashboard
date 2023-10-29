@@ -18,7 +18,7 @@ export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
-  let currency = JSON.parse(localStorage.getItem("currency"));
+  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   // ).length;
@@ -306,7 +306,7 @@ export const getGraphData = (apidata, parentCtx) => {
 };
 
 export const getCounterGraphData = (arr, parentCtx) => {
-  let currency = JSON.parse(localStorage.getItem("currency"));
+  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   //  ).length;

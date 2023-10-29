@@ -97,10 +97,34 @@
         outline: none;
         box-shadow: none;
         padding: 0;
+        .custom-control {
+          .custom-control-label {
+            &::before {
+              background-color: #f2f2f2;
+            }
+            cursor: pointer;
+          }
+          .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: $grey-B0B;
+          }
+        }
       }
+
       &:hover {
         .pageHeaderShareBtn {
           color: $primary;
+          .custom-control {
+            color: $primary;
+            .custom-control-label {
+              color: $primary;
+              &::after {
+                background-color: $primary;
+              }
+              &::before {
+                border-color: $primary;
+              }
+            }
+          }
         }
         .pageHeaderShareImg {
           filter: brightness(0);

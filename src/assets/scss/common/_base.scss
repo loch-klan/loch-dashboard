@@ -2369,3 +2369,10 @@ textarea {
 .marginBot2point8 {
   margin-bottom: 2.8rem;
 }
+.dropdownArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3.5rem;
+  pointer-events: none;
+}

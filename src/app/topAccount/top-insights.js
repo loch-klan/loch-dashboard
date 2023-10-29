@@ -62,13 +62,14 @@ class TopInsightsPage extends Component {
       selectedFilter: 1,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
@@ -85,7 +86,7 @@ class TopInsightsPage extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -208,8 +209,8 @@ class TopInsightsPage extends Component {
     }
   };
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
@@ -319,7 +320,7 @@ class TopInsightsPage extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="insight-page"

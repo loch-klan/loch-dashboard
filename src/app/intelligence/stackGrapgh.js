@@ -13,7 +13,7 @@ export const getProfitLossAsset = (arr) => {
   // Find total outflows by calculating outflows.totalvolume
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
-  let currency = JSON.parse(localStorage.getItem("currency"));
+  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   let fees = arr?.fees;
 
   let totalFees = 0;

@@ -31,8 +31,8 @@ import AuthModal from "./AuthModal";
 class CheckoutModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -125,8 +125,8 @@ class CheckoutModal extends BaseReactComponent {
 
   AddEmailModal = () => {
     // console.log("handle emailc close");
-    const isDummy = localStorage.getItem("lochDummyUser");
-    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    const isDummy = window.sessionStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (islochUser) {
       this.setState({
         RegisterModal: false,

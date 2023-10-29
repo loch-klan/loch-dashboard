@@ -75,7 +75,7 @@ class PieChart2 extends BaseReactComponent {
       isLoading: props.isLoading,
       isFollowingAddress: false,
       showFollowingAddress: true,
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
@@ -95,11 +95,12 @@ class PieChart2 extends BaseReactComponent {
       triggerId: 6,
       timeNumber: null,
       timeUnit: "",
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       defiLoader: false,
 
       // refresh
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       isStopLoading: false,
 
       chainLoader: false,
@@ -197,7 +198,7 @@ class PieChart2 extends BaseReactComponent {
     });
     let chainList = [];
 
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let uniquechains = [];
     // console.log("user wallet",UserWallet)
     UserWallet &&
@@ -293,7 +294,7 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     //  console.log("wallet_address", UserWallet);
 
     if (UserWallet?.length !== 0) {
@@ -447,7 +448,7 @@ class PieChart2 extends BaseReactComponent {
       //     });
       //   }
       // });
-      let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
       let uniquechains = [];
 
       UserWallet &&
@@ -673,7 +674,7 @@ class PieChart2 extends BaseReactComponent {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -702,10 +703,10 @@ class PieChart2 extends BaseReactComponent {
       unit = " just now";
     } else if (diffInMinutes < 60) {
       timeDiffString = Math.floor(diffInMinutes);
-      unit = diffInMinutes < 2 ? " minute ago" : " minutes ago";
+      unit = diffInMinutes < 2 ? "m ago" : "m ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-      unit = diffInHours < 2 ? " hour ago" : " hours ago";
+      unit = diffInHours < 2 ? "h ago" : "h ago";
     }
 
     // console.log("timediff str", timeDiffString);
@@ -743,8 +744,8 @@ class PieChart2 extends BaseReactComponent {
     this.props.portfolioState.yesterdayBalance = 0;
 
     // console.log("Refresh clicked");
-    // localStorage.setItem("refreshApiTime", currentTime);
-    let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    // window.sessionStorage.setItem("refreshApiTime", currentTime);
+    let userWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
 
     userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
@@ -767,7 +768,7 @@ class PieChart2 extends BaseReactComponent {
     // getUserWallet(this);
   };
   addAddressToWatchListFun = () => {
-    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -834,7 +835,7 @@ class PieChart2 extends BaseReactComponent {
     window.sessionStorage.setItem("isFollowingAddress", false);
   };
   isFollowedByUserFun = () => {
-    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -856,7 +857,7 @@ class PieChart2 extends BaseReactComponent {
     }
   };
   showFollowOrNot = () => {
-    const listJson = JSON.parse(localStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
       if (listJson.length === 1) {
         this.isFollowedByUserFun();
@@ -1143,8 +1144,8 @@ class PieChart2 extends BaseReactComponent {
       ],
     };
 
-    // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    // console.log("wallet address", JSON.parse(window.sessionStorage.getItem("addWallet")))
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
@@ -1241,7 +1242,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("uniquelist", uniqueList);
     const handleShare = () => {
       let lochUser = getCurrentUser().id;
-      let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
       let slink =
         userWallet?.length === 1
           ? userWallet[0].displayAddress || userWallet[0].address
@@ -1354,11 +1355,14 @@ class PieChart2 extends BaseReactComponent {
                   <h2
                     className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
+                    style={{
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     <Image src={refreshIcon} />
                     Updated{" "}
                     <span
-                      style={{ margin: "0px 3px" }}
+                      style={{ marginLeft: "3px" }}
                       className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
                       {this.state.timeNumber === null
@@ -1366,13 +1370,14 @@ class PieChart2 extends BaseReactComponent {
                         : this.state.timeNumber === 0
                         ? " just now"
                         : this.state.timeNumber}
-                    </span>{" "}
-                    {" " + this.state.timeUnit !== "" &&
-                    this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      : this.state.timeNumber == 0
-                      ? ""
-                      : "hours ago"}
+                    </span>
+                    <span>
+                      {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber == 0
+                        ? ""
+                        : "h ago"}
+                    </span>
                   </h2>
                   <CustomOverlay
                     position="top"

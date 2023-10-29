@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Breadcrumb, Image } from "react-bootstrap";
+import { Button, Breadcrumb, Image, Form } from "react-bootstrap";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
 import { Link } from "react-router-dom";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
@@ -23,7 +23,7 @@ export default function PageHeader(props) {
 
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -255,6 +255,38 @@ export default function PageHeader(props) {
               </Button>
             )}
             <div style={{ display: "flex", alignItems: "center" }}>
+              {props.showHideDust && props.showHideDustFun ? (
+                <div
+                  onClick={props.showHideDustFun}
+                  className="pageHeaderShareContainer"
+                  style={{ marginRight: props.ShareBtn ? "0.4rem" : "" }}
+                >
+                  <div className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={props.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        props.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                  {/* <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                    {props.showHideDustVal
+                      ? "Reveal dust (less than $1)"
+                      : "Hide dust (less than $1)"}
+                  </div> */}
+                </div>
+              ) : null}
               {props.ExportBtn && (
                 <div
                   onClick={props.handleExportModal}

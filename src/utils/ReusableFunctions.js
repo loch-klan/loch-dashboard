@@ -252,7 +252,7 @@ export const noExponents = (value) => {
 };
 
 export const CurrencyType = (code = "both") => {
-  let currency = JSON.parse(localStorage.getItem("currency"));
+  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   if (code === "both") {
     return currency?.symbol + " " + currency?.code;
   } else if (code) {
@@ -263,11 +263,11 @@ export const CurrencyType = (code = "both") => {
 };
 
 export const UpgradeTriggered = () => {
-  let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+  let userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
   let id = 0;
   let trigger = false;
 
-  let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+  let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
   // console.log("wal", walletAddress?.length, userPlan?.wallet_address_limit);
 
   if (

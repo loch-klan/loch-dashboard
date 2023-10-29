@@ -113,25 +113,26 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
-    JSON.parse(localStorage.getItem("currency"))
+    JSON.parse(window.sessionStorage.getItem("currency"))
   );
-  let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+  let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
   if (lochUser) {
     // if loch user remove share id to prevent opening upgrade modal
-    localStorage.removeItem("share_id");
+    window.sessionStorage.removeItem("share_id");
   }
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
   const [isWallet, setWallet] = React.useState(
-    JSON.parse(localStorage.getItem("addWallet")) ? true : false
+    JSON.parse(window.sessionStorage.getItem("addWallet")) ? true : false
   );
   const [signinPopup, setSigninPopup] = React.useState(false);
-  let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
+  let userPlan =
+    JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
-  let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+  let defi_access = JSON.parse(window.sessionStorage.getItem("defi_access"));
   let isDefi = userPlan?.defi_enabled || defi_access;
   let selectedPlan = {};
-  const Plans = JSON.parse(localStorage.getItem("Plans"));
+  const Plans = JSON.parse(window.sessionStorage.getItem("Plans"));
   Plans?.map((plan) => {
     if (plan?.name === userPlan?.name) {
       selectedPlan = {
@@ -148,16 +149,16 @@ function Sidebar(props) {
   // submenu
 
   const [isSubmenu, setSubmenu] = React.useState(
-    JSON.parse(localStorage.getItem("isSubmenu"))
+    JSON.parse(window.sessionStorage.getItem("isSubmenu"))
   );
 
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
-    JSON.parse(localStorage.getItem("previewAddress"))
+    JSON.parse(window.sessionStorage.getItem("previewAddress"))
   );
 
   const handleIntelligentSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     let obj = {
       me: true,
       discover: false,
@@ -168,10 +169,10 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
   };
   const handleDefiSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     let obj = {
       me: true,
       discover: false,
@@ -182,11 +183,11 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
   };
 
   const handleTopAccountIntelligentSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     let obj = {
       me: true,
       discover: false,
@@ -198,11 +199,11 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
   };
 
   const handleTopAccountSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     let obj = {
       me: true,
       discover: false,
@@ -213,11 +214,11 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
   };
 
   const handleMeSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     // console.log("current", currentValue)
     let obj = {
       me: true,
@@ -228,7 +229,7 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
 
     MenuMeTab({
       session_id: getCurrentUser().id,
@@ -237,7 +238,7 @@ function Sidebar(props) {
   };
 
   const handleDiscoverSubmenu = () => {
-    let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    let currentValue = JSON.parse(window.sessionStorage.getItem("isSubmenu"));
     let obj = {
       me: true,
       discover: false,
@@ -247,7 +248,7 @@ function Sidebar(props) {
     };
     setSubmenu(obj);
 
-    localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
 
     MenuDiscoverTab({
       session_id: getCurrentUser().id,
@@ -259,7 +260,9 @@ function Sidebar(props) {
     // console.log("in use effect");
 
     // update previewaddress from localstorage
-    setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
+    setPreviewAddress(
+      JSON.parse(window.sessionStorage.getItem("previewAddress"))
+    );
 
     // Me section
     if (
@@ -280,9 +283,11 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
       resetPreviewAddress();
-      setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
+      setPreviewAddress(
+        JSON.parse(window.sessionStorage.getItem("previewAddress"))
+      );
     }
     // Me section with intelligence
     else if (
@@ -298,7 +303,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/intelligence",
@@ -320,7 +325,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
     // Discover section
     else if (
@@ -337,7 +342,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts",
@@ -355,7 +360,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts/intelligence/transaction-history",
@@ -378,7 +383,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else {
       let obj = {
         me: true,
@@ -390,7 +395,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
   }, []);
 
@@ -399,7 +404,7 @@ function Sidebar(props) {
   }, []);
 
   const getWalletFunction = () => {
-    let status = JSON.parse(localStorage.getItem("addWallet"));
+    let status = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (status) {
       setWallet(true);
       // console.log("wallet", isWallet);
@@ -415,7 +420,7 @@ function Sidebar(props) {
     handleLeave();
   };
   const handleLeave = () => {
-    const isDummy = localStorage.getItem("lochDummyUser");
+    const isDummy = window.sessionStorage.getItem("lochDummyUser");
     // console.log("isDummy user", isDummy)
     MenuLeave({
       session_id: getCurrentUser().id,
@@ -498,8 +503,8 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleShare = () => {
-    const user = JSON.parse(localStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -510,10 +515,10 @@ function Sidebar(props) {
   };
 
   React.useEffect(() => {
-    let currency = JSON.parse(localStorage.getItem("currency"));
+    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
 
     if (!currency) {
-      localStorage.setItem(
+      window.sessionStorage.setItem(
         "currency",
         JSON.stringify({
           active: true,
@@ -525,12 +530,14 @@ function Sidebar(props) {
         })
       );
 
-      setCurrency(JSON.parse(localStorage.getItem("currency")));
+      setCurrency(JSON.parse(window.sessionStorage.getItem("currency")));
     }
 
     setTimeout(() => {
       //  console.log("curr", currency);
-      let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
+      let currencyRates = JSON.parse(
+        window.sessionStorage.getItem("currencyRates")
+      );
       // console.log("currency", currencyRates);
       getAllCurrencyApi(setAllCurrencyList);
       !currencyRates && getAllCurrencyRatesApi();
@@ -544,12 +551,14 @@ function Sidebar(props) {
 
   // function to call popup timer
   const SiginModal = () => {
-    let isPopup = JSON.parse(localStorage.getItem("isPopup"));
+    let isPopup = JSON.parse(window.sessionStorage.getItem("isPopup"));
 
     setTimeout(() => {
       // if isPopupActive = true then do not open this popup bcoz any other popup still open
-      let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
-      lochUser = JSON.parse(localStorage.getItem("lochUser"));
+      let isPopupActive = JSON.parse(
+        window.sessionStorage.getItem("isPopupActive")
+      );
+      lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
       if (!isPopupActive) {
         // console.log("inactive popup", isPopupActive);
         if (!lochUser) {
@@ -558,10 +567,10 @@ function Sidebar(props) {
           //   from: history.location.pathname.substring(1),
           // });
           // isPopup && handleSiginPopup();
-          // localStorage.setItem("isPopup", false);
+          // window.sessionStorage.setItem("isPopup", false);
           if (isPopup) {
             handleSiginPopup();
-            localStorage.setItem("isPopup", false);
+            window.sessionStorage.setItem("isPopup", false);
             GeneralPopup({
               session_id: getCurrentUser().id,
               from: history.location.pathname.substring(1),
@@ -577,7 +586,9 @@ function Sidebar(props) {
   };
 
   const handleFunction = (currency) => {
-    let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
+    let currencyRates = JSON.parse(
+      window.sessionStorage.getItem("currencyRates")
+    );
     for (const [key, value] of Object.entries(currencyRates.rates)) {
       // console.log(`${key}: ${value}`);
       if (key === currency.code) {
@@ -595,7 +606,7 @@ function Sidebar(props) {
     });
     setTimeout(() => {
       setCurrency(currency);
-      localStorage.setItem("currency", JSON.stringify(currency));
+      window.sessionStorage.setItem("currency", JSON.stringify(currency));
       window.location.reload();
     }, 200);
   };
@@ -631,7 +642,7 @@ function Sidebar(props) {
 
   const upgradeModal = () => {
     setUpgradeModal(!Upgrade);
-    userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+    userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
   };
 
   const handleConnectModal = () => {
@@ -1158,7 +1169,7 @@ function Sidebar(props) {
                             Yield opportunities
                           </NavLink>
                         </li> */}
-                        <li>
+                        {/* <li>
                           <NavLink
                             className={`nav-link`}
                             to="/top-accounts"
@@ -1199,7 +1210,7 @@ function Sidebar(props) {
                               />
                             )}
                           </NavLink>
-                        </li>
+                        </li> */}
                         {isSubmenu.topAccount && previewAddress?.address && (
                           <>
                             <li className="sub-menu">
@@ -2121,7 +2132,7 @@ function Sidebar(props) {
                       </Button>
                     </span>
                   </li> */}
-                  {/* {JSON.parse(localStorage.getItem("lochUser")) && (
+                  {/* {JSON.parse(window.sessionStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -2251,7 +2262,7 @@ function Sidebar(props) {
           show={Upgrade}
           onHide={upgradeModal}
           history={history}
-          isShare={localStorage.getItem("share_id")}
+          isShare={window.sessionStorage.getItem("share_id")}
           // isStatic={isStatic}
           triggerId={triggerId}
           pname="sidebar"

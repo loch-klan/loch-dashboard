@@ -27,6 +27,7 @@ import {
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
   SEARCH_BY_CHAIN_IN,
+  SEARCH_BETWEEN_VALUE,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
 import { searchTransactionApi, getFilters } from "./Api";
@@ -52,6 +53,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
+  TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
   TransactionHistoryHideDust,
@@ -92,6 +94,7 @@ import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
 import { ExportIconWhite } from "../../assets/images/icons";
+import DropDown from "../common/DropDown";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -99,7 +102,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(localStorage.getItem("addWallet"));
+    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -110,9 +113,14 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      selectedTimes: [],
+      selectedAssets: [],
+      selectedMethods: [],
+      selectedNetworks: [],
+      amountFilter: "Amount",
       exportModal: false,
       goToBottom: false,
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -168,14 +176,15 @@ class TransactionHistoryPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // userWalletList: window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -210,7 +219,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -225,49 +234,157 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    this.props.history.replace({
-      search: `?p=${this.state.currentPage}`,
-    });
-    this.callApi(this.state.currentPage || START_INDEX);
-    this.props.getFilters(this);
-    this.props.getAllCoins();
-    // this.props.getCoinRate();
-    this.props.GetAllPlan();
-    this.props.getUser();
+    const transHistoryPageNumber = window.sessionStorage.getItem(
+      "transHistoryPageNumber"
+    );
+    const transHistoryConditions = window.sessionStorage.getItem(
+      "transHistoryConditions"
+    );
+    const transHistorySorts =
+      window.sessionStorage.getItem("transHistorySorts");
 
-    let obj = UpgradeTriggered();
-
-    if (obj.trigger) {
+    if (transHistoryPageNumber || transHistoryConditions || transHistorySorts) {
       this.setState(
         {
-          triggerId: obj.id,
-          isStatic: true,
+          currentPage: transHistoryPageNumber
+            ? Number(transHistoryPageNumber)
+            : 0,
+          condition: transHistoryConditions
+            ? JSON.parse(transHistoryConditions)
+            : [],
+          sort: transHistorySorts
+            ? JSON.parse(transHistorySorts)
+            : [{ key: SORT_BY_TIMESTAMP, value: false }],
         },
         () => {
-          this.upgradeModal();
+          if (transHistoryPageNumber) {
+            window.sessionStorage.removeItem("transHistoryPageNumber");
+          }
+          if (transHistoryConditions) {
+            const tempHolder = JSON.parse(transHistoryConditions);
+            for (var key in tempHolder) {
+              if (tempHolder.hasOwnProperty(key)) {
+                const tempVar = tempHolder[key];
+                if (tempVar.key === SEARCH_BY_TIMESTAMP_IN) {
+                  this.setState({ selectedTimes: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_ASSETS_IN) {
+                  this.setState({ selectedAssets: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_METHOD_IN) {
+                  this.setState({ selectedMethods: tempVar.value });
+                } else if (tempVar.key === SEARCH_BY_CHAIN_IN) {
+                  this.setState({ selectedNetworks: tempVar.value });
+                } else if (tempVar.key === SEARCH_BETWEEN_VALUE) {
+                  let tempAmount = "Amount";
+                  let min = tempVar.value?.min_value
+                    ? tempVar.value.min_value
+                    : 0;
+                  let max = tempVar.value?.max_value
+                    ? tempVar.value.max_value
+                    : 0;
+
+                  if (min === 0 && max === 10000) {
+                    tempAmount = "$10K or less";
+                  } else if (min === 10000 && max === 100000) {
+                    tempAmount = "$10K - $100K";
+                  } else if (min === 100000 && max === 1000000) {
+                    tempAmount = "$100K - $1M";
+                  } else if (min === 1000000 && max === 10000000) {
+                    tempAmount = "$1M - $10M";
+                  } else if (min === 10000000 && max === 100000000) {
+                    tempAmount = "$10M - $100M";
+                  } else if (min === 100000000 && max === 10000000000) {
+                    tempAmount = "$100M or more";
+                  }
+
+                  this.setState({ amountFilter: tempAmount });
+                }
+              }
+            }
+            window.sessionStorage.removeItem("transHistoryConditions");
+          }
+          if (transHistorySorts) {
+            window.sessionStorage.removeItem("transHistorySorts");
+          }
+
+          this.props.history.replace({
+            search: `?p=${this.state.currentPage}`,
+          });
+          this.callApi(this.state.currentPage || START_INDEX);
+          this.props.getFilters(this);
+          this.props.getAllCoins();
+          // this.props.getCoinRate();
+          this.props.GetAllPlan();
+          this.props.getUser();
+
+          let obj = UpgradeTriggered();
+
+          if (obj.trigger) {
+            this.setState(
+              {
+                triggerId: obj.id,
+                isStatic: true,
+              },
+              () => {
+                this.upgradeModal();
+              }
+            );
+          }
+          this.startPageView();
+          this.updateTimer(true);
+
+          return () => {
+            clearInterval(window.checkTransactionHistoryTimer);
+          };
         }
       );
-    }
-    this.startPageView();
-    this.updateTimer(true);
+    } else {
+      this.props.history.replace({
+        search: `?p=${this.state.currentPage}`,
+      });
+      this.callApi(this.state.currentPage || START_INDEX);
+      this.props.getFilters(this);
+      this.props.getAllCoins();
+      // this.props.getCoinRate();
+      this.props.GetAllPlan();
+      this.props.getUser();
 
-    return () => {
-      clearInterval(window.checkTransactionHistoryTimer);
-    };
+      let obj = UpgradeTriggered();
+
+      if (obj.trigger) {
+        this.setState(
+          {
+            triggerId: obj.id,
+            isStatic: true,
+          },
+          () => {
+            this.upgradeModal();
+          }
+        );
+      }
+      this.startPageView();
+      this.updateTimer(true);
+
+      return () => {
+        clearInterval(window.checkTransactionHistoryTimer);
+      };
+    }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("transactionHistoryPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "transactionHistoryPageExpiryTime",
+      tempExpiryTime
+    );
   };
   endPageView = () => {
     clearInterval(window.checkTransactionHistoryTimer);
-    localStorage.removeItem("transactionHistoryPageExpiryTime");
+    window.sessionStorage.removeItem("transactionHistoryPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -279,7 +396,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -287,7 +404,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -431,6 +548,59 @@ class TransactionHistoryPage extends BaseReactComponent {
       );
     }
   };
+  handleAmount = (e) => {
+    let title = "";
+
+    if (e.split(" ")[1] !== undefined) {
+      title = title + " " + e.split(" ")[1];
+    }
+    if (e.split(" ")[2] !== undefined) {
+      title = title + " " + e.split(" ")[2];
+    }
+    if (e.split(" ")[3] !== "undefined") {
+      title = title + " " + e.split(" ")[3];
+    }
+    title = title.trim();
+    if (title === this.state.amountFilter) {
+      this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
+      this.setState({
+        amountFilter: "Amount",
+      });
+      return;
+    }
+    this.setState({
+      amountFilter: title,
+    });
+    TransactionHistoryAmountFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      amount_filter: title,
+    });
+    let min = 0;
+    let max = 0;
+
+    if (title === "$10K or less") {
+      min = 0;
+      max = 10000;
+    } else if (title === "$10K - $100K") {
+      min = 10000;
+      max = 100000;
+    } else if (title === "$100K - $1M") {
+      min = 100000;
+      max = 1000000;
+    } else if (title === "$1M - $10M") {
+      min = 1000000;
+      max = 10000000;
+    } else if (title === "$10M - $100M") {
+      min = 10000000;
+      max = 100000000;
+    } else if (title === "$100M or more") {
+      min = 100000000;
+      max = 10000000000;
+    }
+    const value = { min_value: min, max_value: max };
+    this.addCondition(SEARCH_BETWEEN_VALUE, value);
+  };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -441,7 +611,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsTimeUsed,
       });
       this.updateTimer();
-      this.setState({ isTimeSearchUsed: false });
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
 
@@ -465,8 +635,10 @@ class TransactionHistoryPage extends BaseReactComponent {
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
-        this.setState({ isAssetSearchUsed: false });
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
       });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
     } else if (key === "SEARCH_BY_CHAIN_IN") {
       const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
       TransactionHistoryNetworkFilter({
@@ -476,7 +648,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsNetworkUsed,
       });
       this.updateTimer();
-      this.setState({ isNetworkSearchUsed: false });
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
 
@@ -489,14 +661,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allAssets" &&
       value !== "allMethod" &&
       value !== "allYear" &&
-      value !== "allNetworks"
+      value !== "allNetworks" &&
+      value !== "allAmounts"
     ) {
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear" ||
-      value === "allNetworks"
+      value === "allNetworks" ||
+      value === "allAmounts"
     ) {
       if (index !== -1) {
         arr.splice(index, 1);
@@ -536,7 +710,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    console.log("tableSortOpt are ", this.state.tableSortOpt);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -685,11 +858,12 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
+
     let shareLink =
       BASE_URL_S3 +
       "home/" +
@@ -702,6 +876,43 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
+  };
+  handleSpecificShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    TransactionHistoryShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    let shareLink =
+      BASE_URL_S3 +
+      "home/" +
+      slink +
+      "?redirect=intelligence/transaction-history";
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const page = params.get("p");
+    if (page !== undefined || page !== null) {
+      shareLink = shareLink + "&transHistoryPageNumber=" + page;
+    }
+    if (this.state.condition) {
+      shareLink =
+        shareLink +
+        "&transHistoryConditions=" +
+        JSON.stringify(this.state.condition);
+    }
+    if (this.state.sort) {
+      shareLink =
+        shareLink + "&transHistorySorts=" + JSON.stringify(this.state.sort);
+    }
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
     this.updateTimer();
   };
 
@@ -849,6 +1060,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
+            let showThis = "";
+            if (rowData.from?.metaData?.nickname) {
+              showThis = TruncateText(rowData.from?.metaData?.nickname);
+            } else if (rowData.from?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.from?.wallet_metaData.text);
+            } else if (rowData.from?.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.from?.metaData?.displayAddress);
+            } else if (rowData.from?.address) {
+              showThis = TruncateText(rowData.from?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -891,25 +1112,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.from.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
+
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -921,22 +1138,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.from.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
+
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1012,22 +1228,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1065,6 +1279,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
+            let showThis = "";
+            if (rowData.to.metaData?.nickname) {
+              showThis = TruncateText(rowData.to?.metaData?.nickname);
+            } else if (rowData.to?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.to?.wallet_metaData?.text);
+            } else if (rowData.to.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.to.metaData?.displayAddress);
+            } else if (rowData.to?.address) {
+              showThis = TruncateText(rowData.to?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1107,25 +1331,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.to.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1137,22 +1356,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                   rowData.to.wallet_metaData.text ||
                   rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.to.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1228,22 +1445,20 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1562,6 +1777,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+
     return (
       <>
         {/* topbar */}
@@ -1573,7 +1789,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1619,7 +1835,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
@@ -1640,38 +1856,70 @@ class TransactionHistoryPage extends BaseReactComponent {
               ExportBtn
               exportBtnTxt="Click to export transactions"
               handleExportModal={this.handleExportModal}
-              handleShare={this.handleShare}
+              handleShare={this.handleSpecificShare}
               updateTimer={this.updateTimer}
+              showHideDust
+              showHideDustVal={this.state.showDust}
+              showHideDustFun={this.showDust}
             />
 
             <div className="fillter_tabs_section">
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
                   <Col className="transactionHistoryCol">
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        // "All time",
+                        "$10K or less",
+                        "$10K - $100K",
+                        "$100K - $1M",
+                        "$1M - $10M",
+                        "$10M - $100M",
+                        "$100M or more",
+                      ]}
+                      onSelect={this.handleAmount}
+                      title={this.state.amountFilter}
+                      activetab={
+                        this.state.amountFilter === "Amount"
+                          ? ""
+                          : this.state.amountFilter
+                      }
+                      showChecked={true}
+                      customArrow={true}
+                      relative={true}
+                      arrowClassName="singleArrowClassName"
+                    />
+                  </Col>
+                  <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All years"
+                      filtername="Years"
                       options={this.props.intelligenceState.yearFilter}
                       action={SEARCH_BY_TIMESTAMP_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
                       searchIsUsed={this.timeSearchIsUsed}
+                      selectedTokens={this.state.selectedTimes}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All assets"
+                      filtername="Assets"
                       options={this.props.intelligenceState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
                       searchIsUsed={this.assetSearchIsUsed}
+                      selectedTokens={this.state.selectedAssets}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All methods"
+                      filtername="Methods"
                       options={this.props.intelligenceState.methodFilter}
                       action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
@@ -1679,17 +1927,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       searchIsUsed={this.methodSearchIsUsed}
                       isCaptialised
+                      selectedTokens={this.state.selectedMethods}
+                      transactionHistorySavedData
                     />
                   </Col>
                   <Col className="transactionHistoryCol">
                     <CustomDropdown
-                      filtername="All networks"
+                      filtername="Networks"
                       options={this.props.OnboardingState.coinsList}
                       action={SEARCH_BY_CHAIN_IN}
                       handleClick={this.handleFunction}
                       searchIsUsed={this.networkSearchIsUsed}
                       isCaptialised
                       isGreyChain
+                      selectedTokens={this.state.selectedNetworks}
+                      transactionHistorySavedData
                     />
                   </Col>
                   {/* {fillter_tabs} */}
@@ -1739,7 +1991,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     onPageChange={this.onPageChange}
                     addWatermark
                   />
-                  <div className="ShowDust">
+                  {/* <div className="ShowDust">
                     <p
                       onClick={this.showDust}
                       className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -1748,7 +2000,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         ? "Reveal dust (less than $1)"
                         : "Hide dust (less than $1)"}
                     </p>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>

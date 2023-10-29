@@ -227,23 +227,23 @@ class Home extends BaseReactComponent {
     }
     let passingData = new URLSearchParams();
     passingData.append("user_account", JSON.stringify(theExchangeData));
-    const islochUser = localStorage.getItem("lochDummyUser");
+    const islochUser = window.sessionStorage.getItem("lochDummyUser");
     if (islochUser) {
-      localStorage.removeItem("lochToken");
-      localStorage.removeItem("addWallet");
-      localStorage.removeItem("lochUser");
-      localStorage.removeItem("lochDummyUser");
-      localStorage.removeItem("currencyRates");
-      localStorage.removeItem("currency");
-      localStorage.removeItem("currentPlan");
-      localStorage.removeItem("share_id");
-      localStorage.removeItem("Plans");
-      localStorage.removeItem("stopClick");
-      localStorage.removeItem("defi_access");
-      localStorage.removeItem("isPopup");
-      localStorage.removeItem("stop_redirect");
-      localStorage.removeItem("connectWalletAddress");
-      localStorage.removeItem("gotShareProtfolio");
+      window.sessionStorage.removeItem("lochToken");
+      window.sessionStorage.removeItem("addWallet");
+      window.sessionStorage.removeItem("lochUser");
+      window.sessionStorage.removeItem("lochDummyUser");
+      window.sessionStorage.removeItem("currencyRates");
+      window.sessionStorage.removeItem("currency");
+      window.sessionStorage.removeItem("currentPlan");
+      window.sessionStorage.removeItem("share_id");
+      window.sessionStorage.removeItem("Plans");
+      window.sessionStorage.removeItem("stopClick");
+      window.sessionStorage.removeItem("defi_access");
+      window.sessionStorage.removeItem("isPopup");
+      window.sessionStorage.removeItem("stop_redirect");
+      window.sessionStorage.removeItem("connectWalletAddress");
+      window.sessionStorage.removeItem("gotShareProtfolio");
       setTimeout(() => {
         let walletAddress = [];
         let addWallet = this.state.addWalletList;

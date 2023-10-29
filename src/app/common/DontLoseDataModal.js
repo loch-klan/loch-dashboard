@@ -26,7 +26,7 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 class DontLoseDataModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
     this.state = {
       otp: "",
       email: "",
@@ -47,11 +47,11 @@ class DontLoseDataModal extends BaseReactComponent {
   }
 
   componentDidMount() {
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
 
   handleAccountCreate = () => {
@@ -127,14 +127,17 @@ class DontLoseDataModal extends BaseReactComponent {
 
   // Signin wit wallet
   SigninWallet = () => {
-    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
 
-    if (!localStorage.getItem("deviceId")) {
-      localStorage.setItem("deviceId", deviceId);
+    if (!window.sessionStorage.getItem("deviceId")) {
+      window.sessionStorage.setItem("deviceId", deviceId);
     }
 
-    if (!localStorage.getItem("connectWalletAddress")) {
-      localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+    if (!window.sessionStorage.getItem("connectWalletAddress")) {
+      window.sessionStorage.setItem(
+        "connectWalletAddress",
+        this.state.MetaAddress
+      );
     }
 
     let data = new URLSearchParams();

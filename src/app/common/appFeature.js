@@ -17,8 +17,9 @@ class AppFeature extends Component {
     const PageName = params.get("redirect");
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       PageName: PageName ? PageName : "",
     };
   }
@@ -30,7 +31,7 @@ class AppFeature extends Component {
     this.props.getAllCoins(this.handleResponse);
     this.props.getAllParentChains();
 
-    localStorage.setItem(
+    window.sessionStorage.setItem(
       "currency",
       JSON.stringify({
         active: true,
@@ -42,7 +43,7 @@ class AppFeature extends Component {
       })
     );
 
-    let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+    let userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
     if (!userPlan) {
       GetDefaultPlan();
     }
