@@ -47,8 +47,8 @@ class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
-      userWallet: JSON.parse(localStorage.getItem("addWallet")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      userWallet: JSON.parse(window.sessionStorage.getItem("addWallet")),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -1042,7 +1042,7 @@ class LineChartSlider extends BaseReactComponent {
 
         formatter: function () {
           let walletAddress = JSON.parse(
-            localStorage.getItem("addWallet")
+            window.sessionStorage.getItem("addWallet")
           )?.map((e) => e.address);
 
           let tooltipData = [];

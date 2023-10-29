@@ -12,14 +12,36 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       // console.log('props',props);
       const searchParams = new URLSearchParams(props.location.search);
       const redirectPath = searchParams.get("redirect");
+      const passedRefrenceId = searchParams.get("refrenceId");
+      const transHistoryPageNumber = searchParams.get("transHistoryPageNumber");
+      const transHistoryConditions = searchParams.get("transHistoryConditions");
+      const transHistorySorts = searchParams.get("transHistorySorts");
 
-      let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+      let redirect = JSON.parse(window.sessionStorage.getItem("ShareRedirect"));
       //  console.log("redirect", redirect);
       if (!redirect && redirectPath) {
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "ShareRedirect",
           JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
         );
+        if (passedRefrenceId) {
+          window.sessionStorage.setItem("PassedRefrenceId", passedRefrenceId);
+        }
+        if (transHistoryPageNumber) {
+          window.sessionStorage.setItem(
+            "transHistoryPageNumber",
+            transHistoryPageNumber
+          );
+        }
+        if (transHistoryConditions) {
+          window.sessionStorage.setItem(
+            "transHistoryConditions",
+            transHistoryConditions
+          );
+        }
+        if (transHistorySorts) {
+          window.sessionStorage.setItem("transHistorySorts", transHistorySorts);
+        }
       }
       const isMobile = mobileCheck();
       return requireAuth() ? (

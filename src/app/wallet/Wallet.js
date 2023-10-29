@@ -35,7 +35,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       walletList: [],
       start: 0,
       sorts: [],
@@ -348,6 +348,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isLastEle={index === walletList.length - 1}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

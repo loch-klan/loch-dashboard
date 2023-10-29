@@ -68,9 +68,9 @@ class LPPeace extends BaseReactComponent {
     // reset all token
     deleteToken();
 
-    localStorage.setItem("defi_access", true);
-    localStorage.setItem("isPopup", true);
-    localStorage.setItem(
+    window.sessionStorage.setItem("defi_access", true);
+    window.sessionStorage.setItem("isPopup", true);
+    window.sessionStorage.setItem(
       "whalepodview",
       JSON.stringify({ access: true, id: "" })
     );
@@ -101,7 +101,7 @@ class LPPeace extends BaseReactComponent {
     //   //   this.setState({
     //   //     showEmailPopup: false,
     //   //   });
-    //   //   localStorage.setItem("discountEmail", true);
+    //   //   window.sessionStorage.setItem("discountEmail", true);
     //   this.props.history.push("/welcome");
     // }, 5000);
   };

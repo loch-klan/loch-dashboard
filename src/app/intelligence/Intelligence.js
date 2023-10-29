@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PageHeader from "../common/PageHeader";
-import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
 import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
@@ -52,6 +51,7 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import InflowOutflowChart from "./InflowOutflowChart";
+import { EyeThinIcon } from "../../assets/images/icons";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -66,7 +66,7 @@ class Intelligence extends Component {
       // },
 
       startTime: "",
-      updatedInsightList: "",
+      updatedInsightList: [],
       isLoading: false,
       // profit loss asset data
       ProfitLossAsset: [],
@@ -76,8 +76,8 @@ class Intelligence extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -88,7 +88,8 @@ class Intelligence extends Component {
       selectedOption: 0,
       selectedActiveBadge: [],
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -118,7 +119,7 @@ class Intelligence extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -149,6 +150,15 @@ class Intelligence extends Component {
   };
 
   componentDidMount() {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     const tempLeftExplainerClosed = window.sessionStorage.getItem(
       "netFlowLeftExplainerClosed"
     );
@@ -216,6 +226,20 @@ class Intelligence extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
+    // used for filter
+    if (
+      prevProps.intelligenceState?.updatedInsightList !==
+      this.props.intelligenceState?.updatedInsightList
+    ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     if (prevProps.intelligenceState !== this.props.intelligenceState) {
       this.setState({ isGraphLoading: false });
     }
@@ -301,18 +325,18 @@ class Intelligence extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
-    localStorage.removeItem("intelligencePageExpiryTime");
+    window.sessionStorage.removeItem("intelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -324,13 +348,17 @@ class Intelligence extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "intelligencePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "intelligencePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -706,7 +734,7 @@ class Intelligence extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -752,7 +780,7 @@ class Intelligence extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"
@@ -791,10 +819,9 @@ class Intelligence extends Component {
                   {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
-                  ) : this.props.intelligenceState.updatedInsightList &&
-                    this.props.intelligenceState.updatedInsightList.length >
-                      0 ? (
-                    this.props.intelligenceState.updatedInsightList
+                  ) : this.state.updatedInsightList &&
+                    this.state.updatedInsightList.length > 0 ? (
+                    this.state.updatedInsightList
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         return (
@@ -859,7 +886,7 @@ class Intelligence extends Component {
                 <PageHeader
                   showNetflowExplainers
                   title="Realized gains"
-                  showImg={eyeIcon}
+                  showImg={EyeThinIcon}
                 />
               </div>
               {/* Netflow Info Start */}

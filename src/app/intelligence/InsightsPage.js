@@ -44,7 +44,7 @@ class InsightsPage extends Component {
     this.state = {
       // insightList: "",
       isLoading: false,
-      updatedInsightList: this.props.intelligenceState.updatedInsightList,
+      updatedInsightList: [],
       selected: "",
       insightFilter: [
         {
@@ -59,21 +59,18 @@ class InsightsPage extends Component {
           name: "Reduce Risk",
           value: 20,
         },
-        {
-          name: "Increase Yield",
-          value: 30,
-        },
       ],
       selectedFilter: 1,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
@@ -97,7 +94,7 @@ class InsightsPage extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -120,7 +117,6 @@ class InsightsPage extends Component {
         window.ethereum
           .request({ method: "eth_accounts" })
           .then((metaRes) => {
-            console.log("metaRes ", metaRes);
             if (metaRes && metaRes.length > 0) {
               this.setState({
                 sendAdd: metaRes[0],
@@ -137,6 +133,15 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
     this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
@@ -158,18 +163,18 @@ class InsightsPage extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkInsightsTimer);
-    localStorage.removeItem("insightsPageExpiryTime");
+    window.sessionStorage.removeItem("insightsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -181,13 +186,17 @@ class InsightsPage extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "insightsPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "insightsPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -201,8 +210,13 @@ class InsightsPage extends Component {
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
     ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
       this.setState({
-        updatedInsightList: this.props.intelligenceState.updatedInsightList,
+        updatedInsightList: newTempHolder,
       });
     }
 
@@ -257,13 +271,19 @@ class InsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.props.intelligenceState.updatedInsightList;
+    let insightList = this.props.intelligenceState?.updatedInsightList
+      ? this.props.intelligenceState?.updatedInsightList
+      : [];
     insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
+    const newTempHolder = insightList.filter(
+      (resRes) => resRes.insight_type !== 30
+    );
+
     this.setState({
       selectedFilter: value,
-      updatedInsightList: insightList,
+      updatedInsightList: newTempHolder,
       riskType: "All risks",
     });
     this.updateTimer();
@@ -298,7 +318,7 @@ class InsightsPage extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -338,7 +358,9 @@ class InsightsPage extends Component {
         });
         this.updateTimer();
         let riskType = InsightType.getRiskNumber(this.state.riskType);
-        let insightList = this.props.intelligenceState.updatedInsightList;
+        let insightList = this.props.intelligenceState?.updatedInsightList
+          ? this.props.intelligenceState?.updatedInsightList
+          : [];
 
         if (riskType !== 0) {
           insightList =
@@ -356,9 +378,11 @@ class InsightsPage extends Component {
             );
           }
         }
-
+        const newTempHolder = insightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
         this.setState({
-          updatedInsightList: insightList,
+          updatedInsightList: newTempHolder,
         });
       }
     );
@@ -424,7 +448,7 @@ class InsightsPage extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="insight-page"

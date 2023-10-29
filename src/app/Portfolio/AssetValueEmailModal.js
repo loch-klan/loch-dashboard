@@ -24,10 +24,13 @@ import { getCurrentUser } from "../../utils/ManageToken";
 class AssetValueEmailModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.state = {
       email: "",
-      link: userDetails?.link || localStorage.getItem("lochDummyUser") || "",
+      link:
+        userDetails?.link ||
+        window.sessionStorage.getItem("lochDummyUser") ||
+        "",
       show: props.show,
       onHide: props.onHide,
       modalType: "Email",
@@ -37,8 +40,8 @@ class AssetValueEmailModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    window.sessionStorage.setItem("isPopupActive", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.setState({
         email: userDetails.email,
@@ -49,7 +52,7 @@ class AssetValueEmailModal extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
   componentDidUpdate() {}
 

@@ -36,8 +36,8 @@ class TopAssetValueGraph extends Component {
     this.state = {
       graphLoading: false,
       // externalEvents: [],
-      userWalletList: localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      userWalletList: window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [],
       // add new wallet
 
@@ -80,18 +80,21 @@ class TopAssetValueGraph extends Component {
     });
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topAssetValuePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topAssetValuePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "topAssetValuePageExpiryTime",
+      tempExpiryTime
+    );
   };
   endPageView = () => {
     clearInterval(window.checkTopAssetValueTimer);
-    localStorage.removeItem("topAssetValuePageExpiryTime");
+    window.sessionStorage.removeItem("topAssetValuePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -103,13 +106,17 @@ class TopAssetValueGraph extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topAssetValuePageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topAssetValuePageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -236,8 +243,8 @@ class TopAssetValueGraph extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"
@@ -277,7 +284,10 @@ class TopAssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal
@@ -308,7 +318,7 @@ class TopAssetValueGraph extends Component {
               ShareBtn={true}
               handleShare={this.handleShare}
             />
-            <div className="graph-container" style={{ marginBottom: "5rem" }}>
+            <div className="graph-container">
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"

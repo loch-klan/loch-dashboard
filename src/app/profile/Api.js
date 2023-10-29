@@ -9,7 +9,7 @@ export const updateUser = (data, ctx) => {
       .then((res) => {
         if (!res.data.error) {
           // console.log(data)
-          let obj = JSON.parse(localStorage.getItem("lochUser"));
+          let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
           obj = {
             ...obj,
             first_name: ctx.state.firstName,
@@ -18,7 +18,7 @@ export const updateUser = (data, ctx) => {
             mobile: ctx.state.mobileNumber,
             link: ctx.state.link,
           };
-          localStorage.setItem("lochUser", JSON.stringify(obj));
+          window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
           dispatch({
             type: LOCH_USER,
             payload: JSON.stringify(obj),

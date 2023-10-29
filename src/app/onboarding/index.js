@@ -41,18 +41,18 @@ class OnBoarding extends Component {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "onboardingPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("onboardingPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("onboardingPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkOnboardingTimer);
-    localStorage.removeItem("onboardingPageExpiryTime");
+    window.sessionStorage.removeItem("onboardingPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -60,13 +60,17 @@ class OnBoarding extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }

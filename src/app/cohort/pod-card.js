@@ -60,8 +60,9 @@ class PodCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       isIndexed: false,
       podId: this.props.item?.id,
       upgradeModal: false,
@@ -101,7 +102,7 @@ class PodCard extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -168,7 +169,9 @@ class PodCard extends Component {
           onClick={() => {
             if (this.state.isIndexed) {
               if (PodType.INFLUENCER === item?.cohort_type) {
-                let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
+                let isAccess = JSON.parse(
+                  window.sessionStorage.getItem("whalepodview")
+                );
 
                 if (
                   isAccess?.access ||
@@ -176,7 +179,7 @@ class PodCard extends Component {
                   this.state.userPlan?.influencer_pod_limit == -1
                 ) {
                   // if true
-                  localStorage.setItem(
+                  window.sessionStorage.setItem(
                     "whalepodview",
                     JSON.stringify({ access: false, id: item.id })
                   );
@@ -468,7 +471,7 @@ class PodCard extends Component {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="pod-card"

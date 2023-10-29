@@ -90,7 +90,7 @@ class TwitterInflucencePage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -129,14 +129,15 @@ class TwitterInflucencePage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // userWalletList: window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -151,7 +152,7 @@ class TwitterInflucencePage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -698,7 +699,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              apiResponse={(e) => this.CheckApiResponse(e)}
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -733,7 +734,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
@@ -857,6 +858,7 @@ class TwitterInflucencePage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}
                     message={"No accounts found"}

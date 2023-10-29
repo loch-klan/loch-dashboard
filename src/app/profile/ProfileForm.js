@@ -25,13 +25,16 @@ import { toast } from "react-toastify";
 class ProfileForm extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       email: userDetails?.email || "",
       mobileNumber: userDetails?.mobile || "",
-      link: userDetails?.link || localStorage.getItem("lochDummyUser") || "",
+      link:
+        userDetails?.link ||
+        window.sessionStorage.getItem("lochDummyUser") ||
+        "",
       prevfirstName: userDetails?.first_name || "",
       prevlastName: userDetails?.last_name || "",
       prevemail: userDetails?.email || "",
@@ -67,7 +70,7 @@ class ProfileForm extends BaseReactComponent {
           btnloader: true,
         });
 
-        if (!localStorage.getItem("lochUser")) {
+        if (!window.sessionStorage.getItem("lochUser")) {
           this.SigninWallet();
         }
       } catch (error) {
@@ -82,15 +85,18 @@ class ProfileForm extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
 
-    if (!localStorage.getItem("deviceId")) {
+    if (!window.sessionStorage.getItem("deviceId")) {
       // console.log("no device id");
-      localStorage.setItem("deviceId", deviceId);
+      window.sessionStorage.setItem("deviceId", deviceId);
     }
 
-    if (!localStorage.getItem("connectWalletAddress")) {
-      localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+    if (!window.sessionStorage.getItem("connectWalletAddress")) {
+      window.sessionStorage.setItem(
+        "connectWalletAddress",
+        this.state.MetaAddress
+      );
     }
 
     let data = new URLSearchParams();
@@ -104,9 +110,9 @@ class ProfileForm extends BaseReactComponent {
     ManageLink(this);
 
     // check metamask already connected or not
-    if (localStorage.getItem("connectWalletAddress")) {
+    if (window.sessionStorage.getItem("connectWalletAddress")) {
       this.setState({
-        MetaAddress: localStorage.getItem("connectWalletAddress"),
+        MetaAddress: window.sessionStorage.getItem("connectWalletAddress"),
       });
     }
   }
@@ -114,7 +120,7 @@ class ProfileForm extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -355,7 +361,7 @@ class ProfileForm extends BaseReactComponent {
               show={this.state.upgradeModal}
               onHide={this.upgradeModal}
               history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
+              isShare={window.sessionStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
               triggerId={0}
               pname="profile form"
