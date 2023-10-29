@@ -23,7 +23,7 @@ export default function PageHeader(props) {
 
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -255,6 +255,19 @@ export default function PageHeader(props) {
               </Button>
             )}
             <div style={{ display: "flex", alignItems: "center" }}>
+              {props.showHideDust && props.showHideDustFun ? (
+                <div
+                  onClick={props.showHideDustFun}
+                  className="pageHeaderShareContainer"
+                  style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
+                >
+                  <div className="inter-display-medium f-s-16 lh-19 pageHeaderShareBtn">
+                    {props.showHideDustVal
+                      ? "Reveal dust (less than $1)"
+                      : "Hide dust (less than $1)"}
+                  </div>
+                </div>
+              ) : null}
               {props.ExportBtn && (
                 <div
                   onClick={props.handleExportModal}

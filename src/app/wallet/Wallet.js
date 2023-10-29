@@ -35,7 +35,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       walletList: [],
       start: 0,
       sorts: [],

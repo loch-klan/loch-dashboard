@@ -18,8 +18,9 @@ class TopAccountShare extends Component {
     const page = params.get("redirect");
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       page: page ? page : "",
       data: props?.match?.params?.id,
       hash: props?.location?.hash,
@@ -35,7 +36,7 @@ class TopAccountShare extends Component {
     this.props.getAllCoins(this.handleResponse);
     this.props.getAllParentChains();
 
-    localStorage.setItem(
+    window.sessionStorage.setItem(
       "currency",
       JSON.stringify({
         active: true,
@@ -47,7 +48,7 @@ class TopAccountShare extends Component {
       })
     );
 
-    let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+    let userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
     if (!userPlan) {
       GetDefaultPlan();
     }
@@ -72,8 +73,8 @@ class TopAccountShare extends Component {
     // const decodedAddress = base64url.decode(this.state.data);
     // console.log("de add", decodedAddress,"en add", this.state.data, "hash",this.state.hash, "page",this.state.page);
 
-    let obj = JSON.parse(localStorage.getItem("previewAddress"));
-    localStorage.setItem(
+    let obj = JSON.parse(window.sessionStorage.getItem("previewAddress"));
+    window.sessionStorage.setItem(
       "previewAddress",
       JSON.stringify({
         ...obj,

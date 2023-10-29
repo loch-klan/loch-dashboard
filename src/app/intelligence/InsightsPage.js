@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi } from "./Api";
+import { getAllInsightsApi, sendAmount } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -44,7 +44,7 @@ class InsightsPage extends Component {
     this.state = {
       // insightList: "",
       isLoading: false,
-      updatedInsightList: this.props.intelligenceState.updatedInsightList,
+      updatedInsightList: [],
       selected: "",
       insightFilter: [
         {
@@ -59,21 +59,18 @@ class InsightsPage extends Component {
           name: "Reduce Risk",
           value: 20,
         },
-        {
-          name: "Increase Yield",
-          value: 30,
-        },
       ],
       selectedFilter: 1,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
@@ -82,13 +79,22 @@ class InsightsPage extends Component {
 
       // start time for time spent on page
       startTime: "",
+      sendAdd: "",
+      receiveAdd: "",
+      amount: "",
     };
   }
-
+  sendAmountFun = () => {
+    let tempData = new URLSearchParams();
+    tempData.append("send_address", this.state.sendAdd);
+    tempData.append("receive_address", this.state.receiveAdd);
+    tempData.append("amount", this.state.amount);
+    this.props.sendAmount(tempData);
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -105,7 +111,38 @@ class InsightsPage extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  checkIsMetaMaskConnected = async () => {
+    if (window.ethereum) {
+      try {
+        window.ethereum
+          .request({ method: "eth_accounts" })
+          .then((metaRes) => {
+            if (metaRes && metaRes.length > 0) {
+              this.setState({
+                sendAdd: metaRes[0],
+              });
+            } else {
+            }
+          })
+          .catch((metaErr) => {
+            console.log("metaError ", metaErr);
+          });
+      } catch (passedError) {
+        console.log("Api issue ", passedError);
+      }
+    }
+  };
   componentDidMount() {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
+    this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
     this.props.getUser();
@@ -126,18 +163,18 @@ class InsightsPage extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkInsightsTimer);
-    localStorage.removeItem("insightsPageExpiryTime");
+    window.sessionStorage.removeItem("insightsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -149,13 +186,17 @@ class InsightsPage extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "insightsPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "insightsPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -169,8 +210,13 @@ class InsightsPage extends Component {
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
     ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
       this.setState({
-        updatedInsightList: this.props.intelligenceState.updatedInsightList,
+        updatedInsightList: newTempHolder,
       });
     }
 
@@ -225,13 +271,19 @@ class InsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.props.intelligenceState.updatedInsightList;
+    let insightList = this.props.intelligenceState?.updatedInsightList
+      ? this.props.intelligenceState?.updatedInsightList
+      : [];
     insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
+    const newTempHolder = insightList.filter(
+      (resRes) => resRes.insight_type !== 30
+    );
+
     this.setState({
       selectedFilter: value,
-      updatedInsightList: insightList,
+      updatedInsightList: newTempHolder,
       riskType: "All risks",
     });
     this.updateTimer();
@@ -266,7 +318,7 @@ class InsightsPage extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -306,7 +358,9 @@ class InsightsPage extends Component {
         });
         this.updateTimer();
         let riskType = InsightType.getRiskNumber(this.state.riskType);
-        let insightList = this.props.intelligenceState.updatedInsightList;
+        let insightList = this.props.intelligenceState?.updatedInsightList
+          ? this.props.intelligenceState?.updatedInsightList
+          : [];
 
         if (riskType !== 0) {
           insightList =
@@ -324,9 +378,11 @@ class InsightsPage extends Component {
             );
           }
         }
-
+        const newTempHolder = insightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
         this.setState({
-          updatedInsightList: insightList,
+          updatedInsightList: newTempHolder,
         });
       }
     );
@@ -357,6 +413,7 @@ class InsightsPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -391,7 +448,7 @@ class InsightsPage extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="insight-page"
@@ -605,7 +662,39 @@ class InsightsPage extends Component {
                 <div className="inner-box2"></div>
               </div>
             )}
-
+            {/* <div>
+              <input
+                value={this.state.sendAdd}
+                onChange={(changed) => {
+                  this.setState({
+                    sendAdd: changed.target.value,
+                  });
+                }}
+                placeholder="send address"
+                type="text"
+              />
+              <input
+                onChange={(changed) => {
+                  this.setState({
+                    receiveAdd: changed.target.value,
+                  });
+                }}
+                value={this.state.receiveAdd}
+                placeholder="receive address"
+                type="text"
+              />
+              <input
+                onChange={(changed) => {
+                  this.setState({
+                    amount: changed.target.value,
+                  });
+                }}
+                value={this.state.amount}
+                placeholder="amount"
+                type="text"
+              />
+              <button onClick={this.sendAmountFun}>Send</button>
+            </div> */}
             {/* footer */}
             <Footer />
           </div>
@@ -628,6 +717,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   GetAllPlan,
   getUser,
+  sendAmount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);

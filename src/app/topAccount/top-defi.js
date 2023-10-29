@@ -35,7 +35,7 @@ class TopDefi extends Component {
     super(props);
     this.state = {
       // store current currency
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       sortBy: [
         { title: "Amount", down: false },
         { title: "Name", down: true },
@@ -44,15 +44,16 @@ class TopDefi extends Component {
       sorts: [],
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       upgradeModal: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
 
       isYeildToggle: false,
@@ -71,7 +72,7 @@ class TopDefi extends Component {
     this.setState(
       {
         upgradeModal: !this.state.upgradeModal,
-        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
       },
       () => {
         if (!this.state.upgradeModal) {
@@ -111,18 +112,18 @@ class TopDefi extends Component {
     this.props.getAllCoins();
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topDefiPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topDefiPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("topDefiPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkTopDefiTimer);
-    localStorage.removeItem("topDefiPageExpiryTime");
+    window.sessionStorage.removeItem("topDefiPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -134,13 +135,17 @@ class TopDefi extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topDefiPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topDefiPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -176,7 +181,9 @@ class TopDefi extends Component {
         }
       );
     } else {
-      let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+      let defi_access = JSON.parse(
+        window.sessionStorage.getItem("defi_access")
+      );
       if (this.state.userPlan?.name === "Free" && defi_access) {
         setTimeout(() => {
           this.setState(
@@ -185,7 +192,7 @@ class TopDefi extends Component {
             },
             () => {
               this.upgradeModal();
-              localStorage.setItem("defi_access", false);
+              window.sessionStorage.setItem("defi_access", false);
             }
           );
         }, 10000);
@@ -270,8 +277,8 @@ class TopDefi extends Component {
   };
 
   getYieldBalance = () => {
-    let UserWallet = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    let UserWallet = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
     if (UserWallet.length !== 0) {
       const allAddresses = [];
@@ -292,7 +299,7 @@ class TopDefi extends Component {
           },
           () => {
             this.upgradeModal();
-            localStorage.setItem("defi_access", false);
+            window.sessionStorage.setItem("defi_access", false);
           }
         );
       }, 10000);
@@ -394,8 +401,8 @@ class TopDefi extends Component {
     this.props.setPageFlagDefault();
   };
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"
@@ -424,6 +431,7 @@ class TopDefi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -456,7 +464,7 @@ class TopDefi extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 // isStatic={true}
                 triggerId={this.state.triggerId}
                 pname="defi"

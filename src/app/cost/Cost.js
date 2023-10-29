@@ -111,8 +111,8 @@ class Cost extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -411,16 +411,17 @@ class Cost extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem("costPageExpiryTime");
+    const tempExistingExpiryTime =
+      window.sessionStorage.getItem("costPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkCostTimer);
-    localStorage.removeItem("costPageExpiryTime");
+    window.sessionStorage.removeItem("costPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -433,13 +434,13 @@ class Cost extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -665,7 +666,7 @@ class Cost extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -1225,6 +1226,7 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal

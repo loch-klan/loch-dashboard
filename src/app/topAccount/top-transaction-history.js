@@ -69,8 +69,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    const walletList = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
     const address = walletList?.map((wallet) => {
       return wallet.address;
@@ -83,7 +83,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     ];
     this.state = {
       goToBottom: false,
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -139,14 +139,15 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // userWalletList: window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -162,7 +163,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -204,18 +205,21 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topTransactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topTransactionHistoryPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "topTransactionHistoryPageExpiryTime",
+      tempExpiryTime
+    );
   };
   endPageView = () => {
     clearInterval(window.checkTopTransactionHistoryTimer);
-    localStorage.removeItem("topTransactionHistoryPageExpiryTime");
+    window.sessionStorage.removeItem("topTransactionHistoryPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -227,7 +231,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "topTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -235,7 +239,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "topTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -564,8 +568,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"
@@ -1434,6 +1438,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1466,7 +1471,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"

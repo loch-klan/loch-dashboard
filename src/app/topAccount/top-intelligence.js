@@ -63,8 +63,8 @@ class TopIntelligence extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -75,7 +75,8 @@ class TopIntelligence extends Component {
       selectedOption: 0,
       selectedActiveBadge: [],
 
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -107,7 +108,7 @@ class TopIntelligence extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -176,18 +177,21 @@ class TopIntelligence extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topIntelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topIntelligencePageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "topIntelligencePageExpiryTime",
+      tempExpiryTime
+    );
   };
   endPageView = () => {
     clearInterval(window.checkTopIntelligenceTimer);
-    localStorage.removeItem("topIntelligencePageExpiryTime");
+    window.sessionStorage.removeItem("topIntelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -199,7 +203,7 @@ class TopIntelligence extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "topIntelligencePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -207,7 +211,7 @@ class TopIntelligence extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "topIntelligencePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -262,8 +266,8 @@ class TopIntelligence extends Component {
 
   assetList = () => {
     let data = new URLSearchParams();
-    let addressObj = localStorage.getItem("previewAddress")
-      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+    let addressObj = window.sessionStorage.getItem("previewAddress")
+      ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
       : [];
     let address = addressObj?.map((e) => e?.address);
     data.append("wallet_address", JSON.stringify(address));
@@ -624,8 +628,8 @@ class TopIntelligence extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
+    const previewAddress = window.sessionStorage.getItem("previewAddress")
+      ? JSON.parse(window.sessionStorage.getItem("previewAddress"))
       : "";
     const encodedAddress = Buffer.from(previewAddress?.address).toString(
       "base64"
@@ -656,6 +660,7 @@ class TopIntelligence extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -672,7 +677,7 @@ class TopIntelligence extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"

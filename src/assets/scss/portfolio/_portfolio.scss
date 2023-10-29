@@ -164,6 +164,7 @@
 
         .topbar-btn {
           background: rgba(229, 229, 230, 0.5);
+          border: 1px solid #f2f2f3;
           border-radius: 8px;
           padding: 1.2rem 2rem;
           color: $black-191;
@@ -211,13 +212,16 @@
           img {
             transition-duration: 300ms;
           }
-
           &:hover {
             background-color: $black-191;
+            border-color: $black-191;
             color: $secondary;
 
             img {
               filter: invert(1);
+            }
+            .noHoverEffect {
+              filter: invert(0);
             }
             .topBarExchangeIcons {
               filter: none;
@@ -230,6 +234,19 @@
             transition-duration: 300ms;
             &:hover {
               opacity: 1;
+            }
+          }
+        }
+        .topbar-btn-transparent {
+          background-color: transparent;
+          border-color: #f2f2f3;
+          cursor: default;
+          &:hover {
+            border-color: #f2f2f3;
+            background-color: transparent;
+            color: $black-191;
+            img {
+              filter: invert(0);
             }
           }
         }
@@ -1304,7 +1321,7 @@
       z-index: 2;
 
       .chain-content {
-        max-height: 25rem;
+        max-height: 25.75rem;
         overflow-y: scroll;
         width: 100%;
 
@@ -1578,6 +1595,7 @@
     }
   }
 }
+
 .pageHeaderShareContainer {
   padding: 1rem 1.5rem;
   cursor: pointer;
@@ -1603,5 +1621,34 @@
     .pageHeaderShareImg {
       filter: brightness(0);
     }
+  }
+}
+.pageHeaderConnectWalletContainer {
+  border-radius: 8px;
+  border: 0.1rem solid $grey-B0B;
+  margin-right: 2.2rem;
+  transition-duration: 300ms;
+  &:hover {
+    background-color: black;
+    border-color: black;
+    .pageHeaderShareBtn {
+      color: white;
+    }
+    .pageHeaderShareImg {
+      filter: brightness(2);
+    }
+  }
+}
+.pageHeaderConnectWalletContainerSelected {
+  background-color: black;
+  border-color: black;
+  .pageHeaderShareBtn {
+    color: white;
+  }
+  .pageHeaderShareImg {
+    filter: brightness(2);
+  }
+  &:hover {
+    filter: brightness(0.5);
   }
 }

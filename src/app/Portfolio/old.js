@@ -81,7 +81,7 @@ class Portfolio extends BaseReactComponent {
     super(props);
     // console.log("props", props);
     if (props.location.state) {
-      // localStorage.setItem(
+      // window.sessionStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(props.location.state?.addWallet)
       // );
@@ -89,8 +89,8 @@ class Portfolio extends BaseReactComponent {
 
     this.state = {
       id: props.match.params?.id,
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
 
       // page loader
@@ -176,7 +176,7 @@ class Portfolio extends BaseReactComponent {
       currentPage: "Home",
 
       // get currency
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
 
       // not used any where on this page
       counterGraphDigit: 3,
@@ -194,13 +194,14 @@ class Portfolio extends BaseReactComponent {
       apiResponse: false,
 
       // upgrade plan
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
 
       // get lock token
-      lochToken: JSON.parse(localStorage.getItem("stopClick")),
+      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
 
       // insight
       updatedInsightList: "",
@@ -215,10 +216,10 @@ class Portfolio extends BaseReactComponent {
   // get token
   getToken = () => {
     // console.log(this.state.lochToken)
-    let token = localStorage.getItem("lochToken");
+    let token = window.sessionStorage.getItem("lochToken");
     if (!this.state.lochToken) {
       this.setState({
-        lochToken: JSON.parse(localStorage.getItem("stopClick")),
+        lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
       });
       setTimeout(() => {
         this.getToken();
@@ -226,7 +227,7 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (token !== "jsk") {
-      localStorage.setItem("stopClick", true);
+      window.sessionStorage.setItem("stopClick", true);
       let obj = UpgradeTriggered();
 
       if (obj.trigger) {
@@ -290,7 +291,7 @@ class Portfolio extends BaseReactComponent {
 
     // if share link store share id to show upgrade modal
     if (this.props.match.params.id) {
-      localStorage.setItem("share_id", this.props.match.params.id);
+      window.sessionStorage.setItem("share_id", this.props.match.params.id);
     }
 
     HomePage({
@@ -417,7 +418,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "addWallet",
           JSON.stringify(this.props.location.state?.addWallet)
         );
@@ -1216,6 +1217,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  apiResponse={(e) => this.CheckApiResponse(e)}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
                   // toggleAddWallet={this.state.toggleAddWallet}
@@ -1606,7 +1608,7 @@ class Portfolio extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
           />

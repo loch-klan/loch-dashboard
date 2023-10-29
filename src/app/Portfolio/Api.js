@@ -22,6 +22,26 @@ import {
   TOP_YESTERDAY_BALANCE,
 } from "../topAccount/ActionTypes";
 
+export const isFollowedByUser = (data, ctx) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/followed-by-user", data)
+      .then((res) => {
+        if (!res.data?.error) {
+          if (res.data?.data.following) {
+            if (ctx.showAddressesAdded) {
+              ctx.showAddressesAdded();
+            }
+          } else {
+            if (ctx.addressDeleted) {
+              ctx.addressDeleted();
+            }
+          }
+        }
+      })
+      .catch((err) => {});
+  };
+};
 export const getCoinRate = () => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -78,7 +98,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         // );
         // if (isRefresh) {
 
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "refreshApiTime",
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
@@ -145,7 +165,7 @@ export const getExchangeBalance = (exchangeName, ctx) => {
           res.data.data.user_wallet.active
             ? res.data.data.user_wallet
             : [];
-        // localStorage.setItem(
+        // window.sessionStorage.setItem(
         //   "refreshApiTime",
         //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
         // );
@@ -194,7 +214,7 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
             ? res.data.data.user_wallets
             : [];
 
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "refreshApiTime",
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
@@ -322,7 +342,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
               : false;
           }
           // console.log('addWallet',addWallet);
-          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
           // sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           ctx.setState({
@@ -332,7 +352,9 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
 
           // ctx.handleResponse && ctx.handleResponse();
           // console.log("add",addWallet.length)
-          let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+          let userPlan = JSON.parse(
+            window.sessionStorage.getItem("currentPlan")
+          );
 
           if (
             addWallet.length > userPlan?.wallet_address_limit &&
@@ -412,9 +434,11 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
             }, 15000);
           } else {
             ctx.setState({ assetValueDataLoaded: true });
-            let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+            let obj = JSON.parse(
+              window.sessionStorage.getItem("assetValueLoader")
+            );
             if (obj) {
-              localStorage.setItem(
+              window.sessionStorage.setItem(
                 "assetValueLoader",
                 JSON.stringify({
                   me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
@@ -467,8 +491,8 @@ export const getYesterdaysBalanceApi = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      let addressObj = window.sessionStorage.getItem("previewAddress")
+        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -477,7 +501,7 @@ export const getYesterdaysBalanceApi = (ctx) => {
       .post("wallet/user-wallet/get-yesterday-portfolio-balance", data)
       .then((res) => {
         if (!res.data.error) {
-          let currency = JSON.parse(localStorage.getItem("currency"));
+          let currency = JSON.parse(window.sessionStorage.getItem("currency"));
           let balance = res.data.data.balance * currency?.rate;
           dispatch({
             type: ctx?.state?.isTopAccountPage
@@ -870,8 +894,8 @@ export const AssetValueEmail = (data, ctx) => {
     .post("wallet/user-wallet/notify-asset-value-chart", data)
     .then((res) => {
       if (!res.data.error) {
-        let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
-        localStorage.setItem(
+        let obj = JSON.parse(window.sessionStorage.getItem("assetValueLoader"));
+        window.sessionStorage.setItem(
           "assetValueLoader",
           JSON.stringify({
             me: ctx?.props.from === "me" ? true : obj?.me,

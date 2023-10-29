@@ -22,7 +22,7 @@ export const initAmplitude = () => {
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
-  let baseToken = localStorage.getItem("baseToken");
+  let baseToken = window.sessionStorage.getItem("baseToken");
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
@@ -127,6 +127,50 @@ export const LPC_Go = ({
 };
 
 //3. Landing Page Conversion:privacy message
+export const ConnectWalletButtonClickedWelcome = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
+  const event_name = "Top Bar: Connect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const DisconnectWalletButtonClicked = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Top Bar: Disconnect wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopBarMetamaskWalletConnected = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+    wallet: "Metamask",
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {};
@@ -2984,6 +3028,19 @@ export const TransactionHistoryYearFilter = ({
 };
 
 // Transaction History: assets filter - done
+export const TransactionHistoryAmountFilter = ({
+  session_id,
+  email_address,
+  amount_filter,
+}) => {
+  const event_name = "Transaction History: amount filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "amount selected": amount_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryAssetFilter = ({
   session_id,
   email_address,
@@ -4160,6 +4217,33 @@ export const HomeShare = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+export const HomeFollow = ({ session_id, email_address, address, nameTag }) => {
+  const event_name = "Home: follow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+export const HomeUnFollow = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Home: unfollow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");

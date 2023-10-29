@@ -84,8 +84,8 @@ import { EditIcon } from "../../assets/images";
 class CohortPage extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = localStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     // console.log(userDetails);
     this.state = {
       isLochUser: userDetails,
@@ -133,7 +133,8 @@ class CohortPage extends BaseReactComponent {
       activeAsset: [],
       AssetFilterList: [],
       upgradeModal: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
       showDust: false,
       isStatic: false,
@@ -209,7 +210,7 @@ class CohortPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -340,18 +341,21 @@ class CohortPage extends BaseReactComponent {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "whalePodIndividualPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("whalePodIndividualPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "whalePodIndividualPageExpiryTime",
+      tempExpiryTime
+    );
   };
   endPageView = () => {
     clearInterval(window.checkWhalePodIndividualTimer);
-    localStorage.removeItem("whalePodIndividualPageExpiryTime");
+    window.sessionStorage.removeItem("whalePodIndividualPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000;
@@ -365,7 +369,7 @@ class CohortPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "whalePodIndividualPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -374,7 +378,7 @@ class CohortPage extends BaseReactComponent {
   };
 
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "whalePodIndividualPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -768,8 +772,8 @@ class CohortPage extends BaseReactComponent {
       account: account,
     });
     this.updateTimer();
-    let obj = JSON.parse(localStorage.getItem("previewAddress"));
-    localStorage.setItem(
+    let obj = JSON.parse(window.sessionStorage.getItem("previewAddress"));
+    window.sessionStorage.setItem(
       "previewAddress",
       JSON.stringify({
         ...obj,
@@ -777,7 +781,7 @@ class CohortPage extends BaseReactComponent {
         // nameTag: rowData.tagName ? rowData.tagName : "",
       })
     );
-    localStorage.setItem(
+    window.sessionStorage.setItem(
       "previewAddressGoToWhaleWatch",
       JSON.stringify({
         goToWhaleWatch: true,
@@ -853,6 +857,7 @@ class CohortPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -895,7 +900,7 @@ class CohortPage extends BaseReactComponent {
               show={this.state.upgradeModal}
               onHide={this.upgradeModal}
               history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
+              isShare={window.sessionStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
               triggerId={this.state.triggerId}
               pname="cohort-individual"

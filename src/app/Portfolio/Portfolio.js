@@ -110,7 +110,7 @@ class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
     if (props.location.state) {
-      // localStorage.setItem(
+      // window.sessionStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(props.location.state?.addWallet)
       // );
@@ -129,8 +129,8 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       settings,
       id: props.match.params?.id,
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
 
       // page loader
@@ -216,7 +216,7 @@ class Portfolio extends BaseReactComponent {
       currentPage: "Home",
 
       // get currency
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
 
       // not used any where on this page
       counterGraphDigit: 3,
@@ -234,13 +234,14 @@ class Portfolio extends BaseReactComponent {
       apiResponse: false,
 
       // upgrade plan
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
 
       // get lock token
-      lochToken: JSON.parse(localStorage.getItem("stopClick")),
+      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
 
       // insight
       updatedInsightList: "",
@@ -284,10 +285,10 @@ class Portfolio extends BaseReactComponent {
   };
   // get token
   getToken = () => {
-    let token = localStorage.getItem("lochToken");
+    let token = window.sessionStorage.getItem("lochToken");
     if (!this.state.lochToken) {
       this.setState({
-        lochToken: JSON.parse(localStorage.getItem("stopClick")),
+        lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
       });
       setTimeout(() => {
         this.getToken();
@@ -295,7 +296,7 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (token !== "jsk") {
-      localStorage.setItem("stopClick", true);
+      window.sessionStorage.setItem("stopClick", true);
       let obj = UpgradeTriggered();
 
       if (obj.trigger) {
@@ -329,7 +330,7 @@ class Portfolio extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -398,14 +399,14 @@ class Portfolio extends BaseReactComponent {
       },
     });
     // reset redirect stop
-    localStorage.setItem("stop_redirect", false);
+    window.sessionStorage.setItem("stop_redirect", false);
 
     // reset discount modal
-    localStorage.setItem("discountEmail", false);
+    window.sessionStorage.setItem("discountEmail", false);
 
     // if share link store share id to show upgrade modal
     if (this.props.match.params.id) {
-      localStorage.setItem("share_id", this.props.match.params.id);
+      window.sessionStorage.setItem("share_id", this.props.match.params.id);
     }
 
     if (this.props.location.state?.noLoad) {
@@ -429,18 +430,18 @@ class Portfolio extends BaseReactComponent {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "portfolioPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkPortfolioTimer);
-    localStorage.removeItem("portfolioPageExpiryTime");
+    window.sessionStorage.removeItem("portfolioPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -452,13 +453,17 @@ class Portfolio extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "portfolioPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "portfolioPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -511,8 +516,8 @@ class Portfolio extends BaseReactComponent {
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
-        const tempUserWalletList = localStorage.getItem("addWallet")
-          ? JSON.parse(localStorage.getItem("addWallet"))
+        const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+          ? JSON.parse(window.sessionStorage.getItem("addWallet"))
           : this.state.userWalletList;
         tempUserWalletList?.forEach((wallet, i) => {
           if (wallet.coinFound) {
@@ -632,7 +637,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
-        localStorage.setItem(
+        window.sessionStorage.setItem(
           "addWallet",
           JSON.stringify(this.props.location.state?.addWallet)
         );
@@ -686,9 +691,9 @@ class Portfolio extends BaseReactComponent {
       // }
       // if its true means we ahve store share data and remove token else remove token and call share api
       let gotShareProtfolio = JSON.parse(
-        localStorage.getItem("gotShareProtfolio")
+        window.sessionStorage.getItem("gotShareProtfolio")
       );
-      // localStorage.setItem(
+      // window.sessionStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(this.props.location.state?.addWallet)
       // );
@@ -697,11 +702,13 @@ class Portfolio extends BaseReactComponent {
 
         const searchParams = new URLSearchParams(this.props.location.search);
         const redirectPath = searchParams.get("redirect");
-        localStorage.setItem("gotShareProtfolio", true);
+        window.sessionStorage.setItem("gotShareProtfolio", true);
 
-        let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+        let redirect = JSON.parse(
+          window.sessionStorage.getItem("ShareRedirect")
+        );
         if (!redirect && redirectPath) {
-          localStorage.setItem(
+          window.sessionStorage.setItem(
             "ShareRedirect",
             JSON.stringify({
               path: redirectPath,
@@ -723,9 +730,9 @@ class Portfolio extends BaseReactComponent {
           },
         });
       } else {
-        localStorage.setItem("gotShareProtfolio", false);
+        window.sessionStorage.setItem("gotShareProtfolio", false);
         // remove redirect urls
-        localStorage.removeItem("ShareRedirect");
+        window.sessionStorage.removeItem("ShareRedirect");
 
         if (
           this.props.location?.state?.hash &&
@@ -777,8 +784,8 @@ class Portfolio extends BaseReactComponent {
     let ActionType = ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
       let addressList = [];
-      const tempUserWalletList = localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : this.state.userWalletList;
       tempUserWalletList.map((wallet) => addressList.push(wallet.address));
       let data = new URLSearchParams();
@@ -802,8 +809,8 @@ class Portfolio extends BaseReactComponent {
   // transaction history table data
   getTableData = () => {
     this.setState({ tableLoading: true });
-    const arr = localStorage.getItem("addWallet")
-      ? JSON.parse(localStorage.getItem("addWallet"))
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       : this.state.userWalletList;
     let address = arr?.map((wallet) => {
       return wallet.address;
@@ -1187,6 +1194,16 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "from") {
+            let showThis = "";
+            if (rowData.from?.metaData?.nickname) {
+              showThis = TruncateText(rowData.from?.metaData?.nickname);
+            } else if (rowData.from?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.from?.wallet_metaData.text);
+            } else if (rowData.from?.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.from?.metaData?.displayAddress);
+            } else if (rowData.from?.address) {
+              showThis = TruncateText(rowData.from?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1209,25 +1226,20 @@ class Portfolio extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.from.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1239,22 +1251,20 @@ class Portfolio extends BaseReactComponent {
                   rowData.from.wallet_metaData.text ||
                   rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.from.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1330,22 +1340,20 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1391,6 +1399,16 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "to") {
+            let showThis = "";
+            if (rowData.to.metaData?.nickname) {
+              showThis = TruncateText(rowData.to?.metaData?.nickname);
+            } else if (rowData.to?.wallet_metaData?.text) {
+              showThis = TruncateText(rowData.to?.wallet_metaData?.text);
+            } else if (rowData.to.metaData?.displayAddress) {
+              showThis = TruncateText(rowData.to.metaData?.displayAddress);
+            } else if (rowData.to?.address) {
+              showThis = TruncateText(rowData.to?.address);
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -1412,25 +1430,20 @@ class Portfolio extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <span>
-                    <Image
-                      src={
-                        rowData.to.metaData?.wallet_metaData?.symbol ||
-                        unrecognizedIcon
-                      }
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1442,22 +1455,20 @@ class Portfolio extends BaseReactComponent {
                   rowData.to.wallet_metaData.text ||
                   rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
-                    <span>
-                      <Image
-                        src={rowData.to.wallet_metaData.symbol}
-                        className="history-table-icon"
-                        onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
-                        }}
-                      />
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                        this.updateTimer();
+                      }}
+                    >
+                      {showThis}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1533,22 +1544,20 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 ) : (
-                  <span>
-                    <Image
-                      src={unrecognizedIcon}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
-                      }}
-                    />
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                      this.updateTimer();
+                    }}
+                  >
+                    {showThis}
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -2051,6 +2060,8 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
                   showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
@@ -2568,7 +2579,7 @@ class Portfolio extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
+            isShare={window.sessionStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="portfolio"

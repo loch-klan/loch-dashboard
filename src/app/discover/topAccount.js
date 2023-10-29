@@ -93,7 +93,7 @@ class TopAccountPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
-      currency: JSON.parse(localStorage.getItem("currency")),
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -134,13 +134,14 @@ class TopAccountPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: localStorage.getItem("addWallet")
-      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      // userWalletList: window.sessionStorage.getItem("addWallet")
+      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -152,7 +153,9 @@ class TopAccountPage extends BaseReactComponent {
 
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
-      walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
+      walletInput: [
+        JSON.parse(window.sessionStorage.getItem("previewAddress")),
+      ],
       goToBottom: false,
     };
     this.delayTimer = 0;
@@ -161,7 +164,7 @@ class TopAccountPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
     });
   };
 
@@ -179,7 +182,7 @@ class TopAccountPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    // localStorage.setItem("previewAddress", "");
+    // window.sessionStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -193,18 +196,18 @@ class TopAccountPage extends BaseReactComponent {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "topAccountPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("topAccountPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("topAccountPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkTopAccountTimer);
-    localStorage.removeItem("topAccountPageExpiryTime");
+    window.sessionStorage.removeItem("topAccountPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -216,13 +219,17 @@ class TopAccountPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("topAccountPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topAccountPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("topAccountPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "topAccountPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -276,7 +283,7 @@ class TopAccountPage extends BaseReactComponent {
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.state.currency) {
       this.setState({
-        currency: JSON.parse(localStorage.getItem("currency")),
+        currency: JSON.parse(window.sessionStorage.getItem("currency")),
       });
       getAllCurrencyRatesApi();
     }
@@ -530,7 +537,7 @@ class TopAccountPage extends BaseReactComponent {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -678,32 +685,49 @@ class TopAccountPage extends BaseReactComponent {
               <span
                 onClick={() => {
                   resetPreviewAddress();
+                  let lochUser = getCurrentUser().id;
                   TopAccountClickedAccount({
-                    session_id: getCurrentUser().id,
+                    session_id: lochUser,
                     email_address: getCurrentUser().email,
                     account: rowData.account ? rowData.account : "",
                     name_tag: rowData.tagName ? rowData.tagName : "",
                   });
-                  this.updateTimer();
-                  let obj = JSON.parse(localStorage.getItem("previewAddress"));
-                  localStorage.setItem(
-                    "previewAddress",
-                    JSON.stringify({
-                      ...obj,
-                      address: rowData.account,
-                      nameTag: rowData.tagName ? rowData.tagName : "",
-                    })
-                  );
-                  localStorage.setItem(
-                    "previewAddressGoToWhaleWatch",
-                    JSON.stringify({
-                      goToWhaleWatch: false,
-                    })
-                  );
-                  this.props?.TopsetPageFlagDefault();
 
-                  // this.getCoinBasedOnWalletAddress(rowData.account);
-                  this.props.history.push("/top-accounts/home");
+                  let slink = rowData.account;
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                  if (lochUser) {
+                    const alreadyPassed =
+                      window.sessionStorage.getItem("PassedRefrenceId");
+                    if (alreadyPassed) {
+                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                    } else {
+                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    }
+                  }
+                  window.open(shareLink, "_blank", "noreferrer");
+                  // this.updateTimer();
+                  // let obj = JSON.parse(
+                  //   window.sessionStorage.getItem("previewAddress")
+                  // );
+                  // window.sessionStorage.setItem(
+                  //   "previewAddress",
+                  //   JSON.stringify({
+                  //     ...obj,
+                  //     address: rowData.account,
+                  //     nameTag: rowData.tagName ? rowData.tagName : "",
+                  //   })
+                  // );
+                  // window.sessionStorage.setItem(
+                  //   "previewAddressGoToWhaleWatch",
+                  //   JSON.stringify({
+                  //     goToWhaleWatch: false,
+                  //   })
+                  // );
+                  // this.props?.TopsetPageFlagDefault();
+
+                  // // this.getCoinBasedOnWalletAddress(rowData.account);
+                  // this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
                 className="top-account-address"
@@ -1160,6 +1184,7 @@ class TopAccountPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -1192,7 +1217,7 @@ class TopAccountPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={localStorage.getItem("share_id")}
+                isShare={window.sessionStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"

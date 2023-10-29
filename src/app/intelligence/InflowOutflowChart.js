@@ -29,7 +29,9 @@ class InflowOutflowChart extends BaseReactComponent {
   }
   componentDidMount() {
     let addressList = [];
-    const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    const userWalletList = JSON.parse(
+      window.sessionStorage.getItem("addWallet")
+    );
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     const tempAdd = JSON.stringify(addressList);
     let data = new URLSearchParams();
@@ -80,7 +82,9 @@ class InflowOutflowChart extends BaseReactComponent {
       this.props.InflowOutflowAssetListState
     ) {
       let addressList = [];
-      const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      const userWalletList = JSON.parse(
+        window.sessionStorage.getItem("addWallet")
+      );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
       this.props.setInflowsAndOutflowsWalletList(tempAdd);
@@ -101,7 +105,9 @@ class InflowOutflowChart extends BaseReactComponent {
       prevProps.AddLocalAddWalletState !== this.props.AddLocalAddWalletState
     ) {
       let addressList = [];
-      const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      const userWalletList = JSON.parse(
+        window.sessionStorage.getItem("addWallet")
+      );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
       let data = new URLSearchParams();
@@ -151,7 +157,9 @@ class InflowOutflowChart extends BaseReactComponent {
     data.append("dust_value", this.state.isDust);
 
     let addressList = [];
-    const userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    const userWalletList = JSON.parse(
+      window.sessionStorage.getItem("addWallet")
+    );
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     data.append("wallet_addresses", JSON.stringify(addressList));
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);

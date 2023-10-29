@@ -15,12 +15,12 @@ class ConfirmLeaveModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    localStorage.setItem("isPopupActive", true);
+    window.sessionStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
     // set popup active
-    localStorage.setItem("isPopupActive", false);
+    window.sessionStorage.setItem("isPopupActive", false);
   }
 
   render() {
@@ -43,7 +43,7 @@ class ConfirmLeaveModal extends BaseReactComponent {
                 className="secondary-btn m-r-24"
                 onClick={() => {
                   resetUser();
-                  localStorage.setItem("refresh", false);
+                  window.sessionStorage.setItem("refresh", false);
                   this.props.history.push("/welcome");
                 }}
               >

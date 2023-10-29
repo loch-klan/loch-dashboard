@@ -1,12 +1,33 @@
 import { API_LIMIT, DEFAULT_PRICE } from "../../utils/Constant";
-import { TOP_ALL_TRANSACTION_HISTORY, TOP_ALL_TRANSACTION_HISTORY_HOME, TOP_ASSET_VALUE_GRAPH, TOP_ASSET_VALUE_GRAPH_DAY, TOP_ASSET_VALUE_GRAPH_MONTH, TOP_ASSET_VALUE_GRAPH_YEAR, TOP_AVERAGE_COST_BASIS, TOP_AVERAGE_COST_RESET, TOP_AVERAGE_COST_SORT, TOP_COUNTER_PARTY_VOLUME, TOP_DEFAULT_VALUES, TOP_EXTERNAL_EVENTS, TOP_GAS_FEES, TOP_GET_DEFI_DATA, TOP_INSIGHT_DATA, TOP_NETFLOW_GRAPH, TOP_PORTFOLIO_ASSET, TOP_TRANSACTION_FILTER, TOP_USER_WALLET_LIST, TOP_YESTERDAY_BALANCE } from "./ActionTypes";
+import {
+  TOP_ALL_TRANSACTION_HISTORY,
+  TOP_ALL_TRANSACTION_HISTORY_HOME,
+  TOP_ASSET_VALUE_GRAPH,
+  TOP_ASSET_VALUE_GRAPH_DAY,
+  TOP_ASSET_VALUE_GRAPH_MONTH,
+  TOP_ASSET_VALUE_GRAPH_YEAR,
+  TOP_AVERAGE_COST_BASIS,
+  TOP_AVERAGE_COST_RESET,
+  TOP_AVERAGE_COST_SORT,
+  TOP_COUNTER_PARTY_VOLUME,
+  TOP_DEFAULT_VALUES,
+  TOP_EXTERNAL_EVENTS,
+  TOP_GAS_FEES,
+  TOP_GET_DEFI_DATA,
+  TOP_INSIGHT_DATA,
+  TOP_NETFLOW_GRAPH,
+  TOP_PORTFOLIO_ASSET,
+  TOP_TRANSACTION_FILTER,
+  TOP_USER_WALLET_LIST,
+  TOP_YESTERDAY_BALANCE,
+} from "./ActionTypes";
 const INITIAL_STATE = {
   //  top account home
   coinRateList: [],
   chainWallet: [],
   walletTotal: 0,
   chainPortfolio: {},
-  currency: JSON.parse(localStorage.getItem("currency")),
+  currency: JSON.parse(window.sessionStorage.getItem("currency")),
   // yesterday balance
   yesterdayBalance: 0,
 
@@ -75,13 +96,13 @@ const INITIAL_STATE = {
 const TopAccountReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // case TOP_COIN_RATE_LIST:
-    //   // return { 
+    //   // return {
     //   //   ...state,
     //   //   coinRateList: { ...state.coinRateList, ...action.payload },
     //   // };
     //   return { ...state, coinRateList: action.payload };
     case TOP_USER_WALLET_LIST:
-      // console.log("action.payload", action.payload); 
+      // console.log("action.payload", action.payload);
       let updateWalletTotal = state.walletTotal || 0;
       let updatedChainWallet = state.chainWallet || [];
       let chainPortfolio = state.chainPortfolio || {};

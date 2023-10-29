@@ -24,6 +24,8 @@ import Loading from "../common/Loading";
 import {
   HomeDefiDebt,
   HomeDefiYield,
+  HomeFollow,
+  HomeUnFollow,
   HomeRefreshButton,
   HomeShare,
   NetworkTab,
@@ -32,13 +34,13 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import arrowUp from "../../assets/images/arrow-up.svg";
-
 import {
   getAllProtocol,
   getYieldBalanceApi,
   getUserWallet,
   getProtocolBalanceApi,
   getExchangeBalances,
+  isFollowedByUser,
 } from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
@@ -46,8 +48,13 @@ import { updateDefiData } from "../defi/Api";
 import {
   PieChartWatermarkIcon,
   SharePortfolioIconWhite,
+  TwoPeopleLightIcon,
 } from "../../assets/images/icons";
 import { toast } from "react-toastify";
+import {
+  addAddressToWatchList,
+  removeAddressFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -63,8 +70,9 @@ class PieChart2 extends BaseReactComponent {
       valueChanged: false,
       flag: false,
       isLoading: props.isLoading,
-
-      currency: JSON.parse(localStorage.getItem("currency")),
+      isFollowingAddress: false,
+      showFollowingAddress: true,
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
@@ -84,11 +92,12 @@ class PieChart2 extends BaseReactComponent {
       triggerId: 6,
       timeNumber: null,
       timeUnit: "",
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan:
+        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
       defiLoader: false,
 
       // refresh
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       isStopLoading: false,
 
       chainLoader: false,
@@ -97,10 +106,22 @@ class PieChart2 extends BaseReactComponent {
   }
 
   componentDidMount() {
-    // for temp
+    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
 
+    if (whatIsIt === "true") {
+      this.setState({
+        isFollowingAddress: true,
+      });
+    } else {
+      this.setState({
+        isFollowingAddress: false,
+      });
+    }
+    // for temp
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
+      this.isFollowedByUserFun();
+      this.showFollowOrNot();
       let assetData = [];
 
       if (
@@ -169,7 +190,7 @@ class PieChart2 extends BaseReactComponent {
     });
     let chainList = [];
 
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let uniquechains = [];
     // console.log("user wallet",UserWallet)
     UserWallet &&
@@ -265,7 +286,7 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     //  console.log("wallet_address", UserWallet);
 
     if (UserWallet?.length !== 0) {
@@ -298,6 +319,9 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
+    if (prevProps?.HeaderState !== this.props.HeaderState) {
+      this.showFollowOrNot();
+    }
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
       // }
@@ -416,7 +440,7 @@ class PieChart2 extends BaseReactComponent {
       //     });
       //   }
       // });
-      let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
       let uniquechains = [];
 
       UserWallet &&
@@ -642,7 +666,7 @@ class PieChart2 extends BaseReactComponent {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -712,8 +736,8 @@ class PieChart2 extends BaseReactComponent {
     this.props.portfolioState.yesterdayBalance = 0;
 
     // console.log("Refresh clicked");
-    // localStorage.setItem("refreshApiTime", currentTime);
-    let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    // window.sessionStorage.setItem("refreshApiTime", currentTime);
+    let userWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
 
     userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
@@ -735,7 +759,112 @@ class PieChart2 extends BaseReactComponent {
 
     // getUserWallet(this);
   };
+  addAddressToWatchListFun = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length > 0) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const tempNameTag = tempListOfAdd[0].nameTag
+          ? tempListOfAdd[0].nameTag
+          : "";
+        if (this.state.isFollowingAddress) {
+          const firstData = new URLSearchParams();
+          firstData.append("address", tempWalletAddress);
 
+          this.props.removeAddressFromWatchList(
+            firstData,
+            this,
+            tempWalletAddress,
+            tempNameTag
+          );
+          HomeUnFollow({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            address: tempWalletAddress,
+            nameTag: tempNameTag,
+          });
+          return null;
+        }
+
+        this.setState({
+          loadAddBtn: true,
+        });
+        const data = new URLSearchParams();
+        HomeFollow({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          address: tempWalletAddress,
+          nameTag: tempNameTag,
+        });
+        data.append("wallet_address", tempWalletAddress);
+        data.append("type", "self");
+        data.append("name_tag", tempNameTag);
+        this.props.addAddressToWatchList(
+          data,
+          this,
+          tempWalletAddress,
+          tempNameTag
+        );
+      }
+    }
+  };
+  showAddressesAdded = () => {
+    this.setState({ isFollowingAddress: true });
+    window.sessionStorage.setItem("isFollowingAddress", true);
+  };
+  addressDeleted = () => {
+    this.setState({ isFollowingAddress: false });
+    window.sessionStorage.setItem("isFollowingAddress", false);
+  };
+  isFollowedByUserFun = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const data = new URLSearchParams();
+        data.append("wallet_address", tempWalletAddress);
+        this.props.isFollowedByUser(data, this);
+      }
+    }
+  };
+  showFollowOrNot = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson && listJson.length > 0) {
+      if (listJson.length === 1) {
+        this.isFollowedByUserFun();
+        this.setState({
+          showFollowingAddress: true,
+        });
+      } else {
+        this.setState({
+          showFollowingAddress: false,
+        });
+      }
+    } else {
+      this.addressDeleted();
+    }
+  };
   render() {
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
@@ -1007,8 +1136,8 @@ class PieChart2 extends BaseReactComponent {
       ],
     };
 
-    // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    // console.log("wallet address", JSON.parse(window.sessionStorage.getItem("addWallet")))
+    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
@@ -1105,7 +1234,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("uniquelist", uniqueList);
     const handleShare = () => {
       let lochUser = getCurrentUser().id;
-      let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
       let slink =
         userWallet?.length === 1
           ? userWallet[0].displayAddress || userWallet[0].address
@@ -1183,6 +1312,20 @@ class PieChart2 extends BaseReactComponent {
                     justifyContent: "end",
                   }}
                 >
+                  {this.state.showFollowingAddress ? (
+                    <div
+                      onClick={this.addAddressToWatchListFun}
+                      className={`pageHeaderShareContainer pageHeaderConnectWalletContainer`}
+                    >
+                      <Image
+                        className="pageHeaderShareImg"
+                        src={TwoPeopleLightIcon}
+                      />
+                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                        {this.state.isFollowingAddress ? "Following" : "Follow"}
+                      </div>
+                    </div>
+                  ) : null}
                   <h2
                     className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
@@ -1889,6 +2032,8 @@ const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
   commonState: state.CommonState,
+  AddLocalAddWalletState: state.AddLocalAddWalletState,
+  HeaderState: state.HeaderState,
 });
 
 const mapDispatchToProps = {
@@ -1897,7 +2042,9 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   updateDefiData,
   getProtocolBalanceApi,
-
+  addAddressToWatchList,
   getExchangeBalances,
+  isFollowedByUser,
+  removeAddressFromWatchList,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);

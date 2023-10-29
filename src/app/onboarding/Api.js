@@ -58,7 +58,13 @@ export const getAllParentChains = () => {
   };
 };
 
-export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
+export const detectCoin = (
+  wallet,
+  ctx = null,
+  isCohort = false,
+  index = 0,
+  justDetect = false
+) => {
   return function (dispatch, getState) {
     let data = new URLSearchParams();
     data.append("chain", wallet.coinCode);
@@ -90,7 +96,7 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
             });
           }
 
-          if (!isCohort && !ctx?.topAccountPage) {
+          if (!isCohort && !ctx?.topAccountPage && !justDetect) {
             // wallet.address = res.data.data.wallet_address;
             dispatch({
               type: WALLET_LIST,
@@ -107,7 +113,6 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
               },
             });
           }
-
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
             ctx.handleSetCoin({
@@ -118,7 +123,9 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
 
             if (
               ctx?.state.isTopAccountPage &&
-              index === ctx?.props?.OnboardingState.parentCoinList?.length - 1
+              index ===
+                ctx?.props?.OnboardingState.parentCoinList?.length - 1 &&
+              !justDetect
             ) {
               setTimeout(() => {
                 ctx?.CalculateOverview && ctx?.CalculateOverview();
@@ -204,8 +211,11 @@ export const verifyUser = (ctx, info) => {
       .then((res) => {
         // console.log(res.data.data.user)
         if (!res.data.error) {
-          localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
-          localStorage.setItem("lochToken", res.data.data.token);
+          window.sessionStorage.setItem(
+            "lochUser",
+            JSON.stringify(res.data.data.user)
+          );
+          window.sessionStorage.setItem("lochToken", res.data.data.token);
           // free pricing
           let plan = {
             defi_enabled: true,
@@ -237,14 +247,14 @@ export const verifyUser = (ctx, info) => {
             influencer_pod_limit: -1,
           };
           // free pricing
-          localStorage.setItem(
+          window.sessionStorage.setItem(
             "currentPlan",
             JSON.stringify({
               ...plan,
               influencer_pod_limit: -1,
             })
           );
-          // localStorage.setItem(
+          // window.sessionStorage.setItem(
           //   "currentPlan",
           //   JSON.stringify({...res.data.data?.current_plan,influencer_pod_limit:
           // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
@@ -325,7 +335,7 @@ export const verifyUser = (ctx, info) => {
             track: "Landing page sign in",
           });
           // console.log("addWallet", addWallet);
-          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
           ctx.props.history.push({
             pathname: "/home",
@@ -335,7 +345,7 @@ export const verifyUser = (ctx, info) => {
             email_address: res.data.data.user.email,
             session_id: res.data.data.user?.link,
           });
-          if (localStorage.getItem("lochToken")) {
+          if (window.sessionStorage.getItem("lochToken")) {
             postLoginInstance
               .post("wallet/user-wallet/add-yield-pools")
               .then((res) => {
@@ -374,7 +384,7 @@ export const createAnonymousUserApi = (
   userFunction = null
 ) => {
   return function (dispatch, getState) {
-    // localStorage.setItem('currency',JSON.stringify({
+    // window.sessionStorage.setItem('currency',JSON.stringify({
     //         active: true,
     //         code: "USD",
     //         id: "6399a2d35a10114b677299fe",
@@ -383,9 +393,9 @@ export const createAnonymousUserApi = (
     //         rate: 1,
     // }))
 
-    localStorage.setItem("stopClick", false);
+    window.sessionStorage.setItem("stopClick", false);
 
-    localStorage.setItem("lochToken", "jsk");
+    window.sessionStorage.setItem("lochToken", "jsk");
 
     if (!ctx.props.ishome) {
       if (!ctx.state?.podName) {
@@ -407,8 +417,11 @@ export const createAnonymousUserApi = (
       .then((res) => {
         // console.log("inside create user function")
         if (!res.data.error) {
-          localStorage.setItem("lochDummyUser", res.data.data.user.link);
-          localStorage.setItem("lochToken", res.data.data.token);
+          window.sessionStorage.setItem(
+            "lochDummyUser",
+            res.data.data.user.link
+          );
+          window.sessionStorage.setItem("lochToken", res.data.data.token);
 
           // free pricing
           let plan = {
@@ -441,20 +454,20 @@ export const createAnonymousUserApi = (
             influencer_pod_limit: -1,
           };
           // free pricing
-          localStorage.setItem(
+          window.sessionStorage.setItem(
             "currentPlan",
             JSON.stringify({
               ...plan,
               influencer_pod_limit: -1,
             })
           );
-          // localStorage.setItem(
+          // window.sessionStorage.setItem(
           //   "currentPlan",
           //   JSON.stringify({...res.data.data.current_plan,influencer_pod_limit:
           // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
           // );
 
-          localStorage.setItem("stopClick", true);
+          window.sessionStorage.setItem("stopClick", true);
 
           signUpProperties({
             userId: res.data.data.user.link,
@@ -519,10 +532,13 @@ export const createAnonymousUserApi = (
             newAddWallet.push(obj);
           }
           if (ctx.state.podName) {
-            localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+            window.sessionStorage.setItem(
+              "addWallet",
+              JSON.stringify(newAddWallet)
+            );
             addLocalWalletList(JSON.stringify(addWallet));
           } else {
-            localStorage.setItem(
+            window.sessionStorage.setItem(
               "addWallet",
               JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
             );
@@ -531,7 +547,7 @@ export const createAnonymousUserApi = (
           if (userFunction) {
             // console.log("user function found");
             ctx.getUrl();
-            localStorage.setItem("stop_redirect", true);
+            window.sessionStorage.setItem("stop_redirect", true);
             setTimeout(() => {
               userFunction();
             }, 100);
@@ -559,7 +575,7 @@ export const createAnonymousUserApi = (
           let passAddress = newAddWallet?.map((wallet) => {
             return wallet.address;
           });
-          if (localStorage.getItem("lochToken") && passAddress) {
+          if (window.sessionStorage.getItem("lochToken") && passAddress) {
             const yieldData = new URLSearchParams();
             yieldData.append("wallet_addresses", JSON.stringify(passAddress));
             postLoginInstance
@@ -583,14 +599,14 @@ export const createAnonymousUserApi = (
 
 // create user for app feature
 export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
-  localStorage.setItem("stopClick", false);
+  window.sessionStorage.setItem("stopClick", false);
 
-  localStorage.setItem("lochToken", "jsk");
+  window.sessionStorage.setItem("lochToken", "jsk");
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
     if (!res.data.error) {
-      localStorage.setItem("lochDummyUser", res.data.data.user.link);
-      localStorage.setItem("lochToken", res.data.data.token);
+      window.sessionStorage.setItem("lochDummyUser", res.data.data.user.link);
+      window.sessionStorage.setItem("lochToken", res.data.data.token);
 
       // free pricing
       let plan = {
@@ -623,30 +639,30 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
         influencer_pod_limit: -1,
       };
       // free pricing
-      localStorage.setItem(
+      window.sessionStorage.setItem(
         "currentPlan",
         JSON.stringify({
           ...plan,
           influencer_pod_limit: -1,
         })
       );
-      // localStorage.setItem(
+      // window.sessionStorage.setItem(
       //   "currentPlan",
       //   JSON.stringify({...res.data.data.current_plan,influencer_pod_limit:
       // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
       // );
 
-      localStorage.setItem("stopClick", true);
-      // localStorage.setItem("defi_access", true);
-      // localStorage.setItem("isPopup", true);
-      // // localStorage.setItem("whalepodview", true);
-      // localStorage.setItem(
+      window.sessionStorage.setItem("stopClick", true);
+      // window.sessionStorage.setItem("defi_access", true);
+      // window.sessionStorage.setItem("isPopup", true);
+      // // window.sessionStorage.setItem("whalepodview", true);
+      // window.sessionStorage.setItem(
       //   "whalepodview",
       //   JSON.stringify({ access: true, id: "" })
       // );
-      // localStorage.setItem("previewAddress", "");
+      // window.sessionStorage.setItem("previewAddress", "");
 
-      //  localStorage.setItem(
+      //  window.sessionStorage.setItem(
       //    "isSubmenu",
       //    JSON.stringify({
       //      me: true,
@@ -720,7 +736,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
           : false;
         newAddWallet.push(obj);
       }
-      localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       if (userFunction) {
         setTimeout(() => {
