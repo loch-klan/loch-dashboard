@@ -1329,6 +1329,9 @@ class PieChart2 extends BaseReactComponent {
                   <h2
                     className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
+                    style={{
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     <Image src={refreshIcon} />
                     Updated{" "}
