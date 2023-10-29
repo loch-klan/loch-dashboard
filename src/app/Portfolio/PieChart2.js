@@ -703,10 +703,10 @@ class PieChart2 extends BaseReactComponent {
       unit = " just now";
     } else if (diffInMinutes < 60) {
       timeDiffString = Math.floor(diffInMinutes);
-      unit = diffInMinutes < 2 ? " minute ago" : " minutes ago";
+      unit = diffInMinutes < 2 ? "m ago" : "m ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-      unit = diffInHours < 2 ? " hour ago" : " hours ago";
+      unit = diffInHours < 2 ? "h ago" : "h ago";
     }
 
     // console.log("timediff str", timeDiffString);
@@ -1355,11 +1355,14 @@ class PieChart2 extends BaseReactComponent {
                   <h2
                     className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
                     onClick={this.RefreshButton}
+                    style={{
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     <Image src={refreshIcon} />
                     Updated{" "}
                     <span
-                      style={{ margin: "0px 3px" }}
+                      style={{ marginLeft: "3px" }}
                       className="inter-display-bold f-s-13 lh-15 grey-B0B"
                     >
                       {this.state.timeNumber === null
@@ -1367,13 +1370,14 @@ class PieChart2 extends BaseReactComponent {
                         : this.state.timeNumber === 0
                         ? " just now"
                         : this.state.timeNumber}
-                    </span>{" "}
-                    {" " + this.state.timeUnit !== "" &&
-                    this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      : this.state.timeNumber == 0
-                      ? ""
-                      : "hours ago"}
+                    </span>
+                    <span>
+                      {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber == 0
+                        ? ""
+                        : "h ago"}
+                    </span>
                   </h2>
                   <CustomOverlay
                     position="top"

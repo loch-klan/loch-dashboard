@@ -109,7 +109,7 @@ export default function WelcomeCard(props) {
     if (temp && temp.goToWhaleWatch) {
       props?.history.push("/whale-watch");
     } else {
-      props?.history.push("/top-accounts");
+      // props?.history.push("/top-accounts");
     }
   };
   const tempReturn =

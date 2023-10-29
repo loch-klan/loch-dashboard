@@ -275,6 +275,30 @@ class TransactionHistoryPage extends BaseReactComponent {
                   this.setState({ selectedMethods: tempVar.value });
                 } else if (tempVar.key === SEARCH_BY_CHAIN_IN) {
                   this.setState({ selectedNetworks: tempVar.value });
+                } else if (tempVar.key === SEARCH_BETWEEN_VALUE) {
+                  let tempAmount = "Amount";
+                  let min = tempVar.value?.min_value
+                    ? tempVar.value.min_value
+                    : 0;
+                  let max = tempVar.value?.max_value
+                    ? tempVar.value.max_value
+                    : 0;
+
+                  if (min === 0 && max === 10000) {
+                    tempAmount = "$10K or less";
+                  } else if (min === 10000 && max === 100000) {
+                    tempAmount = "$10K - $100K";
+                  } else if (min === 100000 && max === 1000000) {
+                    tempAmount = "$100K - $1M";
+                  } else if (min === 1000000 && max === 10000000) {
+                    tempAmount = "$1M - $10M";
+                  } else if (min === 10000000 && max === 100000000) {
+                    tempAmount = "$10M - $100M";
+                  } else if (min === 100000000 && max === 10000000000) {
+                    tempAmount = "$100M or more";
+                  }
+
+                  this.setState({ amountFilter: tempAmount });
                 }
               }
             }

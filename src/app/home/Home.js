@@ -130,7 +130,7 @@ class Home extends BaseReactComponent {
     this.setState({ onboardingWalletAddress: copyWallet });
   };
   handleRedirection = () => {
-    this.props.history.push(`/top-accounts`);
+    // this.props.history.push(`/top-accounts`);
   };
   connectWalletEthers = async () => {
     ConnectWalletButtonClickedWelcome({
