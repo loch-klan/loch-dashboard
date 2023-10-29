@@ -695,10 +695,10 @@ class PieChart2 extends BaseReactComponent {
       unit = " just now";
     } else if (diffInMinutes < 60) {
       timeDiffString = Math.floor(diffInMinutes);
-      unit = diffInMinutes < 2 ? " m ago" : " m ago";
+      unit = diffInMinutes < 2 ? "m ago" : "m ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-      unit = diffInHours < 2 ? " h ago" : " h ago";
+      unit = diffInHours < 2 ? "h ago" : "h ago";
     }
 
     // console.log("timediff str", timeDiffString);
@@ -1341,9 +1341,8 @@ class PieChart2 extends BaseReactComponent {
                         : this.state.timeNumber === 0
                         ? " just now"
                         : this.state.timeNumber}
-                    </span>{" "}
-                    {" " + this.state.timeUnit !== "" &&
-                    this.state.timeNumber !== 0
+                    </span>
+                    {this.state.timeUnit !== "" && this.state.timeNumber !== 0
                       ? this.state.timeUnit
                       : this.state.timeNumber == 0
                       ? ""

@@ -703,7 +703,7 @@ class LineChartSlider extends BaseReactComponent {
             >
               <GraphHeader
                 title="Asset Value"
-                subtitle="Updated 3mins ago"
+                subtitle="Updated 3m ago"
                 isArrow={true}
               />
               <CoinBadges
