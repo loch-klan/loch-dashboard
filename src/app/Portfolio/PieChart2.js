@@ -9,6 +9,7 @@ import {
   CurrencyType,
   lightenDarkenColor,
   loadingAnimation,
+  mobileCheck,
   numToCurrency,
   TruncateText,
 } from "../../utils/ReusableFunctions";
@@ -55,11 +56,13 @@ import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+import PieChart2Mobile from "./PieChart2Mobile";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobileDevice: false,
       pieSectionDataEnabled: {},
       selectedSection: {},
       assetTotal: props.assetTotal,
@@ -106,6 +109,11 @@ class PieChart2 extends BaseReactComponent {
   }
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
     const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
 
     if (whatIsIt === "true") {
@@ -1248,6 +1256,24 @@ class PieChart2 extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     };
+    if (this.state.isMobileDevice) {
+      return (
+        <PieChart2Mobile
+          assetTotal={this.props.assetTotal}
+          chainLoader={this.props.chainLoader}
+          isChainToggle={this.state.isChainToggle}
+          chainList={this.state.chainList}
+          toggleChain={this.toggleChain}
+          toggleDebt={this.toggleDebt}
+          toggleYield={this.toggleYield}
+          defiLoader={this.state.defiLoader}
+          isYeildToggle={this.state.isYeildToggle}
+          isDebtToggle={this.state.isDebtToggle}
+          userWalletList={this.state.userWalletList}
+          undetectedWallet={this.props.undetectedWallet}
+        />
+      );
+    }
 
     return (
       <div
