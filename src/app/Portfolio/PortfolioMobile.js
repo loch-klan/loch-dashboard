@@ -49,7 +49,9 @@ class PortfolioMobile extends BaseReactComponent {
     this.state = {};
   }
   componentDidMount() {
-    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   }
   handleShare = () => {
     let lochUser = getCurrentUser().id;
@@ -59,13 +61,22 @@ class PortfolioMobile extends BaseReactComponent {
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
     let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
+    // navigator.clipboard.writeText(shareLink);
+    this.copyTextToClipboard(shareLink);
+
     // HomeShare({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
     // });
   };
+  async copyTextToClipboard(text) {
+    if ("clipboard" in navigator) {
+      toast.success("Link copied");
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand("copy", true, text);
+    }
+  }
   goToWelcome = () => {
     this.props.history.push("/welcome?FromMobileHome=true");
   };

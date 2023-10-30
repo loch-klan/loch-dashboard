@@ -26,7 +26,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import "./_welcomeMobilePage.scss";
-class Home extends BaseReactComponent {
+class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,6 +52,9 @@ class Home extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
     const search = this.props?.location?.search;
     const params = new URLSearchParams(search);
     const IsFromMobileHome = params.get("FromMobileHome");
@@ -205,7 +208,10 @@ class Home extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 500);
   };
-  onValidSubmit = () => {
+  onValidSubmit = (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     if (!this.state.coinsFound) {
       return null;
     }
@@ -430,26 +436,36 @@ class Home extends BaseReactComponent {
                     alt="searchIcon"
                   />
                 ) : null}
-                <input
-                  disabled={
-                    (elem.displayAddress &&
-                      elem.displayAddress ===
-                        this.state.metamaskWalletConnected) ||
-                    (elem.address &&
-                      elem.address === this.state.metamaskWalletConnected)
-                  }
-                  name={`wallet${index + 1}`}
-                  value={elem.displayAddress || elem.address || ""}
-                  placeholder="Search any address or ENS here"
-                  className={`inter-display-regular f-s-16 lh-20 mwbAwInput`}
-                  onChange={(e) => this.handleOnchange(e)}
-                  id={elem.id}
-                  onKeyDown={this.handleTabPress}
-                  onFocus={this.showBorder}
-                  onBlur={this.hideBorder}
-                  autocomplete="off"
+                <form
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                  }}
                   onSubmit={this.onValidSubmit}
-                />
+                  action="#"
+                >
+                  <input
+                    type="text"
+                    disabled={
+                      (elem.displayAddress &&
+                        elem.displayAddress ===
+                          this.state.metamaskWalletConnected) ||
+                      (elem.address &&
+                        elem.address === this.state.metamaskWalletConnected)
+                    }
+                    name={`wallet${index + 1}`}
+                    value={elem.displayAddress || elem.address || ""}
+                    placeholder="Search any address or ENS here"
+                    className={`inter-display-regular f-s-16 lh-20 mwbAwInput`}
+                    onChange={(e) => this.handleOnchange(e)}
+                    id={elem.id}
+                    onKeyDown={this.handleTabPress}
+                    onFocus={this.showBorder}
+                    onBlur={this.hideBorder}
+                    autocomplete="off"
+                    onSubmit={this.onValidSubmit}
+                  />
+                </form>
               </div>
             )}
           </div>
@@ -548,8 +564,8 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   createAnonymousUserApi,
 };
-Home.propTypes = {
+MobileHome.propTypes = {
   // getPosts: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(MobileHome);
