@@ -168,11 +168,13 @@
     }
   }
 }
-.mbwBottomDisclaimerHover {
-  width: 90vw;
-  padding-right: 2rem !important;
-}
-.Toastify__toast-container {
-  min-width: auto !important;
-  width: 100vw !important;
+@media screen and (max-width: 800px) {
+  .mbwBottomDisclaimerHover {
+    width: 90vw;
+    padding-right: 2rem !important;
+  }
+  .Toastify__toast-container {
+    min-width: auto !important;
+    width: 100vw !important;
+  }
 }
