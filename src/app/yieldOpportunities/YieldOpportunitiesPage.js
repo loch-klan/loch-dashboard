@@ -37,6 +37,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   amountFormat,
   CurrencyType,
+  mobileCheck,
   noExponents,
   numToCurrency,
   UpgradeTriggered,
@@ -191,6 +192,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });

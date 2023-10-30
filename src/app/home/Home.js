@@ -51,7 +51,7 @@ import {
   setMetamaskConnectedReducer,
 } from "../header/HeaderAction";
 import { ethers } from "ethers";
-import "./_welcomePage.scss";
+
 import MobileHome from "./MobileHome";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 

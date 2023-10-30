@@ -40,6 +40,7 @@ import WelcomeCard from "./WelcomeCard";
 import { SharePortfolioIconWhite } from "../../assets/images/icons";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
+import { toast } from "react-toastify";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -47,27 +48,19 @@ class PortfolioMobile extends BaseReactComponent {
 
     this.state = {};
   }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
     let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
-    // navigator.clipboard.writeText(shareLink);
-    if (navigator.share) {
-      navigator
-        .share({
-          title: "Loch",
-          text: "",
-          url: shareLink,
-        })
-        .then(() => console.log("Successful share"))
-        .catch((error) => console.log("Error sharing", error));
-    }
-    // toast.success("Link copied");
-
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
     // HomeShare({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
@@ -85,14 +78,14 @@ class PortfolioMobile extends BaseReactComponent {
           </div>
         ) : (
           <div className="mpcHomeContainer">
-            <div onClick={this.goToWelcome} className="mpcMobileSearch">
-              <div className="mpcMobileSearchInput">
+            <div className="mpcMobileSearch">
+              <div onClick={this.goToWelcome} className="mpcMobileSearchInput">
                 <Image className="mpcMobileSearchImage" src={SearchIcon} />
                 <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
                   Search for another address / ENS
                 </div>
               </div>
-              <div onClick={this.handleShare}>
+              <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
                   className="mpcMobileSearchImage"
                   src={SharePortfolioIconWhite}
