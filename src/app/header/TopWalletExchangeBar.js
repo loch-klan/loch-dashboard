@@ -545,6 +545,9 @@ class TopBar extends Component {
                   <Image className="eyeAndAccountImage" src={EyeIcon} />
                   <div className="inter-display-semi-bold f-s-13 lh-19">
                     {this.state.walletList[0]}
+                    {this.state.walletList.length > 1
+                      ? ` + ${this.state.walletList.length - 1} more`
+                      : null}
                   </div>
                 </>
               ) : null}

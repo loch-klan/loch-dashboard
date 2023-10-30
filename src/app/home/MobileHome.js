@@ -16,6 +16,7 @@ import {
   LochLogoWhiteIcon,
   MobileSearchGreyIcon,
 } from "../../assets/images/icons";
+import LochBlackLogo from "../../image/Loch.svg";
 import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
 import {
   setHeaderReducer,
@@ -24,7 +25,7 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
-
+import "./_welcomeMobilePage.scss";
 class Home extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -458,7 +459,16 @@ class Home extends BaseReactComponent {
 
     return (
       <div className="mobileWelcomeContainer">
-        <div className="mobileWelcomeBlockHeader">Blank Space</div>
+        <div className="mobileWelcomeBlockHeader">
+          <div className="mobileWelcomeBlockHeaderOverlay"></div>
+          <div className="mobileWelcomeBlockHeaderData">
+            <Image
+              className="mobileWelcomeBlockHeaderImage"
+              src={LochBlackLogo}
+            />
+            <div className="mobileWelcomeBlockHeaderTitle">Loch</div>
+          </div>
+        </div>
         <div className="mobileWelcomeBlock">
           <div className="mbwBannerContainer">
             {/* <Image className="mbwBanner" src={MobileFrame} /> */}
@@ -493,7 +503,7 @@ class Home extends BaseReactComponent {
 
           <div
             style={{
-              marginBottom: "5rem",
+              marginBottom: "8rem",
             }}
             className="mbwBottomDisclaimer"
           >
@@ -505,7 +515,7 @@ class Home extends BaseReactComponent {
                 isIcon={true}
                 IconImage={LockIcon}
                 isInfo={true}
-                className={"fix-width"}
+                className={"mbwBottomDisclaimerHover"}
               >
                 <Image
                   src={InfoIcon}

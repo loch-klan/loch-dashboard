@@ -1271,6 +1271,7 @@ class PieChart2 extends BaseReactComponent {
           isDebtToggle={this.state.isDebtToggle}
           userWalletList={this.state.userWalletList}
           undetectedWallet={this.props.undetectedWallet}
+          assetData={this.state?.assetData}
         />
       );
     }

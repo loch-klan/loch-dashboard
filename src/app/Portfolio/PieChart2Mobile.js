@@ -20,11 +20,13 @@ import {
   amountFormat,
   lightenDarkenColor,
   loadingAnimation,
+  noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import LinkIcon from "../../assets/images/link.svg";
 import arrowUp from "../../assets/images/arrow-up.svg";
+import TransactionTable from "../intelligence/TransactionTable";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {
@@ -34,6 +36,7 @@ class PieChart2Mobile extends BaseReactComponent {
       isChainToggle: false,
       isDebtToggle: false,
       isYeildToggle: false,
+      assetData: [],
     };
   }
   toggleChain = () => {
@@ -75,25 +78,184 @@ class PieChart2Mobile extends BaseReactComponent {
     }
   };
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.chainList !== this.props.chainList &&
-      this.props.chainList.length > 0
-    ) {
+  componentDidMount() {
+    if (this.props.assetData) {
+      let totalAmount = 0;
+      this.props.assetData.forEach((resRes) => {
+        let tempAssetVal = resRes.assetValue ? resRes.assetValue : 0;
+        totalAmount = totalAmount + tempAssetVal;
+      });
+      const tempAssetData = this.props.assetData.map((resRes) => {
+        let tempAssetVal = resRes.assetValue ? resRes.assetValue : 0;
+        let tempCount = resRes.count ? resRes.count : 0;
+        let percentageVal = 0;
+        let singlePriceVal = 0;
+        if (tempAssetVal) {
+          percentageVal = (tempAssetVal / totalAmount) * 100;
+          if (tempCount) {
+            singlePriceVal = tempAssetVal / tempCount;
+          }
+        }
+        return {
+          ...resRes,
+          percentageOfPortfolio: percentageVal,
+          singleAssetPrice: singlePriceVal,
+        };
+      });
       this.setState({
-        isChainToggle: true,
+        assetData: tempAssetData,
       });
     }
-    if (
-      prevProps.defiState?.YieldValues !== this.props.defiState?.YieldValues &&
-      this.props.defiState?.YieldValues.length > 0
-    ) {
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.assetData !== this.props.assetData) {
+      let totalAmount = 0;
+      this.props.assetData.forEach((resRes) => {
+        let tempAssetVal = resRes.assetValue ? resRes.assetValue : 0;
+        totalAmount = totalAmount + tempAssetVal;
+      });
+      const tempAssetData = this.props.assetData.map((resRes) => {
+        let tempAssetVal = resRes.assetValue ? resRes.assetValue : 0;
+        let tempCount = resRes.count ? resRes.count : 0;
+        let percentageVal = 0;
+        let singlePriceVal = 0;
+        if (tempAssetVal) {
+          percentageVal = (tempAssetVal / totalAmount) * 100;
+          if (tempCount) {
+            singlePriceVal = tempAssetVal / tempCount;
+          }
+        }
+        return {
+          ...resRes,
+          percentageOfPortfolio: percentageVal,
+          singleAssetPrice: singlePriceVal,
+        };
+      });
       this.setState({
-        isYeildToggle: true,
+        assetData: tempAssetData,
       });
     }
   }
   render() {
+    const CostBasisColumnData = [
+      {
+        labelName: (
+          <div className="cp history-table-header-col no-hover" id="Asset">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+          </div>
+        ),
+        dataKey: "Asset",
+        // coumnWidth: 118,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "Asset" && rowData.assetSymbol) {
+            return (
+              <Image
+                src={rowData.assetSymbol}
+                style={{
+                  height: "2.5rem",
+                }}
+              />
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col no-hover"
+            id="Average Cost Price"
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Price
+            </span>
+          </div>
+        ),
+        dataKey: "Price",
+        // coumnWidth: 153,
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "Price") {
+            let usdVal = 0;
+            if (rowData.singleAssetPrice) {
+              usdVal = rowData.singleAssetPrice;
+            }
+            return (
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {usdVal === 0 ? "N/A" : "$" + numToCurrency(usdVal)}
+              </span>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col no-hover"
+            id="Current Price"
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Value
+            </span>
+          </div>
+        ),
+        dataKey: "Value",
+        // coumnWidth: 128,
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "Value") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
+            const assetVal = rowData.assetValue ? rowData.assetValue : 0;
+            return (
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {assetVal === 0 ? "N/A" : "$" + numToCurrency(assetVal)}
+              </span>
+            );
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div className="cp history-table-header-col no-hover" id="Gain loss">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              % Portfolio
+            </span>
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+        // coumnWidth: 128,
+        coumnWidth: 0.3,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "PortfolioPercentage") {
+            if (rowData === "EMPTY") {
+              return null;
+            }
+            let percentageVal = 0;
+            if (rowData.percentageOfPortfolio) {
+              percentageVal = rowData.percentageOfPortfolio;
+            }
+            return (
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {amountFormat(percentageVal.toFixed(2), "en-US", "USD")}%
+                  </span>
+                </div>
+              </div>
+            );
+          }
+        },
+      },
+    ];
     return (
       <div>
         <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 ">
@@ -260,7 +422,7 @@ class PieChart2Mobile extends BaseReactComponent {
               ? "19rem"
               : this.state.isDebtToggle
               ? "9rem"
-              : "",
+              : "1.8rem",
           }}
           className="balance-sheet-card "
         >
@@ -273,6 +435,7 @@ class PieChart2Mobile extends BaseReactComponent {
               className={`balance-sheet-card-credit ${
                 this.props.defiLoader ? "balance-sheet-card-credit-loading" : ""
               }`}
+              style={{ whiteSpace: "nowrap" }}
             >
               <div>
                 <span
@@ -450,6 +613,26 @@ class PieChart2Mobile extends BaseReactComponent {
               </div>
             </div>
           )}
+        </div>
+        <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+          Assets
+        </h2>
+        <div className="section-table">
+          <TransactionTable
+            noSubtitleBottomPadding
+            disableOnLoading
+            isMiniversion
+            title=""
+            handleClick={() => {}}
+            subTitle=""
+            message="No assets found"
+            tableData={this.state.assetData.slice(0, 3)}
+            columnList={CostBasisColumnData}
+            headerHeight={60}
+            isArrow={true}
+            isLoading={this.state.AvgCostLoading}
+            isAnalytics="average cost basis"
+          />
         </div>
       </div>
     );
