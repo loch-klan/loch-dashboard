@@ -103,8 +103,138 @@ export const PreviewDemo = ({ session_id }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:preview demo");
 };
-
+export const MobileHomePageView = ({ session_id, email_address }) => {
+  const event_name = "Mobile: Page View: Home page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TimeSpentMobileHome = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Mobile: Home: Time spent on home page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 //2. Landing Page Conversion:go
+export const Mobile_Home_Open_Defi_Debt_Balance = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Mobile: Home: open defi debt balance sheet";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Home_Open_Defi_Credit_Balance = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Mobile: Home: open defi credit balance sheet";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Home_Open_Network_Balance = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Mobile: Home: open network balance sheet";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Home_Share = ({ session_id, email_address, address }) => {
+  const event_name = "Mobile: Home: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Home_Search_New_Address = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Mobile: Home: search for another address clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Go_Back_Home = ({ session_id, email_address, address }) => {
+  const event_name = "Mobile: Welcome: Go back to home";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_LPC_Go = ({
+  addresses,
+  ENS,
+  chains_detected_against_them,
+  unrecognized_addresses,
+  unrecognized_ENS,
+  nicknames,
+}) => {
+  const event_name = "Mobile: Welcome: Landing Page Conversion: go";
+  const eventProperties = {
+    addresses: addresses,
+    ENS: ENS,
+    "chains detected against them": chains_detected_against_them,
+    "unrecognized addresses": unrecognized_addresses,
+    "unrecognized ENS": unrecognized_ENS,
+    nicknames: nicknames,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
+export const Mobile_Update_Address = ({
+  addresses,
+  ENS,
+  chains_detected_against_them,
+  unrecognized_addresses,
+  unrecognized_ENS,
+  nicknames,
+}) => {
+  const event_name = "Mobile: Welcome: Update address";
+  const eventProperties = {
+    addresses: addresses,
+    ENS: ENS,
+    "chains detected against them": chains_detected_against_them,
+    "unrecognized addresses": unrecognized_addresses,
+    "unrecognized ENS": unrecognized_ENS,
+    nicknames: nicknames,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
 export const LPC_Go = ({
   addresses,
   ENS,
@@ -335,7 +465,6 @@ export const AddWalletAddressNickname = ({
   ////console.log("Home:add wallet_address");
 };
 
-//11. Home:piechart overview
 export const PiechartOverview = ({
   session_id,
   email_address,

@@ -41,6 +41,12 @@ import { SharePortfolioIconWhite } from "../../assets/images/icons";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
+import {
+  MobileHomePageView,
+  Mobile_Home_Search_New_Address,
+  Mobile_Home_Share,
+  TimeSpentMobileHome,
+} from "../../utils/AnalyticsFunctions";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -48,12 +54,71 @@ class PortfolioMobile extends BaseReactComponent {
 
     this.state = {};
   }
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    MobileHomePageView({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkMobileHomeTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   componentDidMount() {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
+    this.startPageView();
+    this.updateTimer(true);
+    return () => {
+      clearInterval(window.checkMobileHomeTimer);
+    };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
+      "mobileHomePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    window.sessionStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkMobileHomeTimer);
+    window.sessionStorage.removeItem("mobileHomePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentMobileHome({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileHomePageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileHomePageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
   handleShare = () => {
+    Mobile_Home_Share({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     let lochUser = getCurrentUser().id;
     let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     let slink =
@@ -78,6 +143,10 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   goToWelcome = () => {
+    Mobile_Home_Search_New_Address({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.props.history.push("/welcome?FromMobileHome=true");
   };
   render() {

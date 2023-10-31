@@ -10,7 +10,12 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 
 import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
 
-import { TimeSpentDiscountEmail } from "../../utils/AnalyticsFunctions";
+import {
+  Mobile_Go_Back_Home,
+  Mobile_LPC_Go,
+  Mobile_Update_Address,
+  TimeSpentDiscountEmail,
+} from "../../utils/AnalyticsFunctions";
 import {
   CloseIcon,
   LochLogoWhiteIcon,
@@ -26,6 +31,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import "./_welcomeMobilePage.scss";
+import { getCurrentUser } from "../../utils/ManageToken";
 class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -109,7 +115,7 @@ class MobileHome extends BaseReactComponent {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentDiscountEmail({ time_spent: TimeSpent });
+      // TimeSpentDiscountEmail({ time_spent: TimeSpent });
     }
   }
 
@@ -313,6 +319,11 @@ class MobileHome extends BaseReactComponent {
         // data.append("link", );
         this.props.createAnonymousUserApi(data, this, finalArr, null);
 
+        const address = finalArr?.map((e) => e.address);
+
+        const unrecog_address = finalArr
+          .filter((e) => !e.coinFound)
+          .map((e) => e.address);
         const blockchainDetected = [];
         const nicknames = [];
         finalArr
@@ -326,6 +337,14 @@ class MobileHome extends BaseReactComponent {
             blockchainDetected.push({ address: address, names: coinName });
             nicknames.push({ address: address, nickname: nickname });
           });
+        Mobile_Update_Address({
+          addresses: address,
+          ENS: address,
+          chains_detected_against_them: blockchainDetected,
+          unrecognized_addresses: unrecog_address,
+          unrecognized_ENS: unrecog_address,
+          nicknames: nicknames,
+        });
       }, 500);
     } else {
       let walletAddress = [];
@@ -388,7 +407,11 @@ class MobileHome extends BaseReactComponent {
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       // data.append("link", );
       this.props.createAnonymousUserApi(data, this, finalArr, null);
+      const address = finalArr?.map((e) => e.address);
 
+      const unrecog_address = finalArr
+        .filter((e) => !e.coinFound)
+        .map((e) => e.address);
       const blockchainDetected = [];
       const nicknames = [];
       finalArr
@@ -403,17 +426,23 @@ class MobileHome extends BaseReactComponent {
           nicknames.push({ address: address, nickname: nickname });
         });
 
-      // LPC_Go({
-      //   addresses: address,
-      //   ENS: address,
-      //   chains_detected_against_them: blockchainDetected,
-      //   unrecognized_addresses: unrecog_address,
-      //   unrecognized_ENS: unrecog_address,
-      //   nicknames: nicknames,
-      // });
+      Mobile_LPC_Go({
+        addresses: address,
+        ENS: address,
+        chains_detected_against_them: blockchainDetected,
+        unrecognized_addresses: unrecog_address,
+        unrecognized_ENS: unrecog_address,
+        nicknames: nicknames,
+      });
     }
   };
   goToHome = () => {
+    if (getCurrentUser()) {
+      Mobile_Go_Back_Home({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
     this.props.history.push("/home");
   };
   render() {
