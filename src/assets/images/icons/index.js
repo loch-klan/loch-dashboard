@@ -1,3 +1,5 @@
+export { default as SmartMoneyPaginationArrowLeftIcon } from "./smartMoneyPaginationArrowLeft.svg";
+export { default as SmartMoneyPaginationArrowRightIcon } from "./smartMoneyPaginationArrowRight.svg";
 export { default as WalletIcon } from "./wallet_icon.svg";
 export { default as WalletWhiteIcon } from "./wallet_icon_white.svg";
 export { default as TriangleArrowDownIcon } from "./triangleArrowDown.svg";

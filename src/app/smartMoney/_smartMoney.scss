@@ -1,0 +1,100 @@
+.smartMoneyHeaderContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  width: 100%;
+  height: 9rem;
+  box-sizing: border-box;
+  z-index: 99;
+  box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.04), 6px 1px 1px rgba(0, 0, 0, 0.04);
+  .smartMoneyHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    display: flex;
+    .leftSmartMoneyContainer {
+      width: 28rem;
+      padding: 0rem 3rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .leftSmartMoneyLogos {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+        img {
+          width: 4rem;
+          margin-right: 1rem;
+        }
+        .leftSmartMoneyLogoText {
+          color: #0d0d0d;
+          font-family: "Inter-Medium";
+          font-size: 2.4rem;
+          font-weight: 500;
+          line-height: 24px;
+          vertical-align: middle;
+        }
+      }
+      .currency-wrapper {
+        .dropdown {
+          text-align: left;
+
+          #currency-dropdown {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 1.2rem;
+            border-radius: 8px;
+            color: #96979a;
+            font-family: "Inter-SemiBold";
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 12px;
+            &:focus {
+              border: 1px solid #e5e5e6;
+            }
+
+            &:hover {
+              border: 1px solid #e5e5e6;
+            }
+          }
+          .dropdown-menu {
+            &.show {
+              width: 9.3rem;
+              height: 22rem;
+              overflow-y: auto;
+              background: white;
+              left: -9px !important;
+              .dropdown-item {
+                display: flex;
+                justify-content: space-between;
+              }
+            }
+          }
+        }
+      }
+    }
+    .rightSmartMoneyContainer {
+      flex: 1;
+      padding: 0rem;
+      .rightSmartMoneyContainerHeading {
+        color: #0d0d0d;
+        font-size: 2rem;
+      }
+      .rightSmartMoneyContainerSubHeading {
+        color: #adadad;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+.smartMoneyPage {
+  padding: 0 28rem;
+  overflow-x: hidden;
+  width: 100%;
+}
