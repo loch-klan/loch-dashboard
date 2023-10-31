@@ -49,6 +49,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         // WHEN PARAM ID CHANGES.
         <div className="main-section">
           {props.location.pathname !== "/welcome" &&
+          props.location.pathname !== "/smart-money" &&
           !props.match.params.podName &&
           !isMobile ? (
             <Sidebar ownerName={""} {...props} />
@@ -56,6 +57,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <div
             className={`main-section-right ${
               props.location.pathname !== "/welcome" &&
+              props.location.pathname !== "/smart-money" &&
               !props.match.params.podName
                 ? "m-l-27"
                 : ""

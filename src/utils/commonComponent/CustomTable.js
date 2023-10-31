@@ -12,6 +12,7 @@ import {
   FormElement,
 } from "../form";
 import Loading from "../../app/common/Loading";
+import SmartMoneyPagination from "./SmartMoneyPagination";
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -223,16 +224,34 @@ class CustomTable extends BaseReactComponent {
             )}
           </>
         )}
-        {tableData && tableData.length >= 1 && totalPage > 1 && (
-          <Pagination
-            history={history}
-            location={location}
-            page={currentPage + 1}
-            pageCount={totalPage}
-            pagePrev={pagePrev}
-            pageNext={pageNext}
-            onPageChange={this.props.onPageChange}
-          />
+        {this.props.isSmartMoney ? (
+          tableData && tableData.length >= 1 && totalPage >= 1 ? (
+            <SmartMoneyPagination
+              history={history}
+              location={location}
+              page={currentPage + 1}
+              pageCount={totalPage}
+              pagePrev={pagePrev}
+              pageNext={pageNext}
+              pageLimit={this.props.pageLimit}
+              changePageLimit={this.props.changePageLimit}
+              onPageChange={this.props.onPageChange}
+            />
+          ) : null
+        ) : (
+          tableData &&
+          tableData.length >= 1 &&
+          totalPage > 1 && (
+            <Pagination
+              history={history}
+              location={location}
+              page={currentPage + 1}
+              pageCount={totalPage}
+              pagePrev={pagePrev}
+              pageNext={pageNext}
+              onPageChange={this.props.onPageChange}
+            />
+          )
         )}
       </div>
     );
