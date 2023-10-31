@@ -18,7 +18,11 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import {
   EyeIcon,
   MetamaskIcon,
@@ -531,6 +535,33 @@ class TopBar extends Component {
     this.props.updateUserWalletApi(data, this, yieldData);
   };
   render() {
+    if (this.props.isMobileRender) {
+      if (this.state.walletList && this.state.walletList.length > 0) {
+        return (
+          <div className="accountsAmountContainer">
+            <div className="eyeAndAccount">
+              {this.state.walletList && this.state.walletList[0] ? (
+                <>
+                  <Image className="eyeAndAccountImage" src={EyeIcon} />
+                  <div className="inter-display-semi-bold f-s-13 lh-19">
+                    {this.state.walletList[0]}
+                    {this.state.walletList.length > 1
+                      ? ` + ${this.state.walletList.length - 1} more`
+                      : null}
+                  </div>
+                </>
+              ) : null}
+            </div>
+            <div className="inter-display-semi-bold f-s-16 lh-19">
+              {this.props.assetTotal ? (
+                <span>${numToCurrency(this.props.assetTotal)}</span>
+              ) : null}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    }
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (

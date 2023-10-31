@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import Sidebar from "../app/common/Sidebar";
 import { getToken } from "./ManageToken";
+import { mobileCheck } from "./ReusableFunctions";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -42,13 +43,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           window.sessionStorage.setItem("transHistorySorts", transHistorySorts);
         }
       }
+      const isMobile = mobileCheck();
       return requireAuth() ? (
         // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
         // WHEN PARAM ID CHANGES.
         <div className="main-section">
           {props.location.pathname !== "/welcome" &&
           props.location.pathname !== "/smart-money" &&
-          !props.match.params.podName ? (
+          !props.match.params.podName &&
+          !isMobile ? (
             <Sidebar ownerName={""} {...props} />
           ) : null}
           <div

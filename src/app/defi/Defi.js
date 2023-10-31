@@ -13,6 +13,7 @@ import {
   amountFormat,
   convertNtoNumber,
   CurrencyType,
+  mobileCheck,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -125,6 +126,9 @@ class Defi extends Component {
     });
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     // if (this.state.userPlan?.defi_enabled) {
     //   this.props.getAllCoins();
     //   // getAllProtocol(this);
