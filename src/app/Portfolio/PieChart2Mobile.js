@@ -27,6 +27,12 @@ import { Image } from "react-bootstrap";
 import LinkIcon from "../../assets/images/link.svg";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import TransactionTable from "../intelligence/TransactionTable";
+import {
+  Mobile_Home_Open_Defi_Credit_Balance,
+  Mobile_Home_Open_Defi_Debt_Balance,
+  Mobile_Home_Open_Network_Balance,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {
@@ -41,6 +47,12 @@ class PieChart2Mobile extends BaseReactComponent {
   }
   toggleChain = () => {
     if (!this.props.chainLoader) {
+      if (!this.state.isChainToggle) {
+        Mobile_Home_Open_Network_Balance({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      }
       this.setState({
         isChainToggle: !this.state.isChainToggle,
       });
@@ -52,7 +64,13 @@ class PieChart2Mobile extends BaseReactComponent {
     }
   };
   toggleYield = () => {
-    if (!this.state.defiLoader) {
+    if (!this.props.defiLoader) {
+      if (!this.state.isYeildToggle) {
+        Mobile_Home_Open_Defi_Credit_Balance({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      }
       this.setState({
         isYeildToggle: !this.state.isYeildToggle,
         isDebtToggle: false,
@@ -65,7 +83,13 @@ class PieChart2Mobile extends BaseReactComponent {
   };
 
   toggleDebt = () => {
-    if (!this.state.defiLoader) {
+    if (!this.props.defiLoader) {
+      if (!this.state.isDebtToggle) {
+        Mobile_Home_Open_Defi_Debt_Balance({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      }
       this.setState({
         isDebtToggle: !this.state.isDebtToggle,
         isYeildToggle: false,
