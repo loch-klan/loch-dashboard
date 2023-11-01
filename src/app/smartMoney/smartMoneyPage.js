@@ -4,7 +4,7 @@ import { Image } from "react-bootstrap";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
-import { getWatchListByUser } from "../watchlist/redux/WatchListApi";
+
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   Method,
@@ -36,7 +36,6 @@ import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
-  getUser,
   setPageFlagDefault,
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
@@ -122,7 +121,6 @@ class SmartMoneyPage extends BaseReactComponent {
       accountList: [],
       totalPage: 0,
       timeFIlter: "Time",
-      AssetList: [],
       startTime: "",
 
       // this is used in chain detect api to check it call from top accout or not
@@ -176,9 +174,9 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
-    this.assetList();
+
     this.props.GetAllPlan();
-    this.props.getUser();
+
     this.startPageView();
     this.updateTimer(true);
   }
@@ -222,14 +220,7 @@ class SmartMoneyPage extends BaseReactComponent {
     }
   }
 
-  assetList = () => {
-    let data = new URLSearchParams();
-    // data.append("end_datetime", endDate);
-    getTransactionAsset(data, this);
-  };
-
   callApi = (page = START_INDEX) => {
-    this.props.getWatchListByUser();
     this.setState({ tableLoading: true });
     setTimeout(() => {
       let data = new URLSearchParams();
@@ -981,7 +972,7 @@ class SmartMoneyPage extends BaseReactComponent {
                     <Loading />
                   </div>
                 ) : (
-                  <>
+                  <div className="smartMoneyTable">
                     <TransactionTable
                       isSmartMoney
                       noSubtitleBottomPadding
@@ -1009,7 +1000,7 @@ class SmartMoneyPage extends BaseReactComponent {
                       : "Hide dust (less than $1)"}
                   </p>
                 </div> */}
-                  </>
+                  </div>
                 )}
               </div>
             </div>
@@ -1036,10 +1027,10 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   TopsetPageFlagDefault,
   getAllParentChains,
-  getWatchListByUser,
+
   removeFromWatchList,
   updateAddToWatchList,
-  getUser,
+
   GetAllPlan,
 };
 

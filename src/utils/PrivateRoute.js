@@ -43,12 +43,24 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           window.sessionStorage.setItem("transHistorySorts", transHistorySorts);
         }
       }
+      // if (props.location.pathname === "/smart-money") {
+      //   return (
+      //     <div className="main-section">
+      //       <div className={`main-section-right`}>
+      //         <div className="main-content-wrapper">
+      //           <Component key={props.location.pathname} {...props} />
+      //         </div>
+      //       </div>
+      //     </div>
+      //   );
+      // }
       const isMobile = mobileCheck();
       return requireAuth() ? (
         // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
         // WHEN PARAM ID CHANGES.
         <div className="main-section">
           {props.location.pathname !== "/welcome" &&
+          //Del this
           props.location.pathname !== "/smart-money" &&
           !props.match.params.podName &&
           !isMobile ? (
@@ -57,6 +69,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <div
             className={`main-section-right ${
               props.location.pathname !== "/welcome" &&
+              //Del this
               props.location.pathname !== "/smart-money" &&
               !props.match.params.podName
                 ? "m-l-27"
