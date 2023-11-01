@@ -649,7 +649,7 @@ class PieChart2Mobile extends BaseReactComponent {
             title=""
             handleClick={() => {}}
             subTitle=""
-            message="No assets found"
+            message=" "
             tableData={this.state.assetData.slice(0, 3)}
             columnList={CostBasisColumnData}
             headerHeight={60}

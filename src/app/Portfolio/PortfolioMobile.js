@@ -261,7 +261,7 @@ class PortfolioMobile extends BaseReactComponent {
                 updateTimer={this.props.updateTimer}
               />
 
-              <Footer />
+              <Footer isMobile />
             </div>
           </div>
         )}
