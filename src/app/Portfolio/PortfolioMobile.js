@@ -37,7 +37,7 @@ import "./_mobilePortfolio.scss";
 import PieChart2 from "./PieChart2";
 import Footer from "../common/footer";
 import WelcomeCard from "./WelcomeCard";
-import { SharePortfolioIconWhite } from "../../assets/images/icons";
+import { MacIcon, SharePortfolioIconWhite } from "../../assets/images/icons";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
@@ -52,8 +52,16 @@ class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      showPopupModal: true,
+    };
   }
+  hideThePopupModal = () => {
+    window.sessionStorage.setItem("mobileHomePagePopupModalHidden", true);
+    this.setState({
+      showPopupModal: false,
+    });
+  };
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
     MobileHomePageView({
@@ -66,6 +74,14 @@ class PortfolioMobile extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+      "mobileHomePagePopupModalHidden"
+    );
+    if (tempIsModalPopuRemoved) {
+      this.setState({
+        showPopupModal: false,
+      });
+    }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -158,6 +174,24 @@ class PortfolioMobile extends BaseReactComponent {
           </div>
         ) : (
           <div className="mpcHomeContainer">
+            {this.state.showPopupModal ? (
+              <div className="mpcHomeFloatingContainer">
+                <div className="mpcHomeFloatingElement">
+                  <div className="mpcHFMacIconContainer">
+                    <Image src={MacIcon} className="mpcHFMacIcon" />
+                  </div>
+                  <div className="mpcHFText inter-display-medium f-s-13">
+                    Visit app.loch.one from your desktop for all the details
+                  </div>
+                  <div
+                    onClick={this.hideThePopupModal}
+                    className="mpcHFGoBtn inter-display-medium f-s-13"
+                  >
+                    Ok
+                  </div>
+                </div>
+              </div>
+            ) : null}
             <div className="mpcMobileSearch">
               <div onClick={this.goToWelcome} className="mpcMobileSearchInput">
                 <Image className="mpcMobileSearchImage" src={SearchIcon} />

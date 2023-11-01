@@ -32,3 +32,4 @@ export { default as XCircleIcon } from "./xCircle.svg";
 export { default as XCircleRedIcon } from "./xCircleRed.svg";
 export { default as LochLogoWhiteIcon } from "./lochLogoWhite.svg";
 export { default as MobileSearchGreyIcon } from "./mobileSearchGrey.svg";
+export { default as MacIcon } from "./mac.svg";
