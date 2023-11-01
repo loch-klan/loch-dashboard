@@ -54,8 +54,20 @@ class PortfolioMobile extends BaseReactComponent {
 
     this.state = {
       showPopupModal: true,
+      showSearchIcon: false,
+      showShareIcon: false,
     };
   }
+  searchIconLoaded = () => {
+    this.setState({
+      showSearchIcon: true,
+    });
+  };
+  shareIconLoaded = () => {
+    this.setState({
+      showShareIcon: true,
+    });
+  };
   hideThePopupModal = () => {
     window.sessionStorage.setItem("mobileHomePagePopupModalHidden", true);
     this.setState({
@@ -194,13 +206,24 @@ class PortfolioMobile extends BaseReactComponent {
             ) : null}
             <div className="mpcMobileSearch">
               <div onClick={this.goToWelcome} className="mpcMobileSearchInput">
-                <Image className="mpcMobileSearchImage" src={SearchIcon} />
+                <Image
+                  style={{
+                    opacity: this.state.showSearchIcon ? 1 : 0,
+                  }}
+                  onLoad={this.searchIconLoaded}
+                  className="mpcMobileSearchImage"
+                  src={SearchIcon}
+                />
                 <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
                   Search for another address / ENS
                 </div>
               </div>
               <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
+                  style={{
+                    opacity: this.state.showShareIcon ? 1 : 0,
+                  }}
+                  onLoad={this.shareIconLoaded}
                   className="mpcMobileSearchImage"
                   src={SharePortfolioIconWhite}
                 />
