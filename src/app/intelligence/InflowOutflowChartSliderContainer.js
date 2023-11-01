@@ -129,7 +129,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
         if (currentTimeFormat === "Year") {
           formattedTimeStamp = moment(resData.timestamp).format("YYYY");
         } else if (currentTimeFormat === "Month") {
-          formattedTimeStamp = moment(resData.timestamp).format("MMM YY");
+          formattedTimeStamp = moment(resData.timestamp).format("MM/DD/YY");
         } else {
           formattedTimeStamp = moment(resData.timestamp).format("MM/DD/YY");
         }

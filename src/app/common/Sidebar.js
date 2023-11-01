@@ -1169,7 +1169,7 @@ function Sidebar(props) {
                             Yield opportunities
                           </NavLink>
                         </li> */}
-                        <li>
+                        {/* <li>
                           <NavLink
                             className={`nav-link`}
                             to="/top-accounts"
@@ -1210,7 +1210,7 @@ function Sidebar(props) {
                               />
                             )}
                           </NavLink>
-                        </li>
+                        </li> */}
                         {isSubmenu.topAccount && previewAddress?.address && (
                           <>
                             <li className="sub-menu">
