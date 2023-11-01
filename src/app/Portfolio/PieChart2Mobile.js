@@ -39,12 +39,18 @@ class PieChart2Mobile extends BaseReactComponent {
     super(props);
 
     this.state = {
+      showArrowIcon: false,
       isChainToggle: false,
       isDebtToggle: false,
       isYeildToggle: false,
       assetData: [],
     };
   }
+  arrowIconLoaded = () => {
+    this.setState({
+      showArrowIcon: true,
+    });
+  };
   toggleChain = () => {
     if (!this.props.chainLoader) {
       if (!this.state.isChainToggle) {
@@ -347,6 +353,7 @@ class PieChart2Mobile extends BaseReactComponent {
               }}
             >
               <Image
+                onLoad={this.arrowIconLoaded}
                 className="defiMenu"
                 src={arrowUp}
                 style={
@@ -356,8 +363,13 @@ class PieChart2Mobile extends BaseReactComponent {
                         filter: "opacity(1)",
                         height: "1.25rem",
                         width: "1.25rem",
+                        opacity: this.state.showArrowIcon ? 1 : 0,
                       }
-                    : { height: "1.25rem", width: "1.25rem" }
+                    : {
+                        height: "1.25rem",
+                        width: "1.25rem",
+                        opacity: this.state.showArrowIcon ? 1 : 0,
+                      }
                 }
               />
               {this.props.chainLoader && (
@@ -505,8 +517,9 @@ class PieChart2Mobile extends BaseReactComponent {
                       ? {
                           transform: "rotate(180deg)",
                           filter: "opacity(1)",
+                          opacity: this.state.showArrowIcon ? 1 : 0,
                         }
-                      : {}
+                      : { opacity: this.state.showArrowIcon ? 1 : 0 }
                   }
                 />
               </div>
@@ -553,8 +566,9 @@ class PieChart2Mobile extends BaseReactComponent {
                       ? {
                           transform: "rotate(180deg)",
                           filter: "opacity(1)",
+                          opacity: this.state.showArrowIcon ? 1 : 0,
                         }
-                      : {}
+                      : { opacity: this.state.showArrowIcon ? 1 : 0 }
                   }
                 />
               </div>

@@ -36,6 +36,8 @@ class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      showWhiteLogo: false,
+      showQuestionMarkLogo: false,
       modalType: "addwallet",
       addWalletList: [
         {
@@ -57,6 +59,16 @@ class MobileHome extends BaseReactComponent {
       showCloseBtn: false,
     };
   }
+  whiteLogoIconLoaded = () => {
+    this.setState({
+      showWhiteLogo: true,
+    });
+  };
+  questionMarkLogoIconLoaded = () => {
+    this.setState({
+      showQuestionMarkLogo: true,
+    });
+  };
   componentDidMount() {
     setTimeout(() => {
       window.scrollTo(0, 0);
@@ -518,7 +530,14 @@ class MobileHome extends BaseReactComponent {
           <div className="mbwBannerContainer">
             {/* <Image className="mbwBanner" src={MobileFrame} /> */}
             <div className="mbwBanner">
-              <Image className="mbwBannerLochLogo " src={LochLogoWhiteIcon} />
+              <Image
+                style={{
+                  opacity: this.state.showWhiteLogo ? 1 : 0,
+                }}
+                onLoad={this.whiteLogoIconLoaded}
+                className="mbwBannerLochLogo"
+                src={LochLogoWhiteIcon}
+              />
               {this.state.showCloseBtn ? (
                 <div
                   className="closebtn mbwBannerCrossLogoContainer"
@@ -566,7 +585,11 @@ class MobileHome extends BaseReactComponent {
                   src={InfoIcon}
                   className="info-icon"
                   onMouseEnter={this.privacymessage}
-                  style={{ cursor: "pointer" }}
+                  onLoad={this.questionMarkLogoIconLoaded}
+                  style={{
+                    cursor: "pointer",
+                    opacity: this.state.showQuestionMarkLogo ? 1 : 0,
+                  }}
                 />
               </CustomOverlay>
             </p>
