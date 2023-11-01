@@ -33,6 +33,7 @@ import {
 } from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class AssetValueGraph extends Component {
   constructor(props) {
@@ -82,6 +83,9 @@ class AssetValueGraph extends Component {
     this.props.getAssetGraphDataApi(data, this, ASSET_VALUE_GRAPH_DAY);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -305,7 +309,10 @@ class AssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal

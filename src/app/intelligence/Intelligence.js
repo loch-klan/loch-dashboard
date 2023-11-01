@@ -45,7 +45,7 @@ import {
 
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
-import { UpgradeTriggered } from "../../utils/ReusableFunctions";
+import { UpgradeTriggered, mobileCheck } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
@@ -150,6 +150,9 @@ class Intelligence extends Component {
   };
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(

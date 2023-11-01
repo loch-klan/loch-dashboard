@@ -67,6 +67,7 @@ import {
 } from "../common/Api";
 import {
   CurrencyType,
+  mobileCheck,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
@@ -239,6 +240,9 @@ class Cost extends Component {
     }, 900000);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");

@@ -126,6 +126,20 @@ export default function WelcomeCard(props) {
   } else {
     finalReturn = tempReturn;
   }
+  if (props.isMobileRender) {
+    return (
+      <TopWalletExchangeBar
+        changeWalletList={props.changeWalletList}
+        apiResponse={props.apiResponse}
+        history={history}
+        buttonRef={buttonRef}
+        handleAddWalletClick={handleAddWalletClick}
+        handleConnectModal={handleConnectModal}
+        isMobileRender
+        assetTotal={props.assetTotal}
+      />
+    );
+  }
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">

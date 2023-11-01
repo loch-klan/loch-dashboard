@@ -2,7 +2,16 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT } from "./Constant";
 import moment from "moment";
-
+export const mobileCheck = () => {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    return true;
+  }
+  return false;
+};
 // TruncateText
 export const convertNtoNumber = (n) => {
   if (n === undefined || n === null) {
