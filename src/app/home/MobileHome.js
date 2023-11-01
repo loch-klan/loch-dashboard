@@ -37,6 +37,7 @@ class MobileHome extends BaseReactComponent {
     super(props);
     this.state = {
       showWhiteLogo: false,
+      showBlackLogo: false,
       showQuestionMarkLogo: false,
       modalType: "addwallet",
       addWalletList: [
@@ -62,6 +63,11 @@ class MobileHome extends BaseReactComponent {
   whiteLogoIconLoaded = () => {
     this.setState({
       showWhiteLogo: true,
+    });
+  };
+  blackLogoIconLoaded = () => {
+    this.setState({
+      showBlackLogo: true,
     });
   };
   questionMarkLogoIconLoaded = () => {
@@ -520,6 +526,10 @@ class MobileHome extends BaseReactComponent {
           <div className="mobileWelcomeBlockHeaderOverlay"></div>
           <div className="mobileWelcomeBlockHeaderData">
             <Image
+              style={{
+                opacity: this.state.showWhiteLogo ? 1 : 0,
+              }}
+              onLoad={this.whiteLogoIconLoaded}
               className="mobileWelcomeBlockHeaderImage"
               src={LochBlackLogo}
             />
