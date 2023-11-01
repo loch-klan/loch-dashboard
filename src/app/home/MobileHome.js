@@ -527,9 +527,9 @@ class MobileHome extends BaseReactComponent {
           <div className="mobileWelcomeBlockHeaderData">
             <Image
               style={{
-                opacity: this.state.showWhiteLogo ? 1 : 0,
+                opacity: this.state.showBlackLogo ? 1 : 0,
               }}
-              onLoad={this.whiteLogoIconLoaded}
+              onLoad={this.blackLogoIconLoaded}
               className="mobileWelcomeBlockHeaderImage"
               src={LochBlackLogo}
             />
