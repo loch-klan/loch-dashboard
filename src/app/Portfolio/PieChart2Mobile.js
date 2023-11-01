@@ -282,7 +282,12 @@ class PieChart2Mobile extends BaseReactComponent {
     ];
     return (
       <div>
-        <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 ">
+        <h2
+          style={{
+            marginTop: "2rem",
+          }}
+          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
+        >
           Balance by network
         </h2>
         <div
@@ -290,7 +295,7 @@ class PieChart2Mobile extends BaseReactComponent {
             this.props.chainLoader ? "chain-card-loading" : ""
           } ${this.state.isChainToggle ? "chain-card-active" : ""}`}
           style={{
-            marginBottom: this.state.isChainToggle ? "29.35rem" : "",
+            marginBottom: this.state.isChainToggle ? "30.5rem" : "",
           }}
         >
           <div className="chain-card-child" onClick={this.toggleChain}>
@@ -437,15 +442,20 @@ class PieChart2Mobile extends BaseReactComponent {
             </div>
           </div>
         </div>
-        <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+        <h2
+          style={{
+            marginTop: "3rem",
+          }}
+          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
+        >
           DeFi Balance Sheet
         </h2>
         <div
           style={{
             marginBottom: this.state.isYeildToggle
-              ? "19rem"
+              ? "19.5rem"
               : this.state.isDebtToggle
-              ? "9rem"
+              ? "9.2rem"
               : "1.8rem",
           }}
           className="balance-sheet-card "
@@ -638,7 +648,12 @@ class PieChart2Mobile extends BaseReactComponent {
             </div>
           )}
         </div>
-        <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+        <h2
+          style={{
+            marginTop: "3rem",
+          }}
+          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
+        >
           Assets
         </h2>
         <div className="section-table">

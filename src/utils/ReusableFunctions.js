@@ -4,7 +4,7 @@ import { API_LIMIT } from "./Constant";
 import moment from "moment";
 export const mobileCheck = () => {
   if (
-    /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
   ) {
