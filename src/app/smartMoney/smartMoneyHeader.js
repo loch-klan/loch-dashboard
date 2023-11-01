@@ -104,7 +104,12 @@ export default function SmartMoneyHeader(props) {
           <div className="rightSmartMoneyContainerHeading inter-display-medium">
             Loch’s Smart Money Leaderboard
           </div>
-          <p className="rightSmartMoneyContainerSubHeading inter-display-medium">
+          <p
+            style={{
+              marginTop: "0.3rem",
+            }}
+            className="rightSmartMoneyContainerSubHeading inter-display-medium"
+          >
             The lazy analyst’s guide to alpha
           </p>
         </div>
