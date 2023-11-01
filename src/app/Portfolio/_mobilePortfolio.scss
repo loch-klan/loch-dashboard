@@ -4,6 +4,8 @@
   position: absolute;
   left: 0;
   top: 0;
+  display: flex;
+  flex-direction: column;
 
   .mpLoadingContainer {
     display: flex;
@@ -13,6 +15,10 @@
     width: 100%;
   }
   .mpcHomeContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
     .mpcHomeFloatingContainer {
       position: fixed;
       left: 0;
@@ -99,7 +105,17 @@
       }
     }
     .mpcHomePage {
+      flex: 1;
       padding: 2rem;
+      padding-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      .mobileFooterContainer {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
       .accountsAmountContainer {
         background-color: #e5e5e6;
         padding: 1.6rem 2rem;
