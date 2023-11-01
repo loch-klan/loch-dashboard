@@ -294,8 +294,11 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
-
-              <Footer isMobile />
+              <div className="mobileFooterContainer">
+                <div>
+                  <Footer isMobile />
+                </div>
+              </div>
             </div>
           </div>
         )}
