@@ -13,11 +13,7 @@ import {
   SORT_BY_AMOUNT,
   BASE_URL_S3,
 } from "../../utils/Constant";
-import {
-  searchTransactionApi,
-  getFilters,
-  getTransactionAsset,
-} from "../intelligence/Api";
+import { searchTransactionApi, getFilters } from "../intelligence/Api";
 import { BaseReactComponent } from "../../utils/form";
 
 import {
@@ -509,7 +505,7 @@ class SmartMoneyPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.15,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -549,7 +545,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -606,7 +602,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -724,8 +720,14 @@ class SmartMoneyPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  CurrencyType(false) +
-                  amountFormat(tempNetflows * tempCurrencyRate, "en-US", "USD")
+                  tempNetflows * tempCurrencyRate
+                    ? CurrencyType(false) +
+                      amountFormat(
+                        Math.abs(tempNetflows * tempCurrencyRate),
+                        "en-US",
+                        "USD"
+                      )
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="gainLossContainer">
@@ -796,23 +798,29 @@ class SmartMoneyPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  CurrencyType(false) +
-                  amountFormat(tempProfits * tempCurrencyRate, "en-US", "USD")
+                  tempProfits * tempCurrencyRate
+                    ? CurrencyType(false) +
+                      amountFormat(
+                        Math.abs(tempProfits * tempCurrencyRate),
+                        "en-US",
+                        "USD"
+                      )
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="gainLossContainer">
                   <div
                     className={`gainLoss ${tempProfits < 0 ? "loss" : "gain"}`}
                     onMouseEnter={() => {
-                      TopAccountNetflowHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hover: amountFormat(
-                          tempProfits * tempCurrencyRate,
-                          "en-US",
-                          "USD"
-                        ),
-                      });
+                      // TopAccountNetflowHover({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   hover: amountFormat(
+                      //     tempProfits * tempCurrencyRate,
+                      //     "en-US",
+                      //     "USD"
+                      //   ),
+                      // });
                       this.updateTimer();
                     }}
                   >
@@ -868,23 +876,28 @@ class SmartMoneyPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  CurrencyType(false) +
-                  amountFormat(tempReturns * tempCurrencyRate, "en-US", "USD")
+                  tempReturns * tempCurrencyRate
+                    ? amountFormat(
+                        Math.abs(tempReturns * tempCurrencyRate),
+                        "en-US",
+                        "USD"
+                      ) + "%"
+                    : "0.00%"
                 }
               >
                 <div className="gainLossContainer">
                   <div
                     className={`gainLoss ${tempReturns < 0 ? "loss" : "gain"}`}
                     onMouseEnter={() => {
-                      TopAccountNetflowHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hover: amountFormat(
-                          tempReturns * tempCurrencyRate,
-                          "en-US",
-                          "USD"
-                        ),
-                      });
+                      // TopAccountNetflowHover({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   hover: amountFormat(
+                      //     tempReturns * tempCurrencyRate,
+                      //     "en-US",
+                      //     "USD"
+                      //   ),
+                      // });
                       this.updateTimer();
                     }}
                   >
@@ -895,8 +908,7 @@ class SmartMoneyPage extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(tempReturns * tempCurrencyRate)}
+                      {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
                     </span>
                   </div>
                 </div>
