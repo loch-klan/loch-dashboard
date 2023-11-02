@@ -67,8 +67,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <div
             className={`main-section-right ${
               props.location.pathname !== "/welcome" &&
-              //Del this
-              props.location.pathname !== "/smart-money" &&
               !props.match.params.podName
                 ? "m-l-27"
                 : ""
