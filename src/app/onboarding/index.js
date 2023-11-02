@@ -20,6 +20,7 @@ import {
   PrivacyMessage,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions.js";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 class OnBoarding extends Component {
   constructor(props) {
     super(props);
@@ -37,8 +38,10 @@ class OnBoarding extends Component {
     }, 900000);
   };
   componentDidMount() {
-    this.startPageView();
-    this.updateTimer(true);
+    if (!mobileCheck()) {
+      this.startPageView();
+      this.updateTimer(true);
+    }
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
