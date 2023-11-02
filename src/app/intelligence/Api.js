@@ -308,6 +308,8 @@ export const getProfitAndLossApi = (
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
+      console.log("getProfitAndLossApi start_datetime", startDate);
+      console.log("getProfitAndLossApi end_datetime", endDate);
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
     }
@@ -415,6 +417,9 @@ export const getAssetProfitLoss = (
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
+      console.log("getAssetProfitLoss start_datetime", startDate);
+      console.log("getAssetProfitLoss end_datetime", endDate);
+
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
     }

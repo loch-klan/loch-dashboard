@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -892,7 +892,6 @@ class LineChartSlider extends BaseReactComponent {
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
-              // console.log("diff", diff);
               HomeAssetValueNavigator({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
