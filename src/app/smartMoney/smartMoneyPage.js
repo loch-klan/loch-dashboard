@@ -152,6 +152,13 @@ class SmartMoneyPage extends BaseReactComponent {
   changePageLimit = (dropdownResponse) => {
     const tempHolder = dropdownResponse.split(" ");
     if (tempHolder && tempHolder.length > 1) {
+      const params = new URLSearchParams(this.props.location.search);
+      params.set("p", 0);
+      if (this.props.history) {
+        this.props.history.push(
+          `${this.props.history.location.pathname}?${params}`
+        );
+      }
       this.setState({
         pageLimit: tempHolder[1],
       });
