@@ -39,12 +39,18 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { getSmartMoney } from "./Api";
 
 import {
-  TopAccountNetflowHover,
-  TopAccountPageNext,
-  TopAccountPagePrev,
-  TopAccountPageSearch,
-  TopAccountPageView,
-  TopAccountTimeSpent,
+  SmartMoneyChangeLimit,
+  SmartMoneyNameTagHover,
+  SmartMoneyNetflowHover,
+  SmartMoneyNetWorthHover,
+  SmartMoneyPageNext,
+  SmartMoneyPagePrev,
+  SmartMoneyPageSearch,
+  SmartMoneyPageView,
+  SmartMoneyProfitHover,
+  SmartMoneyReturnHover,
+  SmartMoneyTimeSpent,
+  SmartMoneyWalletClicked,
 } from "../../utils/AnalyticsFunctions";
 import {
   updateAddToWatchList,
@@ -140,18 +146,30 @@ class SmartMoneyPage extends BaseReactComponent {
     this.setState({
       startTime: new Date() * 1,
     });
-    TopAccountPageView({
+    SmartMoneyPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     // Inactivity Check
-    window.checkTopAccountTimer = setInterval(() => {
+    window.checkSmartMoneyTimer = setInterval(() => {
       this.checkForInactivity();
     }, 900000);
   };
   changePageLimit = (dropdownResponse) => {
     const tempHolder = dropdownResponse.split(" ");
     if (tempHolder && tempHolder.length > 1) {
+      const params = new URLSearchParams(this.props.location.search);
+      params.set("p", 0);
+      if (this.props.history) {
+        this.props.history.push(
+          `${this.props.history.location.pathname}?${params}`
+        );
+      }
+      SmartMoneyChangeLimit({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet: tempHolder[1],
+      });
       this.setState({
         pageLimit: tempHolder[1],
       });
@@ -178,21 +196,21 @@ class SmartMoneyPage extends BaseReactComponent {
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
-      "topAccountPageExpiryTime"
+      "smartMoneyPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("topAccountPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
-    clearInterval(window.checkTopAccountTimer);
-    window.sessionStorage.removeItem("topAccountPageExpiryTime");
+    clearInterval(window.checkSmartMoneyTimer);
+    window.sessionStorage.removeItem("smartMoneyPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TopAccountTimeSpent({
+      SmartMoneyTimeSpent({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -201,7 +219,7 @@ class SmartMoneyPage extends BaseReactComponent {
   };
   checkForInactivity = () => {
     const tempExpiryTime = window.sessionStorage.getItem(
-      "topAccountPageExpiryTime"
+      "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
@@ -209,7 +227,7 @@ class SmartMoneyPage extends BaseReactComponent {
   };
   componentWillUnmount() {
     const tempExpiryTime = window.sessionStorage.getItem(
-      "topAccountPageExpiryTime"
+      "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime) {
       this.endPageView();
@@ -273,21 +291,21 @@ class SmartMoneyPage extends BaseReactComponent {
       });
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
-          TopAccountPagePrev({
+          SmartMoneyPagePrev({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
           this.updateTimer();
         } else if (prevPage + 1 === page) {
-          TopAccountPageNext({
+          SmartMoneyPageNext({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
           this.updateTimer();
         } else {
-          TopAccountPageSearch({
+          SmartMoneyPageSearch({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
@@ -557,12 +575,6 @@ class SmartMoneyPage extends BaseReactComponent {
               <span
                 onClick={() => {
                   let lochUser = getCurrentUser().id;
-                  // TopAccountClickedAccount({
-                  //   session_id: lochUser,
-                  //   email_address: getCurrentUser().email,
-                  //   account: rowData.account ? rowData.account : "",
-                  //   name_tag: rowData.tagName ? rowData.tagName : "",
-                  // });
 
                   let slink = rowData.account;
                   let shareLink =
@@ -576,6 +588,11 @@ class SmartMoneyPage extends BaseReactComponent {
                       shareLink = shareLink + "&refrenceId=" + lochUser;
                     }
                   }
+                  SmartMoneyWalletClicked({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    wallet: slink,
+                  });
                   window.open(shareLink, "_blank", "noreferrer");
                 }}
                 className="top-account-address"
@@ -620,11 +637,11 @@ class SmartMoneyPage extends BaseReactComponent {
               >
                 <span
                   onMouseEnter={() => {
-                    // TopAccountNameHover({
-                    //   session_id: getCurrentUser().id,
-                    //   email_address: getCurrentUser().email,
-                    //   hover: rowData.tagName,
-                    // });
+                    SmartMoneyNameTagHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: rowData.tagName,
+                    });
                     this.updateTimer();
                   }}
                 >
@@ -676,7 +693,19 @@ class SmartMoneyPage extends BaseReactComponent {
                   amountFormat(tempNetWorth * tempCurrencyRate, "en-US", "USD")
                 }
               >
-                <div className="cost-common-container">
+                <div
+                  onMouseEnter={() => {
+                    SmartMoneyNetWorthHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover:
+                        CurrencyType(false) +
+                        numToCurrency(tempNetWorth * tempCurrencyRate),
+                    });
+                    this.updateTimer();
+                  }}
+                  className="cost-common-container"
+                >
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
@@ -738,14 +767,18 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss ${tempNetflows < 0 ? "loss" : "gain"}`}
                     onMouseEnter={() => {
-                      TopAccountNetflowHover({
+                      SmartMoneyNetflowHover({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
-                        hover: amountFormat(
-                          tempNetflows * tempCurrencyRate,
-                          "en-US",
-                          "USD"
-                        ),
+                        hover:
+                          tempNetflows * tempCurrencyRate
+                            ? CurrencyType(false) +
+                              amountFormat(
+                                Math.abs(tempNetflows * tempCurrencyRate),
+                                "en-US",
+                                "USD"
+                              )
+                            : CurrencyType(false) + "0.00",
                       });
                       this.updateTimer();
                     }}
@@ -816,15 +849,19 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss ${tempProfits < 0 ? "loss" : "gain"}`}
                     onMouseEnter={() => {
-                      // TopAccountNetflowHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   hover: amountFormat(
-                      //     tempProfits * tempCurrencyRate,
-                      //     "en-US",
-                      //     "USD"
-                      //   ),
-                      // });
+                      SmartMoneyProfitHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        hover:
+                          tempProfits * tempCurrencyRate
+                            ? CurrencyType(false) +
+                              amountFormat(
+                                Math.abs(tempProfits * tempCurrencyRate),
+                                "en-US",
+                                "USD"
+                              )
+                            : CurrencyType(false) + "0.00",
+                      });
                       this.updateTimer();
                     }}
                   >
@@ -893,15 +930,18 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss ${tempReturns < 0 ? "loss" : "gain"}`}
                     onMouseEnter={() => {
-                      // TopAccountNetflowHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   hover: amountFormat(
-                      //     tempReturns * tempCurrencyRate,
-                      //     "en-US",
-                      //     "USD"
-                      //   ),
-                      // });
+                      SmartMoneyReturnHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        hover:
+                          tempReturns * tempCurrencyRate
+                            ? amountFormat(
+                                Math.abs(tempReturns * tempCurrencyRate),
+                                "en-US",
+                                "USD"
+                              ) + "%"
+                            : "0.00%",
+                      });
                       this.updateTimer();
                     }}
                   >
