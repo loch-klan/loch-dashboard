@@ -355,6 +355,14 @@ export const UserWrongCode = ({ session_id, email_address }) => {
 };
 
 //8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentOnboardingMobile = ({ time_spent }) => {
+  const event_name = "Mobile: Landing Page Conversion:time spent on onboarding";
+  const eventProperties = {
+    "time spent onboarding": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
 export const TimeSpentOnboarding = ({
   session_id,
   email_address,
@@ -1951,6 +1959,11 @@ export const WatchlistPage = ({ session_id, email_address }) => {
 };
 
 // Page View: Onboarding
+export const OnboardingMobilePage = () => {
+  const event_name = "Mobile: Page View: Onboarding";
+  const eventProperties = {};
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const OnboardingPage = () => {
   const event_name = "Page View: Onboarding";
   const eventProperties = {};

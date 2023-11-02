@@ -551,7 +551,7 @@ class Home extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-    if (this.state.startTime) {
+    if (this.state.startTime && !mobileCheck()) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
       TimeSpentDiscountEmail({ time_spent: TimeSpent });

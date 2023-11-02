@@ -14,7 +14,9 @@ import {
   Mobile_Go_Back_Home,
   Mobile_LPC_Go,
   Mobile_Update_Address,
+  OnboardingMobilePage,
   TimeSpentDiscountEmail,
+  TimeSpentOnboardingMobile,
 } from "../../utils/AnalyticsFunctions";
 import {
   CloseIcon,
@@ -36,6 +38,10 @@ class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      startTime: "",
+      showWhiteLogo: false,
+      showBlackLogo: false,
+      showQuestionMarkLogo: false,
       modalType: "addwallet",
       addWalletList: [
         {
@@ -57,6 +63,28 @@ class MobileHome extends BaseReactComponent {
       showCloseBtn: false,
     };
   }
+  whiteLogoIconLoaded = () => {
+    this.setState({
+      showWhiteLogo: true,
+    });
+  };
+  blackLogoIconLoaded = () => {
+    this.setState({
+      showBlackLogo: true,
+    });
+  };
+  questionMarkLogoIconLoaded = () => {
+    this.setState({
+      showQuestionMarkLogo: true,
+    });
+  };
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    OnboardingMobilePage({});
+    window.checkMobileWelcomeTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   componentDidMount() {
     setTimeout(() => {
       window.scrollTo(0, 0);
@@ -68,6 +96,52 @@ class MobileHome extends BaseReactComponent {
       this.setState({
         showCloseBtn: true,
       });
+    } else {
+      this.startPageView();
+      this.updateTimer(true);
+      return () => {
+        clearInterval(window.checkMobileWelcomeTimer);
+      };
+    }
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
+      "mobileWelcomePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    window.sessionStorage.setItem(
+      "mobileWelcomePageExpiryTime",
+      tempExpiryTime
+    );
+  };
+  endPageView = () => {
+    clearInterval(window.checkMobileWelcomeTimer);
+    window.sessionStorage.removeItem("mobileWelcomePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentOnboardingMobile({
+        time_spent: TimeSpent,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileWelcomePageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileWelcomePageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
     }
   }
   componentDidUpdate(prevProps, prevState) {
@@ -111,13 +185,6 @@ class MobileHome extends BaseReactComponent {
       showBorder: false,
     });
   };
-  componentWillUnmount() {
-    if (this.state.startTime) {
-      let endTime = new Date() * 1;
-      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      // TimeSpentDiscountEmail({ time_spent: TimeSpent });
-    }
-  }
 
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
@@ -508,6 +575,10 @@ class MobileHome extends BaseReactComponent {
           <div className="mobileWelcomeBlockHeaderOverlay"></div>
           <div className="mobileWelcomeBlockHeaderData">
             <Image
+              style={{
+                opacity: this.state.showBlackLogo ? 1 : 0,
+              }}
+              onLoad={this.blackLogoIconLoaded}
               className="mobileWelcomeBlockHeaderImage"
               src={LochBlackLogo}
             />
@@ -518,7 +589,14 @@ class MobileHome extends BaseReactComponent {
           <div className="mbwBannerContainer">
             {/* <Image className="mbwBanner" src={MobileFrame} /> */}
             <div className="mbwBanner">
-              <Image className="mbwBannerLochLogo " src={LochLogoWhiteIcon} />
+              <Image
+                style={{
+                  opacity: this.state.showWhiteLogo ? 1 : 0,
+                }}
+                onLoad={this.whiteLogoIconLoaded}
+                className="mbwBannerLochLogo"
+                src={LochLogoWhiteIcon}
+              />
               {this.state.showCloseBtn ? (
                 <div
                   className="closebtn mbwBannerCrossLogoContainer"
@@ -566,7 +644,11 @@ class MobileHome extends BaseReactComponent {
                   src={InfoIcon}
                   className="info-icon"
                   onMouseEnter={this.privacymessage}
-                  style={{ cursor: "pointer" }}
+                  onLoad={this.questionMarkLogoIconLoaded}
+                  style={{
+                    cursor: "pointer",
+                    opacity: this.state.showQuestionMarkLogo ? 1 : 0,
+                  }}
                 />
               </CustomOverlay>
             </p>

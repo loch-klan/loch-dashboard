@@ -6,6 +6,24 @@ import moment from "moment";
 import { Image } from "react-bootstrap";
 
 class Footer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showTwitterIcon: false,
+      showTelegramIcon: false,
+    };
+  }
+  twitterIconLoaded = () => {
+    this.setState({
+      showTwitterIcon: true,
+    });
+  };
+  telegramIconLoaded = () => {
+    this.setState({
+      showTelegramIcon: true,
+    });
+  };
   render() {
     return (
       <>
@@ -52,10 +70,12 @@ class Footer extends Component {
               }}
             /> */}
             <Image
+              onLoad={this.telegramIconLoaded}
               src={TelegramIcon}
               style={{
                 width: "2rem",
                 marginRight: "1rem",
+                opacity: this.state.showTwitterIcon ? 1 : 0,
               }}
               className="social-media-icon"
               onClick={() => {
@@ -67,6 +87,7 @@ class Footer extends Component {
               }}
             />
             <Image
+              onLoad={this.twitterIconLoaded}
               src={TwitterIcon}
               style={{
                 width: "2rem",

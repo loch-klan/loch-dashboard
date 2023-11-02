@@ -436,12 +436,14 @@ class Portfolio extends BaseReactComponent {
     }
     // get token to check if wallet address not loaded
     this.getToken();
-    this.startPageView();
-    this.updateTimer(true);
+    if (!mobileCheck()) {
+      this.startPageView();
+      this.updateTimer(true);
 
-    return () => {
-      clearInterval(window.checkPortfolioTimer);
-    };
+      return () => {
+        clearInterval(window.checkPortfolioTimer);
+      };
+    }
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
@@ -478,7 +480,7 @@ class Portfolio extends BaseReactComponent {
     const tempExpiryTime = window.sessionStorage.getItem(
       "portfolioPageExpiryTime"
     );
-    if (tempExpiryTime) {
+    if (tempExpiryTime && !mobileCheck()) {
       this.endPageView();
     }
     // reset all sort average cost
