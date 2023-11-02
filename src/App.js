@@ -40,9 +40,10 @@ function App() {
     ReactGA.initialize(BASE_GA_KEY);
   }, []);
 
-  return isMobile ? (
-    <MobileDevice />
-  ) : (
+  // return isMobile ? (
+  //   <MobileDevice />
+  // ) : (
+  return (
     <div>
       <BrowserRouter>
         <Switch>
@@ -75,6 +76,7 @@ function App() {
       />
     </div>
   );
+  // );
 }
 
 export default App;

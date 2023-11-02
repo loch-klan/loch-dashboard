@@ -65,7 +65,7 @@ import {
   getWatchListLoading,
   removeAddressFromWatchList,
 } from "./redux/WatchListApi";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 
@@ -152,6 +152,9 @@ class WatchListPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
