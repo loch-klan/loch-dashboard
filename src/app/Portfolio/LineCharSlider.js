@@ -892,7 +892,6 @@ class LineChartSlider extends BaseReactComponent {
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
-              // console.log("diff", diff);
               HomeAssetValueNavigator({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
