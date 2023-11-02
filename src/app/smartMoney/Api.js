@@ -8,7 +8,6 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
 
       .post("wallet/user-wallet/get-smart-money", data)
       .then((res) => {
-        console.log("res is ", res);
         if (!res.data.error) {
           let tempLimit = API_LIMIT;
           if (apiLimit) {
