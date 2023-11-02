@@ -34,6 +34,7 @@ import topCosts from "./app/topAccount/top-costs";
 import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
+import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 const routes = [
   {
     path: "/",
@@ -125,12 +126,18 @@ const routes = [
     type: PrivateRoute,
     component: CohortSharePage,
   },
-  // {
-  //   path: "/top-accounts",
-  //   name: "Top accounts",
-  //   type: PrivateRoute,
-  //   component: TopAccount,
-  // },
+  {
+    path: "/smart-money",
+    name: "Smart Money",
+    type: PrivateRoute,
+    component: SmartMoneyPage,
+  },
+  {
+    path: "/top-accounts",
+    name: "Top accounts",
+    type: PrivateRoute,
+    component: TopAccount,
+  },
 
   // {
   //   path: "/top-accounts/home",
