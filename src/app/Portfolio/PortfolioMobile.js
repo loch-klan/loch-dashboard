@@ -53,6 +53,7 @@ class PortfolioMobile extends BaseReactComponent {
     super(props);
 
     this.state = {
+      startTime: "",
       showPopupModal: true,
       showSearchIcon: false,
       showShareIcon: false,
