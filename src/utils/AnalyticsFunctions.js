@@ -5533,7 +5533,7 @@ export const SmartMoneyNetflowHover = ({
   email_address,
   hover,
 }) => {
-  const event_name = "Smart money: fet flows hover";
+  const event_name = "Smart money: net flows hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
