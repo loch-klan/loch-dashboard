@@ -21,6 +21,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             netflows: e?.net_flow,
             profits: e?.profits,
             returns: e?.returns,
+            rank: e?.rank,
           }));
           ctx.setState({
             accountList: tableData,

@@ -509,16 +509,20 @@ class SmartMoneyPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
+            let rank = index + 1;
+            if (rowData.rank) {
+              rank = rowData.rank;
+            }
             return (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+                text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
                 <span className="inter-display-medium f-s-13">
-                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                  {Number(noExponents(rank)).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
