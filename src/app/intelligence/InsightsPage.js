@@ -37,6 +37,7 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -133,6 +134,9 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(

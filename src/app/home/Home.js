@@ -52,10 +52,14 @@ import {
 } from "../header/HeaderAction";
 import { ethers } from "ethers";
 
+import MobileHome from "./MobileHome";
+import { mobileCheck } from "../../utils/ReusableFunctions";
+
 class Home extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobileDevice: false,
       showModal: true,
       signedIn: true,
       upgradeModal: false,
@@ -305,7 +309,6 @@ class Home extends BaseReactComponent {
         id: `wallet${i + 1}`,
       };
     });
-    console.log("addressList ", addressList);
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -432,6 +435,11 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     // DiscountEmailPage();
@@ -469,7 +477,9 @@ class Home extends BaseReactComponent {
           JSON.parse(window.sessionStorage.getItem("stop_redirect"));
         if (isStopRedirect) {
           this.props.setPageFlagDefault();
-          deleteToken();
+          if (!mobileCheck()) {
+            deleteToken();
+          }
         } else {
           // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
           let user = window.sessionStorage.getItem("lochUser")
@@ -479,11 +489,13 @@ class Home extends BaseReactComponent {
             this.props.history.push("/home");
           } else {
             this.props.setPageFlagDefault();
-            deleteToken();
-            //  window.sessionStorage.setItem("defi_access", true);
-            //  window.sessionStorage.setItem("isPopup", true);
-            //  // window.sessionStorage.setItem("whalepodview", true);
-            //  window.sessionStorage.setItem(
+            if (!mobileCheck()) {
+              deleteToken();
+            }
+            //  localStorage.setItem("defi_access", true);
+            //  localStorage.setItem("isPopup", true);
+            //  // localStorage.setItem("whalepodview", true);
+            //  localStorage.setItem(
             //    "whalepodview",
             //    JSON.stringify({ access: true, id: "" })
             //  );
@@ -507,11 +519,13 @@ class Home extends BaseReactComponent {
         }
       } else {
         this.props.setPageFlagDefault();
-        deleteToken();
-        // window.sessionStorage.setItem("defi_access", true);
-        // window.sessionStorage.setItem("isPopup", true);
-        // // window.sessionStorage.setItem("whalepodview", true);
-        // window.sessionStorage.setItem(
+        if (!mobileCheck()) {
+          deleteToken();
+        }
+        // localStorage.setItem("defi_access", true);
+        // localStorage.setItem("isPopup", true);
+        // // localStorage.setItem("whalepodview", true);
+        // localStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );
@@ -537,7 +551,7 @@ class Home extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-    if (this.state.startTime) {
+    if (this.state.startTime && !mobileCheck()) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
       TimeSpentDiscountEmail({ time_spent: TimeSpent });
@@ -565,8 +579,17 @@ class Home extends BaseReactComponent {
       showEmailPopup: false,
     });
   };
-
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileHome
+          exchanges={this.state.onboardingExchanges}
+          history={this.props.history}
+          location={this.props.location}
+        />
+      );
+    }
+
     return (
       <>
         {this.state.showEmailPopup && (
