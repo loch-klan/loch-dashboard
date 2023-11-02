@@ -5131,8 +5131,28 @@ export const TopAccountPageView = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Page View: Top accounts");
 };
+export const SmartMoneyPageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: Smart money";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
-//Top accounts: time spents on top accounts page - done
+export const SmartMoneyTimeSpent = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Smart money: time spent on smart money page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TopAccountTimeSpent = ({
   session_id,
   email_address,
@@ -5456,6 +5476,89 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
 };
 
 //Top accounts: net flows hover - done
+export const SmartMoneyChangeLimit = ({
+  session_id,
+  email_address,
+  records,
+}) => {
+  const event_name = "Smart money: page limit changed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    records: records,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Smart money: wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyNameTagHover = ({
+  session_id,
+  email_address,
+  hover,
+}) => {
+  const event_name = "Smart money: name tag hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyNetWorthHover = ({
+  session_id,
+  email_address,
+  hover,
+}) => {
+  const event_name = "Smart money: net worth hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyNetflowHover = ({
+  session_id,
+  email_address,
+  hover,
+}) => {
+  const event_name = "Smart money: fet flows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
+  const event_name = "Smart money: profits hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyReturnHover = ({ session_id, email_address, hover }) => {
+  const event_name = "Smart money: return hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TopAccountNetflowHover = ({
   session_id,
   email_address,
@@ -5505,6 +5608,35 @@ export const TopAccountPageSearch = ({ session_id, email_address, page }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: page search");
+};
+export const SmartMoneyPageNext = ({ session_id, email_address, page }) => {
+  const event_name = "Smart money: next page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const SmartMoneyPagePrev = ({ session_id, email_address, page }) => {
+  const event_name = "Smart money: previous page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const SmartMoneyPageSearch = ({ session_id, email_address, page }) => {
+  const event_name = "Smart money: page search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page searched": page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //46. Defi: share - done
