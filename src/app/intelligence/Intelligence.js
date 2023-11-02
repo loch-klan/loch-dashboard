@@ -58,8 +58,9 @@ class Intelligence extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fromDate: new Date(),
-      toDate: new Date(),
+      fromDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       // showPercentage: {
       //   icon: arrowUpRight,
       //   percent: "25",
@@ -101,8 +102,32 @@ class Intelligence extends Component {
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
       waitForMixpannelCall: false,
+      isFromCalendar: false,
+      isToCalendar: false,
     };
   }
+  showFromCalendar = () => {
+    this.setState({
+      isFromCalendar: true,
+      isToCalendar: false,
+    });
+  };
+  hideFromCalendar = () => {
+    this.setState({
+      isFromCalendar: false,
+    });
+  };
+  showToCalendar = () => {
+    this.setState({
+      isToCalendar: true,
+      isFromCalendar: false,
+    });
+  };
+  hideToCalendar = () => {
+    this.setState({
+      isToCalendar: false,
+    });
+  };
   waitForMixpannelCallOn = () => {
     this.setState({
       waitForMixpannelCall: true,
@@ -404,6 +429,8 @@ class Intelligence extends Component {
     if (passedDate) {
       this.setState({
         fromDate: passedDate,
+        isFromCalendar: false,
+        isToCalendar: false,
       });
     }
   };
@@ -411,6 +438,8 @@ class Intelligence extends Component {
     if (passedDate) {
       this.setState({
         toDate: passedDate,
+        isToCalendar: false,
+        isFromCalendar: false,
       });
     }
   };
@@ -894,36 +923,41 @@ class Intelligence extends Component {
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  position: "relative",
                 }}
               >
-                <Calendar
-                  date={this.state.fromDate}
-                  className={
-                    "calendar-select inter-display-medium f-s-13 lh-16"
-                  }
-                  onChange={this.changeFromDate}
-                  // minDate={new Date()}
-                  // maxDate={maxDate}
-                  defaultValue={this.state.fromDate}
-                  // nextLabel={nextLabel}
-                  // next2Label={next2Label}
-                  // prevLabel={prevLabel}
-                  // prev2Label={prev2Label}
-                />
-                <Calendar
-                  date={this.state.toDate}
-                  className={
-                    "calendar-select inter-display-medium f-s-13 lh-16"
-                  }
-                  onChange={this.changeToDate}
-                  // minDate={new Date()}
-                  // maxDate={maxDate}
-                  // defaultValue={valueLink.value}
-                  // nextLabel={nextLabel}
-                  // next2Label={next2Label}
-                  // prevLabel={prevLabel}
-                  // prev2Label={prev2Label}
-                />
+                <div className="intelligenceCalendarContainer">
+                  <div onClick={this.showFromCalendar}>From</div>
+                  {this.state.isFromCalendar ? (
+                    <div className="intelligenceCalendar">
+                      <Calendar
+                        date={this.state.fromDate}
+                        className={
+                          "calendar-select inter-display-medium f-s-13 lh-16"
+                        }
+                        onChange={this.changeFromDate}
+                        maxDate={this.state.maxDate}
+                        defaultValue={this.state.fromDate}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+                <div className="intelligenceCalendarContainer">
+                  <div onClick={this.showToCalendar}>To</div>
+                  {this.state.isToCalendar ? (
+                    <div className="intelligenceCalendar">
+                      <Calendar
+                        date={this.state.toDate}
+                        className={
+                          "calendar-select inter-display-medium f-s-13 lh-16"
+                        }
+                        onChange={this.changeToDate}
+                        maxDate={this.state.maxDate}
+                        defaultValue={this.state.toDate}
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </div>
 
               <div
