@@ -5547,7 +5547,7 @@ export const SmartMoneyNetflowHover = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Smart money: profits hover";
+  const event_name = "Smart money: realized PnL hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5556,7 +5556,7 @@ export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
   sendAmplitudeData(event_name, eventProperties);
 };
 export const SmartMoneyReturnHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Smart money: return hover";
+  const event_name = "Smart money: unrealized hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5614,32 +5614,50 @@ export const TopAccountPageSearch = ({ session_id, email_address, page }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: page search");
 };
-export const SmartMoneyPageNext = ({ session_id, email_address, page }) => {
+export const SmartMoneyPageNext = ({
+  session_id,
+  email_address,
+  page,
+  isMobile,
+}) => {
   const event_name = "Smart money: next page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     page: page,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneyPagePrev = ({ session_id, email_address, page }) => {
+export const SmartMoneyPagePrev = ({
+  session_id,
+  email_address,
+  page,
+  isMobile,
+}) => {
   const event_name = "Smart money: previous page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     page: page,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneyPageSearch = ({ session_id, email_address, page }) => {
+export const SmartMoneyPageSearch = ({
+  session_id,
+  email_address,
+  page,
+  isMobile,
+}) => {
   const event_name = "Smart money: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page searched": page,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
