@@ -149,7 +149,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                     </div>
                     <div className="msmbBodyItem">
                       <div className="inter-display-medium msmbBITitle">
-                        Profits
+                        Realized PnL
                       </div>
                       <div
                         className={`inter-display-medium msmbBIAmount ${
@@ -170,7 +170,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                     </div>
                     <div className="msmbBodyItem">
                       <div className="inter-display-medium msmbBITitle">
-                        Return
+                        Unrealized
                       </div>
                       <div
                         className={`inter-display-medium msmbBIAmount ${

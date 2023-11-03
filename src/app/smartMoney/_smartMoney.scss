@@ -24,13 +24,22 @@
       }
       .smheaderText {
         margin-left: 1rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
         .smheaderTextHeading {
           font-size: 15px;
           color: #19191a;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
         .smheaderTextSubHeading {
           font-size: 12px;
           color: #b0b1b3;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
       }
     }
@@ -97,6 +106,9 @@
           justify-content: space-between;
           padding: 0.3rem;
           .msmbBITitle {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
             color: #96979a;
             font-size: 13px;
           }

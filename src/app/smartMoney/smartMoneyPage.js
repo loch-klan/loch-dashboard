@@ -813,7 +813,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Profits
+              Realized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -895,7 +895,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Return
+              Unrealized
             </span>
             {/* <Image
               src={sortByIcon}
