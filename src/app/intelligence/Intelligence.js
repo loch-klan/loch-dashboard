@@ -53,6 +53,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import InflowOutflowChart from "./InflowOutflowChart";
 import { EyeThinIcon } from "../../assets/images/icons";
 import Calendar from "react-calendar";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class Intelligence extends Component {
       fromDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
       toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      minDate: new Date(new Date().setFullYear(2011, 0, 1)),
       // showPercentage: {
       //   icon: arrowUpRight,
       //   percent: "25",
@@ -107,26 +109,34 @@ class Intelligence extends Component {
     };
   }
   showFromCalendar = () => {
-    this.setState({
-      isFromCalendar: true,
-      isToCalendar: false,
-    });
+    if (!this.state.isFromCalendar) {
+      this.setState({
+        isFromCalendar: true,
+        isToCalendar: false,
+      });
+    }
   };
   hideFromCalendar = () => {
-    this.setState({
-      isFromCalendar: false,
-    });
+    if (this.state.isFromCalendar) {
+      this.setState({
+        isFromCalendar: false,
+      });
+    }
   };
   showToCalendar = () => {
-    this.setState({
-      isToCalendar: true,
-      isFromCalendar: false,
-    });
+    if (!this.state.isToCalendar) {
+      this.setState({
+        isToCalendar: true,
+        isFromCalendar: false,
+      });
+    }
   };
   hideToCalendar = () => {
-    this.setState({
-      isToCalendar: false,
-    });
+    if (this.state.isToCalendar) {
+      this.setState({
+        isToCalendar: false,
+      });
+    }
   };
   waitForMixpannelCallOn = () => {
     this.setState({
@@ -777,7 +787,6 @@ class Intelligence extends Component {
     this.updateTimer();
   };
   render() {
-    console.log("this.state.fromDate ", this.state.fromDate);
     return (
       <>
         {/* topbar */}
@@ -919,46 +928,52 @@ class Intelligence extends Component {
 
               {/* Second */}
               {/* Netflow Info End */}
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   position: "relative",
                 }}
               >
-                <div className="intelligenceCalendarContainer">
-                  <div onClick={this.showFromCalendar}>From</div>
-                  {this.state.isFromCalendar ? (
-                    <div className="intelligenceCalendar">
-                      <Calendar
-                        date={this.state.fromDate}
-                        className={
-                          "calendar-select inter-display-medium f-s-13 lh-16"
-                        }
-                        onChange={this.changeFromDate}
-                        maxDate={this.state.maxDate}
-                        defaultValue={this.state.fromDate}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-                <div className="intelligenceCalendarContainer">
-                  <div onClick={this.showToCalendar}>To</div>
-                  {this.state.isToCalendar ? (
-                    <div className="intelligenceCalendar">
-                      <Calendar
-                        date={this.state.toDate}
-                        className={
-                          "calendar-select inter-display-medium f-s-13 lh-16"
-                        }
-                        onChange={this.changeToDate}
-                        maxDate={this.state.maxDate}
-                        defaultValue={this.state.toDate}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
+                <OutsideClickHandler onOutsideClick={this.hideFromCalendar}>
+                  <div className="intelligenceCalendarContainer">
+                    <div onClick={this.showFromCalendar}>From</div>
+                    {this.state.isFromCalendar ? (
+                      <div className="intelligenceCalendar">
+                        <Calendar
+                          date={this.state.fromDate}
+                          className={
+                            "calendar-select inter-display-medium f-s-13 lh-16"
+                          }
+                          onChange={this.changeFromDate}
+                          maxDate={this.state.maxDate}
+                          minDate={this.state.minDate}
+                          defaultValue={this.state.fromDate}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                </OutsideClickHandler>
+                <OutsideClickHandler onOutsideClick={this.hideToCalendar}>
+                  <div className="intelligenceCalendarContainer">
+                    <div onClick={this.showToCalendar}>To</div>
+                    {this.state.isToCalendar ? (
+                      <div className="intelligenceCalendar">
+                        <Calendar
+                          date={this.state.toDate}
+                          className={
+                            "calendar-select inter-display-medium f-s-13 lh-16"
+                          }
+                          onChange={this.changeToDate}
+                          maxDate={this.state.maxDate}
+                          minDate={this.state.minDate}
+                          defaultValue={this.state.toDate}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                </OutsideClickHandler>
+              </div> */}
 
               <div
                 style={{
@@ -968,6 +983,19 @@ class Intelligence extends Component {
               >
                 {this.props.intelligenceState.graphValue ? (
                   <BarGraphSection
+                    showToCalendar={this.showToCalendar}
+                    hideToCalendar={this.hideToCalendar}
+                    hideFromCalendar={this.hideFromCalendar}
+                    showFromCalendar={this.showFromCalendar}
+                    changeToDate={this.changeToDate}
+                    changeFromDate={this.changeFromDate}
+                    isFromCalendar={this.state.isFromCalendar}
+                    toDate={this.state.toDate}
+                    isToCalendar={this.state.isToCalendar}
+                    fromDate={this.state.fromDate}
+                    maxDate={this.state.maxDate}
+                    minDate={this.state.minDate}
+                    showFromAndTo
                     isScrollVisible={false}
                     data={this.props.intelligenceState.graphValue[0]}
                     options={this.props.intelligenceState.graphValue[1]}
