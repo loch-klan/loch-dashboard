@@ -5131,11 +5131,12 @@ export const TopAccountPageView = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Page View: Top accounts");
 };
-export const SmartMoneyPageView = ({ session_id, email_address }) => {
+export const SmartMoneyPageView = ({ session_id, email_address, isMobile }) => {
   const event_name = "Page View: Smart money";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5144,12 +5145,14 @@ export const SmartMoneyTimeSpent = ({
   session_id,
   email_address,
   time_spent,
+  isMobile,
 }) => {
   const event_name = "Smart money: time spent on smart money page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5493,12 +5496,14 @@ export const SmartMoneyWalletClicked = ({
   session_id,
   email_address,
   wallet,
+  isMobile,
 }) => {
   const event_name = "Smart money: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

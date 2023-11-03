@@ -19,6 +19,7 @@ import { BaseReactComponent } from "../../utils/form";
 import {
   amountFormat,
   CurrencyType,
+  mobileCheck,
   noExponents,
   numToCurrency,
   TruncateText,
@@ -58,6 +59,7 @@ import {
 } from "../watchlist/redux/WatchListApi";
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
+import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -149,6 +151,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: mobileCheck(),
     });
     // Inactivity Check
     window.checkSmartMoneyTimer = setInterval(() => {
@@ -214,6 +217,7 @@ class SmartMoneyPage extends BaseReactComponent {
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
+        isMobile: mobileCheck(),
       });
     }
   };
@@ -592,6 +596,7 @@ class SmartMoneyPage extends BaseReactComponent {
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                     wallet: slink,
+                    isMobile: false,
                   });
                   window.open(shareLink, "_blank", "noreferrer");
                 }}
@@ -962,7 +967,17 @@ class SmartMoneyPage extends BaseReactComponent {
         },
       },
     ];
-
+    if (mobileCheck()) {
+      return (
+        <SmartMoneyMobilePage
+          location={this.props.location}
+          history={this.props.history}
+          accountList={this.state.accountList}
+          currency={this.state.currency}
+          isLoading={this.state.tableLoading}
+        />
+      );
+    }
     return (
       <>
         {/* topbar */}
