@@ -180,9 +180,15 @@ class SmartMoneyPage extends BaseReactComponent {
   };
   componentDidMount() {
     if (API_LIMIT) {
-      this.setState({
-        pageLimit: API_LIMIT,
-      });
+      if (mobileCheck()) {
+        this.setState({
+          pageLimit: 5,
+        });
+      } else {
+        this.setState({
+          pageLimit: API_LIMIT,
+        });
+      }
     }
     // window.sessionStorage.setItem("previewAddress", "");
     this.props.history.replace({
@@ -299,6 +305,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         } else if (prevPage + 1 === page) {
@@ -306,6 +313,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         } else {
@@ -313,6 +321,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         }
@@ -975,6 +984,11 @@ class SmartMoneyPage extends BaseReactComponent {
           accountList={this.state.accountList}
           currency={this.state.currency}
           isLoading={this.state.tableLoading}
+          currentPage={this.state.currentPage}
+          totalPage={this.state.totalPage}
+          pageLimit={this.state.pageLimit}
+          changePageLimit={this.changePageLimit}
+          onPageChange={this.onPageChange}
         />
       );
     }
