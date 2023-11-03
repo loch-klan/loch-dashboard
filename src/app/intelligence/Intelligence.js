@@ -322,7 +322,7 @@ class Intelligence extends Component {
     if (!this.props.commonState.intelligence) {
       this.props.updateWalletListFlag("intelligence", true);
       this.props.getAllCoins();
-      // this.timeFilter(0);
+      this.callTimeFilter();
       this.assetList();
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
