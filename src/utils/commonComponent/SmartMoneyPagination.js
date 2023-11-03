@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Image } from "react-bootstrap";
 
@@ -99,6 +99,14 @@ const SmartMoneyPagination = (props) => {
       }
     }
   };
+  const [isLeftLogoLoaded, setIsLeftLogoLoaded] = useState(false);
+  const [isRightLogoLoaded, setIsRightLogoLoaded] = useState(false);
+  const leftLogoLoadingComplete = () => {
+    setIsLeftLogoLoaded(true);
+  };
+  const rightLogoLoadingComplete = () => {
+    setIsRightLogoLoaded(true);
+  };
   if (mobileCheck()) {
     return (
       <div className="mobileSmartMoneyPagingation">
@@ -114,6 +122,10 @@ const SmartMoneyPagination = (props) => {
             <Image
               src={SmartMoneyPaginationArrowLeftIcon}
               className={"smartMoneyPaginationArrow"}
+              style={{
+                opacity: isLeftLogoLoaded ? 1 : 0,
+              }}
+              onLoad={leftLogoLoadingComplete}
             />
           </div>
           <h5 className="inter-display-medium f-s-14">
@@ -141,6 +153,10 @@ const SmartMoneyPagination = (props) => {
             <Image
               src={SmartMoneyPaginationArrowRightIcon}
               className={"smartMoneyPaginationArrow"}
+              style={{
+                opacity: isRightLogoLoaded ? 1 : 0,
+              }}
+              onLoad={rightLogoLoadingComplete}
             />
           </div>
         </div>
