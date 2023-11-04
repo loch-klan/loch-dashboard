@@ -10,6 +10,7 @@ import {
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import BinanceIcon from "../../assets/images/icons/Binance.svg";
 import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
+import BitBtnIcon from "../../assets/images/icons/bitbns.png";
 
 import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
 import BybitIcon from "../../assets/images/icons/bybit.jpg";
@@ -851,6 +852,105 @@ class ConnectModal extends BaseReactComponent {
                           Copy and paste your <b>API (Access) Key</b> and{" "}
                           <b>Secret Key</b> into the Loch website and click{" "}
                           <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
+            {
+              name: "Bitbns",
+              code: "BITBNS",
+              icon: BitBtnIcon,
+              isActive: false,
+              isOAuth: true,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>Bitbns</b> account
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click on your <b>Profile icon</b> and go to the{" "}
+                          <b>Settings</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          In Settings open <b>API Tab</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click on <b>New API Key</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 5
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Enable the <b>2FA</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 6
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Set permissions for your account <b>API</b>, it's
+                          recommended to check all 'read' permission checkboxes
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 7
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click <b>Create</b> on the bottom right corner
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 8
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Copy/paste your <b>API</b> and <b>Secret Keys</b> into
+                          the app
                         </p>
                       </div>
                     </div>
