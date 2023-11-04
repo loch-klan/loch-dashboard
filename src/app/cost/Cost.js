@@ -1310,6 +1310,11 @@ class Cost extends Component {
                 </p>
                 </div> */}
                 <TransactionTable
+                  bottomCombiedValues
+                  combinedCostBasis={1500}
+                  combinedCurrentValue={2500}
+                  combinedUnrealizedGains={3500}
+                  combinedReturn={-85}
                   noSubtitleBottomPadding
                   title="Unrealized gains"
                   subTitle="Understand your unrealized gains per token"
