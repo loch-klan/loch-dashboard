@@ -920,7 +920,7 @@ class Intelligence extends Component {
               <div id="netflow" style={{ paddingTop: "0.4rem" }}>
                 <PageHeader
                   showNetflowExplainers
-                  title="Realized gains"
+                  title="Realized profit and loss"
                   showImg={EyeThinIcon}
                 />
               </div>
