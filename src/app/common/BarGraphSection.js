@@ -24,6 +24,9 @@ import HC_rounded from "highcharts-rounded-corners";
 import ChartjsPluginWatermark from "chartjs-plugin-watermark";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import OutsideClickHandler from "react-outside-click-handler";
+import Calendar from "react-calendar";
+import moment from "moment";
 
 HC_rounded(Highcharts);
 
@@ -49,6 +52,7 @@ class BarGraphSection extends Component {
       activeFooter: props.activeTitle ? props.activeTitle : 0,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
+      showFromAndTo: props.showFromAndTo,
       showFooter: props.showFooter,
       showBadges: props.showBadges,
       isArrow: props.isArrow,
@@ -214,6 +218,7 @@ class BarGraphSection extends Component {
       showFooterDropdown,
       footerDropdownLabels,
       handleSelect,
+      showFromAndTo,
     } = this.state;
     const {
       marginBottom,
@@ -303,6 +308,106 @@ class BarGraphSection extends Component {
                       active={this.state.activeFooter}
                       footerLabels={footerLabels}
                     />
+                  </div>
+                )}
+                {showFromAndTo && (
+                  <div
+                    style={{
+                      width: "75%",
+                    }}
+                  >
+                    <div class="bar-graph-footer ">
+                      <div class="timeCalendarBadgeWrapper ">
+                        <div
+                          id="0"
+                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                        >
+                          From
+                        </div>
+                        <div
+                          id="1"
+                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                        >
+                          <OutsideClickHandler
+                            onOutsideClick={this.props.hideFromCalendar}
+                          >
+                            <div
+                              className="timeBadgeCalendarContainer"
+                              onClick={this.props.showFromCalendar}
+                            >
+                              <div>
+                                {this.props.fromDate
+                                  ? moment(this.props.fromDate).format(
+                                      "D MMM YYYY"
+                                    )
+                                  : ""}
+                              </div>
+                              {this.props.isFromCalendar ? (
+                                <div className="intelligenceCalendar">
+                                  <Calendar
+                                    date={this.props.fromDate}
+                                    className={
+                                      "calendar-select inter-display-medium f-s-13 lh-16"
+                                    }
+                                    onChange={this.props.changeFromDate}
+                                    maxDate={this.props.maxDate}
+                                    minDate={this.props.minDate}
+                                    defaultValue={this.props.fromDate}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
+                          </OutsideClickHandler>
+                        </div>
+                        <div
+                          id="2"
+                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                        >
+                          To
+                        </div>
+                        <div
+                          id="3"
+                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                        >
+                          <OutsideClickHandler
+                            onOutsideClick={this.props.hideToCalendar}
+                          >
+                            <div
+                              className="timeBadgeCalendarContainer"
+                              onClick={this.props.showToCalendar}
+                            >
+                              <div>
+                                {this.props.toDate
+                                  ? moment(this.props.toDate).format(
+                                      "D MMM YYYY"
+                                    )
+                                  : ""}
+                              </div>
+                              {this.props.isToCalendar ? (
+                                <div className="intelligenceCalendar">
+                                  <Calendar
+                                    date={this.props.toDate}
+                                    className={
+                                      "calendar-select inter-display-medium f-s-13 lh-16"
+                                    }
+                                    onChange={this.props.changeToDate}
+                                    maxDate={this.props.maxDate}
+                                    minDate={this.props.minDate}
+                                    defaultValue={this.props.toDate}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
+                          </OutsideClickHandler>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <BarGraphFooter
+                      handleFooterClick={this.handleFooter}
+                      active={this.state.activeFooter}
+                      footerLabels={footerLabels}
+                    /> */}
                   </div>
                 )}
 
