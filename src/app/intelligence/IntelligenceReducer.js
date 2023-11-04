@@ -65,6 +65,7 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         table_home: action.payload.results,
+        table_home_count: action.payload.total_count,
         assetPriceList_home: action.payload.objects.asset_prices,
       };
     case INSIGHT_DATA:

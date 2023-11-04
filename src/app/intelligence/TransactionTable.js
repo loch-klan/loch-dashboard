@@ -39,6 +39,9 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        moreData={props.moreData}
+        showDataAtBottom={props.showDataAtBottom}
+        moreDataHandleClick={props.handleClick}
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
         isSmartMoney={props.isSmartMoney}
