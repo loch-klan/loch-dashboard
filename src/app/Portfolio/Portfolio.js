@@ -96,6 +96,7 @@ import {
   loadingAnimation,
   mobileCheck,
   noExponents,
+  numToCurrency,
   TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
@@ -2260,10 +2261,11 @@ class Portfolio extends BaseReactComponent {
                           this.props.intelligenceState?.Average_cost_basis &&
                           this.props.intelligenceState.Average_cost_basis
                             .length > 3
-                            ? `${
+                            ? `${numToCurrency(
                                 this.props.intelligenceState.Average_cost_basis
-                                  .length - 3
-                              } More assets`
+                                  .length - 3,
+                                true
+                              ).toLocaleString("en-US")} More assets`
                             : 0
                         }
                         showDataAtBottom={
@@ -2349,7 +2351,9 @@ class Portfolio extends BaseReactComponent {
                       <TransactionTable
                         moreData={
                           table_home_count && table_home_count > 3
-                            ? `${table_home_count - 3} More transactions`
+                            ? `${numToCurrency(
+                                table_home_count - 3
+                              ).toLocaleString("en-US")} More transactions`
                             : 0
                         }
                         showDataAtBottom={
