@@ -39,6 +39,11 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        bottomCombiedValues={props.bottomCombiedValues}
+        combinedCostBasis={props.combinedCostBasis}
+        combinedCurrentValue={props.combinedCurrentValue}
+        combinedUnrealizedGains={props.combinedUnrealizedGains}
+        combinedReturn={props.combinedReturn}
         moreData={props.moreData}
         showDataAtBottom={props.showDataAtBottom}
         moreDataHandleClick={props.handleClick}
