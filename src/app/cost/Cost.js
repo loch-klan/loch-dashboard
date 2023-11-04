@@ -82,6 +82,10 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      combinedCostBasis: 0,
+      combinedCurrentValue: 0,
+      combinedUnrealizedGains: 0,
+      combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized gains",
       exportHeaderSubTitle: "Export your unrealized gains from Loch",
       exportSelectExportOption: 4,
@@ -279,6 +283,41 @@ class Cost extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState.Average_cost_basis !==
+      this.props.intelligenceState.Average_cost_basis
+    ) {
+      let tempName = this.props.intelligenceState.Average_cost_basis;
+
+      let tempcombinedCostBasis = 0;
+      let tempcombinedCurrentValue = 0;
+      let tempcombinedUnrealizedGains = 0;
+      let tempcombinedReturn = 0;
+
+      for (let index = 0; index < tempName.length; index++) {
+        const element = tempName[index];
+        if (element.CostBasis) {
+          tempcombinedCostBasis = tempcombinedCostBasis + element.CostBasis;
+        }
+        if (element.CurrentValue) {
+          tempcombinedCurrentValue =
+            tempcombinedCurrentValue + element.CurrentValue;
+        }
+        if (element.GainAmount) {
+          tempcombinedUnrealizedGains =
+            tempcombinedUnrealizedGains + element.GainAmount;
+        }
+        if (element.GainLoss) {
+          tempcombinedReturn = tempcombinedReturn + element.GainLoss;
+        }
+      }
+      this.setState({
+        combinedCostBasis: tempcombinedCostBasis,
+        combinedCurrentValue: tempcombinedCurrentValue,
+        combinedUnrealizedGains: tempcombinedUnrealizedGains,
+        combinedReturn: tempcombinedReturn,
+      });
+    }
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
@@ -1311,10 +1350,10 @@ class Cost extends Component {
                 </div> */}
                 <TransactionTable
                   bottomCombiedValues
-                  combinedCostBasis={1500}
-                  combinedCurrentValue={2500}
-                  combinedUnrealizedGains={3500}
-                  combinedReturn={-85}
+                  combinedCostBasis={this.state.combinedCostBasis}
+                  combinedCurrentValue={this.state.combinedCurrentValue}
+                  combinedUnrealizedGains={this.state.combinedUnrealizedGains}
+                  combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
                   title="Unrealized gains"
                   subTitle="Understand your unrealized gains per token"
