@@ -2257,12 +2257,19 @@ class Portfolio extends BaseReactComponent {
                         subTitle="Understand your unrealized gains per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
                         moreData={
-                          tableDataCostBasis && tableDataCostBasis.length > 3
-                            ? `${tableDataCostBasis.length - 3} More assets`
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                            ? `${
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length - 3
+                              } More assets`
                             : 0
                         }
                         showDataAtBottom={
-                          tableDataCostBasis && tableDataCostBasis.length > 3
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
                         }
                         columnList={CostBasisColumnData}
                         headerHeight={60}
