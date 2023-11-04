@@ -86,8 +86,8 @@ class Cost extends Component {
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
-      exportHeaderTitle: "Download all unrealized gains",
-      exportHeaderSubTitle: "Export your unrealized gains from Loch",
+      exportHeaderTitle: "Download all unrealized profit and loss",
+      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -150,8 +150,9 @@ class Cost extends Component {
     });
     this.setState(
       {
-        exportHeaderTitle: "Download unrealized gains",
-        exportHeaderSubTitle: "Export your unrealized gains from Loch",
+        exportHeaderTitle: "Download unrealized profit and loss",
+        exportHeaderSubTitle:
+          "Export your unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -1355,8 +1356,8 @@ class Cost extends Component {
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized gains"
-                  subTitle="Understand your unrealized gains per token"
+                  title="Unrealized profit and loss"
+                  subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}

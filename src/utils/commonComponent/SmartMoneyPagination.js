@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Image } from "react-bootstrap";
 
@@ -13,11 +13,14 @@ import {
 } from "../../assets/images/icons";
 import "./_smartMoneyPagination.scss";
 import DropDown from "../../app/common/DropDown";
+import { mobileCheck } from "../ReusableFunctions";
 
 const SmartMoneyPagination = (props) => {
   React.useEffect(() => {
     var pageNo = document.getElementById("pageNo");
-    pageNo.value = props.page;
+    if (pageNo) {
+      pageNo.value = props.page;
+    }
   }, [props.page]);
 
   const [input, setInput] = React.useState(props.page);
@@ -96,7 +99,70 @@ const SmartMoneyPagination = (props) => {
       }
     }
   };
-
+  const [isLeftLogoLoaded, setIsLeftLogoLoaded] = useState(false);
+  const [isRightLogoLoaded, setIsRightLogoLoaded] = useState(false);
+  const leftLogoLoadingComplete = () => {
+    setIsLeftLogoLoaded(true);
+  };
+  const rightLogoLoadingComplete = () => {
+    setIsRightLogoLoaded(true);
+  };
+  if (mobileCheck()) {
+    return (
+      <div className="mobileSmartMoneyPagingation">
+        <div className="smartMoneyPaginationContainer">
+          <div
+            className={`smartMoneyPaginationArrowContainer ${
+              props.page === 1
+                ? "smartMoneyPaginationArrowContainerDisabled"
+                : ""
+            }`}
+            onClick={() => onLeftClick(props)}
+          >
+            <Image
+              src={SmartMoneyPaginationArrowLeftIcon}
+              className={"smartMoneyPaginationArrow"}
+              style={{
+                opacity: isLeftLogoLoaded ? 1 : 0,
+              }}
+              onLoad={leftLogoLoadingComplete}
+            />
+          </div>
+          <h5 className="inter-display-medium f-s-14">
+            <input
+              type="number"
+              name="pagenumber"
+              id="pageNo"
+              defaultValue={props.page}
+              onChange={(event) => {
+                setInput(event.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+            />
+            <span className="smartMoneyPaginationOfTxt">of</span>
+            {props.pageCount}
+          </h5>
+          <div
+            className={`smartMoneyPaginationArrowContainer ${
+              props.page === props.pageCount
+                ? "smartMoneyPaginationArrowContainerDisabled"
+                : ""
+            }`}
+            onClick={() => onNextClick(props)}
+          >
+            <Image
+              src={SmartMoneyPaginationArrowRightIcon}
+              className={"smartMoneyPaginationArrow"}
+              style={{
+                opacity: isRightLogoLoaded ? 1 : 0,
+              }}
+              onLoad={rightLogoLoadingComplete}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="smartMoneyPaginationAndLimitSelectorContainer">
       <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">

@@ -1,9 +1,13 @@
-import React from "react";
-import Slider from "react-slick";
+import React, { useState } from "react";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 
 function Loading(props) {
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
+
+  const logoLoadingComplete = () => {
+    setIsLogoLoaded(true);
+  };
   const settings = {
     dots: false,
     infinite: true,
@@ -18,7 +22,14 @@ function Loading(props) {
   };
   return (
     <div className="loading-animation">
-      <Image src={lochClean} className="no-data" />
+      <Image
+        style={{
+          opacity: isLogoLoaded ? 1 : 0,
+        }}
+        onLoad={logoLoadingComplete}
+        src={lochClean}
+        className="no-data"
+      />
 
       {/* {!props.showIcon && (
         <>

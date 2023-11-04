@@ -1051,7 +1051,8 @@ class Portfolio extends BaseReactComponent {
       });
   };
   render() {
-    const { table_home, assetPriceList_home } = this.props.intelligenceState;
+    const { table_home, assetPriceList_home, table_home_count } =
+      this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
 
     //   "asset price state",
@@ -2243,7 +2244,7 @@ class Portfolio extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        title="Unrealized gains"
+                        title="Unrealized profit and loss"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
@@ -2253,8 +2254,23 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="Understand your unrealized gains per token"
+                        subTitle="Understand your unrealized profit and loss per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
+                        moreData={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                            ? `${
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length - 3
+                              } More assets`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                        }
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
@@ -2270,7 +2286,7 @@ class Portfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Realized gains"
+                        headerTitle="Realized profit and loss"
                         headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
@@ -2331,6 +2347,14 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        moreData={
+                          table_home_count && table_home_count > 3
+                            ? `${table_home_count - 3} More transactions`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          table_home_count && table_home_count > 3
+                        }
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion

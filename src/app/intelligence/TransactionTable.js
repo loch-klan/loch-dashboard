@@ -44,6 +44,9 @@ function TransactionTable(props) {
         combinedCurrentValue={props.combinedCurrentValue}
         combinedUnrealizedGains={props.combinedUnrealizedGains}
         combinedReturn={props.combinedReturn}
+        moreData={props.moreData}
+        showDataAtBottom={props.showDataAtBottom}
+        moreDataHandleClick={props.handleClick}
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
         isSmartMoney={props.isSmartMoney}
@@ -63,8 +66,8 @@ function TransactionTable(props) {
           props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
         }
         message={
-          props.title === "Unrealized gains"
-            ? "No unrealized gains found"
+          props.title === "Unrealized profit and loss"
+            ? "No unrealized profit and loss found"
             : props?.message
             ? props?.message
             : "No transactions found"
