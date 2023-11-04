@@ -1051,7 +1051,8 @@ class Portfolio extends BaseReactComponent {
       });
   };
   render() {
-    const { table_home, assetPriceList_home } = this.props.intelligenceState;
+    const { table_home, assetPriceList_home, table_home_count } =
+      this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
 
     //   "asset price state",
@@ -2255,6 +2256,14 @@ class Portfolio extends BaseReactComponent {
                         }}
                         subTitle="Understand your unrealized profit and loss per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
+                        moreData={
+                          tableDataCostBasis && tableDataCostBasis.length > 3
+                            ? `${tableDataCostBasis.length - 3} More assets`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          tableDataCostBasis && tableDataCostBasis.length > 3
+                        }
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
@@ -2331,6 +2340,14 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        moreData={
+                          table_home_count && table_home_count > 3
+                            ? `${table_home_count - 3} More transactions`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          table_home_count && table_home_count > 3
+                        }
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion

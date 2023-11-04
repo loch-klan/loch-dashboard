@@ -117,9 +117,19 @@ class CustomTable extends BaseReactComponent {
                 {({ width }) => (
                   <Table
                     width={width}
-                    height={60 * (tableData.length + 1) - 10}
+                    height={
+                      (this.props.showDataAtBottom && this.props.moreData
+                        ? 50
+                        : 60) *
+                        (tableData.length + 1) -
+                      10
+                    }
                     headerHeight={headerHeight ? headerHeight : 80}
-                    rowHeight={60}
+                    rowHeight={
+                      this.props.showDataAtBottom && this.props.moreData
+                        ? 50
+                        : 60
+                    }
                     rowCount={tableData.length}
                     rowGetter={({ index }) => tableData[index]}
                     className={`custom-table ${className}`}
@@ -222,6 +232,16 @@ class CustomTable extends BaseReactComponent {
                 </div>
               </>
             )}
+            {this.props.showDataAtBottom && this.props.moreData ? (
+              <div className="inter-display-medium bottomExtraInfo">
+                <div
+                  className="bottomExtraInfoText"
+                  onClick={this.props.moreDataHandleClick}
+                >
+                  {this.props.moreData}
+                </div>
+              </div>
+            ) : null}
           </>
         )}
         {this.props.isSmartMoney ? (
