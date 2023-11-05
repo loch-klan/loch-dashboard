@@ -253,7 +253,11 @@ class CustomTable extends BaseReactComponent {
                   style={{
                     flex: "0 1 169.75px",
                   }}
-                ></div>
+                >
+                  <div className="inter-display-medium bottomCombinedItemBlock">
+                    Total:
+                  </div>
+                </div>
                 <div
                   aria-colindex="3"
                   role="gridcell"
