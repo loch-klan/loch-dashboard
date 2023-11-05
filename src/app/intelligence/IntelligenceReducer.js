@@ -106,6 +106,10 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
         Average_cost_basis: action.payload.Average_cost_basis,
         Average_cost_basis_all: action.payload.Average_cost_basis,
         totalPercentage: action.payload.totalPercentage,
+        net_return: action.payload.net_return,
+        total_bal: action.payload.total_bal,
+        total_cost: action.payload.total_cost,
+        total_gain: action.payload.total_gain,
       };
     case AVERAGE_COST_RESET:
       return { ...state, Average_cost_basis: state.Average_cost_basis_all };
