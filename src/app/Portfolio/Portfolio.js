@@ -2352,7 +2352,8 @@ class Portfolio extends BaseReactComponent {
                         moreData={
                           table_home_count && table_home_count > 3
                             ? `${numToCurrency(
-                                table_home_count - 3
+                                table_home_count - 3,
+                                true
                               ).toLocaleString("en-US")}+ transactions`
                             : 0
                         }
