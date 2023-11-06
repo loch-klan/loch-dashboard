@@ -109,12 +109,10 @@ class Intelligence extends Component {
     };
   }
   showFromCalendar = () => {
-    if (!this.state.isFromCalendar) {
-      this.setState({
-        isFromCalendar: true,
-        isToCalendar: false,
-      });
-    }
+    this.setState({
+      isFromCalendar: !this.state.isFromCalendar,
+      isToCalendar: false,
+    });
   };
   hideFromCalendar = () => {
     if (this.state.isFromCalendar) {
@@ -124,12 +122,10 @@ class Intelligence extends Component {
     }
   };
   showToCalendar = () => {
-    if (!this.state.isToCalendar) {
-      this.setState({
-        isToCalendar: true,
-        isFromCalendar: false,
-      });
-    }
+    this.setState({
+      isToCalendar: !this.state.isToCalendar,
+      isFromCalendar: false,
+    });
   };
   hideToCalendar = () => {
     if (this.state.isToCalendar) {
@@ -433,7 +429,7 @@ class Intelligence extends Component {
   assetList = () => {
     let data = new URLSearchParams();
     // data.append("end_datetime", endDate);
-    getTransactionAsset(data, this);
+    getTransactionAsset(data, this, true);
   };
   changeFromDate = (passedDate) => {
     if (passedDate) {
@@ -983,6 +979,7 @@ class Intelligence extends Component {
               >
                 {this.props.intelligenceState.graphValue ? (
                   <BarGraphSection
+                    dontShowAssets
                     showToCalendar={this.showToCalendar}
                     hideToCalendar={this.hideToCalendar}
                     hideFromCalendar={this.hideFromCalendar}
@@ -1000,7 +997,6 @@ class Intelligence extends Component {
                     data={this.props.intelligenceState.graphValue[0]}
                     options={this.props.intelligenceState.graphValue[1]}
                     coinsList={this.props.OnboardingState.coinsList}
-                    showSwitch={true}
                     isSwitch={this.state.isSwitch}
                     setSwitch={this.setSwitch}
                     marginBottom="m-b-32"
@@ -1010,7 +1006,6 @@ class Intelligence extends Component {
                     showToken={true}
                     activeTitle={this.state.title}
                     assetList={this.state.AssetList}
-                    showBadges={true}
                     showPercentage={this.props.intelligenceState.graphValue[2]}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
