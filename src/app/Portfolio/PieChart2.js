@@ -1291,7 +1291,7 @@ class PieChart2 extends BaseReactComponent {
         <>
           <Row style={{ width: "100%" }}>
             <Col
-              md={7}
+              md={6}
               className="piechart-column"
               style={{
                 padding: 0,
@@ -1329,7 +1329,7 @@ class PieChart2 extends BaseReactComponent {
                 </div>
               )}
             </Col>
-            <Col md={5} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
+            <Col md={6} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
               <div>
                 {/* Chains */}
                 <div
@@ -1808,7 +1808,7 @@ class PieChart2 extends BaseReactComponent {
               </div>
             </Col>
             <Col
-              md={chainList.length > 1 ? 12 : 7}
+              md={chainList.length > 1 ? 12 : 6}
               style={
                 chainList.length > 1
                   ? { padding: 0 }
