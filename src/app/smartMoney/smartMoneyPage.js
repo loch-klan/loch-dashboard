@@ -19,6 +19,7 @@ import { BaseReactComponent } from "../../utils/form";
 import {
   amountFormat,
   CurrencyType,
+  mobileCheck,
   noExponents,
   numToCurrency,
   TruncateText,
@@ -58,6 +59,7 @@ import {
 } from "../watchlist/redux/WatchListApi";
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
+import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -149,6 +151,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: mobileCheck(),
     });
     // Inactivity Check
     window.checkSmartMoneyTimer = setInterval(() => {
@@ -177,9 +180,15 @@ class SmartMoneyPage extends BaseReactComponent {
   };
   componentDidMount() {
     if (API_LIMIT) {
-      this.setState({
-        pageLimit: API_LIMIT,
-      });
+      if (mobileCheck()) {
+        this.setState({
+          pageLimit: 5,
+        });
+      } else {
+        this.setState({
+          pageLimit: API_LIMIT,
+        });
+      }
     }
     // window.sessionStorage.setItem("previewAddress", "");
     this.props.history.replace({
@@ -214,6 +223,7 @@ class SmartMoneyPage extends BaseReactComponent {
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
+        isMobile: mobileCheck(),
       });
     }
   };
@@ -295,6 +305,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         } else if (prevPage + 1 === page) {
@@ -302,6 +313,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         } else {
@@ -309,6 +321,7 @@ class SmartMoneyPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
+            isMobile: mobileCheck(),
           });
           this.updateTimer();
         }
@@ -592,6 +605,7 @@ class SmartMoneyPage extends BaseReactComponent {
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                     wallet: slink,
+                    isMobile: false,
                   });
                   window.open(shareLink, "_blank", "noreferrer");
                 }}
@@ -808,7 +822,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Profits
+              Realized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -890,7 +904,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Return
+              Unrealized
             </span>
             {/* <Image
               src={sortByIcon}
@@ -962,7 +976,22 @@ class SmartMoneyPage extends BaseReactComponent {
         },
       },
     ];
-
+    if (mobileCheck()) {
+      return (
+        <SmartMoneyMobilePage
+          location={this.props.location}
+          history={this.props.history}
+          accountList={this.state.accountList}
+          currency={this.state.currency}
+          isLoading={this.state.tableLoading}
+          currentPage={this.state.currentPage}
+          totalPage={this.state.totalPage}
+          pageLimit={this.state.pageLimit}
+          changePageLimit={this.changePageLimit}
+          onPageChange={this.onPageChange}
+        />
+      );
+    }
     return (
       <>
         {/* topbar */}
