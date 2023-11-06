@@ -432,14 +432,10 @@ class CustomTable extends BaseReactComponent {
                     isInfo={true}
                     isText={true}
                     text={
-                      this.props.combinedUnrealizedGains
-                        ? Math.abs(
-                            Number(
-                              noExponents(
-                                this.props.combinedUnrealizedGains.toFixed(2)
-                              )
-                            )
-                          ).toLocaleString("en-US") + "%"
+                      this.props.combinedReturn
+                        ? Math.abs(this.props.combinedReturn).toLocaleString(
+                            "en-US"
+                          ) + "%"
                         : "0%"
                     }
                     colorCode="#000"
