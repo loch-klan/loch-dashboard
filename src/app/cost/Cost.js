@@ -82,6 +82,7 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
