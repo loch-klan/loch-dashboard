@@ -66,8 +66,8 @@ function TransactionTable(props) {
           props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
         }
         message={
-          props.title === "Unrealized gains"
-            ? "No unrealized gains found"
+          props.title === "Unrealized profit and loss"
+            ? "No unrealized profit and loss found"
             : props?.message
             ? props?.message
             : "No transactions found"

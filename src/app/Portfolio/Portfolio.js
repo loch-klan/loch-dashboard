@@ -2245,7 +2245,7 @@ class Portfolio extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        title="Unrealized gains"
+                        title="Unrealized profit and loss"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
@@ -2255,7 +2255,7 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="Understand your unrealized gains per token"
+                        subTitle="Understand your unrealized profit and loss per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
                         moreData={
                           this.props.intelligenceState?.Average_cost_basis &&
@@ -2288,7 +2288,7 @@ class Portfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Realized gains"
+                        headerTitle="Realized profit and loss"
                         headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
