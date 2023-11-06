@@ -26,6 +26,7 @@ import {
 import {
   EyeIcon,
   MetamaskIcon,
+  PlusCircleIcon,
   WalletIcon,
   XCircleIcon,
   XCircleRedIcon,
@@ -563,7 +564,11 @@ class TopBar extends Component {
       return null;
     }
     return (
-      <div className="topBarContainer">
+      <div
+        className={`topBarContainer ${
+          this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
+        }`}
+      >
         {this.state.walletList.length > 0 ? (
           <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
@@ -584,19 +589,28 @@ class TopBar extends Component {
             id="address-button"
             onClick={this.passAddWalletClick}
           >
-            <Image className="topBarWalletAdd" src={EyeIcon} />
-            <span className="dotDotText">Add wallet address</span>
+            <Image className="topBarWalletAdd" src={PlusCircleIcon} />
+            <span className="dotDotText">Add address</span>
           </div>
         )}
         <div
-          style={{
-            display: "flex",
-            overflow: "hidden",
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "flex-end",
-          }}
+          className={`topBarContainerRightBlock ${
+            this.state.walletList.length > 0
+              ? "topBarContainerRightBlockMultiple"
+              : ""
+          }`}
         >
+          {this.state.walletList.length > 0 ? (
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn maxWidth50 ml-2"
+              id="address-button"
+              onClick={this.passAddWalletClick}
+            >
+              <Image className="topBarWalletAdd" src={PlusCircleIcon} />
+              <span className="dotDotText">Add address</span>
+            </div>
+          ) : null}
           {this.state.metamaskWalletConnected ? (
             <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
               <Image className="topBarWalletAdd" src={WalletIcon} />
