@@ -1075,6 +1075,27 @@ form {
   text-overflow: ellipsis;
 }
 .table-wrapper {
+  .bottomExtraInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    color: #adadad;
+    font-size: 12px;
+    font-weight: 500;
+    .bottomExtraInfoText {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem 1rem;
+      cursor: pointer;
+      transition-duration: 300ms;
+      &:hover {
+        color: #000000;
+      }
+    }
+  }
   .form-group {
     width: 8rem;
     margin-left: 3rem;
