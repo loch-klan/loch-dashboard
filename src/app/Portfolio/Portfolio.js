@@ -96,6 +96,7 @@ import {
   loadingAnimation,
   mobileCheck,
   noExponents,
+  numToCurrency,
   TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
@@ -1051,7 +1052,8 @@ class Portfolio extends BaseReactComponent {
       });
   };
   render() {
-    const { table_home, assetPriceList_home } = this.props.intelligenceState;
+    const { table_home, assetPriceList_home, table_home_count } =
+      this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
 
     //   "asset price state",
@@ -2255,6 +2257,22 @@ class Portfolio extends BaseReactComponent {
                         }}
                         subTitle="Understand your unrealized profit and loss per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
+                        moreData={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                            ? `${numToCurrency(
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length - 3,
+                                true
+                              ).toLocaleString("en-US")}+ assets`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                        }
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
@@ -2331,6 +2349,17 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        moreData={
+                          table_home_count && table_home_count > 3
+                            ? `${numToCurrency(
+                                table_home_count - 3,
+                                true
+                              ).toLocaleString("en-US")}+ transactions`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          table_home_count && table_home_count > 3
+                        }
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion

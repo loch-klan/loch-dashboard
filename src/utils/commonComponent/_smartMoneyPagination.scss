@@ -1,3 +1,82 @@
+.mobileSmartMoneyPagingation {
+  padding: 2rem;
+  padding-top: 0rem;
+  .smartMoneyPaginationContainer {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .smartMoneyPaginationOfTxt {
+      margin: 0rem 1rem;
+      color: #b0b1b3;
+      font-weight: 500;
+    }
+    .smartMoneyPaginationArrowContainer {
+      background-color: #e5e5e6;
+      height: 4rem;
+      width: 4rem;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+    .smartMoneyPaginationArrowContainerDisabled {
+      cursor: default;
+      &:hover {
+        filter: brightness(1);
+      }
+      .smartMoneyPaginationArrow {
+        filter: opacity(0.5);
+        height: 1rem;
+      }
+    }
+
+    button {
+      background-color: #0d0d0d;
+      border-color: #0d0d0d;
+      box-shadow: 0 0 10px #d3d3d3;
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #0d0d0d;
+        color: white;
+      }
+      &:disabled {
+        color: #000000;
+      }
+      img {
+        width: 2rem;
+      }
+    }
+    h5 {
+      display: inline-block;
+      margin: 0 1.5rem;
+    }
+    input {
+      // display: flex;
+      background: white;
+      border: 0.1rem solid #d4d4d4;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      border-radius: 0.8rem;
+      height: 4rem;
+      width: 3.5rem;
+      text-align: center;
+      &:focus-visible {
+        outline: none;
+      }
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
 .smartMoneyPaginationAndLimitSelectorContainer {
   margin-bottom: 0;
   margin-top: 0;
