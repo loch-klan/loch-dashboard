@@ -27,6 +27,7 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import OutsideClickHandler from "react-outside-click-handler";
 import Calendar from "react-calendar";
 import moment from "moment";
+import { CheckIcon, ThickCheckMarkIcon } from "../../assets/images/icons";
 
 HC_rounded(Highcharts);
 
@@ -198,7 +199,11 @@ class BarGraphSection extends Component {
     //     asset_selected: badge.name,
     //   });
   };
-
+  toggleBreakdownSelected = () => {
+    this.setState({
+      switchselected: !this.state.switchselected,
+    });
+  };
   render() {
     const {
       data,
@@ -311,16 +316,12 @@ class BarGraphSection extends Component {
                   </div>
                 )}
                 {showFromAndTo && (
-                  <div
-                    style={{
-                      width: "75%",
-                    }}
-                  >
+                  <div className="intelligenceRealisedLeftContainer">
                     <div class="bar-graph-footer ">
                       <div class="timeCalendarBadgeWrapper ">
                         <div
                           id="0"
-                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
                         >
                           From
                         </div>
@@ -410,7 +411,97 @@ class BarGraphSection extends Component {
                     /> */}
                   </div>
                 )}
-
+                {showFromAndTo ? (
+                  <div className="intelligenceRealisedRightContainer">
+                    <div
+                      className="intelligenceRealisedRightItems"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "18rem",
+                      //   maxWidth: "20rem",
+                      //   marginLeft: "1rem",
+                      //   zIndex: 4,
+                      // }}
+                    >
+                      <CustomDropdown
+                        filtername="All chains"
+                        options={coinsList}
+                        action={null}
+                        handleClick={this.handleFunction}
+                        isChain={true}
+                        searchIsUsed={this.props.chainSearchIsUsed}
+                        // selectedTokens={this.state.activeBadge}
+                      />
+                    </div>
+                    <div
+                      className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "15rem",
+                      //   maxWidth: "18rem",
+                      //   zIndex: "2",
+                      // }}
+                    >
+                      <CustomDropdown
+                        filtername="All assets"
+                        options={this.props.assetList}
+                        action={null}
+                        handleClick={this.props.handleAssetSelected}
+                        // isChain={true}
+                        LightTheme={true}
+                        placeholderName={"asset"}
+                        getObj={this.props?.getObj}
+                        searchIsUsed={this.props.assetSearchIsUsed}
+                        // selectedTokens={this.state.activeBadge}
+                      />
+                    </div>
+                    <div
+                      className="intelligenceRealisedRightItems"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "15rem",
+                      //   maxWidth: "18rem",
+                      //   zIndex: "2",
+                      // }}
+                    >
+                      <div
+                        onClick={this.toggleBreakdownSelected}
+                        className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                          this.state.switchselected
+                            ? "IRRIbreakdownContainerSelected"
+                            : ""
+                        }`}
+                      >
+                        <div>Breakdown</div>
+                        <div className="IRRIbreakdownImageContainer">
+                          <Image
+                            className="IRRIbreakdownImage"
+                            src={ThickCheckMarkIcon}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        marginLeft: "1rem",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                        subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                        className={"fix-width tool-tip-container-bottom-arrow"}
+                        isLeftText
+                      >
+                        <Image src={InfoIcon} className="infoIcon" />
+                      </CustomOverlay>
+                    </div>
+                  </div>
+                ) : null}
                 {showBadges && (
                   <div
                     style={{
@@ -435,7 +526,7 @@ class BarGraphSection extends Component {
               </div>
             </>
 
-            {
+            {!this.props.dontShowAssets ? (
               <div
                 style={{
                   display: "flex",
@@ -471,7 +562,7 @@ class BarGraphSection extends Component {
                   </div>
                 )}
               </div>
-            }
+            ) : null}
             {showPercentage || showSwitch ? (
               <div
                 className="show-percentage-div"

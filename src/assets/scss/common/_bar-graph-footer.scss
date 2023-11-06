@@ -1,3 +1,71 @@
+.intelligenceRealisedLeftContainer {
+  width: 50%;
+}
+.intelligenceRealisedRightContainer {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  .intelligenceRealisedRightItems {
+    flex: 1;
+    .IRRIbreakdownContainer {
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+/Edge */
+      user-select: none; /* Standard */
+      min-height: 4rem;
+      width: 100%;
+      height: 100%;
+      padding: 0rem 1rem;
+      background-color: transparent;
+      border-radius: 0.8rem;
+      border: 0.1rem solid #b0b1b3;
+      color: #19191a;
+      transition-duration: 300ms;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .IRRIbreakdownImageContainer {
+        background-color: transparent;
+        border-radius: 0.4rem;
+        border: 0.1rem solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2rem;
+        width: 2rem;
+        transition-duration: 300ms;
+        .IRRIbreakdownImage {
+          height: 1.1rem;
+          width: 1.1rem;
+        }
+      }
+
+      &:hover {
+        border-color: #19191a;
+        .IRRIbreakdownImageContainer {
+          background-color: rgba(51, 51, 51, 0.7);
+        }
+      }
+    }
+    .IRRIbreakdownContainerSelected {
+      border-color: #19191a;
+      .IRRIbreakdownImageContainer {
+        background-color: #333333;
+        border-color: #333333;
+      }
+      &:hover {
+        .IRRIbreakdownImageContainer {
+          border-color: transparent;
+          background-color: #333333;
+        }
+      }
+    }
+  }
+  .intelligenceRealisedRightMiddleItem {
+    margin: 0rem 1rem;
+  }
+}
 .bar-graph-footer {
   // margin-top: 2rem;
   margin-bottom: 2rem;
@@ -23,13 +91,17 @@
   .timeCalendarBadgeWrapper {
     display: flex;
     align-items: center;
-    column-gap: 1rem;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
     .timeCalBadge {
-      width: 100%;
-      background-color: $grey-F2F;
+      // width: 100%;
+      background-color: transparent;
       border-radius: 0.8rem;
-      border: 0.1rem solid $grey-F2F;
-      color: $black-191;
+      border: 0.1rem solid #b0b1b3;
+      color: #19191a;
+      transition-duration: 300ms;
       cursor: pointer;
       text-align: center;
       .intelligenceCalendar {
@@ -145,22 +217,22 @@
         position: relative;
       }
       &:hover {
-        border: 1px solid rgba(229, 229, 230, 0.5);
-        box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
-          0px 14px 64px -4px rgba(24, 39, 75, 0.12);
-        border-radius: 8px;
-        background: #ffffff;
+        border: 1px solid #19191a;
+        background-color: transparent;
       }
     }
     .timeNoCalBadge {
       // width: 100%;
-      //   background-color: $grey-F2F;
+      background-color: transparent;
       border-radius: 0.8rem;
       border: 0.1rem solid transparent;
       color: $black-191;
-      cursor: pointer;
+      cursor: default;
       text-align: center;
       padding: 1.125rem 1rem;
+    }
+    .timeNoCalBadgeNoLeft {
+      padding-left: 0;
     }
   }
 
@@ -168,10 +240,10 @@
     padding: 1.125rem 1rem;
     width: 100%;
     // min-width: 6.5rem;
-    background-color: $grey-F2F;
+    background-color: transparent;
     border-radius: 0.8rem;
-    border: 0.1rem solid $grey-F2F;
-    color: $black-191;
+    border: 0.1rem solid transparent;
+    color: #19191a;
     cursor: pointer;
     text-align: center;
 
