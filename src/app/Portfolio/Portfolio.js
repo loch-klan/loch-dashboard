@@ -2265,7 +2265,7 @@ class Portfolio extends BaseReactComponent {
                                 this.props.intelligenceState.Average_cost_basis
                                   .length - 3,
                                 true
-                              ).toLocaleString("en-US")} More assets`
+                              ).toLocaleString("en-US")}+ assets`
                             : 0
                         }
                         showDataAtBottom={
@@ -2353,7 +2353,7 @@ class Portfolio extends BaseReactComponent {
                           table_home_count && table_home_count > 3
                             ? `${numToCurrency(
                                 table_home_count - 3
-                              ).toLocaleString("en-US")} More transactions`
+                              ).toLocaleString("en-US")}+ transactions`
                             : 0
                         }
                         showDataAtBottom={
