@@ -39,14 +39,14 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        moreData={props.moreData}
+        showDataAtBottom={props.showDataAtBottom}
+        moreDataHandleClick={props.handleClick}
         bottomCombiedValues={props.bottomCombiedValues}
         combinedCostBasis={props.combinedCostBasis}
         combinedCurrentValue={props.combinedCurrentValue}
         combinedUnrealizedGains={props.combinedUnrealizedGains}
         combinedReturn={props.combinedReturn}
-        moreData={props.moreData}
-        showDataAtBottom={props.showDataAtBottom}
-        moreDataHandleClick={props.handleClick}
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
         isSmartMoney={props.isSmartMoney}

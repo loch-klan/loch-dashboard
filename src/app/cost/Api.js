@@ -424,14 +424,14 @@ export const getAvgCostBasis = (ctx) => {
                   : ((current_price - costBasis) / costBasis) * 100,
             });
           });
-
-          let totalPercentage =
-            totalCostBasis === 0
-              ? 0
-              : (
-                  ((totalCurrentValue - totalCostBasis) / totalCostBasis) *
-                  100
-                ).toFixed(2);
+          // Remove this
+          let totalPercentage = netReturn ? netReturn.toFixed(2) : 0;
+          // totalCostBasis === 0
+          //   ? 0
+          //   : (
+          //       ((totalCurrentValue - totalCostBasis) / totalCostBasis) *
+          //       100
+          //     ).toFixed(2);
 
           // console.log("Asset",AssetsList)
           dispatch({

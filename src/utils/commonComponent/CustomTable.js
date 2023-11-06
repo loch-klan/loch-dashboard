@@ -236,6 +236,16 @@ class CustomTable extends BaseReactComponent {
                 </div>
               </>
             )}
+            {this.props.showDataAtBottom && this.props.moreData ? (
+              <div className="inter-display-medium bottomExtraInfo">
+                <div
+                  className="bottomExtraInfoText"
+                  onClick={this.props.moreDataHandleClick}
+                >
+                  {this.props.moreData}
+                </div>
+              </div>
+            ) : null}
             {this.props.bottomCombiedValues ? (
               <div className="bottomCombinedItem">
                 <div
@@ -442,14 +452,10 @@ class CustomTable extends BaseReactComponent {
                     isInfo={true}
                     isText={true}
                     text={
-                      this.props.combinedUnrealizedGains
-                        ? Math.abs(
-                            Number(
-                              noExponents(
-                                this.props.combinedUnrealizedGains.toFixed(2)
-                              )
-                            )
-                          ).toLocaleString("en-US") + "%"
+                      this.props.combinedReturn
+                        ? Math.abs(this.props.combinedReturn).toLocaleString(
+                            "en-US"
+                          ) + "%"
                         : "0%"
                     }
                     colorCode="#000"
@@ -491,16 +497,6 @@ class CustomTable extends BaseReactComponent {
                       </div>
                     </div>
                   </CustomOverlay>
-                </div>
-              </div>
-            ) : null}
-            {this.props.showDataAtBottom && this.props.moreData ? (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.props.moreDataHandleClick}
-                >
-                  {this.props.moreData}
                 </div>
               </div>
             ) : null}
