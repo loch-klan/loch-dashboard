@@ -39,6 +39,9 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        pageLimit={props.pageLimit}
+        changePageLimit={props.changePageLimit}
+        isSmartMoney={props.isSmartMoney}
         showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"
