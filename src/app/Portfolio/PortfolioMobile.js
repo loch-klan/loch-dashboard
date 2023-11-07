@@ -95,9 +95,7 @@ class PortfolioMobile extends BaseReactComponent {
         showPopupModal: false,
       });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
+    window.history.scrollRestoration = "manual";
     this.startPageView();
     this.updateTimer(true);
     return () => {

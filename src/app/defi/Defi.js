@@ -579,10 +579,9 @@ class Defi extends Component {
                           style={
                             this.state.isYeildToggle
                               ? {
-                                  transform: "rotate(180deg)",
                                   filter: "opacity(1)",
                                 }
-                              : {}
+                              : { transform: "rotate(180deg)" }
                           }
                         />
                       </div>
@@ -671,10 +670,9 @@ class Defi extends Component {
                           style={
                             this.state.isDebtToggle
                               ? {
-                                  transform: "rotate(180deg)",
                                   filter: "opacity(1)",
                                 }
-                              : {}
+                              : { transform: "rotate(180deg)" }
                           }
                         />
                       </div>

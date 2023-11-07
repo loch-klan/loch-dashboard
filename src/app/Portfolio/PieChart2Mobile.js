@@ -359,13 +359,13 @@ class PieChart2Mobile extends BaseReactComponent {
                 style={
                   this.state.isChainToggle
                     ? {
-                        transform: "rotate(180deg)",
                         filter: "opacity(1)",
                         height: "1.25rem",
                         width: "1.25rem",
                         opacity: this.state.showArrowIcon ? 1 : 0,
                       }
                     : {
+                        transform: "rotate(180deg)",
                         height: "1.25rem",
                         width: "1.25rem",
                         opacity: this.state.showArrowIcon ? 1 : 0,
@@ -515,11 +515,13 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isYeildToggle
                       ? {
-                          transform: "rotate(180deg)",
                           filter: "opacity(1)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
-                      : { opacity: this.state.showArrowIcon ? 1 : 0 }
+                      : {
+                          transform: "rotate(180deg)",
+                          opacity: this.state.showArrowIcon ? 1 : 0,
+                        }
                   }
                 />
               </div>
@@ -564,11 +566,13 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isDebtToggle
                       ? {
-                          transform: "rotate(180deg)",
                           filter: "opacity(1)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
-                      : { opacity: this.state.showArrowIcon ? 1 : 0 }
+                      : {
+                          transform: "rotate(180deg)",
+                          opacity: this.state.showArrowIcon ? 1 : 0,
+                        }
                   }
                 />
               </div>

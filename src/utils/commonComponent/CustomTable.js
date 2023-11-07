@@ -14,6 +14,10 @@ import {
 import Loading from "../../app/common/Loading";
 import SmartMoneyPagination from "./SmartMoneyPagination";
 import { ContributeTrophyIcon } from "../../assets/images/icons";
+import CustomOverlay from "./CustomOverlay";
+import { CurrencyType, noExponents, numToCurrency } from "../ReusableFunctions";
+import GainIcon from "../../assets/images/icons/GainIcon.svg";
+import LossIcon from "../../assets/images/icons/LossIcon.svg";
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -119,9 +123,19 @@ class CustomTable extends BaseReactComponent {
                   {({ width }) => (
                     <Table
                       width={width}
-                      height={60 * (tableData.length + 1) - 10}
+                      height={
+                        (this.props.showDataAtBottom && this.props.moreData
+                          ? 50
+                          : 60) *
+                          (tableData.length + 1) -
+                        10
+                      }
                       headerHeight={headerHeight ? headerHeight : 80}
-                      rowHeight={60}
+                      rowHeight={
+                        this.props.showDataAtBottom && this.props.moreData
+                          ? 50
+                          : 60
+                      }
                       rowCount={tableData.length}
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
@@ -256,6 +270,270 @@ class CustomTable extends BaseReactComponent {
                 </div>
               </>
             )}
+            {this.props.showDataAtBottom && this.props.moreData ? (
+              <div className="inter-display-medium bottomExtraInfo">
+                <div
+                  className="bottomExtraInfoText"
+                  onClick={this.props.moreDataHandleClick}
+                >
+                  {this.props.moreData}
+                </div>
+              </div>
+            ) : null}
+            {this.props.bottomCombiedValues ? (
+              <div className="bottomCombinedItem">
+                <div
+                  aria-colindex="1"
+                  role="gridcell"
+                  className="bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 67.9px",
+                  }}
+                ></div>
+                <div
+                  aria-colindex="2"
+                  role="gridcell"
+                  className="bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 169.75px",
+                  }}
+                >
+                  <div className="inter-display-medium bottomCombinedItemBlock">
+                    Total:
+                  </div>
+                </div>
+                <div
+                  aria-colindex="3"
+                  role="gridcell"
+                  className="bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 169.75px",
+                  }}
+                ></div>
+                <div
+                  aria-colindex="4"
+                  role="gridcell"
+                  className="bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 169.75px",
+                  }}
+                ></div>
+                <div
+                  aria-colindex="5"
+                  role="gridcell"
+                  className="bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 169.75px",
+                  }}
+                ></div>
+                <div
+                  aria-colindex="6"
+                  role="gridcell"
+                  className="inter-display-medium bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 176.54px",
+                  }}
+                >
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.props.combinedCostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(this.props.combinedCostBasis.toFixed(2))
+                          ).toLocaleString("en-US")
+                    }
+                  >
+                    <span
+                      onMouseEnter={() => {
+                        // CostCostBasisHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                    >
+                      {this.props.combinedCostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            this.props.combinedCostBasis.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </CustomOverlay>
+                </div>
+                <div
+                  aria-colindex="7"
+                  role="gridcell"
+                  className="inter-display-medium bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 176.54px",
+                  }}
+                >
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.props.combinedCurrentValue === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(
+                              this.props.combinedCurrentValue.toFixed(2)
+                            )
+                          ).toLocaleString("en-US")
+                    }
+                  >
+                    <span
+                      onMouseEnter={() => {
+                        // CostCostBasisHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                    >
+                      {this.props.combinedCurrentValue === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            this.props.combinedCurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </CustomOverlay>
+                </div>
+                <div
+                  aria-colindex="8"
+                  role="gridcell"
+                  className="inter-display-medium bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 176.54px",
+                  }}
+                >
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.props.combinedUnrealizedGains
+                        ? CurrencyType(false) +
+                          Math.abs(
+                            Number(
+                              noExponents(
+                                this.props.combinedUnrealizedGains.toFixed(2)
+                              )
+                            )
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"
+                    }
+                    colorCode="#000"
+                  >
+                    <div
+                      onMouseEnter={() => {
+                        // CostGainHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                      className="gainLossContainer"
+                    >
+                      <div
+                        className={`gainLoss ${
+                          this.props.combinedUnrealizedGains < 0
+                            ? "loss"
+                            : "gain"
+                        }`}
+                      >
+                        {this.props.combinedUnrealizedGains &&
+                        this.props.combinedUnrealizedGains !== 0 ? (
+                          <Image
+                            className="mr-2"
+                            src={
+                              this.props.combinedUnrealizedGains < 0
+                                ? LossIcon
+                                : GainIcon
+                            }
+                          />
+                        ) : null}
+                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                          {this.props.combinedUnrealizedGains
+                            ? CurrencyType(false) +
+                              numToCurrency(
+                                this.props.combinedUnrealizedGains
+                              ).toLocaleString("en-US")
+                            : "0.00"}
+                        </span>
+                      </div>
+                    </div>
+                  </CustomOverlay>
+                </div>
+                <div
+                  aria-colindex="9"
+                  role="gridcell"
+                  className="inter-display-medium bottomCombinedItemBlock"
+                  style={{
+                    flex: "0 1 176.54px",
+                  }}
+                >
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.props.combinedReturn
+                        ? Math.abs(this.props.combinedReturn).toLocaleString(
+                            "en-US"
+                          ) + "%"
+                        : "0%"
+                    }
+                    colorCode="#000"
+                  >
+                    <div
+                      onMouseEnter={() => {
+                        // CostGainLossHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                      className="gainLossContainer"
+                    >
+                      <div
+                        className={`gainLoss ${
+                          this.props.combinedReturn < 0 ? "loss" : "gain"
+                        }`}
+                      >
+                        {this.props.combinedReturn &&
+                        this.props.combinedReturn !== 0 ? (
+                          <Image
+                            className="mr-2"
+                            src={
+                              this.props.combinedReturn < 0
+                                ? LossIcon
+                                : GainIcon
+                            }
+                          />
+                        ) : null}
+                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                          {this.props.combinedReturn
+                            ? Math.abs(
+                                noExponents(
+                                  this.props.combinedReturn.toFixed(2)
+                                )
+                              ).toLocaleString("en-US") + "%"
+                            : "0.00%"}
+                        </span>
+                      </div>
+                    </div>
+                  </CustomOverlay>
+                </div>
+              </div>
+            ) : null}
           </>
         )}
         {this.props.isSmartMoney ? (

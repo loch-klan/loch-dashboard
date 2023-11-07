@@ -1,14 +1,20 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT } from "./Constant";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 export const mobileCheck = () => {
+  if (
+    BASE_URL_S3 ===
+    "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+  ) {
+    return false;
+  }
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
   ) {
-    return true;
+    // return true;
   }
   return false;
 };
@@ -114,7 +120,10 @@ export const compareDate = (dateTimeA, dateTimeB) => {
   else return true;
 };
 
-export const numToCurrency = (num) => {
+export const numToCurrency = (num, noDefaultDecimals) => {
+  if (num < 100 && noDefaultDecimals) {
+    return num;
+  }
   if (num === undefined || num === null) {
     return "";
   }

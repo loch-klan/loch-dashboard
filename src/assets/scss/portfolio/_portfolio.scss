@@ -125,6 +125,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                cursor: pointer;
               }
               .topbar-btn {
                 font-family: "Inter-Regular" !important;
@@ -148,7 +149,7 @@
           .topBarContainer {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
@@ -159,6 +160,18 @@
             .maxWidth50 {
               max-width: 50%;
             }
+            .topBarContainerRightBlock {
+              display: flex;
+              overflow: hidden;
+              align-items: center;
+              justify-content: flex-end;
+            }
+            .topBarContainerRightBlockMultiple {
+              flex: 1;
+            }
+          }
+          .topBarContainerMultiple {
+            justify-content: space-between;
           }
         }
 
@@ -183,19 +196,26 @@
               text-transform: capitalize;
             }
           }
-
+          .topBarWalletChainEyeAmountContainer {
+            background-color: #e5e5e680;
+            // background-color: red;
+            margin-right: 0.6rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+          }
           .topBarWalletChain {
             height: 1.2rem;
-            margin-right: 0.4rem;
           }
-          .topBarWalletChainSingle {
-            margin-right: 0.8rem;
-          }
+
           .topBarWalletTotalWallets {
-            margin-right: 0.6rem;
+            margin-left: 0.6rem;
           }
           .topBarWalletArrow {
-            width: 1.2rem;
+            transition-duration: 0ms;
+            width: 1.1rem;
+          }
+          .topBarWalletArrowRotate {
+            transform: rotate(180deg);
           }
 
           .topBarExchangeIcons {
@@ -206,7 +226,9 @@
           }
           .topBarWalletAdd {
             margin-right: 0.8rem;
-            width: 1.2rem;
+            // width: 1.2rem;
+            height: 1.2rem;
+            object-fit: cover;
             margin-bottom: 0px;
           }
           img {
@@ -226,23 +248,21 @@
             .topBarExchangeIcons {
               filter: none;
             }
-            .topBarWalletArrowContainer {
-              opacity: 0;
-            }
-          }
-          .topBarWalletArrowContainer {
-            transition-duration: 300ms;
-            &:hover {
-              opacity: 1;
-            }
           }
         }
         .topbar-btn-transparent {
           background-color: transparent;
-          border-color: #f2f2f3;
+          border-color: transparent;
           cursor: default;
+          .topBarWalletArrowContainer {
+            transition-duration: 300ms;
+            cursor: pointer;
+            &:hover {
+              filter: brightness(0);
+            }
+          }
           &:hover {
-            border-color: #f2f2f3;
+            border-color: transparent;
             background-color: transparent;
             color: $black-191;
             img {

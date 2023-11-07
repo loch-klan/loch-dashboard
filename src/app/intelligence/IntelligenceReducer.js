@@ -65,6 +65,7 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         table_home: action.payload.results,
+        table_home_count: action.payload.total_count,
         assetPriceList_home: action.payload.objects.asset_prices,
       };
     case INSIGHT_DATA:
@@ -105,6 +106,10 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
         Average_cost_basis: action.payload.Average_cost_basis,
         Average_cost_basis_all: action.payload.Average_cost_basis,
         totalPercentage: action.payload.totalPercentage,
+        net_return: action.payload.net_return,
+        total_bal: action.payload.total_bal,
+        total_cost: action.payload.total_cost,
+        total_gain: action.payload.total_gain,
       };
     case AVERAGE_COST_RESET:
       return { ...state, Average_cost_basis: state.Average_cost_basis_all };

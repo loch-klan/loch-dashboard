@@ -10,6 +10,7 @@ import {
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import BinanceIcon from "../../assets/images/icons/Binance.svg";
 import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
+import BitBtnIcon from "../../assets/images/icons/bitbns.png";
 
 import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
 import BybitIcon from "../../assets/images/icons/bybit.jpg";
@@ -851,6 +852,65 @@ class ConnectModal extends BaseReactComponent {
                           Copy and paste your <b>API (Access) Key</b> and{" "}
                           <b>Secret Key</b> into the Loch website and click{" "}
                           <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
+            {
+              name: "Bitbns",
+              code: "BITBNS",
+              icon: BitBtnIcon,
+              isActive: false,
+              isOAuth: false,
+              apiKey: "",
+              apiSecretKey: "",
+              connectionName: "",
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>Bitbns</b> account
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Go to <b>More</b> and then click on{" "}
+                          <b>Get New Keys</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Select <b>Read only</b> and click{" "}
+                          <b>Create New Keys</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Copy paste your <b>Public Key</b> and{" "}
+                          <b>Secret key</b> into Loch
                         </p>
                       </div>
                     </div>
