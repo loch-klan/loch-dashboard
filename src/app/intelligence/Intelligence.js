@@ -109,12 +109,13 @@ class Intelligence extends Component {
     };
   }
   showFromCalendar = () => {
+    console.log("1");
     this.setState({
       isFromCalendar: !this.state.isFromCalendar,
-      isToCalendar: false,
     });
   };
   hideFromCalendar = () => {
+    console.log("2");
     if (this.state.isFromCalendar) {
       this.setState({
         isFromCalendar: false,
@@ -122,12 +123,13 @@ class Intelligence extends Component {
     }
   };
   showToCalendar = () => {
+    console.log("3");
     this.setState({
       isToCalendar: !this.state.isToCalendar,
-      isFromCalendar: false,
     });
   };
   hideToCalendar = () => {
+    console.log("4");
     if (this.state.isToCalendar) {
       this.setState({
         isToCalendar: false,
@@ -432,6 +434,7 @@ class Intelligence extends Component {
     getTransactionAsset(data, this, true);
   };
   changeFromDate = (passedDate) => {
+    console.log("5");
     if (passedDate) {
       this.setState({
         fromDate: passedDate,
@@ -441,6 +444,7 @@ class Intelligence extends Component {
     }
   };
   changeToDate = (passedDate) => {
+    console.log("6");
     if (passedDate) {
       this.setState({
         toDate: passedDate,

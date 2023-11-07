@@ -332,11 +332,11 @@ class BarGraphSection extends Component {
                           <OutsideClickHandler
                             onOutsideClick={this.props.hideFromCalendar}
                           >
-                            <div
-                              className="timeBadgeCalendarContainer"
-                              onClick={this.props.showFromCalendar}
-                            >
-                              <div>
+                            <div className="timeBadgeCalendarContainer">
+                              <div
+                                className="timeBadgeCalendarText"
+                                onClick={this.props.showFromCalendar}
+                              >
                                 {this.props.fromDate
                                   ? moment(this.props.fromDate).format(
                                       "D MMM YYYY"
@@ -373,11 +373,11 @@ class BarGraphSection extends Component {
                           <OutsideClickHandler
                             onOutsideClick={this.props.hideToCalendar}
                           >
-                            <div
-                              className="timeBadgeCalendarContainer"
-                              onClick={this.props.showToCalendar}
-                            >
-                              <div>
+                            <div className="timeBadgeCalendarContainer">
+                              <div
+                                className="timeBadgeCalendarText"
+                                onClick={this.props.showToCalendar}
+                              >
                                 {this.props.toDate
                                   ? moment(this.props.toDate).format(
                                       "D MMM YYYY"
@@ -481,12 +481,7 @@ class BarGraphSection extends Component {
                         </div>
                       </div>
                     </div>
-                    <div
-                      style={{
-                        marginLeft: "1rem",
-                        cursor: "pointer",
-                      }}
-                    >
+                    <div className="intelligenceRealisedInfoIcon">
                       <CustomOverlay
                         position="bottom"
                         isIcon={false}

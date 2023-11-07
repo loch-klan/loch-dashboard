@@ -557,14 +557,12 @@ class CustomDropdown extends Component {
             ? this.getSelected()?.length + "/4 Selected"
             : this.props.isChain
             ? this.getSelected()?.length +
-              (this.getSelected()?.length > 1
-                ? " chains selected"
-                : " chain selected")
+              (this.getSelected()?.length > 1 ? " chains" : " chain")
             : this.props.placeholderName
             ? this.getSelected()?.length +
               (this.getSelected()?.length > 1
-                ? " " + this.props.placeholderName + "s selected"
-                : " " + this.props.placeholderName + " selected")
+                ? " " + this.props.placeholderName + "s"
+                : " " + this.props.placeholderName + "")
             : this.getSelected()?.length + " Selected"}
 
           {!this.props.isLineChart &&
