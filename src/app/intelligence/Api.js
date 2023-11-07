@@ -308,8 +308,6 @@ export const getProfitAndLossApi = (
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
-      console.log("getProfitAndLossApi start_datetime", startDate);
-      console.log("getProfitAndLossApi end_datetime", endDate);
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
     }
@@ -331,7 +329,7 @@ export const getProfitAndLossApi = (
     postLoginInstance
       .post("wallet/transaction/get-profit-loss", data)
       .then((res) => {
-        //   console.log("calling get profit and loss");
+        // console.log("calling get profit and loss ", res);
         if (!res.data.error) {
           dispatch({
             type: ctx?.state?.isTopAccountPage
@@ -417,9 +415,6 @@ export const getAssetProfitLoss = (
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
-      console.log("getAssetProfitLoss start_datetime", startDate);
-      console.log("getAssetProfitLoss end_datetime", endDate);
-
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
     }
@@ -442,7 +437,7 @@ export const getAssetProfitLoss = (
       .post("wallet/transaction/get-asset-profit-loss", data)
       .then((res) => {
         if (!res.data.error) {
-          //  console.log("get profit loss", res.data.data);
+          // console.log("asset profit loss", res.data.data);
           dispatch({
             type: ctx?.state?.isTopAccountPage
               ? TOP_PORTFOLIO_ASSET
