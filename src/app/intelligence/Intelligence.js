@@ -109,13 +109,11 @@ class Intelligence extends Component {
     };
   }
   showFromCalendar = () => {
-    console.log("1");
     this.setState({
       isFromCalendar: !this.state.isFromCalendar,
     });
   };
   hideFromCalendar = () => {
-    console.log("2");
     if (this.state.isFromCalendar) {
       this.setState({
         isFromCalendar: false,
@@ -123,13 +121,11 @@ class Intelligence extends Component {
     }
   };
   showToCalendar = () => {
-    console.log("3");
     this.setState({
       isToCalendar: !this.state.isToCalendar,
     });
   };
   hideToCalendar = () => {
-    console.log("4");
     if (this.state.isToCalendar) {
       this.setState({
         isToCalendar: false,
@@ -229,6 +225,7 @@ class Intelligence extends Component {
     }
     this.startPageView();
     this.props.getAllCoins();
+    //here this.timeFilter(0, true);
     this.callTimeFilter();
     this.props.GetAllPlan();
     this.props.getUser();
@@ -262,6 +259,11 @@ class Intelligence extends Component {
     };
   }
   callTimeFilter = () => {
+    this.setState({
+      graphValue: "",
+      netFlowLoading: true,
+      isGraphLoading: true,
+    });
     this.props.getAssetProfitLoss(
       this,
       moment(this.state.fromDate).unix(),
@@ -284,11 +286,6 @@ class Intelligence extends Component {
       prevState.fromDate !== this.state.fromDate ||
       prevState.toDate !== this.state.toDate
     ) {
-      this.setState({
-        graphValue: "",
-        netFlowLoading: true,
-        isGraphLoading: true,
-      });
       this.callTimeFilter();
     }
     if (
@@ -320,6 +317,7 @@ class Intelligence extends Component {
     if (!this.props.commonState.intelligence) {
       this.props.updateWalletListFlag("intelligence", true);
       this.props.getAllCoins();
+      //here this.timeFilter(0);
       this.callTimeFilter();
       this.assetList();
       let tempData = new URLSearchParams();
@@ -434,7 +432,6 @@ class Intelligence extends Component {
     getTransactionAsset(data, this, true);
   };
   changeFromDate = (passedDate) => {
-    console.log("5");
     if (passedDate) {
       this.setState({
         fromDate: passedDate,
@@ -444,7 +441,6 @@ class Intelligence extends Component {
     }
   };
   changeToDate = (passedDate) => {
-    console.log("6");
     if (passedDate) {
       this.setState({
         toDate: passedDate,
