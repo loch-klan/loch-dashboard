@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import { EyeIcon, RoundedArrowDownIcon } from "../../assets/images/icons";
+import { EyeIcon, RoundedGreyArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const list = props.list.map((li, index) => {
@@ -77,27 +78,42 @@ export default function TopBarDropDown(props) {
           className="w-100"
         >
           <div
-            onClick={props.handleAddWalletClick}
             ref={props.buttonRef}
-            className="topbar-btn w-100"
+            className="topbar-btn topbar-btn-transparent w-100"
             id="address-button"
           >
-            <Image
-              className={`topBarWalletChain ${
-                props.totalWallets && props.totalWallets === 1
-                  ? "topBarWalletChainSingle"
-                  : ""
-              }`}
-              src={EyeIcon}
-            />
-            <div className="hideText">
+            <div className="topBarWalletChainEyeAmountContainer">
+              <Image
+                className={`topBarWalletChain ${
+                  props.totalWallets && props.totalWallets === 1
+                    ? "topBarWalletChainSingle"
+                    : ""
+                }`}
+                src={EyeIcon}
+              />
               {props.totalWallets && props.totalWallets > 1 ? (
                 <span className="topBarWalletTotalWallets">
                   {props.totalWallets}
                 </span>
               ) : null}
-              <span>{props.firstWallet}</span>
             </div>
+            <CustomOverlay
+              position="bottom"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={
+                props.firstFullWallet
+                  ? props.firstFullWallet
+                  : props.firstWallet
+              }
+              className={"fix-width tool-tip-container-bottom-arrow"}
+            >
+              <div className="hideText">
+                <span>{props.firstWallet}</span>
+              </div>
+            </CustomOverlay>
+
             {props.totalWallets && props.totalWallets > 1 ? (
               <OutsideClickHandler onOutsideClick={closeDropdown}>
                 <div
@@ -105,8 +121,10 @@ export default function TopBarDropDown(props) {
                   className="topBarWalletArrowContainer pl-3 h-100 pr-1"
                 >
                   <Image
-                    className="topBarWalletArrow"
-                    src={RoundedArrowDownIcon}
+                    className={`topBarWalletArrow ${
+                      showDropdown ? "topBarWalletArrowRotate" : ""
+                    }`}
+                    src={RoundedGreyArrowDownIcon}
                   />
                 </div>
               </OutsideClickHandler>
