@@ -1336,7 +1336,7 @@ class PieChart2 extends BaseReactComponent {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "end",
+                    justifyContent: "flex-start",
                   }}
                 >
                   {this.state.showFollowingAddress ? (
