@@ -452,6 +452,7 @@ class BarGraphSection extends Component {
                         placeholderName={"asset"}
                         getObj={this.props?.getObj}
                         searchIsUsed={this.props.assetSearchIsUsed}
+
                         // selectedTokens={this.state.activeBadge}
                       />
                     </div>

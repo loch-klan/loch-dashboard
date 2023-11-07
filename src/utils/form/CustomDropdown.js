@@ -617,7 +617,7 @@ class CustomDropdown extends Component {
               value={this.state.search}
               type="text"
               placeholder={
-                this.props.filtername.toLowerCase() === "all assets" ||
+                // this.props.filtername.toLowerCase() === "all assets" ||
                 this.props.filtername.toLowerCase() === "all assets selected" ||
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "Name or symbol"
