@@ -37,3 +37,4 @@ export { default as LochLogoWhiteIcon } from "./lochLogoWhite.svg";
 export { default as MobileSearchGreyIcon } from "./mobileSearchGrey.svg";
 export { default as MacIcon } from "./mac.svg";
 export { default as PlusCircleIcon } from "./plus-circle.svg";
+export { default as RoundedGreyArrowDownIcon } from "./roundedGreyArrowDown.svg";
