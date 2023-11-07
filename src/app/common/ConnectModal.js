@@ -864,7 +864,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: true,
+              isOAuth: false,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
@@ -887,8 +887,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 2
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Click on your <b>Profile icon</b> and go to the{" "}
-                          <b>Settings</b>
+                          Go to <b>More</b> and then click on{" "}
+                          <b>Get New Keys</b>
                         </p>
                       </div>
                     </div>
@@ -898,7 +898,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 3
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          In Settings open <b>API Tab</b>
+                          Select <b>Read only</b> and click{" "}
+                          <b>Create New Keys</b>
                         </p>
                       </div>
                     </div>
@@ -908,49 +909,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 4
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Click on <b>New API Key</b>
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Enable the <b>2FA</b>
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Set permissions for your account <b>API</b>, it's
-                          recommended to check all 'read' permission checkboxes
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 7
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create</b> on the bottom right corner
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 8
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy/paste your <b>API</b> and <b>Secret Keys</b> into
-                          the app
+                          Copy paste your <b>Public Key</b> and{" "}
+                          <b>Secret key</b> into Loch
                         </p>
                       </div>
                     </div>
