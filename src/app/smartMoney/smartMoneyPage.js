@@ -60,6 +60,7 @@ import {
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
+import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -69,6 +70,7 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      addSmartMoneyAddressModal: false,
       pageLimit: 1,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
@@ -512,7 +514,11 @@ class SmartMoneyPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
   };
-
+  handleAddSmartMoneyAddresses = () => {
+    this.setState({
+      addSmartMoneyAddressModal: !this.state.addSmartMoneyAddressModal,
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -976,6 +982,7 @@ class SmartMoneyPage extends BaseReactComponent {
         },
       },
     ];
+
     if (mobileCheck()) {
       return (
         <SmartMoneyMobilePage
@@ -992,6 +999,7 @@ class SmartMoneyPage extends BaseReactComponent {
         />
       );
     }
+
     return (
       <>
         {/* topbar */}
@@ -1015,6 +1023,13 @@ class SmartMoneyPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
+            {this.state.addSmartMoneyAddressModal ? (
+              <AddSmartMoneyAddressesModal
+                show={this.state.addSmartMoneyAddressModal}
+                onHide={this.handleAddTopAccounts}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1059,6 +1074,8 @@ class SmartMoneyPage extends BaseReactComponent {
                 ) : (
                   <div className="smartMoneyTable">
                     <TransactionTable
+                      smartMoneyBlur
+                      blurButtonClick={this.handleAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding
                       tableData={tableData}
