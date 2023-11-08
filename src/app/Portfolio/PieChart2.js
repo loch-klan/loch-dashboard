@@ -1464,12 +1464,15 @@ class PieChart2 extends BaseReactComponent {
                         style={
                           this.state.isChainToggle
                             ? {
-                                transform: "rotate(180deg)",
                                 filter: "opacity(1)",
                                 height: "1.25rem",
                                 width: "1.25rem",
                               }
-                            : { height: "1.25rem", width: "1.25rem" }
+                            : {
+                                transform: "rotate(180deg)",
+                                height: "1.25rem",
+                                width: "1.25rem",
+                              }
                         }
                       />
                       {this.props.chainLoader && (
@@ -1614,10 +1617,9 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isYeildToggle
                                 ? {
-                                    transform: "rotate(180deg)",
                                     filter: "opacity(1)",
                                   }
-                                : {}
+                                : { transform: "rotate(180deg)" }
                             }
                           />
                         </div>
@@ -1663,10 +1665,9 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isDebtToggle
                                 ? {
-                                    transform: "rotate(180deg)",
                                     filter: "opacity(1)",
                                   }
-                                : {}
+                                : { transform: "rotate(180deg)" }
                             }
                           />
                         </div>
