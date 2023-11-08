@@ -8,7 +8,7 @@ export const mobileCheck = () => {
       navigator.userAgent
     )
   ) {
-    return true;
+    // return true;
   }
   return false;
 };
