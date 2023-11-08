@@ -1241,7 +1241,14 @@ backdrop-filter: blur(15px);">
     return (
       <div
         className="welcome-card-section lineChartSlider"
-        style={this.props.hideTimeFilter ? minVersionSection : {}}
+        style={
+          this.props.hideTimeFilter
+            ? minVersionSection
+            : {
+                padding: "2rem 0rem",
+                paddingBottom: "1.8rem",
+              }
+        }
       >
         <>
           <div
@@ -1249,7 +1256,7 @@ backdrop-filter: blur(15px);">
             style={
               !this.props.hideTimeFilter
                 ? {
-                    padding: "0rem 4.8rem",
+                    padding: "0rem 3.2rem",
                   }
                 : { ...minVersion, display: "flex", flexDirection: "column" }
             }
