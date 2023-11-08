@@ -23,6 +23,7 @@ export { default as EyeThinIcon } from "./eyeThinIcon.svg";
 export { default as CloseIcon } from "./dummyX.svg";
 export { default as DeleteIcon } from "./delete-icon.png";
 export { default as CheckIcon } from "./check.svg";
+export { default as ThickCheckMarkIcon } from "./thickCheckMark.svg";
 export { default as CompassWhiteIcon } from "./compassWhite.svg";
 export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as SharePortfolioIconWhite } from "./SharePortfolioIconWhite.svg";
