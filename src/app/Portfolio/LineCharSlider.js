@@ -1256,7 +1256,7 @@ backdrop-filter: blur(15px);">
             style={
               !this.props.hideTimeFilter
                 ? {
-                    padding: "0rem 4.8rem",
+                    padding: "0rem 3.2rem",
                   }
                 : { ...minVersion, display: "flex", flexDirection: "column" }
             }
