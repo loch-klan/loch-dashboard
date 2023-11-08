@@ -411,3 +411,43 @@
     }
   }
 }
+.addCommunityTopAccountsWrapperAdded {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 1.2rem;
+  .addCommunityTopAccountsAddedHeader {
+    width: 100%;
+    z-index: 2;
+  }
+  .addCommunityTopAccountsAddedBody {
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    .addCommunityTopAccountsAddedBodyContent {
+      padding: 4rem 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      .addCommunityTopAccountsAddedBodyContentChild {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .addCommunityTopAccountsAddedBodyIcon {
+        height: 3.5rem;
+      }
+      .addCommunityTopAccountsAddedBodyLargerIcon {
+        height: 7rem;
+      }
+    }
+  }
+}

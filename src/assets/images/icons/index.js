@@ -1,3 +1,5 @@
+export { default as WarningCircleIcon } from "./warningCircle.svg";
+export { default as TrophyCelebrationIcon } from "./trophyCelebration.svg";
 export { default as ContributeTrophyIcon } from "./contributeTrophy.svg";
 export { default as TrophyIcon } from "./trophy.svg";
 export { default as SmartMoneyPaginationArrowLeftIcon } from "./smartMoneyPaginationArrowLeft.svg";

@@ -5,8 +5,8 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
 
 import {
   CloseIcon,
+  TrophyCelebrationIcon,
   TrophyIcon,
-  // TrophyCelebrationIcon,
   WarningCircleIcon,
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
@@ -250,7 +250,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             descriptionOne="Thanks for adding your address, you may now view the full"
             descriptionTwo="Loch leaderboard"
             btnText="View"
-            // imageIcon={TrophyCelebrationIcon}
+            imageIcon={TrophyCelebrationIcon}
             bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
             hideModal={this.hideModal}
           />
@@ -261,7 +261,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             heading="Sorry this address has already been added."
             descriptionOne="Please try to add another address!"
             btnText="Add another"
-            // imageIcon={WarningCircleIcon}
+            imageIcon={WarningCircleIcon}
             hideModal={this.hideModal}
           />
         ) : null}
@@ -271,7 +271,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             heading="Sorry this address is not worth at least $1m."
             descriptionOne="Please try to add another address!"
             btnText="Add another"
-            // imageIcon={WarningCircleIcon}
+            imageIcon={WarningCircleIcon}
             hideModal={this.hideModal}
           />
         ) : null}
@@ -481,7 +481,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                   this.state.addButtonVisible ? this.isDisabled() : true
                 }
                 buttonText="Add"
-                // handleClick={this.showAddressAdded}
+                handleClick={this.showAddressAdded}
               />
             </div>
           </div>
