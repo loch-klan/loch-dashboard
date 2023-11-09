@@ -1157,7 +1157,6 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="time"
             onClick={() => {
-              this.handleTableSort("time");
               TransactionHistoryDate({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
@@ -1188,6 +1187,9 @@ class Portfolio extends BaseReactComponent {
               </span>
             </CustomOverlay>
             <Image
+              onClick={() => {
+                this.handleTableSort("time");
+              }}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
