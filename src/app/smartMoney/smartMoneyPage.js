@@ -60,7 +60,8 @@ import {
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
-
+import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
+import SidebarModal from "../common/SidebarModal";
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -69,6 +70,8 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      blurTable: true,
+      addSmartMoneyAddressModal: false,
       pageLimit: 1,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
@@ -133,10 +136,33 @@ class SmartMoneyPage extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("previewAddress")),
       ],
       goToBottom: false,
+      dragPosition: { x: 0, y: 0 },
+      signinPopup: true,
     };
     this.delayTimer = 0;
   }
+  trackPos = (data) => {
+    if (data) {
+      this.setState({
+        dragPosition: { x: data.x, y: data.y },
+      });
 
+      window.sessionStorage.setItem(
+        "floatingModalPosition",
+        JSON.stringify({ x: data.x, y: data.y })
+      );
+    }
+  };
+  openSignInPopup = () => {
+    this.setState({
+      signinPopup: true,
+    });
+  };
+  closeSignInPopup = () => {
+    this.setState({
+      signinPopup: false,
+    });
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -512,7 +538,11 @@ class SmartMoneyPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
   };
-
+  handleAddSmartMoneyAddresses = () => {
+    this.setState({
+      addSmartMoneyAddressModal: !this.state.addSmartMoneyAddressModal,
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -976,6 +1006,7 @@ class SmartMoneyPage extends BaseReactComponent {
         },
       },
     ];
+
     if (mobileCheck()) {
       return (
         <SmartMoneyMobilePage
@@ -992,6 +1023,7 @@ class SmartMoneyPage extends BaseReactComponent {
         />
       );
     }
+
     return (
       <>
         {/* topbar */}
@@ -1015,6 +1047,13 @@ class SmartMoneyPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
+            {this.state.addSmartMoneyAddressModal ? (
+              <AddSmartMoneyAddressesModal
+                show={this.state.addSmartMoneyAddressModal}
+                onHide={this.handleAddSmartMoneyAddresses}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1059,12 +1098,16 @@ class SmartMoneyPage extends BaseReactComponent {
                 ) : (
                   <div className="smartMoneyTable">
                     <TransactionTable
+                      smartMoneyBlur={this.state.blurTable}
+                      blurButtonClick={this.handleAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding
                       tableData={tableData}
                       columnList={columnList}
                       message={"No accounts found"}
-                      totalPage={this.state.totalPage}
+                      totalPage={
+                        this.state.blurTable ? 0 : this.state.totalPage
+                      }
                       history={this.props.history}
                       location={this.props.location}
                       page={this.state.currentPage}
@@ -1092,6 +1135,15 @@ class SmartMoneyPage extends BaseReactComponent {
             {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
+        <SidebarModal
+          trackPos={this.trackPos}
+          dragPosition={this.state.dragPosition}
+          show={this.state.signinPopup}
+          onHide={this.closeSignInPopup}
+          history={this.props.history}
+          popupType="general_popup"
+          tracking={this.props.history.location.pathname.substring(1)}
+        />
       </>
     );
   }

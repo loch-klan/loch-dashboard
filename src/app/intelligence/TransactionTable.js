@@ -78,6 +78,8 @@ function TransactionTable(props) {
         onPageChange={props.onPageChange}
         isMiniversion={props.isMiniversion}
         // isStickyHead={props?.isStickyHead}
+        smartMoneyBlur={props.smartMoneyBlur}
+        blurButtonClick={props.blurButtonClick}
       />
     </div>
   );
