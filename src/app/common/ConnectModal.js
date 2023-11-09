@@ -887,8 +887,7 @@ class ConnectModal extends BaseReactComponent {
                           STEP 2
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Go to <b>More</b> and then click on{" "}
-                          <b>Get New Keys</b>
+                          Go to <b>More</b> and then click on <b>API Trading</b>
                         </p>
                       </div>
                     </div>
@@ -896,6 +895,16 @@ class ConnectModal extends BaseReactComponent {
                       <div className="steps">
                         <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
                           STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Then click on <b>Get New Keys</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
                           Select <b>Read only</b> and click{" "}
@@ -906,7 +915,7 @@ class ConnectModal extends BaseReactComponent {
                     <div>
                       <div className="steps">
                         <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
+                          STEP 5
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
                           Copy paste your <b>Public Key</b> and{" "}
