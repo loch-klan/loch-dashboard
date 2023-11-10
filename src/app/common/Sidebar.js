@@ -2245,25 +2245,41 @@ function Sidebar(props) {
                         (lochUser.email ||
                           lochUser.first_name ||
                           lochUser.last_name) ? (
-                          <div
-                            onClick={handleGoToProfile}
-                            className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedSignedIn inter-display-medium f-s-13 lh-19 "
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Profile"}
                           >
-                            <Image
-                              className="sideBarFooterSignInIcon"
-                              src={BlackManIcon}
-                            />
-                          </div>
+                            <div
+                              onClick={handleGoToProfile}
+                              className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedSignedIn inter-display-medium f-s-13 lh-19 "
+                            >
+                              <Image
+                                className="sideBarFooterSignInIcon"
+                                src={BlackManIcon}
+                              />
+                            </div>
+                          </CustomOverlay>
                         ) : (
-                          <div
-                            onClick={openSigninModal}
-                            className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Sign in / up"}
                           >
-                            <Image
-                              className="sideBarFooterSignInIcon"
-                              src={GreyManIcon}
-                            />
-                          </div>
+                            <div
+                              onClick={openSigninModal}
+                              className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                            >
+                              <Image
+                                className="sideBarFooterSignInIcon"
+                                src={GreyManIcon}
+                              />
+                            </div>
+                          </CustomOverlay>
                         )}
                       </ul>
                     )}
