@@ -830,7 +830,7 @@ class Intelligence extends Component {
               />
             </div>
 
-            <div className="insights-image m-b-32">
+            {/* <div className="insights-image m-b-32">
               <PageHeader
                 title="Insights"
                 showImg={insight}
@@ -847,7 +847,6 @@ class Intelligence extends Component {
               />
               <div style={{ position: "relative" }}>
                 <div className="insights-wrapper">
-                  {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
                   ) : this.state.updatedInsightList &&
@@ -911,6 +910,12 @@ class Intelligence extends Component {
                   )}
                 </div>
               </div>
+            </div> */}
+            <div
+              id="price"
+              style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
+            >
+              <InflowOutflowChart userWalletList={this.state.userWalletList} />
             </div>
             <div className="portfolio-bar-graph">
               <div id="netflow" style={{ paddingTop: "0.4rem" }}>
@@ -1040,11 +1045,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <div id="price" style={{ paddingTop: "0.4rem" }}>
-                <InflowOutflowChart
-                  userWalletList={this.state.userWalletList}
-                />
-              </div>
+
               {/* footer */}
               <Footer />
             </div>
