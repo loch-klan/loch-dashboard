@@ -136,6 +136,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isShowingAge: false,
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
@@ -291,6 +292,11 @@ class Portfolio extends BaseReactComponent {
   waitForMixpannelCallOff = () => {
     this.setState({
       waitForMixpannelCall: false,
+    });
+  };
+  toggleAgeTimestamp = () => {
+    this.setState({
+      isShowingAge: !this.state.isShowingAge,
     });
   };
   // get token
@@ -1102,6 +1108,7 @@ class Portfolio extends BaseReactComponent {
 
         return {
           time: row.timestamp,
+          age: row.age,
           from: {
             address: row.from_wallet.address,
             metaData: walletFromData,
@@ -1150,17 +1157,39 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="time"
             onClick={() => {
-              this.handleTableSort("time");
               TransactionHistoryDate({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
               });
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Date
-            </span>
+            <CustomOverlay
+              position="top"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={
+                this.state.isShowingAge
+                  ? "Click to view Timestamp"
+                  : "Click to view Age"
+              }
+            >
+              <span
+                onClick={() => {
+                  this.toggleAgeTimestamp();
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                style={{
+                  color: "rgb(95, 51, 255)",
+                }}
+              >
+                {this.state.isShowingAge ? "Age" : "Timestamp"}
+              </span>
+            </CustomOverlay>
             <Image
+              onClick={() => {
+                this.handleTableSort("time");
+              }}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
@@ -1169,14 +1198,33 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        coumnWidth: 0.3,
+        coumnWidth: 0.4,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "time") {
-            return moment(rowData.time).format("MM/DD/YY");
+            let tempVal = "-";
+            let tempOpp = "-";
+            if (this.state.isShowingAge && rowData.age) {
+              tempVal = rowData.age;
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+            } else if (!this.state.isShowingAge && rowData.time) {
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = rowData.age;
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={tempOpp ? tempOpp : "-"}
+              >
+                <span>{tempVal}</span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -1205,7 +1253,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -1410,7 +1458,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -1614,7 +1662,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
