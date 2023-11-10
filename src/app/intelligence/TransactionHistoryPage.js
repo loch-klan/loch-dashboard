@@ -120,7 +120,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       selectedAssets: [],
       selectedMethods: [],
       selectedNetworks: [],
-      amountFilter: "Amount",
+      amountFilter: "Size",
       exportModal: false,
       goToBottom: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -575,7 +575,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     if (title === this.state.amountFilter) {
       this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
       this.setState({
-        amountFilter: "Amount",
+        amountFilter: "Size",
       });
       return;
     }
@@ -1935,7 +1935,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       onSelect={this.handleAmount}
                       title={this.state.amountFilter}
                       activetab={
-                        this.state.amountFilter === "Amount"
+                        this.state.amountFilter === "Size"
                           ? ""
                           : this.state.amountFilter
                       }
