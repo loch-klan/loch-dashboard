@@ -114,6 +114,10 @@ import "./_mobilePortfolio.scss";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import LinkIcon from "../../assets/images/link.svg";
 import PortfolioMobile from "./PortfolioMobile";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../assets/images/icons/index.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -2071,15 +2075,19 @@ class Portfolio extends BaseReactComponent {
                 colorCode="#000"
               >
                 <div className="gainLossContainer">
-                  <div
-                    className={`gainLoss ${
-                      rowData.GainLoss < 0 ? "loss" : "gain"
-                    }`}
-                  >
+                  <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
                         className="mr-2"
-                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainLoss < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
