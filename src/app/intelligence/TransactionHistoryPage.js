@@ -1040,7 +1040,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-4F4"
                 style={{
-                  color: "rgb(95, 51, 255)",
+                  textDecoration: "underline",
                 }}
               >
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
