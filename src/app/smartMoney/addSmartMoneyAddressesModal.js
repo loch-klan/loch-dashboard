@@ -258,7 +258,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             btnClick={this.hideModal}
             heading="Thanks for your contribution!"
             descriptionOne="Thanks for adding your address, you may now view the full"
-            descriptionTwo="Loch leaderboard"
+            descriptionTwo="Loch’s Smart Money Leaderboard"
             btnText="View"
             imageIcon={TrophyCelebrationIcon}
             bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
