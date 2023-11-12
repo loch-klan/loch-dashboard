@@ -12,6 +12,7 @@ import {
 import { CustomCoin } from "../../utils/commonComponent";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
 import AddSmartMoneyAddressesModalMessagesBox from "./addSmartMoneyAddressesModalMessagesBox";
+import { addSmartMoney } from "./Api";
 
 class AddSmartMoneyAddressesModal extends BaseReactComponent {
   constructor(props) {
@@ -32,6 +33,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
           apiAddress: "",
           showNameTag: true,
           nameTag: "",
+          loadAddBtn: false,
         },
       ],
       addressAdded: false,
@@ -140,7 +142,6 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
   };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
-    console.log("parentCoinList is ", parentCoinList);
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
@@ -211,10 +212,19 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
   };
   showAddressAdded = () => {
     this.setState({
-      addressAdded: true,
-      addressAlreadyPresent: false,
-      addressNotOneMil: false,
+      addButtonVisible: false,
+      loadAddBtn: true,
     });
+    let data = new URLSearchParams();
+    const tempItem = this.state.walletInput[0];
+    data.append("address", tempItem.address);
+    data.append("name_tag", tempItem.nickname);
+    this.props.addSmartMoney(data, this);
+    // this.setState({
+    //   addressAdded: true,
+    //   addressAlreadyPresent: false,
+    //   addressNotOneMil: false,
+    // });
   };
   showAccountAdreadyAdded = () => {
     this.setState({
@@ -385,7 +395,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                                 name={`wallet${index + 1}`}
                                 value={c.nickname || ""}
                                 className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                placeholder="Enter nickname"
+                                placeholder="Enter nametag"
                                 title={c.nickname || ""}
                                 onChange={(e) => {
                                   this.nicknameOnChain(e);
@@ -475,7 +485,8 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  this.state.addButtonVisible ? this.isDisabled(true) : false
+                  this.state.loadAddBtn ||
+                  (this.state.addButtonVisible ? this.isDisabled(true) : false)
                 }
                 isDisabled={
                   this.state.addButtonVisible ? this.isDisabled() : true
@@ -498,6 +509,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllParentChains,
   detectCoin,
+  addSmartMoney,
 };
 
 AddSmartMoneyAddressesModal.propTypes = {};

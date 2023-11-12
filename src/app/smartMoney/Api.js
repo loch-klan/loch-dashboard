@@ -34,3 +34,27 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
       });
   };
 };
+export const addSmartMoney = (data, ctx, apiLimit) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      // /wallet/user-wallet/add-smart-money
+      // ismein address and name_tag karke do key mein pass kardo
+      .post("/wallet/user-wallet/add-smart-money", data)
+      .then((res) => {
+        if (!res.data.error) {
+          console.log("response is ", res);
+          ctx.setState({
+            addButtonVisible: true,
+            loadAddBtn: false,
+          });
+          if (res.data.message === "Succesfully added") {
+            ctx.setState({
+              addressAdded: true,
+            });
+          }
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      });
+  };
+};
