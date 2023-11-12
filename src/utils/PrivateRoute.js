@@ -22,10 +22,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const handleResize = () => {
       // do magic for resize
       const isSmall = window.matchMedia("(max-width: 1300px)");
-      console.log("isSmall ", isSmall);
-      console.log("isSidebarClosed ", isSidebarClosed);
+
       if (isSmall && isSmall.matches) {
         setIsSidebarClosed(true);
+        window.sessionStorage.setItem("isSidebarClosed", true);
       } else {
         // setIsSidebarClosed(false);
       }

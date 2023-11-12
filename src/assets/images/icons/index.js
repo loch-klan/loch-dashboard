@@ -43,3 +43,5 @@ export { default as MacIcon } from "./mac.svg";
 export { default as PlusCircleIcon } from "./plus-circle.svg";
 export { default as RoundedGreyArrowDownIcon } from "./roundedGreyArrowDown.svg";
 export { default as SidebarLeftArrowIcon } from "./sidebarLeftArrow.svg";
+export { default as ArrowUpRightSmallIcon } from "./arrowUpRightSmall.svg";
+export { default as ArrowDownLeftSmallIcon } from "./arrowDownLeftSmall.svg";

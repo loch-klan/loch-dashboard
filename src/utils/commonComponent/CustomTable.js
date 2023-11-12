@@ -16,8 +16,11 @@ import SmartMoneyPagination from "./SmartMoneyPagination";
 import { ContributeTrophyIcon } from "../../assets/images/icons";
 import CustomOverlay from "./CustomOverlay";
 import { CurrencyType, noExponents, numToCurrency } from "../ReusableFunctions";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
+
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../assets/images/icons";
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -442,21 +445,19 @@ class CustomTable extends BaseReactComponent {
                       }}
                       className="gainLossContainer"
                     >
-                      <div
-                        className={`gainLoss ${
-                          this.props.combinedUnrealizedGains < 0
-                            ? "loss"
-                            : "gain"
-                        }`}
-                      >
+                      <div className={`gainLoss`}>
                         {this.props.combinedUnrealizedGains &&
                         this.props.combinedUnrealizedGains !== 0 ? (
                           <Image
                             className="mr-2"
+                            style={{
+                              height: "1.5rem",
+                              width: "1.5rem",
+                            }}
                             src={
                               this.props.combinedUnrealizedGains < 0
-                                ? LossIcon
-                                : GainIcon
+                                ? ArrowDownLeftSmallIcon
+                                : ArrowUpRightSmallIcon
                             }
                           />
                         ) : null}
@@ -503,19 +504,19 @@ class CustomTable extends BaseReactComponent {
                       }}
                       className="gainLossContainer"
                     >
-                      <div
-                        className={`gainLoss ${
-                          this.props.combinedReturn < 0 ? "loss" : "gain"
-                        }`}
-                      >
+                      <div className={`gainLoss`}>
                         {this.props.combinedReturn &&
                         this.props.combinedReturn !== 0 ? (
                           <Image
                             className="mr-2"
+                            style={{
+                              height: "1.5rem",
+                              width: "1.5rem",
+                            }}
                             src={
                               this.props.combinedReturn < 0
-                                ? LossIcon
-                                : GainIcon
+                                ? ArrowDownLeftSmallIcon
+                                : ArrowUpRightSmallIcon
                             }
                           />
                         ) : null}

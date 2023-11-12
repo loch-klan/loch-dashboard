@@ -10,7 +10,11 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
 import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { ExportIcon } from "../../assets/images/icons";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  ExportIcon,
+} from "../../assets/images/icons";
 export const GraphHeader = (props) => {
   const [showDust, setDust] = useState(false);
 
@@ -140,10 +144,20 @@ export const GraphHeader = (props) => {
           )}
           {props.isGainLoss && (
             <div
-              className={`inter-display-medium f-s-15 lh-15 grey-313 content ${
-                props.totalPercentage >= 0 ? "inc" : "dec"
-              }`}
+              className={`inter-display-medium f-s-15 lh-15 grey-313 content`}
             >
+              <Image
+                className="mr-2"
+                style={{
+                  height: "1.5rem",
+                  width: "1.5rem",
+                }}
+                src={
+                  props.totalPercentage < 0
+                    ? ArrowDownLeftSmallIcon
+                    : ArrowUpRightSmallIcon
+                }
+              />
               {Math.abs(props.totalPercentage) + "%"}{" "}
             </div>
           )}
