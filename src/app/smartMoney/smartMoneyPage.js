@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
@@ -33,7 +33,9 @@ import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
+  getUser,
   setPageFlagDefault,
+  updateWalletListFlag,
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
@@ -61,7 +63,7 @@ import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
 import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
-import SidebarModal from "../common/SidebarModal";
+
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -70,6 +72,10 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      //Testing
+      showWithLogin: false,
+      showWithSignUp: false,
+      //Testing
       blurTable: true,
       addSmartMoneyAddressModal: false,
       pageLimit: 1,
@@ -136,33 +142,10 @@ class SmartMoneyPage extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("previewAddress")),
       ],
       goToBottom: false,
-      dragPosition: { x: 0, y: 0 },
-      signinPopup: true,
     };
     this.delayTimer = 0;
   }
-  trackPos = (data) => {
-    if (data) {
-      this.setState({
-        dragPosition: { x: data.x, y: data.y },
-      });
 
-      window.sessionStorage.setItem(
-        "floatingModalPosition",
-        JSON.stringify({ x: data.x, y: data.y })
-      );
-    }
-  };
-  openSignInPopup = () => {
-    this.setState({
-      signinPopup: true,
-    });
-  };
-  closeSignInPopup = () => {
-    this.setState({
-      signinPopup: false,
-    });
-  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -287,6 +270,20 @@ class SmartMoneyPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (!this.props.commonState.smart_money) {
+      let token = window.sessionStorage.getItem("lochToken");
+      this.props.updateWalletListFlag("smart_money", true);
+      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (token && lochUser && lochUser.email) {
+        this.setState({
+          blurTable: false,
+        });
+      } else {
+        this.setState({
+          blurTable: true,
+        });
+      }
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -541,6 +538,17 @@ class SmartMoneyPage extends BaseReactComponent {
   handleAddSmartMoneyAddresses = () => {
     this.setState({
       addSmartMoneyAddressModal: !this.state.addSmartMoneyAddressModal,
+    });
+  };
+  loginFunction = () => {
+    console.log("????");
+    this.setState({
+      showWithLogin: true,
+    });
+  };
+  signUpFunction = () => {
+    this.setState({
+      showWithSignUp: true,
     });
   };
   render() {
@@ -1047,6 +1055,32 @@ class SmartMoneyPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
+            {/* Testing */}
+            {this.state.showWithLogin ? (
+              <AddSmartMoneyAddressesModal
+                show={this.state.showWithLogin}
+                onHide={() => {
+                  this.setState({
+                    showWithLogin: false,
+                  });
+                }}
+                history={this.props.history}
+                signInVar
+              />
+            ) : null}
+            {this.state.showWithSignUp ? (
+              <AddSmartMoneyAddressesModal
+                show={this.state.showWithSignUp}
+                onHide={() => {
+                  this.setState({
+                    showWithSignUp: false,
+                  });
+                }}
+                history={this.props.history}
+                signUpVar
+              />
+            ) : null}
+            {/* Testing */}
             {this.state.addSmartMoneyAddressModal ? (
               <AddSmartMoneyAddressesModal
                 show={this.state.addSmartMoneyAddressModal}
@@ -1054,6 +1088,8 @@ class SmartMoneyPage extends BaseReactComponent {
                 history={this.props.history}
               />
             ) : null}
+            <Button onClick={this.loginFunction}>Login</Button>
+            <Button onClick={this.signUpFunction}>Sign up</Button>
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1135,15 +1171,6 @@ class SmartMoneyPage extends BaseReactComponent {
             {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
-        <SidebarModal
-          trackPos={this.trackPos}
-          dragPosition={this.state.dragPosition}
-          show={this.state.signinPopup}
-          onHide={this.closeSignInPopup}
-          history={this.props.history}
-          popupType="general_popup"
-          tracking={this.props.history.location.pathname.substring(1)}
-        />
       </>
     );
   }
@@ -1154,6 +1181,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
   TopAccountsInWatchListState: state.TopAccountsInWatchListState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1164,6 +1192,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   TopsetPageFlagDefault,
   getAllParentChains,
+  updateWalletListFlag,
 
   removeFromWatchList,
   updateAddToWatchList,

@@ -34,11 +34,9 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
       });
   };
 };
-export const addSmartMoney = (data, ctx, apiLimit) => {
+export const addSmartMoney = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      // /wallet/user-wallet/add-smart-money
-      // ismein address and name_tag karke do key mein pass kardo
       .post("/wallet/user-wallet/add-smart-money", data)
       .then((res) => {
         if (!res.data.error) {
@@ -47,14 +45,163 @@ export const addSmartMoney = (data, ctx, apiLimit) => {
             addButtonVisible: true,
             loadAddBtn: false,
           });
-          if (res.data.message === "Succesfully added") {
+          if (res.data.message === "Successfully added") {
             ctx.setState({
               addressAdded: true,
+              addressNotOneMil: false,
+              addressAlreadyPresent: false,
+            });
+          } else if (res.data.message === "Low balance") {
+            ctx.setState({
+              addressAdded: false,
+              addressNotOneMil: true,
+              addressAlreadyPresent: false,
+            });
+          } else if (res.data.message === "Enter a valid wallet address") {
+            ctx.setState({
+              addressAdded: false,
+              addressNotOneMil: false,
+              addressAlreadyPresent: false,
+            });
+          } else if (res.data.message === "Address already used in Loch") {
+            ctx.setState({
+              addressAdded: false,
+              addressNotOneMil: false,
+              addressAlreadyPresent: true,
             });
           }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
+      });
+  };
+};
+export const smartMoneySignUpApi = (ctx, info) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/update-user", info)
+      .then((res) => {
+        if (!res.data.error) {
+          ctx.handleSuccesfulSignUp();
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+          ctx.handleSignUpError();
+        }
+      })
+      .catch((err) => {
+        // console.log("fixwallet",err)
+      });
+  };
+};
+
+export const smartMoneySignInApi = (data, ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/send-email-otp", data)
+      .then((res) => {
+        if (!res.data.error) {
+          if (ctx.handleSuccesfulSignIn) {
+            ctx.handleSuccesfulSignIn();
+          }
+        } else {
+          if (ctx.handleSignInError) {
+            ctx.handleSignInError();
+          }
+        }
+      })
+      .catch((err) => {
+        if (ctx.handleSignInError) {
+          ctx.handleSignInError();
+        }
+      });
+  };
+};
+
+export const VerifySmartMoneyEmail = (data, ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/verify-otp-code", data)
+      .then((res) => {
+        if (!res.data.error) {
+          let isOptValid = res.data.data.otp_verified;
+          let token = res.data.data.token;
+
+          //  window.sessionStorage.setItem(
+          //    "currentPlan",
+          //    JSON.stringify(res.data.data?.current_plan)
+          //  );
+          // free pricing
+          let plan = {
+            defi_enabled: true,
+            export_address_limit: -1,
+            id: "63eb32769b5e4daf6b588207",
+            is_default: false,
+            is_trial: false,
+            name: "Sovereign",
+            notifications_limit: -1,
+            notifications_provided: true,
+            plan_reference_id: "prod_NM0aQTO38msDkq",
+            subscription: {
+              active: true,
+              created_on: "2023-04-06 06:41:11.302000+00:00",
+              id: "642e69878cc994b64ca49272",
+              modified_on: "2023-04-06 06:41:11.302000+00:00",
+              plan_id: "63eb32769b5e4daf6b588207",
+              plan_reference_id: "prod_NM0aQTO38msDkq",
+              subscription_reference_id: "",
+              trial_subscription: false,
+              user_id: "63f89011251cc82aeebfcae5",
+              valid_till: "2023-05-06 00:00:00+00:00",
+            },
+            trial_days: 30,
+            upload_csv: true,
+            wallet_address_limit: -1,
+            whale_pod_address_limit: -1,
+            whale_pod_limit: -1,
+            influencer_pod_limit: -1,
+          };
+          // free pricing
+          window.sessionStorage.setItem(
+            "currentPlan",
+            JSON.stringify({
+              ...plan,
+              influencer_pod_limit: -1,
+            })
+          );
+
+          window.sessionStorage.setItem("lochToken", token);
+          setTimeout(() => {
+            ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
+          }, 500);
+
+          window.sessionStorage.removeItem("lochDummyUser");
+          let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+          obj = {
+            ...obj,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+            email: res.data.data.user?.email,
+            mobile: res.data.data.user?.mobile,
+            link: res.data.data.user?.link,
+          };
+
+          window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+
+          if (isOptValid) {
+            if (ctx.emailIsVerified) {
+              ctx.emailIsVerified();
+            } else {
+              toast.success(`Email verified`);
+            }
+          }
+        } else if (res.data.error === true) {
+          ctx.setState({
+            isOptInValid: true,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
       });
   };
 };

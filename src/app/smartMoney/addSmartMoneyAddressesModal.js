@@ -12,12 +12,34 @@ import {
 import { CustomCoin } from "../../utils/commonComponent";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
 import AddSmartMoneyAddressesModalMessagesBox from "./addSmartMoneyAddressesModalMessagesBox";
-import { addSmartMoney } from "./Api";
+import AddSmartMoneyAddressesModalInputBox from "./addSmartMoneyAddressesModalInputBox";
+import {
+  addSmartMoney,
+  smartMoneySignUpApi,
+  smartMoneySignInApi,
+  VerifySmartMoneyEmail,
+} from "./Api";
+import { fixWalletApi, setPageFlagDefault } from "../common/Api";
+import { toast } from "react-toastify";
+import validator from "validator";
 
 class AddSmartMoneyAddressesModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      verificationOtp: "",
+      showVerifyEmail: false,
+      loadingVerificationOtpBtn: false,
+      showSignUpPage: false,
+      showSignInPage: false,
+      showSignInErrorMessage: false,
+      showSignUpErrorMessage: false,
+      disableSignUpBtn: true,
+      disableSignInBtn: true,
+      signInEmailId: "",
+      signUpEmailId: "",
+      loadingSignInBtn: false,
+      loadingSignUpBtn: false,
       show: props.show,
       onHide: this.props.onHide,
       walletInput: [
@@ -42,6 +64,27 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    // Testing
+    if (this.props.signUpVar) {
+      this.setState({
+        showSignUpPage: true,
+        showVerifyEmail: false,
+        showSignInPage: false,
+        addressAdded: false,
+        addressAlreadyPresent: false,
+        addressNotOneMil: false,
+      });
+    } else if (this.props.signInVar) {
+      this.setState({
+        showSignInPage: true,
+        showSignUpPage: false,
+        showVerifyEmail: false,
+        addressAdded: false,
+        addressAlreadyPresent: false,
+        addressNotOneMil: false,
+      });
+    }
+    // Testing
     this.props.getAllCoins();
     this.props.getAllParentChains();
     //  this.makeApiCall();
@@ -228,19 +271,186 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
   };
   showAccountAdreadyAdded = () => {
     this.setState({
-      addressAdded: false,
       addressAlreadyPresent: true,
+      showSignUpPage: false,
+      showVerifyEmail: false,
+      showSignInPage: false,
+      addressAdded: false,
       addressNotOneMil: false,
     });
   };
   showDefaultView = () => {
     this.setState({
+      showSignUpPage: false,
+      showVerifyEmail: false,
+      showSignInPage: false,
       addressAdded: false,
       addressAlreadyPresent: false,
       addressNotOneMil: false,
     });
   };
+  onSignUp = () => {
+    this.setState({
+      disableSignUpBtn: true,
+      loadingSignUpBtn: true,
+    });
+    const url = new URLSearchParams();
+    url.append("email", this.state.signUpEmailId);
+    url.append("signed_up_from", "leaving");
+    url.append("type", "smart-money");
+    this.props.smartMoneySignUpApi(this, url);
+  };
+  onVerifyOtp = () => {
+    let data = new URLSearchParams();
+    data.append("email", this.state.signInEmailId);
+    data.append("otp_token", this.state.verificationOtp);
+    data.append("signed_up_from", "smart money");
+    this.props.VerifySmartMoneyEmail(data, this);
+  };
+  emailIsVerified = () => {
+    this.hideModal();
+    toast.success(`Email verified`);
+  };
+  onSignIn = () => {
+    this.setState({
+      disableSignInBtn: true,
+      loadingSignInBtn: true,
+    });
 
+    let data = new URLSearchParams();
+    data.append("email", this.state.signInEmailId);
+    this.props.smartMoneySignInApi(data, this);
+  };
+  handleSuccesfulSignIn = () => {
+    this.setState({
+      showVerifyEmail: true,
+      showSignUpPage: false,
+      showSignInPage: false,
+      addressAdded: false,
+      addressAlreadyPresent: false,
+      addressNotOneMil: false,
+    });
+  };
+  handleSignInError = () => {
+    this.setState({
+      disableSignInBtn: false,
+      loadingSignInBtn: false,
+    });
+  };
+  handleSuccesfulSignUp = () => {
+    this.hideModal();
+    toast.success(
+      <div className="custom-toast-msg">
+        <div>Successful</div>
+        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          Please check your mailbox for the verification link
+        </div>
+      </div>
+    );
+  };
+  handleSignUpError = () => {
+    this.setState({
+      disableSignUpBtn: false,
+      loadingSignUpBtn: false,
+    });
+  };
+  handleOnVerifyOtpChange = (e) => {
+    let { value } = e.target;
+    this.setState({
+      verificationOtp: value,
+    });
+  };
+  handleOnSignUpChange = (e) => {
+    let { value } = e.target;
+    this.setState(
+      {
+        signUpEmailId: value,
+        showSignUpErrorMessage: false,
+      },
+      () => {
+        if (
+          this.state.signUpEmailId &&
+          validator.isEmail(this.state.signUpEmailId)
+        ) {
+          this.setState({
+            disableSignUpBtn: false,
+          });
+        } else {
+          this.setState({
+            disableSignUpBtn: true,
+          });
+        }
+      }
+    );
+  };
+  handleOnSignInChange = (e) => {
+    let { value } = e.target;
+    this.setState(
+      {
+        signInEmailId: value,
+        showSignInErrorMessage: false,
+      },
+      () => {
+        if (
+          this.state.signInEmailId &&
+          validator.isEmail(this.state.signInEmailId)
+        ) {
+          this.setState({
+            disableSignInBtn: false,
+          });
+        } else {
+          this.setState({
+            disableSignInBtn: true,
+          });
+        }
+      }
+    );
+  };
+  handleOnSignUpEnterPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (
+        this.state.signUpEmailId &&
+        validator.isEmail(this.state.signUpEmailId)
+      ) {
+        this.onSignUp();
+      } else {
+        this.setState({
+          showSignUpErrorMessage: true,
+        });
+      }
+    }
+  };
+  handleOnVerificationEnterPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+  handleOnSignInEnterPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (
+        this.state.signInEmailId &&
+        validator.isEmail(this.state.signInEmailId)
+      ) {
+        this.onSignIn();
+      } else {
+        this.setState({
+          showSignInErrorMessage: true,
+        });
+      }
+    }
+  };
+  showSignUpModal = () => {
+    this.setState({
+      showSignUpPage: true,
+      showVerifyEmail: false,
+      showSignInPage: false,
+      addressAdded: false,
+      addressAlreadyPresent: false,
+      addressNotOneMil: false,
+    });
+  };
   render() {
     return (
       <Modal
@@ -253,13 +463,62 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
       >
+        {this.state.showVerifyEmail ? (
+          <AddSmartMoneyAddressesModalInputBox
+            inputPlaceholder="Enter Verification Code"
+            btnClick={this.onVerifyOtp}
+            heading="Verify email"
+            descriptionOne="Enter the verification code sent to your email to sign in your account"
+            btnText="Verify"
+            hideModal={this.hideModal}
+            handleEnterPress={this.handleOnVerificationEnterPress}
+            handleOnChange={this.handleOnVerifyOtpChange}
+            // showErrorMessage={this.state.showSignUpErrorMessage}
+            disableBtn={!this.state.verificationOtp}
+            inputVal={this.state.verificationOtp}
+            loadingBtn={this.state.loadingVerificationOtpBtn}
+          />
+        ) : null}
+        {this.state.showSignInPage ? (
+          <AddSmartMoneyAddressesModalInputBox
+            inputPlaceholder="john@loch.one"
+            btnClick={this.onSignIn}
+            heading="Sign In"
+            descriptionOne="Get right back into your account"
+            btnText="Send verification"
+            hideModal={this.hideModal}
+            handleEnterPress={this.handleOnSignInEnterPress}
+            handleOnChange={this.handleOnSignInChange}
+            showErrorMessage={this.state.showSignInErrorMessage}
+            disableBtn={this.state.disableSignInBtn}
+            inputVal={this.state.signInEmailId}
+            loadingBtn={this.state.loadingSignInBtn}
+          />
+        ) : null}
+        {this.state.showSignUpPage ? (
+          <AddSmartMoneyAddressesModalInputBox
+            inputPlaceholder="john@loch.one"
+            btnClick={this.onSignUp}
+            heading="Verify your email"
+            descriptionOne="Verify your email so you can view the leaderboard anytime you want."
+            btnText="Confirm"
+            hideModal={this.hideModal}
+            handleEnterPress={this.handleOnSignUpEnterPress}
+            handleOnChange={this.handleOnSignUpChange}
+            showErrorMessage={this.state.showSignUpErrorMessage}
+            disableBtn={this.state.disableSignUpBtn}
+            inputVal={this.state.signUpEmailId}
+            loadingBtn={this.state.loadingSignUpBtn}
+            hideCrossBtn
+          />
+        ) : null}
         {this.state.addressAdded ? (
           <AddSmartMoneyAddressesModalMessagesBox
-            btnClick={this.hideModal}
+            btnClick={this.showSignUpModal}
             heading="Thanks for your contribution!"
-            descriptionOne="Thanks for adding your address, you may now view the full"
-            descriptionTwo="Loch’s Smart Money Leaderboard"
-            btnText="View"
+            descriptionOne="Well done! This unique address seems to be worth more than $10K."
+            descriptionTwo="Please click Next to proceed."
+            btnText="Next"
             imageIcon={TrophyCelebrationIcon}
             bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
             hideModal={this.hideModal}
@@ -278,7 +537,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         {this.state.addressNotOneMil ? (
           <AddSmartMoneyAddressesModalMessagesBox
             btnClick={this.showDefaultView}
-            heading="Sorry this address is not worth at least $1m."
+            heading="Sorry this address is not worth at least $10K."
             descriptionOne="Please try to add another address!"
             btnText="Add another"
             imageIcon={WarningCircleIcon}
@@ -330,7 +589,6 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                                 placeholder="Paste wallet address or ENS here"
                                 title={c.address || ""}
                                 onChange={(e) => this.handleOnChange(e)}
-                                onKeyDown={this.handleTabPress}
                                 onFocus={(e) => {
                                   this.FocusInInput(e);
                                 }}
@@ -510,6 +768,10 @@ const mapDispatchToProps = {
   getAllParentChains,
   detectCoin,
   addSmartMoney,
+  smartMoneySignUpApi,
+  smartMoneySignInApi,
+  setPageFlagDefault,
+  VerifySmartMoneyEmail,
 };
 
 AddSmartMoneyAddressesModal.propTypes = {};
