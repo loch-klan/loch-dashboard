@@ -441,6 +441,17 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        .addCommunityTopAccountsAddedBodyContentChildErrorMeaageContainer {
+          padding: 0rem 5rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+          font-size: 1rem;
+          font-weight: normal;
+          color: #ea4e3c;
+          line-height: 19px;
+        }
       }
       .addCommunityTopAccountsAddedBodyIcon {
         height: 3.5rem;
