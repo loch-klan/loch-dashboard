@@ -34,8 +34,17 @@ export const GraphHeader = (props) => {
   };
   return (
     <div className="graph-header">
-      <div className="header">
-        <div>
+      <div
+        style={{
+          overflow: "hidden",
+        }}
+        className="header"
+      >
+        <div
+          style={{
+            overflow: "hidden",
+          }}
+        >
           <div
             style={{
               display: "flex",
@@ -44,7 +53,11 @@ export const GraphHeader = (props) => {
             }}
             className={`${props.noSubtitleBottomPadding ? "" : "m-b-26"}`}
           >
-            <div>
+            <div
+              style={{
+                overflow: "hidden",
+              }}
+            >
               <h4
                 className={`inter-display-semi-bold f-s-16 lh-19 m-b-4 ${
                   props.handleClick &&
@@ -78,7 +91,14 @@ export const GraphHeader = (props) => {
               >
                 {props.title} {props.isArrow ? <Image src={ArrowRight} /> : ""}
               </h4>
-              <p className={`inter-display-medium f-s-13 lh-16 grey-ADA`}>
+              <p
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+                className={`inter-display-medium f-s-13 lh-16 grey-ADA`}
+              >
                 {props.subtitle}
               </p>
             </div>

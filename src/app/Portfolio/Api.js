@@ -548,11 +548,11 @@ export const getProtocolBalanceApi = (ctx, data) => {
       .post("wallet/user-wallet/get-debank-balance", data)
       .then((res) => {
         if (!res.data.error) {
-          let defiList = ctx.props.defiState.defiList || [];
-          let totalYield = ctx.props.defiState.totalYield;
-          let totalDebt = ctx.props.defiState.totalDebt;
-          let lastYieldValues = ctx.props.defiState.YieldValues;
-          let lastDebtValues = ctx.props.defiState.DebtValues;
+          let defiList = [];
+          let totalYield = 0;
+          let totalDebt = 0;
+          let lastYieldValues = [];
+          let lastDebtValues = [];
 
           let totalSuppliedPrice = 0;
           let totalLentPrice = 0;
