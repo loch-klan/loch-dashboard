@@ -1,7 +1,13 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
 import { API_LIMIT } from "../../utils/Constant";
-import { setLocalStoraage } from "../../utils/ManageToken";
+import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import {
+  SmartMoneyAddressAdded,
+  SmartMoneyAddressAddedAttempted,
+  SmartMoneySignIn,
+  SmartMoneySignUp,
+} from "../../utils/AnalyticsFunctions";
 
 export const getSmartMoney = (data, ctx, apiLimit) => {
   return async function (dispatch, getState) {
@@ -35,18 +41,29 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
       });
   };
 };
-export const addSmartMoney = (data, ctx) => {
+export const addSmartMoney = (data, ctx, address, nameTag, email) => {
+  SmartMoneyAddressAddedAttempted({
+    session_id: getCurrentUser().id,
+    email_address: getCurrentUser().email,
+    address: address,
+    nameTag: nameTag,
+  });
   return async function (dispatch, getState) {
     postLoginInstance
       .post("/wallet/user-wallet/add-smart-money", data)
       .then((res) => {
         if (!res.data.error) {
-          console.log("response is ", res);
           ctx.setState({
             addButtonVisible: true,
             loadAddBtn: false,
           });
           if (res.data.message === "Successfully added") {
+            SmartMoneyAddressAdded({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              address: address,
+              nameTag: nameTag,
+            });
             ctx.setState({
               addressAdded: true,
               addressNotOneMil: false,
@@ -78,13 +95,17 @@ export const addSmartMoney = (data, ctx) => {
       });
   };
 };
-export const smartMoneySignUpApi = (ctx, info) => {
+export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/update-user", info)
       .then((res) => {
         if (!res.data.error) {
           ctx.handleSuccesfulSignUp();
+          SmartMoneySignUp({
+            session_id: getCurrentUser().id,
+            email_address: passedEmail,
+          });
         } else {
           toast.error(res.data.message || "Something went wrong");
           ctx.handleSignUpError();
@@ -119,7 +140,7 @@ export const smartMoneySignInApi = (data, ctx) => {
   };
 };
 
-export const VerifySmartMoneyEmailOtp = (data, ctx) => {
+export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/verify-otp-code", data)
@@ -128,6 +149,10 @@ export const VerifySmartMoneyEmailOtp = (data, ctx) => {
           loadingVerificationOtpBtn: false,
         });
         if (!res.data.error) {
+          SmartMoneySignIn({
+            session_id: getCurrentUser().id,
+            email_address: passedEmail,
+          });
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;
 

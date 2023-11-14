@@ -5478,7 +5478,52 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-//Top accounts: net flows hover - done
+export const SmartMoneySignUp = ({ session_id, email_address }) => {
+  const event_name = "Smart money: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneySignIn = ({ session_id, email_address }) => {
+  const event_name = "Smart money: sign in";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyAddressAddedAttempted = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Smart money: address adding attempt";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyAddressAdded = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Smart money: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyChangeLimit = ({
   session_id,
   email_address,

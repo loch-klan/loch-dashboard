@@ -4,6 +4,7 @@ import logo from "../../image/Loch.svg";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 
 export default function SmartMoneyHeader(props) {
@@ -18,6 +19,8 @@ export default function SmartMoneyHeader(props) {
   useEffect(() => {
     if (!props.blurTable) {
       setLocalLochUser(JSON.parse(window.sessionStorage.getItem("lochUser")));
+    } else {
+      setLocalLochUser(undefined);
     }
   }, [props.blurTable]);
 
@@ -130,43 +133,37 @@ export default function SmartMoneyHeader(props) {
         (localLochUser.email ||
           localLochUser.first_name ||
           localLochUser.last_name) ? (
-          <div
-            // onClick={handleGoToProfile}
-            className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+          <CustomOverlay
+            position="bottom"
+            isIcon={false}
+            isInfo={true}
+            isText={true}
+            text="Sign out"
+            className="tool-tip-container-bottom-arrow"
           >
-            <div className="smarMoneyHeaderSignInData">
-              <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
-                <Image
-                  className="smarMoneyHeaderSignInIcon"
-                  src={BlackManIcon}
-                />
-              </div>
-              <div className="dotDotText">
-                {localLochUser.first_name || localLochUser.last_name
-                  ? `${localLochUser.first_name} ${
-                      localLochUser.last_name
-                        ? localLochUser.last_name.slice(0, 1) + "."
-                        : ""
-                    }`
-                  : "Signed In"}
+            <div
+              onClick={props.signOutFun}
+              className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+            >
+              <div className="smarMoneyHeaderSignInData">
+                <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
+                  <Image
+                    className="smarMoneyHeaderSignInIcon"
+                    src={BlackManIcon}
+                  />
+                </div>
+                <div>
+                  {localLochUser.first_name || localLochUser.last_name
+                    ? `${localLochUser.first_name} ${
+                        localLochUser.last_name
+                          ? localLochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed in"}
+                </div>
               </div>
             </div>
-            <span
-              // onClick={handleLeaveChild}
-              onMouseOver={(e) =>
-                (e.currentTarget.children[0].src = LeaveBlackIcon)
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.children[0].src = LeaveIcon)
-              }
-              className="smarMoneyHeaderSignedInLeaveContainer inter-display-medium f-s-13"
-            >
-              <Image src={LeaveIcon} />
-              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                Sign out
-              </Button>
-            </span>
-          </div>
+          </CustomOverlay>
         ) : (
           <div
             onClick={props.onSignInClick}
