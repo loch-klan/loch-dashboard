@@ -5,7 +5,7 @@ import { info } from "./dummyData.js";
 import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
+
 import { Image } from "react-bootstrap";
 import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
@@ -76,14 +76,22 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
-import { ExportIconWhite } from "../../assets/images/icons";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  ExportIconWhite,
+} from "../../assets/images/icons";
 
 class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      exportHeaderTitle: "Download all unrealized gains",
-      exportHeaderSubTitle: "Export your unrealized gains from Loch",
+      combinedCostBasis: 0,
+      combinedCurrentValue: 0,
+      combinedUnrealizedGains: 0,
+      combinedReturn: 0,
+      exportHeaderTitle: "Download all unrealized profit and loss",
+      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -146,8 +154,9 @@ class Cost extends Component {
     });
     this.setState(
       {
-        exportHeaderTitle: "Download unrealized gains",
-        exportHeaderSubTitle: "Export your unrealized gains from Loch",
+        exportHeaderTitle: "Download unrealized profit and loss",
+        exportHeaderSubTitle:
+          "Export your unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -279,6 +288,34 @@ class Cost extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState.Average_cost_basis !==
+      this.props.intelligenceState.Average_cost_basis
+    ) {
+      let tempcombinedCostBasis = 0;
+      let tempcombinedCurrentValue = 0;
+      let tempcombinedUnrealizedGains = 0;
+      let tempcombinedReturn = 0;
+      if (this.props.intelligenceState?.net_return) {
+        tempcombinedReturn = this.props.intelligenceState?.net_return;
+      }
+      if (this.props.intelligenceState?.total_bal) {
+        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+      }
+      if (this.props.intelligenceState?.total_cost) {
+        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+      }
+      if (this.props.intelligenceState?.total_gain) {
+        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+      }
+
+      this.setState({
+        combinedCostBasis: tempcombinedCostBasis,
+        combinedCurrentValue: tempcombinedCurrentValue,
+        combinedUnrealizedGains: tempcombinedUnrealizedGains,
+        combinedReturn: tempcombinedReturn,
+      });
+    }
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
@@ -713,7 +750,7 @@ class Cost extends Component {
     //     CurrentValue: "$22,280.50",
     //     GainLoss: {
     //       status: "loss",
-    //       symbol: LossIcon,
+    //       symbol: ArrowDownLeftSmallIcon,
     //       // "-18.45%"
     //       value: "-18.45%",
     //     },
@@ -1123,15 +1160,19 @@ class Cost extends Component {
                   }}
                   className="gainLossContainer"
                 >
-                  <div
-                    className={`gainLoss ${
-                      rowData.GainAmount < 0 ? "loss" : "gain"
-                    }`}
-                  >
+                  <div className={`gainLoss`}>
                     {rowData.GainAmount !== 0 ? (
                       <Image
                         className="mr-2"
-                        src={rowData.GainAmount < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainAmount < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -1194,15 +1235,19 @@ class Cost extends Component {
                   }}
                   className="gainLossContainer"
                 >
-                  <div
-                    className={`gainLoss ${
-                      rowData.GainLoss < 0 ? "loss" : "gain"
-                    }`}
-                  >
+                  <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
                         className="mr-2"
-                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainLoss < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -1310,9 +1355,14 @@ class Cost extends Component {
                 </p>
                 </div> */}
                 <TransactionTable
+                  bottomCombiedValues
+                  combinedCostBasis={this.state.combinedCostBasis}
+                  combinedCurrentValue={this.state.combinedCurrentValue}
+                  combinedUnrealizedGains={this.state.combinedUnrealizedGains}
+                  combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized gains"
-                  subTitle="Understand your unrealized gains per token"
+                  title="Unrealized profit and loss"
+                  subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}

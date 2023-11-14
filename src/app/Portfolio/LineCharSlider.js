@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -892,7 +892,6 @@ class LineChartSlider extends BaseReactComponent {
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
-              // console.log("diff", diff);
               HomeAssetValueNavigator({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
@@ -1008,7 +1007,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       legend: {
         enabled: this.props.hideTimeFilter ? false : true,
-        x: -120,
+        x: -330,
         // y:20,
         align: "right",
         verticalAlign: "top",
@@ -1242,7 +1241,14 @@ backdrop-filter: blur(15px);">
     return (
       <div
         className="welcome-card-section lineChartSlider"
-        style={this.props.hideTimeFilter ? minVersionSection : {}}
+        style={
+          this.props.hideTimeFilter
+            ? minVersionSection
+            : {
+                padding: "2rem 0rem",
+                paddingBottom: "1.8rem",
+              }
+        }
       >
         <>
           <div
@@ -1250,7 +1256,7 @@ backdrop-filter: blur(15px);">
             style={
               !this.props.hideTimeFilter
                 ? {
-                    padding: "0rem 4.8rem",
+                    padding: "0rem 3.2rem",
                   }
                 : { ...minVersion, display: "flex", flexDirection: "column" }
             }
@@ -1300,7 +1306,7 @@ backdrop-filter: blur(15px);">
                             : "2rem",
                       }}
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -1340,7 +1346,7 @@ backdrop-filter: blur(15px);">
                             searchIsUsed={this.chainSearchIsUsed}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </>
                 )}
@@ -1385,27 +1391,42 @@ backdrop-filter: blur(15px);">
                     <>
                       <span
                         style={{
-                          width: "120px",
+                          width: "33rem",
                           position: "absolute",
                           right: "0px",
                           zIndex: "1",
                           cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        <CustomDropdown
-                          filtername="Tokens"
-                          options={AllLegends}
-                          action={null}
-                          selectedTokens={
-                            this.state.legends.length === 0
-                              ? topLegends
-                              : this.state.legends
-                          }
-                          handleClick={(arr) => this.DropdownData(arr)}
-                          isLineChart={true}
-                          getObj={true}
-                          searchIsUsed={this.tokenSearchIsUsed}
-                        />
+                        <div style={{ width: "20rem", marginRight: "1rem" }}>
+                          <CustomDropdown
+                            filtername="All chains selected"
+                            options={this.props.OnboardingState.coinsList}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            // selectedTokens={this.state.activeBadge}
+                            searchIsUsed={this.chainSearchIsUsed}
+                          />
+                        </div>
+                        <div style={{ width: "12rem" }}>
+                          <CustomDropdown
+                            filtername="Tokens"
+                            options={AllLegends}
+                            action={null}
+                            selectedTokens={
+                              this.state.legends.length === 0
+                                ? topLegends
+                                : this.state.legends
+                            }
+                            handleClick={(arr) => this.DropdownData(arr)}
+                            isLineChart={true}
+                            getObj={true}
+                            searchIsUsed={this.tokenSearchIsUsed}
+                          />
+                        </div>
                       </span>
                     </>
                   )}

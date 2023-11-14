@@ -1,6 +1,7 @@
 // page-header-begin
 .page-header {
   display: flex;
+  min-width: 85rem;
   justify-content: space-between;
   align-items: center;
   // align-items: baseline;

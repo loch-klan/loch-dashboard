@@ -329,7 +329,7 @@ export const getProfitAndLossApi = (
     postLoginInstance
       .post("wallet/transaction/get-profit-loss", data)
       .then((res) => {
-        //   console.log("calling get profit and loss");
+        // console.log("calling get profit and loss ", res);
         if (!res.data.error) {
           dispatch({
             type: ctx?.state?.isTopAccountPage
@@ -437,7 +437,7 @@ export const getAssetProfitLoss = (
       .post("wallet/transaction/get-asset-profit-loss", data)
       .then((res) => {
         if (!res.data.error) {
-          //  console.log("get profit loss", res.data.data);
+          // console.log("asset profit loss", res.data.data);
           dispatch({
             type: ctx?.state?.isTopAccountPage
               ? TOP_PORTFOLIO_ASSET
@@ -461,19 +461,29 @@ export const getAssetProfitLoss = (
   };
 };
 
-export const getTransactionAsset = (data, ctx) => {
+export const getTransactionAsset = (data, ctx, isCodeInsteadOfLabel) => {
   postLoginInstance
     .post("wallet/transaction/get-transaction-asset-filter")
     .then((res) => {
       if (!res.data.error) {
         let assetFilter = [{ value: "allAssets", label: "All assets" }];
-        res?.data?.data?.assets?.forEach((e) => {
-          assetFilter.push({
-            value: e._id,
-            label: e.asset.name,
-            code: e.asset?.code ? e.asset.code : "",
+        if (isCodeInsteadOfLabel) {
+          res?.data?.data?.assets?.forEach((e) => {
+            assetFilter.push({
+              value: e._id,
+              label: e.asset?.code ? e.asset?.code : e.asset.name,
+              code: e.asset?.code ? e.asset.code : "",
+            });
           });
-        });
+        } else {
+          res?.data?.data?.assets?.forEach((e) => {
+            assetFilter.push({
+              value: e._id,
+              label: e.asset.name,
+              code: e.asset?.code ? e.asset.code : "",
+            });
+          });
+        }
         ctx.setState({
           AssetList: assetFilter,
         });
