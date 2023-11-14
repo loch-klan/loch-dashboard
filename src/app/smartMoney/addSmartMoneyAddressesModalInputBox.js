@@ -33,7 +33,7 @@ class AddSmartMoneyAddressesModalMessagesBox extends BaseReactComponent {
             >
               {/* addCommunityTopAccountsAddedBodyContentChild */}
               <div
-                className="exit-overlay-body mt-3"
+                className="exit-overlay-body"
                 style={{ padding: "0rem 10.5rem" }}
               >
                 <h6 className="inter-display-medium f-s-25">
@@ -56,7 +56,7 @@ class AddSmartMoneyAddressesModalMessagesBox extends BaseReactComponent {
                 style={{
                   width: "100%",
                 }}
-                className="addCommunityTopAccountsWrapperParent"
+                className="addCommunitySmartMoneyWrapperParent"
               >
                 <div className="addCommunityTopAccountsWrapperContainer">
                   <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
@@ -97,6 +97,12 @@ class AddSmartMoneyAddressesModalMessagesBox extends BaseReactComponent {
                 </div>
               </div>
             </div>
+            {/* <p
+              onClick={this.props.goToSignUp}
+              className="goToSingUp m-b-10 inter-display-medium f-s-13 lh-16 grey-ADA"
+            >
+              Don’t have an account yet? Click here to sign up.
+            </p> */}
             <CustomButton
               className="primary-btn go-btn"
               type="submit"

@@ -39,7 +39,7 @@ import {
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
-import { getSmartMoney } from "./Api";
+import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api";
 
 import {
   SmartMoneyChangeLimit,
@@ -72,10 +72,7 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
-      //Testing
       showWithLogin: false,
-      showWithSignUp: false,
-      //Testing
       blurTable: true,
       addSmartMoneyAddressModal: false,
       pageLimit: 1,
@@ -188,6 +185,9 @@ class SmartMoneyPage extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify([]));
+    this.props.createAnonymousUserSmartMoneyApi(data);
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
@@ -535,22 +535,30 @@ class SmartMoneyPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
   };
-  handleAddSmartMoneyAddresses = () => {
+  showAddSmartMoneyAddresses = () => {
     this.setState({
-      addSmartMoneyAddressModal: !this.state.addSmartMoneyAddressModal,
+      addSmartMoneyAddressModal: true,
+    });
+  };
+  hideAddSmartMoneyAddresses = () => {
+    this.setState({
+      addSmartMoneyAddressModal: false,
+      showWithLogin: false,
     });
   };
   loginFunction = () => {
-    console.log("????");
-    this.setState({
-      showWithLogin: true,
-    });
+    this.setState(
+      {
+        showWithLogin: true,
+      },
+      () => {
+        this.setState({
+          addSmartMoneyAddressModal: true,
+        });
+      }
+    );
   };
-  signUpFunction = () => {
-    this.setState({
-      showWithSignUp: true,
-    });
-  };
+
   render() {
     const tableData = this.state.accountList;
 
@@ -772,20 +780,10 @@ class SmartMoneyPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
+          <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Net flows
             </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
           </div>
         ),
         dataKey: "netflows",
@@ -1049,47 +1047,24 @@ class SmartMoneyPage extends BaseReactComponent {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 hideButton={true}
+                onSignInClick={this.loginFunction}
+                blurTable={this.state.blurTable}
               />
             </div>
           </div>
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
-            {/* Testing */}
-            {this.state.showWithLogin ? (
-              <AddSmartMoneyAddressesModal
-                show={this.state.showWithLogin}
-                onHide={() => {
-                  this.setState({
-                    showWithLogin: false,
-                  });
-                }}
-                history={this.props.history}
-                signInVar
-              />
-            ) : null}
-            {this.state.showWithSignUp ? (
-              <AddSmartMoneyAddressesModal
-                show={this.state.showWithSignUp}
-                onHide={() => {
-                  this.setState({
-                    showWithSignUp: false,
-                  });
-                }}
-                history={this.props.history}
-                signUpVar
-              />
-            ) : null}
-            {/* Testing */}
             {this.state.addSmartMoneyAddressModal ? (
               <AddSmartMoneyAddressesModal
                 show={this.state.addSmartMoneyAddressModal}
-                onHide={this.handleAddSmartMoneyAddresses}
+                onHide={this.hideAddSmartMoneyAddresses}
                 history={this.props.history}
+                signInVar={this.state.showWithLogin}
               />
             ) : null}
-            <Button onClick={this.loginFunction}>Login</Button>
-            <Button onClick={this.signUpFunction}>Sign up</Button>
+            {/* <Button onClick={this.loginFunction}>Login</Button>
+            <Button onClick={this.signUpFunction}>Sign up</Button> */}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1135,7 +1110,7 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div className="smartMoneyTable">
                     <TransactionTable
                       smartMoneyBlur={this.state.blurTable}
-                      blurButtonClick={this.handleAddSmartMoneyAddresses}
+                      blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding
                       tableData={tableData}
@@ -1196,7 +1171,7 @@ const mapDispatchToProps = {
 
   removeFromWatchList,
   updateAddToWatchList,
-
+  createAnonymousUserSmartMoneyApi,
   GetAllPlan,
 };
 
