@@ -171,8 +171,8 @@ class CustomTable extends BaseReactComponent {
                             Contribute to the community to see more
                           </h6>
                           <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                            Add a unique address worth at least $10K to the
-                            community board to view the full list
+                            Add a unique address worth at least $10K to view the
+                            full list
                           </p>
                         </div>
                       </div>

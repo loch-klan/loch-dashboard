@@ -24,7 +24,7 @@ import {
   numToCurrency,
   TruncateText,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import Loading from "../common/Loading";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -558,7 +558,10 @@ class SmartMoneyPage extends BaseReactComponent {
       }
     );
   };
-
+  signOutFun = () => {
+    this.props.setPageFlagDefault();
+    deleteToken();
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1049,6 +1052,7 @@ class SmartMoneyPage extends BaseReactComponent {
                 hideButton={true}
                 onSignInClick={this.loginFunction}
                 blurTable={this.state.blurTable}
+                signOutFun={this.signOutFun}
               />
             </div>
           </div>

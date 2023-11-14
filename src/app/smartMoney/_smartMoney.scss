@@ -196,21 +196,18 @@
       }
     }
     .smarMoneyHeaderSignedInContainer {
-      justify-content: space-between;
-      padding: 1rem 2rem;
       .smarMoneyHeaderSignInData {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        width: 60%;
+        white-space: nowrap;
       }
       .smarMoneyHeaderSignedInIconContainer {
         background-color: #f2f2f2;
       }
       .smarMoneyHeaderSignedInLeaveContainer {
         display: flex;
-        align-items: center;
-        white-space: nowrap;
+
         .navbar-button {
           background: none;
           border: none;

@@ -241,7 +241,8 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     const tempItem = this.state.walletInput[0];
     data.append("address", tempItem.address);
     data.append("name_tag", tempItem.nickname);
-    this.props.addSmartMoney(data, this);
+
+    this.props.addSmartMoney(data, this, tempItem.address, tempItem.nickname);
     // this.setState({
     //   addressAdded: true,
     //   addressAlreadyPresent: false,
@@ -277,7 +278,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     url.append("email", this.state.signUpEmailId);
     url.append("signed_up_from", "leaving");
     url.append("type", "smart-money");
-    this.props.smartMoneySignUpApi(this, url);
+    this.props.smartMoneySignUpApi(this, url, this.state.signUpEmailId);
   };
   onVerifyOtp = () => {
     this.setState({
@@ -287,7 +288,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     data.append("email", this.state.signInEmailId);
     data.append("otp_token", this.state.verificationOtp);
     data.append("signed_up_from", "smart money");
-    this.props.VerifySmartMoneyEmailOtp(data, this);
+    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId);
   };
   emailIsVerified = () => {
     this.hideModal();
