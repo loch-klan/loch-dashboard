@@ -11,6 +11,7 @@ import {
   IntShare,
   netflowAssetFilter,
   netflowChainFilter,
+  netflowDateFilter,
   netflowExplainer1,
   netflowExplainer2,
   NetflowSwitch,
@@ -365,22 +366,7 @@ class Intelligence extends Component {
       this.props?.location?.pathname + this.props?.location?.hash ===
         "/top-accounts/intelligence#price"
     ) {
-      if (this.props.location.hash !== "") {
-        setTimeout(() => {
-          const id = this.props.location.hash.replace("#", "");
-          const element = document.getElementById(id);
-          if (element) {
-            window.scrollTo({
-              top:
-                element.getBoundingClientRect().top -
-                document.body.getBoundingClientRect().top -
-                15,
-            });
-          }
-        }, 0);
-      } else {
-        window.scrollTo(0, 0);
-      }
+      window.scrollTo(0, 0);
       setTimeout(() => {
         this.props.history.replace("/intelligence");
       }, 1000);
@@ -438,6 +424,12 @@ class Intelligence extends Component {
         isFromCalendar: false,
         isToCalendar: false,
       });
+      netflowDateFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        from: passedDate,
+        to: this.state.toDate,
+      });
     }
   };
   changeToDate = (passedDate) => {
@@ -446,6 +438,12 @@ class Intelligence extends Component {
         toDate: passedDate,
         isToCalendar: false,
         isFromCalendar: false,
+      });
+      netflowDateFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        from: this.state.fromDate,
+        to: passedDate,
       });
     }
   };
