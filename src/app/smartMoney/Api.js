@@ -66,27 +66,39 @@ export const addSmartMoney = (data, ctx, address, nameTag, email) => {
             });
             ctx.setState({
               addressAdded: true,
-              addressNotOneMil: false,
               addressAlreadyPresent: false,
+              showSignUpPage: false,
+              showVerifyEmail: false,
+              showSignInPage: false,
+              addressNotOneMil: false,
             });
           } else if (res.data.message === "Low balance") {
             ctx.setState({
-              addressAdded: false,
               addressNotOneMil: true,
               addressAlreadyPresent: false,
+              showSignUpPage: false,
+              showVerifyEmail: false,
+              showSignInPage: false,
+              addressAdded: false,
             });
           } else if (res.data.message === "Enter a valid wallet address") {
             ctx.setState({
+              addressAlreadyPresent: false,
+              showSignUpPage: false,
+              showVerifyEmail: false,
+              showSignInPage: false,
               addressAdded: false,
               addressNotOneMil: false,
-              addressAlreadyPresent: false,
             });
             toast.error("Enter a valid wallet address");
           } else if (res.data.message === "Address already used in Loch") {
             ctx.setState({
+              addressAlreadyPresent: true,
+              showSignUpPage: false,
+              showVerifyEmail: false,
+              showSignInPage: false,
               addressAdded: false,
               addressNotOneMil: false,
-              addressAlreadyPresent: true,
             });
           }
         } else {
@@ -112,7 +124,7 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
         }
       })
       .catch((err) => {
-        // console.log("fixwallet",err)
+        toast.error("Something Went Wrong");
       });
   };
 };
@@ -127,12 +139,14 @@ export const smartMoneySignInApi = (data, ctx) => {
             ctx.handleSuccesfulSignIn();
           }
         } else {
+          toast.error("Something Went Wrong");
           if (ctx.handleSignInError) {
             ctx.handleSignInError();
           }
         }
       })
       .catch((err) => {
+        toast.error("Something Went Wrong");
         if (ctx.handleSignInError) {
           ctx.handleSignInError();
         }
@@ -225,16 +239,19 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
             }
           }
         } else if (res.data.error === true) {
+          toast.error(
+            res.data?.message ? res.data?.message : "Something Went Wrong"
+          );
           ctx.setState({
             isOptInValid: true,
           });
         }
       })
       .catch((err) => {
+        toast.error("Something Went Wrong");
         ctx.setState({
           loadingVerificationOtpBtn: false,
         });
-        console.log("err", err);
       });
   };
 };

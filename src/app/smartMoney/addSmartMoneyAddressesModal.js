@@ -19,7 +19,7 @@ import {
   smartMoneySignInApi,
   VerifySmartMoneyEmailOtp,
 } from "./Api";
-import { fixWalletApi, setPageFlagDefault } from "../common/Api";
+import { fixWalletApi, getUser, setPageFlagDefault } from "../common/Api";
 import { toast } from "react-toastify";
 import validator from "validator";
 
@@ -42,6 +42,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
       loadingSignUpBtn: false,
       show: props.show,
       onHide: this.props.onHide,
+      blurTable: this.props.blurTable,
       walletInput: [
         {
           id: `wallet1`,
@@ -426,14 +427,18 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     }
   };
   showSignUpModal = () => {
-    this.setState({
-      showSignUpPage: true,
-      showVerifyEmail: false,
-      showSignInPage: false,
-      addressAdded: false,
-      addressAlreadyPresent: false,
-      addressNotOneMil: false,
-    });
+    if (this.state.blurTable) {
+      this.setState({
+        showSignUpPage: true,
+        showVerifyEmail: false,
+        showSignInPage: false,
+        addressAdded: false,
+        addressAlreadyPresent: false,
+        addressNotOneMil: false,
+      });
+    } else {
+      this.hideModal();
+    }
   };
   render() {
     return (

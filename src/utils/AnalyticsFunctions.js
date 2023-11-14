@@ -5583,7 +5583,7 @@ export const SmartMoneyNetflowHover = ({
   email_address,
   hover,
 }) => {
-  const event_name = "Smart money: net flows hover";
+  const event_name = "Smart money: realized PnL hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5592,7 +5592,7 @@ export const SmartMoneyNetflowHover = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Smart money: realized PnL hover";
+  const event_name = "Smart money: unrealized PnL hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
