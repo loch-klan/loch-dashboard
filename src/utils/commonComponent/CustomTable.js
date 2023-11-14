@@ -540,6 +540,7 @@ class CustomTable extends BaseReactComponent {
         {this.props.isSmartMoney ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
+              smartMoneyBlur={this.props.smartMoneyBlur}
               history={history}
               location={location}
               page={currentPage + 1}

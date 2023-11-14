@@ -1,8 +1,6 @@
 import React from "react";
 import { Button, Image } from "react-bootstrap";
 
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
 
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -62,7 +60,12 @@ import {
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
+
 import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../assets/images/icons/index.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -560,7 +563,7 @@ class SmartMoneyPage extends BaseReactComponent {
   };
   signOutFun = () => {
     this.props.setPageFlagDefault();
-    deleteToken();
+    deleteToken(true);
   };
   render() {
     const tableData = this.state.accountList;
@@ -585,7 +588,7 @@ class SmartMoneyPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.1,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -629,7 +632,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -686,7 +689,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -737,7 +740,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -769,12 +772,10 @@ class SmartMoneyPage extends BaseReactComponent {
                   }}
                   className="cost-common-container"
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(tempNetWorth * tempCurrencyRate)}
-                    </span>
-                  </div>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {CurrencyType(false) +
+                      numToCurrency(tempNetWorth * tempCurrencyRate)}
+                  </span>
                 </div>
               </CustomOverlay>
             );
@@ -785,13 +786,13 @@ class SmartMoneyPage extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net flows
+              Realized PnL
             </span>
           </div>
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -818,7 +819,7 @@ class SmartMoneyPage extends BaseReactComponent {
               >
                 <div className="gainLossContainer">
                   <div
-                    className={`gainLoss ${tempNetflows < 0 ? "loss" : "gain"}`}
+                    className={`gainLoss `}
                     onMouseEnter={() => {
                       SmartMoneyNetflowHover({
                         session_id: getCurrentUser().id,
@@ -838,7 +839,15 @@ class SmartMoneyPage extends BaseReactComponent {
                   >
                     {tempNetflows !== 0 ? (
                       <Image
-                        src={tempNetflows < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempNetflows < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                         className="mr-2"
                       />
                     ) : null}
@@ -861,7 +870,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Realized PnL
+              Unealized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -873,7 +882,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -900,7 +909,7 @@ class SmartMoneyPage extends BaseReactComponent {
               >
                 <div className="gainLossContainer">
                   <div
-                    className={`gainLoss ${tempProfits < 0 ? "loss" : "gain"}`}
+                    className={`gainLoss `}
                     onMouseEnter={() => {
                       SmartMoneyProfitHover({
                         session_id: getCurrentUser().id,
@@ -920,7 +929,15 @@ class SmartMoneyPage extends BaseReactComponent {
                   >
                     {tempProfits !== 0 ? (
                       <Image
-                        src={tempProfits < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempProfits < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                         className="mr-2"
                       />
                     ) : null}
@@ -935,85 +952,93 @@ class SmartMoneyPage extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unrealized
-            </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
-          </div>
-        ),
-        dataKey: "returns",
+      // {
+      //   labelName: (
+      //     <div
+      //       className=" history-table-header-col no-hover"
+      //       id="netflows"
+      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Unrealized
+      //       </span>
+      //       {/* <Image
+      //         src={sortByIcon}
+      //         className={
+      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       /> */}
+      //     </div>
+      //   ),
+      //   dataKey: "returns",
 
-        coumnWidth: 0.15,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "returns") {
-            let tempReturns = rowData.returns ? rowData.returns : 0;
-            let tempCurrencyRate = this.state.currency?.rate
-              ? this.state.currency.rate
-              : 0;
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempReturns * tempCurrencyRate
-                    ? amountFormat(
-                        Math.abs(tempReturns * tempCurrencyRate),
-                        "en-US",
-                        "USD"
-                      ) + "%"
-                    : "0.00%"
-                }
-              >
-                <div className="gainLossContainer">
-                  <div
-                    className={`gainLoss ${tempReturns < 0 ? "loss" : "gain"}`}
-                    onMouseEnter={() => {
-                      SmartMoneyReturnHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hover:
-                          tempReturns * tempCurrencyRate
-                            ? amountFormat(
-                                Math.abs(tempReturns * tempCurrencyRate),
-                                "en-US",
-                                "USD"
-                              ) + "%"
-                            : "0.00%",
-                      });
-                      this.updateTimer();
-                    }}
-                  >
-                    {tempReturns !== 0 ? (
-                      <Image
-                        src={tempReturns < 0 ? LossIcon : GainIcon}
-                        className="mr-2"
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
+      //   coumnWidth: 0.15,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "returns") {
+      //       let tempReturns = rowData.returns ? rowData.returns : 0;
+      //       let tempCurrencyRate = this.state.currency?.rate
+      //         ? this.state.currency.rate
+      //         : 0;
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={
+      //             tempReturns * tempCurrencyRate
+      //               ? amountFormat(
+      //                   Math.abs(tempReturns * tempCurrencyRate),
+      //                   "en-US",
+      //                   "USD"
+      //                 ) + "%"
+      //               : "0.00%"
+      //           }
+      //         >
+      //           <div className="gainLossContainer">
+      //             <div
+      //               className={`gainLoss `}
+      //               onMouseEnter={() => {
+      //                 SmartMoneyReturnHover({
+      //                   session_id: getCurrentUser().id,
+      //                   email_address: getCurrentUser().email,
+      //                   hover:
+      //                     tempReturns * tempCurrencyRate
+      //                       ? amountFormat(
+      //                           Math.abs(tempReturns * tempCurrencyRate),
+      //                           "en-US",
+      //                           "USD"
+      //                         ) + "%"
+      //                       : "0.00%",
+      //                 });
+      //                 this.updateTimer();
+      //               }}
+      //             >
+      //               {tempReturns !== 0 ? (
+      //                 <Image
+      //                   style={{
+      //                     height: "1.5rem",
+      //                     width: "1.5rem",
+      //                   }}
+      //                   src={
+      //                     tempReturns < 0
+      //                       ? ArrowDownLeftSmallIcon
+      //                       : ArrowUpRightSmallIcon
+      //                   }
+      //                   className="mr-2"
+      //                 />
+      //               ) : null}
+      //               <span className="inter-display-medium f-s-13 lh-16 grey-313">
+      //                 {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
+      //               </span>
+      //             </div>
+      //           </div>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
     ];
 
     if (mobileCheck()) {
@@ -1044,6 +1069,7 @@ class SmartMoneyPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <SmartMoneyHeader
+                openAddAddressModal={this.showAddSmartMoneyAddresses}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1065,6 +1091,7 @@ class SmartMoneyPage extends BaseReactComponent {
                 onHide={this.hideAddSmartMoneyAddresses}
                 history={this.props.history}
                 signInVar={this.state.showWithLogin}
+                blurTable={this.state.blurTable}
               />
             ) : null}
             {/* <Button onClick={this.loginFunction}>Login</Button>
@@ -1120,9 +1147,7 @@ class SmartMoneyPage extends BaseReactComponent {
                       tableData={tableData}
                       columnList={columnList}
                       message={"No accounts found"}
-                      totalPage={
-                        this.state.blurTable ? 0 : this.state.totalPage
-                      }
+                      totalPage={this.state.totalPage}
                       history={this.props.history}
                       location={this.props.location}
                       page={this.state.currentPage}
@@ -1130,8 +1155,8 @@ class SmartMoneyPage extends BaseReactComponent {
                       onPageChange={this.onPageChange}
                       pageLimit={this.state.pageLimit}
                       changePageLimit={this.changePageLimit}
-
-                      // addWatermark
+                      addWatermark
+                      className={this.state.blurTable ? "noScroll" : ""}
                     />
                     {/* <div className="ShowDust">
                   <p

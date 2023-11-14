@@ -129,41 +129,59 @@ export default function SmartMoneyHeader(props) {
             The lazy analyst’s guide to alpha
           </p>
         </div>
+
         {localLochUser &&
         (localLochUser.email ||
           localLochUser.first_name ||
           localLochUser.last_name) ? (
-          <CustomOverlay
-            position="bottom"
-            isIcon={false}
-            isInfo={true}
-            isText={true}
-            text="Sign out"
-            className="tool-tip-container-bottom-arrow"
-          >
+          <>
             <div
-              onClick={props.signOutFun}
-              className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+              onClick={props.openAddAddressModal}
+              className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
             >
-              <div className="smarMoneyHeaderSignInData">
-                <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
-                  <Image
-                    className="smarMoneyHeaderSignInIcon"
-                    src={BlackManIcon}
-                  />
-                </div>
-                <div>
-                  {localLochUser.first_name || localLochUser.last_name
-                    ? `${localLochUser.first_name} ${
-                        localLochUser.last_name
-                          ? localLochUser.last_name.slice(0, 1) + "."
-                          : ""
-                      }`
-                    : "Signed in"}
-                </div>
+              <div
+                style={{
+                  minHeight: "2.5rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Add address
               </div>
             </div>
-          </CustomOverlay>
+            <CustomOverlay
+              position="bottom"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text="Sign out"
+              className="tool-tip-container-bottom-arrow"
+            >
+              <div
+                onClick={props.signOutFun}
+                className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+              >
+                <div className="smarMoneyHeaderSignInData">
+                  <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
+                    <Image
+                      className="smarMoneyHeaderSignInIcon"
+                      src={BlackManIcon}
+                    />
+                  </div>
+                  <div>
+                    {localLochUser.first_name || localLochUser.last_name
+                      ? `${localLochUser.first_name} ${
+                          localLochUser.last_name
+                            ? localLochUser.last_name.slice(0, 1) + "."
+                            : ""
+                        }`
+                      : "Signed in"}
+                  </div>
+                </div>
+              </div>
+            </CustomOverlay>
+          </>
         ) : (
           <div
             onClick={props.onSignInClick}

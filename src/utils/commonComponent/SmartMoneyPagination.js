@@ -163,58 +163,66 @@ const SmartMoneyPagination = (props) => {
       </div>
     );
   }
+
   return (
     <div className="smartMoneyPaginationAndLimitSelectorContainer">
-      <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
-        <div className="smartMoneyLimitSelectorTxts">Show:</div>
-        <DropDown
-          class="smartMoneyLimitSelectorInput"
-          list={[10, 50, 100]}
-          onSelect={props.changePageLimit}
-          title={props.pageLimit}
-          activetab={props.pageLimit}
-        />
+      <div className="smartMoneyPaginationAndLimitSelectorChild">
+        {props.smartMoneyBlur ? (
+          <div className="smartMoneyPaginationAndLimitSelectorChildCover" />
+        ) : null}
+        <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
+          <div className="smartMoneyLimitSelectorTxts">Show:</div>
+          <DropDown
+            class="smartMoneyLimitSelectorInput"
+            list={[10, 50, 100]}
+            onSelect={props.changePageLimit}
+            title={props.pageLimit}
+            activetab={props.pageLimit}
+          />
 
-        <div className="smartMoneyLimitSelectorTxts">Records</div>
-      </div>
-      <div className="smartMoneyPaginationContainer">
-        <div
-          className={`smartMoneyPaginationArrowContainer ${
-            props.page === 1 ? "smartMoneyPaginationArrowContainerDisabled" : ""
-          }`}
-          onClick={() => onLeftClick(props)}
-        >
-          <Image
-            src={SmartMoneyPaginationArrowLeftIcon}
-            className={"smartMoneyPaginationArrow"}
-          />
+          <div className="smartMoneyLimitSelectorTxts">Records</div>
         </div>
-        <h5 className="inter-display-medium f-s-14">
-          <input
-            type="number"
-            name="pagenumber"
-            id="pageNo"
-            defaultValue={props.page}
-            onChange={(event) => {
-              setInput(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-          />
-          <span className="smartMoneyPaginationOfTxt">of</span>
-          {props.pageCount}
-        </h5>
-        <div
-          className={`smartMoneyPaginationArrowContainer ${
-            props.page === props.pageCount
-              ? "smartMoneyPaginationArrowContainerDisabled"
-              : ""
-          }`}
-          onClick={() => onNextClick(props)}
-        >
-          <Image
-            src={SmartMoneyPaginationArrowRightIcon}
-            className={"smartMoneyPaginationArrow"}
-          />
+        <div className="smartMoneyPaginationContainer">
+          <div
+            className={`smartMoneyPaginationArrowContainer ${
+              props.page === 1
+                ? "smartMoneyPaginationArrowContainerDisabled"
+                : ""
+            }`}
+            onClick={() => onLeftClick(props)}
+          >
+            <Image
+              src={SmartMoneyPaginationArrowLeftIcon}
+              className={"smartMoneyPaginationArrow"}
+            />
+          </div>
+          <h5 className="inter-display-medium f-s-14">
+            <input
+              type="number"
+              name="pagenumber"
+              id="pageNo"
+              defaultValue={props.page}
+              onChange={(event) => {
+                setInput(event.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+            />
+            <span className="smartMoneyPaginationOfTxt">of</span>
+            {props.pageCount}
+          </h5>
+          <div
+            className={`smartMoneyPaginationArrowContainer ${
+              props.page === props.pageCount
+                ? "smartMoneyPaginationArrowContainerDisabled"
+                : ""
+            }`}
+            onClick={() => onNextClick(props)}
+          >
+            <Image
+              src={SmartMoneyPaginationArrowRightIcon}
+              className={"smartMoneyPaginationArrow"}
+            />
+          </div>
         </div>
       </div>
     </div>
