@@ -17,7 +17,7 @@ import {
   addSmartMoney,
   smartMoneySignUpApi,
   smartMoneySignInApi,
-  VerifySmartMoneyEmail,
+  VerifySmartMoneyEmailOtp,
 } from "./Api";
 import { fixWalletApi, setPageFlagDefault } from "../common/Api";
 import { toast } from "react-toastify";
@@ -31,7 +31,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
       showVerifyEmail: false,
       loadingVerificationOtpBtn: false,
       showSignUpPage: false,
-      showSignInPage: false,
+      showSignInPage: this.props.signInVar,
       showSignInErrorMessage: false,
       showSignUpErrorMessage: false,
       disableSignUpBtn: true,
@@ -64,27 +64,6 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    // Testing
-    if (this.props.signUpVar) {
-      this.setState({
-        showSignUpPage: true,
-        showVerifyEmail: false,
-        showSignInPage: false,
-        addressAdded: false,
-        addressAlreadyPresent: false,
-        addressNotOneMil: false,
-      });
-    } else if (this.props.signInVar) {
-      this.setState({
-        showSignInPage: true,
-        showSignUpPage: false,
-        showVerifyEmail: false,
-        addressAdded: false,
-        addressAlreadyPresent: false,
-        addressNotOneMil: false,
-      });
-    }
-    // Testing
     this.props.getAllCoins();
     this.props.getAllParentChains();
     //  this.makeApiCall();
@@ -301,11 +280,14 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     this.props.smartMoneySignUpApi(this, url);
   };
   onVerifyOtp = () => {
+    this.setState({
+      loadingVerificationOtpBtn: true,
+    });
     let data = new URLSearchParams();
     data.append("email", this.state.signInEmailId);
     data.append("otp_token", this.state.verificationOtp);
     data.append("signed_up_from", "smart money");
-    this.props.VerifySmartMoneyEmail(data, this);
+    this.props.VerifySmartMoneyEmailOtp(data, this);
   };
   emailIsVerified = () => {
     this.hideModal();
@@ -424,6 +406,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
   handleOnVerificationEnterPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
+      this.onVerifyOtp();
     }
   };
   handleOnSignInEnterPress = (event) => {
@@ -483,7 +466,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
           <AddSmartMoneyAddressesModalInputBox
             inputPlaceholder="john@loch.one"
             btnClick={this.onSignIn}
-            heading="Sign In"
+            heading="Sign in"
             descriptionOne="Get right back into your account"
             btnText="Send verification"
             hideModal={this.hideModal}
@@ -515,7 +498,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         {this.state.addressAdded ? (
           <AddSmartMoneyAddressesModalMessagesBox
             btnClick={this.showSignUpModal}
-            heading="Thanks for your contribution!"
+            heading="Thanks for your contribution"
             descriptionOne="Well done! This unique address seems to be worth more than $10K."
             descriptionTwo="Please click Next to proceed."
             btnText="Next"
@@ -527,8 +510,8 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         {this.state.addressAlreadyPresent ? (
           <AddSmartMoneyAddressesModalMessagesBox
             btnClick={this.showDefaultView}
-            heading="Sorry this address has already been added."
-            descriptionOne="Please try to add another address!"
+            heading="Sorry this address has already been added"
+            descriptionOne="Please try to add another address."
             btnText="Add another"
             imageIcon={WarningCircleIcon}
             hideModal={this.hideModal}
@@ -537,8 +520,8 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         {this.state.addressNotOneMil ? (
           <AddSmartMoneyAddressesModalMessagesBox
             btnClick={this.showDefaultView}
-            heading="Sorry this address is not worth at least $10K."
-            descriptionOne="Please try to add another address!"
+            heading="Sorry this address is not worth at least $10K"
+            descriptionOne="Please try to add another address."
             btnText="Add another"
             imageIcon={WarningCircleIcon}
             hideModal={this.hideModal}
@@ -553,7 +536,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="addCommunityTopAccountsWrapperParent">
+          <div className="addCommunitySmartMoneyWrapperParent">
             <div
               className="exit-overlay-body"
               style={{ padding: "0rem 10.5rem" }}
@@ -735,7 +718,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             <div className="watchListAddressBtnContainer">
               <Button
                 className="secondary-btn white-bg"
-                onClick={this.showAccountAdreadyAdded}
+                onClick={this.hideModal}
               >
                 Cancel
               </Button>
@@ -771,7 +754,7 @@ const mapDispatchToProps = {
   smartMoneySignUpApi,
   smartMoneySignInApi,
   setPageFlagDefault,
-  VerifySmartMoneyEmail,
+  VerifySmartMoneyEmailOtp,
 };
 
 AddSmartMoneyAddressesModal.propTypes = {};

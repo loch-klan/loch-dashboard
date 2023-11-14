@@ -1,13 +1,26 @@
-import React from "react";
-import { Dropdown, DropdownButton, Image } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Button, Dropdown, DropdownButton, Image } from "react-bootstrap";
 import logo from "../../image/Loch.svg";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
+import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
+import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
+import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
   const [currencyList, setAllCurrencyList] = React.useState([]);
+  const [localLochUser, setLocalLochUser] = React.useState(
+    JSON.parse(window.sessionStorage.getItem("lochUser"))
+  );
+
+  useEffect(() => {
+    if (!props.blurTable) {
+      setLocalLochUser(JSON.parse(window.sessionStorage.getItem("lochUser")));
+    }
+  }, [props.blurTable]);
+
   React.useEffect(() => {
     let currency = JSON.parse(window.sessionStorage.getItem("currency"));
 
@@ -113,6 +126,58 @@ export default function SmartMoneyHeader(props) {
             The lazy analyst’s guide to alpha
           </p>
         </div>
+        {localLochUser &&
+        (localLochUser.email ||
+          localLochUser.first_name ||
+          localLochUser.last_name) ? (
+          <div
+            // onClick={handleGoToProfile}
+            className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+          >
+            <div className="smarMoneyHeaderSignInData">
+              <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
+                <Image
+                  className="smarMoneyHeaderSignInIcon"
+                  src={BlackManIcon}
+                />
+              </div>
+              <div className="dotDotText">
+                {localLochUser.first_name || localLochUser.last_name
+                  ? `${localLochUser.first_name} ${
+                      localLochUser.last_name
+                        ? localLochUser.last_name.slice(0, 1) + "."
+                        : ""
+                    }`
+                  : "Signed In"}
+              </div>
+            </div>
+            <span
+              // onClick={handleLeaveChild}
+              onMouseOver={(e) =>
+                (e.currentTarget.children[0].src = LeaveBlackIcon)
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.children[0].src = LeaveIcon)
+              }
+              className="smarMoneyHeaderSignedInLeaveContainer inter-display-medium f-s-13"
+            >
+              <Image src={LeaveIcon} />
+              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                Sign out
+              </Button>
+            </span>
+          </div>
+        ) : (
+          <div
+            onClick={props.onSignInClick}
+            className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+          >
+            <div className="smarMoneyHeaderSignInIconContainer">
+              <Image className="smarMoneyHeaderSignInIcon" src={GreyManIcon} />
+            </div>
+            <div>Sign in now</div>
+          </div>
+        )}
       </div>
     </div>
   );

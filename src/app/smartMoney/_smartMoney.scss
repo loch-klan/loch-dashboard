@@ -153,8 +153,82 @@
     height: 100%;
     width: 100%;
     position: relative;
-
     display: flex;
+    .smarMoneyHeaderSignInContainer {
+      color: #313233;
+      padding: 1rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.8rem;
+      transition-duration: 300ms;
+      border: 1.3px #e5e5e6 solid;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      background-color: white;
+      margin-right: 3rem;
+      &:hover {
+        box-shadow: none;
+        background-color: #f2f2f2;
+        color: #19191a;
+        .smarMoneyHeaderSignInIconContainer {
+          background-color: white;
+        }
+      }
+
+      .smarMoneyHeaderSignInIconContainer {
+        transition-duration: 300ms;
+        margin-right: 0.5rem;
+        border: 0.1rem solid #e5e5e6;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        max-width: 2.5rem;
+        max-height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.8rem;
+        background-color: white;
+        .smarMoneyHeaderSignInIcon {
+          height: 1.3rem;
+        }
+      }
+    }
+    .smarMoneyHeaderSignedInContainer {
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      .smarMoneyHeaderSignInData {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 60%;
+      }
+      .smarMoneyHeaderSignedInIconContainer {
+        background-color: #f2f2f2;
+      }
+      .smarMoneyHeaderSignedInLeaveContainer {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        .navbar-button {
+          background: none;
+          border: none;
+          color: #b0b1b3;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        img {
+          width: 1.6rem;
+          margin-left: 6rem;
+        }
+        &:hover {
+          .navbar-button {
+            color: #0d0d0d;
+          }
+        }
+      }
+    }
     .leftSmartMoneyContainer {
       width: 28rem;
       padding: 0rem 3rem;
@@ -230,7 +304,7 @@
     }
   }
 }
-.addCommunityTopAccountsWrapperParent {
+.addCommunitySmartMoneyWrapperParent {
   .addCommunityTopAccountsWrapperContainer {
     width: 100%;
     padding: 0rem 5rem;
@@ -429,7 +503,7 @@
     flex: 1;
     display: flex;
     .addCommunityTopAccountsAddedBodyContent {
-      padding: 4rem 2rem;
+      padding: 3rem 5rem;
       flex: 1;
       display: flex;
       flex-direction: column;

@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
-import { postLoginInstance } from "../../utils";
+import { postLoginInstance, preLoginInstance } from "../../utils";
 import { API_LIMIT } from "../../utils/Constant";
+import { setLocalStoraage } from "../../utils/ManageToken";
 
 export const getSmartMoney = (data, ctx, apiLimit) => {
   return async function (dispatch, getState) {
@@ -63,6 +64,7 @@ export const addSmartMoney = (data, ctx) => {
               addressNotOneMil: false,
               addressAlreadyPresent: false,
             });
+            toast.error("Enter a valid wallet address");
           } else if (res.data.message === "Address already used in Loch") {
             ctx.setState({
               addressAdded: false,
@@ -117,11 +119,14 @@ export const smartMoneySignInApi = (data, ctx) => {
   };
 };
 
-export const VerifySmartMoneyEmail = (data, ctx) => {
+export const VerifySmartMoneyEmailOtp = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/verify-otp-code", data)
       .then((res) => {
+        ctx.setState({
+          loadingVerificationOtpBtn: false,
+        });
         if (!res.data.error) {
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;
@@ -201,7 +206,139 @@ export const VerifySmartMoneyEmail = (data, ctx) => {
         }
       })
       .catch((err) => {
+        ctx.setState({
+          loadingVerificationOtpBtn: false,
+        });
         console.log("err", err);
       });
   };
+};
+export const createAnonymousUserSmartMoneyApi = (data) => {
+  return function (dispatch, getState) {
+    window.sessionStorage.setItem("stopClick", false);
+
+    window.sessionStorage.setItem("lochToken", "jsk");
+
+    postLoginInstance
+      .post("organisation/user/create-user", data)
+      .then((res) => {
+        if (!res.data.error) {
+          window.sessionStorage.setItem(
+            "lochDummyUser",
+            res.data.data.user.link
+          );
+          window.sessionStorage.setItem("lochToken", res.data.data.token);
+
+          let plan = {
+            defi_enabled: true,
+            export_address_limit: -1,
+            id: "63eb32769b5e4daf6b588207",
+            is_default: false,
+            is_trial: false,
+            name: "Sovereign",
+            notifications_limit: -1,
+            notifications_provided: true,
+            plan_reference_id: "prod_NM0aQTO38msDkq",
+            subscription: {
+              active: true,
+              created_on: "2023-04-06 06:41:11.302000+00:00",
+              id: "642e69878cc994b64ca49272",
+              modified_on: "2023-04-06 06:41:11.302000+00:00",
+              plan_id: "63eb32769b5e4daf6b588207",
+              plan_reference_id: "prod_NM0aQTO38msDkq",
+              subscription_reference_id: "",
+              trial_subscription: false,
+              user_id: "63f89011251cc82aeebfcae5",
+              valid_till: "2023-05-06 00:00:00+00:00",
+            },
+            trial_days: 30,
+            upload_csv: true,
+            wallet_address_limit: -1,
+            whale_pod_address_limit: -1,
+            whale_pod_limit: -1,
+            influencer_pod_limit: -1,
+          };
+          // free pricing
+          window.sessionStorage.setItem(
+            "currentPlan",
+            JSON.stringify({
+              ...plan,
+              influencer_pod_limit: -1,
+            })
+          );
+
+          window.sessionStorage.setItem("stopClick", true);
+        } else {
+          // toast.error(res.data.message || "Something Went Wrong");
+        }
+      });
+  };
+};
+export const verifyEmailLinkApi = (ctx, data) => {
+  preLoginInstance
+    .post("organisation/user/verify-email", data)
+    .then((res) => {
+      if (!res.data.error) {
+        window.sessionStorage.setItem("lochToken", res.data?.data?.token);
+        window.sessionStorage.setItem("stopClick", true);
+        let plan = {
+          defi_enabled: true,
+          export_address_limit: -1,
+          id: "63eb32769b5e4daf6b588207",
+          is_default: false,
+          is_trial: false,
+          name: "Sovereign",
+          notifications_limit: -1,
+          notifications_provided: true,
+          plan_reference_id: "prod_NM0aQTO38msDkq",
+          subscription: {
+            active: true,
+            created_on: "2023-04-06 06:41:11.302000+00:00",
+            id: "642e69878cc994b64ca49272",
+            modified_on: "2023-04-06 06:41:11.302000+00:00",
+            plan_id: "63eb32769b5e4daf6b588207",
+            plan_reference_id: "prod_NM0aQTO38msDkq",
+            subscription_reference_id: "",
+            trial_subscription: false,
+            user_id: "63f89011251cc82aeebfcae5",
+            valid_till: "2023-05-06 00:00:00+00:00",
+          },
+          trial_days: 30,
+          upload_csv: true,
+          wallet_address_limit: -1,
+          whale_pod_address_limit: -1,
+          whale_pod_limit: -1,
+          influencer_pod_limit: -1,
+        };
+        window.sessionStorage.setItem(
+          "currentPlan",
+          JSON.stringify({
+            ...plan,
+            influencer_pod_limit: -1,
+          })
+        );
+
+        let obj = {
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+        };
+
+        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+
+        setLocalStoraage();
+
+        // ctx.setState({ error: false });
+        ctx.props.history.push({
+          pathname: "/smart-money",
+        });
+      } else {
+        // ctx.setState({ error: true });
+      }
+    })
+    .catch((err) => {
+      // console.log("fixwallet",err)
+    });
 };

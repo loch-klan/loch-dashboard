@@ -10,6 +10,7 @@ import Wallet from "./app/wallet/Wallet";
 import Cost from "./app/cost/Cost";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifyEmail from "./app/common/VerifyEmail";
+import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
 import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
@@ -210,6 +211,12 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/verify-email-smart-money",
+    name: "Verify Smart Money Email",
+    type: Route,
+    component: VerifySmartMoneyEmailLink,
   },
   {
     path: "/app-feature",
