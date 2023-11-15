@@ -3923,6 +3923,14 @@ export const MobileEmail = ({ email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+export const SmartMobileEmail = ({ email_address }) => {
+  const event_name = "Smart money mobile coming soon page: email added";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 
 // email added for mopbile device
 export const MobileEmailPageView = () => {
@@ -5549,6 +5557,14 @@ export const SmartMoneyWalletClicked = ({
     "email address": email_address,
     wallet: wallet,
     isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
+  const event_name = "Smart money: how it works clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

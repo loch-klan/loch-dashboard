@@ -43,7 +43,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           window.sessionStorage.setItem("transHistorySorts", transHistorySorts);
         }
       }
-      if (props.location.pathname === "/smart-money") {
+      if (
+        props.location.pathname &&
+        props.location.pathname.includes("/smart-money")
+      ) {
         return (
           <div className="main-section">
             <div className={`main-section-right`}>
