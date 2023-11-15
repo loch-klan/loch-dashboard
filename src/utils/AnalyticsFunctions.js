@@ -2974,6 +2974,9 @@ export const netflowChainFilter = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 export const netflowDateFilter = ({ session_id, email_address, from, to }) => {
+  console.log("calling it ");
+  console.log("from ", from);
+  console.log("to ", to);
   const event_name = "Intelligence:netflows: date filter";
   const eventProperties = {
     "session id": session_id,

@@ -419,6 +419,11 @@ class Intelligence extends Component {
   };
   changeFromDate = (passedDate) => {
     if (passedDate) {
+      let toText = "";
+      if (this.state.toDate) {
+        toText = moment(this.state.toDate).format("MMMM Do YYYY");
+      }
+      let fromText = moment(passedDate).format("MMMM Do YYYY");
       this.setState({
         fromDate: passedDate,
         isFromCalendar: false,
@@ -427,15 +432,19 @@ class Intelligence extends Component {
       netflowDateFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        from: passedDate ? moment(passedDate).format("DD MM YYYY") : "",
-        to: this.state.toDate
-          ? moment(this.state.toDate).format("DD MM YYYY")
-          : "",
+        from: fromText,
+        to: toText,
       });
     }
   };
   changeToDate = (passedDate) => {
     if (passedDate) {
+      let fromText = "";
+      if (this.state.fromDate) {
+        fromText = moment(this.state.fromDate).format("MMMM Do YYYY");
+      }
+      let toText = moment(passedDate).format("MMMM Do YYYY");
+
       this.setState({
         toDate: passedDate,
         isToCalendar: false,
@@ -444,10 +453,8 @@ class Intelligence extends Component {
       netflowDateFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        from: this.state.fromDate
-          ? moment(this.state.fromDate).format("DD MM YYYY")
-          : "",
-        to: passedDate ? moment(passedDate).format("DD MM YYYY") : "",
+        from: fromText,
+        to: toText,
       });
     }
   };
