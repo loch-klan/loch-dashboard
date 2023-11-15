@@ -170,7 +170,12 @@ const SmartMoneyPagination = (props) => {
         {props.smartMoneyBlur ? (
           <div className="smartMoneyPaginationAndLimitSelectorChildCover" />
         ) : null}
-        <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
+        <div
+          style={{
+            opacity: props.smartMoneyBlur ? 0 : 1,
+          }}
+          className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer"
+        >
           <div className="smartMoneyLimitSelectorTxts">Show:</div>
           <DropDown
             class="smartMoneyLimitSelectorInput"
