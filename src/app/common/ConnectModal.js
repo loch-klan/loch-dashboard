@@ -877,7 +877,7 @@ class ConnectModal extends BaseReactComponent {
                           STEP 1
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Bitbns</b> account
+                          Log in to your <b>BitBNS</b> account from your desktop
                         </p>
                       </div>
                     </div>
@@ -887,7 +887,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 2
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Go to <b>More</b> and then click on <b>API Trading</b>
+                          Select <b>More</b> in the menu on the top and then
+                          click on <b>API Trading</b>
                         </p>
                       </div>
                     </div>
@@ -897,7 +898,7 @@ class ConnectModal extends BaseReactComponent {
                           STEP 3
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Then click on <b>Get New Keys</b>
+                          Click <b>+ Get New Keys</b>
                         </p>
                       </div>
                     </div>
@@ -907,8 +908,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 4
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>Read only</b> and click{" "}
-                          <b>Create New Keys</b>
+                          Select <b>Read Only</b> and click{" "}
+                          <b>Create New Key</b>
                         </p>
                       </div>
                     </div>
@@ -918,8 +919,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 5
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Copy paste your <b>Public Key</b> and{" "}
-                          <b>Secret key</b> into Loch
+                          Copy/paste your <b>Public Key</b> and{" "}
+                          <b>Secret Key</b> into Loch
                         </p>
                       </div>
                     </div>
