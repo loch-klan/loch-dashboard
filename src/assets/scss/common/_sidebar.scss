@@ -230,11 +230,18 @@
   position: relative;
 }
 .sidebar-section {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
   // position: absolute;
   position: fixed;
   height: 100vh;
   top: 0;
-  background-color: $secondary;
+
   width: 27.2rem;
   .container {
     width: 27.2rem;
@@ -418,12 +425,30 @@
       flex: 1;
       position: relative;
       overflow: auto;
+      .scroll-menu-wrapper-closed-container {
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+        background-color: transparent;
+        .scroll-menu-wrapper-closed {
+          height: 100%;
+          padding-top: 2.4rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          background-color: white;
+          width: 10.2rem;
+        }
+      }
       .scroll-menu-wrapper {
+        background-color: white;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
         padding-top: 2.4rem;
+        padding-bottom: 1rem;
         width: 100%;
         overflow: scroll;
 
@@ -498,6 +523,11 @@
                 box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
                   0px 18px 88px -4px rgba(24, 39, 75, 0.14);
                 border-radius: 1.2rem;
+              }
+            }
+            .nav-link-closed {
+              img {
+                margin-right: 0rem;
               }
             }
             &.sub-menu {
@@ -575,6 +605,9 @@
           }
         }
       }
+    }
+    .sidebar-body-closed {
+      width: 17.2rem;
     }
     .nowallet {
       // margin-bottom: 21rem;
@@ -665,10 +698,90 @@
       }
     }
     .sidebar-footer {
+      background-color: white;
+      .sidebar-footer-closed-container {
+        background-color: white;
+        width: 10.2rem;
+        border-top: 0.1rem solid #e5e5e680;
+      }
       width: 100%;
-      border-top: 0.1rem solid $grey-CAC;
-      padding-top: 4rem;
 
+      padding: 0rem !important;
+      .sidebar-footer-toggle-container {
+        border-top: 0.1rem solid #e5e5e680;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .sidebar-footer-toggle {
+          cursor: pointer;
+          transform: translateY(-50%);
+          border: 0.1rem solid #e5e5e6;
+          background-color: white;
+          height: 3rem;
+          width: 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 1.2rem;
+
+          &:hover {
+            background-color: #f6f6f7;
+          }
+
+          .sidebar-footer-toggle-image {
+            height: 1rem;
+            width: 1rem;
+          }
+          .sidebar-footer-toggle-image-reversed {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      .sidebar-footer-content-closed {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 3rem;
+        padding-top: 2.4rem;
+        .sideBarFooterSignInIconContainerClosed {
+          height: 3rem;
+          width: 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 2rem;
+          border-radius: 1rem;
+          transition-duration: 300ms;
+          border: 1.3px $white-E5E solid;
+          cursor: pointer;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+            0px 1px 1px rgba(0, 0, 0, 0.04);
+          background-color: white;
+          &:hover {
+            box-shadow: none;
+            background-color: $grey-F2F;
+            color: $black-191;
+            .sideBarFooterSignInIconContainer {
+              background-color: white;
+            }
+          }
+
+          .sideBarFooterSignInIcon {
+            height: 1.3rem;
+          }
+        }
+        .sideBarFooterSignInIconContainerClosedSignedIn {
+          background-color: #f2f2f2;
+          &:hover {
+            background-color: white;
+          }
+        }
+      }
+      .sidebar-footer-content {
+        padding: 2.4rem;
+        padding-top: 2rem;
+      }
       .sideBarFooterSignInContainer {
         color: $grey-313;
         padding: 1rem;
@@ -805,6 +918,9 @@
       //     font-family: Inter-SemiBold;
       //     color: $grey-B0B;
       // }
+    }
+    .sidebar-footer-closed {
+      background-color: transparent;
     }
   }
 }

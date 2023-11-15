@@ -253,6 +253,19 @@ export const getAvgCostBasis = (ctx) => {
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;
+          let netReturn = res?.data.data?.net_return
+            ? res?.data.data?.net_return
+            : 0;
+          let totalBalance = res?.data.data?.total_bal
+            ? res?.data.data?.total_bal
+            : 0;
+          let totalCost = res?.data.data?.total_cost
+            ? res?.data.data?.total_cost
+            : 0;
+          let totalGain = res?.data.data?.total_gain
+            ? res?.data.data?.total_gain
+            : 0;
+
           let currency = JSON.parse(window.sessionStorage.getItem("currency"));
           // let ApiResponse = [
           //   {
@@ -411,14 +424,14 @@ export const getAvgCostBasis = (ctx) => {
                   : ((current_price - costBasis) / costBasis) * 100,
             });
           });
-
-          let totalPercentage =
-            totalCostBasis === 0
-              ? 0
-              : (
-                  ((totalCurrentValue - totalCostBasis) / totalCostBasis) *
-                  100
-                ).toFixed(2);
+          // Remove this
+          let totalPercentage = netReturn ? netReturn.toFixed(2) : 0;
+          // totalCostBasis === 0
+          //   ? 0
+          //   : (
+          //       ((totalCurrentValue - totalCostBasis) / totalCostBasis) *
+          //       100
+          //     ).toFixed(2);
 
           // console.log("Asset",AssetsList)
           dispatch({
@@ -428,6 +441,10 @@ export const getAvgCostBasis = (ctx) => {
             payload: {
               Average_cost_basis: AssetsList,
               totalPercentage: totalPercentage,
+              net_return: netReturn,
+              total_bal: totalBalance,
+              total_cost: totalCost,
+              total_gain: totalGain,
             },
           });
 

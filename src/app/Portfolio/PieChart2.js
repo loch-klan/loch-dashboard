@@ -1291,7 +1291,7 @@ class PieChart2 extends BaseReactComponent {
         <>
           <Row style={{ width: "100%" }}>
             <Col
-              md={7}
+              md={6}
               className="piechart-column"
               style={{
                 padding: 0,
@@ -1329,14 +1329,14 @@ class PieChart2 extends BaseReactComponent {
                 </div>
               )}
             </Col>
-            <Col md={5} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
+            <Col md={6} style={{ marginTop: "-3.4rem", padding: 0, zIndex: 1 }}>
               <div>
                 {/* Chains */}
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "end",
+                    justifyContent: "flex-start",
                   }}
                 >
                   {this.state.showFollowingAddress ? (
@@ -1464,12 +1464,15 @@ class PieChart2 extends BaseReactComponent {
                         style={
                           this.state.isChainToggle
                             ? {
-                                transform: "rotate(180deg)",
                                 filter: "opacity(1)",
                                 height: "1.25rem",
                                 width: "1.25rem",
                               }
-                            : { height: "1.25rem", width: "1.25rem" }
+                            : {
+                                transform: "rotate(180deg)",
+                                height: "1.25rem",
+                                width: "1.25rem",
+                              }
                         }
                       />
                       {this.props.chainLoader && (
@@ -1614,10 +1617,9 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isYeildToggle
                                 ? {
-                                    transform: "rotate(180deg)",
                                     filter: "opacity(1)",
                                   }
-                                : {}
+                                : { transform: "rotate(180deg)" }
                             }
                           />
                         </div>
@@ -1663,10 +1665,9 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isDebtToggle
                                 ? {
-                                    transform: "rotate(180deg)",
                                     filter: "opacity(1)",
                                   }
-                                : {}
+                                : { transform: "rotate(180deg)" }
                             }
                           />
                         </div>
@@ -1807,7 +1808,7 @@ class PieChart2 extends BaseReactComponent {
               </div>
             </Col>
             <Col
-              md={chainList.length > 1 ? 12 : 7}
+              md={chainList.length > 1 ? 12 : 6}
               style={
                 chainList.length > 1
                   ? { padding: 0 }

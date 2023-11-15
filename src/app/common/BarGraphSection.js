@@ -24,6 +24,10 @@ import HC_rounded from "highcharts-rounded-corners";
 import ChartjsPluginWatermark from "chartjs-plugin-watermark";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import OutsideClickHandler from "react-outside-click-handler";
+import Calendar from "react-calendar";
+import moment from "moment";
+import { CheckIcon, ThickCheckMarkIcon } from "../../assets/images/icons";
 
 HC_rounded(Highcharts);
 
@@ -49,6 +53,7 @@ class BarGraphSection extends Component {
       activeFooter: props.activeTitle ? props.activeTitle : 0,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
+      showFromAndTo: props.showFromAndTo,
       showFooter: props.showFooter,
       showBadges: props.showBadges,
       isArrow: props.isArrow,
@@ -194,7 +199,11 @@ class BarGraphSection extends Component {
     //     asset_selected: badge.name,
     //   });
   };
-
+  toggleBreakdownSelected = () => {
+    this.setState({
+      switchselected: !this.state.switchselected,
+    });
+  };
   render() {
     const {
       data,
@@ -214,6 +223,7 @@ class BarGraphSection extends Component {
       showFooterDropdown,
       footerDropdownLabels,
       handleSelect,
+      showFromAndTo,
     } = this.state;
     const {
       marginBottom,
@@ -305,7 +315,189 @@ class BarGraphSection extends Component {
                     />
                   </div>
                 )}
+                {showFromAndTo && (
+                  <div className="intelligenceRealisedLeftContainer">
+                    <div class="bar-graph-footer ">
+                      <div class="timeCalendarBadgeWrapper ">
+                        <div
+                          id="0"
+                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
+                        >
+                          From
+                        </div>
+                        <div
+                          id="1"
+                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                        >
+                          <OutsideClickHandler
+                            onOutsideClick={this.props.hideFromCalendar}
+                          >
+                            <div className="timeBadgeCalendarContainer">
+                              <div
+                                className="timeBadgeCalendarText"
+                                onClick={this.props.showFromCalendar}
+                              >
+                                {this.props.fromDate
+                                  ? moment(this.props.fromDate).format(
+                                      "D MMM YYYY"
+                                    )
+                                  : ""}
+                              </div>
+                              {this.props.isFromCalendar ? (
+                                <div className="intelligenceCalendar">
+                                  <Calendar
+                                    date={this.props.fromDate}
+                                    className={
+                                      "calendar-select inter-display-medium f-s-13 lh-16"
+                                    }
+                                    onChange={this.props.changeFromDate}
+                                    maxDate={this.props.maxDate}
+                                    minDate={this.props.minDate}
+                                    defaultValue={this.props.fromDate}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
+                          </OutsideClickHandler>
+                        </div>
+                        <div
+                          id="2"
+                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                        >
+                          To
+                        </div>
+                        <div
+                          id="3"
+                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                        >
+                          <OutsideClickHandler
+                            onOutsideClick={this.props.hideToCalendar}
+                          >
+                            <div className="timeBadgeCalendarContainer">
+                              <div
+                                className="timeBadgeCalendarText"
+                                onClick={this.props.showToCalendar}
+                              >
+                                {this.props.toDate
+                                  ? moment(this.props.toDate).format(
+                                      "D MMM YYYY"
+                                    )
+                                  : ""}
+                              </div>
+                              {this.props.isToCalendar ? (
+                                <div className="intelligenceCalendar">
+                                  <Calendar
+                                    date={this.props.toDate}
+                                    className={
+                                      "calendar-select inter-display-medium f-s-13 lh-16"
+                                    }
+                                    onChange={this.props.changeToDate}
+                                    maxDate={this.props.maxDate}
+                                    minDate={this.props.minDate}
+                                    defaultValue={this.props.toDate}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
+                          </OutsideClickHandler>
+                        </div>
+                      </div>
+                    </div>
 
+                    {/* <BarGraphFooter
+                      handleFooterClick={this.handleFooter}
+                      active={this.state.activeFooter}
+                      footerLabels={footerLabels}
+                    /> */}
+                  </div>
+                )}
+                {showFromAndTo ? (
+                  <div className="intelligenceRealisedRightContainer">
+                    <div
+                      className="intelligenceRealisedRightItems"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "18rem",
+                      //   maxWidth: "20rem",
+                      //   marginLeft: "1rem",
+                      //   zIndex: 4,
+                      // }}
+                    >
+                      <CustomDropdown
+                        filtername="All chains"
+                        options={coinsList}
+                        action={null}
+                        handleClick={this.handleFunction}
+                        isChain={true}
+                        searchIsUsed={this.props.chainSearchIsUsed}
+                        // selectedTokens={this.state.activeBadge}
+                      />
+                    </div>
+                    <div
+                      className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "15rem",
+                      //   maxWidth: "18rem",
+                      //   zIndex: "2",
+                      // }}
+                    >
+                      <CustomDropdown
+                        filtername="All assets"
+                        options={this.props.assetList}
+                        action={null}
+                        handleClick={this.props.handleAssetSelected}
+                        // isChain={true}
+                        LightTheme={true}
+                        placeholderName={"asset"}
+                        getObj={this.props?.getObj}
+                        searchIsUsed={this.props.assetSearchIsUsed}
+
+                        // selectedTokens={this.state.activeBadge}
+                      />
+                    </div>
+                    <div
+                      className="intelligenceRealisedRightItems"
+                      // style={{
+                      //   width: "100%",
+                      //   minWidth: "15rem",
+                      //   maxWidth: "18rem",
+                      //   zIndex: "2",
+                      // }}
+                    >
+                      <div
+                        onClick={this.toggleBreakdownSelected}
+                        className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                          this.state.switchselected
+                            ? "IRRIbreakdownContainerSelected"
+                            : ""
+                        }`}
+                      >
+                        <div>Breakdown</div>
+                        <div className="IRRIbreakdownImageContainer">
+                          <Image
+                            className="IRRIbreakdownImage"
+                            src={ThickCheckMarkIcon}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="intelligenceRealisedInfoIcon">
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                        subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                        className={"fix-width tool-tip-container-bottom-arrow"}
+                        isLeftText
+                      >
+                        <Image src={InfoIcon} className="infoIcon" />
+                      </CustomOverlay>
+                    </div>
+                  </div>
+                ) : null}
                 {showBadges && (
                   <div
                     style={{
@@ -330,7 +522,7 @@ class BarGraphSection extends Component {
               </div>
             </>
 
-            {
+            {!this.props.dontShowAssets ? (
               <div
                 style={{
                   display: "flex",
@@ -366,7 +558,7 @@ class BarGraphSection extends Component {
                   </div>
                 )}
               </div>
-            }
+            ) : null}
             {showPercentage || showSwitch ? (
               <div
                 className="show-percentage-div"

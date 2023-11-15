@@ -31,6 +31,7 @@ class Footer extends Component {
           style={{
             marginTop: "3rem",
             marginBottom: "2.6rem",
+            minWidth: "85rem",
           }}
         />
         <div
@@ -39,6 +40,7 @@ class Footer extends Component {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            minWidth: "85rem",
           }}
         >
           <div style={{ width: "50%" }}>
@@ -104,7 +106,12 @@ class Footer extends Component {
           </div>
         </div>
         {!this.props.isMobile ? (
-          <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText">
+          <p
+            style={{
+              minWidth: "85rem",
+            }}
+            className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText"
+          >
             The content made available on this web page and our mobile
             applications ("Platform") is for informational purposes only. You
             should not construe any such information or other material as

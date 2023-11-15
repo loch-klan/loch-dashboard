@@ -285,11 +285,17 @@ class Wallet extends Component {
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
-          <CoinBadges
-            activeBadge={this.state.activeBadge}
-            chainList={this.props.OnboardingState.coinsList}
-            handleFunction={this.handleFunction}
-          />
+          <div
+            style={{
+              minWidth: "85rem",
+            }}
+          >
+            <CoinBadges
+              activeBadge={this.state.activeBadge}
+              chainList={this.props.OnboardingState.coinsList}
+              handleFunction={this.handleFunction}
+            />
+          </div>
           <div className="m-b-16 sortby-section">
             <div className="dropdown-section">
               <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
@@ -348,6 +354,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isLastEle={index === walletList.length - 1}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}
