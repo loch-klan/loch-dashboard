@@ -427,8 +427,10 @@ class Intelligence extends Component {
       netflowDateFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        from: passedDate,
-        to: this.state.toDate,
+        from: passedDate ? moment(passedDate).format("DD MM YYYY") : "",
+        to: this.state.toDate
+          ? moment(this.state.toDate).format("DD MM YYYY")
+          : "",
       });
     }
   };
@@ -442,8 +444,10 @@ class Intelligence extends Component {
       netflowDateFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        from: this.state.fromDate,
-        to: passedDate,
+        from: this.state.fromDate
+          ? moment(this.state.fromDate).format("DD MM YYYY")
+          : "",
+        to: passedDate ? moment(passedDate).format("DD MM YYYY") : "",
       });
     }
   };
