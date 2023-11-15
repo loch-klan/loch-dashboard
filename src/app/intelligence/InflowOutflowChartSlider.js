@@ -35,10 +35,11 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       formattedXAxis: [],
       formattedOverallData: {},
       formattedPointList: [],
-      startHoverInflow: true,
-      startHoverOutflow: true,
     };
+    this.startHoverInflow = true;
+    this.startHoverOutflow = true;
   }
+
   componentDidMount() {
     if (this.props.assetList) {
       this.setState({
@@ -325,43 +326,27 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   };
   hoverOnInflow = () => {
-    if (this.state.startHoverInflow) {
+    if (this.startHoverInflow) {
       PriceChartHoverInflow({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
-      this.setState(
-        {
-          startHoverInflow: false,
-        },
-        () => {
-          setTimeout(() => {
-            this.setState({
-              startHoverInflow: true,
-            });
-          }, 2000);
-        }
-      );
+      this.startHoverInflow = false;
+      setTimeout(() => {
+        this.startHoverInflow = true;
+      }, 2000);
     }
   };
   hoverOnOutflow = () => {
-    if (this.state.startHoverOutflow) {
+    if (this.startHoverOutflow) {
       PriceChartHoverOutflow({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
-      this.setState(
-        {
-          startHoverOutflow: false,
-        },
-        () => {
-          setTimeout(() => {
-            this.setState({
-              startHoverOutflow: true,
-            });
-          }, 2000);
-        }
-      );
+      this.startHoverOutflow = false;
+      setTimeout(() => {
+        this.startHoverOutflow = true;
+      }, 2000);
     }
   };
 
@@ -526,7 +511,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
             const curItem = parent.state.formattedOverallData[this.x];
 
             if (curItem) {
-              console.log("curItem is ", curItem);
               const dateTitle = moment(curItem.timestamp).format(
                 "DD MMMM YYYY"
               );
@@ -543,7 +527,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               const tempIndex = parent.state.assetList.findIndex(
                 (resData) => resData._id === parent.state.activeAssetTab
               );
-              console.log("tempIndex is ", tempIndex);
               let assetCode = "ETH";
               if (
                 tempIndex !== -1 &&
@@ -558,8 +541,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                 } else {
                   parent.hoverOnOutflow();
                 }
-                console.log("receivedVal ", receivedVal);
-                console.log("sendVal ", sendVal);
                 return `
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
