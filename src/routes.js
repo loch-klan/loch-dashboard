@@ -36,6 +36,7 @@ import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
+import smartMoneyFAQPage from "./app/smartMoney/smartMoneyFAQPage";
 const routes = [
   {
     path: "/",
@@ -132,6 +133,12 @@ const routes = [
     name: "Smart Money",
     type: PrivateRoute,
     component: SmartMoneyPage,
+  },
+  {
+    path: "/smart-money/faq",
+    name: "Smart Money FAQs",
+    type: PrivateRoute,
+    component: smartMoneyFAQPage,
   },
   {
     path: "/top-accounts",

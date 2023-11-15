@@ -13,7 +13,7 @@ import {
 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "../intelligence/Api";
 import { BaseReactComponent } from "../../utils/form";
-
+import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal";
 import {
   amountFormat,
   CurrencyType,
@@ -41,6 +41,7 @@ import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api";
 
 import {
   SmartMoneyChangeLimit,
+  SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
   SmartMoneyNetflowHover,
   SmartMoneyNetWorthHover,
@@ -66,6 +67,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
 } from "../../assets/images/icons/index.js";
+import MobileDevice from "../common/mobileDevice.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -75,6 +77,7 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      showSignOutModal: false,
       showWithLogin: false,
       blurTable: true,
       addSmartMoneyAddressModal: false,
@@ -188,6 +191,17 @@ class SmartMoneyPage extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    let token = window.sessionStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (token && lochUser && lochUser.email) {
+      this.setState({
+        blurTable: false,
+      });
+    } else {
+      this.setState({
+        blurTable: true,
+      });
+    }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify([]));
     this.props.createAnonymousUserSmartMoneyApi(data);
@@ -561,9 +575,27 @@ class SmartMoneyPage extends BaseReactComponent {
       }
     );
   };
+  openSignOutModal = () => {
+    this.setState({
+      showSignOutModal: true,
+    });
+  };
+  closeSignOutModal = () => {
+    this.setState({
+      showSignOutModal: false,
+    });
+  };
   signOutFun = () => {
     this.props.setPageFlagDefault();
     deleteToken(true);
+    this.closeSignOutModal();
+  };
+  goToSmartMoneyFaq = () => {
+    SmartMoneyHowItWorksClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.props.history.push("/smart-money/faq");
   };
   render() {
     const tableData = this.state.accountList;
@@ -786,7 +818,7 @@ class SmartMoneyPage extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Realized PnL
+              Realized PnL (1yr)
             </span>
           </div>
         ),
@@ -1043,18 +1075,19 @@ class SmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <SmartMoneyMobilePage
-          location={this.props.location}
-          history={this.props.history}
-          accountList={this.state.accountList}
-          currency={this.state.currency}
-          isLoading={this.state.tableLoading}
-          currentPage={this.state.currentPage}
-          totalPage={this.state.totalPage}
-          pageLimit={this.state.pageLimit}
-          changePageLimit={this.changePageLimit}
-          onPageChange={this.onPageChange}
-        />
+        <MobileDevice isSmartMoney />
+        // <SmartMoneyMobilePage
+        //   location={this.props.location}
+        //   history={this.props.history}
+        //   accountList={this.state.accountList}
+        //   currency={this.state.currency}
+        //   isLoading={this.state.tableLoading}
+        //   currentPage={this.state.currentPage}
+        //   totalPage={this.state.totalPage}
+        //   pageLimit={this.state.pageLimit}
+        //   changePageLimit={this.changePageLimit}
+        //   onPageChange={this.onPageChange}
+        // />
       );
     }
 
@@ -1078,13 +1111,22 @@ class SmartMoneyPage extends BaseReactComponent {
                 hideButton={true}
                 onSignInClick={this.loginFunction}
                 blurTable={this.state.blurTable}
-                signOutFun={this.signOutFun}
+                signOutFun={this.openSignOutModal}
+                goToSmartMoneyFaq={this.goToSmartMoneyFaq}
               />
             </div>
           </div>
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
+            {this.state.showSignOutModal ? (
+              <ConformSmartMoneyLeaveModal
+                show={this.state.showSignOutModal}
+                history={this.props.history}
+                handleClose={this.closeSignOutModal}
+                handleYes={this.signOutFun}
+              />
+            ) : null}
             {this.state.addSmartMoneyAddressModal ? (
               <AddSmartMoneyAddressesModal
                 show={this.state.addSmartMoneyAddressModal}

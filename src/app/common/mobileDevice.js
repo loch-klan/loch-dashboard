@@ -24,6 +24,7 @@ import BackIcon from "../../assets/images/icons/backIcon.svg";
 import {
   MobileEmail,
   MobileEmailPageView,
+  SmartMobileEmail,
 } from "../../utils/AnalyticsFunctions";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -43,6 +44,9 @@ class MobileDevice extends BaseReactComponent {
   componentWillUnmount() {}
 
   handleSave = () => {
+    if (this.props.isSmartMoney) {
+      SmartMobileEmail({ email_address: this.state.email });
+    }
     MobileEmail({ email_address: this.state.email });
     toast.success("Email added to our mailing list");
 
@@ -83,19 +87,21 @@ class MobileDevice extends BaseReactComponent {
           pauseOnHover
           theme="light"
         />
-        <Image
-          src={BackIcon}
-          style={{
-            position: "absolute",
-            top: "2rem",
-            left: "2rem",
-            width: "3rem",
-          }}
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = "https://loch.one/";
-          }}
-        />
+        {!this.props.isSmartMoney ? (
+          <Image
+            src={BackIcon}
+            style={{
+              position: "absolute",
+              top: "2rem",
+              left: "2rem",
+              width: "3rem",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "https://loch.one/";
+            }}
+          />
+        ) : null}
         <Image src={LochIcon} style={{ position: "relative", top: "-8rem" }} />
         <div
           style={{
@@ -124,7 +130,7 @@ class MobileDevice extends BaseReactComponent {
         </div>
         <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-t-20">
           Add your email so you can be the first to know when we’ve launched
-          mobile for Loch.
+          mobile for {this.props.isSmartMoney ? "Loch’s Smart Money " : "Loch"}.
         </h4>
         <Form onValidSubmit={this.handleSave}>
           <FormElement

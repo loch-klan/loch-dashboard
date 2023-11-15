@@ -1,3 +1,49 @@
+.smartMoneyFAQContainer {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding: 0 28rem;
+  color: #0d0d0d;
+  font-weight: 400;
+  text-align: justify;
+  .smfaqHeading {
+    font-size: 25px;
+    line-height: 25px;
+    font-weight: 500;
+  }
+  .smfaqPointsContainer {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+    color: #0d0d0d;
+    .smfaqPoints {
+      margin-top: 1.5rem;
+    }
+  }
+  .smfaqQuestionAns {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    .smfaqQuestion {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .smfaqAns {
+      font-size: 14px;
+      line-height: 17px;
+      font-weight: 500;
+      font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+      color: #0d0d0d;
+      margin-top: 0.5rem;
+    }
+    .smfaqQuestionAnsNumbering {
+      font-size: 1.6rem;
+      font-weight: normal;
+      margin-right: 0.5rem;
+    }
+  }
+}
 .mobileSmartMoneyPage {
   .smartMoneyMobileHeaderContainer {
     background-color: #fff;
@@ -249,6 +295,13 @@
           vertical-align: middle;
         }
       }
+      .leftSmartMoneyFAQLogos {
+        cursor: pointer;
+        transition-duration: 300ms;
+        &:hover {
+          filter: opacity(0.65);
+        }
+      }
       .currency-wrapper {
         .dropdown {
           text-align: left;
@@ -290,9 +343,31 @@
     .rightSmartMoneyContainer {
       flex: 1;
       padding: 0rem;
-      .rightSmartMoneyContainerHeading {
-        color: #0d0d0d;
-        font-size: 2rem;
+
+      .rightSmartMoneyContainerHeadingParent {
+        display: flex;
+        align-items: center;
+        .rscHowItWorks {
+          color: #adadad;
+          font-size: 1.3rem;
+          margin-left: 1rem;
+          transition-duration: 300ms;
+          cursor: pointer;
+          &:hover {
+            color: #0d0d0d;
+          }
+        }
+        .rightSmartMoneyContainerHeading {
+          color: #0d0d0d;
+          font-size: 2rem;
+        }
+        .rightSmartMoneyContainerHeadingSmartMoney {
+          cursor: pointer;
+          transition-duration: 300ms;
+          &:hover {
+            filter: opacity(0.65);
+          }
+        }
       }
       .rightSmartMoneyContainerSubHeading {
         color: #adadad;
@@ -543,5 +618,10 @@
         height: 7rem;
       }
     }
+  }
+}
+@media screen and (max-width: 1000px) {
+  .smartMoneyFAQContainer {
+    padding: 0 10rem;
   }
 }
