@@ -349,7 +349,7 @@ class Intelligence extends Component {
               top:
                 element.getBoundingClientRect().top -
                 document.body.getBoundingClientRect().top -
-                15,
+                100,
             });
           }
         }, 0);
