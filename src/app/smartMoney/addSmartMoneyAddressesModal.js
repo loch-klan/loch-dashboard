@@ -504,8 +504,8 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
         {this.state.addressAdded ? (
           <AddSmartMoneyAddressesModalMessagesBox
             btnClick={this.showSignUpModal}
-            heading="Thanks for your contribution"
-            descriptionOne="Well done! This unique address seems to be worth more than $10K."
+            heading="Congratulations"
+            descriptionOne="This unique address is worth more than $10K"
             descriptionTwo="Please click Next to proceed."
             btnText="Next"
             imageIcon={TrophyCelebrationIcon}

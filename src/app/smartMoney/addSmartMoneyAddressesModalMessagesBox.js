@@ -22,7 +22,7 @@ class AddSmartMoneyAddressesModalMessagesBox extends BaseReactComponent {
               />
               <div
                 className="exit-overlay-body mt-3"
-                style={{ padding: "0rem 10.5rem" }}
+                style={{ padding: "0rem 5rem" }}
               >
                 <h6 className="inter-display-medium f-s-25">
                   {this.props.heading ? this.props.heading : ""}
