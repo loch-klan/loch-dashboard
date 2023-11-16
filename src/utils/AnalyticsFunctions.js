@@ -3933,6 +3933,14 @@ export const MobileEmail = ({ email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+export const SmartMobileEmail = ({ email_address }) => {
+  const event_name = "Smart money mobile coming soon page: email added";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 
 // email added for mopbile device
 export const MobileEmailPageView = () => {
@@ -5488,7 +5496,52 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-//Top accounts: net flows hover - done
+export const SmartMoneySignUp = ({ session_id, email_address }) => {
+  const event_name = "Smart money: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneySignIn = ({ session_id, email_address }) => {
+  const event_name = "Smart money: sign in";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyAddressAddedAttempted = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Smart money: address adding attempt";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyAddressAdded = ({
+  session_id,
+  email_address,
+  address,
+  nameTag,
+}) => {
+  const event_name = "Smart money: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    nameTag: nameTag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyChangeLimit = ({
   session_id,
   email_address,
@@ -5514,6 +5567,14 @@ export const SmartMoneyWalletClicked = ({
     "email address": email_address,
     wallet: wallet,
     isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
+  const event_name = "Smart money: how it works clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5548,7 +5609,7 @@ export const SmartMoneyNetflowHover = ({
   email_address,
   hover,
 }) => {
-  const event_name = "Smart money: net flows hover";
+  const event_name = "Smart money: realized PnL hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5557,7 +5618,7 @@ export const SmartMoneyNetflowHover = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Smart money: realized PnL hover";
+  const event_name = "Smart money: unrealized PnL hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

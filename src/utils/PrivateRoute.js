@@ -86,7 +86,25 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             );
           }
         }
-        if (props.location.pathname === "/smart-money") {
+        if (
+          props.location.pathname &&
+          props.location.pathname.includes("/smart-money")
+        ) {
+          const isMobile = mobileCheck();
+          if (isMobile) {
+            return (
+              <Redirect
+                to={{
+                  pathname: "/",
+                  state: {
+                    from: props.location,
+                    params: props.match.params,
+                    page: "route",
+                  },
+                }}
+              />
+            );
+          }
           return (
             <div className="main-section">
               <div className={`main-section-right`}>

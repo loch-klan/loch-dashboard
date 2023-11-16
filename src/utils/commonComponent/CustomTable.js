@@ -13,6 +13,7 @@ import {
 } from "../form";
 import Loading from "../../app/common/Loading";
 import SmartMoneyPagination from "./SmartMoneyPagination";
+import { ContributeTrophyIcon } from "../../assets/images/icons";
 import CustomOverlay from "./CustomOverlay";
 import { CurrencyType, noExponents, numToCurrency } from "../ReusableFunctions";
 
@@ -120,55 +121,88 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-              <AutoSizer disableHeight>
-                {({ width }) => (
-                  <Table
-                    width={width}
-                    height={
-                      (this.props.showDataAtBottom && this.props.moreData
-                        ? 50
-                        : 60) *
-                        (tableData.length + 1) -
-                      10
-                    }
-                    headerHeight={headerHeight ? headerHeight : 80}
-                    rowHeight={
-                      this.props.showDataAtBottom && this.props.moreData
-                        ? 50
-                        : 60
-                    }
-                    rowCount={tableData.length}
-                    rowGetter={({ index }) => tableData[index]}
-                    className={`custom-table ${className}`}
-                    gridClassName={`${
-                      this.props.addWatermark ? "tableWatermark" : ""
-                    } ${
-                      this.props.addWatermarkMoveUp
-                        ? "tableWatermarkMoveUp"
-                        : ""
-                    }`}
-                  >
-                    {columnList &&
-                      columnList.length > 0 &&
-                      columnList.map((item, key) => {
-                        return (
-                          <Column
-                            key={key}
-                            // width={item.coumnWidth}
-                            width={width * item.coumnWidth}
-                            className={item.className}
-                            label={item.labelName}
-                            dataKey={item.dataKey}
-                            cellRenderer={({ rowData, rowIndex }) => {
-                              return item.cell(rowData, item.dataKey, rowIndex);
-                            }}
-                            headerClassName={item.headerClassName}
-                          />
-                        );
-                      })}
-                  </Table>
-                )}
-              </AutoSizer>
+              <>
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <Table
+                      width={width}
+                      height={
+                        (this.props.showDataAtBottom && this.props.moreData
+                          ? 50
+                          : 60) *
+                          (tableData.length + 1) -
+                        10
+                      }
+                      headerHeight={headerHeight ? headerHeight : 80}
+                      rowHeight={
+                        this.props.showDataAtBottom && this.props.moreData
+                          ? 50
+                          : 60
+                      }
+                      rowCount={tableData.length}
+                      rowGetter={({ index }) => tableData[index]}
+                      className={`custom-table ${className}`}
+                      gridClassName={`${
+                        this.props.addWatermark ? "tableWatermark" : ""
+                      } ${
+                        this.props.addWatermarkMoveUp
+                          ? "tableWatermarkMoveUp"
+                          : ""
+                      }`}
+                    >
+                      {columnList &&
+                        columnList.length > 0 &&
+                        columnList.map((item, key) => {
+                          return (
+                            <Column
+                              key={key}
+                              // width={item.coumnWidth}
+                              width={width * item.coumnWidth}
+                              className={item.className}
+                              label={item.labelName}
+                              dataKey={item.dataKey}
+                              cellRenderer={({ rowData, rowIndex }) => {
+                                return item.cell(
+                                  rowData,
+                                  item.dataKey,
+                                  rowIndex
+                                );
+                              }}
+                              headerClassName={item.headerClassName}
+                            />
+                          );
+                        })}
+                    </Table>
+                  )}
+                </AutoSizer>
+                {this.props.smartMoneyBlur ? (
+                  <div className="smartMoneyBlurContainer">
+                    <div className="smartMoneyBlurContainerTwo">
+                      <div className="smartMoneyBlur">
+                        <Image
+                          className="smartMoneyBlurLogo"
+                          src={ContributeTrophyIcon}
+                        />
+                        <div className="exit-overlay-body">
+                          <h6 className="inter-display-medium f-s-24">
+                            Contribute to the community to see more
+                          </h6>
+                          <p className="inter-display-medium f-s-14 grey-969 mt-2">
+                            Add a unique address worth at least $10K to view the
+                            full list
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        className="secondary-btn"
+                        onClick={this.props.blurButtonClick}
+                      >
+                        Add address now
+                      </Button>
+                    </div>
+                  </div>
+                ) : null}
+              </>
             ) : (
               <>
                 {this.props.showHeaderOnEmpty ? (
@@ -506,6 +540,7 @@ class CustomTable extends BaseReactComponent {
         {this.props.isSmartMoney ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
+              smartMoneyBlur={this.props.smartMoneyBlur}
               history={history}
               location={location}
               page={currentPage + 1}

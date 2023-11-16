@@ -1,8 +1,6 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
 
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -15,7 +13,7 @@ import {
 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "../intelligence/Api";
 import { BaseReactComponent } from "../../utils/form";
-
+import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal";
 import {
   amountFormat,
   CurrencyType,
@@ -24,7 +22,7 @@ import {
   numToCurrency,
   TruncateText,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import Loading from "../common/Loading";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -33,14 +31,17 @@ import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
+  getUser,
   setPageFlagDefault,
+  updateWalletListFlag,
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
-import { getSmartMoney } from "./Api";
+import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api";
 
 import {
   SmartMoneyChangeLimit,
+  SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
   SmartMoneyNetflowHover,
   SmartMoneyNetWorthHover,
@@ -61,6 +62,13 @@ import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
 
+import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../assets/images/icons/index.js";
+import MobileDevice from "../common/mobileDevice.js";
+
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -69,6 +77,10 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      showSignOutModal: false,
+      showWithLogin: false,
+      blurTable: true,
+      addSmartMoneyAddressModal: false,
       pageLimit: 1,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       year: "",
@@ -179,6 +191,20 @@ class SmartMoneyPage extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    let token = window.sessionStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (token && lochUser && lochUser.email) {
+      this.setState({
+        blurTable: false,
+      });
+    } else {
+      this.setState({
+        blurTable: true,
+      });
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify([]));
+    this.props.createAnonymousUserSmartMoneyApi(data);
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
@@ -261,6 +287,20 @@ class SmartMoneyPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (!this.props.commonState.smart_money) {
+      let token = window.sessionStorage.getItem("lochToken");
+      this.props.updateWalletListFlag("smart_money", true);
+      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (token && lochUser && lochUser.email) {
+        this.setState({
+          blurTable: false,
+        });
+      } else {
+        this.setState({
+          blurTable: true,
+        });
+      }
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -512,7 +552,51 @@ class SmartMoneyPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
   };
-
+  showAddSmartMoneyAddresses = () => {
+    this.setState({
+      addSmartMoneyAddressModal: true,
+    });
+  };
+  hideAddSmartMoneyAddresses = () => {
+    this.setState({
+      addSmartMoneyAddressModal: false,
+      showWithLogin: false,
+    });
+  };
+  loginFunction = () => {
+    this.setState(
+      {
+        showWithLogin: true,
+      },
+      () => {
+        this.setState({
+          addSmartMoneyAddressModal: true,
+        });
+      }
+    );
+  };
+  openSignOutModal = () => {
+    this.setState({
+      showSignOutModal: true,
+    });
+  };
+  closeSignOutModal = () => {
+    this.setState({
+      showSignOutModal: false,
+    });
+  };
+  signOutFun = () => {
+    this.props.setPageFlagDefault();
+    deleteToken(true);
+    this.closeSignOutModal();
+  };
+  goToSmartMoneyFaq = () => {
+    SmartMoneyHowItWorksClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.props.history.push("/smart-money/faq");
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -536,7 +620,7 @@ class SmartMoneyPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.1,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -580,7 +664,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -637,7 +721,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -688,7 +772,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -720,12 +804,10 @@ class SmartMoneyPage extends BaseReactComponent {
                   }}
                   className="cost-common-container"
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(tempNetWorth * tempCurrencyRate)}
-                    </span>
-                  </div>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {CurrencyType(false) +
+                      numToCurrency(tempNetWorth * tempCurrencyRate)}
+                  </span>
                 </div>
               </CustomOverlay>
             );
@@ -734,25 +816,15 @@ class SmartMoneyPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
+          <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net flows
+              Realized PnL (1yr)
             </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
           </div>
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -779,7 +851,7 @@ class SmartMoneyPage extends BaseReactComponent {
               >
                 <div className="gainLossContainer">
                   <div
-                    className={`gainLoss ${tempNetflows < 0 ? "loss" : "gain"}`}
+                    className={`gainLoss `}
                     onMouseEnter={() => {
                       SmartMoneyNetflowHover({
                         session_id: getCurrentUser().id,
@@ -799,7 +871,15 @@ class SmartMoneyPage extends BaseReactComponent {
                   >
                     {tempNetflows !== 0 ? (
                       <Image
-                        src={tempNetflows < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempNetflows < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                         className="mr-2"
                       />
                     ) : null}
@@ -822,7 +902,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Realized PnL
+              Unealized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -834,7 +914,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.15,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -861,7 +941,7 @@ class SmartMoneyPage extends BaseReactComponent {
               >
                 <div className="gainLossContainer">
                   <div
-                    className={`gainLoss ${tempProfits < 0 ? "loss" : "gain"}`}
+                    className={`gainLoss `}
                     onMouseEnter={() => {
                       SmartMoneyProfitHover({
                         session_id: getCurrentUser().id,
@@ -881,7 +961,15 @@ class SmartMoneyPage extends BaseReactComponent {
                   >
                     {tempProfits !== 0 ? (
                       <Image
-                        src={tempProfits < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempProfits < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                         className="mr-2"
                       />
                     ) : null}
@@ -896,102 +984,113 @@ class SmartMoneyPage extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unrealized
-            </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
-          </div>
-        ),
-        dataKey: "returns",
+      // {
+      //   labelName: (
+      //     <div
+      //       className=" history-table-header-col no-hover"
+      //       id="netflows"
+      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Unrealized
+      //       </span>
+      //       {/* <Image
+      //         src={sortByIcon}
+      //         className={
+      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       /> */}
+      //     </div>
+      //   ),
+      //   dataKey: "returns",
 
-        coumnWidth: 0.15,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "returns") {
-            let tempReturns = rowData.returns ? rowData.returns : 0;
-            let tempCurrencyRate = this.state.currency?.rate
-              ? this.state.currency.rate
-              : 0;
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempReturns * tempCurrencyRate
-                    ? amountFormat(
-                        Math.abs(tempReturns * tempCurrencyRate),
-                        "en-US",
-                        "USD"
-                      ) + "%"
-                    : "0.00%"
-                }
-              >
-                <div className="gainLossContainer">
-                  <div
-                    className={`gainLoss ${tempReturns < 0 ? "loss" : "gain"}`}
-                    onMouseEnter={() => {
-                      SmartMoneyReturnHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hover:
-                          tempReturns * tempCurrencyRate
-                            ? amountFormat(
-                                Math.abs(tempReturns * tempCurrencyRate),
-                                "en-US",
-                                "USD"
-                              ) + "%"
-                            : "0.00%",
-                      });
-                      this.updateTimer();
-                    }}
-                  >
-                    {tempReturns !== 0 ? (
-                      <Image
-                        src={tempReturns < 0 ? LossIcon : GainIcon}
-                        className="mr-2"
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
+      //   coumnWidth: 0.15,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "returns") {
+      //       let tempReturns = rowData.returns ? rowData.returns : 0;
+      //       let tempCurrencyRate = this.state.currency?.rate
+      //         ? this.state.currency.rate
+      //         : 0;
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={
+      //             tempReturns * tempCurrencyRate
+      //               ? amountFormat(
+      //                   Math.abs(tempReturns * tempCurrencyRate),
+      //                   "en-US",
+      //                   "USD"
+      //                 ) + "%"
+      //               : "0.00%"
+      //           }
+      //         >
+      //           <div className="gainLossContainer">
+      //             <div
+      //               className={`gainLoss `}
+      //               onMouseEnter={() => {
+      //                 SmartMoneyReturnHover({
+      //                   session_id: getCurrentUser().id,
+      //                   email_address: getCurrentUser().email,
+      //                   hover:
+      //                     tempReturns * tempCurrencyRate
+      //                       ? amountFormat(
+      //                           Math.abs(tempReturns * tempCurrencyRate),
+      //                           "en-US",
+      //                           "USD"
+      //                         ) + "%"
+      //                       : "0.00%",
+      //                 });
+      //                 this.updateTimer();
+      //               }}
+      //             >
+      //               {tempReturns !== 0 ? (
+      //                 <Image
+      //                   style={{
+      //                     height: "1.5rem",
+      //                     width: "1.5rem",
+      //                   }}
+      //                   src={
+      //                     tempReturns < 0
+      //                       ? ArrowDownLeftSmallIcon
+      //                       : ArrowUpRightSmallIcon
+      //                   }
+      //                   className="mr-2"
+      //                 />
+      //               ) : null}
+      //               <span className="inter-display-medium f-s-13 lh-16 grey-313">
+      //                 {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
+      //               </span>
+      //             </div>
+      //           </div>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
     ];
+
     if (mobileCheck()) {
       return (
-        <SmartMoneyMobilePage
-          location={this.props.location}
-          history={this.props.history}
-          accountList={this.state.accountList}
-          currency={this.state.currency}
-          isLoading={this.state.tableLoading}
-          currentPage={this.state.currentPage}
-          totalPage={this.state.totalPage}
-          pageLimit={this.state.pageLimit}
-          changePageLimit={this.changePageLimit}
-          onPageChange={this.onPageChange}
-        />
+        <MobileDevice isSmartMoney />
+        // <SmartMoneyMobilePage
+        //   location={this.props.location}
+        //   history={this.props.history}
+        //   accountList={this.state.accountList}
+        //   currency={this.state.currency}
+        //   isLoading={this.state.tableLoading}
+        //   currentPage={this.state.currentPage}
+        //   totalPage={this.state.totalPage}
+        //   pageLimit={this.state.pageLimit}
+        //   changePageLimit={this.changePageLimit}
+        //   onPageChange={this.onPageChange}
+        // />
       );
     }
+
     return (
       <>
         {/* topbar */}
@@ -1003,18 +1102,42 @@ class SmartMoneyPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <SmartMoneyHeader
+                openAddAddressModal={this.showAddSmartMoneyAddresses}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 hideButton={true}
+                onSignInClick={this.loginFunction}
+                blurTable={this.state.blurTable}
+                signOutFun={this.openSignOutModal}
+                goToSmartMoneyFaq={this.goToSmartMoneyFaq}
               />
             </div>
           </div>
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table smartMoneyPage">
+            {this.state.showSignOutModal ? (
+              <ConformSmartMoneyLeaveModal
+                show={this.state.showSignOutModal}
+                history={this.props.history}
+                handleClose={this.closeSignOutModal}
+                handleYes={this.signOutFun}
+              />
+            ) : null}
+            {this.state.addSmartMoneyAddressModal ? (
+              <AddSmartMoneyAddressesModal
+                show={this.state.addSmartMoneyAddressModal}
+                onHide={this.hideAddSmartMoneyAddresses}
+                history={this.props.history}
+                signInVar={this.state.showWithLogin}
+                blurTable={this.state.blurTable}
+              />
+            ) : null}
+            {/* <Button onClick={this.loginFunction}>Login</Button>
+            <Button onClick={this.signUpFunction}>Sign up</Button> */}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1059,6 +1182,8 @@ class SmartMoneyPage extends BaseReactComponent {
                 ) : (
                   <div className="smartMoneyTable">
                     <TransactionTable
+                      smartMoneyBlur={this.state.blurTable}
+                      blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding
                       tableData={tableData}
@@ -1072,8 +1197,8 @@ class SmartMoneyPage extends BaseReactComponent {
                       onPageChange={this.onPageChange}
                       pageLimit={this.state.pageLimit}
                       changePageLimit={this.changePageLimit}
-
-                      // addWatermark
+                      addWatermark
+                      className={this.state.blurTable ? "noScroll" : ""}
                     />
                     {/* <div className="ShowDust">
                   <p
@@ -1102,6 +1227,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
   TopAccountsInWatchListState: state.TopAccountsInWatchListState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1112,10 +1238,11 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   TopsetPageFlagDefault,
   getAllParentChains,
+  updateWalletListFlag,
 
   removeFromWatchList,
   updateAddToWatchList,
-
+  createAnonymousUserSmartMoneyApi,
   GetAllPlan,
 };
 
