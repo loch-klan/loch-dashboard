@@ -2973,6 +2973,16 @@ export const netflowChainFilter = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const netflowDateFilter = ({ session_id, email_address, from, to }) => {
+  const event_name = "Intelligence:netflows: date filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    from: from,
+    to: to,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const topNetflowChainFilter = ({
   session_id,
   email_address,

@@ -43,6 +43,7 @@ import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
+  convertNtoNumber,
   CurrencyType,
   mobileCheck,
   noExponents,
@@ -114,11 +115,12 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      isShowingAge: false,
       selectedTimes: [],
       selectedAssets: [],
       selectedMethods: [],
       selectedNetworks: [],
-      amountFilter: "Amount",
+      amountFilter: "Size",
       exportModal: false,
       goToBottom: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -198,6 +200,11 @@ class TransactionHistoryPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
+  toggleAgeTimestamp = () => {
+    this.setState({
+      isShowingAge: !this.state.isShowingAge,
+    });
+  };
   history = this.props;
   handleExportModal = () => {
     TransactionHistoryExport({
@@ -568,7 +575,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     if (title === this.state.amountFilter) {
       this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
       this.setState({
-        amountFilter: "Amount",
+        amountFilter: "Size",
       });
       return;
     }
@@ -960,6 +967,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
         return {
           time: row.timestamp,
+          age: row.age,
           from: {
             address: row.from_wallet.address,
             metaData: walletFromData,
@@ -1014,15 +1022,32 @@ class TransactionHistoryPage extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="time"
-            onClick={() => this.handleTableSort("time")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Date
-            </span>
+          <div className="cp history-table-header-col" id="time">
+            <CustomOverlay
+              position="top"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={
+                this.state.isShowingAge
+                  ? "Click to view Timestamp"
+                  : "Click to view Age"
+              }
+            >
+              <span
+                onClick={() => {
+                  this.toggleAgeTimestamp();
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                style={{
+                  textDecoration: "underline",
+                }}
+              >
+                {this.state.isShowingAge ? "Age" : "Timestamp"}
+              </span>
+            </CustomOverlay>
             <Image
+              onClick={() => this.handleTableSort("time")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
@@ -1031,12 +1056,31 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        // coumnWidth: 90,
-        coumnWidth: 0.16,
+
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
-            return moment(rowData.time).format("MM/DD/YY");
+            let tempVal = "-";
+            let tempOpp = "-";
+            if (this.state.isShowingAge && rowData.age) {
+              tempVal = rowData.age;
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+            } else if (!this.state.isShowingAge && rowData.time) {
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = rowData.age;
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={tempOpp ? tempOpp : "-"}
+              >
+                <span>{tempVal}</span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -1059,8 +1103,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        // coumnWidth: 90,
-        coumnWidth: 0.15,
+
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -1278,8 +1322,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        // coumnWidth: 90,
-        coumnWidth: 0.15,
+
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -1495,8 +1539,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        // coumnWidth: 130,
-        coumnWidth: 0.2,
+
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1537,24 +1581,23 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "amount",
-        // coumnWidth: 100,
-        coumnWidth: 0.15,
+
+        coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
             // return rowData.amount.value?.toFixed(2)
+            const tempAmountVal = convertNtoNumber(rowData.amount.value);
             return (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(noExponents(rowData.amount.value)).toLocaleString(
-                  "en-US"
-                )}
+                text={tempAmountVal ? tempAmountVal : "0.00"}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {numToCurrency(rowData.amount.value).toLocaleString("en-US")}
+                  {numToCurrency(tempAmountVal).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -1580,9 +1623,9 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValueThen",
-        // coumnWidth: 100,
+
         className: "usd-value",
-        coumnWidth: 0.25,
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValueThen") {
@@ -1603,7 +1646,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
-
+            const tempValueToday = convertNtoNumber(valueToday);
+            const tempValueThen = convertNtoNumber(valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1612,13 +1656,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                    tempValueToday && tempValueToday !== "0"
+                      ? CurrencyType(false) + tempValueToday
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                     {CurrencyType(false) +
-                      numToCurrency(valueToday).toLocaleString("en-US")}
+                      numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>(
@@ -1628,14 +1673,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                    tempValueThen
+                      ? CurrencyType(false) + tempValueThen
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {valueThen
+                    {tempValueThen
                       ? CurrencyType(false) +
-                        numToCurrency(valueThen).toLocaleString("en-US")
+                        numToCurrency(tempValueThen).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
@@ -1664,9 +1710,9 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdTransactionFee",
-        // coumnWidth: 100,
+
         className: "usd-value",
-        coumnWidth: 0.25,
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdTransactionFee") {
@@ -1685,6 +1731,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
+            const tempValueToday = convertNtoNumber(valueToday);
+            const tempValueThen = convertNtoNumber(valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1693,14 +1741,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(valueToday?.toFixed(2)).toLocaleString("en-US")
+                    tempValueToday
+                      ? CurrencyType(false) + tempValueToday
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {valueToday
+                    {tempValueToday
                       ? CurrencyType(false) +
-                        numToCurrency(valueToday).toLocaleString("en-US")
+                        numToCurrency(tempValueToday).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
@@ -1711,14 +1760,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(valueThen?.toFixed(2)).toLocaleString("en-US")
+                    tempValueThen
+                      ? CurrencyType(false) + tempValueThen
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {valueThen
+                    {tempValueThen
                       ? CurrencyType(false) +
-                        numToCurrency(valueThen).toLocaleString("en-US")
+                        numToCurrency(tempValueThen).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
@@ -1747,8 +1797,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "method",
-        // coumnWidth: 100,
-        coumnWidth: 0.2,
+
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
@@ -1885,7 +1935,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       onSelect={this.handleAmount}
                       title={this.state.amountFilter}
                       activetab={
-                        this.state.amountFilter === "Amount"
+                        this.state.amountFilter === "Size"
                           ? ""
                           : this.state.amountFilter
                       }
@@ -1961,7 +2011,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         control={{
                           type: CustomTextControl,
                           settings: {
-                            placeholder: "Search",
+                            placeholder: "Search addresses",
                           },
                         }}
                         classes={{

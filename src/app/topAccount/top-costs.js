@@ -978,8 +978,8 @@ class TopCost extends Component {
               </div> */}
                 <TransactionTable
                   noSubtitleBottomPadding
-                  title="Unrealized gains"
-                  subTitle="Understand your unrealized gains per token"
+                  title="Unrealized profit and loss"
+                  subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}

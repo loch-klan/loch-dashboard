@@ -19,6 +19,7 @@
     }
 
     .fillter_tabs_section {
+      min-width: 85rem;
       // display: flex;
       // align-items: center;
       padding: 1.2rem;
@@ -70,9 +71,11 @@
             margin-left: 1rem;
           }
           .form-group {
+            flex: 1;
             .search-input {
               font-size: 1.2rem;
-              padding-left: 1rem;
+              padding-left: 0.5rem;
+              padding-right: 1rem !important;
               &::-ms-input-placeholder {
                 font-size: 1.2rem;
               }
@@ -81,6 +84,9 @@
                 font-size: 1.2rem;
               }
             }
+          }
+          .is-valid {
+            padding-right: 1rem !important;
           }
         }
         .col-md-3 {
@@ -360,6 +366,7 @@
   }
 }
 .transaction-history-table {
+  min-width: 85rem;
   .loadingSizeContainer {
     height: 50vh;
     display: flex;

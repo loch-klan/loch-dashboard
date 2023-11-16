@@ -26,6 +26,7 @@ import {
 import {
   EyeIcon,
   MetamaskIcon,
+  PlusCircleIcon,
   WalletIcon,
   XCircleIcon,
   XCircleRedIcon,
@@ -39,6 +40,7 @@ class TopBar extends Component {
     this.state = {
       totalWallets: "",
       firstWallet: "",
+      firstFullWallet: "",
       walletList: [],
       exchangeList: [],
       exchangeListImages: [],
@@ -98,12 +100,25 @@ class TopBar extends Component {
     let tempWalletAdd = window.sessionStorage.getItem(
       "topBarLocalStorageWalletAddresses"
     );
+    let tempFullWalletAdd = window.sessionStorage.getItem(
+      "topBarLocalStorageFullWalletAddresses"
+    );
     if (tempWalletAdd) {
       tempWalletAdd = JSON.parse(tempWalletAdd);
     }
+    if (tempFullWalletAdd) {
+      tempFullWalletAdd = JSON.parse(tempFullWalletAdd);
+    }
+
     if (tempWalletAdd && tempWalletAdd.length > 0) {
       this.setState({
         firstWallet: tempWalletAdd.length > 0 ? tempWalletAdd[0] : "",
+        firstFullWallet:
+          tempFullWalletAdd &&
+          tempFullWalletAdd.length &&
+          tempFullWalletAdd[0].length > 0
+            ? tempFullWalletAdd[0][0]
+            : "",
         totalWallets: tempWalletAdd.length,
         walletList: tempWalletAdd,
       });
@@ -113,6 +128,7 @@ class TopBar extends Component {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
       const tempWalletList = [];
+      const tempFullWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
       const tempWalletListToPush = [];
@@ -128,15 +144,22 @@ class TopBar extends Component {
               }
             }
           } else {
+            let tempFullAdd = data.address;
+            let tempSortAdd = "";
             if (data?.nickname) {
               tempWalletList.push(data.nickname);
+              tempSortAdd = data.nickname;
             } else if (data?.tag) {
               tempWalletList.push(data.tag);
+              tempSortAdd = data.tag;
             } else if (data?.display_address) {
               tempWalletList.push(data.display_address);
+              tempSortAdd = data.display_address;
             } else if (data?.address) {
               tempWalletList.push(TruncateText(data.address));
+              tempSortAdd = TruncateText(data.address);
             }
+            tempFullWalletList.push([tempFullAdd, tempSortAdd]);
 
             const sendThis = {
               nickname: data.nickname,
@@ -148,14 +171,26 @@ class TopBar extends Component {
           }
           return null;
         });
-        tempWalletList.sort().reverse();
+
+        tempWalletList.sort((a, b) => a - b).reverse();
+        tempFullWalletList.sort((a, b) => a[1] - b[1]).reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
+        const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
         window.sessionStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+        window.sessionStorage.setItem(
+          "topBarLocalStorageFullWalletAddresses",
+          tempWalletFullListLoaclPass
+        );
+
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          firstFullWallet:
+            tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
+              ? tempFullWalletList[0][0]
+              : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
@@ -171,41 +206,69 @@ class TopBar extends Component {
     if (this.props.HeaderState?.wallet) {
       const walletList = this.props.HeaderState?.wallet;
       const tempWalletList = [];
+      const tempFullWalletList = [];
       const regex = /\.eth$/;
       if (walletList) {
         walletList.forEach((data) => {
           let tempAddress = "";
+
+          let tempFullAdd = data.address;
+          let tempSortAdd = "";
           if (data?.nickname) {
             tempAddress = data.nickname;
+            tempSortAdd = data.nickname;
           } else if (data?.nameTag) {
             tempAddress = data.nameTag;
+            tempSortAdd = data.nameTag;
           } else if (data?.displayAddress) {
             tempAddress = data.displayAddress;
+            tempSortAdd = data.displayAddress;
+
             if (!regex.test(tempAddress)) {
               tempAddress = TruncateText(tempAddress);
+              tempSortAdd = TruncateText(tempAddress);
             }
           } else if (data?.address) {
             tempAddress = data.address;
+            tempSortAdd = data.address;
+
             if (!regex.test(tempAddress)) {
               tempAddress = TruncateText(tempAddress);
+              tempSortAdd = TruncateText(tempAddress);
             }
           } else if (data?.apiAddress) {
             tempAddress = data.apiAddress;
+            tempSortAdd = data.apiAddress;
+
             if (!regex.test(tempAddress)) {
               tempAddress = TruncateText(tempAddress);
+              tempSortAdd = TruncateText(tempAddress);
             }
           }
 
           tempWalletList.push(tempAddress);
+          tempFullWalletList.push([tempFullAdd, tempSortAdd]);
         });
-        tempWalletList.sort().reverse();
+
+        tempWalletList.sort((a, b) => a - b).reverse();
+        tempFullWalletList.sort((a, b) => a[1] - b[1]).reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
+        const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
         window.sessionStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
+        window.sessionStorage.setItem(
+          "topBarLocalStorageFullWalletAddresses",
+          tempWalletFullListLoaclPass
+        );
+
         this.setState({
           firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          firstFullWallet:
+            tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
+              ? tempFullWalletList[0][0]
+              : "",
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
         });
@@ -563,7 +626,11 @@ class TopBar extends Component {
       return null;
     }
     return (
-      <div className="topBarContainer">
+      <div
+        className={`topBarContainer ${
+          this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
+        }`}
+      >
         {this.state.walletList.length > 0 ? (
           <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
@@ -575,6 +642,7 @@ class TopBar extends Component {
               buttonRef={this.props.buttonRef}
               totalWallets={this.state.totalWallets}
               firstWallet={this.state.firstWallet}
+              firstFullWallet={this.state.firstFullWallet}
             />
           </div>
         ) : (
@@ -584,19 +652,28 @@ class TopBar extends Component {
             id="address-button"
             onClick={this.passAddWalletClick}
           >
-            <Image className="topBarWalletAdd" src={EyeIcon} />
-            <span className="dotDotText">Add wallet address</span>
+            <Image className="topBarWalletAdd" src={PlusCircleIcon} />
+            <span className="dotDotText">Add address</span>
           </div>
         )}
         <div
-          style={{
-            display: "flex",
-            overflow: "hidden",
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "flex-end",
-          }}
+          className={`topBarContainerRightBlock ${
+            this.state.walletList.length > 0
+              ? "topBarContainerRightBlockMultiple"
+              : ""
+          }`}
         >
+          {this.state.walletList.length > 0 ? (
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn maxWidth50 ml-2"
+              id="address-button"
+              onClick={this.passAddWalletClick}
+            >
+              <Image className="topBarWalletAdd" src={PlusCircleIcon} />
+              <span className="dotDotText">Add address</span>
+            </div>
+          ) : null}
           {this.state.metamaskWalletConnected ? (
             <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
               <Image className="topBarWalletAdd" src={WalletIcon} />
@@ -636,7 +713,9 @@ class TopBar extends Component {
           )}
           <div
             onClick={this.passConnectExchangeClick}
-            className="topbar-btn ml-2 maxWidth50"
+            className={`topbar-btn ml-2 ${
+              this.state.walletList.length > 0 ? "maxWidth50" : ""
+            }`}
           >
             {this.state.exchangeList.length > 0 ? (
               <>

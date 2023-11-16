@@ -538,7 +538,12 @@ class Defi extends Component {
             <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
               Balance sheet
             </h2>
-            <div style={{}} className="balance-sheet-card">
+            <div
+              style={{
+                minWidth: "85rem",
+              }}
+              className="balance-sheet-card"
+            >
               <div className="balance-dropdown">
                 <div className="balance-list-content">
                   {/* For yeild */}
@@ -579,10 +584,9 @@ class Defi extends Component {
                           style={
                             this.state.isYeildToggle
                               ? {
-                                  transform: "rotate(180deg)",
                                   filter: "opacity(1)",
                                 }
-                              : {}
+                              : { transform: "rotate(180deg)" }
                           }
                         />
                       </div>
@@ -671,10 +675,9 @@ class Defi extends Component {
                           style={
                             this.state.isDebtToggle
                               ? {
-                                  transform: "rotate(180deg)",
                                   filter: "opacity(1)",
                                 }
-                              : {}
+                              : { transform: "rotate(180deg)" }
                           }
                         />
                       </div>
@@ -738,6 +741,7 @@ class Defi extends Component {
             <div
               style={{
                 marginBottom: "1.6rem",
+                minWidth: "85rem",
               }}
               className="sortby-section"
             >
@@ -782,6 +786,9 @@ class Defi extends Component {
                   <div
                     key={`sortedList-${index}`}
                     className="defi-card-wrapper"
+                    style={{
+                      minWidth: "85rem",
+                    }}
                   >
                     <div className="top-title-wrapper">
                       <div className="heading-image">
@@ -993,7 +1000,11 @@ class Defi extends Component {
 
               <div
                 className="defi animation-wrapper"
-                style={{ padding: "3rem", textAlign: "center" }}
+                style={{
+                  padding: "3rem",
+                  textAlign: "center",
+                  minWidth: "85rem",
+                }}
               >
                 <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
                   No data found
@@ -1001,7 +1012,12 @@ class Defi extends Component {
               </div>
             ) : (
               // </Col>
-              <div className="defi animation-wrapper">
+              <div
+                style={{
+                  minWidth: "85rem",
+                }}
+                className="defi animation-wrapper"
+              >
                 <Loading />
               </div>
             )}

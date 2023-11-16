@@ -96,6 +96,7 @@ import {
   loadingAnimation,
   mobileCheck,
   noExponents,
+  numToCurrency,
   TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
@@ -113,6 +114,10 @@ import "./_mobilePortfolio.scss";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import LinkIcon from "../../assets/images/link.svg";
 import PortfolioMobile from "./PortfolioMobile";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../assets/images/icons/index.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -135,6 +140,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isShowingAge: false,
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
@@ -290,6 +296,11 @@ class Portfolio extends BaseReactComponent {
   waitForMixpannelCallOff = () => {
     this.setState({
       waitForMixpannelCall: false,
+    });
+  };
+  toggleAgeTimestamp = () => {
+    this.setState({
+      isShowingAge: !this.state.isShowingAge,
     });
   };
   // get token
@@ -1051,7 +1062,8 @@ class Portfolio extends BaseReactComponent {
       });
   };
   render() {
-    const { table_home, assetPriceList_home } = this.props.intelligenceState;
+    const { table_home, assetPriceList_home, table_home_count } =
+      this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
 
     //   "asset price state",
@@ -1100,6 +1112,7 @@ class Portfolio extends BaseReactComponent {
 
         return {
           time: row.timestamp,
+          age: row.age,
           from: {
             address: row.from_wallet.address,
             metaData: walletFromData,
@@ -1148,17 +1161,39 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="time"
             onClick={() => {
-              this.handleTableSort("time");
               TransactionHistoryDate({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
               });
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Date
-            </span>
+            <CustomOverlay
+              position="top"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={
+                this.state.isShowingAge
+                  ? "Click to view Timestamp"
+                  : "Click to view Age"
+              }
+            >
+              <span
+                onClick={() => {
+                  this.toggleAgeTimestamp();
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                style={{
+                  textDecoration: "underline",
+                }}
+              >
+                {this.state.isShowingAge ? "Age" : "Timestamp"}
+              </span>
+            </CustomOverlay>
             <Image
+              onClick={() => {
+                this.handleTableSort("time");
+              }}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
@@ -1167,14 +1202,33 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        coumnWidth: 0.3,
+        coumnWidth: 0.4,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "time") {
-            return moment(rowData.time).format("MM/DD/YY");
+            let tempVal = "-";
+            let tempOpp = "-";
+            if (this.state.isShowingAge && rowData.age) {
+              tempVal = rowData.age;
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+            } else if (!this.state.isShowingAge && rowData.time) {
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = rowData.age;
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={tempOpp ? tempOpp : "-"}
+              >
+                <span>{tempVal}</span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -1203,7 +1257,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -1408,7 +1462,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -1612,7 +1666,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2021,15 +2075,19 @@ class Portfolio extends BaseReactComponent {
                 colorCode="#000"
               >
                 <div className="gainLossContainer">
-                  <div
-                    className={`gainLoss ${
-                      rowData.GainLoss < 0 ? "loss" : "gain"
-                    }`}
-                  >
+                  <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
                         className="mr-2"
-                        src={rowData.GainLoss < 0 ? LossIcon : GainIcon}
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainLoss < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -2243,7 +2301,7 @@ class Portfolio extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        title="Unrealized gains"
+                        title="Unrealized profit and loss"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
@@ -2253,8 +2311,24 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="Understand your unrealized gains per token"
+                        subTitle="Understand your unrealized profit and loss per token"
                         tableData={tableDataCostBasis.slice(0, 3)}
+                        moreData={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                            ? `${numToCurrency(
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length - 3,
+                                true
+                              ).toLocaleString("en-US")}+ assets`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 3
+                        }
                         columnList={CostBasisColumnData}
                         headerHeight={60}
                         isArrow={true}
@@ -2270,7 +2344,7 @@ class Portfolio extends BaseReactComponent {
                         disableOnLoading
                         noSubtitleBottomPadding
                         loaderHeight={15.5}
-                        headerTitle="Realized gains"
+                        headerTitle="Realized profit and loss"
                         headerSubTitle="Understand your portfolio's net flows"
                         isArrow={true}
                         handleClick={() => {
@@ -2331,6 +2405,17 @@ class Portfolio extends BaseReactComponent {
                       }}
                     >
                       <TransactionTable
+                        moreData={
+                          table_home_count && table_home_count > 3
+                            ? `${numToCurrency(
+                                table_home_count - 3,
+                                true
+                              ).toLocaleString("en-US")}+ transactions`
+                            : 0
+                        }
+                        showDataAtBottom={
+                          table_home_count && table_home_count > 3
+                        }
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion

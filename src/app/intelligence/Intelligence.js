@@ -11,6 +11,7 @@ import {
   IntShare,
   netflowAssetFilter,
   netflowChainFilter,
+  netflowDateFilter,
   netflowExplainer1,
   netflowExplainer2,
   NetflowSwitch,
@@ -52,11 +53,17 @@ import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import InflowOutflowChart from "./InflowOutflowChart";
 import { EyeThinIcon } from "../../assets/images/icons";
+import Calendar from "react-calendar";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class Intelligence extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fromDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      minDate: new Date(new Date().setFullYear(2011, 0, 1)),
       // showPercentage: {
       //   icon: arrowUpRight,
       //   percent: "25",
@@ -98,8 +105,34 @@ class Intelligence extends Component {
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
       waitForMixpannelCall: false,
+      isFromCalendar: false,
+      isToCalendar: false,
     };
   }
+  showFromCalendar = () => {
+    this.setState({
+      isFromCalendar: !this.state.isFromCalendar,
+    });
+  };
+  hideFromCalendar = () => {
+    if (this.state.isFromCalendar) {
+      this.setState({
+        isFromCalendar: false,
+      });
+    }
+  };
+  showToCalendar = () => {
+    this.setState({
+      isToCalendar: !this.state.isToCalendar,
+    });
+  };
+  hideToCalendar = () => {
+    if (this.state.isToCalendar) {
+      this.setState({
+        isToCalendar: false,
+      });
+    }
+  };
   waitForMixpannelCallOn = () => {
     this.setState({
       waitForMixpannelCall: true,
@@ -193,7 +226,8 @@ class Intelligence extends Component {
     }
     this.startPageView();
     this.props.getAllCoins();
-    this.timeFilter(0, true);
+    //here this.timeFilter(0, true);
+    this.callTimeFilter();
     this.props.GetAllPlan();
     this.props.getUser();
     this.assetList();
@@ -221,15 +255,40 @@ class Intelligence extends Component {
     }
 
     this.updateTimer(true);
-
     return () => {
       clearInterval(window.checkIntelligenceTimer);
     };
   }
-
+  callTimeFilter = () => {
+    this.setState({
+      graphValue: "",
+      netFlowLoading: true,
+      isGraphLoading: true,
+    });
+    this.props.getAssetProfitLoss(
+      this,
+      moment(this.state.fromDate).unix(),
+      moment(this.state.toDate).unix(),
+      [],
+      this.state.selectedAssets
+    );
+    this.props.getProfitAndLossApi(
+      this,
+      moment(this.state.fromDate).unix(),
+      moment(this.state.toDate).unix(),
+      [],
+      this.state.selectedAssets
+    );
+  };
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     // used for filter
+    if (
+      prevState.fromDate !== this.state.fromDate ||
+      prevState.toDate !== this.state.toDate
+    ) {
+      this.callTimeFilter();
+    }
     if (
       prevProps.intelligenceState?.updatedInsightList !==
       this.props.intelligenceState?.updatedInsightList
@@ -259,7 +318,8 @@ class Intelligence extends Component {
     if (!this.props.commonState.intelligence) {
       this.props.updateWalletListFlag("intelligence", true);
       this.props.getAllCoins();
-      this.timeFilter(0);
+      //here this.timeFilter(0);
+      this.callTimeFilter();
       this.assetList();
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
@@ -289,7 +349,7 @@ class Intelligence extends Component {
               top:
                 element.getBoundingClientRect().top -
                 document.body.getBoundingClientRect().top -
-                15,
+                100,
             });
           }
         }, 0);
@@ -306,22 +366,7 @@ class Intelligence extends Component {
       this.props?.location?.pathname + this.props?.location?.hash ===
         "/top-accounts/intelligence#price"
     ) {
-      if (this.props.location.hash !== "") {
-        setTimeout(() => {
-          const id = this.props.location.hash.replace("#", "");
-          const element = document.getElementById(id);
-          if (element) {
-            window.scrollTo({
-              top:
-                element.getBoundingClientRect().top -
-                document.body.getBoundingClientRect().top -
-                15,
-            });
-          }
-        }, 0);
-      } else {
-        window.scrollTo(0, 0);
-      }
+      window.scrollTo(0, 0);
       setTimeout(() => {
         this.props.history.replace("/intelligence");
       }, 1000);
@@ -370,208 +415,249 @@ class Intelligence extends Component {
   assetList = () => {
     let data = new URLSearchParams();
     // data.append("end_datetime", endDate);
-    getTransactionAsset(data, this);
+    getTransactionAsset(data, this, true);
   };
-  timeFilter = (option, first) => {
-    let selectedChains = [];
-    // if(activeBadgeList){
-    //   this.props.OnboardingState.coinsList.map((item)=>{
-    //     if(activeBadgeList.includes(item.id)){
-    //       selectedChains.push(item.code)
-    //     }
-    //   })
-    // }
-    let handleSelected = "All";
-    this.setState({
-      graphValue: "",
-      netFlowLoading: true,
-      isGraphLoading: true,
-    });
-    const today = moment().unix();
-    if (option == 0) {
-      this.props.getProfitAndLossApi(
-        this,
-        false,
-        false,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      // for asset Breakdown
-      this.props.getAssetProfitLoss(
-        this,
-        false,
-        false,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      handleSelected = "All";
-    } else if (option == 1) {
-      const fiveyear = moment().subtract(5, "years").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        fiveyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      // for asset Breakdown
-      this.props.getAssetProfitLoss(
-        this,
-        fiveyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      handleSelected = "5 years";
-    } else if (option == 2) {
-      handleSelected = "4 years";
-      const fouryear = moment().subtract(4, "years").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        fouryear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        fouryear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 3) {
-      handleSelected = "3 years";
-      const threeyear = moment().subtract(3, "years").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        threeyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        threeyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 4) {
-      handleSelected = "2 years";
-      const twoyear = moment().subtract(2, "years").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        twoyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        twoyear,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 5) {
-      handleSelected = "1 year";
-      const year = moment().subtract(1, "years").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        year,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        year,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 6) {
-      handleSelected = "6 months";
-      const sixmonth = moment().subtract(6, "months").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        sixmonth,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        sixmonth,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 7) {
-      handleSelected = "1 month";
-      const month = moment().subtract(1, "month").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        month,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        month,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 8) {
-      handleSelected = "1 week";
-      const week = moment().subtract(1, "week").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        week,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        week,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else if (option == 9) {
-      handleSelected = "1 day";
-      const day = moment().subtract(1, "day").unix();
-      this.props.getProfitAndLossApi(
-        this,
-        day,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        day,
-        today,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    }
-    if (!first) {
-      netflowTimeFilter({
+  changeFromDate = (passedDate) => {
+    if (passedDate) {
+      let toText = "";
+      if (this.state.toDate) {
+        toText = moment(this.state.toDate).format("MMMM Do YYYY");
+      }
+      let fromText = moment(passedDate).format("MMMM Do YYYY");
+      this.setState({
+        fromDate: passedDate,
+        isFromCalendar: false,
+        isToCalendar: false,
+      });
+      netflowDateFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        selected: handleSelected,
+        from: fromText,
+        to: toText,
       });
-      this.updateTimer();
     }
-    this.setState({
-      title: option,
-    });
   };
+  changeToDate = (passedDate) => {
+    if (passedDate) {
+      let fromText = "";
+      if (this.state.fromDate) {
+        fromText = moment(this.state.fromDate).format("MMMM Do YYYY");
+      }
+      let toText = moment(passedDate).format("MMMM Do YYYY");
+
+      this.setState({
+        toDate: passedDate,
+        isToCalendar: false,
+        isFromCalendar: false,
+      });
+      netflowDateFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        from: fromText,
+        to: toText,
+      });
+    }
+  };
+  // timeFilter = (option, first) => {
+  //   let selectedChains = [];
+  //   // if(activeBadgeList){
+  //   //   this.props.OnboardingState.coinsList.map((item)=>{
+  //   //     if(activeBadgeList.includes(item.id)){
+  //   //       selectedChains.push(item.code)
+  //   //     }
+  //   //   })
+  //   // }
+  //   let handleSelected = "All";
+  //   this.setState({
+  //     graphValue: "",
+  //     netFlowLoading: true,
+  //     isGraphLoading: true,
+  //   });
+  //   const today = moment().unix();
+  //   if (option == 0) {
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       false,
+  //       false,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     // for asset Breakdown
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       false,
+  //       false,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     handleSelected = "All";
+  //   } else if (option == 1) {
+  //     const fiveyear = moment().subtract(5, "years").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       fiveyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     // for asset Breakdown
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       fiveyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     handleSelected = "5 years";
+  //   } else if (option == 2) {
+  //     handleSelected = "4 years";
+  //     const fouryear = moment().subtract(4, "years").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       fouryear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       fouryear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 3) {
+  //     handleSelected = "3 years";
+  //     const threeyear = moment().subtract(3, "years").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       threeyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       threeyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 4) {
+  //     handleSelected = "2 years";
+  //     const twoyear = moment().subtract(2, "years").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       twoyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       twoyear,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 5) {
+  //     handleSelected = "1 year";
+  //     const year = moment().subtract(1, "years").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       year,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       year,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 6) {
+  //     handleSelected = "6 months";
+  //     const sixmonth = moment().subtract(6, "months").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       sixmonth,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       sixmonth,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 7) {
+  //     handleSelected = "1 month";
+  //     const month = moment().subtract(1, "month").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       month,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       month,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 8) {
+  //     handleSelected = "1 week";
+  //     const week = moment().subtract(1, "week").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       week,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       week,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   } else if (option == 9) {
+  //     handleSelected = "1 day";
+  //     const day = moment().subtract(1, "day").unix();
+  //     this.props.getProfitAndLossApi(
+  //       this,
+  //       day,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //     this.props.getAssetProfitLoss(
+  //       this,
+  //       day,
+  //       today,
+  //       selectedChains,
+  //       this.state.selectedAssets
+  //     );
+  //   }
+  //   if (!first) {
+  //     netflowTimeFilter({
+  //       session_id: getCurrentUser().id,
+  //       email_address: getCurrentUser().email,
+  //       selected: handleSelected,
+  //     });
+  //     this.updateTimer();
+  //   }
+  //   this.setState({
+  //     title: option,
+  //   });
+  // };
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
     this.setState({
@@ -579,30 +665,8 @@ class Intelligence extends Component {
       netFlowLoading: true,
       isGraphLoading: true,
     });
-    let startDate = moment().unix();
-    let endDate;
-    if (activeFooter == "0") {
-      startDate = "";
-      endDate = "";
-    } else if (activeFooter == "1") {
-      endDate = moment().subtract(5, "years").unix();
-    } else if (activeFooter == "2") {
-      endDate = moment().subtract(4, "years").unix();
-    } else if (activeFooter == "3") {
-      endDate = moment().subtract(3, "years").unix();
-    } else if (activeFooter == "4") {
-      endDate = moment().subtract(2, "years").unix();
-    } else if (activeFooter == "5") {
-      endDate = moment().subtract(1, "years").unix();
-    } else if (activeFooter == "6") {
-      endDate = moment().subtract(6, "months").unix();
-    } else if (activeFooter == "7") {
-      endDate = moment().subtract(1, "month").unix();
-    } else if (activeFooter == "8") {
-      endDate = moment().subtract(1, "week").unix();
-    } else if (activeFooter == "9") {
-      endDate = moment().subtract(1, "day").unix();
-    }
+    let startDate = moment(this.state.fromDate).unix();
+    let endDate = moment(this.state.toDate).unix();
 
     let selectedChains = [];
     this.props.OnboardingState.coinsList?.map((item) => {
@@ -611,39 +675,22 @@ class Intelligence extends Component {
       }
     });
 
-    if ((activeFooter = 0)) {
-      this.props.getProfitAndLossApi(
-        this,
-        false,
-        false,
-        selectedChains,
-        this.state.selectedAssets
-      );
-      this.props.getAssetProfitLoss(
-        this,
-        false,
-        false,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    } else {
-      this.props.getProfitAndLossApi(
-        this,
-        startDate,
-        endDate,
-        selectedChains,
-        this.state.selectedAssets
-      );
+    this.props.getProfitAndLossApi(
+      this,
+      startDate,
+      endDate,
+      selectedChains,
+      this.state.selectedAssets
+    );
 
-      // for asset Breakdown
-      this.props.getAssetProfitLoss(
-        this,
-        startDate,
-        endDate,
-        selectedChains,
-        this.state.selectedAssets
-      );
-    }
+    // for asset Breakdown
+    this.props.getAssetProfitLoss(
+      this,
+      startDate,
+      endDate,
+      selectedChains,
+      this.state.selectedAssets
+    );
 
     const tempIsSearchUsed = this.state.isChainSearchUsed;
     netflowChainFilter({
@@ -654,15 +701,6 @@ class Intelligence extends Component {
     });
     this.updateTimer();
     this.setState({ isChainSearchUsed: false });
-  };
-
-  handleSelect = (opt) => {
-    const t = opt.split(" ")[1];
-    const x = opt.split(" ")[2];
-    this.setState({
-      title: t == "Max" ? t : t + " " + x,
-    });
-    this.timeFilter(t == "Max" ? t : t + " " + x);
   };
 
   // For add new address
@@ -753,7 +791,6 @@ class Intelligence extends Component {
     });
     this.updateTimer();
   };
-
   render() {
     return (
       <>
@@ -802,7 +839,7 @@ class Intelligence extends Component {
               />
             </div>
 
-            <div className="insights-image m-b-32">
+            {/* <div className="insights-image m-b-32">
               <PageHeader
                 title="Insights"
                 showImg={insight}
@@ -819,7 +856,6 @@ class Intelligence extends Component {
               />
               <div style={{ position: "relative" }}>
                 <div className="insights-wrapper">
-                  {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
                   ) : this.state.updatedInsightList &&
@@ -883,12 +919,18 @@ class Intelligence extends Component {
                   )}
                 </div>
               </div>
+            </div> */}
+            <div
+              id="price"
+              style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
+            >
+              <InflowOutflowChart userWalletList={this.state.userWalletList} />
             </div>
             <div className="portfolio-bar-graph">
               <div id="netflow" style={{ paddingTop: "0.4rem" }}>
                 <PageHeader
                   showNetflowExplainers
-                  title="Realized gains"
+                  title="Realized profit and loss"
                   showImg={EyeThinIcon}
                 />
               </div>
@@ -896,6 +938,52 @@ class Intelligence extends Component {
 
               {/* Second */}
               {/* Netflow Info End */}
+              {/* <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
+                <OutsideClickHandler onOutsideClick={this.hideFromCalendar}>
+                  <div className="intelligenceCalendarContainer">
+                    <div onClick={this.showFromCalendar}>From</div>
+                    {this.state.isFromCalendar ? (
+                      <div className="intelligenceCalendar">
+                        <Calendar
+                          date={this.state.fromDate}
+                          className={
+                            "calendar-select inter-display-medium f-s-13 lh-16"
+                          }
+                          onChange={this.changeFromDate}
+                          maxDate={this.state.maxDate}
+                          minDate={this.state.minDate}
+                          defaultValue={this.state.fromDate}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                </OutsideClickHandler>
+                <OutsideClickHandler onOutsideClick={this.hideToCalendar}>
+                  <div className="intelligenceCalendarContainer">
+                    <div onClick={this.showToCalendar}>To</div>
+                    {this.state.isToCalendar ? (
+                      <div className="intelligenceCalendar">
+                        <Calendar
+                          date={this.state.toDate}
+                          className={
+                            "calendar-select inter-display-medium f-s-13 lh-16"
+                          }
+                          onChange={this.changeToDate}
+                          maxDate={this.state.maxDate}
+                          minDate={this.state.minDate}
+                          defaultValue={this.state.toDate}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                </OutsideClickHandler>
+              </div> */}
 
               <div
                 style={{
@@ -905,37 +993,33 @@ class Intelligence extends Component {
               >
                 {this.props.intelligenceState.graphValue ? (
                   <BarGraphSection
+                    dontShowAssets
+                    showToCalendar={this.showToCalendar}
+                    hideToCalendar={this.hideToCalendar}
+                    hideFromCalendar={this.hideFromCalendar}
+                    showFromCalendar={this.showFromCalendar}
+                    changeToDate={this.changeToDate}
+                    changeFromDate={this.changeFromDate}
+                    isFromCalendar={this.state.isFromCalendar}
+                    toDate={this.state.toDate}
+                    isToCalendar={this.state.isToCalendar}
+                    fromDate={this.state.fromDate}
+                    maxDate={this.state.maxDate}
+                    minDate={this.state.minDate}
+                    showFromAndTo
                     isScrollVisible={false}
                     data={this.props.intelligenceState.graphValue[0]}
                     options={this.props.intelligenceState.graphValue[1]}
                     coinsList={this.props.OnboardingState.coinsList}
-                    timeFunction={(e, activeBadgeList) =>
-                      this.timeFilter(e, activeBadgeList)
-                    }
-                    showSwitch={true}
                     isSwitch={this.state.isSwitch}
                     setSwitch={this.setSwitch}
                     marginBottom="m-b-32"
                     // showFooter={false}
                     showFooterDropdown={false}
-                    showFooter={true}
+                    // showFooter={true}
                     showToken={true}
-                    footerLabels={[
-                      "Max",
-                      "5 Y",
-                      "4 Y",
-                      "3 Y",
-                      "2 Y",
-                      "1 Y",
-                      "6 M",
-                      "1 M",
-                      "1 W",
-                      "1 D",
-                    ]}
                     activeTitle={this.state.title}
                     assetList={this.state.AssetList}
-                    // handleSelect={(opt) => this.handleSelect(opt)}
-                    showBadges={true}
                     showPercentage={this.props.intelligenceState.graphValue[2]}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
@@ -970,11 +1054,7 @@ class Intelligence extends Component {
                   </div>
                 )}
               </div>
-              <div id="price" style={{ paddingTop: "0.4rem" }}>
-                <InflowOutflowChart
-                  userWalletList={this.state.userWalletList}
-                />
-              </div>
+
               {/* footer */}
               <Footer />
             </div>

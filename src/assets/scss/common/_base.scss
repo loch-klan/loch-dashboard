@@ -134,6 +134,15 @@ body {
       // padding: 2rem 3rem;
     }
   }
+  .main-section-right-margin-handler {
+    padding-left: 27.2rem;
+    overflow-x: hidden;
+  }
+  .main-section-right-margin-handler-closed {
+    padding-left: 18.7rem;
+    padding-right: 8.5rem;
+    overflow-x: hidden;
+  }
 }
 
 //Fonts
@@ -1075,6 +1084,27 @@ form {
   text-overflow: ellipsis;
 }
 .table-wrapper {
+  .bottomExtraInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    color: #adadad;
+    font-size: 12px;
+    font-weight: 500;
+    .bottomExtraInfoText {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem 1rem;
+      cursor: pointer;
+      transition-duration: 300ms;
+      &:hover {
+        color: #000000;
+      }
+    }
+  }
   .form-group {
     width: 8rem;
     margin-left: 3rem;
@@ -1672,9 +1702,13 @@ form {
 
 .page {
   padding: 0 13.4rem;
-  overflow-x: hidden;
   width: 100%;
 }
+// @media all and (max-width: 1300px) {
+//   .page {
+//     padding: 0;
+//   }
+// }
 
 .graph-header {
   .header {
