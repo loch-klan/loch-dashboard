@@ -133,9 +133,15 @@ class SmartMoneyFAQPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80 inter-display-medium">
           <div className="smartMoneyFAQContainer">
-            <div className="smfaqHeading">How it works</div>
             <div className="smfaqPointsContainer">
-              <div className="smfaqPoints">You see a token 2x in price.</div>
+              <div
+                style={{
+                  marginTop: "0rem",
+                }}
+                className="smfaqPoints"
+              >
+                You see a token 2x in price.
+              </div>
               <div className="smfaqPoints">
                 You see another token plummet by 4x overnight.
               </div>
