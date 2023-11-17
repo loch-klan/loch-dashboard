@@ -547,7 +547,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
               className="exit-overlay-body"
               style={{ padding: "0rem 10.5rem" }}
             >
-              <h6 className="inter-display-medium f-s-25">
+              <h6 className="inter-display-medium text-center f-s-25">
                 Contribute to the community
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">

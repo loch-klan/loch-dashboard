@@ -45,3 +45,9 @@ export { default as RoundedGreyArrowDownIcon } from "./roundedGreyArrowDown.svg"
 export { default as SidebarLeftArrowIcon } from "./sidebarLeftArrow.svg";
 export { default as ArrowUpRightSmallIcon } from "./arrowUpRightSmall.svg";
 export { default as ArrowDownLeftSmallIcon } from "./arrowDownLeftSmall.svg";
+export { default as PlusCircleSmartMoneyIcon } from "./plusCircleSmartMoney.svg";
+export { default as QuestionmarkCircleSmartMoneyIcon } from "./questionmarkCircleSmartMoney.svg";
+export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg";
+export { default as SmartMoneyFaqModalIcon } from "./smartMoneyFaqModal.svg";
+export { default as BackArrowSmartMoneyIcon } from "./backArrowSmartMoney.svg";
+export { default as CrossSmartMoneyIcon } from "./crossSmartMoney.svg";

@@ -5570,6 +5570,14 @@ export const SmartMoneyWalletClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const SmartMoneyFAQClicked = ({ session_id, email_address }) => {
+  const event_name = "Smart money: faq clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
   const event_name = "Smart money: how it works clicked";
   const eventProperties = {
