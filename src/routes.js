@@ -10,6 +10,7 @@ import Wallet from "./app/wallet/Wallet";
 import Cost from "./app/cost/Cost";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifyEmail from "./app/common/VerifyEmail";
+import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
 import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
@@ -35,6 +36,7 @@ import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
+import smartMoneyFAQPage from "./app/smartMoney/smartMoneyFAQPage";
 const routes = [
   {
     path: "/",
@@ -133,6 +135,12 @@ const routes = [
     component: SmartMoneyPage,
   },
   {
+    path: "/smart-money/faq",
+    name: "Smart Money FAQs",
+    type: PrivateRoute,
+    component: smartMoneyFAQPage,
+  },
+  {
     path: "/top-accounts",
     name: "Top accounts",
     type: PrivateRoute,
@@ -210,6 +218,12 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/verify-email-smart-money",
+    name: "Verify Smart Money Email",
+    type: Route,
+    component: VerifySmartMoneyEmailLink,
   },
   {
     path: "/app-feature",

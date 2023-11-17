@@ -3,6 +3,12 @@ import { Image } from "react-bootstrap";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 export const mobileCheck = () => {
+  // if (
+  //   BASE_URL_S3 ===
+  //   "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+  // ) {
+  //   return false;
+  // }
   if (
     BASE_URL_S3 ===
     "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"

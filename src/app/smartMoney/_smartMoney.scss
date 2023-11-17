@@ -1,3 +1,49 @@
+.smartMoneyFAQContainer {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding: 0 28rem;
+  color: #0d0d0d;
+  font-weight: 400;
+  text-align: justify;
+  .smfaqHeading {
+    font-size: 25px;
+    line-height: 25px;
+    font-weight: 500;
+  }
+  .smfaqPointsContainer {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+    color: #0d0d0d;
+    .smfaqPoints {
+      margin-top: 1.5rem;
+    }
+  }
+  .smfaqQuestionAns {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    .smfaqQuestion {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .smfaqAns {
+      font-size: 14px;
+      line-height: 17px;
+      font-weight: 500;
+      font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+      color: #0d0d0d;
+      margin-top: 0.5rem;
+    }
+    .smfaqQuestionAnsNumbering {
+      font-size: 1.6rem;
+      font-weight: normal;
+      margin-right: 0.5rem;
+    }
+  }
+}
 .mobileSmartMoneyPage {
   .smartMoneyMobileHeaderContainer {
     background-color: #fff;
@@ -20,7 +66,7 @@
       display: flex;
       align-items: center;
       .smheaderLogo {
-        height: 3rem;
+        height: 3.5rem;
       }
       .smheaderText {
         margin-left: 1rem;
@@ -28,14 +74,14 @@
         white-space: nowrap;
         overflow: hidden;
         .smheaderTextHeading {
-          font-size: 15px;
+          font-size: 18px;
           color: #19191a;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
         }
         .smheaderTextSubHeading {
-          font-size: 12px;
+          font-size: 14px;
           color: #b0b1b3;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -153,8 +199,79 @@
     height: 100%;
     width: 100%;
     position: relative;
-
     display: flex;
+    .smarMoneyHeaderSignInContainer {
+      color: #313233;
+      padding: 1rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.8rem;
+      transition-duration: 300ms;
+      border: 1.3px #e5e5e6 solid;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      background-color: white;
+      margin-right: 3rem;
+      &:hover {
+        box-shadow: none;
+        background-color: #f2f2f2;
+        color: #19191a;
+        .smarMoneyHeaderSignInIconContainer {
+          background-color: white;
+        }
+      }
+
+      .smarMoneyHeaderSignInIconContainer {
+        transition-duration: 300ms;
+        margin-right: 0.5rem;
+        border: 0.1rem solid #e5e5e6;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        max-width: 2.5rem;
+        max-height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.8rem;
+        background-color: white;
+        .smarMoneyHeaderSignInIcon {
+          height: 1.3rem;
+        }
+      }
+    }
+    .smarMoneyHeaderSignedInContainer {
+      .smarMoneyHeaderSignInData {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        white-space: nowrap;
+      }
+      .smarMoneyHeaderSignedInIconContainer {
+        background-color: #f2f2f2;
+      }
+      .smarMoneyHeaderSignedInLeaveContainer {
+        display: flex;
+
+        .navbar-button {
+          background: none;
+          border: none;
+          color: #b0b1b3;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        img {
+          width: 1.6rem;
+          margin-left: 6rem;
+        }
+        &:hover {
+          .navbar-button {
+            color: #0d0d0d;
+          }
+        }
+      }
+    }
     .leftSmartMoneyContainer {
       width: 28rem;
       padding: 0rem 3rem;
@@ -176,6 +293,13 @@
           font-weight: 500;
           line-height: 24px;
           vertical-align: middle;
+        }
+      }
+      .leftSmartMoneyFAQLogos {
+        cursor: pointer;
+        transition-duration: 300ms;
+        &:hover {
+          filter: opacity(0.65);
         }
       }
       .currency-wrapper {
@@ -219,9 +343,31 @@
     .rightSmartMoneyContainer {
       flex: 1;
       padding: 0rem;
-      .rightSmartMoneyContainerHeading {
-        color: #0d0d0d;
-        font-size: 2rem;
+
+      .rightSmartMoneyContainerHeadingParent {
+        display: flex;
+        align-items: center;
+        .rscHowItWorks {
+          color: #adadad;
+          font-size: 1.3rem;
+          margin-left: 1rem;
+          transition-duration: 300ms;
+          cursor: pointer;
+          &:hover {
+            color: #0d0d0d;
+          }
+        }
+        .rightSmartMoneyContainerHeading {
+          color: #0d0d0d;
+          font-size: 2rem;
+        }
+        .rightSmartMoneyContainerHeadingSmartMoney {
+          cursor: pointer;
+          transition-duration: 300ms;
+          &:hover {
+            filter: opacity(0.65);
+          }
+        }
       }
       .rightSmartMoneyContainerSubHeading {
         color: #adadad;
@@ -230,11 +376,159 @@
     }
   }
 }
+.addCommunitySmartMoneyWrapperParent {
+  .addCommunityTopAccountsWrapperContainer {
+    width: 100%;
+    padding: 0rem 5rem;
+    .addWalletWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      .awOldDelBtn {
+        border-radius: 0.8rem;
+        width: 4rem;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        cursor: pointer;
+        margin-right: 2rem;
+        margin-left: 1rem;
+        &:hover {
+          filter: brightness(0.965);
+        }
+      }
+      .fakeBtn {
+        opacity: 0;
+        cursor: default;
+      }
+      .awInputWrapper {
+        border: 0.1rem solid #d4d4d4;
+        border-radius: 0.8rem;
+        padding: 1rem;
+        width: 100%;
+
+        .awLable {
+          color: #b0b1b3;
+          font-size: 1.2rem;
+        }
+        .awInputContainer {
+          flex: 1;
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+
+          .awInput {
+            border: none;
+            width: 100%;
+            padding: 0;
+            font-size: 1.5rem;
+            &:focus {
+              outline: none;
+            }
+            &::placeholder {
+              color: #b0b1b3;
+            }
+          }
+        }
+        .awInputBinIcon {
+          width: 3rem;
+          height: 3rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition-duration: 300ms;
+          &:hover {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04),
+              0px 1px 1px rgba(0, 0, 0, 0.04);
+          }
+        }
+        .awBlockContainer {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+          flex: 1;
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          color: #b0b1b3;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          .awNameTag {
+            font-size: 1.5rem;
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: left;
+          }
+        }
+        .awTopInputWrapper {
+          display: flex;
+          align-items: center;
+        }
+        .awBottomInputWrapper {
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+      }
+      .isAwInputWrapperValid {
+        border-color: #19191a;
+      }
+    }
+  }
+  .watchListAddressBtnContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    padding-top: 4.5rem;
+  }
+}
 .smartMoneyPage {
   padding: 0 28rem;
   overflow-x: hidden;
   width: 100%;
+
   .smartMoneyTable {
+    .smartMoneyBlurContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 1.2rem;
+      padding: 4rem;
+      display: flex;
+      align-items: flex-start;
+      background: linear-gradient(
+        white,
+        white,
+        white,
+        transparent,
+        transparent
+      );
+      .smartMoneyBlurContainerTwo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 2rem;
+        width: 100%;
+        .smartMoneyBlur {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-align: left;
+          width: 60%;
+        }
+        .smartMoneyBlurLogo {
+          height: 4rem;
+          margin-right: 2rem;
+        }
+      }
+    }
     .table-wrapper {
       .custom-table {
         .ReactVirtualized__Table__Grid {
@@ -261,5 +555,73 @@
         }
       }
     }
+    .noScroll {
+      .ReactVirtualized__Table__Grid {
+        &::-webkit-scrollbar {
+          width: 0rem !important;
+          height: 0rem !important;
+        }
+
+        &::-webkit-scrollbar-track {
+          border-radius: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCommunityTopAccountsWrapperAdded {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 1.2rem;
+  .addCommunityTopAccountsAddedHeader {
+    width: 100%;
+    z-index: 2;
+  }
+  .addCommunityTopAccountsAddedBody {
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    .addCommunityTopAccountsAddedBodyContent {
+      padding: 3rem 5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      .addCommunityTopAccountsAddedBodyContentChild {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .addCommunityTopAccountsAddedBodyContentChildErrorMeaageContainer {
+          padding: 0rem 5rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+          font-size: 1rem;
+          font-weight: normal;
+          color: #ea4e3c;
+          line-height: 19px;
+        }
+      }
+      .addCommunityTopAccountsAddedBodyIcon {
+        height: 3.5rem;
+      }
+      .addCommunityTopAccountsAddedBodyLargerIcon {
+        height: 7rem;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1000px) {
+  .smartMoneyFAQContainer {
+    padding: 0 10rem;
   }
 }

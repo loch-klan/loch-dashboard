@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dropdown, DropdownButton, Image } from "react-bootstrap";
 import logo from "../../image/Loch.svg";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
+import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
   const [currencyList, setAllCurrencyList] = React.useState([]);
+  const [localLochUser, setLocalLochUser] = React.useState(
+    JSON.parse(window.sessionStorage.getItem("lochUser"))
+  );
+
+  useEffect(() => {
+    if (!props.blurTable) {
+      setLocalLochUser(JSON.parse(window.sessionStorage.getItem("lochUser")));
+    } else {
+      setLocalLochUser(undefined);
+    }
+  }, [props.blurTable]);
+
   React.useEffect(() => {
     let currency = JSON.parse(window.sessionStorage.getItem("currency"));
 
@@ -62,47 +76,67 @@ export default function SmartMoneyHeader(props) {
       window.location.reload();
     }, 200);
   };
+  const goBackToSmartMoney = () => {
+    if (props.history && props.isFaq) {
+      props.history.replace("/smart-money");
+    }
+  };
   return (
     <div className="smartMoneyHeaderContainer">
       <div className="smartMoneyHeader">
         <div className="leftSmartMoneyContainer">
-          <div className="leftSmartMoneyLogos">
+          <div
+            className={`leftSmartMoneyLogos ${
+              props.isFaq ? "leftSmartMoneyFAQLogos" : ""
+            }`}
+            onClick={goBackToSmartMoney}
+          >
             <Image src={logo} />
             <span className="leftSmartMoneyLogoText">Loch</span>
           </div>
-          <div className="currency-wrapper">
-            <DropdownButton
-              id="currency-dropdown"
-              title={
-                selectedCurrency &&
-                selectedCurrency.symbol + " " + selectedCurrency.code
-              }
-              onClick={() => {
-                // MenuCurrencyDropdown({
-                //   session_id: getCurrentUser().id,
-                //   email_address: getCurrentUser().email,
-                //   currency:
-                //     selectedCurrency.symbol + " " + selectedCurrency.code,
-                // });
-              }}
-            >
-              {currencyList?.map((currency, key) => {
-                return (
-                  <Dropdown.Item
-                    key={key}
-                    onClick={() => handleFunction(currency)}
-                  >
-                    {" "}
-                    <span>{currency.symbol}</span> <span>{currency.code}</span>
-                  </Dropdown.Item>
-                );
-              })}
-            </DropdownButton>
-          </div>
+          {!props.isFaq ? (
+            <div className="currency-wrapper">
+              <DropdownButton
+                id="currency-dropdown"
+                title={
+                  selectedCurrency &&
+                  selectedCurrency.symbol + " " + selectedCurrency.code
+                }
+                onClick={() => {
+                  // MenuCurrencyDropdown({
+                  //   session_id: getCurrentUser().id,
+                  //   email_address: getCurrentUser().email,
+                  //   currency:
+                  //     selectedCurrency.symbol + " " + selectedCurrency.code,
+                  // });
+                }}
+              >
+                {currencyList?.map((currency, key) => {
+                  return (
+                    <Dropdown.Item
+                      key={key}
+                      onClick={() => handleFunction(currency)}
+                    >
+                      {" "}
+                      <span>{currency.symbol}</span>{" "}
+                      <span>{currency.code}</span>
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </div>
+          ) : null}
         </div>
         <div className="rightSmartMoneyContainer">
-          <div className="rightSmartMoneyContainerHeading inter-display-medium">
-            Loch’s Smart Money Leaderboard
+          <div className={`rightSmartMoneyContainerHeadingParent`}>
+            <div
+              onClick={goBackToSmartMoney}
+              className={`rightSmartMoneyContainerHeading inter-display-medium  ${
+                props.isFaq ? "rightSmartMoneyContainerHeadingSmartMoney" : ""
+              }`}
+            >
+              Loch’s Smart Money Leaderboard
+            </div>
           </div>
           <p
             style={{
@@ -113,6 +147,94 @@ export default function SmartMoneyHeader(props) {
             The lazy analyst’s guide to alpha
           </p>
         </div>
+
+        {!props.isFaq ? (
+          <>
+            {!props.isFaq ? (
+              <div
+                onClick={props.goToSmartMoneyFaq}
+                className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+              >
+                <div
+                  style={{
+                    minHeight: "2.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  How it works
+                </div>
+              </div>
+            ) : null}
+            {localLochUser &&
+            (localLochUser.email ||
+              localLochUser.first_name ||
+              localLochUser.last_name) ? (
+              <>
+                <div
+                  onClick={props.openAddAddressModal}
+                  className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                >
+                  <div
+                    style={{
+                      minHeight: "2.5rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Add address
+                  </div>
+                </div>
+                <CustomOverlay
+                  position="bottom"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text="Sign out"
+                  className="tool-tip-container-bottom-arrow"
+                >
+                  <div
+                    onClick={props.signOutFun}
+                    className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
+                  >
+                    <div className="smarMoneyHeaderSignInData">
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={BlackManIcon}
+                        />
+                      </div>
+                      <div>
+                        {localLochUser.first_name || localLochUser.last_name
+                          ? `${localLochUser.first_name} ${
+                              localLochUser.last_name
+                                ? localLochUser.last_name.slice(0, 1) + "."
+                                : ""
+                            }`
+                          : "Signed in"}
+                      </div>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              </>
+            ) : (
+              <div
+                onClick={props.onSignInClick}
+                className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+              >
+                <div className="smarMoneyHeaderSignInIconContainer">
+                  <Image
+                    className="smarMoneyHeaderSignInIcon"
+                    src={GreyManIcon}
+                  />
+                </div>
+                <div>Sign in now</div>
+              </div>
+            )}
+          </>
+        ) : null}
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
-const deleteToken = () => {
+const deleteToken = (notCurrencyRates) => {
   window.sessionStorage.removeItem("lochToken");
   window.sessionStorage.removeItem("addWallet");
   window.sessionStorage.removeItem("lochUser");
   window.sessionStorage.removeItem("lochDummyUser");
-  window.sessionStorage.removeItem("currencyRates");
-  window.sessionStorage.removeItem("currency");
+  if (!notCurrencyRates) {
+    window.sessionStorage.removeItem("currencyRates");
+    window.sessionStorage.removeItem("currency");
+  }
   window.sessionStorage.removeItem("currentPlan");
   window.sessionStorage.removeItem("share_id");
   window.sessionStorage.removeItem("Plans");
