@@ -41,6 +41,7 @@ import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api";
 
 import {
   SmartMoneyChangeLimit,
+  SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
   SmartMoneyNetflowHover,
@@ -68,6 +69,8 @@ import {
   ArrowUpRightSmallIcon,
 } from "../../assets/images/icons/index.js";
 import MobileDevice from "../common/mobileDevice.js";
+import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
+import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -77,6 +80,8 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      faqModal: false,
+      howItWorksModal: false,
       showSignOutModal: false,
       showWithLogin: false,
       blurTable: true,
@@ -563,6 +568,34 @@ class SmartMoneyPage extends BaseReactComponent {
       showWithLogin: false,
     });
   };
+  showFaqModal = () => {
+    SmartMoneyFAQClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      faqModal: true,
+    });
+  };
+  hideFaqModal = () => {
+    this.setState({
+      faqModal: false,
+    });
+  };
+  showHowItWorksModal = () => {
+    SmartMoneyHowItWorksClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      howItWorksModal: true,
+    });
+  };
+  hideHowItWorksModal = () => {
+    this.setState({
+      howItWorksModal: false,
+    });
+  };
   loginFunction = () => {
     this.setState(
       {
@@ -590,13 +623,7 @@ class SmartMoneyPage extends BaseReactComponent {
     deleteToken(true);
     this.closeSignOutModal();
   };
-  goToSmartMoneyFaq = () => {
-    SmartMoneyHowItWorksClicked({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.props.history.push("/smart-money/faq");
-  };
+
   render() {
     const tableData = this.state.accountList;
 
@@ -1112,7 +1139,8 @@ class SmartMoneyPage extends BaseReactComponent {
                 onSignInClick={this.loginFunction}
                 blurTable={this.state.blurTable}
                 signOutFun={this.openSignOutModal}
-                goToSmartMoneyFaq={this.goToSmartMoneyFaq}
+                showFaqModal={this.showFaqModal}
+                showHowItWorksModal={this.showHowItWorksModal}
               />
             </div>
           </div>
@@ -1125,6 +1153,20 @@ class SmartMoneyPage extends BaseReactComponent {
                 history={this.props.history}
                 handleClose={this.closeSignOutModal}
                 handleYes={this.signOutFun}
+              />
+            ) : null}
+            {this.state.faqModal ? (
+              <SmartMoneyFaqModal
+                show={this.state.faqModal}
+                onHide={this.hideFaqModal}
+                history={this.props.history}
+              />
+            ) : null}
+            {this.state.howItWorksModal ? (
+              <SmartMoneyHowItWorksModal
+                show={this.state.howItWorksModal}
+                onHide={this.hideHowItWorksModal}
+                history={this.props.history}
               />
             ) : null}
             {this.state.addSmartMoneyAddressModal ? (

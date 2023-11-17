@@ -2,7 +2,13 @@ import React, { useEffect } from "react";
 import { Dropdown, DropdownButton, Image } from "react-bootstrap";
 import logo from "../../image/Loch.svg";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
-import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
+import {
+  BlackManIcon,
+  GreyManIcon,
+  InfoCircleSmartMoneyIcon,
+  PlusCircleSmartMoneyIcon,
+  QuestionmarkCircleSmartMoneyIcon,
+} from "../../assets/images/icons";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 export default function SmartMoneyHeader(props) {
@@ -150,23 +156,6 @@ export default function SmartMoneyHeader(props) {
 
         {!props.isFaq ? (
           <>
-            {!props.isFaq ? (
-              <div
-                onClick={props.goToSmartMoneyFaq}
-                className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
-              >
-                <div
-                  style={{
-                    minHeight: "2.5rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  How it works
-                </div>
-              </div>
-            ) : null}
             {localLochUser &&
             (localLochUser.email ||
               localLochUser.first_name ||
@@ -174,64 +163,128 @@ export default function SmartMoneyHeader(props) {
               <>
                 <div
                   onClick={props.openAddAddressModal}
-                  className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                  className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                 >
-                  <div
-                    style={{
-                      minHeight: "2.5rem",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                    <Image
+                      className="smarMoneyHeaderSignInIcon"
+                      src={PlusCircleSmartMoneyIcon}
+                    />
+                  </div>
+                  <div className="smarMoneyHeaderSignInJustText">
                     Add address
                   </div>
                 </div>
-                <CustomOverlay
+                {!props.isFaq ? (
+                  <>
+                    {" "}
+                    <div
+                      onClick={props.showFaqModal}
+                      className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="smarMoneyHeaderSignInJustText">FAQ</div>
+                    </div>
+                    <div
+                      onClick={props.showHowItWorksModal}
+                      className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="smarMoneyHeaderSignInJustText">
+                        How it works
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+                {/* <CustomOverlay
                   position="bottom"
                   isIcon={false}
                   isInfo={true}
                   isText={true}
                   text="Sign out"
                   className="tool-tip-container-bottom-arrow"
+                > */}
+                <div
+                  onClick={props.signOutFun}
+                  className="smarMoneyHeaderSignInContainer  smarMoneyHeaderSignedInContainer inter-display-medium f-s-14 lh-19"
                 >
-                  <div
-                    onClick={props.signOutFun}
-                    className="smarMoneyHeaderSignInContainer smarMoneyHeaderSignedInContainer inter-display-medium f-s-13 lh-19"
-                  >
-                    <div className="smarMoneyHeaderSignInData">
-                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
-                        <Image
-                          className="smarMoneyHeaderSignInIcon"
-                          src={BlackManIcon}
-                        />
-                      </div>
-                      <div>
-                        {localLochUser.first_name || localLochUser.last_name
-                          ? `${localLochUser.first_name} ${
-                              localLochUser.last_name
-                                ? localLochUser.last_name.slice(0, 1) + "."
-                                : ""
-                            }`
-                          : "Signed in"}
-                      </div>
+                  <div className="smarMoneyHeaderSignInData">
+                    <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignedInIconContainer">
+                      <Image
+                        className="smarMoneyHeaderSignInIcon"
+                        src={BlackManIcon}
+                      />
+                    </div>
+                    <div className="smarMoneyHeaderSignInDataName">
+                      {localLochUser.first_name || localLochUser.last_name
+                        ? `${localLochUser.first_name} ${
+                            localLochUser.last_name
+                              ? localLochUser.last_name.slice(0, 1) + "."
+                              : ""
+                          }`
+                        : "Signed in"}
                     </div>
                   </div>
-                </CustomOverlay>
+                </div>
+                {/* </CustomOverlay> */}
               </>
             ) : (
-              <div
-                onClick={props.onSignInClick}
-                className="smarMoneyHeaderSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
-              >
-                <div className="smarMoneyHeaderSignInIconContainer">
-                  <Image
-                    className="smarMoneyHeaderSignInIcon"
-                    src={GreyManIcon}
-                  />
+              <>
+                {!props.isFaq ? (
+                  <>
+                    <div
+                      onClick={props.showFaqModal}
+                      className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="smarMoneyHeaderSignInJustText">FAQ</div>
+                    </div>
+                    <div
+                      onClick={props.showHowItWorksModal}
+                      className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="smarMoneyHeaderSignInJustText">
+                        How it works
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+                <div
+                  onClick={props.onSignInClick}
+                  className="smarMoneyHeaderSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                >
+                  <div className="smarMoneyHeaderSignInIconContainer">
+                    <Image
+                      className="smarMoneyHeaderSignInIcon"
+                      src={GreyManIcon}
+                    />
+                  </div>
+                  <div className="smarMoneyHeaderSignInDataName">
+                    Sign in now
+                  </div>
                 </div>
-                <div>Sign in now</div>
-              </div>
+              </>
             )}
           </>
         ) : null}
