@@ -44,14 +44,13 @@ import {
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
-  SmartMoneyNetflowHover,
+  SmartMoneyRealizedPNLHover,
   SmartMoneyNetWorthHover,
   SmartMoneyPageNext,
   SmartMoneyPagePrev,
   SmartMoneyPageSearch,
   SmartMoneyPageView,
-  SmartMoneyProfitHover,
-  SmartMoneyReturnHover,
+  SmartMoneyUnrealizedPNLHover,
   SmartMoneyTimeSpent,
   SmartMoneyWalletClicked,
 } from "../../utils/AnalyticsFunctions";
@@ -880,7 +879,7 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss `}
                     onMouseEnter={() => {
-                      SmartMoneyNetflowHover({
+                      SmartMoneyRealizedPNLHover({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         hover:
@@ -970,7 +969,7 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss `}
                     onMouseEnter={() => {
-                      SmartMoneyProfitHover({
+                      SmartMoneyUnrealizedPNLHover({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         hover:
