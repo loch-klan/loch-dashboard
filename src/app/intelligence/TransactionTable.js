@@ -39,6 +39,8 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        xAxisScrollable={props.xAxisScrollable}
+        yAxisScrollable={props.yAxisScrollable}
         moreData={props.moreData}
         showDataAtBottom={props.showDataAtBottom}
         moreDataHandleClick={props.handleClick}

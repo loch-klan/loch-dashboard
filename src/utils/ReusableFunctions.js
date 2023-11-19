@@ -10,12 +10,6 @@ export const mobileCheck = () => {
   //   return false;
   // }
   if (
-    BASE_URL_S3 ===
-    "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
-  ) {
-    return false;
-  }
-  if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
