@@ -701,7 +701,7 @@ class BarGraphSection extends Component {
                             opacity: 0,
                           }}
                         >
-                          Red
+                          Loch
                         </div>
                         <HighchartsReact
                           highcharts={Highcharts}
