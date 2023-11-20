@@ -685,12 +685,38 @@ class BarGraphSection extends Component {
                       <div
                         className="chartArea"
                         style={
-                          data.labels.length > 8 && isScroll
-                            ? ScrollStyle
-                            : NormalStyle
+                          showSwitch && !showPercentage
+                            ? {
+                                maxHeight: "35.55rem",
+                                overflow: "hidden",
+                              }
+                            : {
+                                overflow: "hidden",
+                              }
                         }
                       >
-                        <Bar options={options} data={data} />
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <HighchartsReact
+                          highcharts={Highcharts}
+                          options={options}
+                          // constructorType={"stockChart"}
+                          // allowChartUpdate={true}
+                          // updateArgs={[true]}
+                          containerProps={{
+                            style: {
+                              height: this.props.noSubtitleBottomPadding
+                                ? "120%"
+                                : "",
+                            },
+                          }}
+                        />
                       </div>
                     ) : (
                       <div
