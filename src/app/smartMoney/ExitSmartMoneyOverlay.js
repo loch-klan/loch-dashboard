@@ -740,10 +740,10 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
   };
 
   leavePrivacy = () => {
-    LeavePrivacyMessage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    // LeavePrivacyMessage({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     if (this.props.updateTimer) {
       this.props.updateTimer();
     }
