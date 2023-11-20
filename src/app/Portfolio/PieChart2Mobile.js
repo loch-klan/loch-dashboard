@@ -666,7 +666,7 @@ class PieChart2Mobile extends BaseReactComponent {
             </div>
           )}
         </div>
-        <h2
+        {/* <h2
           style={{
             marginTop: "3rem",
           }}
@@ -693,6 +693,7 @@ class PieChart2Mobile extends BaseReactComponent {
             yAxisScrollable
           />
         </div>
+      */}
       </div>
     );
   }
