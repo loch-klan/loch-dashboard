@@ -5496,19 +5496,29 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-export const SmartMoneySignUp = ({ session_id, email_address }) => {
+export const SmartMoneySignUp = ({
+  session_id,
+  email_address,
+  passedEmail,
+}) => {
   const event_name = "Smart money: sign up";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    email: passedEmail,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({ session_id, email_address }) => {
+export const SmartMoneySignIn = ({
+  session_id,
+  email_address,
+  passedEmail,
+}) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    email: passedEmail,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
