@@ -204,19 +204,18 @@ class CustomTable extends BaseReactComponent {
                         />
                         <div className="exit-overlay-body">
                           <h6 className="inter-display-medium f-s-24">
-                            Contribute to the community to see more
+                            Sign in to view the Leaderboard
                           </h6>
                           <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                            Add a unique address worth at least $10K to view the
-                            full list
+                            View the smartest money on-chain
                           </p>
                         </div>
                       </div>
                       <Button
                         className="secondary-btn"
-                        onClick={this.props.blurButtonClick}
+                        onClick={this.props.onBlurSignInClick}
                       >
-                        Add address now
+                        Sign in / up now
                       </Button>
                     </div>
                   </div>

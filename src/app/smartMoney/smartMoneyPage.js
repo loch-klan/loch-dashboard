@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Image } from "react-bootstrap";
 
 import { connect } from "react-redux";
-
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   Method,
@@ -44,16 +44,16 @@ import {
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
-  SmartMoneyNetflowHover,
+  SmartMoneyRealizedPNLHover,
   SmartMoneyNetWorthHover,
   SmartMoneyPageNext,
   SmartMoneyPagePrev,
   SmartMoneyPageSearch,
   SmartMoneyPageView,
-  SmartMoneyProfitHover,
-  SmartMoneyReturnHover,
+  SmartMoneyUnrealizedPNLHover,
   SmartMoneyTimeSpent,
   SmartMoneyWalletClicked,
+  resetUser,
 } from "../../utils/AnalyticsFunctions";
 import {
   updateAddToWatchList,
@@ -71,6 +71,8 @@ import {
 import MobileDevice from "../common/mobileDevice.js";
 import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
+import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
+import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -80,6 +82,9 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      signInModalAnimation: true,
+      signInModal: false,
+      signUpModal: false,
       faqModal: false,
       howItWorksModal: false,
       showSignOutModal: false,
@@ -153,6 +158,38 @@ class SmartMoneyPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
+  handleSignUpRedirection = () => {
+    resetUser();
+    setTimeout(function () {
+      this.props.history.push("/smart-money");
+    }, 3000);
+  };
+  showSignInModal = () => {
+    this.setState({
+      signInModal: true,
+      signUpModal: false,
+    });
+  };
+  hideSignInSignUpModal = () => {
+    this.setState({
+      signInModalAnimation: true,
+      signInModal: false,
+      signUpModal: false,
+    });
+  };
+  openSignUpModal = () => {
+    this.setState({
+      signInModalAnimation: false,
+      signInModal: false,
+      signUpModal: true,
+    });
+    // setSignInModalAnimation(false);
+    // setSigninModal(false);
+    // setSignupModal(true);
+    // SignupMenu({
+    //   session_id: getCurrentUser().id,
+    // });
+  };
 
   upgradeModal = () => {
     this.setState({
@@ -195,6 +232,11 @@ class SmartMoneyPage extends BaseReactComponent {
       });
     }
   };
+  createEmptyUser = () => {
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify([]));
+    this.props.createAnonymousUserSmartMoneyApi(data);
+  };
   componentDidMount() {
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -207,9 +249,7 @@ class SmartMoneyPage extends BaseReactComponent {
         blurTable: true,
       });
     }
-    const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify([]));
-    this.props.createAnonymousUserSmartMoneyApi(data);
+    this.createEmptyUser();
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
@@ -622,6 +662,7 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.setPageFlagDefault();
     deleteToken(true);
     this.closeSignOutModal();
+    this.createEmptyUser();
   };
 
   render() {
@@ -880,7 +921,7 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss `}
                     onMouseEnter={() => {
-                      SmartMoneyNetflowHover({
+                      SmartMoneyRealizedPNLHover({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         hover:
@@ -970,7 +1011,7 @@ class SmartMoneyPage extends BaseReactComponent {
                   <div
                     className={`gainLoss `}
                     onMouseEnter={() => {
-                      SmartMoneyProfitHover({
+                      SmartMoneyUnrealizedPNLHover({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         hover:
@@ -1136,7 +1177,7 @@ class SmartMoneyPage extends BaseReactComponent {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 hideButton={true}
-                onSignInClick={this.loginFunction}
+                onSignInClick={this.showSignInModal}
                 blurTable={this.state.blurTable}
                 signOutFun={this.openSignOutModal}
                 showFaqModal={this.showFaqModal}
@@ -1160,6 +1201,38 @@ class SmartMoneyPage extends BaseReactComponent {
                 show={this.state.faqModal}
                 onHide={this.hideFaqModal}
                 history={this.props.history}
+              />
+            ) : null}
+            {this.state.signInModal ? (
+              <AuthSmartMoneyModal
+                hideOnblur
+                showHiddenError
+                modalAnimation={this.state.signInModalAnimation}
+                show={this.state.signInModal}
+                onHide={this.hideSignInSignUpModal}
+                history={this.props.history}
+                modalType={"create_account"}
+                iconImage={SignInIcon}
+                hideSkip={true}
+                title="Sign in"
+                description="Get right back into your account"
+                stopUpdate={true}
+                tracking="Sign in button"
+                goToSignUp={this.openSignUpModal}
+              />
+            ) : null}
+            {this.state.signUpModal ? (
+              <ExitSmartMoneyOverlay
+                hideOnblur
+                showHiddenError
+                modalAnimation={false}
+                show={this.state.signUpModal}
+                onHide={this.hideSignInSignUpModal}
+                history={this.props.history}
+                modalType={"exitOverlay"}
+                handleRedirection={this.handleSignUpRedirection}
+                signup={true}
+                goToSignIn={this.showSignInModal}
               />
             ) : null}
             {this.state.howItWorksModal ? (
@@ -1241,6 +1314,7 @@ class SmartMoneyPage extends BaseReactComponent {
                       changePageLimit={this.changePageLimit}
                       addWatermark
                       className={this.state.blurTable ? "noScroll" : ""}
+                      onBlurSignInClick={this.showSignInModal}
                     />
                     {/* <div className="ShowDust">
                   <p
