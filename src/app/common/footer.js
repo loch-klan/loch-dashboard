@@ -117,7 +117,7 @@ class Footer extends Component {
         {!this.props.isMobile ? (
           <p
             style={{
-              minWidth: "85rem",
+              minWidth: this.state.isMobileDevice ? "" : "85rem",
             }}
             className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText"
           >
