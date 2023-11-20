@@ -58,14 +58,23 @@ class CustomTable extends BaseReactComponent {
       isMiniversion,
     } = this.props;
     return (
-      <div className="table-wrapper">
+      <div
+        className={`table-wrapper ${
+          this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
+        } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
+      >
         {isLoading === true ? (
           <div
             className={`transaction-table-loading-wrapper ${
               isMiniversion ? "transaction-table-loading-wrapper-smaller" : ""
             }`}
           >
-            <div className="animation-wrapper">
+            <div
+              style={{
+                minHeight: this.props.xAxisScrollable ? "25rem" : "",
+              }}
+              className="animation-wrapper"
+            >
               <Loading />
             </div>
           </div>
@@ -125,7 +134,11 @@ class CustomTable extends BaseReactComponent {
                 <AutoSizer disableHeight>
                   {({ width }) => (
                     <Table
-                      width={width}
+                      width={
+                        this.props.xAxisScrollable
+                          ? width * (columnList.length / 3.5)
+                          : width
+                      }
                       height={
                         (this.props.showDataAtBottom && this.props.moreData
                           ? 50
@@ -157,7 +170,13 @@ class CustomTable extends BaseReactComponent {
                             <Column
                               key={key}
                               // width={item.coumnWidth}
-                              width={width * item.coumnWidth}
+                              width={
+                                this.props.xAxisScrollable
+                                  ? width *
+                                    item.coumnWidth *
+                                    (columnList.length / 3.5)
+                                  : width * item.coumnWidth
+                              }
                               className={item.className}
                               label={item.labelName}
                               dataKey={item.dataKey}
@@ -185,19 +204,18 @@ class CustomTable extends BaseReactComponent {
                         />
                         <div className="exit-overlay-body">
                           <h6 className="inter-display-medium f-s-24">
-                            Contribute to the community to see more
+                            Sign in to view the Leaderboard
                           </h6>
                           <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                            Add a unique address worth at least $10K to view the
-                            full list
+                            View the smartest money on-chain
                           </p>
                         </div>
                       </div>
                       <Button
                         className="secondary-btn"
-                        onClick={this.props.blurButtonClick}
+                        onClick={this.props.onBlurSignInClick}
                       >
-                        Add address now
+                        Sign in / up now
                       </Button>
                     </div>
                   </div>
@@ -487,7 +505,8 @@ class CustomTable extends BaseReactComponent {
                     isInfo={true}
                     isText={true}
                     text={
-                      this.props.combinedReturn
+                      this.props.combinedReturn &&
+                      this.props.combinedReturn !== 0
                         ? Math.abs(this.props.combinedReturn).toLocaleString(
                             "en-US"
                           ) + "%"
@@ -521,7 +540,8 @@ class CustomTable extends BaseReactComponent {
                           />
                         ) : null}
                         <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                          {this.props.combinedReturn
+                          {this.props.combinedReturn &&
+                          this.props.combinedReturn !== 0
                             ? Math.abs(
                                 noExponents(
                                   this.props.combinedReturn.toFixed(2)

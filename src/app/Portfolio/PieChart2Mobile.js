@@ -666,7 +666,7 @@ class PieChart2Mobile extends BaseReactComponent {
             </div>
           )}
         </div>
-        <h2
+        {/* <h2
           style={{
             marginTop: "3rem",
           }}
@@ -674,7 +674,8 @@ class PieChart2Mobile extends BaseReactComponent {
         >
           Assets
         </h2>
-        <div className="section-table">
+        <div className="section-table section-table-mobile-scroll">
+          <div className="section-table-mobile-scroll-top-cover" />
           <TransactionTable
             noSubtitleBottomPadding
             disableOnLoading
@@ -683,14 +684,16 @@ class PieChart2Mobile extends BaseReactComponent {
             handleClick={() => {}}
             subTitle=""
             message=" "
-            tableData={this.state.assetData.slice(0, 3)}
+            tableData={this.state.assetData}
             columnList={CostBasisColumnData}
             headerHeight={60}
             isArrow={true}
             isLoading={this.state.AvgCostLoading}
             isAnalytics="average cost basis"
+            yAxisScrollable
           />
         </div>
+      */}
       </div>
     );
   }
