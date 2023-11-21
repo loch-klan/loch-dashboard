@@ -1718,6 +1718,13 @@ form {
     }
   }
 }
+@media all and (max-width: 800px) {
+  .tool-tip-container {
+    .arrow::before {
+      top: -1px;
+    }
+  }
+}
 .tool-tip-container-bottom-arrow {
   .arrow::before {
     border-bottom-color: $grey-E5E;
