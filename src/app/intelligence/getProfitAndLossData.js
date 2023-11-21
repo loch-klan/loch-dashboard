@@ -13,8 +13,7 @@ import {
   netflowNetHover,
   netflowOutflowHover,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { useHistory } from "react-router-dom";
+
 import GraphLogo from "../../assets/images/graph-logo.svg";
 export const getProfitAndLossData = (arr, parentctx) => {
   // console.log("array", arr);
@@ -23,6 +22,10 @@ export const getProfitAndLossData = (arr, parentctx) => {
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));
   let currencyRate = currency?.rate || 1;
+
+  let totalInflow = inflows * currencyRate;
+  let totalOutflow = outflows * currencyRate;
+  let totalNetflow = outflows * currencyRate - inflows * currencyRate;
   // console.log(
   //   "wothout breadown",
   //   outflows * currency.rate, inflows * currency.rate,
@@ -32,7 +35,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
   let GraphLogoImage = new Image();
   GraphLogoImage.src = GraphLogo;
 
-  const labels = ["Inflows", "Outflows", "Net"];
+  const labels = ["Inflow", "Outflow", "Net"];
   const profitOrLossData = {
     profit: {
       data: inflows * currencyRate,
@@ -80,195 +83,162 @@ export const getProfitAndLossData = (arr, parentctx) => {
   };
 
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        top: 15,
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-        labels: {
-          // This more specific font property overrides the global property
-          font: {
-            family: "Inter-Regular",
-          },
-        },
-      },
-      tooltip: {
-        displayColors: false,
-        backgroundColor: "#ffffff",
-        // fontColor: '#000000',
-        intersect: false,
-        color: "#000000",
-        padding: 12,
-        borderWidth: 1,
-        borderColor: "#E5E7EB",
-        // boxPadding: 5,
-        bodyFont: {
-          family: "Inter-Medium",
-          size: 13,
-        },
-        bodySpacing: 8,
-        callbacks: {
-          title: function () {}, //REMOVE TITLE
-          label: (ctx) => {
-            let label =
-              ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
+    chart: {
+      type: "column",
+      spacingBottom: 35,
 
-            // console.log(
-            //   "net",
-            //   ctx.label,
-            //   parentctx.props.history.location.pathname.substring(1)
-            // );
-            if (
-              parentctx.props.history.location.pathname.substring(1) === "home"
-            ) {
-              if (parentctx.state.waitForMixpannelCall) {
-                return [label];
-              }
-              if (parentctx.waitForMixpannelCallOn) {
-                parentctx.waitForMixpannelCallOn();
-              }
+      events: {
+        load: function () {
+          // Get the renderer
+          const renderer = this.renderer;
 
-              if (ctx.label === "Net") {
-                homeNetHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              } else if (ctx.label === "Outflows") {
-                homeOutflowHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              } else if (ctx.label === "Inflows") {
-                homeInflowHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              }
-              if (parentctx.waitForMixpannelCallOff) {
-                setTimeout(() => {
-                  parentctx.waitForMixpannelCallOff();
-                }, 2000);
-              }
-            } else {
-              if (parentctx.state.waitForMixpannelCall) {
-                return [label];
-              }
-              if (parentctx.waitForMixpannelCallOn) {
-                parentctx.waitForMixpannelCallOn();
-              }
+          const chartWidth = this.chartWidth;
+          const chartHeight = this.chartHeight;
+          const imageWidth = 104; // Set the width of the image
+          const imageHeight = 39; // Set the height of the image
+          const x = (chartWidth - imageWidth) / 2;
+          const y = (chartHeight - imageHeight) / 2.5;
 
-              if (ctx.label === "Net") {
-                netflowNetHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              } else if (ctx.label === "Outflows") {
-                netflowOutflowHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              } else if (ctx.label === "Inflows") {
-                netflowInflowHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hovered: CurrencyType(false) + numToCurrency(ctx.raw),
-                });
-              }
-              if (parentctx.waitForMixpannelCallOff) {
-                setTimeout(() => {
-                  parentctx.waitForMixpannelCallOff();
-                }, 500);
-              }
-            }
-
-            return [label];
-          },
-          labelColor: function (context) {
-            return {
-              padding: 10,
-            };
-          },
-          labelTextColor: function (context) {
-            return "#19191A";
-          },
+          // Add a text element for the watermark
+          renderer
+            .image(GraphLogo, x, y, imageWidth, imageHeight)
+            .attr({
+              zIndex: 1, // Set the zIndex so it appears above the chart
+            })
+            .add();
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
 
-      x: 0,
-      y: 0,
-
-      width: 104,
-      height: 39,
-
-      opacity: 1,
-
-      alignX: "middle",
-      alignY: "middle",
-
-      position: "back",
+    credits: {
+      enabled: false,
     },
-    scales: {
-      y: {
-        //   min: min,
-        //   max: 22574,
-        // beginAtZero: true,
-        // title: {
-        //   display: true,
-        //   text: "$ USD",
-        //   position: 'bottom',
-        // },
-        ticks: {
-          display: labels.length > 8 ? false : true,
-          // display: false,
-          // stepSize: 1500,
-          padding: 8,
-          size: 12,
-          lineHeight: 20,
-          fontFamily: "'Inter-Regular'",
-          weight: 400,
+    title: {
+      text: null,
+    },
+    xAxis: {
+      categories: labels,
+    },
+    yAxis: {
+      showLastLabel: true,
+      // min: 0,
+      title: {
+        text: null,
+      },
+      stackLabels: {
+        enabled: false,
+      },
+      offset: 10,
+      labels: {
+        formatter: function () {
+          // console.log("y value", this.value, this);
+          // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+          let val = Number(noExponents(this.value).toLocaleString("en-US"));
+          return CurrencyType(false) + numToCurrency(val);
+        },
+        x: 0,
+        y: 4,
+        align: "right",
+        style: {
+          fontSize: 12,
+          fontFamily: "Inter-Regular",
+          fontWeight: 400,
           color: "#B0B1B3",
-          callback: function (value, index, ticks) {
-            let val = Number(noExponents(value));
-            return CurrencyType(false) + numToCurrency(val);
-          },
-        },
-        grid: {
-          drawBorder: false,
-          display: true,
-          borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
-          drawTicks: false,
         },
       },
-      x: {
-        ticks: {
-          font: "Inter-SemiBold",
-          size: 10,
-          lineHeight: 12,
-          weight: 600,
-          color: "#86909C",
-          maxRotation: 0,
-          minRotation: 0,
-          autoSkip: false,
-        },
-        grid: {
-          display: false,
-          borderWidth: 1,
+      gridLineDashStyle: "longdash",
+    },
+    tooltip: {
+      shared: true,
+
+      split: false,
+      useHTML: true,
+      distance: 20,
+      borderRadius: 10,
+      borderColor: "tranparent",
+      backgroundColor: null,
+      outside: true,
+      borderShadow: 0,
+      // borderWidth: 1,
+      padding: 0,
+      shadow: false,
+      hideDelay: 0,
+
+      formatter: function () {
+        let net_amount = 0;
+        if (this.x === "Inflow") {
+          net_amount = Math.abs(totalInflow);
+        } else if (this.x === "Outflow") {
+          net_amount = Math.abs(totalOutflow);
+        } else if (this.x === "Net") {
+          net_amount = Math.abs(totalNetflow);
+        }
+
+        let netColor = "#16182B";
+        console.log("totalNetflow ", totalNetflow);
+        if (this.x === "Net") {
+          if (totalNetflow > 0) {
+            netColor = "#18C278";
+          } else if (totalNetflow < 0) {
+            netColor = "#CF1011";
+          }
+        }
+
+        return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+        backdrop-filter: blur(15px);">
+                                <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
+                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
+                                  this.x
+                                }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
+          this.x === "Net" ? netColor : "#16182B"
+        };">${CurrencyType(false)}${numToCurrency(net_amount)}</b></div></div>`;
+      },
+    },
+    legend: false,
+    plotOptions: {
+      series: {
+        stacking: "normal",
+        // grouping: false,
+
+        dataLabels: {
+          enabled: false,
         },
       },
     },
+    series: [
+      {
+        name: "All",
+        data: [
+          {
+            y: Math.abs(totalInflow),
+            color: "rgba(100, 190, 205, 0.3)",
+            borderColor: "#64BECD",
+            borderWidth: 2,
+            name: "Inflow",
+            borderRadius: 0,
+          },
+          {
+            y: Math.abs(totalOutflow),
+            color: "rgba(34, 151, 219, 0.3)",
+            borderColor: "#2297DB",
+            borderWidth: 2,
+            name: "Outflow",
+            borderRadius: 0,
+          },
+          {
+            y: Math.abs(totalNetflow),
+            color: totalNetflow < 0 ? "#FFE0D9" : "#A9F4C4",
+            borderColor: totalNetflow < 0 ? "#CF1011" : "#18C278",
+            borderWidth: 2,
+            name: "Net",
+          },
+        ],
+        maxPointWidth: 50,
+        borderRadiusTopLeft: 6,
+        borderRadiusTopRight: 6,
+        // borderRadius: 5,
+      },
+    ],
   };
   let value = outflows * currencyRate - inflows * currencyRate;
   let showPercentage = {

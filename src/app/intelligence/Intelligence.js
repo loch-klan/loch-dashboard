@@ -267,15 +267,15 @@ class Intelligence extends Component {
     });
     this.props.getAssetProfitLoss(
       this,
-      moment(this.state.fromDate).unix(),
-      moment(this.state.toDate).unix(),
+      moment.utc(this.state.fromDate).add(1, "days").unix(),
+      moment.utc(this.state.toDate).add(1, "days").unix(),
       [],
       this.state.selectedAssets
     );
     this.props.getProfitAndLossApi(
       this,
-      moment(this.state.fromDate).unix(),
-      moment(this.state.toDate).unix(),
+      moment.utc(this.state.fromDate).add(1, "days").unix(),
+      moment.utc(this.state.toDate).add(1, "days").unix(),
       [],
       this.state.selectedAssets
     );
@@ -665,8 +665,9 @@ class Intelligence extends Component {
       netFlowLoading: true,
       isGraphLoading: true,
     });
-    let startDate = moment(this.state.fromDate).unix();
-    let endDate = moment(this.state.toDate).unix();
+
+    let startDate = moment.utc(this.state.fromDate).add(1, "days").unix();
+    let endDate = moment.utc(this.state.toDate).add(1, "days").unix();
 
     let selectedChains = [];
     this.props.OnboardingState.coinsList?.map((item) => {

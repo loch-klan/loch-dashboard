@@ -202,21 +202,36 @@
     display: flex;
     .smarMoneyHeaderSignInContainer {
       color: #313233;
-      padding: 1rem 5rem;
+      padding: 0.8rem 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 0.8rem;
       transition-duration: 300ms;
-      border: 1.3px #e5e5e6 solid;
+      border: 1.3px #f2f2f2 solid;
       cursor: pointer;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
         0px 1px 1px rgba(0, 0, 0, 0.04);
       background-color: white;
       margin-right: 3rem;
+      .smarMoneyHeaderSignInDataName {
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: 500;
+      }
+      .smarMoneyHeaderSignInJustText {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #19191a;
+        font-weight: 500;
+      }
       &:hover {
         box-shadow: none;
         background-color: #f2f2f2;
+
         color: #19191a;
         .smarMoneyHeaderSignInIconContainer {
           background-color: white;
@@ -240,6 +255,28 @@
           height: 1.3rem;
         }
       }
+      .smarMoneyHeaderSignInIconNoColor {
+        background-color: transparent;
+        border-color: transparent;
+        min-width: 1.3rem;
+        max-height: 1.3rem;
+        &:hover {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+    .smarMoneyHeaderFaqContainer {
+      background-color: #f2f2f2;
+      border-color: #f2f2f2;
+      box-shadow: none;
+      margin-right: 2.5rem;
+      &:hover {
+        background-color: white;
+        border-color: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+      }
     }
     .smarMoneyHeaderSignedInContainer {
       .smarMoneyHeaderSignInData {
@@ -248,6 +285,7 @@
         justify-content: flex-start;
         white-space: nowrap;
       }
+
       .smarMoneyHeaderSignedInIconContainer {
         background-color: #f2f2f2;
       }
@@ -343,7 +381,7 @@
     .rightSmartMoneyContainer {
       flex: 1;
       padding: 0rem;
-
+      margin-right: 1rem;
       .rightSmartMoneyContainerHeadingParent {
         display: flex;
         align-items: center;
@@ -360,6 +398,8 @@
         .rightSmartMoneyContainerHeading {
           color: #0d0d0d;
           font-size: 2rem;
+          overflow: hidden;
+          white-space: nowrap;
         }
         .rightSmartMoneyContainerHeadingSmartMoney {
           cursor: pointer;
@@ -377,6 +417,63 @@
   }
 }
 .addCommunitySmartMoneyWrapperParent {
+  .smartMoneyHowItWorksModalBodyContainer {
+    padding: 3rem 5rem;
+    padding-top: 0rem;
+    .smartMoneyHowItWorksTextLine {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  }
+  .smartMoneyFAQModalBodyContainer {
+    padding: 3rem 5rem;
+    margin-top: 2rem;
+    padding-top: 0rem;
+    .smartMoneyFAQModalBody {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      column-gap: 2rem;
+      row-gap: 2rem;
+      position: relative;
+      .smartMoneyFAQModalAnswerContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+
+        .smartMoneyFAQModalAnswerBlock {
+          padding: 1.5rem 1.5rem;
+          border: 0.1rem solid #e5e5e6;
+          border-radius: 1.2rem;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+            0px 1px 1px rgba(0, 0, 0, 0.04);
+          .smartMoneyFAQModalAnswerBlockQues {
+            color: #000000;
+          }
+          .smartMoneyFAQModalAnswerBlockAns {
+            color: #b0b1b3;
+            margin-top: 1rem;
+          }
+        }
+      }
+      .smartMoneyFAQModalBlocks {
+        background-color: #f8f8f8;
+        border: 0.1rem solid #e5e5e6;
+        padding: 1.5rem 1.5rem;
+        border-radius: 1.2rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition-duration: 300ms;
+        &:hover {
+          background-color: white;
+          // border-color: white;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+            0px 1px 1px rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+  }
+
   .addCommunityTopAccountsWrapperContainer {
     width: 100%;
     padding: 0rem 5rem;
@@ -502,13 +599,16 @@
       border-radius: 1.2rem;
       padding: 4rem;
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
       background: linear-gradient(
-        white,
-        white,
-        white,
         transparent,
-        transparent
+        transparent,
+        transparent,
+        transparent,
+        transparent,
+        white,
+        white,
+        white
       );
       .smartMoneyBlurContainerTwo {
         display: flex;
@@ -521,11 +621,15 @@
           align-items: center;
           justify-content: flex-start;
           text-align: left;
-          width: 60%;
+          flex: 1;
         }
         .smartMoneyBlurLogo {
           height: 4rem;
           margin-right: 2rem;
+        }
+        .secondary-btn {
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }
@@ -620,8 +724,15 @@
     }
   }
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1150px) {
   .smartMoneyFAQContainer {
     padding: 0 10rem;
   }
+  .smartMoneyPage {
+    padding: 0 10rem;
+    // overflow: scroll;
+  }
+}
+.modal-content {
+  min-width: 60rem !important;
 }

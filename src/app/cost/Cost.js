@@ -1421,6 +1421,7 @@ class Cost extends Component {
                   this.handleBadge(activeBadgeList, 1)
                 }
                 chainSearchIsUsed={this.feesChainSearchIsUsed}
+                oldBar
                 // height={420}
                 // width={824}
                 // comingSoon={false}
@@ -1475,6 +1476,7 @@ class Cost extends Component {
                 // width={"824px"}
                 // comingSoon={true}
                 chainSearchIsUsed={this.volumeChainSearchIsUsed}
+                oldBar
               />
             </div>
 
