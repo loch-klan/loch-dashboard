@@ -1177,6 +1177,79 @@ form {
     padding: 10rem;
   }
 }
+.section-table-mobile-scroll {
+  padding: 0.5rem;
+  position: relative;
+  .section-table-mobile-scroll-top-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-color: white;
+    height: 40px;
+    border-top-left-radius: 1.2rem;
+    border-top-right-radius: 1.2rem;
+  }
+  // background-color: red;
+  // padding: 0rem;
+  // padding-left: 0.4rem;
+  // padding-right: 0.4rem;
+  // padding-top: 0.3rem;
+
+  .table-wrapper-mobile-x-scroll {
+    overflow-y: scroll;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &::-webkit-scrollbar {
+      border-radius: 0.9rem;
+      width: 0rem;
+      height: 0rem;
+      background-color: rgba(229, 229, 230, 0.5);
+      margin-bottom: 0.2rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.8rem;
+      background-color: #cacbcc;
+    }
+  }
+  .table-wrapper-mobile-y-scroll {
+    overflow-x: scroll;
+    max-height: 25rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .ReactVirtualized__Table {
+      .ReactVirtualized__Table__headerRow {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 100;
+        border-top-left-radius: 1.2rem;
+        border-top-right-radius: 1.2rem;
+      }
+      .ReactVirtualized__Table__Grid {
+        // overflow-y: scroll;
+        // // background-color: red;
+        // height: 100% !important;
+      }
+    }
+    &::-webkit-scrollbar {
+      border-radius: 0.9rem;
+      width: 0rem;
+      height: 0rem;
+      background-color: rgba(229, 229, 230, 0.5);
+      margin-bottom: 0.2rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.8rem;
+      background-color: #cacbcc;
+    }
+  }
+}
 
 // btn
 .primary-btn {

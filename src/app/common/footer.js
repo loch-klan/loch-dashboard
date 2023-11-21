@@ -5,6 +5,7 @@ import TelegramIcon from "../../assets/images/icons/telegram.png";
 import moment from "moment";
 import { Image } from "react-bootstrap";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+
 class Footer extends Component {
   constructor(props) {
     super(props);

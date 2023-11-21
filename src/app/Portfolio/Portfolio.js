@@ -2210,6 +2210,8 @@ class Portfolio extends BaseReactComponent {
           handleAddModal={this.handleAddModal}
           isLoadingNet={this.state.isLoadingNet}
           history={this.props.history}
+          tableDataCostBasis={tableDataCostBasis}
+          AvgCostLoading={this.state.AvgCostLoading}
         />
       );
     }
