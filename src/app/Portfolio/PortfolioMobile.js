@@ -755,7 +755,7 @@ class PortfolioMobile extends BaseReactComponent {
                 style={{
                   marginTop: "3rem",
                 }}
-                className="inter-display-semi-bold f-s-16 lh-19 grey-313"
+                className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
               >
                 {/* Unrealized profit and loss */}
                 Assets
