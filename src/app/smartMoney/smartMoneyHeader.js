@@ -281,7 +281,7 @@ export default function SmartMoneyHeader(props) {
                     />
                   </div>
                   <div className="smarMoneyHeaderSignInDataName">
-                    Sign in now
+                    Sign in / up now
                   </div>
                 </div>
               </>
