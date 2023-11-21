@@ -4,41 +4,36 @@ import {
   Form,
   FormElement,
   FormValidator,
-} from "../../utils/form/index.js";
+} from "../../../utils/form";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
-// import CloseIcon from '../../assets/images/icons/close-icon.svg'
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import BackIcon from "../../assets/images/icons/backIcon.svg";
-import CustomTextControl from "../../utils/form/CustomTextControl.js";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import ExitOverlayIcon from "../../../assets/images/icons/ExitOverlayWalletIcon.svg";
+import CloseIcon from "../../../assets/images/icons/dummyX.svg";
+import BackIcon from "../../../assets/images/icons/backIcon.svg";
+import CustomTextControl from ".././../../utils/form/CustomTextControl";
+import InfoIcon from "../../../assets/images/icons/info-icon.svg";
 import {
   getAllCoins,
   detectCoin,
   getAllParentChains,
-} from "../onboarding/Api.js";
-// import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
-// import Dropdown from '../common/DropDown.js';
-import CopyLink from "../../assets/images/icons/CopyLink.svg";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
-
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import ShareLink from "../../assets/images/icons/ShareLink.svg";
-import { exportDataApi, fixWalletApi } from "../common/Api.js";
-import { BASE_URL_S3, Plans } from "../../utils/Constant.js";
+} from "../../onboarding//Api";
+import CopyLink from "../../../assets/images/icons/CopyLink.svg";
+import LockIcon from "../../../assets/images/icons/lock-icon.svg";
+import CheckIcon from "../../../assets/images/icons/check-upgrade.svg";
+import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
+import { exportDataApi, fixWalletApi } from "../../common/Api.js";
+import { BASE_URL_S3 } from "../../../utils/Constant";
 import { toast } from "react-toastify";
-import ApiModalFrame from "../../assets/images/apiModalFrame.svg";
-import nextIcon from "../../assets/images/icons/next.svg";
-import next2Icon from "../../assets/images/icons/next2.svg";
-import prevIcon from "../../assets/images/icons/prev.svg";
-import prev2Icon from "../../assets/images/icons/prev2.svg";
-import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
-import { getCurrentUser } from "../../utils/ManageToken.js";
-import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-import FileIcon from "../../assets/images/icons/file-text.svg";
-import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
+import ApiModalFrame from "../../../assets/images/apiModalFrame.svg";
+import nextIcon from "../../../assets/images/icons/next.svg";
+import next2Icon from "../../../assets/images/icons/next2.svg";
+import prevIcon from "../../../assets/images/icons/prev.svg";
+import prev2Icon from "../../../assets/images/icons/prev2.svg";
+import DeleteIcon from "../../../assets/images/icons/trashIcon.svg";
+import { getCurrentUser } from "../../../utils/ManageToken";
+import PlusIcon from "../../../assets/images/icons/plus-icon-grey.svg";
+import FileIcon from "../../../assets/images/icons/file-text.svg";
+import EmailNotFoundCross from "../../../assets/images/icons/EmailNotFoundCross.svg";
 import {
   CreateWhalePodSave,
   ExportDataDownlaod,
@@ -53,37 +48,28 @@ import {
   WhalePodUploadFile,
   PodName,
   ExportDateSelected,
-  signUpProperties,
   resetUser,
   signInUser,
-} from "../../utils/AnalyticsFunctions.js";
-import { DatePickerControl } from "../../utils/form/index.js";
+} from "../../../utils/AnalyticsFunctions.js";
+import { DatePickerControl } from "../../../utils/form";
 import moment from "moment";
-import lochClean from "../../assets/images/LochClean.gif";
 import {
   CurrencyType,
-  getPadding,
   loadingAnimation,
-} from "../../utils/ReusableFunctions.js";
-import CustomChip from "../../utils/commonComponent/CustomChip.js";
-import Coin1 from "../../assets/images/icons/Coin0.svg";
-import Coin2 from "../../assets/images/icons/Coin-1.svg";
-import Coin3 from "../../assets/images/icons/Coin-2.svg";
-import Coin4 from "../../assets/images/icons/Coin-3.svg";
+} from "../../../utils/ReusableFunctions";
+import CustomChip from "../../../utils/commonComponent/CustomChip";
+
 import {
   createCohort,
   deleteCohort,
   getPodStatus,
   notificationSend,
-} from "../cohort/Api.js";
+} from "../../cohort/Api";
 import Papa from "papaparse";
-import { updateUser } from "../profile/Api.js";
+import { updateUser } from "../../profile/Api";
+import UploadIcon from "../../../assets/images/icons/upgrade-upload.svg";
 
-import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
-import { Form as FormB } from "react-bootstrap";
-import { smartMoneySignUpApi } from "./Api.js";
-
-class ExitSmartMoneyOverlay extends BaseReactComponent {
+class FollowExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = window.sessionStorage.getItem("lochDummyUser");
@@ -684,36 +670,34 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
         userId: getCurrentUser().id,
         first_name: "",
         last_name: "",
-        track: "leaving",
+        track: "following",
       });
       if (this.props.updateTimer) {
         this.props.updateTimer();
       }
-
-      const url = new URLSearchParams();
-      url.append("email", this.state.email);
-      url.append("signed_up_from", "leaving");
-      url.append("type", "smart-money");
-      this.props.smartMoneySignUpApi(this, url, this.state.email);
-      // LeaveEmailAdded({
-      //   session_id: getCurrentUser().id,
-      //   email_address: this.state.email,
-      // });
-      if (this.props.updateTimer) {
-        this.props.updateTimer();
+      let email_arr = [];
+      let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      if (data) {
+        data.map((info) => {
+          email_arr.push(info.address);
+        });
+        const url = new URLSearchParams();
+        url.append("email", this.state.email);
+        url.append("signed_up_from", "leaving");
+        if (this.props.followedAddress) {
+          url.append("follow_address", this.props.followedAddress);
+        }
+        // url.append("wallet_addresses", JSON.stringify(email_arr));
+        fixWalletApi(this, url);
+        LeaveEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state.email,
+        });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       }
     }
-  };
-  handleSuccesfulSignUp = () => {
-    this.state.onHide();
-    toast.success(
-      <div className="custom-toast-msg">
-        <div>Successful</div>
-        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-          Please check your mailbox for the verification link
-        </div>
-      </div>
-    );
   };
   handleRedirection = () => {
     // console.log("this", this.props);
@@ -740,10 +724,10 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
   };
 
   leavePrivacy = () => {
-    // LeavePrivacyMessage({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
+    LeavePrivacyMessage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     if (this.props.updateTimer) {
       this.props.updateTimer();
     }
@@ -1756,8 +1740,8 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
                 Don’t let your hard work go to waste
               </p> */}
                   <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-                    Add your email so you can view, analyze, and follow any or
-                    all of the smartest actors on-chain.
+                    Don’t let your hard work go to waste. Add your email so you
+                    can watch your whales with binoculars
                   </p>
                   {/* this.props.isSkip(); */}
                   <div className="email-section">
@@ -1845,8 +1829,8 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
                       className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
                       style={{ textAlign: "center" }}
                     >
-                      Add your email so you can view, analyze, and follow any or
-                      all of the smartest actors on-chain.
+                      Don’t let your hard work go to waste. Add your email so
+                      you can analyze your portfolio with superpowers
                     </p>
                   )}
                   <div className="email-section">
@@ -1987,12 +1971,8 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   updateUser,
-  smartMoneySignUpApi,
 };
 
-ExitSmartMoneyOverlay.propTypes = {};
+FollowExitOverlay.propTypes = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ExitSmartMoneyOverlay);
+export default connect(mapStateToProps, mapDispatchToProps)(FollowExitOverlay);
