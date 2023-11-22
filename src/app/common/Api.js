@@ -800,6 +800,7 @@ export const SendOtp = (data, ctx) => {
     })
     .catch((err) => {
       console.log("err", err);
+      toast.error("Something Went Wrong");
     });
 };
 
