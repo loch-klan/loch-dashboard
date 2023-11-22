@@ -679,6 +679,17 @@ class BarGraphSection extends Component {
                   >
                     <Loading />
                   </div>
+                ) : this.props.oldBar ? (
+                  <div
+                    className="chartArea"
+                    style={
+                      data.labels.length > 8 && isScroll
+                        ? ScrollStyle
+                        : NormalStyle
+                    }
+                  >
+                    <Bar options={options} data={data} />
+                  </div>
                 ) : (
                   <>
                     {!this.state.switchselected ? (

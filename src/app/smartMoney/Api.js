@@ -116,11 +116,14 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
           ctx.handleSuccesfulSignUp();
           SmartMoneySignUp({
             session_id: getCurrentUser().id,
-            email_address: passedEmail,
+            email_address: getCurrentUser().email,
+            passedEmail: passedEmail,
           });
         } else {
           toast.error(res.data.message || "Something went wrong");
-          ctx.handleSignUpError();
+          if (ctx.handleSignUpError) {
+            ctx.handleSignUpError();
+          }
         }
       })
       .catch((err) => {
@@ -165,7 +168,8 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
         if (!res.data.error) {
           SmartMoneySignIn({
             session_id: getCurrentUser().id,
-            email_address: passedEmail,
+            email_address: getCurrentUser().email,
+            passedEmail: passedEmail,
           });
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;

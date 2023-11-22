@@ -3812,6 +3812,34 @@ export const UpgradeSignInPopup = ({ session_id, from }) => {
 };
 
 //14. Whale pods pop up: email added - done
+export const FollowSignInPopupEmailAdded = ({
+  session_id,
+  email_address,
+  from,
+}) => {
+  const event_name = "Follow sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const FollowSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+  from,
+}) => {
+  const event_name = "Follow sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 export const UpgradeSignInPopupEmailAdded = ({
   session_id,
   email_address,
@@ -5496,19 +5524,29 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-export const SmartMoneySignUp = ({ session_id, email_address }) => {
+export const SmartMoneySignUp = ({
+  session_id,
+  email_address,
+  passedEmail,
+}) => {
   const event_name = "Smart money: sign up";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    email: passedEmail,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({ session_id, email_address }) => {
+export const SmartMoneySignIn = ({
+  session_id,
+  email_address,
+  passedEmail,
+}) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    email: passedEmail,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5612,7 +5650,7 @@ export const SmartMoneyNetWorthHover = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyNetflowHover = ({
+export const SmartMoneyRealizedPNLHover = ({
   session_id,
   email_address,
   hover,
@@ -5625,7 +5663,11 @@ export const SmartMoneyNetflowHover = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyProfitHover = ({ session_id, email_address, hover }) => {
+export const SmartMoneyUnrealizedPNLHover = ({
+  session_id,
+  email_address,
+  hover,
+}) => {
   const event_name = "Smart money: unrealized PnL hover";
   const eventProperties = {
     "session id": session_id,

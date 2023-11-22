@@ -327,6 +327,21 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
+    if (
+      prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
+    ) {
+      const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+
+      if (whatIsIt === "true") {
+        this.setState({
+          isFollowingAddress: true,
+        });
+      } else {
+        this.setState({
+          isFollowingAddress: false,
+        });
+      }
+    }
     if (prevProps?.HeaderState !== this.props.HeaderState) {
       this.showFollowOrNot();
     }
@@ -826,9 +841,12 @@ class PieChart2 extends BaseReactComponent {
       }
     }
   };
-  showAddressesAdded = () => {
+  showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
     this.setState({ isFollowingAddress: true });
     window.sessionStorage.setItem("isFollowingAddress", true);
+    if (this.props.afterAddressFollowed && openModal) {
+      this.props.afterAddressFollowed(passedAddress);
+    }
   };
   addressDeleted = () => {
     this.setState({ isFollowingAddress: false });
@@ -1247,7 +1265,8 @@ class PieChart2 extends BaseReactComponent {
         userWallet?.length === 1
           ? userWallet[0].displayAddress || userWallet[0].address
           : lochUser;
-      let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      let shareLink =
+        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
       navigator.clipboard.writeText(shareLink);
       toast.success("Link copied");
 

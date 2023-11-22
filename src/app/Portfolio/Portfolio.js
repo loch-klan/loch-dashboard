@@ -9,6 +9,7 @@ import LightBulb from "../../assets/images/icons/lightbulb.svg";
 import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 
 import {
   getCoinRate,
@@ -80,8 +81,9 @@ import {
   HomeSortByGainLoss,
   HomeCostAssetHover,
   NetflowSwitchHome,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
 import {
   getAvgCostBasis,
@@ -118,10 +120,14 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
 } from "../../assets/images/icons/index.js";
+import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
+import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
+import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
+
     if (props.location.state) {
       // window.sessionStorage.setItem(
       //   "addWallet",
@@ -140,6 +146,11 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isAddressFollowedCount: 0,
+      followSignInModalAnimation: true,
+      followSigninModal: false,
+      followSignupModal: false,
+      followedAddress: "",
       isShowingAge: false,
       isMobileDevice: false,
       settings,
@@ -288,6 +299,39 @@ class Portfolio extends BaseReactComponent {
       waitForMixpannelCall: false,
     };
   }
+  onCloseModal = () => {
+    this.setState({
+      followSignInModalAnimation: true,
+      followSigninModal: false,
+      followSignupModal: false,
+    });
+  };
+  openSignUpModal = () => {
+    this.setState({
+      followSignInModalAnimation: false,
+      followSigninModal: false,
+      followSignupModal: true,
+    });
+  };
+  openSigninModal = () => {
+    this.setState({
+      followSigninModal: true,
+      followSignupModal: false,
+    });
+  };
+  afterAddressFollowed = (passedAddress) => {
+    if (!getCurrentUser().email) {
+      this.setState(
+        {
+          followedAddress: passedAddress,
+          isAddressFollowedCount: this.state.isAddressFollowedCount + 1,
+        },
+        () => {
+          this.openSigninModal();
+        }
+      );
+    }
+  };
   waitForMixpannelCallOn = () => {
     this.setState({
       waitForMixpannelCall: true,
@@ -403,7 +447,33 @@ class Portfolio extends BaseReactComponent {
       this.checkForInactivity();
     }, 900000);
   };
+  showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
+    window.sessionStorage.setItem("isFollowingAddress", true);
+    if (openModal) {
+      this.afterAddressFollowed(passedAddress);
+    }
+  };
   componentDidMount() {
+    const passedAddress = window.sessionStorage.getItem("followThisAddress");
+    const tempPathName = this.props.location?.pathname;
+
+    if (passedAddress && getCurrentUser().id && tempPathName === "/home") {
+      // Call api
+      const followAddressData = new URLSearchParams();
+      followAddressData.append("wallet_address", passedAddress);
+      followAddressData.append("type", "self");
+      followAddressData.append("name_tag", "");
+      setTimeout(() => {
+        this.props.addAddressToWatchList(
+          followAddressData,
+          this,
+          passedAddress,
+          ""
+        );
+      }, 3500);
+      window.sessionStorage.removeItem("followThisAddress");
+    }
+
     if (mobileCheck()) {
       this.setState({
         isMobileDevice: true,
@@ -2151,6 +2221,47 @@ class Portfolio extends BaseReactComponent {
           <Loading />
         ) : (
           <div className="portfolio-page-section">
+            {this.state.followSigninModal ? (
+              <FollowAuthModal
+                followedAddress={this.state.followedAddress}
+                hideOnblur
+                showHiddenError
+                modalAnimation={this.state.followSignInModalAnimation}
+                show={this.state.followSigninModal}
+                onHide={this.onCloseModal}
+                history={this.props.history}
+                modalType={"create_account"}
+                iconImage={SignInIcon}
+                hideSkip={true}
+                title="You’re now following this wallet"
+                description="Sign in so you’ll be the first to see what they buy and sell"
+                stopUpdate={true}
+                tracking="Follow sign in popup"
+                goToSignUp={this.openSignUpModal}
+              />
+            ) : null}
+            {this.state.followSignupModal ? (
+              <FollowExitOverlay
+                followedAddress={this.state.followedAddress}
+                hideOnblur
+                showHiddenError
+                modalAnimation={false}
+                show={this.state.followSignupModal}
+                onHide={this.onCloseModal}
+                history={this.props.history}
+                modalType={"exitOverlay"}
+                handleRedirection={() => {
+                  // resetUser();
+                  // setTimeout(function () {
+                  //   if (this.props.history) {
+                  //     this.props.history.push("/welcome");
+                  //   }
+                  // }, 3000);
+                }}
+                signup={true}
+                goToSignIn={this.openSigninModal}
+              />
+            ) : null}
             <div
               className="portfolio-container page"
               style={{ overflow: "visible" }}
@@ -2211,6 +2322,8 @@ class Portfolio extends BaseReactComponent {
                 }}
               >
                 <PieChart2
+                  isAddressFollowedCount={this.state.isAddressFollowedCount}
+                  afterAddressFollowed={this.afterAddressFollowed}
                   setLoader={this.setLoader}
                   chainLoader={this.state.chainLoader}
                   totalChainDetechted={this.state.totalChainDetechted}
@@ -2751,6 +2864,7 @@ const mapDispatchToProps = {
   getDetectedChainsApi,
   GetAllPlan,
   getUser,
+  addAddressToWatchList,
 };
 Portfolio.propTypes = {};
 
