@@ -1265,7 +1265,8 @@ class PieChart2 extends BaseReactComponent {
         userWallet?.length === 1
           ? userWallet[0].displayAddress || userWallet[0].address
           : lochUser;
-      let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      let shareLink =
+        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
       navigator.clipboard.writeText(shareLink);
       toast.success("Link copied");
 
