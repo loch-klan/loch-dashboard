@@ -1,46 +1,104 @@
 import React from "react";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
+import GainIcon from "../../../assets/images/icons/GainIcon.svg";
+import LossIcon from "../../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
-import { searchTransactionApi, getFilters } from "../intelligence/Api.js";
-import { BaseReactComponent } from "../../utils/form/index.js";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { searchTransactionApi, getFilters } from "../../intelligence/Api.js";
+import { BaseReactComponent } from "../../../utils/form/index.js";
+import { getAllCoins, getAllParentChains } from "../../onboarding/Api.js";
 import {
   GetAllPlan,
   setPageFlagDefault,
   TopsetPageFlagDefault,
-} from "../common/Api.js";
-import { getSmartMoney } from "./Api.js";
+} from "../../common/Api.js";
+import { getSmartMoney } from "../Api.js";
 
 import {
   removeFromWatchList,
   updateAddToWatchList,
-} from "../watchlist/redux/WatchListApi.js";
+} from "../../watchlist/redux/WatchListApi.js";
 import {
   CurrencyType,
   TruncateText,
   numToCurrency,
-} from "../../utils/ReusableFunctions.js";
+} from "../../../utils/ReusableFunctions.js";
 import { Image } from "react-bootstrap";
-import { getCurrentUser } from "../../utils/ManageToken.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { SmartMoneyWalletClicked } from "../../utils/AnalyticsFunctions.js";
-import SmartMoneyMobileHeader from "./smartMoneyMobileHeader.js";
-import Loading from "../common/Loading.js";
-import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import { getCurrentUser } from "../../../utils/ManageToken.js";
+import { BASE_URL_S3 } from "../../../utils/Constant.js";
+import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
+import SmartMoneyMobileHeader from "../smartMoneyMobileHeader.js";
+import Loading from "../../common/Loading.js";
+import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination.js";
+import {
+  BlackManIcon,
+  CrossSmartMoneyIcon,
+  GreyManIcon,
+} from "../../../assets/images/icons/index.js";
+import SmartMoneyMobileModalContainer from "./smartMoneyMobileModalContainer.js";
+import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp.js";
+import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal.js";
+import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal.js";
 
 class SmartMoneyMobilePage extends BaseReactComponent {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      signInModal: false,
+      addAddressModal: false,
+      howItWorksModal: true,
+      localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+    };
+  }
+  componentDidMount() {
+    document.body.style.overflow = "hidden";
+  }
+  componentDidUpdate(prevProps, prevStates) {
+    if (prevProps.blurTable !== this.props.blurTable) {
+      if (!this.props.blurTable) {
+        this.setState({
+          localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        });
+      } else {
+        this.setState({
+          localLochUser: undefined,
+        });
+      }
+    }
   }
 
-  componentDidMount() {}
+  showSignInModal = () => {
+    this.setState({
+      signInModal: true,
+    });
+    document.body.style.overflow = "hidden";
+  };
+  hideAllModals = () => {
+    this.setState({
+      signInModal: false,
+      addAddressModal: false,
+      howItWorksModal: false,
+    });
+    document.body.style.overflow = "unset";
+  };
 
   render() {
     return (
       <div className="mobileSmartMoneyPage">
+        {this.state.signInModal ? (
+          <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
+            <SmartMoneyMobileSignInUp onHide={this.hideAllModals} />
+          </SmartMoneyMobileModalContainer>
+        ) : null}
+        {this.state.addAddressModal ? (
+          <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
+            <SmartMoneyMobileAddAddressModal onHide={this.hideAllModals} />
+          </SmartMoneyMobileModalContainer>
+        ) : null}
+        {this.state.howItWorksModal ? (
+          <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
+            <SmartMoneyMobileHowItWorksModal onHide={this.hideAllModals} />
+          </SmartMoneyMobileModalContainer>
+        ) : null}
+
         <SmartMoneyMobileHeader />
         {this.props.isLoading ? (
           <div
@@ -56,6 +114,50 @@ class SmartMoneyMobilePage extends BaseReactComponent {
           </div>
         ) : (
           <>
+            <div className="mobileSmartMoneyBtnsContainer">
+              {this.state.localLochUser &&
+              (this.state.localLochUser.email ||
+                this.state.localLochUser.first_name ||
+                this.state.localLochUser.last_name) ? (
+                <div
+                  onClick={this.props.signOutFun}
+                  className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                >
+                  <div className="mobileSmartMoneyBtnSignInIconContainer">
+                    <Image
+                      className="mobileSmartMoneyBtnSignInIcon"
+                      src={BlackManIcon}
+                    />
+                  </div>
+                  <div className="mobileSmartMoneyBtnSignInDataName">
+                    {this.state.localLochUser.first_name ||
+                    this.state.localLochUser.last_name
+                      ? `${this.state.localLochUser.first_name} ${
+                          this.state.localLochUser.last_name
+                            ? this.state.localLochUser.last_name.slice(0, 1) +
+                              "."
+                            : ""
+                        }`
+                      : "Signed in"}
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={this.showSignInModal}
+                  className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                >
+                  <div className="mobileSmartMoneyBtnSignInIconContainer">
+                    <Image
+                      className="mobileSmartMoneyBtnSignInIcon"
+                      src={GreyManIcon}
+                    />
+                  </div>
+                  <div className="mobileSmartMoneyBtnSignInDataName">
+                    Sign in / up now
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="mobileSmartMoneyListContainer">
               {this.props.accountList.map((mapData) => {
                 let tempCurrencyRate = this.props.currency?.rate

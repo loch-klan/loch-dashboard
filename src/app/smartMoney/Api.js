@@ -107,7 +107,7 @@ export const addSmartMoney = (data, ctx, address, nameTag, email) => {
       });
   };
 };
-export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
+export const smartMoneySignUpApi = (ctx, info, passedEmail, isMobile) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/update-user", info)
@@ -118,6 +118,7 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             passedEmail: passedEmail,
+            isMobile: isMobile,
           });
         } else {
           toast.error(res.data.message || "Something went wrong");
@@ -157,7 +158,7 @@ export const smartMoneySignInApi = (data, ctx) => {
   };
 };
 
-export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
+export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/verify-otp-code", data)
@@ -170,6 +171,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             passedEmail: passedEmail,
+            isMobile: isMobile,
           });
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;

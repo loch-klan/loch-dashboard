@@ -61,7 +61,7 @@ import {
 } from "../watchlist/redux/WatchListApi";
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
-import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
+import SmartMoneyMobilePage from "./SmartMoneyMobileBlocks/smartMoneyMobilePage.js";
 
 import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 import {
@@ -1143,19 +1143,21 @@ class SmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileDevice isSmartMoney />
-        // <SmartMoneyMobilePage
-        //   location={this.props.location}
-        //   history={this.props.history}
-        //   accountList={this.state.accountList}
-        //   currency={this.state.currency}
-        //   isLoading={this.state.tableLoading}
-        //   currentPage={this.state.currentPage}
-        //   totalPage={this.state.totalPage}
-        //   pageLimit={this.state.pageLimit}
-        //   changePageLimit={this.changePageLimit}
-        //   onPageChange={this.onPageChange}
-        // />
+        // <MobileDevice isSmartMoney />
+        <SmartMoneyMobilePage
+          location={this.props.location}
+          history={this.props.history}
+          accountList={this.state.accountList}
+          currency={this.state.currency}
+          isLoading={this.state.tableLoading}
+          currentPage={this.state.currentPage}
+          totalPage={this.state.totalPage}
+          pageLimit={this.state.pageLimit}
+          changePageLimit={this.changePageLimit}
+          onPageChange={this.onPageChange}
+          blurTable={this.state.blurTable}
+          signOutFun={this.signOutFun}
+        />
       );
     }
 
