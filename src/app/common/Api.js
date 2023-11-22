@@ -794,10 +794,13 @@ export const SendOtp = (data, ctx) => {
             ? "Enter the verification code sent to your email to save the wallets and pods to your account"
             : "Enter the verification code sent to your email to update the existing wallets and pods for your account",
         });
+      } else if (res.data.error === true) {
+        toast.error(res.data.message || "Something Went Wrong");
       }
     })
     .catch((err) => {
       console.log("err", err);
+      toast.error("Something Went Wrong");
     });
 };
 
