@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { BASE_GA_KEY } from "./utils/Constant";
+import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -44,37 +45,39 @@ function App() {
   //   <MobileDevice />
   // ) : (
   return (
-    <div>
-      <BrowserRouter>
-        <Switch>
-          {routes.map((prop, key) => {
-            return (
-              <prop.type
-                exact
-                path={prop.path}
-                key={key}
-                component={prop.component}
-              />
-            );
-          })}
-          {/* <Route exact path="/" component={Home} /> */}
-        </Switch>
-      </BrowserRouter>
-      {/* <ToastContainer hideProgressBar /> */}
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        hideProgressBar
-        newestOnTop={false}
-        // closeOnClick
-        closeButton={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </div>
+    <ArcxAnalyticsProvider apiKey="9512a5a0991ebed15b7d3ff9cfa3b6d2940697329c667a62e9488740ec422120">
+      <div>
+        <BrowserRouter>
+          <Switch>
+            {routes.map((prop, key) => {
+              return (
+                <prop.type
+                  exact
+                  path={prop.path}
+                  key={key}
+                  component={prop.component}
+                />
+              );
+            })}
+            {/* <Route exact path="/" component={Home} /> */}
+          </Switch>
+        </BrowserRouter>
+        {/* <ToastContainer hideProgressBar /> */}
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          // closeOnClick
+          closeButton={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </div>
+    </ArcxAnalyticsProvider>
   );
   // );
 }
