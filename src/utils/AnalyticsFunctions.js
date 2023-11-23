@@ -5527,6 +5527,7 @@ export const SmartMoneyAddressAddedAttempted = ({
   email_address,
   address,
   nameTag,
+  isMobile,
 }) => {
   const event_name = "Smart money: address adding attempt";
   const eventProperties = {
@@ -5534,6 +5535,7 @@ export const SmartMoneyAddressAddedAttempted = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5542,6 +5544,7 @@ export const SmartMoneyAddressAdded = ({
   email_address,
   address,
   nameTag,
+  isMobile,
 }) => {
   const event_name = "Smart money: address added";
   const eventProperties = {
@@ -5549,6 +5552,7 @@ export const SmartMoneyAddressAdded = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

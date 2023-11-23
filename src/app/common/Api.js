@@ -799,10 +799,16 @@ export const SendOtp = (data, ctx, isForMobile) => {
           });
         }
       } else if (res.data.error === true) {
+        if (isForMobile && ctx.handleError) {
+          ctx.handleError();
+        }
         toast.error(res.data.message || "Something Went Wrong");
       }
     })
     .catch((err) => {
+      if (isForMobile && ctx.handleError) {
+        ctx.handleError();
+      }
       console.log("err", err);
       toast.error("Something Went Wrong");
     });
