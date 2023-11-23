@@ -32,11 +32,15 @@ import {
   BlackManIcon,
   CrossSmartMoneyIcon,
   GreyManIcon,
+  InfoCircleSmartMoneyIcon,
+  PlusCircleSmartMoneyIcon,
+  QuestionmarkCircleSmartMoneyIcon,
 } from "../../../assets/images/icons/index.js";
 import SmartMoneyMobileModalContainer from "./smartMoneyMobileModalContainer.js";
 import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp.js";
 import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal.js";
 import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal.js";
+import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal.js";
 
 class SmartMoneyMobilePage extends BaseReactComponent {
   constructor(props) {
@@ -44,13 +48,12 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     this.state = {
       signInModal: false,
       addAddressModal: false,
-      howItWorksModal: true,
+      howItWorksModal: false,
+      faqModal: false,
       localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
     };
   }
-  componentDidMount() {
-    document.body.style.overflow = "hidden";
-  }
+  componentDidMount() {}
   componentDidUpdate(prevProps, prevStates) {
     if (prevProps.blurTable !== this.props.blurTable) {
       if (!this.props.blurTable) {
@@ -65,6 +68,18 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     }
   }
 
+  showFaqModal = () => {
+    this.setState({
+      faqModal: true,
+    });
+    document.body.style.overflow = "hidden";
+  };
+  showHowItWorksModal = () => {
+    this.setState({
+      howItWorksModal: true,
+    });
+    document.body.style.overflow = "hidden";
+  };
   showSignInModal = () => {
     this.setState({
       signInModal: true,
@@ -76,6 +91,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       signInModal: false,
       addAddressModal: false,
       howItWorksModal: false,
+      faqModal: false,
     });
     document.body.style.overflow = "unset";
   };
@@ -96,6 +112,11 @@ class SmartMoneyMobilePage extends BaseReactComponent {
         {this.state.howItWorksModal ? (
           <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
             <SmartMoneyMobileHowItWorksModal onHide={this.hideAllModals} />
+          </SmartMoneyMobileModalContainer>
+        ) : null}
+        {this.state.faqModal ? (
+          <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
+            <SmartMoneyMobileFAQModal onHide={this.hideAllModals} />
           </SmartMoneyMobileModalContainer>
         ) : null}
 
@@ -119,43 +140,130 @@ class SmartMoneyMobilePage extends BaseReactComponent {
               (this.state.localLochUser.email ||
                 this.state.localLochUser.first_name ||
                 this.state.localLochUser.last_name) ? (
-                <div
-                  onClick={this.props.signOutFun}
-                  className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
-                >
-                  <div className="mobileSmartMoneyBtnSignInIconContainer">
-                    <Image
-                      className="mobileSmartMoneyBtnSignInIcon"
-                      src={BlackManIcon}
-                    />
+                <>
+                  <div
+                    onClick={this.props.signOutFun}
+                    className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                  >
+                    <div className="mobileSmartMoneyBtnSignInIconContainer">
+                      <Image
+                        className="mobileSmartMoneyBtnSignInIcon"
+                        src={BlackManIcon}
+                      />
+                    </div>
+                    <div className="mobileSmartMoneyBtnSignInDataName">
+                      {this.state.localLochUser.first_name ||
+                      this.state.localLochUser.last_name
+                        ? `${this.state.localLochUser.first_name} ${
+                            this.state.localLochUser.last_name
+                              ? this.state.localLochUser.last_name.slice(0, 1) +
+                                "."
+                              : ""
+                          }`
+                        : "Signed in"}
+                    </div>
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInDataName">
-                    {this.state.localLochUser.first_name ||
-                    this.state.localLochUser.last_name
-                      ? `${this.state.localLochUser.first_name} ${
-                          this.state.localLochUser.last_name
-                            ? this.state.localLochUser.last_name.slice(0, 1) +
-                              "."
-                            : ""
-                        }`
-                      : "Signed in"}
+                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                    <div
+                      onClick={this.showFaqModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        FAQ
+                      </div>
+                    </div>
+                    <div
+                      onClick={this.showHowItWorksModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        margin: "0rem 1rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        How it works
+                      </div>
+                    </div>
+                    <div
+                      // onClick={props.openAddAddressModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={PlusCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        Add address
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               ) : (
-                <div
-                  onClick={this.showSignInModal}
-                  className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
-                >
-                  <div className="mobileSmartMoneyBtnSignInIconContainer">
-                    <Image
-                      className="mobileSmartMoneyBtnSignInIcon"
-                      src={GreyManIcon}
-                    />
+                <>
+                  <div
+                    onClick={this.showSignInModal}
+                    className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                  >
+                    <div className="mobileSmartMoneyBtnSignInIconContainer">
+                      <Image
+                        className="mobileSmartMoneyBtnSignInIcon"
+                        src={GreyManIcon}
+                      />
+                    </div>
+                    <div className="mobileSmartMoneyBtnSignInDataName">
+                      Sign in / up now
+                    </div>
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInDataName">
-                    Sign in / up now
+                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                    <div
+                      onClick={this.showFaqModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginRight: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        FAQ
+                      </div>
+                    </div>
+                    <div
+                      onClick={this.showHowItWorksModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        How it works
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
             <div className="mobileSmartMoneyListContainer">

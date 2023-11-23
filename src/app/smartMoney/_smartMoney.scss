@@ -147,6 +147,25 @@
         .msmpModalTexts {
           text-align: center;
         }
+        .msmpFaqListContainer {
+          background-color: #e5e5e680;
+          width: 100%;
+          border-radius: 1rem;
+          overflow: scroll;
+          padding: 1rem;
+          max-height: 45vh;
+          .msmpFaqListItem {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+          }
+          .msmpFaqSelectedListItem {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            background-color: white;
+          }
+        }
         .msmpModalAboutHeading {
           transform: translateY(-8rem);
           z-index: 2;
@@ -324,6 +343,18 @@
         min-width: 1.3rem;
         max-height: 1.3rem;
       }
+    }
+    .mobileSmartMoneyBtnFaqContainer {
+      background-color: #e5e5e6;
+      border-color: #e5e5e6;
+      box-shadow: none;
+      flex: 1;
+    }
+    .mobileSmartMoneyBtnSignInBottomBtns {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
   .mobileSmartMoneyListContainer {

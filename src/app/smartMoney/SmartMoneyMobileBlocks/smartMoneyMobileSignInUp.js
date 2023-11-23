@@ -222,6 +222,14 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
           <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
             {this.state.signInUpSubTitle}
           </p>
+          {this.state.isSignInPage ? (
+            <p
+              onClick={this.showSignUpPage}
+              className="inter-display-medium f-s-14 lh-19 grey-7C7 m-b-24 text-center"
+            >
+              Don’t have an account yet? Click here to sign up.
+            </p>
+          ) : null}
         </div>
         <div
           className={`msmModalInputWrapper m-b-48 ${
@@ -269,9 +277,6 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             />
           </div>
         ) : null}
-        <div onClick={this.showSignUpPage}>
-          Don’t have an account yet? Click here to sign up.
-        </div>
       </div>
     );
   }
