@@ -21,7 +21,7 @@ import {
   TruncateText,
   numToCurrency,
 } from "../../../utils/ReusableFunctions.js";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
 import { BASE_URL_S3 } from "../../../utils/Constant.js";
 import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
@@ -30,6 +30,7 @@ import Loading from "../../common/Loading.js";
 import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination.js";
 import {
   BlackManIcon,
+  ContributeTrophyIcon,
   CrossSmartMoneyIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
@@ -41,6 +42,7 @@ import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp.js";
 import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal.js";
 import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal.js";
 import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal.js";
+import SmartMoneyMobileBlock from "./smartMoneyMobileBlock.js";
 
 class SmartMoneyMobilePage extends BaseReactComponent {
   constructor(props) {
@@ -266,159 +268,108 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                 </>
               )}
             </div>
-            <div className="mobileSmartMoneyListContainer">
-              {this.props.accountList.map((mapData) => {
-                let tempCurrencyRate = this.props.currency?.rate
-                  ? this.props.currency.rate
-                  : 0;
-
-                let tempNetWorth = mapData.networth ? mapData.networth : 0;
-                let tempNetflows = mapData.netflows ? mapData.netflows : 0;
-                let tempProfits = mapData.profits ? mapData.profits : 0;
-                let tempReturns = mapData.returns ? mapData.returns : 0;
-
-                let netWorth = tempNetWorth * tempCurrencyRate;
-                let netFlows = tempNetflows * tempCurrencyRate;
-                let profits = tempProfits * tempCurrencyRate;
-                let returns = tempReturns * tempCurrencyRate;
-                return (
-                  <div className="mobileSmartMoneyBlock">
-                    <div className="msmbHeader">
-                      <div className="msmbHeaderLeft">
-                        {mapData.rank ? (
-                          <div className="inter-display-medium msmbHeaderRank">
-                            {mapData.rank}.
+            {this.props.accountList && this.props.accountList.length > 0 ? (
+              <div className="mobileSmartMoneyListContainer">
+                {this.props.blurTable ? (
+                  <div className="mobileSmartMoneyListBlurContainer">
+                    <div className="mobileSmartMoneyListBlur">
+                      <div className="mobileSmartMoneyBlurContainerTwo">
+                        <div className="mobileSmartMoneyBlur">
+                          <Image
+                            className="mobileSmartMoneyBlurLogo"
+                            src={ContributeTrophyIcon}
+                          />
+                          <div className="mt-4 mb-4">
+                            <h6 className="inter-display-medium f-s-24">
+                              Sign in to view the Leaderboard
+                            </h6>
+                            <p className="inter-display-medium f-s-16 grey-969 mt-2 p-l-30 p-r-30">
+                              View the smartest money on-chain
+                            </p>
                           </div>
-                        ) : null}
-                        {mapData.tagName ? (
-                          <div className="inter-display-medium msmbHeaderNickName">
-                            {mapData.tagName}
-                          </div>
-                        ) : null}
-                        {mapData.account ? (
-                          <div
-                            onClick={() => {
-                              let lochUser = getCurrentUser().id;
-
-                              let slink = mapData.account;
-                              let shareLink =
-                                BASE_URL_S3 +
-                                "home/" +
-                                slink +
-                                "?redirect=home";
-                              if (lochUser) {
-                                const alreadyPassed =
-                                  window.sessionStorage.getItem(
-                                    "PassedRefrenceId"
-                                  );
-                                if (alreadyPassed) {
-                                  shareLink =
-                                    shareLink + "&refrenceId=" + alreadyPassed;
-                                } else {
-                                  shareLink =
-                                    shareLink + "&refrenceId=" + lochUser;
-                                }
-                              }
-                              SmartMoneyWalletClicked({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                                wallet: slink,
-                                isMobile: true,
-                              });
-                              window.open(shareLink, "_blank", "noreferrer");
-                            }}
-                            className="inter-display-medium msmbHeaderAccount"
-                          >
-                            {TruncateText(mapData.account)}
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="msmbHeaderRight">
-                        <div className="inter-display-medium msmbHeaderNetWorth">
-                          {CurrencyType(false) + numToCurrency(netWorth)}
                         </div>
+                        <Button
+                          className="secondary-btn"
+                          onClick={this.showSignInModal}
+                        >
+                          Sign in / up now
+                        </Button>
                       </div>
                     </div>
-                    <div className="msmbBody">
-                      <div className="msmbBodyItem">
-                        <div className="inter-display-medium msmbBITitle">
-                          Net flows
-                        </div>
-                        <div
-                          className={`inter-display-medium msmbBIAmount ${
-                            netFlows >= 0
-                              ? "msmbBIAmountGain"
-                              : "msmbBIAmountLoss"
-                          }`}
-                        >
-                          {netFlows !== 0 ? (
-                            <Image
-                              src={netFlows < 0 ? LossIcon : GainIcon}
-                              className="mr-2"
-                            />
-                          ) : null}
-                          <span>
-                            {CurrencyType(false) + numToCurrency(netFlows)}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="msmbBodyItem">
-                        <div className="inter-display-medium msmbBITitle">
-                          Realized PnL
-                        </div>
-                        <div
-                          className={`inter-display-medium msmbBIAmount ${
-                            profits >= 0
-                              ? "msmbBIAmountGain"
-                              : "msmbBIAmountLoss"
-                          }`}
-                        >
-                          {profits !== 0 ? (
-                            <Image
-                              src={profits < 0 ? LossIcon : GainIcon}
-                              className="mr-2"
-                            />
-                          ) : null}
+                    {this.props.accountList.slice(0, 1).map((mapData) => {
+                      let tempCurrencyRate = this.props.currency?.rate
+                        ? this.props.currency.rate
+                        : 0;
 
-                          <span>
-                            {CurrencyType(false) + numToCurrency(profits)}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="msmbBodyItem">
-                        <div className="inter-display-medium msmbBITitle">
-                          Unrealized
-                        </div>
-                        <div
-                          className={`inter-display-medium msmbBIAmount ${
-                            returns >= 0
-                              ? "msmbBIAmountGain"
-                              : "msmbBIAmountLoss"
-                          }`}
-                        >
-                          {returns !== 0 ? (
-                            <Image
-                              src={returns < 0 ? LossIcon : GainIcon}
-                              className="mr-2"
-                            />
-                          ) : null}
-                          <span>{numToCurrency(returns) + "%"}</span>
-                        </div>
-                      </div>
-                    </div>
+                      let tempNetWorth = mapData.networth
+                        ? mapData.networth
+                        : 0;
+                      let tempNetflows = mapData.netflows
+                        ? mapData.netflows
+                        : 0;
+                      let tempProfits = mapData.profits ? mapData.profits : 0;
+                      let tempReturns = mapData.returns ? mapData.returns : 0;
+
+                      let netWorth = tempNetWorth * tempCurrencyRate;
+                      let netFlows = tempNetflows * tempCurrencyRate;
+                      let profits = tempProfits * tempCurrencyRate;
+                      let returns = tempReturns * tempCurrencyRate;
+                      return (
+                        <SmartMoneyMobileBlock
+                          netWorth={netWorth}
+                          netFlows={netFlows}
+                          profits={profits}
+                          returns={returns}
+                          mapData={mapData}
+                        />
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
-            <SmartMoneyPagination
-              history={this.props.history}
-              location={this.props.location}
-              page={this.props.currentPage + 1}
-              pageCount={this.props.totalPage}
-              pageLimit={this.props.pageLimit}
-              changePageLimit={this.props.changePageLimit}
-              onPageChange={this.props.onPageChange}
-            />
+                ) : (
+                  <>
+                    {this.props.accountList.map((mapData) => {
+                      let tempCurrencyRate = this.props.currency?.rate
+                        ? this.props.currency.rate
+                        : 0;
+
+                      let tempNetWorth = mapData.networth
+                        ? mapData.networth
+                        : 0;
+                      let tempNetflows = mapData.netflows
+                        ? mapData.netflows
+                        : 0;
+                      let tempProfits = mapData.profits ? mapData.profits : 0;
+                      let tempReturns = mapData.returns ? mapData.returns : 0;
+
+                      let netWorth = tempNetWorth * tempCurrencyRate;
+                      let netFlows = tempNetflows * tempCurrencyRate;
+                      let profits = tempProfits * tempCurrencyRate;
+                      let returns = tempReturns * tempCurrencyRate;
+                      return (
+                        <SmartMoneyMobileBlock
+                          netWorth={netWorth}
+                          netFlows={netFlows}
+                          profits={profits}
+                          returns={returns}
+                          mapData={mapData}
+                        />
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            ) : null}
+            {!this.props.blurTable ? (
+              <SmartMoneyPagination
+                history={this.props.history}
+                location={this.props.location}
+                page={this.props.currentPage + 1}
+                pageCount={this.props.totalPage}
+                pageLimit={this.props.pageLimit}
+                changePageLimit={this.props.changePageLimit}
+                onPageChange={this.props.onPageChange}
+              />
+            ) : null}
           </>
         )}
       </div>
