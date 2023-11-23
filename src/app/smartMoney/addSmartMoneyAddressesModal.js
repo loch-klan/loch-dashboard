@@ -19,7 +19,7 @@ import {
   smartMoneySignInApi,
   VerifySmartMoneyEmailOtp,
 } from "./Api";
-import { fixWalletApi, getUser, setPageFlagDefault } from "../common/Api";
+import { setPageFlagDefault } from "../common/Api";
 import { toast } from "react-toastify";
 import validator from "validator";
 

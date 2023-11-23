@@ -1,207 +1,388 @@
 import React from "react";
 import { connect } from "react-redux";
-import { searchTransactionApi, getFilters } from "../../intelligence/Api.js";
 import { BaseReactComponent, CustomButton } from "../../../utils/form/index.js";
-import { getAllCoins, getAllParentChains } from "../../onboarding/Api.js";
+import { detectCoin } from "../../onboarding/Api.js";
 import backIcon from "../../../assets/images/icons/Icon-back.svg";
-import {
-  GetAllPlan,
-  SendOtp,
-  setPageFlagDefault,
-  TopsetPageFlagDefault,
-} from "../../common/Api.js";
-import {
-  VerifySmartMoneyEmailOtp,
-  getSmartMoney,
-  smartMoneySignUpApi,
-} from "../Api.js";
-import {
-  removeFromWatchList,
-  updateAddToWatchList,
-} from "../../watchlist/redux/WatchListApi.js";
+import { setPageFlagDefault } from "../../common/Api.js";
+
 import { Image } from "react-bootstrap";
-import SignInIcon from "../../../assets/images/icons/ActiveProfileIcon.svg";
-import validator from "validator";
-import { toast } from "react-toastify";
+
 import {
   CrossSmartMoneyIcon,
+  TrophyCelebrationIcon,
   TrophyIcon,
+  WarningCircleIcon,
 } from "../../../assets/images/icons/index.js";
+import { addSmartMoney } from "../Api.js";
+import SmartMoneyAddressAddedBlock from "./smartMoneyAddressAddedBlock.js";
+import { toast } from "react-toastify";
 
 class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      isSignUpPage: false,
-      isSignInPage: true,
-      isSignInOtpPage: false,
-
-      signInUpTitle: "Contribute to the community",
-      signInUpSubTitle: "Add an address to the community board",
-      signInUpBtnText: "Add",
-      signInUpIsBtnDisabled: true,
-      signInUpInputPlaceHolder: "Email",
-
-      signInEmail: "",
-      signUpEmail: "",
-      signInOtp: "",
-      showBorder: false,
+      // NEW
+      coinsLoading: false,
+      modalType: "addwallet",
+      addWalletList: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          showNameTag: true,
+          apiAddress: "",
+        },
+      ],
+      showAddAddressResponse: false,
+      showAddressAdded: false,
+      showAddressAlreadyPresent: false,
+      showAddressNotTenK: false,
     };
   }
 
   componentDidMount() {}
-  componentDidUpdate(prevProps, prevState) {}
-  handleOnTextChange = (e) => {
-    let { value } = e.target;
-    const tempIsValidEmail = validator.isEmail(value);
-    if (this.state.isSignUpPage) {
-      this.setState({
-        signUpEmail: value,
-        signInUpIsBtnDisabled: !tempIsValidEmail,
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.addWalletList !== this.state.addWalletList) {
+      let coinsFound = false;
+      let coinsNotFound = false;
+      this.state.addWalletList?.forEach((e, i) => {
+        if (e.coinFound && e.coins.length > 0) {
+          coinsFound = true;
+        } else if (
+          e.coins.length === this.props.OnboardingState.coinsList.length
+        ) {
+          coinsNotFound = true;
+        }
       });
-    } else if (this.state.isSignInPage) {
+
+      if (coinsFound) {
+        this.setState({
+          coinsFound: true,
+          coinsLoading: false,
+        });
+      } else if (coinsNotFound) {
+        this.setState({
+          coinsFound: false,
+          coinsLoading: false,
+        });
+      } else {
+        this.setState({
+          coinsFound: false,
+        });
+      }
+    }
+  }
+  nicknameOnChain = (e) => {
+    let { name, value } = e.target;
+    let walletCopy = [...this.state.addWalletList];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      walletCopy[foundIndex].nickname = value;
+    }
+    this.setState({
+      addWalletList: walletCopy,
+    });
+  };
+  handleOnchange = (e) => {
+    this.setState({
+      coinsLoading: true,
+    });
+    let { name, value } = e.target;
+
+    let prevWallets = [...this.state.addWalletList];
+    let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
+    if (currentIndex > -1) {
+      let prevValue = prevWallets[currentIndex].address;
+      prevWallets[currentIndex].address = value;
+      prevWallets[currentIndex].displayAddress = value;
+      if (value === "" || prevValue !== value) {
+        prevWallets[currentIndex].coins = [];
+      }
+    }
+
+    this.setState({
+      addWalletList: prevWallets,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnWalletAddress(name, value);
+    }, 500);
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this
+        );
+      }
+    }
+  };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+    let newAddress =
+      this.state.modalType === "addwallet"
+        ? [...this.state.addWalletList]
+        : [...this.state.fixWalletAddress];
+
+    data.address === newAddress[i].address &&
+      newAddress[i].coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound =
+      newAddress[i].coins &&
+      newAddress[i].coins.some((e) => e.chain_detected === true);
+    newAddress[i].apiAddress = data?.apiaddress;
+    newAddress[i].showNickname = true;
+
+    if (this.state.modalType === "addwallet") {
       this.setState({
-        signInEmail: value,
-        signInUpIsBtnDisabled: !tempIsValidEmail,
+        addWalletList: newAddress,
       });
-    } else if (this.state.isSignInOtpPage) {
+    } else if (this.state.modalType === "fixwallet") {
       this.setState({
-        signInOtp: value,
-        signInUpIsBtnDisabled: value ? false : true,
+        fixWalletAddress: newAddress,
       });
     }
   };
-
-  showBorder = () => {
-    this.setState({
-      showBorder: true,
-    });
-  };
-  hideBorder = () => {
-    this.setState({
-      showBorder: false,
-    });
-  };
-  handleTabPress = (event) => {
-    if (event.key === "Enter" && !this.state.signInUpIsBtnDisabled) {
-      event.preventDefault();
-      this.onValidSubmit();
+  addAddressToSmartMoney = (e) => {
+    if (this.state.loadAddBtn || !this.state.coinsFound) {
+      return null;
     }
-  };
-
-  showSignInPage = () => {
-    this.setState({
-      isSignUpPage: false,
-      isSignInPage: true,
-      isSignInOtpPage: false,
-      signInEmail: "",
-      signInUpTitle: "Sign in",
-      signInUpSubTitle: "Get right back into your account",
-      signInUpBtnText: "Send verification",
-      signInUpInputPlaceHolder: "Email",
-      signInUpIsBtnDisabled: true,
-    });
-  };
-  showSignInOtpPage = () => {
-    this.setState({
-      isSignUpPage: false,
-      isSignInPage: false,
-      isSignInOtpPage: true,
-      signInOtp: "",
-      signInUpTitle: "Verify email",
-      signInUpSubTitle:
-        "Enter the verification code sent to your email to sign in your account",
-      signInUpBtnText: "Verify",
-      signInUpInputPlaceHolder: "Enter Verification Code",
-      signInUpIsBtnDisabled: true,
-    });
-  };
-  showSignUpPage = () => {
-    this.setState({
-      isSignUpPage: true,
-      isSignInPage: false,
-      isSignInOtpPage: false,
-      signUpEmail: "",
-      signInUpTitle: "Sign up",
-      signInUpSubTitle:
-        "Add your email so you can view, analyze, and follow any or all of the smartest actors on-chain.",
-      signInUpBtnText: "Save",
-      signInUpInputPlaceHolder: "Email",
-      signInUpIsBtnDisabled: true,
-    });
-  };
-  handleAccountCreate = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.signInEmail);
-    SendOtp(data, this, true);
-  };
-  handleOtp = () => {
+    const tempItem = this.state.addWalletList[0];
+    data.append("address", tempItem.address);
+    data.append("name_tag", tempItem.nickname);
     this.setState({
-      isOptInValid: false,
+      loadAddBtn: true,
     });
-    let data = new URLSearchParams();
-    data.append("email", this.state.signInEmail);
-    data.append("otp_token", this.state.signInOtp);
-    data.append(
-      "signed_up_from",
-      this.props?.popupType === "general_popup"
-        ? "generic pop up"
-        : this.props.tracking
-    );
-    this.props.VerifySmartMoneyEmailOtp(
+    this.props.addSmartMoney(
       data,
       this,
-      this.state.signInEmail,
+      tempItem.address,
+      tempItem.nickname,
       true
     );
   };
-  onValidSubmit = () => {
-    if (this.state.isSignInPage) {
-      this.handleAccountCreate();
-    } else if (this.state.isSignInOtpPage) {
-      this.handleOtp();
-    } else if (this.state.isSignUpPage) {
-      this.handleSignUp();
-    }
+  handleAddSmartMoneyError = () => {
+    this.setState({
+      loadAddBtn: false,
+    });
   };
-  handleSignUp = () => {
-    // signInUser({
-    //   email_address: this.state?.email,
-    //   userId: getCurrentUser().id,
-    //   first_name: "",
-    //   last_name: "",
-    //   track: "leaving",
-    // });
-    if (this.props.updateTimer) {
-      this.props.updateTimer();
-    }
+  showDefaultView = () => {
+    this.setState({
+      showAddAddressResponse: false,
+      showAddressAdded: false,
+      showAddressAlreadyPresent: false,
+      showAddressNotTenK: false,
+      loadAddBtn: false,
+      addWalletList: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          showNameTag: true,
+          apiAddress: "",
+        },
+      ],
+    });
+  };
+  addressSuccesfullyAdded = () => {
+    this.setState({
+      showAddAddressResponse: true,
+      showAddressAdded: true,
+      showAddressAlreadyPresent: false,
+      showAddressNotTenK: false,
+      loadAddBtn: false,
+    });
+  };
+  addressLowBalance = () => {
+    this.setState({
+      showAddAddressResponse: true,
+      showAddressAdded: false,
+      showAddressAlreadyPresent: false,
+      showAddressNotTenK: true,
+      loadAddBtn: false,
+    });
+  };
+  addressAlreadyPresent = () => {
+    this.setState({
+      showAddAddressResponse: true,
+      showAddressAdded: false,
+      showAddressAlreadyPresent: true,
+      showAddressNotTenK: false,
+      loadAddBtn: false,
+    });
+  };
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 500);
+  };
+  handleKeyPress = (event) => {
+    if (
+      event.key === "Enter" &&
+      !(this.state.loadAddBtn || !this.state.coinsFound)
+    ) {
+      event.preventDefault();
+      event.target.blur();
 
-    const url = new URLSearchParams();
-    url.append("email", this.state.signUpEmail);
-    url.append("signed_up_from", "leaving");
-    url.append("type", "smart-money");
-    this.props.smartMoneySignUpApi(this, url, this.state.signUpEmail, true);
-  };
-  handleSuccesfulSignUp = () => {
-    this.props.onHide();
-    toast.success(
-      <div className="custom-toast-msg">
-        <div>Successful</div>
-        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-          Please check your mailbox for the verification link
-        </div>
-      </div>
-    );
-  };
-  emailIsVerified = () => {
-    toast.success(`Email verified`);
-    this.props.onHide();
+      this.addAddressToSmartMoney();
+    }
   };
   render() {
+    const wallets = this.state.addWalletList?.map((elem, index) => {
+      return (
+        <div className="mwbAddWalletWrapper inter-display-regular f-s-15 lh-20">
+          <div
+            className={`mwbAwInputWrapper ${
+              elem.displayAddress || this.state.showBorder
+                ? "mwbAwInputWrapperSelected"
+                : ""
+            }`}
+          >
+            {elem.showAddress && (
+              <div className="mbwAwTopInputWrapper">
+                <input
+                  type="text"
+                  disabled={
+                    (elem.displayAddress &&
+                      elem.displayAddress ===
+                        this.state.metamaskWalletConnected) ||
+                    (elem.address &&
+                      elem.address === this.state.metamaskWalletConnected)
+                  }
+                  name={`wallet${index + 1}`}
+                  value={elem.displayAddress || elem.address || ""}
+                  placeholder="Paste wallet address or ENS here"
+                  className={`inter-display-regular f-s-16 lh-20 mwbAwInput`}
+                  onChange={(e) => this.handleOnchange(e)}
+                  id={elem.id}
+                  onKeyDown={this.handleKeyPress}
+                  onFocus={this.scrollToTop}
+                  onBlur={this.hideBorder}
+                  autocomplete="off"
+                />
+              </div>
+            )}
+
+            {elem.coinFound && elem.showNickname && elem.displayAddress ? (
+              <div className="mbwAwTopInputWrapper">
+                <input
+                  type="text"
+                  name={`wallet${index + 1}`}
+                  value={elem.nickname || ""}
+                  placeholder="Enter nametag"
+                  className={`inter-display-regular f-s-16 lh-20 mwbAwInput m-t-20`}
+                  onChange={(e) => this.nicknameOnChain(e)}
+                  id={elem.id}
+                  onKeyDown={this.handleKeyPress}
+                  onFocus={this.scrollToTop}
+                  onBlur={this.hideBorder}
+                  autocomplete="off"
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      );
+    });
     return (
       <div className="msmpModalBody">
-        <div className="msmpModalClosebtnContainer">
+        {this.state.showAddAddressResponse ? (
+          <div className="msmpAddWalletReponsesConatinaer">
+            {this.state.showAddressAdded ? (
+              <SmartMoneyAddressAddedBlock
+                btnClick={this.props.onHide}
+                heading="Congratulations"
+                descriptionOne="This unique address is worth more than $10K. Please click Next to proceed."
+                btnText="Next"
+                imageIcon={TrophyCelebrationIcon}
+                bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
+              />
+            ) : null}
+            {this.state.showAddressAlreadyPresent ? (
+              <SmartMoneyAddressAddedBlock
+                btnClick={this.showDefaultView}
+                heading="Sorry this address has already been added"
+                descriptionOne="Please try to add another address."
+                btnText="Add another"
+                imageIcon={WarningCircleIcon}
+              />
+            ) : null}
+            {this.state.showAddressNotTenK ? (
+              <SmartMoneyAddressAddedBlock
+                btnClick={this.showDefaultView}
+                heading="Sorry this address is not worth at least $10K"
+                descriptionOne="Please try to add another address."
+                btnText="Add another"
+                imageIcon={WarningCircleIcon}
+                hideModal={this.hideModal}
+              />
+            ) : null}
+          </div>
+        ) : null}
+        <div
+          style={{
+            opacity: this.state.showAddAddressResponse ? 0 : 1,
+          }}
+          className="msmpModalClosebtnContainer"
+        >
           <div
             className="back-icon"
             onClick={this.state.isSignUpPage ? this.showSignInPage : () => null}
@@ -220,60 +401,36 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
         </div>
         <div className="msmpModalTexts">
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-10">
-            {this.state.signInUpTitle}
+            Contribute to the community
           </h6>
           <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-            {this.state.signInUpSubTitle}
+            Add an address to the community board
           </p>
         </div>
-        <div
-          className={`msmModalInputWrapper m-b-48 ${
-            this.state.showBorder ? "msmModalInputWrapperSelected" : ""
-          }`}
-        >
-          <input
-            type="text"
-            value={
-              this.state.isSignUpPage
-                ? this.state.signUpEmail
-                : this.state.isSignInOtpPage
-                ? this.state.signInOtp
-                : this.state.isSignInPage
-                ? this.state.signInEmail
-                : ""
-            }
-            placeholder="Paste wallet address or ENS here"
-            className={`inter-display-regular f-s-16 lh-20 msmModalInput`}
-            onChange={this.handleOnTextChange}
-            // id={elem.id}
-            onKeyDown={this.handleTabPress}
-            onFocus={this.showBorder}
-            onBlur={this.hideBorder}
-            autocomplete="off"
-            onSubmit={this.onValidSubmit}
-          />
-        </div>
+        <div className="mwbAddWalletWrapperContainer m-b-48">{wallets}</div>
         <div className="msmModalBtnContainer">
           <CustomButton
             className="inter-display-regular f-s-15 lh-20 msmModalBtn"
             type="submit"
-            handleClick={this.onValidSubmit}
-            isDisabled={this.state.signInUpIsBtnDisabled}
-            buttonText={this.state.signInUpBtnText}
+            isLoading={
+              this.state.loadAddBtn ||
+              (this.state.addWalletList &&
+              this.state.addWalletList[0].displayAddress === ""
+                ? false
+                : this.state.coinsLoading)
+            }
+            buttonText="Go"
+            isDisabled={this.state.loadAddBtn || !this.state.coinsFound}
+            handleClick={this.addAddressToSmartMoney}
           />
         </div>
-        {this.state.isSignInPage ? (
-          <div className="msmModalBtnContainer m-t-24">
-            <CustomButton
-              className="inter-display-regular f-s-15 lh-20 msmModalBtn msmTransparentModalBtn"
-              type="submit"
-              handleClick={this.props.onHide}
-              buttonText="Cancel"
-            />
-          </div>
-        ) : null}
-        <div onClick={this.showSignUpPage}>
-          Don’t have an account yet? Click here to sign up.
+        <div className="msmModalBtnContainer m-t-24">
+          <CustomButton
+            className="inter-display-regular f-s-15 lh-20 msmModalBtn msmTransparentModalBtn"
+            type="submit"
+            handleClick={this.props.onHide}
+            buttonText="Cancel"
+          />
         </div>
       </div>
     );
@@ -281,27 +438,13 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({
-  // portfolioState: state.PortfolioState,
-  intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
-  TopAccountsInWatchListState: state.TopAccountsInWatchListState,
 });
 const mapDispatchToProps = {
-  searchTransactionApi,
-  getSmartMoney,
-
-  getAllCoins,
-  getFilters,
+  // getPosts: fetchPosts
   setPageFlagDefault,
-  TopsetPageFlagDefault,
-  getAllParentChains,
-
-  removeFromWatchList,
-  updateAddToWatchList,
-
-  GetAllPlan,
-  VerifySmartMoneyEmailOtp,
-  smartMoneySignUpApi,
+  detectCoin,
+  addSmartMoney,
 };
 
 SmartMoneyMobileAddAddressModal.propTypes = {};

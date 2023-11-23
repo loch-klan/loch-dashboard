@@ -43,6 +43,7 @@ import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal.j
 import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal.js";
 import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal.js";
 import SmartMoneyMobileBlock from "./smartMoneyMobileBlock.js";
+import SmartMoneyMobileSignOutModal from "./smartMoneyMobileSignOutModal.js";
 
 class SmartMoneyMobilePage extends BaseReactComponent {
   constructor(props) {
@@ -53,6 +54,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       howItWorksModal: false,
       faqModal: false,
       localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      signOutModal: false,
     };
   }
   componentDidMount() {}
@@ -88,12 +90,26 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     });
     document.body.style.overflow = "hidden";
   };
+  showAddAddressModal = () => {
+    this.setState({
+      addAddressModal: true,
+    });
+    document.body.style.overflow = "hidden";
+  };
+  showSignOutModal = () => {
+    this.setState({
+      signOutModal: true,
+    });
+
+    document.body.style.overflow = "hidden";
+  };
   hideAllModals = () => {
     this.setState({
       signInModal: false,
       addAddressModal: false,
       howItWorksModal: false,
       faqModal: false,
+      signOutModal: false,
     });
     document.body.style.overflow = "unset";
   };
@@ -121,6 +137,12 @@ class SmartMoneyMobilePage extends BaseReactComponent {
             <SmartMoneyMobileFAQModal onHide={this.hideAllModals} />
           </SmartMoneyMobileModalContainer>
         ) : null}
+        {this.state.signOutModal ? (
+          <SmartMoneyMobileSignOutModal
+            onSignOut={this.props.signOutFun}
+            onHide={this.hideAllModals}
+          />
+        ) : null}
 
         <SmartMoneyMobileHeader />
         {this.props.isLoading ? (
@@ -144,7 +166,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                 this.state.localLochUser.last_name) ? (
                 <>
                   <div
-                    onClick={this.props.signOutFun}
+                    onClick={this.showSignOutModal}
                     className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
                   >
                     <div className="mobileSmartMoneyBtnSignInIconContainer">
@@ -198,7 +220,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                       </div>
                     </div>
                     <div
-                      // onClick={props.openAddAddressModal}
+                      onClick={this.showAddAddressModal}
                       className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                     >
                       <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
@@ -279,11 +301,11 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                             className="mobileSmartMoneyBlurLogo"
                             src={ContributeTrophyIcon}
                           />
-                          <div className="mt-4 mb-4">
+                          <div className="mt-4 mb-5">
                             <h6 className="inter-display-medium f-s-24">
                               Sign in to view the Leaderboard
                             </h6>
-                            <p className="inter-display-medium f-s-16 grey-969 mt-2 p-l-30 p-r-30">
+                            <p className="inter-display-medium f-s-14 grey-969 mt-2">
                               View the smartest money on-chain
                             </p>
                           </div>

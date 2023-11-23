@@ -57,7 +57,43 @@
     background-color: rgba(0, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
+    .msmpModalSignOutContainer {
+      width: 100vw;
+      height: 100vh;
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .msmpModalSignOutBlock {
+        max-width: 70vw;
+        background-color: white;
+        padding: 3rem;
+        border-radius: 2rem;
+        .msmModalBtnContainer {
+          padding: 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .msmModalBtn {
+            width: 100%;
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            background-color: #19191a;
+            border-color: #19191a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+          }
+          .msmTransparentModalBtn {
+            background-color: transparent;
+            color: #19191a;
+          }
+        }
+      }
+    }
     .msmpModalBlockBlank {
       width: 100%;
       min-height: 9rem;
@@ -82,6 +118,79 @@
 
         padding: 2rem;
         position: relative;
+        .msmpAddWalletReponsesConatinaer {
+          background-color: white;
+          border-radius: 2rem;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          flex: 1;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+
+          padding: 2rem;
+        }
+        .mwbAddWalletWrapperContainer {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-direction: column;
+
+          .mwbAddWalletWrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .mwbAwInputWrapper {
+              width: 100%;
+              border: 0.1rem solid #e5e5e6;
+              border-radius: 1rem;
+              padding: 1.5rem 2rem;
+              background-color: white;
+              box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04),
+                0px 1px 1px rgba(0, 0, 0, 0.04);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              .mbwAwTopInputWrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                position: relative;
+                .mbwAwTopInputSearchIcon {
+                  height: 1.5rem;
+                  // position: absolute;
+                  // left: 1rem;
+                }
+                .mwbAwInput {
+                  border: none;
+                  outline: none;
+                  flex: 1;
+                  text-align: left;
+                  font-weight: 500;
+                  &::-ms-input-placeholder {
+                    color: #afb1b3;
+                  }
+
+                  &::placeholder {
+                    color: #afb1b3;
+                  }
+                }
+              }
+            }
+            .mwbAwInputWrapperSelected {
+              border-color: black;
+            }
+          }
+        }
         .msmpModalHowItWorks {
           width: 100%;
           height: 28rem;
@@ -94,6 +203,9 @@
           border-top-left-radius: 2rem;
           border-top-right-radius: 2rem;
         }
+        // .msmpBigIcon {
+        //   height: 3.5rem;
+        // }
         .msmpModalClosebtnContainer {
           display: flex;
           width: 100%;
@@ -133,6 +245,15 @@
             justify-content: center;
           }
         }
+        .msmpModalMainIconDirectImage {
+          width: 10rem;
+          height: 10rem;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+          transform: translateY(-5rem);
+        }
         .msmpModalMainIconWhiteContainer {
           img {
             width: 2.4rem;
@@ -146,6 +267,9 @@
         }
         .msmpModalTexts {
           text-align: center;
+        }
+        .msmpModalTextsCong {
+          transform: translateY(-5rem);
         }
         .msmpFaqListContainer {
           background-color: #e5e5e680;
@@ -240,6 +364,9 @@
             background-color: transparent;
             color: #19191a;
           }
+        }
+        .msmModalBtnContainerCong {
+          transform: translateY(-5rem);
         }
       }
     }

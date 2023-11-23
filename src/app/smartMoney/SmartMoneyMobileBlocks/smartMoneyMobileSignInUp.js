@@ -44,6 +44,8 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       signUpEmail: "",
       signInOtp: "",
       showBorder: false,
+
+      btnLoading: false,
     };
   }
 
@@ -71,6 +73,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
   };
 
   showBorder = () => {
+    this.scrollToTop();
     this.setState({
       showBorder: true,
     });
@@ -80,9 +83,11 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       showBorder: false,
     });
   };
-  handleTabPress = (event) => {
+
+  handleKeyPress = (event) => {
     if (event.key === "Enter" && !this.state.signInUpIsBtnDisabled) {
       event.preventDefault();
+      event.target.blur();
       this.onValidSubmit();
     }
   };
@@ -98,6 +103,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       signInUpBtnText: "Send verification",
       signInUpInputPlaceHolder: "Email",
       signInUpIsBtnDisabled: true,
+      btnLoading: false,
     });
   };
   showSignInOtpPage = () => {
@@ -112,6 +118,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       signInUpBtnText: "Verify",
       signInUpInputPlaceHolder: "Enter Verification Code",
       signInUpIsBtnDisabled: true,
+      btnLoading: false,
     });
   };
   showSignUpPage = () => {
@@ -126,6 +133,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       signInUpBtnText: "Save",
       signInUpInputPlaceHolder: "Email",
       signInUpIsBtnDisabled: true,
+      btnLoading: false,
     });
   };
   handleAccountCreate = () => {
@@ -153,7 +161,18 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       true
     );
   };
+  handleError = () => {
+    this.setState({
+      btnLoading: false,
+    });
+  };
   onValidSubmit = () => {
+    if (this.state.signInUpIsBtnDisabled) {
+      return null;
+    }
+    this.setState({
+      btnLoading: true,
+    });
     if (this.state.isSignInPage) {
       this.handleAccountCreate();
     } else if (this.state.isSignInOtpPage) {
@@ -195,6 +214,22 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
     toast.success(`Email verified`);
     this.props.onHide();
   };
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 500);
+  };
+
   render() {
     return (
       <div className="msmpModalBody">
@@ -251,11 +286,10 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             className={`inter-display-regular f-s-16 lh-20 msmModalInput`}
             onChange={this.handleOnTextChange}
             // id={elem.id}
-            onKeyDown={this.handleTabPress}
+            onKeyDown={this.handleKeyPress}
             onFocus={this.showBorder}
             onBlur={this.hideBorder}
             autocomplete="off"
-            onSubmit={this.onValidSubmit}
           />
         </div>
         <div className="msmModalBtnContainer">
@@ -263,8 +297,11 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             className="inter-display-regular f-s-15 lh-20 msmModalBtn"
             type="submit"
             handleClick={this.onValidSubmit}
-            isDisabled={this.state.signInUpIsBtnDisabled}
+            isDisabled={
+              this.state.signInUpIsBtnDisabled || this.state.btnLoading
+            }
             buttonText={this.state.signInUpBtnText}
+            isLoading={this.state.btnLoading}
           />
         </div>
         {this.state.isSignInPage ? (
