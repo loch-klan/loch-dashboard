@@ -612,6 +612,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyFAQClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: false,
     });
     this.setState({
       faqModal: true,
@@ -626,6 +627,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyHowItWorksClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: false,
     });
     this.setState({
       howItWorksModal: true,

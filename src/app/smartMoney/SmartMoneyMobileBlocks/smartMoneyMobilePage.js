@@ -1,6 +1,4 @@
 import React from "react";
-import GainIcon from "../../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
 import { searchTransactionApi, getFilters } from "../../intelligence/Api.js";
 import { BaseReactComponent } from "../../../utils/form/index.js";
@@ -16,22 +14,19 @@ import {
   removeFromWatchList,
   updateAddToWatchList,
 } from "../../watchlist/redux/WatchListApi.js";
-import {
-  CurrencyType,
-  TruncateText,
-  numToCurrency,
-} from "../../../utils/ReusableFunctions.js";
+
 import { Button, Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
-import { BASE_URL_S3 } from "../../../utils/Constant.js";
-import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
+import {
+  SmartMoneyFAQClicked,
+  SmartMoneyHowItWorksClicked,
+} from "../../../utils/AnalyticsFunctions.js";
 import SmartMoneyMobileHeader from "../smartMoneyMobileHeader.js";
 import Loading from "../../common/Loading.js";
 import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination.js";
 import {
   BlackManIcon,
   ContributeTrophyIcon,
-  CrossSmartMoneyIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
@@ -73,12 +68,22 @@ class SmartMoneyMobilePage extends BaseReactComponent {
   }
 
   showFaqModal = () => {
+    SmartMoneyFAQClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
     this.setState({
       faqModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showHowItWorksModal = () => {
+    SmartMoneyHowItWorksClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
     this.setState({
       howItWorksModal: true,
     });

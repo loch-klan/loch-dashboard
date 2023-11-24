@@ -144,8 +144,7 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail, isMobile) => {
           ctx.handleSuccesfulSignUp();
           SmartMoneySignUp({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
             isMobile: isMobile,
           });
         } else {
@@ -203,8 +202,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
         if (!res.data.error) {
           SmartMoneySignIn({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
             isMobile: isMobile,
           });
           let isOptValid = res.data.data.otp_verified;
