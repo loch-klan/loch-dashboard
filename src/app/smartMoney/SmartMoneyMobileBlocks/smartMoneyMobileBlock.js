@@ -73,7 +73,9 @@ class smartMoneyMobileBlock extends BaseReactComponent {
         </div>
         <div className="msmbBody">
           <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Net flows</div>
+            <div className="inter-display-medium msmbBITitle">
+              Realized PnL (1yr)
+            </div>
             <div
               className={`inter-display-medium msmbBIAmount ${
                 this.props.netFlows >= 0
@@ -93,7 +95,9 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             </div>
           </div>
           <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Realized PnL</div>
+            <div className="inter-display-medium msmbBITitle">
+              Unealized PnL
+            </div>
             <div
               className={`inter-display-medium msmbBIAmount ${
                 this.props.profits >= 0
@@ -111,24 +115,6 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               <span>
                 {CurrencyType(false) + numToCurrency(this.props.profits)}
               </span>
-            </div>
-          </div>
-          <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Unrealized</div>
-            <div
-              className={`inter-display-medium msmbBIAmount ${
-                this.props.returns >= 0
-                  ? "msmbBIAmountGain"
-                  : "msmbBIAmountLoss"
-              }`}
-            >
-              {this.props.returns !== 0 ? (
-                <Image
-                  src={this.props.returns < 0 ? LossIcon : GainIcon}
-                  className="mr-2"
-                />
-              ) : null}
-              <span>{numToCurrency(this.props.returns) + "%"}</span>
             </div>
           </div>
         </div>
