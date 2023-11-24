@@ -864,12 +864,37 @@
   }
 }
 .addCommunitySmartMoneyWrapperParent {
-  .smartMoneyHowItWorksModalBodyContainer {
-    padding: 3rem 5rem;
-    padding-top: 0rem;
-    .smartMoneyHowItWorksTextLine {
-      text-align: center;
-      margin-top: 2rem;
+  .smartMoneyHowItWorksModalBodyScrollContainer {
+    padding: 5rem;
+    border-radius: 2rem;
+    padding: 2rem;
+    padding-right: 1rem;
+    border: 0.1rem solid #e5e5e6;
+    overflow: auto;
+    .smartMoneyHowItWorksModalBodyContainer {
+      max-height: 35vh;
+      overflow: scroll;
+      overflow-x: hidden;
+      padding-right: 1rem;
+      .smartMoneyHowItWorksTextLine {
+        text-align: left;
+        margin-top: 1rem;
+      }
+      &::-webkit-scrollbar {
+        width: 0.4rem;
+        height: 0.4rem;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.8rem;
+        background-color: #cacbcc;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba(229, 229, 230, 0.5);
+        // background-color: $grey-E5E;
+        border-radius: 0.8rem;
+      }
     }
   }
   .smartMoneyFAQModalBodyContainer {
