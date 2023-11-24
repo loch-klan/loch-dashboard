@@ -550,7 +550,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                 Contribute to the community
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Add a unique address work at least $10k
+                Add a unique address worth at least $10k
               </p>
             </div>
 
