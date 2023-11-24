@@ -121,7 +121,7 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 };
 
 export const numToCurrency = (num, noDefaultDecimals) => {
-  if (num < 100 && noDefaultDecimals) {
+  if (num < 1000 && noDefaultDecimals) {
     return num;
   }
   if (num === undefined || num === null) {
@@ -261,8 +261,10 @@ export const CurrencyType = (code = "both") => {
     return currency?.symbol + " " + currency?.code;
   } else if (code) {
     return currency?.code;
-  } else {
+  } else if (currency?.symbol) {
     return currency?.symbol;
+  } else {
+    return "";
   }
 };
 

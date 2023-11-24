@@ -4,6 +4,7 @@ import TwitterIcon from "../../assets/images/icons/twitter.png";
 import TelegramIcon from "../../assets/images/icons/telegram.png";
 import moment from "moment";
 import { Image } from "react-bootstrap";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class Footer extends Component {
   constructor(props) {
@@ -12,7 +13,15 @@ class Footer extends Component {
     this.state = {
       showTwitterIcon: false,
       showTelegramIcon: false,
+      isMobileDevice: false,
     };
+  }
+  componentDidMount() {
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
   }
   twitterIconLoaded = () => {
     this.setState({
@@ -31,7 +40,7 @@ class Footer extends Component {
           style={{
             marginTop: "3rem",
             marginBottom: "2.6rem",
-            minWidth: "85rem",
+            minWidth: this.state.isMobileDevice ? "" : "85rem",
           }}
         />
         <div
@@ -40,7 +49,7 @@ class Footer extends Component {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            minWidth: "85rem",
+            minWidth: this.state.isMobileDevice ? "" : "85rem",
           }}
         >
           <div style={{ width: "50%" }}>
@@ -108,7 +117,7 @@ class Footer extends Component {
         {!this.props.isMobile ? (
           <p
             style={{
-              minWidth: "85rem",
+              minWidth: this.state.isMobileDevice ? "" : "85rem",
             }}
             className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText"
           >

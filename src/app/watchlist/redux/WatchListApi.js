@@ -91,7 +91,7 @@ export const addAddressToWatchList = (
       .post("wallet/user-wallet/add-update-watchlist", data)
       .then((res) => {
         if (!res.data.error && ctx.showAddressesAdded) {
-          ctx.showAddressesAdded(passedAddress, passedNameTag);
+          ctx.showAddressesAdded(passedAddress, passedNameTag, true);
         }
       })
       .catch((err) => {
@@ -115,9 +115,7 @@ export const removeAddressFromWatchList = (
     postLoginInstance
       .post("wallet/user-wallet/delete-watchlist", data)
       .then((res) => {
-        console.log("Start ", res);
         if (!res.data.error) {
-          console.log("Address deleted");
           if (ctx.refetchList) {
             ctx.refetchList();
             if (ctx.addressDeleted) {

@@ -86,7 +86,10 @@ class MobileHome extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 500);
     const search = this.props?.location?.search;
     const params = new URLSearchParams(search);
     const IsFromMobileHome = params.get("FromMobileHome");
