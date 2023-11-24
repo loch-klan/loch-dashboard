@@ -5200,6 +5200,16 @@ export const SmartMoneyTimeSpent = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const SmartMoneyShare = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Smart money: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
 export const TopAccountTimeSpent = ({
   session_id,
   email_address,

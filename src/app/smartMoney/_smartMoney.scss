@@ -477,10 +477,15 @@
       box-shadow: none;
       flex: 1;
     }
+    .mobileSmartMoneyBtnShareContainer {
+      background-color: #e5e5e6;
+      border-color: #e5e5e6;
+      box-shadow: none;
+    }
     .mobileSmartMoneyBtnSignInBottomBtns {
       margin-top: 1.5rem;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: space-between;
     }
   }
