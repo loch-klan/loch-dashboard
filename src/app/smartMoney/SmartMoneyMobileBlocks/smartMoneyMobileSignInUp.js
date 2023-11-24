@@ -60,12 +60,12 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
     const tempIsValidEmail = validator.isEmail(value);
     if (this.state.isSignUpPage) {
       this.setState({
-        signUpEmail: value,
+        signUpEmail: value ? value.toLowerCase() : "",
         signInUpIsBtnDisabled: !tempIsValidEmail,
       });
     } else if (this.state.isSignInPage) {
       this.setState({
-        signInEmail: value,
+        signInEmail: value ? value.toLowerCase() : "",
         signInUpIsBtnDisabled: !tempIsValidEmail,
       });
     } else if (this.state.isSignInOtpPage) {

@@ -438,7 +438,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
             Contribute to the community
           </h6>
           <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-            Add a unique address work at least $10k
+            Add a unique address worth at least $10k
           </p>
         </div>
         <div className="mwbAddWalletWrapperContainer m-b-48">{wallets}</div>
