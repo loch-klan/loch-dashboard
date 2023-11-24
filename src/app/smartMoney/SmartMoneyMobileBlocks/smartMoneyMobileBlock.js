@@ -96,7 +96,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
           </div>
           <div className="msmbBodyItem">
             <div className="inter-display-medium msmbBITitle">
-              Unealized PnL
+              Unrealized PnL
             </div>
             <div
               className={`inter-display-medium msmbBIAmount ${
