@@ -506,8 +506,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             btnClick={this.showSignUpModal}
             heading="Congratulations"
             descriptionOne="This unique address is worth more than $10K"
-            descriptionTwo="Please click Next to proceed."
-            btnText="Next"
+            btnText="Done"
             imageIcon={TrophyCelebrationIcon}
             bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
             hideModal={this.hideModal}
@@ -551,7 +550,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                 Contribute to the community
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Add an address to the community board
+                Add a unique address work at least $10k
               </p>
             </div>
 

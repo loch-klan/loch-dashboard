@@ -350,8 +350,8 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
               <SmartMoneyAddressAddedBlock
                 btnClick={this.props.onHide}
                 heading="Congratulations"
-                descriptionOne="This unique address is worth more than $10K. Please click Next to proceed."
-                btnText="Next"
+                descriptionOne="This unique address is worth more than $10K."
+                btnText="Done"
                 imageIcon={TrophyCelebrationIcon}
                 bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
               />
@@ -404,7 +404,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
             Contribute to the community
           </h6>
           <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-            Add an address to the community board
+            Add a unique address work at least $10k
           </p>
         </div>
         <div className="mwbAddWalletWrapperContainer m-b-48">{wallets}</div>
