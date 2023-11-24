@@ -7,6 +7,15 @@ import { SmartMoneyAboutMobileImage } from "../../../assets/images/index.js";
 import { CrossSmartMoneyIcon } from "../../../assets/images/icons/index.js";
 
 class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      backIconLoaded: false,
+      CrossSmartMoneyIconLoaded: false,
+      SmartMoneyAboutMobileImageLoaded: false,
+    };
+  }
   render() {
     return (
       <div className="msmpModalBody">
@@ -18,15 +27,44 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
               opacity: this.state.isSignUpPage ? 1 : 0,
             }}
           >
-            <Image className="cp" src={backIcon} />
+            <Image
+              className="cp"
+              src={backIcon}
+              onLoad={() => {
+                this.setState({
+                  backIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.backIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
           <div className="msmpModalClosebtn" onClick={this.props.onHide}>
-            <Image src={CrossSmartMoneyIcon} />
+            <Image
+              src={CrossSmartMoneyIcon}
+              onLoad={() => {
+                this.setState({
+                  CrossSmartMoneyIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.CrossSmartMoneyIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
         </div>
         <Image
           src={SmartMoneyAboutMobileImage}
           className="msmpModalHowItWorks"
+          onLoad={() => {
+            this.setState({
+              SmartMoneyAboutMobileImageLoaded: true,
+            });
+          }}
+          style={{
+            opacity: this.state.SmartMoneyAboutMobileImageLoaded ? 1 : 0,
+          }}
         />
         <div
           style={{

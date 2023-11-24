@@ -289,7 +289,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     data.append("email", this.state.signInEmailId);
     data.append("otp_token", this.state.verificationOtp);
     data.append("signed_up_from", "smart money");
-    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId);
+    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId,false);
   };
   emailIsVerified = () => {
     this.hideModal();

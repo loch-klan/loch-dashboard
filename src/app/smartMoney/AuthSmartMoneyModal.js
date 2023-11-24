@@ -114,7 +114,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.email);
+    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.email, false);
     // VerifyEmail(data, this);
   };
 

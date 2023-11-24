@@ -5503,12 +5503,7 @@ export const SmartMoneySignUp = ({ session_id, email_address, isMobile }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({
-  session_id,
-  email_address,
-
-  isMobile,
-}) => {
+export const SmartMoneySignIn = ({ session_id, email_address, isMobile }) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,

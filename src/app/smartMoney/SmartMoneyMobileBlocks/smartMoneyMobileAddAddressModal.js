@@ -23,6 +23,9 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
 
     this.state = {
       // NEW
+      backIconLoaded: false,
+      CrossSmartMoneyIconLoaded: false,
+      TrophyIconLoaded: false,
       coinsLoading: false,
       modalType: "addwallet",
       addWalletList: [
@@ -390,14 +393,45 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
               opacity: this.state.isSignUpPage ? 1 : 0,
             }}
           >
-            <Image className="cp" src={backIcon} />
+            <Image
+              className="cp"
+              src={backIcon}
+              onLoad={() => {
+                this.setState({
+                  backIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.backIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
           <div className="msmpModalClosebtn" onClick={this.props.onHide}>
-            <Image src={CrossSmartMoneyIcon} />
+            <Image
+              src={CrossSmartMoneyIcon}
+              onLoad={() => {
+                this.setState({
+                  CrossSmartMoneyIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.CrossSmartMoneyIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
         </div>
         <div className="msmpModalMainIconWhiteContainer">
-          <Image src={TrophyIcon} />
+          <Image
+            src={TrophyIcon}
+            onLoad={() => {
+              this.setState({
+                TrophyIconLoaded: true,
+              });
+            }}
+            style={{
+              opacity: this.state.TrophyIconLoaded ? 1 : 0,
+            }}
+          />
         </div>
         <div className="msmpModalTexts">
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-10">

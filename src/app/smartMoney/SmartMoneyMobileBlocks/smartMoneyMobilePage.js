@@ -50,6 +50,13 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       faqModal: false,
       localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       signOutModal: false,
+      BlackManIconLoaded: false,
+      QuestionmarkCircleSmartMoneyIconLoaded: false,
+      InfoCircleSmartMoneyIconLoaded: false,
+      PlusCircleSmartMoneyIconLoaded: false,
+      GreyManIconLoaded: false,
+
+      ContributeTrophyIconLoaded: false,
     };
   }
   componentDidMount() {}
@@ -178,6 +185,14 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                       <Image
                         className="mobileSmartMoneyBtnSignInIcon"
                         src={BlackManIcon}
+                        onLoad={() => {
+                          this.setState({
+                            BlackManIconLoaded: true,
+                          });
+                        }}
+                        style={{
+                          opacity: this.state.BlackManIconLoaded ? 1 : 0,
+                        }}
                       />
                     </div>
                     <div className="mobileSmartMoneyBtnSignInDataName">
@@ -201,6 +216,17 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -218,6 +244,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -232,6 +268,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={PlusCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              PlusCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.PlusCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -250,6 +296,14 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                       <Image
                         className="mobileSmartMoneyBtnSignInIcon"
                         src={GreyManIcon}
+                        onLoad={() => {
+                          this.setState({
+                            GreyManIconIconLoaded: true,
+                          });
+                        }}
+                        style={{
+                          opacity: this.state.GreyManIconIconLoaded ? 1 : 0,
+                        }}
                       />
                     </div>
                     <div className="mobileSmartMoneyBtnSignInDataName">
@@ -268,6 +322,17 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -285,6 +350,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -305,6 +380,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                           <Image
                             className="mobileSmartMoneyBlurLogo"
                             src={ContributeTrophyIcon}
+                            onLoad={() => {
+                              this.setState({
+                                ContributeTrophyIconLoaded: true,
+                              });
+                            }}
+                            style={{
+                              opacity: this.state.ContributeTrophyIconLoaded
+                                ? 1
+                                : 0,
+                            }}
                           />
                           <div className="mt-4 mb-5">
                             <h6 className="inter-display-medium f-s-24">

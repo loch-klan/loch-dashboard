@@ -97,7 +97,6 @@ class SmartMoneyPage extends BaseReactComponent {
       search: "",
       method: "",
       asset: "",
-      accountInWatchList: [],
       methodsDropdown: Method.opt,
       table: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
@@ -238,6 +237,7 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (token && lochUser && lochUser.email) {
@@ -368,11 +368,10 @@ class SmartMoneyPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency) {
+    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
       this.setState({
         currency: JSON.parse(window.sessionStorage.getItem("currency")),
       });
-      getAllCurrencyRatesApi();
     }
     if (
       prevPage !== page ||
@@ -410,18 +409,6 @@ class SmartMoneyPage extends BaseReactComponent {
           });
           this.updateTimer();
         }
-      }
-    }
-
-    if (
-      this.props.TopAccountsInWatchListState !==
-      prevProps.TopAccountsInWatchListState
-    ) {
-      const tempList = this.props.TopAccountsInWatchListState;
-      if (tempList) {
-        this.setState({
-          accountInWatchList: tempList,
-        });
       }
     }
   }
