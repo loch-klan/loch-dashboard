@@ -41,73 +41,101 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
       });
   };
 };
-export const addSmartMoney = (data, ctx, address, nameTag, email) => {
+export const addSmartMoney = (data, ctx, address, nameTag, isMobile) => {
   SmartMoneyAddressAddedAttempted({
     session_id: getCurrentUser().id,
     email_address: getCurrentUser().email,
     address: address,
     nameTag: nameTag,
+    isMobile: isMobile,
   });
   return async function (dispatch, getState) {
     postLoginInstance
       .post("/wallet/user-wallet/add-smart-money", data)
       .then((res) => {
         if (!res.data.error) {
-          ctx.setState({
-            addButtonVisible: true,
-            loadAddBtn: false,
-          });
+          if (!isMobile) {
+            ctx.setState({
+              addButtonVisible: true,
+              loadAddBtn: false,
+            });
+          }
           if (res.data.message === "Successfully added") {
             SmartMoneyAddressAdded({
               session_id: getCurrentUser().id,
               email_address: getCurrentUser().email,
               address: address,
               nameTag: nameTag,
+              isMobile: isMobile,
             });
-            ctx.setState({
-              addressAdded: true,
-              addressAlreadyPresent: false,
-              showSignUpPage: false,
-              showVerifyEmail: false,
-              showSignInPage: false,
-              addressNotOneMil: false,
-            });
+            if (isMobile) {
+              if (ctx.addressSuccesfullyAdded) {
+                ctx.addressSuccesfullyAdded();
+              }
+            } else {
+              ctx.setState({
+                addressAdded: true,
+                addressAlreadyPresent: false,
+                showSignUpPage: false,
+                showVerifyEmail: false,
+                showSignInPage: false,
+                addressNotOneMil: false,
+              });
+            }
           } else if (res.data.message === "Low balance") {
-            ctx.setState({
-              addressNotOneMil: true,
-              addressAlreadyPresent: false,
-              showSignUpPage: false,
-              showVerifyEmail: false,
-              showSignInPage: false,
-              addressAdded: false,
-            });
+            if (isMobile) {
+              if (ctx.addressLowBalance) {
+                ctx.addressLowBalance();
+              }
+            } else {
+              ctx.setState({
+                addressNotOneMil: true,
+                addressAlreadyPresent: false,
+                showSignUpPage: false,
+                showVerifyEmail: false,
+                showSignInPage: false,
+                addressAdded: false,
+              });
+            }
           } else if (res.data.message === "Enter a valid wallet address") {
-            ctx.setState({
-              addressAlreadyPresent: false,
-              showSignUpPage: false,
-              showVerifyEmail: false,
-              showSignInPage: false,
-              addressAdded: false,
-              addressNotOneMil: false,
-            });
+            if (isMobile) {
+            } else {
+              ctx.setState({
+                addressAlreadyPresent: false,
+                showSignUpPage: false,
+                showVerifyEmail: false,
+                showSignInPage: false,
+                addressAdded: false,
+                addressNotOneMil: false,
+              });
+            }
             toast.error("Enter a valid wallet address");
           } else if (res.data.message === "Address already used in Loch") {
-            ctx.setState({
-              addressAlreadyPresent: true,
-              showSignUpPage: false,
-              showVerifyEmail: false,
-              showSignInPage: false,
-              addressAdded: false,
-              addressNotOneMil: false,
-            });
+            if (isMobile) {
+              if (ctx.addressAlreadyPresent) {
+                ctx.addressAlreadyPresent();
+              }
+            } else {
+              ctx.setState({
+                addressAlreadyPresent: true,
+                showSignUpPage: false,
+                showVerifyEmail: false,
+                showSignInPage: false,
+                addressAdded: false,
+                addressNotOneMil: false,
+              });
+            }
           }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
+          if (ctx.handleAddSmartMoneyError) {
+            ctx.handleAddSmartMoneyError();
+          }
         }
       });
   };
 };
-export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
+export const smartMoneySignUpApi = (ctx, info, passedEmail, isMobile) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/update-user", info)
@@ -116,17 +144,23 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail) => {
           ctx.handleSuccesfulSignUp();
           SmartMoneySignUp({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
+            isMobile: isMobile,
           });
         } else {
           toast.error(res.data.message || "Something went wrong");
+          if (isMobile && ctx.handleError) {
+            ctx.handleError();
+          }
           if (ctx.handleSignUpError) {
             ctx.handleSignUpError();
           }
         }
       })
       .catch((err) => {
+        if (isMobile && ctx.handleError) {
+          ctx.handleError();
+        }
         toast.error("Something Went Wrong");
       });
   };
@@ -157,7 +191,7 @@ export const smartMoneySignInApi = (data, ctx) => {
   };
 };
 
-export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
+export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/verify-otp-code", data)
@@ -168,8 +202,8 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
         if (!res.data.error) {
           SmartMoneySignIn({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
+            isMobile: isMobile,
           });
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;
@@ -249,6 +283,9 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail) => {
           ctx.setState({
             isOptInValid: true,
           });
+          if (isMobile && ctx.handleError) {
+            ctx.handleError();
+          }
         }
       })
       .catch((err) => {

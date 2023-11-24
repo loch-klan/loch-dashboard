@@ -777,28 +777,36 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx) => {
+export const SendOtp = (data, ctx, isForMobile) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
+        if (isForMobile && ctx.showSignInOtpPage) {
+          ctx.showSignInOtpPage();
+        }
         // console.log("res", res.data);
-        let otp = res.data.data.opt_token;
-        ctx.setState({
-          isShowOtp: true,
-          isEmailNotExist: res.data.data.is_new_user,
-          modalTitle: "Verify email",
-          modalDescription: ctx?.props?.stopUpdate
-            ? "Enter the verification code sent to your email to sign in your account"
-            : res.data.data.is_new_user
-            ? "Enter the verification code sent to your email to save the wallets and pods to your account"
-            : "Enter the verification code sent to your email to update the existing wallets and pods for your account",
-        });
+        else {
+          let otp = res.data.data.opt_token;
+          ctx.setState({
+            isShowOtp: true,
+            isEmailNotExist: res.data.data.is_new_user,
+            modalTitle: "Verify email",
+            modalDescription: ctx?.props?.stopUpdate
+              ? "Enter the verification code sent to your email to sign in your account"
+              : res.data.data.is_new_user
+              ? "Enter the verification code sent to your email to save the wallets and pods to your account"
+              : "Enter the verification code sent to your email to update the existing wallets and pods for your account",
+          });
+        }
       } else if (res.data.error === true) {
         toast.error(res.data.message || "Something Went Wrong");
       }
     })
     .catch((err) => {
+      if (isForMobile && ctx.handleError) {
+        ctx.handleError();
+      }
       console.log("err", err);
       toast.error("Something Went Wrong");
     });

@@ -26,9 +26,7 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
-    "email address": "",
   };
-  delete newEventProperties["email address"];
   Mixpanel.track(eventType, newEventProperties);
 };
 
@@ -5524,29 +5522,21 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-export const SmartMoneySignUp = ({
-  session_id,
-  email_address,
-  passedEmail,
-}) => {
+export const SmartMoneySignUp = ({ session_id, email_address, isMobile }) => {
   const event_name = "Smart money: sign up";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    email: passedEmail,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({
-  session_id,
-  email_address,
-  passedEmail,
-}) => {
+export const SmartMoneySignIn = ({ session_id, email_address, isMobile }) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    email: passedEmail,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5555,6 +5545,7 @@ export const SmartMoneyAddressAddedAttempted = ({
   email_address,
   address,
   nameTag,
+  isMobile,
 }) => {
   const event_name = "Smart money: address adding attempt";
   const eventProperties = {
@@ -5562,6 +5553,7 @@ export const SmartMoneyAddressAddedAttempted = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5570,6 +5562,7 @@ export const SmartMoneyAddressAdded = ({
   email_address,
   address,
   nameTag,
+  isMobile,
 }) => {
   const event_name = "Smart money: address added";
   const eventProperties = {
@@ -5577,6 +5570,7 @@ export const SmartMoneyAddressAdded = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5608,19 +5602,29 @@ export const SmartMoneyWalletClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyFAQClicked = ({ session_id, email_address }) => {
+export const SmartMoneyFAQClicked = ({
+  session_id,
+  email_address,
+  isMobile,
+}) => {
   const event_name = "Smart money: faq clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
+export const SmartMoneyHowItWorksClicked = ({
+  session_id,
+  email_address,
+  isMobile,
+}) => {
   const event_name = "Smart money: how it works clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
