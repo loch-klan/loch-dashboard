@@ -261,8 +261,10 @@ export const CurrencyType = (code = "both") => {
     return currency?.symbol + " " + currency?.code;
   } else if (code) {
     return currency?.code;
-  } else {
+  } else if (currency?.symbol) {
     return currency?.symbol;
+  } else {
+    return "";
   }
 };
 

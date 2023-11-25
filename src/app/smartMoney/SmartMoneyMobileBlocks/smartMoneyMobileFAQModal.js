@@ -13,6 +13,9 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
     super(props);
 
     this.state = {
+      backIconLoaded: false,
+      CrossSmartMoneyIconLoaded: false,
+      SmartMoneyFaqModalIconLoaded: false,
       questionAnswers: [
         {
           ques: "How are addresses found?",
@@ -71,14 +74,45 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
               opacity: this.state.isSignUpPage ? 1 : 0,
             }}
           >
-            <Image className="cp" src={backIcon} />
+            <Image
+              className="cp"
+              src={backIcon}
+              onLoad={() => {
+                this.setState({
+                  backIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.backIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
           <div className="msmpModalClosebtn" onClick={this.props.onHide}>
-            <Image src={CrossSmartMoneyIcon} />
+            <Image
+              src={CrossSmartMoneyIcon}
+              onLoad={() => {
+                this.setState({
+                  CrossSmartMoneyIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.CrossSmartMoneyIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
         </div>
         <div className="msmpModalMainIconWhiteContainer">
-          <Image src={SmartMoneyFaqModalIcon} />
+          <Image
+            src={SmartMoneyFaqModalIcon}
+            onLoad={() => {
+              this.setState({
+                SmartMoneyFaqModalIconLoaded: true,
+              });
+            }}
+            style={{
+              opacity: this.state.SmartMoneyFaqModalIconLoaded ? 1 : 0,
+            }}
+          />
         </div>
         <div className="msmpModalTexts">
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-4">FAQ</h6>

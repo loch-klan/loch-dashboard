@@ -1,6 +1,4 @@
 import React from "react";
-import GainIcon from "../../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
 import { searchTransactionApi, getFilters } from "../../intelligence/Api.js";
 import { BaseReactComponent } from "../../../utils/form/index.js";
@@ -16,26 +14,25 @@ import {
   removeFromWatchList,
   updateAddToWatchList,
 } from "../../watchlist/redux/WatchListApi.js";
-import {
-  CurrencyType,
-  TruncateText,
-  numToCurrency,
-} from "../../../utils/ReusableFunctions.js";
+
 import { Button, Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
-import { BASE_URL_S3 } from "../../../utils/Constant.js";
-import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
+import {
+  SmartMoneyFAQClicked,
+  SmartMoneyHowItWorksClicked,
+  SmartMoneyShare,
+} from "../../../utils/AnalyticsFunctions.js";
 import SmartMoneyMobileHeader from "../smartMoneyMobileHeader.js";
 import Loading from "../../common/Loading.js";
 import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination.js";
 import {
   BlackManIcon,
   ContributeTrophyIcon,
-  CrossSmartMoneyIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
+  ShareProfileIcon,
 } from "../../../assets/images/icons/index.js";
 import SmartMoneyMobileModalContainer from "./smartMoneyMobileModalContainer.js";
 import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp.js";
@@ -44,6 +41,8 @@ import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal.j
 import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal.js";
 import SmartMoneyMobileBlock from "./smartMoneyMobileBlock.js";
 import SmartMoneyMobileSignOutModal from "./smartMoneyMobileSignOutModal.js";
+import { BASE_URL_S3 } from "../../../utils/Constant.js";
+import { toast } from "react-toastify";
 
 class SmartMoneyMobilePage extends BaseReactComponent {
   constructor(props) {
@@ -55,6 +54,14 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       faqModal: false,
       localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       signOutModal: false,
+      BlackManIconLoaded: false,
+      QuestionmarkCircleSmartMoneyIconLoaded: false,
+      InfoCircleSmartMoneyIconLoaded: false,
+      PlusCircleSmartMoneyIconLoaded: false,
+      GreyManIconLoaded: false,
+      ShareProfileIconLoaded: false,
+
+      ContributeTrophyIconLoaded: false,
     };
   }
   componentDidMount() {}
@@ -71,14 +78,40 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       }
     }
   }
-
+  handleShare = () => {
+    SmartMoneyShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
+    let shareLink = BASE_URL_S3 + "smart-money";
+    this.copyTextToClipboard(shareLink);
+  };
+  async copyTextToClipboard(text) {
+    if ("clipboard" in navigator) {
+      toast.success("Link copied");
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand("copy", true, text);
+    }
+  }
   showFaqModal = () => {
+    SmartMoneyFAQClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
     this.setState({
       faqModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showHowItWorksModal = () => {
+    SmartMoneyHowItWorksClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
     this.setState({
       howItWorksModal: true,
     });
@@ -166,25 +199,70 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                 this.state.localLochUser.last_name) ? (
                 <>
                   <div
-                    onClick={this.showSignOutModal}
-                    className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    style={{
+                      display: "flex",
+                      alignItems: "stretch",
+                    }}
                   >
-                    <div className="mobileSmartMoneyBtnSignInIconContainer">
-                      <Image
-                        className="mobileSmartMoneyBtnSignInIcon"
-                        src={BlackManIcon}
-                      />
+                    <div
+                      onClick={this.showSignOutModal}
+                      style={{
+                        flex: 1,
+                      }}
+                      className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={BlackManIcon}
+                          onLoad={() => {
+                            this.setState({
+                              BlackManIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.BlackManIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInDataName">
+                        {this.state.localLochUser.first_name ||
+                        this.state.localLochUser.last_name
+                          ? `${this.state.localLochUser.first_name} ${
+                              this.state.localLochUser.last_name
+                                ? this.state.localLochUser.last_name.slice(
+                                    0,
+                                    1
+                                  ) + "."
+                                : ""
+                            }`
+                          : "Signed in"}
+                      </div>
                     </div>
-                    <div className="mobileSmartMoneyBtnSignInDataName">
-                      {this.state.localLochUser.first_name ||
-                      this.state.localLochUser.last_name
-                        ? `${this.state.localLochUser.first_name} ${
-                            this.state.localLochUser.last_name
-                              ? this.state.localLochUser.last_name.slice(0, 1) +
-                                "."
-                              : ""
-                          }`
-                        : "Signed in"}
+                    <div
+                      onClick={this.handleShare}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnShareContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={ShareProfileIcon}
+                          onLoad={() => {
+                            this.setState({
+                              ShareProfileIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.ShareProfileIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        Share
+                      </div>
                     </div>
                   </div>
                   <div className="mobileSmartMoneyBtnSignInBottomBtns">
@@ -196,6 +274,17 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -213,6 +302,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -227,6 +326,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={PlusCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              PlusCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.PlusCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -238,17 +347,60 @@ class SmartMoneyMobilePage extends BaseReactComponent {
               ) : (
                 <>
                   <div
-                    onClick={this.showSignInModal}
-                    className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    style={{
+                      display: "flex",
+                      alignItems: "stretch",
+                    }}
                   >
-                    <div className="mobileSmartMoneyBtnSignInIconContainer">
-                      <Image
-                        className="mobileSmartMoneyBtnSignInIcon"
-                        src={GreyManIcon}
-                      />
+                    <div
+                      style={{
+                        flex: 1,
+                      }}
+                      onClick={this.showSignInModal}
+                      className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={GreyManIcon}
+                          onLoad={() => {
+                            this.setState({
+                              GreyManIconIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.GreyManIconIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInDataName">
+                        Sign in / up now
+                      </div>
                     </div>
-                    <div className="mobileSmartMoneyBtnSignInDataName">
-                      Sign in / up now
+                    <div
+                      onClick={this.handleShare}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnShareContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={ShareProfileIcon}
+                          onLoad={() => {
+                            this.setState({
+                              ShareProfileIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.ShareProfileIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        Share
+                      </div>
                     </div>
                   </div>
                   <div className="mobileSmartMoneyBtnSignInBottomBtns">
@@ -263,6 +415,17 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -280,6 +443,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                         <Image
                           className="mobileSmartMoneyBtnSignInIcon"
                           src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
                         />
                       </div>
                       <div className="mobileSmartMoneyBtnSignInJustText">
@@ -300,6 +473,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                           <Image
                             className="mobileSmartMoneyBlurLogo"
                             src={ContributeTrophyIcon}
+                            onLoad={() => {
+                              this.setState({
+                                ContributeTrophyIconLoaded: true,
+                              });
+                            }}
+                            style={{
+                              opacity: this.state.ContributeTrophyIconLoaded
+                                ? 1
+                                : 0,
+                            }}
                           />
                           <div className="mt-4 mb-5">
                             <h6 className="inter-display-medium f-s-24">

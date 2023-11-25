@@ -50,6 +50,7 @@ import {
   ExportDateSelected,
   resetUser,
   signInUser,
+  FollowSignUpPopupEmailAdded,
 } from "../../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from "../../../utils/form";
 import moment from "moment";
@@ -689,9 +690,10 @@ class FollowExitOverlay extends BaseReactComponent {
         }
         // url.append("wallet_addresses", JSON.stringify(email_arr));
         fixWalletApi(this, url);
-        LeaveEmailAdded({
+        FollowSignUpPopupEmailAdded({
           session_id: getCurrentUser().id,
           email_address: this.state.email,
+          from: "Follow sign up popup",
         });
         if (this.props.updateTimer) {
           this.props.updateTimer();

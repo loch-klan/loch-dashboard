@@ -46,6 +46,10 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       showBorder: false,
 
       btnLoading: false,
+
+      backIconLoaded: false,
+      CrossSmartMoneyIconLoaded: false,
+      SignInIconLoaded: false,
     };
   }
 
@@ -56,12 +60,12 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
     const tempIsValidEmail = validator.isEmail(value);
     if (this.state.isSignUpPage) {
       this.setState({
-        signUpEmail: value,
+        signUpEmail: value ? value.toLowerCase() : "",
         signInUpIsBtnDisabled: !tempIsValidEmail,
       });
     } else if (this.state.isSignInPage) {
       this.setState({
-        signInEmail: value,
+        signInEmail: value ? value.toLowerCase() : "",
         signInUpIsBtnDisabled: !tempIsValidEmail,
       });
     } else if (this.state.isSignInOtpPage) {
@@ -241,14 +245,45 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
               opacity: this.state.isSignUpPage ? 1 : 0,
             }}
           >
-            <Image className="cp" src={backIcon} />
+            <Image
+              className="cp"
+              src={backIcon}
+              onLoad={() => {
+                this.setState({
+                  backIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.backIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
           <div className="msmpModalClosebtn" onClick={this.props.onHide}>
-            <Image src={CrossSmartMoneyIcon} />
+            <Image
+              src={CrossSmartMoneyIcon}
+              onLoad={() => {
+                this.setState({
+                  CrossSmartMoneyIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.CrossSmartMoneyIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
         </div>
         <div className="msmpModalMainIconWhiteContainer">
-          <Image src={SignInIcon} />
+          <Image
+            src={SignInIcon}
+            onLoad={() => {
+              this.setState({
+                SignInIconLoaded: true,
+              });
+            }}
+            style={{
+              opacity: this.state.SignInIconLoaded ? 1 : 0,
+            }}
+          />
         </div>
         <div className="msmpModalTexts">
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-10">

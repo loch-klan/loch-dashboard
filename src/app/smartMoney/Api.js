@@ -21,6 +21,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             const numberLimit = Number(apiLimit);
             tempLimit = numberLimit;
           }
+          console.log("res?.data?.data?.accounts ", res?.data?.data?.accounts);
           let tableData = res?.data?.data?.accounts?.map((e) => ({
             account: e?.address,
             networth: e?.net_worth,
@@ -29,6 +30,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             profits: e?.profits,
             returns: e?.returns,
             rank: e?.rank,
+            following: e?.following,
           }));
           ctx.setState({
             accountList: tableData,
@@ -144,8 +146,7 @@ export const smartMoneySignUpApi = (ctx, info, passedEmail, isMobile) => {
           ctx.handleSuccesfulSignUp();
           SmartMoneySignUp({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
             isMobile: isMobile,
           });
         } else {
@@ -203,8 +204,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
         if (!res.data.error) {
           SmartMoneySignIn({
             session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            passedEmail: passedEmail,
+            email_address: passedEmail,
             isMobile: isMobile,
           });
           let isOptValid = res.data.data.otp_verified;

@@ -1261,11 +1261,20 @@ class PieChart2 extends BaseReactComponent {
     const handleShare = () => {
       let lochUser = getCurrentUser().id;
       let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
-      let slink =
-        userWallet?.length === 1
-          ? userWallet[0].displayAddress || userWallet[0].address
-          : lochUser;
-      let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      let shareLink = "";
+
+      if (userWallet?.length === 1) {
+        let slink = userWallet[0].displayAddress || userWallet[0].address;
+        shareLink =
+          BASE_URL_S3 +
+          "home/" +
+          slink +
+          "?redirect=home&followThisAddress=true";
+      } else {
+        let slink = lochUser;
+        shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      }
+
       navigator.clipboard.writeText(shareLink);
       toast.success("Link copied");
 

@@ -470,7 +470,7 @@ class Portfolio extends BaseReactComponent {
           passedAddress,
           ""
         );
-      }, 500);
+      }, 3500);
       window.sessionStorage.removeItem("followThisAddress");
     }
 
@@ -2236,7 +2236,7 @@ class Portfolio extends BaseReactComponent {
                 title="You’re now following this wallet"
                 description="Sign in so you’ll be the first to see what they buy and sell"
                 stopUpdate={true}
-                tracking="Sign in button"
+                tracking="Follow sign in popup"
                 goToSignUp={this.openSignUpModal}
               />
             ) : null}
@@ -2251,10 +2251,12 @@ class Portfolio extends BaseReactComponent {
                 history={this.props.history}
                 modalType={"exitOverlay"}
                 handleRedirection={() => {
-                  resetUser();
-                  setTimeout(function () {
-                    this.props.history.push("/welcome");
-                  }, 3000);
+                  // resetUser();
+                  // setTimeout(function () {
+                  //   if (this.props.history) {
+                  //     this.props.history.push("/welcome");
+                  //   }
+                  // }, 3000);
                 }}
                 signup={true}
                 goToSignIn={this.openSigninModal}

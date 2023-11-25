@@ -26,9 +26,7 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
-    "email address": "",
   };
-  delete newEventProperties["email address"];
   Mixpanel.track(eventType, newEventProperties);
 };
 
@@ -3812,6 +3810,34 @@ export const UpgradeSignInPopup = ({ session_id, from }) => {
 };
 
 //14. Whale pods pop up: email added - done
+export const FollowSignInPopupEmailAdded = ({
+  session_id,
+  email_address,
+  from,
+}) => {
+  const event_name = "Follow sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const FollowSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+  from,
+}) => {
+  const event_name = "Follow sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 export const UpgradeSignInPopupEmailAdded = ({
   session_id,
   email_address,
@@ -5174,6 +5200,16 @@ export const SmartMoneyTimeSpent = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const SmartMoneyShare = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Smart money: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
+};
 export const TopAccountTimeSpent = ({
   session_id,
   email_address,
@@ -5496,29 +5532,21 @@ export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
   ////console.log("Top accounts: net worth hover");
 };
 
-export const SmartMoneySignUp = ({
-  session_id,
-  email_address,
-  passedEmail,
-}) => {
+export const SmartMoneySignUp = ({ session_id, email_address, isMobile }) => {
   const event_name = "Smart money: sign up";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    email: passedEmail,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({
-  session_id,
-  email_address,
-  passedEmail,
-}) => {
+export const SmartMoneySignIn = ({ session_id, email_address, isMobile }) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    email: passedEmail,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5584,19 +5612,29 @@ export const SmartMoneyWalletClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyFAQClicked = ({ session_id, email_address }) => {
+export const SmartMoneyFAQClicked = ({
+  session_id,
+  email_address,
+  isMobile,
+}) => {
   const event_name = "Smart money: faq clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
+export const SmartMoneyHowItWorksClicked = ({
+  session_id,
+  email_address,
+  isMobile,
+}) => {
   const event_name = "Smart money: how it works clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

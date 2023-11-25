@@ -11,7 +11,11 @@ import { CrossSmartMoneyIcon } from "../../../assets/images/icons/index.js";
 class smartMoneyAddressAddedBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      CrossSmartMoneyIconLoaded: false,
+      backIconLoaded: false,
+      imageIconLoaded: false,
+    };
   }
 
   render() {
@@ -24,10 +28,31 @@ class smartMoneyAddressAddedBlock extends BaseReactComponent {
               opacity: 0,
             }}
           >
-            <Image className="cp" src={backIcon} />
+            <Image
+              className="cp"
+              src={backIcon}
+              onLoad={() => {
+                this.setState({
+                  backIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.backIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
           <div className="msmpModalClosebtn" onClick={this.props.onHide}>
-            <Image src={CrossSmartMoneyIcon} />
+            <Image
+              src={CrossSmartMoneyIcon}
+              onLoad={() => {
+                this.setState({
+                  CrossSmartMoneyIconLoaded: true,
+                });
+              }}
+              style={{
+                opacity: this.state.CrossSmartMoneyIconLoaded ? 1 : 0,
+              }}
+            />
           </div>
         </div>
         <div
@@ -37,7 +62,17 @@ class smartMoneyAddressAddedBlock extends BaseReactComponent {
               : "msmpModalMainIconWhiteContainer"
           }
         >
-          <Image src={this.props.imageIcon} />
+          <Image
+            src={this.props.imageIcon}
+            onLoad={() => {
+              this.setState({
+                imageIconLoaded: true,
+              });
+            }}
+            style={{
+              opacity: this.state.imageIconLoaded ? 1 : 0,
+            }}
+          />
         </div>
         <div
           className={`msmpModalTexts ${

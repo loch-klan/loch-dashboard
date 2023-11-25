@@ -10,6 +10,7 @@ import {
   SigninModalTrack,
   signInUser,
   signUpProperties,
+  FollowSignInPopupEmailAdded,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
@@ -799,9 +800,6 @@ export const SendOtp = (data, ctx, isForMobile) => {
           });
         }
       } else if (res.data.error === true) {
-        if (isForMobile && ctx.handleError) {
-          ctx.handleError();
-        }
         toast.error(res.data.message || "Something Went Wrong");
       }
     })
@@ -930,6 +928,12 @@ export const VerifyEmail = (data, ctx) => {
           });
         } else if (ctx.props.tracking === "Upgrade sign in popup") {
           UpgradeSignInPopupEmailAdded({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+            from: ctx.props.tracking,
+          });
+        } else if (ctx.props.tracking === "Follow sign in popup") {
+          FollowSignInPopupEmailAdded({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
             from: ctx.props.tracking,
