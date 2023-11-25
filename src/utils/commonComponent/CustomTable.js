@@ -373,21 +373,25 @@ class CustomTable extends BaseReactComponent {
                           ).toLocaleString("en-US")
                     }
                   >
-                    <span
-                      onMouseEnter={() => {
-                        // CostCostBasisHover({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        // });
-                      }}
-                    >
-                      {this.props.combinedCostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            this.props.combinedCostBasis.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
+                    <div className="cost-common-container">
+                      <div className="cost-common">
+                        <span
+                          onMouseEnter={() => {
+                            // CostCostBasisHover({
+                            //   session_id: getCurrentUser().id,
+                            //   email_address: getCurrentUser().email,
+                            // });
+                          }}
+                        >
+                          {this.props.combinedCostBasis === 0
+                            ? "N/A"
+                            : CurrencyType(false) +
+                              numToCurrency(
+                                this.props.combinedCostBasis.toFixed(2)
+                              ).toLocaleString("en-US")}
+                        </span>
+                      </div>
+                    </div>
                   </CustomOverlay>
                 </div>
                 <div
@@ -414,21 +418,25 @@ class CustomTable extends BaseReactComponent {
                           ).toLocaleString("en-US")
                     }
                   >
-                    <span
-                      onMouseEnter={() => {
-                        // CostCostBasisHover({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        // });
-                      }}
-                    >
-                      {this.props.combinedCurrentValue === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            this.props.combinedCurrentValue.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
+                    <div className="cost-common-container">
+                      <div className="cost-common">
+                        <span
+                          onMouseEnter={() => {
+                            // CostCostBasisHover({
+                            //   session_id: getCurrentUser().id,
+                            //   email_address: getCurrentUser().email,
+                            // });
+                          }}
+                        >
+                          {this.props.combinedCurrentValue === 0
+                            ? "N/A"
+                            : CurrencyType(false) +
+                              numToCurrency(
+                                this.props.combinedCurrentValue.toFixed(2)
+                              ).toLocaleString("en-US")}
+                        </span>
+                      </div>
+                    </div>
                   </CustomOverlay>
                 </div>
                 <div
