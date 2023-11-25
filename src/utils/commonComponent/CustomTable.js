@@ -158,6 +158,10 @@ class CustomTable extends BaseReactComponent {
                       gridClassName={`${
                         this.props.addWatermark ? "tableWatermark" : ""
                       } ${
+                        this.props.bottomCombiedValues
+                          ? "topMarginForCombiedValues"
+                          : ""
+                      } ${
                         this.props.addWatermarkMoveUp
                           ? "tableWatermarkMoveUp"
                           : ""

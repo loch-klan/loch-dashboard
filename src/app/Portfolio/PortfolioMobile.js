@@ -135,6 +135,31 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    if (this.props.intelligenceState.Average_cost_basis) {
+      let tempcombinedCostBasis = 0;
+      let tempcombinedCurrentValue = 0;
+      let tempcombinedUnrealizedGains = 0;
+      let tempcombinedReturn = 0;
+      if (this.props.intelligenceState?.net_return) {
+        tempcombinedReturn = this.props.intelligenceState?.net_return;
+      }
+      if (this.props.intelligenceState?.total_bal) {
+        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+      }
+      if (this.props.intelligenceState?.total_cost) {
+        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+      }
+      if (this.props.intelligenceState?.total_gain) {
+        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+      }
+
+      this.setState({
+        combinedCostBasis: tempcombinedCostBasis,
+        combinedCurrentValue: tempcombinedCurrentValue,
+        combinedUnrealizedGains: tempcombinedUnrealizedGains,
+        combinedReturn: tempcombinedReturn,
+      });
+    }
     getAllCurrencyRatesApi();
     const tempIsModalPopuRemoved = window.sessionStorage.getItem(
       "mobileHomePagePopupModalHidden"

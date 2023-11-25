@@ -30,6 +30,11 @@
           height: 60px;
           display: flex;
           align-items: center;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          margin-top: 64px;
           .bottomCombinedItemBlock {
             display: flex;
             align-items: center;
@@ -103,6 +108,14 @@
               .ReactVirtualized__Table__row {
                 .coin-chip {
                   margin: 0 auto;
+                }
+              }
+              .testerRed {
+                position: relative;
+                .testerRed {
+                  position: -webkit-sticky; /* Safari */
+                  position: sticky;
+                  top: 0;
                 }
               }
             }
