@@ -879,18 +879,15 @@ class Cost extends Component {
                       email_address: getCurrentUser().email,
                     });
                   }}
-                  className="cost-common-container"
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.AverageCostPrice === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            rowData.AverageCostPrice.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
-                  </div>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        numToCurrency(
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")}
+                  </span>
                 </div>
               </CustomOverlay>
             );
@@ -939,16 +936,13 @@ class Cost extends Component {
                       email_address: getCurrentUser().email,
                     });
                   }}
-                  className="cost-common-container"
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentPrice.toFixed(2)
-                        ).toLocaleString("en-US")}
-                    </span>
-                  </div>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
+                  </span>
                 </div>
               </CustomOverlay>
             );
@@ -1039,21 +1033,25 @@ class Cost extends Component {
                       ).toLocaleString("en-US")
                 }
               >
-                <span
-                  onMouseEnter={() => {
-                    CostCostBasisHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                >
-                  {rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CostBasis.toFixed(2)
-                      ).toLocaleString("en-US")}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCostBasisHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {rowData.CostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }
@@ -1094,19 +1092,23 @@ class Cost extends Component {
                   ).toLocaleString("en-US")
                 }
               >
-                <span
-                  onMouseEnter={() => {
-                    CostCurrentValueHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                >
-                  {CurrencyType(false) +
-                    numToCurrency(
-                      rowData.CurrentValue.toFixed(2)
-                    ).toLocaleString("en-US")}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCurrentValueHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }

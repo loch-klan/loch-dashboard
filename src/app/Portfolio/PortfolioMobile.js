@@ -71,6 +71,10 @@ class PortfolioMobile extends BaseReactComponent {
       showPopupModal: true,
       showSearchIcon: false,
       showShareIcon: false,
+      combinedCostBasis: 0,
+      combinedCurrentValue: 0,
+      combinedUnrealizedGains: 0,
+      combinedReturn: 0,
     };
   }
   searchIconLoaded = () => {
@@ -100,7 +104,62 @@ class PortfolioMobile extends BaseReactComponent {
       this.checkForInactivity();
     }, 900000);
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState.Average_cost_basis !==
+      this.props.intelligenceState.Average_cost_basis
+    ) {
+      let tempcombinedCostBasis = 0;
+      let tempcombinedCurrentValue = 0;
+      let tempcombinedUnrealizedGains = 0;
+      let tempcombinedReturn = 0;
+      if (this.props.intelligenceState?.net_return) {
+        tempcombinedReturn = this.props.intelligenceState?.net_return;
+      }
+      if (this.props.intelligenceState?.total_bal) {
+        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+      }
+      if (this.props.intelligenceState?.total_cost) {
+        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+      }
+      if (this.props.intelligenceState?.total_gain) {
+        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+      }
+
+      this.setState({
+        combinedCostBasis: tempcombinedCostBasis,
+        combinedCurrentValue: tempcombinedCurrentValue,
+        combinedUnrealizedGains: tempcombinedUnrealizedGains,
+        combinedReturn: tempcombinedReturn,
+      });
+    }
+  }
   componentDidMount() {
+    if (this.props.intelligenceState.Average_cost_basis) {
+      let tempcombinedCostBasis = 0;
+      let tempcombinedCurrentValue = 0;
+      let tempcombinedUnrealizedGains = 0;
+      let tempcombinedReturn = 0;
+      if (this.props.intelligenceState?.net_return) {
+        tempcombinedReturn = this.props.intelligenceState?.net_return;
+      }
+      if (this.props.intelligenceState?.total_bal) {
+        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+      }
+      if (this.props.intelligenceState?.total_cost) {
+        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+      }
+      if (this.props.intelligenceState?.total_gain) {
+        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+      }
+
+      this.setState({
+        combinedCostBasis: tempcombinedCostBasis,
+        combinedCurrentValue: tempcombinedCurrentValue,
+        combinedUnrealizedGains: tempcombinedUnrealizedGains,
+        combinedReturn: tempcombinedReturn,
+      });
+    }
     getAllCurrencyRatesApi();
     const tempIsModalPopuRemoved = window.sessionStorage.getItem(
       "mobileHomePagePopupModalHidden"
@@ -228,8 +287,11 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.137,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Asset") {
+            if (dataIndex === 0) {
+              return <span>Total:</span>;
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -271,8 +333,11 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.137,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "AverageCostPrice") {
+            if (dataIndex === 0) {
+              return "";
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -322,8 +387,11 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.137,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentPrice") {
+            if (dataIndex === 0) {
+              return "";
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -372,8 +440,11 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.137,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Amount") {
+            if (dataIndex === 0) {
+              return "";
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -412,8 +483,37 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.13,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CostBasis") {
+            if (dataIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    !this.state.combinedCostBasis ||
+                    this.state.combinedCostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(this.state.combinedCostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
+                  <span>
+                    {!this.state.combinedCostBasis ||
+                    this.state.combinedCostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        numToCurrency(
+                          this.state.combinedCostBasis.toFixed(2)
+                        ).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              );
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -458,8 +558,37 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.13,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentValue") {
+            if (dataIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    this.state.combinedCurrentValue
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(
+                            this.state.combinedCurrentValue.toFixed(2)
+                          )
+                        ).toLocaleString("en-US")
+                      : "N/A"
+                  }
+                >
+                  <span>
+                    {this.state.combinedCurrentValue
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          this.state.combinedCurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : "N/A"}
+                  </span>
+                </CustomOverlay>
+              );
+            }
             return (
               <CustomOverlay
                 position="top"
@@ -504,8 +633,59 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.13,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainAmount") {
+            if (dataIndex === 0) {
+              const tempDataHolder = numToCurrency(
+                this.state.combinedUnrealizedGains
+              );
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    this.state.combinedUnrealizedGains
+                      ? CurrencyType(false) +
+                        Math.abs(
+                          Number(
+                            noExponents(
+                              this.state.combinedUnrealizedGains.toFixed(2)
+                            )
+                          )
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                  colorCode="#000"
+                >
+                  <div className="gainLossContainer">
+                    <div className={`gainLoss`}>
+                      {this.state.combinedUnrealizedGains !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            this.state.combinedUnrealizedGains < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {tempDataHolder
+                          ? CurrencyType(false) +
+                            tempDataHolder.toLocaleString("en-US")
+                          : "0.00"}
+                      </span>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              );
+            }
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
               <CustomOverlay
@@ -568,8 +748,55 @@ class PortfolioMobile extends BaseReactComponent {
 
         coumnWidth: 0.13,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainLoss") {
+            if (dataIndex === 0) {
+              let tempDataHolder = undefined;
+              if (this.state.combinedReturn) {
+                tempDataHolder = Number(
+                  noExponents(this.state.combinedReturn.toFixed(2))
+                );
+              }
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className="gainLossContainer">
+                    <div className={`gainLoss`}>
+                      {this.state.combinedReturn !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            this.state.combinedReturn < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {tempDataHolder
+                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                            "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              );
+            }
             let tempDataHolder = undefined;
             if (rowData.GainLoss) {
               tempDataHolder = Number(noExponents(rowData.GainLoss.toFixed(2)));
@@ -792,7 +1019,12 @@ class PortfolioMobile extends BaseReactComponent {
                   }}
                   message=" "
                   subTitle=""
-                  tableData={this.props.intelligenceState.Average_cost_basis}
+                  tableData={
+                    this.props.intelligenceState.Average_cost_basis &&
+                    this.props.intelligenceState.Average_cost_basis.length > 0
+                      ? [{}, ...this.props.intelligenceState.Average_cost_basis]
+                      : []
+                  }
                   columnList={columnData}
                   headerHeight={60}
                   isArrow={true}
