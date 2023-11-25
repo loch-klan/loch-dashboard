@@ -1070,7 +1070,7 @@ class ExitOverlay extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
-              {this.props.goToSignIn ? (
+              {this.props.goToSignIn && !this.props.comingDirectly ? (
                 <Image
                   className="back-icon cp"
                   src={BackIcon}

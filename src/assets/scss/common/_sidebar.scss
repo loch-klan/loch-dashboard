@@ -33,6 +33,27 @@
           .sidebarModalBody {
             padding: 2rem !important;
           }
+          .sidebarModalBodyContainer {
+            padding: 2rem !important;
+            .sidebarModalBody {
+              padding: 0rem !important;
+            }
+            .sidebarModalBodyGoToSignUpTextContainer {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              margin-top: 1rem;
+              .sidebarModalBodyGoToSignUpText {
+                text-align: center;
+                cursor: pointer;
+                transition-duration: 300ms;
+                &:hover {
+                  color: #0d0d0d;
+                }
+              }
+            }
+          }
         }
       }
       &:active {
@@ -154,6 +175,7 @@
   .modal-content {
     width: 88rem !important;
   }
+
   .sidebarModalBody {
     display: flex !important;
     flex-direction: row !important;
