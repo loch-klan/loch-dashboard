@@ -241,6 +241,7 @@ class SmartMoneyPage extends BaseReactComponent {
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+
     if (token && lochUser && lochUser.email) {
       this.setState({
         blurTable: false,
@@ -249,8 +250,9 @@ class SmartMoneyPage extends BaseReactComponent {
       this.setState({
         blurTable: true,
       });
+      this.createEmptyUser();
     }
-    this.createEmptyUser();
+
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
