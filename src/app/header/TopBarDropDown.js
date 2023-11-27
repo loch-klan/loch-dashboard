@@ -79,6 +79,9 @@ export default function TopBarDropDown(props) {
         >
           <div
             ref={props.buttonRef}
+            style={{
+              paddingLeft: "0rem",
+            }}
             className="topbar-btn topbar-btn-transparent w-100"
             id="address-button"
           >

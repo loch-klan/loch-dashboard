@@ -2321,7 +2321,7 @@ class Portfolio extends BaseReactComponent {
                   marginTop: "11rem",
                 }}
               >
-                <PieChart2
+                {/* <PieChart2
                   isAddressFollowedCount={this.state.isAddressFollowedCount}
                   afterAddressFollowed={this.afterAddressFollowed}
                   setLoader={this.setLoader}
@@ -2372,7 +2372,7 @@ class Portfolio extends BaseReactComponent {
                   getProtocolTotal={this.getProtocolTotal}
                   updateTimer={this.updateTimer}
                   userWalletList={this.state.userWalletList}
-                />
+                /> */}
                 {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
                 ) > -1 && this.state.userWalletList[0]?.address !== "" ? (

@@ -68,7 +68,8 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        width: calc(100% - 27.2rem);
+        width: calc(100% - 26rem);
+
         // width: 100%;
         position: relative;
         //
@@ -257,7 +258,7 @@
         .topbar-btn-transparent {
           background-color: transparent;
           border: none;
-          padding-left: 0rem;
+          // padding-left: 0rem;
           cursor: default;
           .topBarWalletArrowContainer {
             transition-duration: 300ms;
