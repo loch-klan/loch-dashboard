@@ -53,6 +53,7 @@ import {
   GROUP_BY_DATE,
   InsightType,
   DEFAULT_PRICE,
+  BASE_URL_S3,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
@@ -82,6 +83,7 @@ import {
   HomeCostAssetHover,
   NetflowSwitchHome,
   resetUser,
+  HomeShare,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -430,6 +432,28 @@ class Portfolio extends BaseReactComponent {
   };
 
   // add wallet modal
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let shareLink = "";
+
+    if (userWallet?.length === 1) {
+      let slink = userWallet[0].displayAddress || userWallet[0].address;
+      shareLink =
+        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
+    } else {
+      let slink = lochUser;
+      shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+    }
+
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    HomeShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   handleAddModal = () => {
     this.setState({
       addModal: !this.state.addModal,
@@ -2269,7 +2293,8 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
-                isSidebarClosed={this.props.isSidebarClosed}
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
                   changeWalletList={this.handleChangeList}
                   apiResponse={(e) => this.CheckApiResponse(e)}
                   // showNetworth={true}

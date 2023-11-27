@@ -25,8 +25,10 @@ import {
 } from "../../utils/ReusableFunctions";
 import {
   EyeIcon,
+  FollowTopBarIcon,
   MetamaskIcon,
   PlusCircleIcon,
+  ShareTopBarIcon,
   WalletIcon,
   XCircleIcon,
   XCircleRedIcon,
@@ -679,19 +681,39 @@ class TopWalletExchangeBar extends Component {
         }`}
       >
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer maxWidth50">
-            <TopBarDropDown
-              class="topWalletDropdown"
-              list={this.state.walletList}
-              showChecked={true}
-              relative={true}
-              handleAddWalletClick={this.passAddWalletClick}
-              buttonRef={this.props.buttonRef}
-              totalWallets={this.state.totalWallets}
-              firstWallet={this.state.firstWallet}
-              firstFullWallet={this.state.firstFullWallet}
-            />
-          </div>
+          <>
+            <div className="topWalletDropdownContainer maxWidth50">
+              <TopBarDropDown
+                class="topWalletDropdown"
+                list={this.state.walletList}
+                showChecked={true}
+                relative={true}
+                handleAddWalletClick={this.passAddWalletClick}
+                buttonRef={this.props.buttonRef}
+                totalWallets={this.state.totalWallets}
+                firstWallet={this.state.firstWallet}
+                firstFullWallet={this.state.firstFullWallet}
+              />
+            </div>
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
+              id="address-button"
+              onClick={this.passAddWalletClick}
+            >
+              <Image className="topBarWalletAdd" src={FollowTopBarIcon} />
+              <span className="dotDotText">Follow</span>
+            </div>
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
+              id="address-button"
+              onClick={this.props.handleShare}
+            >
+              <Image className="topBarWalletAdd" src={ShareTopBarIcon} />
+              <span className="dotDotText">Share</span>
+            </div>
+          </>
         ) : (
           <div
             ref={this.props.buttonRef}

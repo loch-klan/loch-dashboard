@@ -299,7 +299,7 @@ export default function PageHeader(props) {
                   </div>
                 </div>
               )}
-              {props.ShareBtn && (
+              {/* {props.ShareBtn && (
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -320,7 +320,7 @@ export default function PageHeader(props) {
                     </div>
                   </div>
                 </CustomOverlay>
-              )}
+              )} */}
               {props.btnText && (
                 <Button
                   className={`${
