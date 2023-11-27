@@ -68,12 +68,12 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        // width: calc(100% - 26rem);
-        width: 100%;
+        width: calc(100% - 27.2rem);
+        // width: 100%;
         position: relative;
         //
         padding-left: 14.5rem;
-        padding-right: 39rem;
+        padding-right: 13.4rem;
         .topWalletDropdownContainer {
           border-radius: 15px;
 
@@ -153,10 +153,10 @@
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
-            padding-left: 1.4rem;
-            padding-right: 1.4rem;
-            border: 1px $grey-50 solid;
-            box-shadow: 0 0 10px 4px $grey-50;
+            padding-left: 0rem;
+            padding-right: 0rem;
+            // border: 1px $grey-50 solid;
+            // box-shadow: 0 0 10px 4px $grey-50;
             .maxWidth50 {
               max-width: 50%;
             }

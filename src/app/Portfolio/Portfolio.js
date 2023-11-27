@@ -2271,7 +2271,7 @@ class Portfolio extends BaseReactComponent {
                 <WelcomeCard
                   changeWalletList={this.handleChangeList}
                   apiResponse={(e) => this.CheckApiResponse(e)}
-                  showNetworth={true}
+                  // showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
                   // toggleAddWallet={this.state.toggleAddWallet}

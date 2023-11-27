@@ -34,7 +34,7 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
-class TopBar extends Component {
+class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -810,4 +810,7 @@ const mapDispatchToProps = {
   getAllCoins,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopWalletExchangeBar);

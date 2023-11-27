@@ -268,7 +268,7 @@ export default function WelcomeCard(props) {
           style={{
             display: "flex",
             flex: 1,
-            marginRight: "1.7rem",
+            // marginRight: "1.7rem",
             // width: "calc(60% - 3rem)",
             // position: "absolute",
             // left: "calc(50% - 13rem)",
