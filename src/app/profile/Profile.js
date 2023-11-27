@@ -230,6 +230,7 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                isSidebarClosed={this.props.isSidebarClosed}
                 // history
                 history={this.props.history}
                 // add wallet address modal

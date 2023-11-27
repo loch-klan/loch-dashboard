@@ -262,12 +262,17 @@ export default function WelcomeCard(props) {
     //   )}
     // </div>
     <div className="welcome-card-section-topbar">
-      <div className="welcome-card-topbar">
+      <div
+        className={`welcome-card-topbar ${
+          props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
+        }`}
+      >
         <div
           className="row-div"
           style={{
             display: "flex",
             flex: 1,
+            minWidth: "85rem",
             // marginRight: "1.7rem",
             // width: "calc(60% - 3rem)",
             // position: "absolute",

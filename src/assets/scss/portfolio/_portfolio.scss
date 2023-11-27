@@ -377,6 +377,10 @@
           background-color: $red-FFE;
         }
       }
+      .welcome-card-topbar-closed {
+        padding-left: 6rem;
+        padding-right: 21.9rem;
+      }
     }
 
     //         .welcome-card-section {
@@ -848,6 +852,7 @@
     // display: flex;
     .row {
       margin: 0rem;
+      flex-wrap: nowrap;
       .col-md-6 {
         padding: 0rem;
       }

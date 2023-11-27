@@ -1217,6 +1217,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  isSidebarClosed={this.props.isSidebarClosed}
                   apiResponse={(e) => this.CheckApiResponse(e)}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}

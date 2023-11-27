@@ -1598,6 +1598,7 @@ class TopPortfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  isSidebarClosed={this.props.isSidebarClosed}
                   showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.topAccountState.yesterdayBalance}

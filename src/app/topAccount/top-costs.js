@@ -914,6 +914,7 @@ class TopCost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
