@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { BASE_GA_KEY } from "./utils/Constant";
+import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -45,35 +46,37 @@ function App() {
   // ) : (
   return (
     <div>
-      <BrowserRouter>
-        <Switch>
-          {routes.map((prop, key) => {
-            return (
-              <prop.type
-                exact
-                path={prop.path}
-                key={key}
-                component={prop.component}
-              />
-            );
-          })}
-          {/* <Route exact path="/" component={Home} /> */}
-        </Switch>
-      </BrowserRouter>
-      {/* <ToastContainer hideProgressBar /> */}
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        hideProgressBar
-        newestOnTop={false}
-        // closeOnClick
-        closeButton={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ArcxAnalyticsProvider apiKey="e76fd158f13e1c246f05f08e7d255382cd34a81f619ba7c76b1e66298c924d8c">
+        <BrowserRouter>
+          <Switch>
+            {routes.map((prop, key) => {
+              return (
+                <prop.type
+                  exact
+                  path={prop.path}
+                  key={key}
+                  component={prop.component}
+                />
+              );
+            })}
+            {/* <Route exact path="/" component={Home} /> */}
+          </Switch>
+        </BrowserRouter>
+        {/* <ToastContainer hideProgressBar /> */}
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          // closeOnClick
+          closeButton={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </ArcxAnalyticsProvider>
     </div>
   );
   // );
