@@ -721,8 +721,42 @@ class TopBar extends Component {
               <span className="dotDotText">Add address</span>
             </div>
           ) : null}
+          <div
+            onClick={this.passConnectExchangeClick}
+            className={`topbar-btn ml-2 ${
+              this.state.walletList.length > 0 ? "maxWidth50" : ""
+            }`}
+          >
+            {this.state.exchangeList.length > 0 ? (
+              <>
+                <span className="mr-2">
+                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                    <Image className="topBarExchangeIcons" src={imgUrl} />
+                  ))}
+                </span>
+                <span className="dotDotText">
+                  <span className="captilasideText">
+                    {this.state.firstExchange?.toLowerCase()}{" "}
+                  </span>
+                  {this.state.exchangeList.length > 1 ? "and others " : ""}
+                  {"connected"}
+                </span>
+              </>
+            ) : (
+              <>
+                <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                <span className="dotDotText">Connect exchange</span>
+              </>
+            )}
+          </div>
           {this.state.metamaskWalletConnected ? (
-            <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
+            <div
+              style={{
+                paddingRight: "1.1rem",
+                paddingLeft: "2rem",
+              }}
+              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
+            >
               <Image className="topBarWalletAdd" src={WalletIcon} />
               <span className="dotDotText">
                 {TruncateText(this.state.metamaskWalletConnected)}
@@ -758,34 +792,6 @@ class TopBar extends Component {
               <span className="dotDotText">Connect wallet</span>
             </div>
           )}
-          <div
-            onClick={this.passConnectExchangeClick}
-            className={`topbar-btn ml-2 ${
-              this.state.walletList.length > 0 ? "maxWidth50" : ""
-            }`}
-          >
-            {this.state.exchangeList.length > 0 ? (
-              <>
-                <span className="mr-2">
-                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                    <Image className="topBarExchangeIcons" src={imgUrl} />
-                  ))}
-                </span>
-                <span className="dotDotText">
-                  <span className="captilasideText">
-                    {this.state.firstExchange?.toLowerCase()}{" "}
-                  </span>
-                  {this.state.exchangeList.length > 1 ? "and others " : ""}
-                  {"connected"}
-                </span>
-              </>
-            ) : (
-              <>
-                <Image className="topBarWalletAdd " src={LinkIconBtn} />
-                <span className="dotDotText">Connect exchange</span>
-              </>
-            )}
-          </div>
         </div>
       </div>
     );
