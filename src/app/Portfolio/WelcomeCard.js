@@ -329,6 +329,7 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              isAddressFollowedCount={props.isAddressFollowedCount}
               handleShare={props.handleShare}
               changeWalletList={props.changeWalletList}
               apiResponse={props.apiResponse}
