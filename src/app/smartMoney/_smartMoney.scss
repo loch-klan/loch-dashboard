@@ -477,10 +477,15 @@
       box-shadow: none;
       flex: 1;
     }
+    .mobileSmartMoneyBtnShareContainer {
+      background-color: #e5e5e6;
+      border-color: #e5e5e6;
+      box-shadow: none;
+    }
     .mobileSmartMoneyBtnSignInBottomBtns {
       margin-top: 1.5rem;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: space-between;
     }
   }
@@ -561,10 +566,11 @@
           .msmbHeaderRank {
             color: #cacbcc;
             font-size: 16px;
+            margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
             color: #313233;
-            margin: 0rem 0.5rem;
+            margin-right: 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
             white-space: nowrap;
