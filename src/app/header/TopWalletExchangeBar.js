@@ -10,6 +10,8 @@ import {
   AddWalletAddressModalOpen,
   ConnectWalletButtonClicked,
   DisconnectWalletButtonClicked,
+  HomeFollow,
+  HomeUnFollow,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -25,8 +27,10 @@ import {
 } from "../../utils/ReusableFunctions";
 import {
   EyeIcon,
+  FollowTopBarIcon,
   MetamaskIcon,
   PlusCircleIcon,
+  ShareTopBarIcon,
   WalletIcon,
   XCircleIcon,
   XCircleRedIcon,
@@ -34,7 +38,12 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
-class TopBar extends Component {
+import { isFollowedByUser } from "../Portfolio/Api";
+import {
+  addAddressToWatchList,
+  removeAddressFromWatchList,
+} from "../watchlist/redux/WatchListApi";
+class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,15 +58,144 @@ class TopBar extends Component {
       currentMetamaskWallet: {},
       changeList: props.changeWalletList,
       isMobileWalletListExpanded: false,
+      isFollowingAddress: false,
+      showFollowingAddress: true,
     };
   }
+  showFollowOrNot = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson && listJson.length > 0) {
+      if (listJson.length === 1) {
+        this.isFollowedByUserFun();
+        this.setState({
+          showFollowingAddress: true,
+        });
+      } else {
+        this.setState({
+          showFollowingAddress: false,
+        });
+      }
+    } else {
+      this.addressDeleted();
+    }
+  };
+  isFollowedByUserFun = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const data = new URLSearchParams();
+        data.append("wallet_address", tempWalletAddress);
+        this.props.isFollowedByUser(data, this);
+      }
+    }
+  };
+  showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
+    this.setState({ isFollowingAddress: true });
+    window.sessionStorage.setItem("isFollowingAddress", true);
+    if (this.props.afterAddressFollowed && openModal) {
+      this.props.afterAddressFollowed(passedAddress);
+    }
+  };
+  addressDeleted = () => {
+    this.setState({ isFollowingAddress: false });
+    window.sessionStorage.setItem("isFollowingAddress", false);
+  };
   toggleMobileWalletList = () => {
     this.setState({
       isMobileWalletListExpanded: !this.state.isMobileWalletListExpanded,
     });
   };
+  addAddressToWatchListFun = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length > 0) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const tempNameTag = tempListOfAdd[0].nameTag
+          ? tempListOfAdd[0].nameTag
+          : "";
+        if (this.state.isFollowingAddress) {
+          const firstData = new URLSearchParams();
+          firstData.append("address", tempWalletAddress);
 
+          this.props.removeAddressFromWatchList(
+            firstData,
+            this,
+            tempWalletAddress,
+            tempNameTag
+          );
+          HomeUnFollow({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            address: tempWalletAddress,
+            nameTag: tempNameTag,
+          });
+          return null;
+        }
+
+        const data = new URLSearchParams();
+        HomeFollow({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          address: tempWalletAddress,
+          nameTag: tempNameTag,
+        });
+        data.append("wallet_address", tempWalletAddress);
+        data.append("type", "self");
+        data.append("name_tag", tempNameTag);
+        this.props.addAddressToWatchList(
+          data,
+          this,
+          tempWalletAddress,
+          tempNameTag
+        );
+      }
+    }
+  };
   componentDidMount() {
+    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+
+    if (whatIsIt === "true") {
+      this.setState({
+        isFollowingAddress: true,
+      });
+    } else {
+      this.setState({
+        isFollowingAddress: false,
+      });
+    }
+    const userWalletData =
+      this.props.portfolioState &&
+      this.props.portfolioState.chainWallet &&
+      Object.keys(this.props.portfolioState.chainWallet).length > 0
+        ? Object.values(this.props.portfolioState.chainWallet)
+        : null;
+
+    if (userWalletData && userWalletData.length > 0) {
+      this.isFollowedByUserFun();
+      this.showFollowOrNot();
+    }
     this.applyLocalStorageWalletList();
 
     this.props.getAllCoins();
@@ -79,6 +217,24 @@ class TopBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
+    ) {
+      const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+
+      if (whatIsIt === "true") {
+        this.setState({
+          isFollowingAddress: true,
+        });
+      } else {
+        this.setState({
+          isFollowingAddress: false,
+        });
+      }
+    }
+    if (prevProps?.HeaderState !== this.props.HeaderState) {
+      this.showFollowOrNot();
+    }
     if (
       prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
     ) {
@@ -679,19 +835,43 @@ class TopBar extends Component {
         }`}
       >
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer maxWidth50">
-            <TopBarDropDown
-              class="topWalletDropdown"
-              list={this.state.walletList}
-              showChecked={true}
-              relative={true}
-              handleAddWalletClick={this.passAddWalletClick}
-              buttonRef={this.props.buttonRef}
-              totalWallets={this.state.totalWallets}
-              firstWallet={this.state.firstWallet}
-              firstFullWallet={this.state.firstFullWallet}
-            />
-          </div>
+          <>
+            <div className="topWalletDropdownContainer maxWidth50">
+              <TopBarDropDown
+                class="topWalletDropdown"
+                list={this.state.walletList}
+                showChecked={true}
+                relative={true}
+                handleAddWalletClick={this.passAddWalletClick}
+                buttonRef={this.props.buttonRef}
+                totalWallets={this.state.totalWallets}
+                firstWallet={this.state.firstWallet}
+                firstFullWallet={this.state.firstFullWallet}
+              />
+            </div>
+            {this.state.showFollowingAddress ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+              >
+                <Image className="topBarWalletAdd" src={FollowTopBarIcon} />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
+              id="address-button"
+              onClick={this.props.handleShare}
+            >
+              <Image className="topBarWalletAdd" src={ShareTopBarIcon} />
+              <span className="dotDotText">Share</span>
+            </div>
+          </>
         ) : (
           <div
             ref={this.props.buttonRef}
@@ -752,8 +932,8 @@ class TopBar extends Component {
           {this.state.metamaskWalletConnected ? (
             <div
               style={{
-                paddingRight: "1.1rem",
-                paddingLeft: "2rem",
+                marginRight: "0rem",
+                paddingRight: "0rem",
               }}
               className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
             >
@@ -799,6 +979,7 @@ class TopBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  portfolioState: state.PortfolioState,
   walletState: state.WalletState,
   HeaderState: state.HeaderState,
   OnboardingState: state.OnboardingState,
@@ -814,6 +995,12 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   getAllCoins,
+  isFollowedByUser,
+  removeAddressFromWatchList,
+  addAddressToWatchList,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopWalletExchangeBar);
