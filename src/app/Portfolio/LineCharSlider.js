@@ -9,6 +9,7 @@ import { GraphHeader } from "../common/GraphHeader";
 import GraphLogo from "../../assets/images/graph-logo.svg";
 import { LoaderIcon } from "../../assets/images/icons";
 import {
+  AssetValueChartWalletOpen,
   AssetValueFilter,
   AssetValueHover,
   AssetValueInternalEvent,
@@ -42,6 +43,7 @@ import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import SwitchButton from "./SwitchButton";
 import AssetValueEmailModal from "./AssetValueEmailModal";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
@@ -628,12 +630,13 @@ class LineChartSlider extends BaseReactComponent {
               let e_address = "";
               if (a.from || a.from_address) {
                 e_address = a.from ? a.from : a.from_address;
+                e_full_address = a.from_address;
                 e_text = "from";
               } else {
                 e_address = a.to ? a.to : a.to_address;
+                e_full_address = a.to_address;
                 e_text = "to";
               }
-              e_full_address = e_address;
               // if (e_address.length > 16) {
               //   e_address =
               //     '"' +
@@ -1516,7 +1519,23 @@ backdrop-filter: blur(15px);">
                         ?.filter((e) => e.text === "from")
                         .map((event, i) => {
                           // console.log("first event", event);
+                          const goToAddress = () => {
+                            let slink = event.fulladdress;
+                            if (slink) {
+                              let shareLink =
+                                BASE_URL_S3 +
+                                "home/" +
+                                slink +
+                                "?redirect=home";
 
+                              AssetValueChartWalletOpen({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                                wallet: slink,
+                              });
+                              window.open(shareLink, "_blank", "noreferrer");
+                            }
+                          };
                           let count =
                             Math.trunc(event.assetValue).toString().length > 6
                               ? 0
@@ -1558,12 +1577,17 @@ backdrop-filter: blur(15px);">
                                     isText={true}
                                     text={event.tooltip}
                                   >
-                                    <span style={{ cursor: "pointer" }}>
+                                    <span>
                                       {/* {this.state.selectedEvents.length === 1 &&
                                       !this.props.hideTimeFilter
                                         ? event.fulladdress
                                         : event.address} */}
-                                      {event.address}
+                                      <span
+                                        onClick={goToAddress}
+                                        className="top-account-address"
+                                      >
+                                        {event.address}
+                                      </span>
                                       <Image
                                         src={CopyClipboardIcon}
                                         onClick={() =>
@@ -1605,6 +1629,24 @@ backdrop-filter: blur(15px);">
                               ? 0
                               : 6 -
                                 Math.trunc(event.assetValue).toString().length;
+
+                          const goToAddress = () => {
+                            let slink = event.fulladdress;
+                            if (slink) {
+                              let shareLink =
+                                BASE_URL_S3 +
+                                "home/" +
+                                slink +
+                                "?redirect=home";
+
+                              AssetValueChartWalletOpen({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                                wallet: slink,
+                              });
+                              window.open(shareLink, "_blank", "noreferrer");
+                            }
+                          };
                           return (
                             <>
                               <div
@@ -1646,7 +1688,12 @@ backdrop-filter: blur(15px);">
                                       !this.props.hideTimeFilter
                                         ? event.fulladdress
                                         : event.address} */}
-                                      {event.address}
+                                      <span
+                                        onClick={goToAddress}
+                                        className="top-account-address"
+                                      >
+                                        {event.address}
+                                      </span>
                                       <Image
                                         src={CopyClipboardIcon}
                                         onClick={() =>

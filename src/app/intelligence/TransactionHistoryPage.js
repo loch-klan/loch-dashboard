@@ -75,6 +75,7 @@ import {
   TransactionHistorySortTo,
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
+  TransactionHistoryWalletClicked,
   TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
@@ -1129,6 +1130,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.from?.address) {
               showThis = TruncateText(rowData.from?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.from?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1184,7 +1199,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
 
                     <Image
                       src={CopyClipboardIcon}
@@ -1210,7 +1227,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
 
                       <Image
                         src={CopyClipboardIcon}
@@ -1233,7 +1255,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1255,7 +1282,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1278,7 +1310,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.from.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1300,7 +1334,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
+
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1348,6 +1385,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.to?.address) {
               showThis = TruncateText(rowData.to?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.to?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1403,7 +1454,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1428,7 +1481,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1450,7 +1508,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1472,7 +1535,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1495,7 +1563,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.to.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1517,7 +1587,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}

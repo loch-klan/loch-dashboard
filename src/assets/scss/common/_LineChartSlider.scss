@@ -44,7 +44,14 @@
       justify-content: space-between;
       margin-top: 2rem;
       flex-wrap: wrap;
+      .top-account-address {
+        text-decoration: underline;
+        cursor: pointer;
 
+        &:hover {
+          font-weight: 600;
+        }
+      }
       .EventColumn {
         display: flex;
         align-items: start;
