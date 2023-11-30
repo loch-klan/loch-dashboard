@@ -153,7 +153,7 @@ class Portfolio extends BaseReactComponent {
       followSigninModal: false,
       followSignupModal: false,
       followedAddress: "",
-      isShowingAge: false,
+      isShowingAge: true,
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
