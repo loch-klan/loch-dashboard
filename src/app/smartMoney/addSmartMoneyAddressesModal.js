@@ -19,7 +19,7 @@ import {
   smartMoneySignInApi,
   VerifySmartMoneyEmailOtp,
 } from "./Api";
-import { fixWalletApi, getUser, setPageFlagDefault } from "../common/Api";
+import { setPageFlagDefault } from "../common/Api";
 import { toast } from "react-toastify";
 import validator from "validator";
 
@@ -289,7 +289,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     data.append("email", this.state.signInEmailId);
     data.append("otp_token", this.state.verificationOtp);
     data.append("signed_up_from", "smart money");
-    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId);
+    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId,false);
   };
   emailIsVerified = () => {
     this.hideModal();
@@ -506,8 +506,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
             btnClick={this.showSignUpModal}
             heading="Congratulations"
             descriptionOne="This unique address is worth more than $10K"
-            descriptionTwo="Please click Next to proceed."
-            btnText="Next"
+            btnText="Done"
             imageIcon={TrophyCelebrationIcon}
             bodyImageClass="addCommunityTopAccountsAddedBodyLargerIcon"
             hideModal={this.hideModal}
@@ -551,7 +550,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
                 Contribute to the community
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Add an address to the community board
+                Add a unique address worth at least $10k
               </p>
             </div>
 

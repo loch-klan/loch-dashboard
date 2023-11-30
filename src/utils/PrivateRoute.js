@@ -54,16 +54,24 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           "transHistoryConditions"
         );
         const transHistorySorts = searchParams.get("transHistorySorts");
+        const followThisAddressInLink = searchParams.get("followThisAddress");
 
+        let linkAddress = "";
+        if (props.location?.pathname) {
+          const justAddress = props.location?.pathname.replace("/home/", "");
+          linkAddress = justAddress;
+        }
         let redirect = JSON.parse(
           window.sessionStorage.getItem("ShareRedirect")
         );
-        //  console.log("redirect", redirect);
         if (!redirect && redirectPath) {
           window.sessionStorage.setItem(
             "ShareRedirect",
             JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
           );
+          if (followThisAddressInLink === "true" && linkAddress) {
+            window.sessionStorage.setItem("followThisAddress", linkAddress);
+          }
           if (passedRefrenceId) {
             window.sessionStorage.setItem("PassedRefrenceId", passedRefrenceId);
           }
@@ -91,20 +99,20 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           props.location.pathname.includes("/smart-money")
         ) {
           const isMobile = mobileCheck();
-          if (isMobile) {
-            return (
-              <Redirect
-                to={{
-                  pathname: "/",
-                  state: {
-                    from: props.location,
-                    params: props.match.params,
-                    page: "route",
-                  },
-                }}
-              />
-            );
-          }
+          // if (isMobile) {
+          //   return (
+          //     <Redirect
+          //       to={{
+          //         pathname: "/",
+          //         state: {
+          //           from: props.location,
+          //           params: props.match.params,
+          //           page: "route",
+          //         },
+          //       }}
+          //     />
+          //   );
+          // }
           return (
             <div className="main-section">
               <div className={`main-section-right`}>

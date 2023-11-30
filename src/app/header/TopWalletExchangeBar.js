@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-
+import arrowUp from "../../assets/images/arrow-up.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
@@ -48,8 +48,14 @@ class TopBar extends Component {
       metamaskWalletConnected: "",
       currentMetamaskWallet: {},
       changeList: props.changeWalletList,
+      isMobileWalletListExpanded: false,
     };
   }
+  toggleMobileWalletList = () => {
+    this.setState({
+      isMobileWalletListExpanded: !this.state.isMobileWalletListExpanded,
+    });
+  };
 
   componentDidMount() {
     this.applyLocalStorageWalletList();
@@ -602,24 +608,65 @@ class TopBar extends Component {
       if (this.state.walletList && this.state.walletList.length > 0) {
         return (
           <div className="accountsAmountContainer">
-            <div className="eyeAndAccount">
-              {this.state.walletList && this.state.walletList[0] ? (
-                <>
-                  <Image className="eyeAndAccountImage" src={EyeIcon} />
-                  <div className="inter-display-semi-bold f-s-13 lh-19">
-                    {this.state.walletList[0]}
-                    {this.state.walletList.length > 1
-                      ? ` + ${this.state.walletList.length - 1} more`
-                      : null}
-                  </div>
-                </>
-              ) : null}
+            <div className="accountsAmount">
+              <div className="eyeAndAccount">
+                {this.state.walletList && this.state.walletList[0] ? (
+                  <>
+                    <Image className="eyeAndAccountImage" src={EyeIcon} />
+                    <div className="inter-display-semi-bold f-s-13 lh-19">
+                      {this.state.walletList[0]}
+                      {this.state.walletList.length > 1 ? (
+                        <span>
+                          <Image
+                            onClick={this.toggleMobileWalletList}
+                            onLoad={this.arrowIconLoaded}
+                            className="eyeAndAccountArrow"
+                            src={arrowUp}
+                            style={
+                              this.state.isMobileWalletListExpanded
+                                ? {}
+                                : {
+                                    transform: "rotate(180deg)",
+                                  }
+                            }
+                          />
+                        </span>
+                      ) : null}
+                    </div>
+                  </>
+                ) : null}
+              </div>
+              <div className="inter-display-semi-bold f-s-16 lh-19">
+                {this.props.assetTotal ? (
+                  <span>${numToCurrency(this.props.assetTotal)}</span>
+                ) : null}
+              </div>
             </div>
-            <div className="inter-display-semi-bold f-s-16 lh-19">
-              {this.props.assetTotal ? (
-                <span>${numToCurrency(this.props.assetTotal)}</span>
-              ) : null}
-            </div>
+            {this.state.walletList && this.state.isMobileWalletListExpanded ? (
+              <div>
+                {this.state.walletList.map((resRes, resIndex) => {
+                  if (resIndex === 0) {
+                    return null;
+                  }
+                  return (
+                    <div className="accountsAmount accountsAmountRemaining">
+                      <div className="eyeAndAccount">
+                        <Image
+                          style={{
+                            opacity: 0,
+                          }}
+                          className="eyeAndAccountImage"
+                          src={EyeIcon}
+                        />
+                        <div className="inter-display-semi-bold f-s-13 lh-19">
+                          {resRes}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         );
       }

@@ -61,7 +61,7 @@ import {
 } from "../watchlist/redux/WatchListApi";
 import SmartMoneyHeader from "./smartMoneyHeader";
 import "./_smartMoney.scss";
-import SmartMoneyMobilePage from "./smartMoneyMobilePage.js";
+import SmartMoneyMobilePage from "./SmartMoneyMobileBlocks/smartMoneyMobilePage.js";
 
 import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 import {
@@ -97,7 +97,6 @@ class SmartMoneyPage extends BaseReactComponent {
       search: "",
       method: "",
       asset: "",
-      accountInWatchList: [],
       methodsDropdown: Method.opt,
       table: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
@@ -238,6 +237,7 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (token && lochUser && lochUser.email) {
@@ -368,11 +368,10 @@ class SmartMoneyPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency) {
+    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
       this.setState({
         currency: JSON.parse(window.sessionStorage.getItem("currency")),
       });
-      getAllCurrencyRatesApi();
     }
     if (
       prevPage !== page ||
@@ -410,18 +409,6 @@ class SmartMoneyPage extends BaseReactComponent {
           });
           this.updateTimer();
         }
-      }
-    }
-
-    if (
-      this.props.TopAccountsInWatchListState !==
-      prevProps.TopAccountsInWatchListState
-    ) {
-      const tempList = this.props.TopAccountsInWatchListState;
-      if (tempList) {
-        this.setState({
-          accountInWatchList: tempList,
-        });
       }
     }
   }
@@ -612,6 +599,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyFAQClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: false,
     });
     this.setState({
       faqModal: true,
@@ -626,6 +614,7 @@ class SmartMoneyPage extends BaseReactComponent {
     SmartMoneyHowItWorksClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      isMobile: false,
     });
     this.setState({
       howItWorksModal: true,
@@ -1143,19 +1132,21 @@ class SmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileDevice isSmartMoney />
-        // <SmartMoneyMobilePage
-        //   location={this.props.location}
-        //   history={this.props.history}
-        //   accountList={this.state.accountList}
-        //   currency={this.state.currency}
-        //   isLoading={this.state.tableLoading}
-        //   currentPage={this.state.currentPage}
-        //   totalPage={this.state.totalPage}
-        //   pageLimit={this.state.pageLimit}
-        //   changePageLimit={this.changePageLimit}
-        //   onPageChange={this.onPageChange}
-        // />
+        // <MobileDevice isSmartMoney />
+        <SmartMoneyMobilePage
+          location={this.props.location}
+          history={this.props.history}
+          accountList={this.state.accountList}
+          currency={this.state.currency}
+          isLoading={this.state.tableLoading}
+          currentPage={this.state.currentPage}
+          totalPage={this.state.totalPage}
+          pageLimit={this.state.pageLimit}
+          changePageLimit={this.changePageLimit}
+          onPageChange={this.onPageChange}
+          blurTable={this.state.blurTable}
+          signOutFun={this.signOutFun}
+        />
       );
     }
 

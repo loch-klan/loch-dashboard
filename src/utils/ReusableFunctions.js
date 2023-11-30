@@ -10,12 +10,6 @@ export const mobileCheck = () => {
   //   return false;
   // }
   if (
-    BASE_URL_S3 ===
-    "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
-  ) {
-    return false;
-  }
-  if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
@@ -267,8 +261,10 @@ export const CurrencyType = (code = "both") => {
     return currency?.symbol + " " + currency?.code;
   } else if (code) {
     return currency?.code;
-  } else {
+  } else if (currency?.symbol) {
     return currency?.symbol;
+  } else {
+    return "";
   }
 };
 

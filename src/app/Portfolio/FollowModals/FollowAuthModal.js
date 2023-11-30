@@ -1,38 +1,45 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
+import BaseReactComponent from "./../../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import { Modal, Image, Button } from "react-bootstrap";
-import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
-import Form from "../../utils/form/Form.js";
-import FormElement from "../../utils/form/FormElement.js";
-import FormValidator from "../../utils/form/FormValidator.js";
+import ExitOverlayIcon from "../../../assets/images/icons/ExitOverlayWalletIcon.svg";
+import Form from "../../../utils/form/Form";
+import FormElement from "../../../utils/form/FormElement";
+import FormValidator from ".././../../utils/form/FormValidator";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import CustomTextControl from "../../utils/form/CustomTextControl.js";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import CloseIcon from "../../../assets/images/icons/dummyX.svg";
+import CustomTextControl from ".././../../utils/form/CustomTextControl";
+import InfoIcon from "../../../assets/images/icons/info-icon.svg";
 import {
   getAllCoins,
   detectCoin,
   getAllParentChains,
-} from "../onboarding/Api.js";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+} from "../../onboarding//Api";
+import LockIcon from "../../../assets/images/icons/lock-icon.svg";
+import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
 import {
   fixWalletApi,
   SendOtp,
   setPageFlagDefault,
   SigninWallet,
-} from "../common/Api.js";
+  VerifyEmail,
+} from "../../common/Api.js";
 
-import backIcon from "../../assets/images/icons/Icon-back.svg";
-import { getCurrentUser } from "../../utils/ManageToken.js";
-import { WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions.js";
+import backIcon from "../../../assets/images/icons/Icon-back.svg";
+import { getCurrentUser } from "../../../utils/ManageToken";
+import {
+  ConnectExPopupEmailAdded,
+  GeneralPopupEmailAdded,
+  SigninMenuEmailAdded,
+  UpgradeSignInEmailVerified,
+  WhaleCreateAccountPrivacyHover,
+  WhalePopupEmailAdded,
+} from "../../../utils/AnalyticsFunctions";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { VerifySmartMoneyEmailOtp } from "./Api.js";
 
-class AuthSmartMoneyModal extends BaseReactComponent {
+class FollowAuthModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = window.sessionStorage.getItem("lochDummyUser");
@@ -97,6 +104,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
     data.append("email", this.state.email);
+    data.append("follow_address", this.props.followedAddress);
     SendOtp(data, this);
   };
 
@@ -114,8 +122,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.email, false);
-    // VerifyEmail(data, this);
+    VerifyEmail(data, this);
   };
 
   handleBack = () => {
@@ -189,10 +196,6 @@ class AuthSmartMoneyModal extends BaseReactComponent {
 
     SigninWallet(data, this);
   };
-  emailIsVerified = () => {
-    this.state.onHide();
-    toast.success(`Email verified`);
-  };
 
   render() {
     return (
@@ -255,7 +258,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
             <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
               {this.state.modalDescription
                 ? this.state.modalDescription
-                : "Add your email so you can view, analyze, and follow any or all of the smartest actors on-chain."}
+                : "Don’t let your hard work go to waste. Add your email so you can watch your whales with binoculars"}
             </p>
             {/* this.props.isSkip(); */}
             <div className="email-section auth-modal">
@@ -435,12 +438,8 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   setPageFlagDefault,
-  VerifySmartMoneyEmailOtp,
 };
 
-AuthSmartMoneyModal.propTypes = {};
+FollowAuthModal.propTypes = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AuthSmartMoneyModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FollowAuthModal);
