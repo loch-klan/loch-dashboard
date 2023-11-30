@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
-import { BASE_GA_KEY } from "./utils/Constant";
+import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
 
 function App() {
@@ -44,9 +44,10 @@ function App() {
   // return isMobile ? (
   //   <MobileDevice />
   // ) : (
+  console.log("ARCX_API_KEY ", ARCX_API_KEY);
   return (
     <div>
-      <ArcxAnalyticsProvider apiKey="e76fd158f13e1c246f05f08e7d255382cd34a81f619ba7c76b1e66298c924d8c">
+      <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}>
         <BrowserRouter>
           <Switch>
             {routes.map((prop, key) => {
