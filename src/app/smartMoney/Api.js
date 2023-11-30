@@ -21,6 +21,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             const numberLimit = Number(apiLimit);
             tempLimit = numberLimit;
           }
+          console.log("res?.data?.data?.accounts ", res?.data?.data?.accounts);
           let tableData = res?.data?.data?.accounts?.map((e) => ({
             account: e?.address,
             networth: e?.net_worth,
@@ -29,6 +30,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             profits: e?.profits,
             returns: e?.returns,
             rank: e?.rank,
+            following: e?.following,
           }));
           ctx.setState({
             accountList: tableData,
