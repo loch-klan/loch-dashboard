@@ -75,6 +75,7 @@ import {
   TransactionHistorySortTo,
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
+  TransactionHistoryWalletClicked,
   TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
@@ -115,7 +116,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
-      isShowingAge: false,
+      isShowingAge: true,
       selectedTimes: [],
       selectedAssets: [],
       selectedMethods: [],
@@ -132,6 +133,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -197,6 +199,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -438,6 +441,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1118,6 +1130,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.from?.address) {
               showThis = TruncateText(rowData.from?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.from?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1173,7 +1199,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
 
                     <Image
                       src={CopyClipboardIcon}
@@ -1199,7 +1227,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
 
                       <Image
                         src={CopyClipboardIcon}
@@ -1222,7 +1255,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1244,7 +1282,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1267,7 +1310,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.from.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1289,7 +1334,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
+
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1337,6 +1385,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.to?.address) {
               showThis = TruncateText(rowData.to?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.to?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1392,7 +1454,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1417,7 +1481,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1439,7 +1508,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1461,7 +1535,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1484,7 +1563,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.to.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1506,7 +1587,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1802,27 +1885,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
+                {actualMethod &&
+                (actualMethod === "send" || actualMethod === "receive") ? (
                   <div className="gainLossContainer">
                     <div
                       className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
+                        actualMethod === "send" ? "loss" : "gain"
                       }`}
                     >
                       <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
+                        {actualMethod}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </>
@@ -1843,6 +1944,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}

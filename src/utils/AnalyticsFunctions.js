@@ -1783,6 +1783,19 @@ export const PriceChartFilter = ({
 };
 
 //Intelligence:asset value chart hover
+export const AssetValueChartWalletOpen = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Intelligence:asset value chart wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const IntlAssetValueHover = ({
   session_id,
   email_address,
@@ -4466,7 +4479,19 @@ export const TimeSpentTransactionHistory = ({
   ////console.log("Transaction History: time spent on transaction history page");
 };
 
-//46.Transaction history: share - done
+export const TransactionHistoryWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Transaction history: wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryShare = ({ session_id, email_address }) => {
   const event_name = "Transaction history: share";
   const eventProperties = {
@@ -5199,6 +5224,16 @@ export const SmartMoneyTimeSpent = ({
     isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyShare = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Smart money: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:go");
 };
 export const TopAccountTimeSpent = ({
   session_id,

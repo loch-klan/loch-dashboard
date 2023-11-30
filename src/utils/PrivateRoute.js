@@ -149,7 +149,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               }`}
             >
               <div className="main-content-wrapper">
-                <Component key={props.location.pathname} {...props} />
+                <Component
+                  isSidebarClosed={isSidebarClosed}
+                  key={props.location.pathname}
+                  {...props}
+                />
               </div>
             </div>
           </div>

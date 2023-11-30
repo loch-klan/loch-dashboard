@@ -53,6 +53,7 @@ import {
   GROUP_BY_DATE,
   InsightType,
   DEFAULT_PRICE,
+  BASE_URL_S3,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
@@ -82,6 +83,10 @@ import {
   HomeCostAssetHover,
   NetflowSwitchHome,
   resetUser,
+  CostCostBasisHover,
+  CostCurrentValueHover,
+  TransactionHistoryWalletClicked,
+  HomeShare,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -151,7 +156,7 @@ class Portfolio extends BaseReactComponent {
       followSigninModal: false,
       followSignupModal: false,
       followedAddress: "",
-      isShowingAge: false,
+      isShowingAge: true,
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
@@ -430,6 +435,28 @@ class Portfolio extends BaseReactComponent {
   };
 
   // add wallet modal
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let shareLink = "";
+
+    if (userWallet?.length === 1) {
+      let slink = userWallet[0].displayAddress || userWallet[0].address;
+      shareLink =
+        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
+    } else {
+      let slink = lochUser;
+      shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+    }
+
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    HomeShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   handleAddModal = () => {
     this.setState({
       addModal: !this.state.addModal,
@@ -1344,6 +1371,20 @@ class Portfolio extends BaseReactComponent {
             } else if (rowData.from?.address) {
               showThis = TruncateText(rowData.from?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.from?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1379,7 +1420,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1404,7 +1447,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1426,7 +1474,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1448,7 +1501,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1471,7 +1529,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.from.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1493,7 +1553,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1549,6 +1611,20 @@ class Portfolio extends BaseReactComponent {
             } else if (rowData.to?.address) {
               showThis = TruncateText(rowData.to?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.to?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1583,7 +1659,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1608,7 +1686,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1630,7 +1713,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1652,7 +1740,12 @@ class Portfolio extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1675,7 +1768,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.to.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1697,7 +1792,9 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1862,55 +1959,55 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Average Cost Price"
-            onClick={() => this.handleSort(this.state.sortBy[1])}
+            id="Cost Basis"
+            onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Avg cost price
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "AverageCostPrice",
-        // coumnWidth: 153,
+        dataKey: "CostBasis",
+        // coumnWidth: 100,
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "AverageCostPrice") {
+          if (dataKey === "CostBasis") {
             if (rowData === "EMPTY") {
               return null;
             }
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    !rowData.CostBasis || rowData.CostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.AverageCostPrice === 0
+                    <span>
+                      {!rowData.CostBasis || rowData.CostBasis === 0
                         ? "N/A"
                         : CurrencyType(false) +
-                          Number(
-                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1919,51 +2016,55 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Current Price"
-            onClick={() => this.handleSort(this.state.sortBy[2])}
+            id="Current Value"
+            onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current value
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "CurrentPrice",
-        // coumnWidth: 128,
+        dataKey: "CurrentValue",
+        // coumnWidth: 140,
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "CurrentPrice") {
-            if (rowData === "EMPTY") {
-              return null;
-            }
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "CurrentValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentPrice.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
                         Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                          noExponents(rowData.CurrentValue.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                >
+                  <div className="cost-common">
+                    <span>
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -2130,21 +2231,21 @@ class Portfolio extends BaseReactComponent {
               return null;
             }
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.GainLoss
-                    ? Math.abs(
-                        Number(noExponents(rowData.GainLoss.toFixed(2)))
-                      ).toLocaleString("en-US") + "%"
-                    : "0.00%"
-                }
-                colorCode="#000"
-              >
-                <div className="gainLossContainer">
+              <div className="gainLossContainer">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainLoss
+                      ? Math.abs(
+                          Number(noExponents(rowData.GainLoss.toFixed(2)))
+                        ).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
                   <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
@@ -2168,8 +2269,8 @@ class Portfolio extends BaseReactComponent {
                         : "0.00%"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -2269,9 +2370,12 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  isAddressFollowedCount={this.state.isAddressFollowedCount}
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
                   changeWalletList={this.handleChangeList}
                   apiResponse={(e) => this.CheckApiResponse(e)}
-                  showNetworth={true}
+                  // showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
                   // toggleAddWallet={this.state.toggleAddWallet}
@@ -2321,7 +2425,7 @@ class Portfolio extends BaseReactComponent {
                   marginTop: "11rem",
                 }}
               >
-                <PieChart2
+                {/* <PieChart2
                   isAddressFollowedCount={this.state.isAddressFollowedCount}
                   afterAddressFollowed={this.afterAddressFollowed}
                   setLoader={this.setLoader}
@@ -2372,7 +2476,7 @@ class Portfolio extends BaseReactComponent {
                   getProtocolTotal={this.getProtocolTotal}
                   updateTimer={this.updateTimer}
                   userWalletList={this.state.userWalletList}
-                />
+                /> */}
                 {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
                 ) > -1 && this.state.userWalletList[0]?.address !== "" ? (

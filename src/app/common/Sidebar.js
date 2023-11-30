@@ -117,6 +117,8 @@ function Sidebar(props) {
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
+  const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
@@ -482,7 +484,17 @@ function Sidebar(props) {
   };
   useSelector((state) => state.LochUserState);
 
+  const openSignupModalDirect = () => {
+    setComingDirectly(true);
+    setSignUpModalAnimation(true);
+    setSignInModalAnimation(false);
+    setSignupModal(true);
+    setSigninModal(false);
+    setSigninPopup(false);
+  };
   const openSigninModal = () => {
+    setComingDirectly(false);
+    setSignUpModalAnimation(false);
     setSignupModal(false);
     setSigninModal(true);
 
@@ -491,12 +503,16 @@ function Sidebar(props) {
     });
   };
   const onCloseModal = () => {
+    setComingDirectly(true);
+    setSignUpModalAnimation(true);
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
   };
 
   const openSignUpModal = () => {
+    setComingDirectly(false);
+    setSignUpModalAnimation(false);
     setSignInModalAnimation(false);
     setSigninModal(false);
     setSignupModal(true);
@@ -2638,9 +2654,10 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError
-          modalAnimation={false}
+          modalAnimation={signUpModalAnimation}
           show={signupModal}
           onHide={onCloseModal}
           history={history}
@@ -2669,6 +2686,7 @@ function Sidebar(props) {
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
+          openSignupModalDirect={openSignupModalDirect}
         />
       ) : null}
     </>
