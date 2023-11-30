@@ -353,19 +353,14 @@ class PortfolioMobile extends BaseReactComponent {
                       ).toLocaleString("en-US")
                 }
               >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {!rowData.AverageCostPrice ||
-                      rowData.AverageCostPrice === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            rowData.AverageCostPrice.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
-                  </div>
-                </div>
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {!rowData.AverageCostPrice || rowData.AverageCostPrice === 0
+                    ? "N/A"
+                    : CurrencyType(false) +
+                      numToCurrency(
+                        rowData.AverageCostPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
+                </span>
               </CustomOverlay>
             );
           }
@@ -407,18 +402,14 @@ class PortfolioMobile extends BaseReactComponent {
                     : "N/A"
                 }
               >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.CurrentPrice
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentPrice.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : "N/A"}
-                    </span>
-                  </div>
-                </div>
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.CurrentPrice
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : "N/A"}
+                </span>
               </CustomOverlay>
             );
           }
@@ -502,15 +493,19 @@ class PortfolioMobile extends BaseReactComponent {
                         ).toLocaleString("en-US")
                   }
                 >
-                  <span>
-                    {!this.state.combinedCostBasis ||
-                    this.state.combinedCostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        numToCurrency(
-                          this.state.combinedCostBasis.toFixed(2)
-                        ).toLocaleString("en-US")}
-                  </span>
+                  <div className="cost-common-container">
+                    <div className="cost-common">
+                      <span>
+                        {!this.state.combinedCostBasis ||
+                        this.state.combinedCostBasis === 0
+                          ? "N/A"
+                          : CurrencyType(false) +
+                            numToCurrency(
+                              this.state.combinedCostBasis.toFixed(2)
+                            ).toLocaleString("en-US")}
+                      </span>
+                    </div>
+                  </div>
                 </CustomOverlay>
               );
             }
@@ -529,14 +524,18 @@ class PortfolioMobile extends BaseReactComponent {
                       ).toLocaleString("en-US")
                 }
               >
-                <span>
-                  {!rowData.CostBasis || rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CostBasis.toFixed(2)
-                      ).toLocaleString("en-US")}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span>
+                      {!rowData.CostBasis || rowData.CostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }
@@ -578,14 +577,18 @@ class PortfolioMobile extends BaseReactComponent {
                       : "N/A"
                   }
                 >
-                  <span>
-                    {this.state.combinedCurrentValue
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          this.state.combinedCurrentValue.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : "N/A"}
-                  </span>
+                  <div className="cost-common-container">
+                    <div className="cost-common">
+                      <span>
+                        {this.state.combinedCurrentValue
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              this.state.combinedCurrentValue.toFixed(2)
+                            ).toLocaleString("en-US")
+                          : "N/A"}
+                      </span>
+                    </div>
+                  </div>
                 </CustomOverlay>
               );
             }
@@ -604,14 +607,18 @@ class PortfolioMobile extends BaseReactComponent {
                     : "N/A"
                 }
               >
-                <span>
-                  {rowData.CurrentValue
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CurrentValue.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : "N/A"}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span>
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }

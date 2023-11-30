@@ -115,7 +115,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
-      isShowingAge: false,
+      isShowingAge: true,
       selectedTimes: [],
       selectedAssets: [],
       selectedMethods: [],

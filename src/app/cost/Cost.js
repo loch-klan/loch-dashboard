@@ -771,7 +771,7 @@ class Cost extends Component {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
               >
                 <span className="inter-display-medium f-s-13">
                   {Number(noExponents(index + 1)).toLocaleString("en-US")}
@@ -804,33 +804,35 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.AssetCode}
+              <div
+                onMouseEnter={() => {
+                  CostAssetHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    asset_hover: rowData.AssetCode,
+                  });
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostAssetHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      asset_hover: rowData.AssetCode,
-                    });
-                  }}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.AssetCode}
                 >
-                  <CoinChip
-                    coin_img_src={rowData.Asset}
-                    coin_code={rowData.AssetCode}
-                    chain={rowData?.chain}
-                  />
-                </div>
-              </CustomOverlay>
+                  <div>
+                    <CoinChip
+                      coin_img_src={rowData.Asset}
+                      coin_code={rowData.AssetCode}
+                      chain={rowData?.chain}
+                    />
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -858,27 +860,27 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
+              <div
+                onMouseEnter={() => {
+                  CostAverageCostPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostAverageCostPriceHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.AverageCostPrice.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {rowData.AverageCostPrice === 0
@@ -888,8 +890,8 @@ class Cost extends Component {
                           rowData.AverageCostPrice.toFixed(2)
                         ).toLocaleString("en-US")}
                   </span>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -917,25 +919,25 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentPrice.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
+              <div
+                onMouseEnter={() => {
+                  CostCurrentPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostCurrentPriceHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentPrice.toFixed(2))
+                    ).toLocaleString("en-US")
+                  }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {CurrencyType(false) +
@@ -943,8 +945,8 @@ class Cost extends Component {
                         rowData.CurrentPrice.toFixed(2)
                       ).toLocaleString("en-US")}
                   </span>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -972,26 +974,28 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(rowData.Amount)).toLocaleString(
-                  "en-US"
-                )}
+              <span
+                onMouseEnter={() => {
+                  CostAmountHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <span
-                  onMouseEnter={() => {
-                    CostAmountHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(noExponents(rowData.Amount)).toLocaleString(
+                    "en-US"
+                  )}
                 >
-                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
+                  <span>
+                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </span>
             );
           }
         },
@@ -1019,21 +1023,21 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
                   <div className="cost-common">
                     <span
                       onMouseEnter={() => {
@@ -1051,8 +1055,8 @@ class Cost extends Component {
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1080,19 +1084,21 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentValue.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentValue.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                >
                   <div className="cost-common">
                     <span
                       onMouseEnter={() => {
@@ -1108,8 +1114,8 @@ class Cost extends Component {
                         ).toLocaleString("en-US")}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1138,29 +1144,29 @@ class Cost extends Component {
           if (dataKey === "GainAmount") {
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.GainAmount
-                    ? CurrencyType(false) +
-                      Math.abs(
-                        Number(noExponents(rowData.GainAmount.toFixed(2)))
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"
-                }
-                colorCode="#000"
+              <div
+                onMouseEnter={() => {
+                  CostGainHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
               >
-                <div
-                  onMouseEnter={() => {
-                    CostGainHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="gainLossContainer"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainAmount
+                      ? CurrencyType(false) +
+                        Math.abs(
+                          Number(noExponents(rowData.GainAmount.toFixed(2)))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                  colorCode="#000"
                 >
                   <div className={`gainLoss`}>
                     {rowData.GainAmount !== 0 ? (
@@ -1184,8 +1190,8 @@ class Cost extends Component {
                         : "0.00"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1216,26 +1222,26 @@ class Cost extends Component {
               noExponents(rowData.GainLoss.toFixed(2))
             );
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempDataHolder
-                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                    : "0%"
-                }
-                colorCode="#000"
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
               >
-                <div
-                  onMouseEnter={() => {
-                    CostGainLossHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="gainLossContainer"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0%"
+                  }
+                  colorCode="#000"
                 >
                   <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
@@ -1258,8 +1264,8 @@ class Cost extends Component {
                         : "0.00%"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },

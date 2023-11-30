@@ -83,6 +83,8 @@ import {
   HomeCostAssetHover,
   NetflowSwitchHome,
   resetUser,
+  CostCostBasisHover,
+  CostCurrentValueHover,
   HomeShare,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
@@ -153,7 +155,7 @@ class Portfolio extends BaseReactComponent {
       followSigninModal: false,
       followSignupModal: false,
       followedAddress: "",
-      isShowingAge: false,
+      isShowingAge: true,
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
@@ -1886,55 +1888,55 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Average Cost Price"
-            onClick={() => this.handleSort(this.state.sortBy[1])}
+            id="Cost Basis"
+            onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Avg cost price
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "AverageCostPrice",
-        // coumnWidth: 153,
+        dataKey: "CostBasis",
+        // coumnWidth: 100,
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "AverageCostPrice") {
+          if (dataKey === "CostBasis") {
             if (rowData === "EMPTY") {
               return null;
             }
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    !rowData.CostBasis || rowData.CostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.AverageCostPrice === 0
+                    <span>
+                      {!rowData.CostBasis || rowData.CostBasis === 0
                         ? "N/A"
                         : CurrencyType(false) +
-                          Number(
-                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1943,51 +1945,55 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Current Price"
-            onClick={() => this.handleSort(this.state.sortBy[2])}
+            id="Current Value"
+            onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current price
+              Current value
             </span>
             <Image
               src={sortByIcon}
-              className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "CurrentPrice",
-        // coumnWidth: 128,
+        dataKey: "CurrentValue",
+        // coumnWidth: 140,
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "CurrentPrice") {
-            if (rowData === "EMPTY") {
-              return null;
-            }
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "CurrentValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentPrice.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
                         Number(
-                          noExponents(rowData.CurrentPrice.toFixed(2))
-                        ).toLocaleString("en-US")}
+                          noExponents(rowData.CurrentValue.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                >
+                  <div className="cost-common">
+                    <span>
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -2154,21 +2160,21 @@ class Portfolio extends BaseReactComponent {
               return null;
             }
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.GainLoss
-                    ? Math.abs(
-                        Number(noExponents(rowData.GainLoss.toFixed(2)))
-                      ).toLocaleString("en-US") + "%"
-                    : "0.00%"
-                }
-                colorCode="#000"
-              >
-                <div className="gainLossContainer">
+              <div className="gainLossContainer">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainLoss
+                      ? Math.abs(
+                          Number(noExponents(rowData.GainLoss.toFixed(2)))
+                        ).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
                   <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
@@ -2192,8 +2198,8 @@ class Portfolio extends BaseReactComponent {
                         : "0.00%"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },

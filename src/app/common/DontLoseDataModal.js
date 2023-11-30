@@ -293,7 +293,7 @@ class DontLoseDataModal extends BaseReactComponent {
                       <div className="sidebarModalBodyGoToSignUpTextContainer">
                         <div
                           onClick={this.props.openSignupModalDirect}
-                          className="sidebarModalBodyGoToSignUpText inter-display-medium f-s-12 grey-7C7"
+                          className="sidebarModalBodyGoToSignUpText inter-display-medium f-s-14 grey-7C7"
                         >
                           Don’t have an account yet? Click here to sign up.
                         </div>

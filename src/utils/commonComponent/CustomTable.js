@@ -359,21 +359,23 @@ class CustomTable extends BaseReactComponent {
                     flex: "0 1 176.54px",
                   }}
                 >
-                  <CustomOverlay
-                    position="top"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    text={
-                      this.props.combinedCostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
-                            noExponents(this.props.combinedCostBasis.toFixed(2))
-                          ).toLocaleString("en-US")
-                    }
-                  >
-                    <div className="cost-common-container">
+                  <div className="cost-common-container">
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={
+                        this.props.combinedCostBasis === 0
+                          ? "N/A"
+                          : CurrencyType(false) +
+                            Number(
+                              noExponents(
+                                this.props.combinedCostBasis.toFixed(2)
+                              )
+                            ).toLocaleString("en-US")
+                      }
+                    >
                       <div className="cost-common">
                         <span
                           onMouseEnter={() => {
@@ -391,8 +393,8 @@ class CustomTable extends BaseReactComponent {
                               ).toLocaleString("en-US")}
                         </span>
                       </div>
-                    </div>
-                  </CustomOverlay>
+                    </CustomOverlay>
+                  </div>
                 </div>
                 <div
                   aria-colindex="7"
@@ -402,23 +404,23 @@ class CustomTable extends BaseReactComponent {
                     flex: "0 1 176.54px",
                   }}
                 >
-                  <CustomOverlay
-                    position="top"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    text={
-                      this.props.combinedCurrentValue === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          Number(
-                            noExponents(
-                              this.props.combinedCurrentValue.toFixed(2)
-                            )
-                          ).toLocaleString("en-US")
-                    }
-                  >
-                    <div className="cost-common-container">
+                  <div className="cost-common-container">
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={
+                        this.props.combinedCurrentValue === 0
+                          ? "N/A"
+                          : CurrencyType(false) +
+                            Number(
+                              noExponents(
+                                this.props.combinedCurrentValue.toFixed(2)
+                              )
+                            ).toLocaleString("en-US")
+                      }
+                    >
                       <div className="cost-common">
                         <span
                           onMouseEnter={() => {
@@ -436,8 +438,8 @@ class CustomTable extends BaseReactComponent {
                               ).toLocaleString("en-US")}
                         </span>
                       </div>
-                    </div>
-                  </CustomOverlay>
+                    </CustomOverlay>
+                  </div>
                 </div>
                 <div
                   aria-colindex="8"
@@ -447,33 +449,33 @@ class CustomTable extends BaseReactComponent {
                     flex: "0 1 176.54px",
                   }}
                 >
-                  <CustomOverlay
-                    position="top"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    text={
-                      this.props.combinedUnrealizedGains
-                        ? CurrencyType(false) +
-                          Math.abs(
-                            Number(
-                              noExponents(
-                                this.props.combinedUnrealizedGains.toFixed(2)
-                              )
-                            )
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"
-                    }
-                    colorCode="#000"
+                  <div
+                    onMouseEnter={() => {
+                      // CostGainHover({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }}
+                    className="gainLossContainer"
                   >
-                    <div
-                      onMouseEnter={() => {
-                        // CostGainHover({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        // });
-                      }}
-                      className="gainLossContainer"
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={
+                        this.props.combinedUnrealizedGains
+                          ? CurrencyType(false) +
+                            Math.abs(
+                              Number(
+                                noExponents(
+                                  this.props.combinedUnrealizedGains.toFixed(2)
+                                )
+                              )
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"
+                      }
+                      colorCode="#000"
                     >
                       <div className={`gainLoss`}>
                         {this.props.combinedUnrealizedGains &&
@@ -500,8 +502,8 @@ class CustomTable extends BaseReactComponent {
                             : "0.00"}
                         </span>
                       </div>
-                    </div>
-                  </CustomOverlay>
+                    </CustomOverlay>
+                  </div>
                 </div>
                 <div
                   aria-colindex="9"
@@ -511,29 +513,29 @@ class CustomTable extends BaseReactComponent {
                     flex: "0 1 176.54px",
                   }}
                 >
-                  <CustomOverlay
-                    position="top"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    text={
-                      this.props.combinedReturn &&
-                      this.props.combinedReturn !== 0
-                        ? Math.abs(this.props.combinedReturn).toLocaleString(
-                            "en-US"
-                          ) + "%"
-                        : "0%"
-                    }
-                    colorCode="#000"
+                  <div
+                    onMouseEnter={() => {
+                      // CostGainLossHover({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }}
+                    className="gainLossContainer"
                   >
-                    <div
-                      onMouseEnter={() => {
-                        // CostGainLossHover({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        // });
-                      }}
-                      className="gainLossContainer"
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={
+                        this.props.combinedReturn &&
+                        this.props.combinedReturn !== 0
+                          ? Math.abs(this.props.combinedReturn).toLocaleString(
+                              "en-US"
+                            ) + "%"
+                          : "0%"
+                      }
+                      colorCode="#000"
                     >
                       <div className={`gainLoss`}>
                         {this.props.combinedReturn &&
@@ -562,8 +564,8 @@ class CustomTable extends BaseReactComponent {
                             : "0.00%"}
                         </span>
                       </div>
-                    </div>
-                  </CustomOverlay>
+                    </CustomOverlay>
+                  </div>
                 </div>
               </div>
             ) : null}
