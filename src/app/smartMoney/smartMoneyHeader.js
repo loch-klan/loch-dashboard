@@ -109,6 +109,7 @@ export default function SmartMoneyHeader(props) {
       return document.execCommand("copy", true, text);
     }
   };
+
   return (
     <div className="smartMoneyHeaderContainer">
       <div className="smartMoneyHeader">

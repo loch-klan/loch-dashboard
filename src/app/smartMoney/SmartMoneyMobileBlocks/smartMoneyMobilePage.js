@@ -59,6 +59,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       InfoCircleSmartMoneyIconLoaded: false,
       PlusCircleSmartMoneyIconLoaded: false,
       GreyManIconLoaded: false,
+      ShareProfileIconLoaded: false,
 
       ContributeTrophyIconLoaded: false,
     };
@@ -204,10 +205,10 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                     }}
                   >
                     <div
+                      onClick={this.showSignOutModal}
                       style={{
                         flex: 1,
                       }}
-                      onClick={this.showSignOutModal}
                       className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
                     >
                       <div className="mobileSmartMoneyBtnSignInIconContainer">
