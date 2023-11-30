@@ -50,6 +50,7 @@ class TopWalletExchangeBar extends Component {
       totalWallets: "",
       firstWallet: "",
       firstFullWallet: "",
+      fullWalletList: "",
       walletList: [],
       exchangeList: [],
       exchangeListImages: [],
@@ -281,6 +282,10 @@ class TopWalletExchangeBar extends Component {
           tempFullWalletAdd[0].length > 0
             ? tempFullWalletAdd[0][0]
             : "",
+        fullWalletList:
+          tempFullWalletAdd && tempFullWalletAdd.length
+            ? tempFullWalletAdd
+            : [[]],
         totalWallets: tempWalletAdd.length,
         walletList: tempWalletAdd,
       });
@@ -353,6 +358,8 @@ class TopWalletExchangeBar extends Component {
             tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
               ? tempFullWalletList[0][0]
               : "",
+          fullWalletList:
+            tempFullWalletList.length > 0 ? tempFullWalletList : [[]],
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
@@ -431,6 +438,9 @@ class TopWalletExchangeBar extends Component {
             tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
               ? tempFullWalletList[0][0]
               : "",
+          fullWalletList:
+            tempFullWalletList.length > 0 ? tempFullWalletList : [[]],
+
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
         });
@@ -847,6 +857,7 @@ class TopWalletExchangeBar extends Component {
                 totalWallets={this.state.totalWallets}
                 firstWallet={this.state.firstWallet}
                 firstFullWallet={this.state.firstFullWallet}
+                fullWalletList={this.state.fullWalletList}
               />
             </div>
             {this.state.showFollowingAddress ? (
