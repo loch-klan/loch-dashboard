@@ -83,6 +83,7 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
       signUpModal: false,
@@ -158,6 +159,11 @@ class SmartMoneyPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
+  hideTheMobilePopupModal = () => {
+    this.setState({
+      mobilePopupModal: false,
+    });
+  };
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
@@ -670,6 +676,15 @@ class SmartMoneyPage extends BaseReactComponent {
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
+      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+        "smartMoneyMobilePopupModal"
+      );
+      if (!tempIsModalPopuRemoved) {
+        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        this.setState({
+          mobilePopupModal: true,
+        });
+      }
     } else {
       // TopAccountRemoveAccountFromWatchList({
       //   session_id: getCurrentUser().id,
@@ -1213,6 +1228,9 @@ class SmartMoneyPage extends BaseReactComponent {
           onPageChange={this.onPageChange}
           blurTable={this.state.blurTable}
           signOutFun={this.signOutFun}
+          handleFollowUnfollow={this.handleFollowUnfollow}
+          mobilePopupModal={this.state.mobilePopupModal}
+          hideThePopupModal={this.hideTheMobilePopupModal}
         />
       );
     }
