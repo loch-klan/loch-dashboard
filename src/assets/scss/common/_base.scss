@@ -2178,6 +2178,11 @@ textarea {
     filter: brightness(0.5);
   }
 }
+.copy-icon-top-bar {
+  &:hover {
+    filter: brightness(0.2);
+  }
+}
 
 // .coin-badges{
 //   .white-scroll::-webkit-scrollbar-thumb, .white-scroll::-webkit-scrollbar-track{

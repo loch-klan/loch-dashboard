@@ -4,12 +4,24 @@ import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { CopyClipboardIcon } from "../../assets/images";
+import { toast } from "react-toastify";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const list = props.list.map((li, index) => {
     const borderStyle = {
       border: `1px solid ${li.color}`,
       color: li.color,
+    };
+    const copyTheAddress = () => {
+      if (
+        props.fullWalletList &&
+        props.fullWalletList.length === props.list.length
+      ) {
+        if (props.fullWalletList[index] && props.fullWalletList[index][0]) {
+          copyContent(props.fullWalletList[index][0]);
+        }
+      }
     };
     return props.showChain ? (
       <Dropdown.Item
@@ -26,7 +38,23 @@ export default function TopBarDropDown(props) {
         key={index}
         className={props.activetab === li ? "active" : ""}
       >
-        {li.name ? li.name : li}{" "}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          {li.name ? li.name : li}{" "}
+          <div className="copy-icon-top-bar pl-3">
+            <Image
+              src={CopyClipboardIcon}
+              onClick={copyTheAddress}
+              className="cp"
+              style={{ height: "1.2rem" }}
+            />
+          </div>
+        </div>
         {props?.showChecked && (
           <svg
             style={
@@ -68,6 +96,16 @@ export default function TopBarDropDown(props) {
       event.stopPropagation();
       setShowDropdown(false);
     }
+  };
+  const copyContent = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
   };
   return (
     <div style={props?.relative ? { position: "relative" } : {}}>
@@ -113,6 +151,20 @@ export default function TopBarDropDown(props) {
                 <span>{props.firstWallet}</span>
               </div>
             </CustomOverlay>
+            {!(props.totalWallets && props.totalWallets > 1) ? (
+              <div className="copy-icon-top-bar pl-2">
+                <Image
+                  src={CopyClipboardIcon}
+                  onClick={() =>
+                    copyContent(
+                      props.firstFullWallet ? props.firstFullWallet : ""
+                    )
+                  }
+                  className="cp"
+                  style={{ height: "1.2rem" }}
+                />
+              </div>
+            ) : null}
 
             {props.totalWallets && props.totalWallets > 1 ? (
               <OutsideClickHandler onOutsideClick={closeDropdown}>
