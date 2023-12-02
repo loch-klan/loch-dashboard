@@ -166,128 +166,138 @@ class DontLoseDataModal extends BaseReactComponent {
               <div className="modal-dialog exit-overlay-modal sidebarModalCustom modal-lg">
                 <div className="modal-content">
                   <Modal.Body>
-                    <div className="exit-overlay-body sidebarModalBody">
-                      <div>
-                        {this.state.isEmailVerified ? (
-                          <>
-                            <h6 className="inter-display-medium f-s-16">
-                              Perfect, your data is saved with us!
-                            </h6>
-                            <p className="inter-display-medium f-s-12 grey-7C7">
-                              Simply sign in with your email next time
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            <h6 className="inter-display-medium f-s-16">
-                              {this.state.isShowOtp
-                                ? "Verify your email"
-                                : "Don’t lose your data"}
-                            </h6>
-                            <p className="inter-display-medium f-s-12 grey-7C7">
-                              {this.state.isShowOtp
-                                ? "Enter verification code"
-                                : "Add your email now"}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                      {/* this.props.isSkip(); */}
-                      {!this.state.isEmailVerified ? (
-                        <div className="email-section auth-modal f-s-14">
-                          {/* For Signin or Signup */}
-                          {!this.state.isShowOtp ? (
-                            <Form onValidSubmit={this.handleAccountCreate}>
-                              <FormElement
-                                valueLink={this.linkState(this, "email")}
-                                required
-                                validations={[
-                                  {
-                                    validate: FormValidator.isRequired,
-                                    message: "",
-                                  },
-                                  {
-                                    validate: FormValidator.isEmail,
-                                    message: "Please enter valid email id",
-                                  },
-                                ]}
-                                control={{
-                                  type: CustomTextControl,
-                                  settings: {
-                                    placeholder: "Your email address",
-                                  },
-                                }}
-                              />
-                              <div className="save-btn-section">
-                                <Button
-                                  className={`inter-display-semi-bold f-s-14 white save-btn ${
-                                    this.state.email ? "active" : ""
-                                  }`}
-                                  type="submit"
-                                >
-                                  Add
-                                </Button>
-                              </div>
-                            </Form>
+                    <div className="sidebarModalBodyContainer">
+                      <div className="exit-overlay-body sidebarModalBody">
+                        <div>
+                          {this.state.isEmailVerified ? (
+                            <>
+                              <h6 className="inter-display-medium f-s-16">
+                                Perfect, your data is saved with us!
+                              </h6>
+                              <p className="inter-display-medium f-s-12 grey-7C7">
+                                Simply sign in with your email next time
+                              </p>
+                            </>
                           ) : (
                             <>
-                              <Form onValidSubmit={this.handleOtp}>
+                              <h6 className="inter-display-medium f-s-16">
+                                {this.state.isShowOtp
+                                  ? "Verify your email"
+                                  : "Don’t lose your data"}
+                              </h6>
+                              <p className="inter-display-medium f-s-12 grey-7C7">
+                                {this.state.isShowOtp
+                                  ? "Enter verification code"
+                                  : "Sign in now"}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                        {/* this.props.isSkip(); */}
+                        {!this.state.isEmailVerified ? (
+                          <div className="email-section auth-modal f-s-14">
+                            {/* For Signin or Signup */}
+                            {!this.state.isShowOtp ? (
+                              <Form onValidSubmit={this.handleAccountCreate}>
                                 <FormElement
-                                  valueLink={this.linkState(this, "otp")}
+                                  valueLink={this.linkState(this, "email")}
                                   required
+                                  validations={[
+                                    {
+                                      validate: FormValidator.isRequired,
+                                      message: "",
+                                    },
+                                    {
+                                      validate: FormValidator.isEmail,
+                                      message: "Please enter valid email id",
+                                    },
+                                  ]}
                                   control={{
                                     type: CustomTextControl,
                                     settings: {
-                                      placeholder: "Verification code",
+                                      placeholder: "Your email address",
                                     },
                                   }}
                                 />
                                 <div className="save-btn-section">
                                   <Button
                                     className={`inter-display-semi-bold f-s-14 white save-btn ${
-                                      this.state.otp ? "active" : ""
+                                      this.state.email ? "active" : ""
                                     }`}
                                     type="submit"
                                   >
-                                    Done
+                                    Add
                                   </Button>
                                 </div>
                               </Form>
-                              {this.state.isOptInValid && (
-                                <small className="has-error custom-form-error form-text">
-                                  Invalid verification code
-                                </small>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      ) : null}
-                      {this.state.isEmailVerified ? (
-                        <div className="closebtnContainer">
-                          <div
-                            className="checkbtn"
-                            onClick={() => {
-                              this.state.onHide();
-                            }}
-                          >
-                            <Image
-                              className="checkbtnIcon"
-                              src={CheckGreenIcon}
-                            />
+                            ) : (
+                              <>
+                                <Form onValidSubmit={this.handleOtp}>
+                                  <FormElement
+                                    valueLink={this.linkState(this, "otp")}
+                                    required
+                                    control={{
+                                      type: CustomTextControl,
+                                      settings: {
+                                        placeholder: "Verification code",
+                                      },
+                                    }}
+                                  />
+                                  <div className="save-btn-section">
+                                    <Button
+                                      className={`inter-display-semi-bold f-s-14 white save-btn ${
+                                        this.state.otp ? "active" : ""
+                                      }`}
+                                      type="submit"
+                                    >
+                                      Done
+                                    </Button>
+                                  </div>
+                                </Form>
+                                {this.state.isOptInValid && (
+                                  <small className="has-error custom-form-error form-text">
+                                    Invalid verification code
+                                  </small>
+                                )}
+                              </>
+                            )}
                           </div>
-                        </div>
-                      ) : (
-                        <div className="closebtnContainer">
-                          <div
-                            className="closebtn"
-                            onClick={() => {
-                              this.state.onHide();
-                            }}
-                          >
-                            <Image className="closebtnIcon" src={CloseIcon} />
+                        ) : null}
+                        {this.state.isEmailVerified ? (
+                          <div className="closebtnContainer">
+                            <div
+                              className="checkbtn"
+                              onClick={() => {
+                                this.state.onHide();
+                              }}
+                            >
+                              <Image
+                                className="checkbtnIcon"
+                                src={CheckGreenIcon}
+                              />
+                            </div>
                           </div>
+                        ) : (
+                          <div className="closebtnContainer">
+                            <div
+                              className="closebtn"
+                              onClick={() => {
+                                this.state.onHide();
+                              }}
+                            >
+                              <Image className="closebtnIcon" src={CloseIcon} />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="sidebarModalBodyGoToSignUpTextContainer">
+                        <div
+                          onClick={this.props.openSignupModalDirect}
+                          className="sidebarModalBodyGoToSignUpText inter-display-medium f-s-14 grey-7C7"
+                        >
+                          Don’t have an account yet? Click here to sign up.
                         </div>
-                      )}
+                      </div>
                     </div>
                   </Modal.Body>
                 </div>

@@ -11,10 +11,11 @@ import {
   ShareProfileIcon,
 } from "../../assets/images/icons";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
+
+import { toast } from "react-toastify";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
+import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(

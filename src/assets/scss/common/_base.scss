@@ -1954,7 +1954,10 @@ form {
       }
     }
   }
-
+  .topMarginForCombiedValues {
+    margin-top: 60px;
+    background-color: green;
+  }
   .tableWatermark {
     background: url(../../images/graph-logo.svg) no-repeat center center;
     background-size: 104px 39px;
@@ -2173,6 +2176,11 @@ textarea {
 .copy-icon {
   &:hover {
     filter: brightness(0.5);
+  }
+}
+.copy-icon-top-bar {
+  &:hover {
+    filter: brightness(0.2);
   }
 }
 
