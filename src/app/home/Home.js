@@ -38,6 +38,7 @@ import {
   CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
+  SmartMoneyWhiteIcon,
   WalletWhiteIcon,
 } from "../../assets/images/icons";
 import LinkIconBtn from "../../assets/images/link.svg";
@@ -54,6 +55,7 @@ import { ethers } from "ethers";
 
 import MobileHome from "./MobileHome";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -131,6 +133,10 @@ class Home extends BaseReactComponent {
   };
   handleRedirection = () => {
     // this.props.history.push(`/top-accounts`);
+  };
+  goToSmartMoney = () => {
+    let shareLink = BASE_URL_S3 + "smart-money";
+    window.open(shareLink, "_blank", "noreferrer");
   };
   connectWalletEthers = async () => {
     ConnectWalletButtonClickedWelcome({
@@ -671,6 +677,21 @@ class Home extends BaseReactComponent {
                 <div className="overlay-bg"></div>
                 <Image src={Banner} className="overlay-banner" />
                 <div className="overLayHeader">
+                  <div
+                    onClick={this.goToSmartMoney}
+                    className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
+                  >
+                    <img
+                      style={{
+                        marginRight: "0.3rem",
+                        padding: "0.15rem",
+                      }}
+                      className="overLayHeaderOptionsIcons"
+                      src={SmartMoneyWhiteIcon}
+                      alt="ProfileVectorIcon"
+                    />
+                    <div>Smart Money</div>
+                  </div>
                   <div
                     onClick={this.connectWalletEthers}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
