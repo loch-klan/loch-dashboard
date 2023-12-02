@@ -903,6 +903,8 @@ class PortfolioMobile extends BaseReactComponent {
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 changeWalletList={this.props.handleChangeList}
                 apiResponse={(e) => this.props.CheckApiResponse(e)}
                 showNetworth={true}

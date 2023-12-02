@@ -431,6 +431,8 @@ class TopDefi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
