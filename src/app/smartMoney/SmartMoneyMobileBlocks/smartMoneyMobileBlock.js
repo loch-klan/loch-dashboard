@@ -12,24 +12,13 @@ import { Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
 import { BASE_URL_S3 } from "../../../utils/Constant.js";
 import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
-import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-} from "../../../assets/images/icons/index.js";
-import CheckboxCustomTable from "../../common/customCheckboxTable.js";
 
 class smartMoneyMobileBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  handleOnClick = (addItem) => {
-    this.props.handleFollowUnfollow(
-      this.props.mapData.account,
-      addItem,
-      this.props.mapData.tagName
-    );
-  };
+
   render() {
     return (
       <div className="mobileSmartMoneyBlock">
@@ -87,18 +76,16 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className="inter-display-medium msmbBITitle">
               Realized PnL (1yr)
             </div>
-            <div className={`inter-display-medium msmbBIAmount`}>
+            <div
+              className={`inter-display-medium msmbBIAmount ${
+                this.props.netFlows >= 0
+                  ? "msmbBIAmountGain"
+                  : "msmbBIAmountLoss"
+              }`}
+            >
               {this.props.netFlows !== 0 ? (
                 <Image
-                  style={{
-                    height: "1.3rem",
-                    width: "1.3rem",
-                  }}
-                  src={
-                    this.props.netFlows < 0
-                      ? ArrowDownLeftSmallIcon
-                      : ArrowUpRightSmallIcon
-                  }
+                  src={this.props.netFlows < 0 ? LossIcon : GainIcon}
                   className="mr-2"
                 />
               ) : null}
@@ -111,18 +98,16 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className="inter-display-medium msmbBITitle">
               Unrealized PnL
             </div>
-            <div className={`inter-display-medium msmbBIAmount`}>
+            <div
+              className={`inter-display-medium msmbBIAmount ${
+                this.props.profits >= 0
+                  ? "msmbBIAmountGain"
+                  : "msmbBIAmountLoss"
+              }`}
+            >
               {this.props.profits !== 0 ? (
                 <Image
-                  style={{
-                    height: "1.3rem",
-                    width: "1.3rem",
-                  }}
-                  src={
-                    this.props.profits < 0
-                      ? ArrowDownLeftSmallIcon
-                      : ArrowUpRightSmallIcon
-                  }
+                  src={this.props.profits < 0 ? LossIcon : GainIcon}
                   className="mr-2"
                 />
               ) : null}
@@ -130,16 +115,6 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               <span>
                 {CurrencyType(false) + numToCurrency(this.props.profits)}
               </span>
-            </div>
-          </div>
-          <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Follow</div>
-            <div className={`inter-display-medium msmbBIAmount`}>
-              <CheckboxCustomTable
-                handleOnClick={this.handleOnClick}
-                isChecked={this.props.mapData.following}
-                noMargin
-              />
             </div>
           </div>
         </div>
