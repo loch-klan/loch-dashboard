@@ -722,7 +722,14 @@ class TopBar extends Component {
             </div>
           ) : null}
           {this.state.metamaskWalletConnected ? (
-            <div className="topbar-btn topbar-btn-transparent ml-2 maxWidth50">
+            <div
+              style={{
+                paddingRight: "0rem",
+                marginRight: "1rem",
+                paddingLeft: "1rem",
+              }}
+              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
+            >
               <Image className="topBarWalletAdd" src={WalletIcon} />
               <span className="dotDotText">
                 {TruncateText(this.state.metamaskWalletConnected)}
