@@ -11,7 +11,6 @@ import {
   ShareProfileIcon,
 } from "../../assets/images/icons";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
@@ -110,7 +109,6 @@ export default function SmartMoneyHeader(props) {
       return document.execCommand("copy", true, text);
     }
   };
-
   return (
     <div className="smartMoneyHeaderContainer">
       <div className="smartMoneyHeader">

@@ -73,7 +73,6 @@ import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
 import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
-import CheckboxCustomTable from "../common/customCheckboxTable.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -83,7 +82,6 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
-      mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
       signUpModal: false,
@@ -159,11 +157,6 @@ class SmartMoneyPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
-  hideTheMobilePopupModal = () => {
-    this.setState({
-      mobilePopupModal: false,
-    });
-  };
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
@@ -247,7 +240,6 @@ class SmartMoneyPage extends BaseReactComponent {
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-
     if (token && lochUser && lochUser.email) {
       this.setState({
         blurTable: false,
@@ -256,9 +248,8 @@ class SmartMoneyPage extends BaseReactComponent {
       this.setState({
         blurTable: true,
       });
-      this.createEmptyUser();
     }
-
+    this.createEmptyUser();
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
@@ -341,9 +332,6 @@ class SmartMoneyPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.blurTable !== this.state.blurTable) {
-      this.callApi(this.state.currentPage || START_INDEX);
-    }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
@@ -665,40 +653,7 @@ class SmartMoneyPage extends BaseReactComponent {
     this.closeSignOutModal();
     this.createEmptyUser();
   };
-  handleFollowUnfollow = (walletAddress, addItem, tagName) => {
-    let tempWatchListata = new URLSearchParams();
-    if (addItem) {
-      // TopAccountAddAccountToWatchList({
-      //   session_id: getCurrentUser().id,
-      //   email_address: getCurrentUser().email,
-      //   address: tagName ? tagName : walletAddress,
-      // });
-      this.updateTimer();
-      tempWatchListata.append("wallet_address", walletAddress);
-      tempWatchListata.append("analysed", false);
-      tempWatchListata.append("remarks", "");
-      tempWatchListata.append("name_tag", tagName);
-      this.props.updateAddToWatchList(tempWatchListata);
-      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
-        "smartMoneyMobilePopupModal"
-      );
-      if (!tempIsModalPopuRemoved) {
-        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
-        this.setState({
-          mobilePopupModal: true,
-        });
-      }
-    } else {
-      // TopAccountRemoveAccountFromWatchList({
-      //   session_id: getCurrentUser().id,
-      //   email_address: getCurrentUser().email,
-      //   address: tagName ? tagName : walletAddress,
-      // });
-      this.updateTimer();
-      tempWatchListata.append("address", walletAddress);
-      this.props.removeFromWatchList(tempWatchListata);
-    }
-  };
+
   render() {
     const tableData = this.state.accountList;
 
@@ -823,7 +778,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.222,
+        coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -874,7 +829,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -926,7 +881,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -1004,7 +959,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unrealized PnL
+            Unrealized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -1016,7 +971,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -1082,46 +1037,6 @@ class SmartMoneyPage extends BaseReactComponent {
                   </div>
                 </div>
               </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Follow
-            </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
-          </div>
-        ),
-        dataKey: "following",
-
-        coumnWidth: 0.125,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
-            const handleOnClick = (addItem) => {
-              this.handleFollowUnfollow(
-                rowData.account,
-                addItem,
-                rowData.tagName
-              );
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={handleOnClick}
-                isChecked={rowData.following}
-              />
             );
           }
         },
@@ -1231,9 +1146,6 @@ class SmartMoneyPage extends BaseReactComponent {
           onPageChange={this.onPageChange}
           blurTable={this.state.blurTable}
           signOutFun={this.signOutFun}
-          handleFollowUnfollow={this.handleFollowUnfollow}
-          mobilePopupModal={this.state.mobilePopupModal}
-          hideThePopupModal={this.hideTheMobilePopupModal}
         />
       );
     }

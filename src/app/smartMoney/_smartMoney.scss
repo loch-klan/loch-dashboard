@@ -45,56 +45,6 @@
   }
 }
 .mobileSmartMoneyPage {
-  .mpcHomeFloatingContainer {
-    position: fixed;
-    left: 0;
-    bottom: 5rem;
-
-    width: 100vw;
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0rem 2rem;
-    .mpcHomeFloatingElement {
-      background-color: #ffffff;
-      width: 100%;
-      border-radius: 1.2rem;
-      padding: 2rem;
-      box-shadow: 0px 0 2rem 0.8rem rgba(24, 39, 75, 0.08),
-        0rem 0 2rem 0.8rem rgba(24, 39, 75, 0.08);
-      display: flex;
-      align-items: center;
-
-      .mpcHFMacIconContainer {
-        background-color: #e5e5e680;
-        height: 4rem;
-        width: 4rem;
-        border-radius: 1rem;
-        padding: 0.8rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .mpcHFMacIcon {
-          height: 100%;
-        }
-      }
-      .mpcHFText {
-        flex: 1;
-        margin: 0rem 1rem;
-      }
-      .mpcHFGoBtn {
-        height: 4rem;
-        background-color: #19191a;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0rem 2rem;
-        border-radius: 1rem;
-      }
-    }
-  }
   .msmpModalBlockContainer {
     position: fixed;
     min-height: 100vh;
@@ -527,15 +477,10 @@
       box-shadow: none;
       flex: 1;
     }
-    .mobileSmartMoneyBtnShareContainer {
-      background-color: #e5e5e6;
-      border-color: #e5e5e6;
-      box-shadow: none;
-    }
     .mobileSmartMoneyBtnSignInBottomBtns {
       margin-top: 1.5rem;
       display: flex;
-      align-items: stretch;
+      align-items: center;
       justify-content: space-between;
     }
   }
@@ -616,11 +561,10 @@
           .msmbHeaderRank {
             color: #cacbcc;
             font-size: 16px;
-            margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
             color: #313233;
-            margin-right: 0.5rem;
+            margin: 0rem 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -647,15 +591,13 @@
       }
       .msmbBody {
         padding: 1rem;
-
         padding-bottom: 0.4rem;
         padding-top: 0.5rem;
         .msmbBodyItem {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0rem 0.3rem;
-          min-height: 3.5rem;
+          padding: 0.3rem;
           .msmbBITitle {
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -665,7 +607,7 @@
           }
           .msmbBIAmount {
             border-radius: 0.4rem;
-            // padding: 0.6rem;
+            padding: 0.6rem;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 13px;
