@@ -581,8 +581,7 @@ class TopWalletExchangeBar extends Component {
         const tempRes = await provider.send("eth_requestAccounts", []);
         try {
           const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0) {
-            console.log("sdk is ", sdk);
+          if (tempRes && tempRes.length > 0 && sdk) {
             sdk.wallet({
               account: tempRes[0],
               chainId: window.ethereum.networkVersion,
@@ -592,12 +591,6 @@ class TopWalletExchangeBar extends Component {
           console.log("ArcxAnalyticsSdk error ", error);
         }
         if (tempRes && tempRes.length > 0) {
-          console.log("List of connected wallets ", tempRes);
-          console.log(
-            "window.ethereum.networkVersion ",
-            window.ethereum.networkVersion
-          );
-
           this.addToList(tempRes);
         }
         // Leaver console log: full signer too"

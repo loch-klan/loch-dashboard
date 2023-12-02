@@ -341,6 +341,9 @@ class SmartMoneyPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.blurTable !== this.state.blurTable) {
+      this.callApi(this.state.currentPage || START_INDEX);
+    }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
@@ -1091,7 +1094,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Following
+              Follow
             </span>
             {/* <Image
               src={sortByIcon}

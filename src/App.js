@@ -44,7 +44,6 @@ function App() {
   // return isMobile ? (
   //   <MobileDevice />
   // ) : (
-  console.log("ARCX_API_KEY ", ARCX_API_KEY);
   return (
     <div>
       <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}>

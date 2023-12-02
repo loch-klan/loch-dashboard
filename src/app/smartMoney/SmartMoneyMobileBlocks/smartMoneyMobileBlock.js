@@ -133,7 +133,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             </div>
           </div>
           <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Following</div>
+            <div className="inter-display-medium msmbBITitle">Follow</div>
             <div className={`inter-display-medium msmbBIAmount`}>
               <CheckboxCustomTable
                 handleOnClick={this.handleOnClick}
