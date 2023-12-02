@@ -41,7 +41,7 @@ class CheckboxCustomTable extends Component {
       >
         <div
           style={{
-            margin: "10px",
+            margin: !this.props.noMargin ? "10px" : "",
             background: this.state.isChecked ? "#0071E3" : "transparent",
           }}
           className="custom-checkbox"

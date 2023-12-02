@@ -30,6 +30,7 @@ import {
   ContributeTrophyIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
+  MacIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
   ShareProfileIcon,
@@ -59,6 +60,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       InfoCircleSmartMoneyIconLoaded: false,
       PlusCircleSmartMoneyIconLoaded: false,
       GreyManIconLoaded: false,
+      ShareProfileIconLoaded: false,
 
       ContributeTrophyIconLoaded: false,
     };
@@ -95,6 +97,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     }
   }
   showFaqModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     SmartMoneyFAQClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -106,6 +111,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   showHowItWorksModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     SmartMoneyHowItWorksClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -117,18 +125,27 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   showSignInModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signInModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showAddAddressModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       addAddressModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showSignOutModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signOutModal: true,
     });
@@ -136,6 +153,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   hideAllModals = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signInModal: false,
       addAddressModal: false,
@@ -149,6 +169,25 @@ class SmartMoneyMobilePage extends BaseReactComponent {
   render() {
     return (
       <div className="mobileSmartMoneyPage">
+        {this.props.mobilePopupModal ? (
+          <div className="mpcHomeFloatingContainer">
+            <div className="mpcHomeFloatingElement">
+              <div className="mpcHFMacIconContainer">
+                <Image src={MacIcon} className="mpcHFMacIcon" />
+              </div>
+              <div className="mpcHFText inter-display-medium f-s-13">
+                Visit app.loch.one from your desktop to view all the addresses
+                you are following
+              </div>
+              <div
+                onClick={this.props.hideThePopupModal}
+                className="mpcHFGoBtn inter-display-medium f-s-13"
+              >
+                Ok
+              </div>
+            </div>
+          </div>
+        ) : null}
         {this.state.signInModal ? (
           <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
             <SmartMoneyMobileSignInUp onHide={this.hideAllModals} />
@@ -204,10 +243,10 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                     }}
                   >
                     <div
+                      onClick={this.showSignOutModal}
                       style={{
                         flex: 1,
                       }}
-                      onClick={this.showSignOutModal}
                       className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
                     >
                       <div className="mobileSmartMoneyBtnSignInIconContainer">
@@ -556,6 +595,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                           profits={profits}
                           returns={returns}
                           mapData={mapData}
+                          handleFollowUnfollow={this.props.handleFollowUnfollow}
                         />
                       );
                     })}

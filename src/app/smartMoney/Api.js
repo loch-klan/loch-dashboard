@@ -29,6 +29,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             profits: e?.profits,
             returns: e?.returns,
             rank: e?.rank,
+            following: e?.following,
           }));
           ctx.setState({
             accountList: tableData,

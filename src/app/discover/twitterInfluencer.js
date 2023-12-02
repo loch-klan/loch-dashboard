@@ -699,6 +699,8 @@ class TwitterInflucencePage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -858,6 +860,7 @@ class TwitterInflucencePage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}
                     message={"No accounts found"}
