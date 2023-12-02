@@ -181,10 +181,10 @@ const SmartMoneyPagination = (props) => {
       </div>
     );
   }
-  const changePageLimitPass = () => {
+  const changePageLimitPass = (res) => {
     if (!props.smartMoneyBlur) {
       if (props.changePageLimit) {
-        props.changePageLimit();
+        props.changePageLimit(res);
       }
     } else {
       if (props.openSignInOnclickModal) {
