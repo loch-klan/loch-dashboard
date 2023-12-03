@@ -54,3 +54,4 @@ export { default as CrossSmartMoneyIcon } from "./crossSmartMoney.svg";
 export { default as ShareTopBarIcon } from "./shareTopBar.svg";
 export { default as FollowTopBarIcon } from "./followTopBar.svg";
 export { default as ShareProfileIcon } from "./SharePortfolioIcon.svg";
+export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";
