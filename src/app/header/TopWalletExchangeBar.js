@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
+import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
@@ -578,7 +579,17 @@ class TopWalletExchangeBar extends Component {
 
       try {
         const tempRes = await provider.send("eth_requestAccounts", []);
-
+        try {
+          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+          if (tempRes && tempRes.length > 0 && sdk) {
+            sdk.wallet({
+              account: tempRes[0],
+              chainId: window.ethereum.networkVersion,
+            });
+          }
+        } catch (error) {
+          console.log("ArcxAnalyticsSdk error ", error);
+        }
         if (tempRes && tempRes.length > 0) {
           this.addToList(tempRes);
         }
