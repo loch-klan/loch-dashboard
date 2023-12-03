@@ -39,6 +39,8 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        localLochUser={props.localLochUser}
+        openSignInOnclickModal={props.openSignInOnclickModal}
         xAxisScrollable={props.xAxisScrollable}
         yAxisScrollable={props.yAxisScrollable}
         onBlurSignInClick={props.onBlurSignInClick}
