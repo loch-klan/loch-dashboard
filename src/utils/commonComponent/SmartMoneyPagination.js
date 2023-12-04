@@ -198,19 +198,21 @@ const SmartMoneyPagination = (props) => {
         {/* {props.smartMoneyBlur ? (
           <div className="smartMoneyPaginationAndLimitSelectorChildCover" />
         ) : null} */}
-        <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
-          <div className="smartMoneyLimitSelectorTxts">Show:</div>
+        {!props.isMobile ? (
+          <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
+            <div className="smartMoneyLimitSelectorTxts">Show:</div>
 
-          <DropDown
-            class="smartMoneyLimitSelectorInput"
-            list={[10, 50, 100]}
-            onSelect={changePageLimitPass}
-            title={props.pageLimit}
-            activetab={props.pageLimit}
-          />
+            <DropDown
+              class="smartMoneyLimitSelectorInput"
+              list={[10, 50, 100]}
+              onSelect={changePageLimitPass}
+              title={props.pageLimit}
+              activetab={props.pageLimit}
+            />
 
-          <div className="smartMoneyLimitSelectorTxts">Records</div>
-        </div>
+            <div className="smartMoneyLimitSelectorTxts">Records</div>
+          </div>
+        ) : null}
         <div className="smartMoneyPaginationContainer">
           <div
             className={`smartMoneyPaginationArrowContainer ${
