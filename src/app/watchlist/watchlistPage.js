@@ -535,7 +535,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "account",
-        coumnWidth: 0.15,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -641,7 +641,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "nametag",
-        coumnWidth: 0.25,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "nametag") {
@@ -673,52 +673,7 @@ class WatchListPage extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className={`cp history-table-header-col goToCenter ${
-              this.state.tableData.length === 0 ? "no-hover" : ""
-            }`}
-            id="isAnalyzed"
-            onClick={() => {
-              if (this.state.tableData.length > 0) {
-                this.handleSort(this.state.tableSortOpt[1].title);
-              }
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Analyzed
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "isAnalyzed",
-        coumnWidth: 0.15,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "isAnalyzed") {
-            const passToggleAnalyzed = (isChecked) => {
-              this.updateWatchListAnalyzed(
-                rowData.nameTag,
-                rowData.address,
-                isChecked,
-                true
-              );
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={passToggleAnalyzed}
-                isChecked={rowData?.isAnalyzed}
-              />
-            );
-          }
-        },
-      },
+
       {
         labelName: (
           <div
@@ -744,7 +699,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        coumnWidth: 0.3,
+        coumnWidth: 0.35,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
