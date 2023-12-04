@@ -114,6 +114,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         key: SEARCH_BY_WALLET_ADDRESS_IN,
         value: address,
       },
+      { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
       isShowingAge: true,
@@ -179,7 +180,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
-      showDust: false,
+      showDust: true,
       // add new wallet
       // userWalletList: window.sessionStorage.getItem("addWallet")
       //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))

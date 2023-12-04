@@ -16,7 +16,7 @@ import {
   ExportIcon,
 } from "../../assets/images/icons";
 export const GraphHeader = (props) => {
-  const [showDust, setDust] = useState(false);
+  const [showDust, setDust] = useState(true);
 
   const toggleDust = () => {
     setDust(!showDust);
