@@ -575,7 +575,6 @@ class CustomTable extends BaseReactComponent {
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
-              localLochUser={this.props.localLochUser}
               smartMoneyBlur={this.props.smartMoneyBlur}
               history={history}
               location={location}
