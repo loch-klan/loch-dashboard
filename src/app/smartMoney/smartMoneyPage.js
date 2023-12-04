@@ -156,7 +156,7 @@ class SmartMoneyPage extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("previewAddress")),
       ],
       goToBottom: false,
-      localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+
       showClickSignInText: false,
     };
     this.delayTimer = 0;
@@ -366,15 +366,6 @@ class SmartMoneyPage extends BaseReactComponent {
     }
     if (prevState.blurTable !== this.state.blurTable) {
       this.callApi(this.state.currentPage || START_INDEX);
-      if (!this.state.blurTable) {
-        this.setState({
-          localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
-        });
-      } else {
-        this.setState({
-          localLochUser: undefined,
-        });
-      }
     }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
@@ -1337,7 +1328,7 @@ class SmartMoneyPage extends BaseReactComponent {
                 title="Sign in"
                 description={
                   this.state.showClickSignInText
-                    ? "Sign in to access the smartest money on-chain."
+                    ? "Sign in to access the smartest money on-chain"
                     : "Get right back into your account"
                 }
                 stopUpdate={true}
@@ -1422,7 +1413,6 @@ class SmartMoneyPage extends BaseReactComponent {
                 ) : (
                   <div className="smartMoneyTable">
                     <TransactionTable
-                      localLochUser={this.state.localLochUser}
                       openSignInOnclickModal={this.openSignInOnclickModal}
                       smartMoneyBlur={this.state.blurTable}
                       blurButtonClick={this.showAddSmartMoneyAddresses}
