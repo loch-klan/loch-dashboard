@@ -27,6 +27,7 @@ import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 
 class Profile extends Component {
   constructor(props) {
@@ -267,6 +268,22 @@ class Profile extends Component {
               // SecondaryBtn={true}
               // handleUpdate={this.handleUpdateWallet}
             />
+            <div style={{ marginBottom: "5rem" }}>
+              <Row>
+                <Col md={12}>
+                  <ProfileLochCreditPoints />
+                </Col>
+              </Row>
+            </div>
+            <PageHeader
+              title="Your details"
+              subTitle=""
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // // connect exchange btn
+              // SecondaryBtn={true}
+              // handleUpdate={this.handleUpdateWallet}
+            />
             {/* <div className="profile-plan-wrapper">
             <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
               Do more with Loch
@@ -378,7 +395,7 @@ class Profile extends Component {
               </div>
             </div>
            
-          </div> */}
+            </div> */}
             <div
               className="profile-form-section"
               style={{ marginBottom: "1rem" }}
