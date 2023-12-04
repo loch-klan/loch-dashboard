@@ -137,7 +137,7 @@ export default function PageHeader(props) {
           <div>
             <div style={{ display: "flex" }}>
               <h4
-                className={`inter-display-medium f-s-24 lh-30 ${
+                className={`inter-display-medium f-s-24 ${
                   props.showImg || props.multipleImg ? "" : "m-b-8"
                 }`}
               >
@@ -195,7 +195,7 @@ export default function PageHeader(props) {
               ) : null}
             </div>
             {props.subTitle ? (
-              <p className="inter-display-medium f-s-16 lh-19">
+              <p className="pageHeaderSubtitles inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}
                 {props.hoverText ? (
                   <CustomOverlay
@@ -299,7 +299,7 @@ export default function PageHeader(props) {
                   </div>
                 </div>
               )}
-              {props.ShareBtn && (
+              {/* {props.ShareBtn && (
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -320,7 +320,7 @@ export default function PageHeader(props) {
                     </div>
                   </div>
                 </CustomOverlay>
-              )}
+              )} */}
               {props.btnText && (
                 <Button
                   className={`${

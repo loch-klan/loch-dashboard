@@ -274,6 +274,8 @@ class TopAssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -284,7 +286,10 @@ class TopAssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal
@@ -315,7 +320,7 @@ class TopAssetValueGraph extends Component {
               ShareBtn={true}
               handleShare={this.handleShare}
             />
-            <div className="graph-container" style={{ marginBottom: "5rem" }}>
+            <div className="graph-container">
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"
