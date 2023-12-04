@@ -564,6 +564,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
               onPageChange={this.props.onPageChange}
               openSignInOnclickModal={this.openSignInOnclickModal}
               smartMoneyBlur={this.props.blurTable}
+              isMobile
             />
           </>
         )}
