@@ -50,6 +50,7 @@ import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import Papa from "papaparse";
 import { CustomCoin } from "../../utils/commonComponent";
 import { MetamaskIcon } from "../../assets/images/icons";
+import { addUserCredits } from "../profile/Api";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -661,6 +662,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
+    console.log("One");
     // console.log(
     //   "add wallet list",
     //   this.state.total_addresses + this.state.addWalletList?.length >
@@ -762,7 +764,29 @@ class FixAddModal extends BaseReactComponent {
               isChangeFile: false,
             });
           }
+          let creditIsAddress = false;
+          let creditIsEns = false;
+          for (let i = 0; i < addressList.length; i++) {
+            const tempItem = addressList[i];
+            const endsWithEth = /\.eth$/i.test(tempItem);
 
+            if (endsWithEth) {
+              creditIsAddress = true;
+              creditIsEns = true;
+            } else {
+              creditIsAddress = true;
+            }
+          }
+          if (creditIsAddress) {
+            const addressCreditScore = new URLSearchParams();
+            addressCreditScore.append("credit", "address_added");
+            this.props.addUserCredits(addressCreditScore);
+          }
+          if (creditIsEns) {
+            const ensCreditScore = new URLSearchParams();
+            ensCreditScore.append("credit", "ens_added");
+            this.props.addUserCredits(ensCreditScore);
+          }
           this.props.updateUserWalletApi(data, this, yieldData);
 
           // message for user
@@ -1803,6 +1827,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   getDetectedChainsApi,
   detectNameTag,
+  addUserCredits,
 };
 FixAddModal.propTypes = {};
 

@@ -980,6 +980,44 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Profile"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/profile"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={ProfileIcon}
+                                style={
+                                  activeTab === "/profile"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
                       </ul>
                     </nav>
                   </div>
@@ -1733,6 +1771,33 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                               Following
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/profile"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/profile"
+                                    ? ActiveProfileIcon
+                                    : ProfileIcon
+                                }
+                              />
+                              Profile
                             </NavLink>
                           </li>
                           {/* <li>

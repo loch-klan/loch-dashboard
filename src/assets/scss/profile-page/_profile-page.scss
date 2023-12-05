@@ -138,7 +138,32 @@
       // transform: scale(1.03);
       //     }
     }
+    .profileCreditPointsLoadingContainer {
+      box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+        0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      margin-bottom: 2rem;
+      padding: 0;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 1.2rem;
+      .animation-wrapper {
+        width: 100%;
+        // background-image: url("../../images/walletCardLoadingBackground.png");
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: 100%;
 
+        .loading-animation {
+          backdrop-filter: blur(10px);
+          border-radius: 1.2rem;
+          width: 100%;
+
+          // img{
+          //     width: 10rem;
+          // }
+        }
+      }
+    }
     .profileCreditPointsContainer {
       min-width: 85rem;
       background-color: $secondary;

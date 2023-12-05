@@ -14,11 +14,26 @@ import {
   UserCreditWalletIcon,
 } from "../../assets/images/icons/index.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
+import { getUserCredits } from "./Api.js";
+import Loading from "../common/Loading.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false,
+      lochScore: "",
+      topPercentage: "",
+      totalTasks: 0,
+      tasksDone: [],
+      tasksList: [
+        "address_added",
+        "ens_added",
+        "email_added",
+        "wallet_connected",
+        "exchange_connected",
+      ],
+    };
   }
   scrollRight = () => {
     var myElement = document.getElementById("profileCreditPointsScrollBody");
@@ -46,7 +61,84 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       behavior: "smooth",
     });
   };
+  componentDidMount() {
+    this.callApi();
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.isUpdate !== prevProps.isUpdate) {
+      this.callApi();
+    }
+  }
+  callApi() {
+    this.setState({
+      loading: true,
+    });
+    this.props.getUserCredits(this);
+  }
+  returnWhichBlock = (whichBlock, whichBlockIndex) => {
+    if (whichBlock === "address_added") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Add a wallet address"
+          earnPoints={1}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+        />
+      );
+    } else if (whichBlock === "ens_added") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Add one ENS"
+          earnPoints={2}
+          imageIcon={UserCreditDiamondIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+        />
+      );
+    } else if (whichBlock === "email_added") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Add email address"
+          earnPoints={3}
+          imageIcon={UserCreditMailIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+        />
+      );
+    } else if (whichBlock === "wallet_connected") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Connect a wallet"
+          earnPoints={3}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+        />
+      );
+    } else if (whichBlock === "exchange_connected") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Connect exchange"
+          earnPoints={3}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+        />
+      );
+    }
+    return null;
+  };
   render() {
+    if (this.state.loading) {
+      return (
+        <div className="profileCreditPointsLoadingContainer">
+          <div className="animation-wrapper">
+            <Loading />
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="profileCreditPointsContainer">
         <div className="profileCreditPointsHeader">
@@ -60,14 +152,21 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             </div>
           </div>
           <div className="profileCreditPointsHeaderRight">
-            <div className="inter-display-medium f-s-13">
-              <span className="profileCreditPointsHeaderRightGreyText">
-                You have
-              </span>{" "}
+            {this.state.lochScore ? (
+              <div className="inter-display-medium f-s-13">
+                <span className="profileCreditPointsHeaderRightGreyText">
+                  Your Loch score is {this.state.lochScore}
+                  {this.state.topPercentage
+                    ? `, which puts you in
+                  the top ${this.state.topPercentage}% of users`
+                    : ""}
+                </span>
+                {/* {" "}
               <span className="profileCreditPointsHeaderRightYellowText">
                 10 points
-              </span>
-            </div>
+              </span> */}
+              </div>
+            ) : null}
             <Image
               style={{
                 marginRight: "3rem",
@@ -90,7 +189,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           id="profileCreditPointsScrollBody"
           className="profileCreditPointsBody"
         >
-          <ProfileLochCreditPointsBlock
+          {this.state.tasksList.map((singleTask, singleTaskIndex) => {
+            return this.returnWhichBlock(singleTask, singleTaskIndex);
+          })}
+          {/* <ProfileLochCreditPointsBlock
             title="Add a wallet address"
             earnPoints={1}
             imageIcon={UserCreditWalletIcon}
@@ -135,14 +237,16 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             earnPoints={3}
             imageIcon={UserCreditLinkIcon}
             lastEle
-          />
+          /> */}
         </div>
       </div>
     );
   }
 }
 const mapStateToProps = () => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getUserCredits,
+};
 ProfileLochCreditPoints.propTypes = {};
 
 export default connect(
