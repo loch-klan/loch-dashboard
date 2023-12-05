@@ -31,6 +31,7 @@ function TransactionTable(props) {
           isAnalytics={props?.isAnalytics ? props?.isAnalytics : ""}
           isGainLoss={props.isGainLoss}
           ishideDust={props.ishideDust}
+          showDust={props.showDust}
           handleDust={props.handleDust}
           totalPercentage={props.totalPercentage}
           handleExchange={props.handleExchange}
