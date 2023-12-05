@@ -111,6 +111,7 @@ class Cost extends Component {
       gasFeesGraphLoading: true,
 
       AvgCostLoading: true,
+      showDust: true,
 
       // counter party
       // counterPartyData: [],
@@ -293,19 +294,15 @@ class Cost extends Component {
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
     ) {
-      if (this.state.firstTimeUnrealizedPNL) {
-        this.setState(
-          {
-            firstTimeUnrealizedPNL: false,
-          },
-          () => {
-            let array =
-              this.props.intelligenceState?.Average_cost_basis?.filter(
-                (e) => e.CurrentValue >= 1
-              ); //all data
-            this.props.updateAverageCostBasis(array, this);
-          }
+      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+        (e) => e.CurrentValue < 1
+      );
+
+      if (array.length > 0 && this.state.showDust) {
+        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+          (e) => e.CurrentValue >= 1
         );
+        this.props.updateAverageCostBasis(array, this);
       } else {
         let tempcombinedCostBasis = 0;
         let tempcombinedCurrentValue = 0;
@@ -704,21 +701,28 @@ class Cost extends Component {
     }
   };
 
-  handleDust = (ishide) => {
-    if (!ishide) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue >= 1
-      ); //all data
-      this.props.updateAverageCostBasis(array, this);
-    } else {
-      this.props.ResetAverageCostBasis(this);
-    }
+  handleDust = () => {
+    this.setState(
+      {
+        showDust: !this.state.showDust,
+      },
+      () => {
+        if (this.state.showDust) {
+          let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+            (e) => e.CurrentValue >= 1
+          ); //all data
+          this.props.updateAverageCostBasis(array, this);
+        } else {
+          this.props.ResetAverageCostBasis(this);
+        }
 
-    CostHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
+        CostHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.updateTimer();
+      }
+    );
   };
 
   handleShare = () => {
@@ -1398,6 +1402,7 @@ class Cost extends Component {
                   ishideDust={true}
                   totalPercentage={this.props.intelligenceState.totalPercentage}
                   handleDust={this.handleDust}
+                  showDust={this.state.showDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"
