@@ -24,7 +24,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       loading: false,
       lochScore: "",
       topPercentage: "",
-      totalTasks: 0,
+
       tasksDone: [],
       tasksList: [
         "address_added",
@@ -76,6 +76,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.props.getUserCredits(this);
   }
   returnWhichBlock = (whichBlock, whichBlockIndex) => {
+    const openAddressModal = () => {
+      if (document.getElementById("address-button-two")) {
+        document.getElementById("address-button-two").click();
+      } else if (document.getElementById("address-button-one")) {
+        document.getElementById("address-button-one").click();
+      }
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -84,6 +91,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openAddressModal}
         />
       );
     } else if (whichBlock === "ens_added") {
@@ -94,6 +102,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditDiamondIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openAddressModal}
         />
       );
     } else if (whichBlock === "email_added") {

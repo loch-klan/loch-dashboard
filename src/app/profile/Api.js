@@ -109,7 +109,7 @@ export const getUserCredits = (ctx) => {
               ctx.setState({ topPercentage: tempHolder.top });
             }
             if (tempHolder.total) {
-              ctx.setState({ totalTasks: tempHolder.total });
+              ctx.setState({ lochScore: tempHolder.total });
             }
             if (tempHolder.credits) {
               ctx.setState({ tasksDone: tempHolder.credits });
