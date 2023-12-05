@@ -106,6 +106,10 @@ class FollowAuthModal extends BaseReactComponent {
     data.append("email", this.state.email);
     data.append("follow_address", this.props.followedAddress);
     SendOtp(data, this);
+    SigninMenuEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+    });
   };
 
   handleOtp = () => {

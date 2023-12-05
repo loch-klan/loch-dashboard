@@ -15,6 +15,7 @@ import {
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
   WhalePopupEmailVerified,
+  FollowSignInPopupEmailVerified,
 } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
@@ -933,10 +934,9 @@ export const VerifyEmail = (data, ctx) => {
             from: ctx.props.tracking,
           });
         } else if (ctx.props.tracking === "Follow sign in popup") {
-          FollowSignInPopupEmailAdded({
+          FollowSignInPopupEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
-            from: ctx.props.tracking,
           });
         }
         if (ctx.props?.popupType === "general_popup") {
