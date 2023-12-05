@@ -271,7 +271,7 @@ class Profile extends Component {
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
-                  <ProfileLochCreditPoints />
+                  <ProfileLochCreditPoints isUpdate={this.state.isUpdate} />
                 </Col>
               </Row>
             </div>

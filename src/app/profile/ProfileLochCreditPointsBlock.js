@@ -30,15 +30,20 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
             <div className="inter-display-medium f-s-13 profileLochCreditPointsBlockInfoBlockDesc">{`Earn ${
               this.props.earnPoints
             } point${this.props.earnPoints === 1 ? "" : "s"}`}</div>
-            <div className="profileLochCreditPointsBlockInfoBlockDescGoContainer">
-              <div className="profileLochCreditPointsBlockInfoBlockDescGo inter-display-medium f-s-13">
-                Go
+            {this.props.isDone ? (
+              <div
+                onClick={this.props.onClick}
+                className="profileLochCreditPointsBlockInfoBlockDescGoContainer"
+              >
+                <div className="profileLochCreditPointsBlockInfoBlockDescGo inter-display-medium f-s-13">
+                  Go
+                </div>
+                <Image
+                  className="profileLochCreditPointsBlockInfoBlockDescGoIcon"
+                  src={UserCreditRightArrowIcon}
+                />
               </div>
-              <Image
-                className="profileLochCreditPointsBlockInfoBlockDescGoIcon"
-                src={UserCreditRightArrowIcon}
-              />
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

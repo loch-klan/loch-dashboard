@@ -899,7 +899,7 @@ class TopWalletExchangeBar extends Component {
           <div
             ref={this.props.buttonRef}
             className="topbar-btn maxWidth50"
-            id="address-button"
+            id="address-button-one"
             onClick={this.passAddWalletClick}
           >
             <Image className="topBarWalletAdd" src={PlusCircleIcon} />
@@ -917,7 +917,7 @@ class TopWalletExchangeBar extends Component {
             <div
               ref={this.props.buttonRef}
               className="topbar-btn maxWidth50 ml-2"
-              id="address-button"
+              id="address-button-two"
               onClick={this.passAddWalletClick}
             >
               <Image className="topBarWalletAdd" src={PlusCircleIcon} />

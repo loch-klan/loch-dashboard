@@ -40,6 +40,8 @@ import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 import { addExchangeTransaction } from "../home/Api";
+import { addUserCredits } from "../profile/Api.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -303,6 +305,9 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
         wallet.address ? true : false
@@ -760,7 +765,29 @@ class AddWallet extends BaseReactComponent {
           id: `wallet${index + 1}`,
         };
       });
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
 
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credit", "address_added");
+        // this.props.addUserCredits(addressCreditScore);
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credit", "ens_added");
+        // this.props.addUserCredits(ensCreditScore);
+      }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -852,10 +879,33 @@ class AddWallet extends BaseReactComponent {
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
-      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
       yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
       this.props.updateUserWalletApi(data, this, yieldData);
+
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
+
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credit", "address_added");
+        this.props.addUserCredits(addressCreditScore);
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credit", "ens_added");
+        this.props.addUserCredits(ensCreditScore);
+      }
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -1410,6 +1460,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   GetAllPlan,
   addExchangeTransaction,
+  addUserCredits,
 };
 AddWallet.propTypes = {};
 
