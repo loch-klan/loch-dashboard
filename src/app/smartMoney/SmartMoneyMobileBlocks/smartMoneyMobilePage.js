@@ -554,18 +554,20 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                 })}
               </div>
             ) : null}
-            <SmartMoneyPagination
-              history={this.props.history}
-              location={this.props.location}
-              page={this.props.currentPage + 1}
-              pageCount={this.props.totalPage}
-              pageLimit={this.props.pageLimit}
-              changePageLimit={this.props.changePageLimit}
-              onPageChange={this.props.onPageChange}
-              openSignInOnclickModal={this.openSignInOnclickModal}
-              smartMoneyBlur={this.props.blurTable}
-              isMobile
-            />
+            {this.props.accountList && this.props.accountList.length > 0 ? (
+              <SmartMoneyPagination
+                history={this.props.history}
+                location={this.props.location}
+                page={this.props.currentPage + 1}
+                pageCount={this.props.totalPage}
+                pageLimit={this.props.pageLimit}
+                changePageLimit={this.props.changePageLimit}
+                onPageChange={this.props.onPageChange}
+                openSignInOnclickModal={this.openSignInOnclickModal}
+                smartMoneyBlur={this.props.blurTable}
+                isMobile
+              />
+            ) : null}
           </>
         )}
       </div>
