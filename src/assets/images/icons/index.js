@@ -51,5 +51,17 @@ export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg"
 export { default as SmartMoneyFaqModalIcon } from "./smartMoneyFaqModal.svg";
 export { default as BackArrowSmartMoneyIcon } from "./backArrowSmartMoney.svg";
 export { default as CrossSmartMoneyIcon } from "./crossSmartMoney.svg";
+export { default as ShareTopBarIcon } from "./shareTopBar.svg";
+export { default as FollowTopBarIcon } from "./followTopBar.svg";
 export { default as ShareProfileIcon } from "./SharePortfolioIcon.svg";
 export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";
+export { default as UserCreditStarIcon } from "./userCreditStar.svg";
+export { default as UserCreditRightArrowIcon } from "./userCreditRightArrow.svg";
+export { default as UserCreditDiamondIcon } from "./userCreditDiamond.svg";
+export { default as UserCreditLinkIcon } from "./userCreditLink.svg";
+export { default as UserCreditMailIcon } from "./userCreditMail.svg";
+export { default as UserCreditTelegramIcon } from "./userCreditTelegram.svg";
+export { default as UserCreditTwitterIcon } from "./userCreditTwitter.svg";
+export { default as UserCreditWalletIcon } from "./userCreditWallet.svg";
+export { default as UserCreditScrollLeftArrowIcon } from "./userCreditScrollLeftArrow.svg";
+export { default as UserCreditScrollRightArrowIcon } from "./userCreditScrollRightArrow.svg";

@@ -27,6 +27,7 @@ import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 
 class Profile extends Component {
   constructor(props) {
@@ -230,6 +231,8 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 // history
                 history={this.props.history}
                 // add wallet address modal
@@ -259,6 +262,22 @@ class Profile extends Component {
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // // connect exchange btn
+              // SecondaryBtn={true}
+              // handleUpdate={this.handleUpdateWallet}
+            />
+            <div style={{ marginBottom: "5rem" }}>
+              <Row>
+                <Col md={12}>
+                  <ProfileLochCreditPoints />
+                </Col>
+              </Row>
+            </div>
+            <PageHeader
+              title="Your details"
+              subTitle=""
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               // // connect exchange btn
@@ -376,7 +395,7 @@ class Profile extends Component {
               </div>
             </div>
            
-          </div> */}
+            </div> */}
             <div
               className="profile-form-section"
               style={{ marginBottom: "1rem" }}
