@@ -39,6 +39,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        openSignInOnclickModal={props.openSignInOnclickModal}
         xAxisScrollable={props.xAxisScrollable}
         yAxisScrollable={props.yAxisScrollable}
         onBlurSignInClick={props.onBlurSignInClick}

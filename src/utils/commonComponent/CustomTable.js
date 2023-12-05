@@ -198,7 +198,7 @@ class CustomTable extends BaseReactComponent {
                     </Table>
                   )}
                 </AutoSizer>
-                {this.props.smartMoneyBlur ? (
+                {/* {this.props.smartMoneyBlur ? (
                   <div className="smartMoneyBlurContainer">
                     <div className="smartMoneyBlurContainerTwo">
                       <div className="smartMoneyBlur">
@@ -223,7 +223,7 @@ class CustomTable extends BaseReactComponent {
                       </Button>
                     </div>
                   </div>
-                ) : null}
+                ) : null} */}
               </>
             ) : (
               <>
@@ -574,6 +574,7 @@ class CustomTable extends BaseReactComponent {
         {this.props.isSmartMoney ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
+              openSignInOnclickModal={this.props.openSignInOnclickModal}
               smartMoneyBlur={this.props.smartMoneyBlur}
               history={history}
               location={location}
