@@ -13,6 +13,8 @@ class CustomMinMaxDropdown extends Component {
       apply: false,
       search: "",
       filteredItems: [],
+      minAmount: "",
+      maxAmount: "",
     };
 
     //  props.options.map((e, i) =>
@@ -22,251 +24,41 @@ class CustomMinMaxDropdown extends Component {
     //      isSelected: i === 0 ? true : false,
     //    })
     //  );
-    if (this.props.isLineChart) {
-      if (this.props.selectedTokens?.length !== 0) {
-        //is already selected then this run
-        let options = [];
-        this.props.options.map((e) =>
-          options.push({
-            label: e.label,
-            value: e.value,
-            code: e.code ? e.code : "",
-            isSelected: this.props.selectedTokens.includes(e.value)
-              ? true
-              : false,
-          })
-        );
-        this.state.options = [
-          options[0],
-          ...options
-            .slice(1, options?.length)
-            .sort((a, b) => (a.label > b.label ? 1 : -1))
-            .sort((a, b) => b.isSelected - a.isSelected),
-        ];
-      } else {
-        let options = [];
-        this.props.options.map((e, i) =>
-          options.push({
-            label: e.label,
-            value: e.value,
-            code: e.code ? e.code : "",
-            isSelected: i < 5 && i !== 0 ? true : false,
-          })
-        );
-        this.state.options = [
-          options[0],
-          ...options
-            .slice(1, options?.length)
-            .sort((a, b) => (a.label > b.label ? 1 : -1))
-            .sort((a, b) => b.isSelected - a.isSelected),
-        ];
-      }
-    } else {
-      this.props.options.map((e, i) =>
-        this.state.options.push({
-          label:
-            this.props.isChain || this.props.isGreyChain ? e.name : e.label,
-          value: this.props.isChain || this.props.isGreyChain ? e.id : e.value,
-          // isSelected: i === 0 && !this.props.isChain ? true : false,
-          code: e.code ? e.code : "",
-          isSelected: true,
-        })
-      );
-      if (this.props.isChain || this.props.isGreyChain) {
-        this.state.options = [
-          { label: "All", value: "", isSelected: true },
-          ...this.state.options,
-        ];
-      }
-    }
 
     this.dropDownRef = React.createRef();
     // this.handleClickOutside = this.handleClickOutside.bind(this);
   }
-  runItAgain = () => {
-    if (!this.props.isLineChart) {
-      const tempOptions = [];
-      let noneSelected = true;
-      this.props.options.forEach((e, i) => {
-        let tempIsSelected = false;
-        if (
-          this.props.selectedTokens.includes(e.name) ||
-          this.props.selectedTokens.includes(e.label) ||
-          this.props.selectedTokens.includes(e.value) ||
-          this.props.selectedTokens.includes(e.id)
-        ) {
-          tempIsSelected = true;
-          noneSelected = false;
-        }
-        tempOptions.push({
-          label:
-            this.props.isChain || this.props.isGreyChain ? e.name : e.label,
-          value: this.props.isChain || this.props.isGreyChain ? e.id : e.value,
-          // isSelected: i === 0 && !this.props.isChain ? true : false,
-          code: e.code ? e.code : "",
-          isSelected: tempIsSelected,
-        });
-      });
-      if (this.props.isGreyChain) {
-        this.setState({
-          options: [
-            { label: "All", value: "", isSelected: noneSelected },
-            ...tempOptions,
-          ],
-        });
-      } else {
-        this.setState({
-          options: [...tempOptions],
-        });
-      }
-    }
-  };
+
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
-    if (this.props.options && this.props.singleSelect) {
-      const tempHolder = [];
-      this.props.options.forEach((e, i) => {
-        tempHolder.push({
-          label: e.asset?.name ? e.asset?.name : "",
-          value: e._id ? e._id : "",
-          isSelected: this.props.selectedTokens.includes(e._id) ? true : false,
-          code: e.asset?.code ? e.asset?.code : "",
-        });
-      });
+    if (this.props.minAmount && this.props.maxAmount) {
       this.setState({
-        options: tempHolder,
+        minAmount: this.props.minAmount,
+        maxAmount: this.props.maxAmount,
       });
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     // if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
     //   this.selectedAll(true);
     // }
     if (
-      this.props.selectedTokens &&
-      this.props.selectedTokens.length > 0 &&
-      this.props.transactionHistorySavedData &&
-      (prevProps.options !== this.props.options ||
-        prevProps.selectedTokens !== this.props.selectedTokens)
+      prevState.minAmount !== this.state.minAmount ||
+      prevState.maxAmount !== this.state.maxAmount
     ) {
-      this.runItAgain();
-    }
-    if (prevProps.options !== this.props.options && this.props.singleSelect) {
-      const tempHolder = [];
-      this.props.options.forEach((e, i) => {
-        tempHolder.push({
-          label: e.asset?.name ? e.asset?.name : "",
-          value: e._id ? e._id : "",
-          isSelected: this.props.selectedTokens.includes(e._id) ? true : false,
-          code: e.asset?.code ? e.asset?.code : "",
+      if (
+        this.state.minAmount === "" ||
+        this.state.maxAmount === "" ||
+        Number(this.state.maxAmount) <= Number(this.state.minAmount)
+      ) {
+        this.setState({
+          disableApply: true,
         });
-      });
-      this.setState({
-        options: tempHolder,
-      });
-    }
-    if (
-      prevProps.options?.length === 0 ||
-      prevProps.options?.length !== this.props.options?.length
-    ) {
-      if (this.props.isLineChart) {
-        this.setState(
-          {
-            options: [],
-          },
-          () => {
-            if (this.props.selectedTokens?.length !== 0) {
-              //is already selected then this run
-              let options = [];
-              Promise.all(
-                this.props.options.map((e) =>
-                  options.push({
-                    label: e.label,
-                    value: e.value,
-                    code: e.code ? e.code : "",
-                    isSelected: this.props.selectedTokens.includes(e.value)
-                      ? true
-                      : false,
-                  })
-                )
-              ).then(() => {
-                this.setState(
-                  {
-                    options: [
-                      options[0],
-                      ...options
-                        .slice(1, options?.length)
-                        .sort((a, b) => (a.label > b.label ? 1 : -1))
-                        .sort((a, b) => b.isSelected - a.isSelected),
-                    ],
-                  },
-                  () => {
-                    // console.log("op", this.state.options);
-                  }
-                );
-              });
-
-              //  this.getSelected();
-              //  this.Apply();
-            } else {
-              let options = [];
-              Promise.all(
-                this.props.options.map((e, i) =>
-                  options.push({
-                    label: e.label,
-                    value: e.value,
-                    code: e.code ? e.code : "",
-                    isSelected: i < 5 && i !== 0 ? true : false,
-                  })
-                )
-              ).then(() => {
-                this.setState({
-                  options: [
-                    options[0],
-                    ...options
-                      .slice(1, options?.length)
-                      .sort((a, b) => (a.label > b.label ? 1 : -1))
-                      .sort((a, b) => b.isSelected - a.isSelected),
-                  ],
-                });
-              });
-            }
-            this.getSelected();
-            this.Apply();
-          }
-        );
       } else {
-        // this.props.options.map((e, i) =>
-        //   this.state.options.push({
-        //     label: e.label,
-        //     value: e.value,
-        //     isSelected: i === 0 ? true : false,
-        //   })
-        // );
-        if (!this.props.singleSelect) {
-          // console.log("transaction", this.props.options);
-          this.state.options = [];
-          this.props.options.map((e, i) =>
-            this.state.options.push({
-              label:
-                this.props.isChain || this.props.isGreyChain ? e.name : e.label,
-              value:
-                this.props.isChain || this.props.isGreyChain ? e.id : e.value,
-              code: e.code ? e.code : "",
-              // isSelected: i === 0 && !this.props.isChain ? true : false,
-              isSelected: true,
-            })
-          );
-
-          // for chain
-          if (this.props.isChain || this.props.isGreyChain) {
-            this.state.options = [
-              { label: "All", value: "", isSelected: true },
-              ...this.state.options,
-            ];
-          }
-        }
+        this.setState({
+          disableApply: false,
+        });
       }
     }
   }
@@ -441,66 +233,18 @@ class CustomMinMaxDropdown extends Component {
   };
 
   ClearAll = () => {
-    if (this.props.isLineChart) {
-      this.onSelect(this.state.options[0]);
-      let options = this.state.options;
-      this.setState(
-        {
-          options: [
-            options[0],
-            ...options
-              .slice(1, options?.length)
-              .sort((a, b) => (a?.label > b?.label ? 1 : -1))
-              .sort((a, b) => b?.isSelected - a?.isSelected),
-          ],
-        },
-        () => {
-          this.copyToFilteredItems();
-        }
-      );
-    } else {
-      // this.onSelect(this.state.options[0]);//
-      this.selectedAll(false);
-    }
-
-    //   this.props.handleClick(this.props.action, this.getSelected().selected);
-
-    //     this.setState({ showMenu: false });
-
-    // this.props.isLineChart || this.props.isChain
-    //   ? this.props.handleClick(this.getSelected().selected)
-    //   : this.props.handleClick(this.props.action, this.getSelected().selected);
-    // this.setState({ showMenu: false });
+    this.setState({
+      minAmount: "1",
+      maxAmount: "1000000000",
+    });
   };
 
   Apply = () => {
-    if (this.getSelected()?.selected?.length !== 0) {
-      this.props.isLineChart || this.props.isChain || this.props.isGreyChain
-        ? this.props.handleClick(this.getSelected()?.selected)
-        : this.props.action
-        ? this.props.handleClick(
-            this.props.action,
-            this.getSelected()?.selected
-          )
-        : this.props.handleClick(this.getSelected()?.selected);
+    console.log("this.state.disableApply ", this.state.disableApply);
+    if (this.props.handleClick && !this.state.disableApply) {
+      this.props.handleClick(this.state.minAmount, this.state.maxAmount);
       this.setState({ showMenu: false });
-    } else {
-      // console.log("Please select");
     }
-
-    if (this.props.isLineChart) {
-      let options = this.state.options;
-      this.setState({
-        options: [
-          options[0],
-          ...options
-            .slice(1, options?.length)
-            .sort((a, b) => (a.label > b.label ? 1 : -1))
-            .sort((a, b) => b.isSelected - a.isSelected),
-        ],
-      });
-    }
-    this.setState({ search: "" });
   };
 
   TruncateText = (string) => {
@@ -510,13 +254,27 @@ class CustomMinMaxDropdown extends Component {
     return string;
   };
 
-  handleSearch = (event) => {
-    this.setState({ search: event.target.value }, () => {
-      this.copyToFilteredItems();
-      if (this.props.searchIsUsed) {
-        this.props.searchIsUsed();
-      }
-    });
+  checkForEnter = (key) => {
+    console.log("key ", key.code);
+    if (key.code === "Enter") {
+      this.Apply();
+    }
+  };
+  handleMinChange = (event) => {
+    let tempHolder = event.target.value;
+    if (!isNaN(tempHolder) && Number(tempHolder) < 1000000000) {
+      this.setState({
+        minAmount: tempHolder,
+      });
+    }
+  };
+  handleMaxChange = (event) => {
+    let tempHolder = event.target.value;
+    if (!isNaN(tempHolder) && Number(tempHolder) <= 1000000000) {
+      this.setState({
+        maxAmount: tempHolder,
+      });
+    }
   };
 
   render() {
@@ -602,164 +360,57 @@ class CustomMinMaxDropdown extends Component {
             minWidth: `${
               this.props.isLineChart || this.props.isChain ? "100%" : "130px"
             }`,
+            backgroundColor: "white",
           }}
         >
-          <div className="dropdown-search-wrapper">
-            <Image
-              className={
-                this.props.filtername.toLowerCase() === "tokens"
-                  ? "dropdown-search-wrapper-image-small"
-                  : ""
-              }
-              src={SearchIcon}
-            />
+          <div className="dropdownMinMaxHeader inter-display-medium f-s-13 black-191">
+            Token Transfer Amount ($)
+          </div>
+          <div className="dropdown-search-wrapper dropdown-search-wrapper-min-max">
             <input
-              value={this.state.search}
+              value={this.state.minAmount}
               type="text"
-              placeholder={
-                // this.props.filtername.toLowerCase() === "all assets" ||
-                this.props.filtername.toLowerCase() === "all assets selected" ||
-                this.props.filtername.toLowerCase() === "tokens"
-                  ? "Name or symbol"
-                  : "Search"
-              }
-              onChange={this.handleSearch}
-              className={`dropdown-search-input ${
+              placeholder="Min"
+              onChange={this.handleMinChange}
+              className={`dropdown-min-max-input ${
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "dropdown-search-input-smaller"
                   : ""
               }`}
+              onKeyDown={this.checkForEnter}
+            />
+            <input
+              value={this.state.maxAmount}
+              type="text"
+              placeholder="Max"
+              onChange={this.handleMaxChange}
+              className={`dropdown-min-max-input ${
+                this.props.filtername.toLowerCase() === "tokens"
+                  ? "dropdown-search-input-smaller"
+                  : ""
+              }`}
+              onKeyDown={this.checkForEnter}
             />
           </div>
-          <div
-            className="dropdown-list"
-            style={{
-              overflowY: `${
-                this.state.options?.length < 5 ? "hidden" : "scroll"
-              }`,
-            }}
-          >
-            {this.state.options?.length === 0 ||
-            (this.state.options[0]?.label === "All" &&
-              this.state.options?.length === 1) ? (
-              <span>No Data</span>
-            ) : (
-              (this.state.search === ""
-                ? this.state.options
-                : this.state.filteredItems
-              ).map((e, i) => {
-                return (
-                  <span
-                    className={`${e?.isSelected ? "active" : ""} ${
-                      this.props.isCaptialised ? "text-capitalize" : ""
-                    } `}
-                    // title={e.label}
-                    key={i}
-                    onClick={() => {
-                      // this.onSelect(e);
-                      if (this.props.singleSelect) {
-                        this.onSingleSelect(e);
-                      } else if (
-                        this.getSelected()?.length < 4 &&
-                        this.props.isLineChart
-                      ) {
-                        //for line Chart
-                        this.onSelect(e);
-                      } else if (this.props.isLineChart && e?.isSelected) {
-                        //for line Chart
-                        this.onSelect(e);
-                      } else {
-                        if (!this.props.isLineChart) {
-                          //for transaction History
-                          this.onSelect(e);
-                        }
-                      }
-                    }}
-                  >
-                    {this.props.isLineChart
-                      ? this.TruncateText(e?.label)
-                      : e?.label}
-                    <svg
-                      className={`${e?.isSelected ? "show" : "hide"}`}
-                      width="24px"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <polyline
-                        fill="none"
-                        stroke="#cccccc"
-                        strokeWidth="2"
-                        points="6 13 10.2 16.6 18 7"
-                      />
-                    </svg>
-                  </span>
-                );
-              })
-            )}
-          </div>
 
-          {!this.props.singleSelect ? (
-            <div className="dropdown-footer">
-              <span
-                className="secondary-btn dropdown-btn"
-                onClick={this.ClearAll}
-                onMouseEnter={() => {
-                  this.setState({
-                    clearAll: true,
-                  });
-                }}
-                onMouseLeave={() => {
-                  this.setState({
-                    clearAll: false,
-                  });
-                }}
-              >
-                {this.props.isLineChart ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                      fill={`${this.state.clearAll ? "#fff" : "#000"}`}
-                    />
-                  </svg>
-                ) : (
-                  "Clear"
-                )}
-              </span>
-              <span
-                className="primary-btn dropdown-btn"
-                onClick={this.Apply}
-                onMouseEnter={() => {
-                  this.setState({
-                    apply: true,
-                  });
-                }}
-                onMouseLeave={() => {
-                  this.setState({
-                    apply: false,
-                  });
-                }}
-              >
-                {this.props.isLineChart ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-                    <rect width="256" height="256" fill="none" />
-                    <polyline
-                      fill="none"
-                      stroke={`${this.state.apply ? "#000" : "#fff"}`}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="16"
-                      points="216 72.005 104 184 48 128.005"
-                    />
-                  </svg>
-                ) : (
-                  "Apply"
-                )}
-              </span>
-            </div>
-          ) : (
-            <div className="mt-2" />
-          )}
+          <div className="dropdown-footer">
+            <span
+              className="secondary-btn dropdown-btn"
+              onClick={this.ClearAll}
+            >
+              Reset
+            </span>
+            <span
+              style={{
+                opacity: this.state.disableApply ? 0.5 : 1,
+                pointerEvents: this.state.disableApply ? "none" : "auto",
+              }}
+              className="primary-btn dropdown-btn"
+              onClick={this.Apply}
+            >
+              Apply
+            </span>
+          </div>
         </div>
       </div>
     );
