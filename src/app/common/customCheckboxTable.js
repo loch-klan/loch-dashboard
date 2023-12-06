@@ -26,9 +26,11 @@ class CheckboxCustomTable extends Component {
     if (this.props.handleOnClick) {
       this.props.handleOnClick(!this.state.isChecked);
     }
-    this.setState({
-      isChecked: !this.state.isChecked,
-    });
+    if (!this.props.dontSelectIt) {
+      this.setState({
+        isChecked: !this.state.isChecked,
+      });
+    }
   };
   render() {
     return (
@@ -41,7 +43,7 @@ class CheckboxCustomTable extends Component {
       >
         <div
           style={{
-            margin: "10px",
+            margin: !this.props.noMargin ? "10px" : "",
             background: this.state.isChecked ? "#0071E3" : "transparent",
           }}
           className="custom-checkbox"

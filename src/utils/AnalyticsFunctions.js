@@ -2861,6 +2861,15 @@ export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const SignupEmail = ({ session_id, email_address }) => {
+  const event_name = "Home: Sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 
 //  Menu: Currency drop down - done
 

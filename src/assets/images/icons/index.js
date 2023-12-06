@@ -52,3 +52,4 @@ export { default as SmartMoneyFaqModalIcon } from "./smartMoneyFaqModal.svg";
 export { default as BackArrowSmartMoneyIcon } from "./backArrowSmartMoney.svg";
 export { default as CrossSmartMoneyIcon } from "./crossSmartMoney.svg";
 export { default as ShareProfileIcon } from "./SharePortfolioIcon.svg";
+export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";

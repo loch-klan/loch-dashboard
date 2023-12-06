@@ -30,6 +30,7 @@ import {
   ContributeTrophyIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
+  MacIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
   ShareProfileIcon,
@@ -59,12 +60,22 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       InfoCircleSmartMoneyIconLoaded: false,
       PlusCircleSmartMoneyIconLoaded: false,
       GreyManIconLoaded: false,
+      ShareProfileIconLoaded: false,
 
       ContributeTrophyIconLoaded: false,
+      showClickSignInText: false,
     };
   }
   componentDidMount() {}
-  componentDidUpdate(prevProps, prevStates) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.signInModal !== this.state.signInModal &&
+      !this.state.signInModal
+    ) {
+      this.setState({
+        showClickSignInText: false,
+      });
+    }
     if (prevProps.blurTable !== this.props.blurTable) {
       if (!this.props.blurTable) {
         this.setState({
@@ -77,6 +88,16 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       }
     }
   }
+  openSignInOnclickModal = () => {
+    this.setState(
+      {
+        showClickSignInText: true,
+      },
+      () => {
+        this.showSignInModal();
+      }
+    );
+  };
   handleShare = () => {
     SmartMoneyShare({
       session_id: getCurrentUser().id,
@@ -95,6 +116,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     }
   }
   showFaqModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     SmartMoneyFAQClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -106,6 +130,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   showHowItWorksModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     SmartMoneyHowItWorksClicked({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -117,18 +144,27 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   showSignInModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signInModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showAddAddressModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       addAddressModal: true,
     });
     document.body.style.overflow = "hidden";
   };
   showSignOutModal = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signOutModal: true,
     });
@@ -136,6 +172,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     document.body.style.overflow = "hidden";
   };
   hideAllModals = () => {
+    if (this.props.mobilePopupModal) {
+      this.props.hideThePopupModal();
+    }
     this.setState({
       signInModal: false,
       addAddressModal: false,
@@ -149,9 +188,31 @@ class SmartMoneyMobilePage extends BaseReactComponent {
   render() {
     return (
       <div className="mobileSmartMoneyPage">
+        {this.props.mobilePopupModal ? (
+          <div className="mpcHomeFloatingContainer">
+            <div className="mpcHomeFloatingElement">
+              <div className="mpcHFMacIconContainer">
+                <Image src={MacIcon} className="mpcHFMacIcon" />
+              </div>
+              <div className="mpcHFText inter-display-medium f-s-13">
+                Visit app.loch.one from your desktop to view all the addresses
+                you are following
+              </div>
+              <div
+                onClick={this.props.hideThePopupModal}
+                className="mpcHFGoBtn inter-display-medium f-s-13"
+              >
+                Ok
+              </div>
+            </div>
+          </div>
+        ) : null}
         {this.state.signInModal ? (
           <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
-            <SmartMoneyMobileSignInUp onHide={this.hideAllModals} />
+            <SmartMoneyMobileSignInUp
+              showClickSignInText={this.state.showClickSignInText}
+              onHide={this.hideAllModals}
+            />
           </SmartMoneyMobileModalContainer>
         ) : null}
         {this.state.addAddressModal ? (
@@ -204,10 +265,10 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                     }}
                   >
                     <div
+                      onClick={this.showSignOutModal}
                       style={{
                         flex: 1,
                       }}
-                      onClick={this.showSignOutModal}
                       className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
                     >
                       <div className="mobileSmartMoneyBtnSignInIconContainer">
@@ -464,106 +525,36 @@ class SmartMoneyMobilePage extends BaseReactComponent {
             </div>
             {this.props.accountList && this.props.accountList.length > 0 ? (
               <div className="mobileSmartMoneyListContainer">
-                {this.props.blurTable ? (
-                  <div className="mobileSmartMoneyListBlurContainer">
-                    <div className="mobileSmartMoneyListBlur">
-                      <div className="mobileSmartMoneyBlurContainerTwo">
-                        <div className="mobileSmartMoneyBlur">
-                          <Image
-                            className="mobileSmartMoneyBlurLogo"
-                            src={ContributeTrophyIcon}
-                            onLoad={() => {
-                              this.setState({
-                                ContributeTrophyIconLoaded: true,
-                              });
-                            }}
-                            style={{
-                              opacity: this.state.ContributeTrophyIconLoaded
-                                ? 1
-                                : 0,
-                            }}
-                          />
-                          <div className="mt-4 mb-5">
-                            <h6 className="inter-display-medium f-s-24">
-                              Sign in to view the Leaderboard
-                            </h6>
-                            <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                              View the smartest money on-chain
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          className="secondary-btn"
-                          onClick={this.showSignInModal}
-                        >
-                          Sign in / up now
-                        </Button>
-                      </div>
-                    </div>
-                    {this.props.accountList.slice(0, 1).map((mapData) => {
-                      let tempCurrencyRate = this.props.currency?.rate
-                        ? this.props.currency.rate
-                        : 0;
+                {this.props.accountList.map((mapData) => {
+                  let tempCurrencyRate = this.props.currency?.rate
+                    ? this.props.currency.rate
+                    : 0;
 
-                      let tempNetWorth = mapData.networth
-                        ? mapData.networth
-                        : 0;
-                      let tempNetflows = mapData.netflows
-                        ? mapData.netflows
-                        : 0;
-                      let tempProfits = mapData.profits ? mapData.profits : 0;
-                      let tempReturns = mapData.returns ? mapData.returns : 0;
+                  let tempNetWorth = mapData.networth ? mapData.networth : 0;
+                  let tempNetflows = mapData.netflows ? mapData.netflows : 0;
+                  let tempProfits = mapData.profits ? mapData.profits : 0;
+                  let tempReturns = mapData.returns ? mapData.returns : 0;
 
-                      let netWorth = tempNetWorth * tempCurrencyRate;
-                      let netFlows = tempNetflows * tempCurrencyRate;
-                      let profits = tempProfits * tempCurrencyRate;
-                      let returns = tempReturns * tempCurrencyRate;
-                      return (
-                        <SmartMoneyMobileBlock
-                          netWorth={netWorth}
-                          netFlows={netFlows}
-                          profits={profits}
-                          returns={returns}
-                          mapData={mapData}
-                        />
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <>
-                    {this.props.accountList.map((mapData) => {
-                      let tempCurrencyRate = this.props.currency?.rate
-                        ? this.props.currency.rate
-                        : 0;
-
-                      let tempNetWorth = mapData.networth
-                        ? mapData.networth
-                        : 0;
-                      let tempNetflows = mapData.netflows
-                        ? mapData.netflows
-                        : 0;
-                      let tempProfits = mapData.profits ? mapData.profits : 0;
-                      let tempReturns = mapData.returns ? mapData.returns : 0;
-
-                      let netWorth = tempNetWorth * tempCurrencyRate;
-                      let netFlows = tempNetflows * tempCurrencyRate;
-                      let profits = tempProfits * tempCurrencyRate;
-                      let returns = tempReturns * tempCurrencyRate;
-                      return (
-                        <SmartMoneyMobileBlock
-                          netWorth={netWorth}
-                          netFlows={netFlows}
-                          profits={profits}
-                          returns={returns}
-                          mapData={mapData}
-                        />
-                      );
-                    })}
-                  </>
-                )}
+                  let netWorth = tempNetWorth * tempCurrencyRate;
+                  let netFlows = tempNetflows * tempCurrencyRate;
+                  let profits = tempProfits * tempCurrencyRate;
+                  let returns = tempReturns * tempCurrencyRate;
+                  return (
+                    <SmartMoneyMobileBlock
+                      netWorth={netWorth}
+                      netFlows={netFlows}
+                      profits={profits}
+                      returns={returns}
+                      mapData={mapData}
+                      handleFollowUnfollow={this.props.handleFollowUnfollow}
+                      openSignInOnclickModal={this.openSignInOnclickModal}
+                      smartMoneyBlur={this.props.blurTable}
+                    />
+                  );
+                })}
               </div>
             ) : null}
-            {!this.props.blurTable ? (
+            {this.props.accountList && this.props.accountList.length > 0 ? (
               <SmartMoneyPagination
                 history={this.props.history}
                 location={this.props.location}
@@ -572,6 +563,9 @@ class SmartMoneyMobilePage extends BaseReactComponent {
                 pageLimit={this.props.pageLimit}
                 changePageLimit={this.props.changePageLimit}
                 onPageChange={this.props.onPageChange}
+                openSignInOnclickModal={this.openSignInOnclickModal}
+                smartMoneyBlur={this.props.blurTable}
+                isMobile
               />
             ) : null}
           </>
