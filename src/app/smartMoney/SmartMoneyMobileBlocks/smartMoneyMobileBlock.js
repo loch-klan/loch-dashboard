@@ -24,11 +24,17 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnClick = (addItem) => {
-    this.props.handleFollowUnfollow(
-      this.props.mapData.account,
-      addItem,
-      this.props.mapData.tagName
-    );
+    if (!this.props.smartMoneyBlur) {
+      this.props.handleFollowUnfollow(
+        this.props.mapData.account,
+        addItem,
+        this.props.mapData.tagName
+      );
+    } else {
+      if (this.props.openSignInOnclickModal) {
+        this.props.openSignInOnclickModal();
+      }
+    }
   };
   render() {
     return (
@@ -48,27 +54,33 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             {this.props.mapData.account ? (
               <div
                 onClick={() => {
-                  let lochUser = getCurrentUser().id;
+                  if (!this.props.smartMoneyBlur) {
+                    let lochUser = getCurrentUser().id;
 
-                  let slink = this.props.mapData.account;
-                  let shareLink =
-                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                  if (lochUser) {
-                    const alreadyPassed =
-                      window.sessionStorage.getItem("PassedRefrenceId");
-                    if (alreadyPassed) {
-                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                    } else {
-                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    let slink = this.props.mapData.account;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    if (lochUser) {
+                      const alreadyPassed =
+                        window.sessionStorage.getItem("PassedRefrenceId");
+                      if (alreadyPassed) {
+                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                      } else {
+                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      }
+                    }
+                    SmartMoneyWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: true,
+                    });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  } else {
+                    if (this.props.openSignInOnclickModal) {
+                      this.props.openSignInOnclickModal();
                     }
                   }
-                  SmartMoneyWalletClicked({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    wallet: slink,
-                    isMobile: true,
-                  });
-                  window.open(shareLink, "_blank", "noreferrer");
                 }}
                 className="inter-display-medium msmbHeaderAccount"
               >
@@ -139,6 +151,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
                 handleOnClick={this.handleOnClick}
                 isChecked={this.props.mapData.following}
                 noMargin
+                dontSelectIt={this.props.smartMoneyBlur}
               />
             </div>
           </div>

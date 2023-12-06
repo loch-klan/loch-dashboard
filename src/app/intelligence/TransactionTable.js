@@ -31,6 +31,7 @@ function TransactionTable(props) {
           isAnalytics={props?.isAnalytics ? props?.isAnalytics : ""}
           isGainLoss={props.isGainLoss}
           ishideDust={props.ishideDust}
+          showDust={props.showDust}
           handleDust={props.handleDust}
           totalPercentage={props.totalPercentage}
           handleExchange={props.handleExchange}
@@ -39,6 +40,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        openSignInOnclickModal={props.openSignInOnclickModal}
         xAxisScrollable={props.xAxisScrollable}
         yAxisScrollable={props.yAxisScrollable}
         onBlurSignInClick={props.onBlurSignInClick}
