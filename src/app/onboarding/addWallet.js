@@ -780,12 +780,12 @@ class AddWallet extends BaseReactComponent {
       }
       if (creditIsAddress) {
         const addressCreditScore = new URLSearchParams();
-        addressCreditScore.append("credit", "address_added");
+        addressCreditScore.append("credits", "address_added");
         // this.props.addUserCredits(addressCreditScore);
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
-        ensCreditScore.append("credit", "ens_added");
+        ensCreditScore.append("credits", "ens_added");
         // this.props.addUserCredits(ensCreditScore);
       }
       const data = new URLSearchParams();
@@ -898,12 +898,12 @@ class AddWallet extends BaseReactComponent {
       }
       if (creditIsAddress) {
         const addressCreditScore = new URLSearchParams();
-        addressCreditScore.append("credit", "address_added");
+        addressCreditScore.append("credits", "address_added");
         this.props.addUserCredits(addressCreditScore);
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
-        ensCreditScore.append("credit", "ens_added");
+        ensCreditScore.append("credits", "ens_added");
         this.props.addUserCredits(ensCreditScore);
       }
 
