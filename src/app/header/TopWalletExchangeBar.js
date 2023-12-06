@@ -34,6 +34,7 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { addUserCredits } from "../profile/Api";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -423,6 +424,12 @@ class TopBar extends Component {
         const tempRes = await provider.send("eth_requestAccounts", []);
 
         if (tempRes && tempRes.length > 0) {
+          setTimeout(() => {
+            this.props.handleUpdate();
+          }, 1000);
+          const walletCreditScore = new URLSearchParams();
+          walletCreditScore.append("credits", "wallet_connected");
+          this.props.addUserCredits(walletCreditScore);
           this.addToList(tempRes);
         }
         // Leaver console log: full signer too"
@@ -828,6 +835,7 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   getAllCoins,
+  addUserCredits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

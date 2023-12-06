@@ -127,6 +127,7 @@ import {
 import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
 import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
+import { addUserCredits } from "../profile/Api.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -366,7 +367,31 @@ class Portfolio extends BaseReactComponent {
     if (token !== "jsk") {
       window.sessionStorage.setItem("stopClick", true);
       let obj = UpgradeTriggered();
-
+      const onceAddCredit = window.sessionStorage.getItem(
+        "addAddressCreditOnce"
+      );
+      if (onceAddCredit) {
+        window.sessionStorage.removeItem("addAddressCreditOnce");
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credits", "address_added");
+        this.props.addUserCredits(addressCreditScore);
+      }
+      const multipleAddCredit = window.sessionStorage.getItem(
+        "addMultipleAddressCreditOnce"
+      );
+      if (multipleAddCredit) {
+        window.sessionStorage.removeItem("addMultipleAddressCreditOnce");
+        const multipleAddressCreditScore = new URLSearchParams();
+        multipleAddressCreditScore.append("credits", "multiple_address_added");
+        this.props.addUserCredits(multipleAddressCreditScore);
+      }
+      const ensCredit = window.sessionStorage.getItem("addEnsCreditOnce");
+      if (ensCredit) {
+        window.sessionStorage.removeItem("addEnsCreditOnce");
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credits", "ens_added");
+        this.props.addUserCredits(ensCreditScore);
+      }
       if (obj.trigger) {
         this.setState(
           {
@@ -2943,6 +2968,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   addAddressToWatchList,
+  addUserCredits,
 };
 Portfolio.propTypes = {};
 
