@@ -350,6 +350,37 @@ class AddWallet extends BaseReactComponent {
     if (this.state.walletInput !== prevState.walletInput) {
       this.props.copyWalletAddress(this.state.walletInput);
     }
+    if (this.state.walletInput !== prevState.walletInput) {
+      let chainNotDetected = false;
+
+      this.state.walletInput.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
+    }
   }
 
   nicknameOnChain = (e) => {
@@ -652,6 +683,35 @@ class AddWallet extends BaseReactComponent {
               ),
             });
           }
+          let chainNotDetected = false;
+
+          this.state.walletInput.forEach((indiWallet) => {
+            let anyCoinPresent = false;
+            if (
+              indiWallet.coins &&
+              indiWallet.coinFound &&
+              indiWallet.coins.length > 0
+            ) {
+              indiWallet.coins.forEach((indiCoin) => {
+                if (indiCoin?.chain_detected) {
+                  anyCoinPresent = true;
+                }
+              });
+            }
+            if (!anyCoinPresent) {
+              chainNotDetected = true;
+            }
+          });
+
+          if (chainNotDetected) {
+            this.setState({
+              disableGoBtn: true,
+            });
+          } else {
+            this.setState({
+              disableGoBtn: false,
+            });
+          }
         }
       );
     }
@@ -779,14 +839,25 @@ class AddWallet extends BaseReactComponent {
         }
       }
       if (creditIsAddress) {
+        // Single address
         const addressCreditScore = new URLSearchParams();
-        addressCreditScore.append("credit", "address_added");
-        // this.props.addUserCredits(addressCreditScore);
+        addressCreditScore.append("credits", "address_added");
+        this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          this.props.addUserCredits(multipleAddressCreditScore);
+        }
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
-        ensCreditScore.append("credit", "ens_added");
-        // this.props.addUserCredits(ensCreditScore);
+        ensCreditScore.append("credits", "ens_added");
+        this.props.addUserCredits(ensCreditScore);
       }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
@@ -898,12 +969,22 @@ class AddWallet extends BaseReactComponent {
       }
       if (creditIsAddress) {
         const addressCreditScore = new URLSearchParams();
-        addressCreditScore.append("credit", "address_added");
+        addressCreditScore.append("credits", "address_added");
         this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          this.props.addUserCredits(multipleAddressCreditScore);
+        }
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
-        ensCreditScore.append("credit", "ens_added");
+        ensCreditScore.append("credits", "ens_added");
         this.props.addUserCredits(ensCreditScore);
       }
 
@@ -1271,9 +1352,7 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  (this.state.addButtonVisible
-                    ? this.isDisabled(true)
-                    : false) || this.state.disableGoBtn
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
                   (this.state.addButtonVisible ? this.isDisabled() : true) ||

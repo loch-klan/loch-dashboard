@@ -2354,6 +2354,7 @@ function Sidebar(props) {
                             <div
                               onClick={openSigninModal}
                               className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                              id="sidebar-closed-sign-in-btn"
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
@@ -2432,6 +2433,7 @@ function Sidebar(props) {
                           <div
                             onClick={openSigninModal}
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                            id="sidebar-open-sign-in-btn"
                           >
                             <div className="sideBarFooterSignInIconContainer">
                               <Image

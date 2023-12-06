@@ -82,6 +82,7 @@ class FixAddModal extends BaseReactComponent {
           ];
     // console.log("addWalletList", addWalletList);
     this.state = {
+      disableGoBtn: false,
       onHide: props.onHide,
       show: props.show,
       modalIcon: props.modalIcon,
@@ -542,6 +543,40 @@ class FixAddModal extends BaseReactComponent {
       });
     }
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.addWalletList !== prevState.addWalletList) {
+      let chainNotDetected = false;
+
+      this.state.addWalletList.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
+    }
+  }
+
   componentDidMount() {
     const ssItem = window.sessionStorage.getItem(
       "setMetamaskConnectedSessionStorage"
@@ -642,9 +677,42 @@ class FixAddModal extends BaseReactComponent {
       w.apiAddress = w.address;
     });
 
-    this.setState({
-      addWalletList: this.state.addWalletList,
-    });
+    this.setState(
+      {
+        addWalletList: this.state.addWalletList,
+      },
+      () => {
+        let chainNotDetected = false;
+
+        this.state.addWalletList.forEach((indiWallet) => {
+          let anyCoinPresent = false;
+          if (
+            indiWallet.coins &&
+            indiWallet.coinFound &&
+            indiWallet.coins.length > 0
+          ) {
+            indiWallet.coins.forEach((indiCoin) => {
+              if (indiCoin?.chain_detected) {
+                anyCoinPresent = true;
+              }
+            });
+          }
+          if (!anyCoinPresent) {
+            chainNotDetected = true;
+          }
+        });
+
+        if (chainNotDetected) {
+          this.setState({
+            disableGoBtn: true,
+          });
+        } else {
+          this.setState({
+            disableGoBtn: false,
+          });
+        }
+      }
+    );
     // console.log("Delete", this.state.addWalletList);
     // console.log("Prev 1", this.state.deletedAddress);
   };
@@ -777,14 +845,24 @@ class FixAddModal extends BaseReactComponent {
               creditIsAddress = true;
             }
           }
+
           if (creditIsAddress) {
+            // Single address
             const addressCreditScore = new URLSearchParams();
-            addressCreditScore.append("credit", "address_added");
+            addressCreditScore.append("credits", "address_added");
             this.props.addUserCredits(addressCreditScore);
+
+            // Multiple address
+            const multipleAddressCreditScore = new URLSearchParams();
+            multipleAddressCreditScore.append(
+              "credits",
+              "multiple_address_added"
+            );
+            this.props.addUserCredits(multipleAddressCreditScore);
           }
           if (creditIsEns) {
             const ensCreditScore = new URLSearchParams();
-            ensCreditScore.append("credit", "ens_added");
+            ensCreditScore.append("credits", "ens_added");
             this.props.addUserCredits(ensCreditScore);
           }
           this.props.updateUserWalletApi(data, this, yieldData);
@@ -1587,8 +1665,8 @@ class FixAddModal extends BaseReactComponent {
                         }`}
                         disabled={
                           this.state.modalType === "addwallet"
-                            ? this.isDisabled()
-                            : this.isFixDisabled()
+                            ? this.isDisabled() || this.state.disableGoBtn
+                            : this.isFixDisabled() || this.state.disableGoBtn
                         }
                         onClick={
                           this.state.modalType === "addwallet"
