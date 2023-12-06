@@ -839,14 +839,25 @@ class AddWallet extends BaseReactComponent {
         }
       }
       if (creditIsAddress) {
+        // Single address
         const addressCreditScore = new URLSearchParams();
         addressCreditScore.append("credits", "address_added");
-        // this.props.addUserCredits(addressCreditScore);
+        this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          this.props.addUserCredits(multipleAddressCreditScore);
+        }
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
         ensCreditScore.append("credits", "ens_added");
-        // this.props.addUserCredits(ensCreditScore);
+        this.props.addUserCredits(ensCreditScore);
       }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
@@ -960,6 +971,16 @@ class AddWallet extends BaseReactComponent {
         const addressCreditScore = new URLSearchParams();
         addressCreditScore.append("credits", "address_added");
         this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          this.props.addUserCredits(multipleAddressCreditScore);
+        }
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();

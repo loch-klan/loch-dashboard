@@ -771,6 +771,7 @@ class TopBar extends Component {
             <div
               onClick={this.connectWalletEthers}
               className="topbar-btn ml-2 maxWidth50"
+              id="topbar-connect-wallet-btn"
             >
               <Image className="topBarWalletAdd " src={WalletIcon} />
               <span className="dotDotText">Connect wallet</span>
@@ -778,6 +779,7 @@ class TopBar extends Component {
           )}
           <div
             onClick={this.passConnectExchangeClick}
+            id="topbar-connect-exchange-btn"
             className={`topbar-btn ml-2 ${
               this.state.walletList.length > 0 ? "maxWidth50" : ""
             }`}

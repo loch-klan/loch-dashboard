@@ -32,6 +32,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "email_added",
         "wallet_connected",
         "exchange_connected",
+        "multiple_address_added",
       ],
     };
   }
@@ -83,6 +84,24 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         document.getElementById("address-button-one").click();
       }
     };
+
+    const openEmailModal = () => {
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+      }
+    };
+    const openConnectWalletModal = () => {
+      if (document.getElementById("topbar-connect-wallet-btn")) {
+        document.getElementById("topbar-connect-wallet-btn").click();
+      }
+    };
+    const openConnectExchangeModal = () => {
+      if (document.getElementById("topbar-connect-exchange-btn")) {
+        document.getElementById("topbar-connect-exchange-btn").click();
+      }
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -113,6 +132,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditMailIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openEmailModal}
         />
       );
     } else if (whichBlock === "wallet_connected") {
@@ -123,6 +143,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openConnectWalletModal}
         />
       );
     } else if (whichBlock === "exchange_connected") {
@@ -133,6 +154,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openConnectExchangeModal}
+        />
+      );
+    } else if (whichBlock === "multiple_address_added") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Add multiple wallet address"
+          earnPoints={3}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openAddressModal}
         />
       );
     }

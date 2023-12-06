@@ -845,10 +845,20 @@ class FixAddModal extends BaseReactComponent {
               creditIsAddress = true;
             }
           }
+
           if (creditIsAddress) {
+            // Single address
             const addressCreditScore = new URLSearchParams();
             addressCreditScore.append("credits", "address_added");
             this.props.addUserCredits(addressCreditScore);
+
+            // Multiple address
+            const multipleAddressCreditScore = new URLSearchParams();
+            multipleAddressCreditScore.append(
+              "credits",
+              "multiple_address_added"
+            );
+            this.props.addUserCredits(multipleAddressCreditScore);
           }
           if (creditIsEns) {
             const ensCreditScore = new URLSearchParams();
