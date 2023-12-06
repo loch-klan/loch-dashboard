@@ -839,25 +839,13 @@ class AddWallet extends BaseReactComponent {
         }
       }
       if (creditIsAddress) {
-        // Single address
-        const addressCreditScore = new URLSearchParams();
-        addressCreditScore.append("credits", "address_added");
-        this.props.addUserCredits(addressCreditScore);
-
+        window.sessionStorage.setItem("addAddressCreditOnce", true);
         if (addWallet.length > 1) {
-          // Multiple address
-          const multipleAddressCreditScore = new URLSearchParams();
-          multipleAddressCreditScore.append(
-            "credits",
-            "multiple_address_added"
-          );
-          this.props.addUserCredits(multipleAddressCreditScore);
+          window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
         }
       }
       if (creditIsEns) {
-        const ensCreditScore = new URLSearchParams();
-        ensCreditScore.append("credits", "ens_added");
-        this.props.addUserCredits(ensCreditScore);
+        window.sessionStorage.setItem("addEnsCreditOnce", true);
       }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
@@ -970,7 +958,7 @@ class AddWallet extends BaseReactComponent {
       if (creditIsAddress) {
         const addressCreditScore = new URLSearchParams();
         addressCreditScore.append("credits", "address_added");
-        this.props.addUserCredits(addressCreditScore);
+        // this.props.addUserCredits(addressCreditScore);
 
         if (addWallet.length > 1) {
           // Multiple address
@@ -979,13 +967,13 @@ class AddWallet extends BaseReactComponent {
             "credits",
             "multiple_address_added"
           );
-          this.props.addUserCredits(multipleAddressCreditScore);
+          // this.props.addUserCredits(multipleAddressCreditScore);
         }
       }
       if (creditIsEns) {
         const ensCreditScore = new URLSearchParams();
         ensCreditScore.append("credits", "ens_added");
-        this.props.addUserCredits(ensCreditScore);
+        // this.props.addUserCredits(ensCreditScore);
       }
 
       // if (!this.state.showWarningMsg) {

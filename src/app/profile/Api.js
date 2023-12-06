@@ -134,7 +134,7 @@ export const addUserCredits = (data) => {
     postLoginInstance
       .post("wallet/user-wallet/add-credits", data)
       .then((res) => {
-        console.log("add credits response ", res.data);
+        // console.log("add credits response ", res.data);
       })
       .catch((err) => {
         console.log("add credits error ", err);
