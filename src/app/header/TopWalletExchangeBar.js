@@ -5,6 +5,7 @@ import arrowUp from "../../assets/images/arrow-up.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
+import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
@@ -34,6 +35,7 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { ARCX_API_KEY } from "../../utils/Constant";
 class TopBar extends Component {
   constructor(props) {
     super(props);
@@ -421,7 +423,17 @@ class TopBar extends Component {
 
       try {
         const tempRes = await provider.send("eth_requestAccounts", []);
-
+        try {
+          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+          if (tempRes && tempRes.length > 0 && sdk) {
+            sdk.wallet({
+              account: tempRes[0],
+              chainId: window.ethereum.networkVersion,
+            });
+          }
+        } catch (error) {
+          console.log("ArcxAnalyticsSdk error ", error);
+        }
         if (tempRes && tempRes.length > 0) {
           this.addToList(tempRes);
         }
