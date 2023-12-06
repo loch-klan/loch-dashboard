@@ -350,6 +350,37 @@ class AddWallet extends BaseReactComponent {
     if (this.state.walletInput !== prevState.walletInput) {
       this.props.copyWalletAddress(this.state.walletInput);
     }
+    if (this.state.walletInput !== prevState.walletInput) {
+      let chainNotDetected = false;
+
+      this.state.walletInput.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
+    }
   }
 
   nicknameOnChain = (e) => {
@@ -650,6 +681,35 @@ class AddWallet extends BaseReactComponent {
               addButtonVisible: this.state.walletInput.some((wallet) =>
                 wallet.address ? true : false
               ),
+            });
+          }
+          let chainNotDetected = false;
+
+          this.state.walletInput.forEach((indiWallet) => {
+            let anyCoinPresent = false;
+            if (
+              indiWallet.coins &&
+              indiWallet.coinFound &&
+              indiWallet.coins.length > 0
+            ) {
+              indiWallet.coins.forEach((indiCoin) => {
+                if (indiCoin?.chain_detected) {
+                  anyCoinPresent = true;
+                }
+              });
+            }
+            if (!anyCoinPresent) {
+              chainNotDetected = true;
+            }
+          });
+
+          if (chainNotDetected) {
+            this.setState({
+              disableGoBtn: true,
+            });
+          } else {
+            this.setState({
+              disableGoBtn: false,
             });
           }
         }
@@ -1271,9 +1331,7 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  (this.state.addButtonVisible
-                    ? this.isDisabled(true)
-                    : false) || this.state.disableGoBtn
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
                   (this.state.addButtonVisible ? this.isDisabled() : true) ||
