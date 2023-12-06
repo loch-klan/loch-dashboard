@@ -86,6 +86,7 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
@@ -110,6 +111,7 @@ class Cost extends Component {
       gasFeesGraphLoading: true,
 
       AvgCostLoading: true,
+      showDust: true,
 
       // counter party
       // counterPartyData: [],
@@ -292,29 +294,41 @@ class Cost extends Component {
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
     ) {
-      let tempcombinedCostBasis = 0;
-      let tempcombinedCurrentValue = 0;
-      let tempcombinedUnrealizedGains = 0;
-      let tempcombinedReturn = 0;
-      if (this.props.intelligenceState?.net_return) {
-        tempcombinedReturn = this.props.intelligenceState?.net_return;
-      }
-      if (this.props.intelligenceState?.total_bal) {
-        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-      }
-      if (this.props.intelligenceState?.total_cost) {
-        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-      }
-      if (this.props.intelligenceState?.total_gain) {
-        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
-      }
+      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+        (e) => e.CurrentValue < 1
+      );
 
-      this.setState({
-        combinedCostBasis: tempcombinedCostBasis,
-        combinedCurrentValue: tempcombinedCurrentValue,
-        combinedUnrealizedGains: tempcombinedUnrealizedGains,
-        combinedReturn: tempcombinedReturn,
-      });
+      if (array.length > 0 && this.state.showDust) {
+        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+          (e) => e.CurrentValue >= 1
+        );
+        this.props.updateAverageCostBasis(array, this);
+      } else {
+        let tempcombinedCostBasis = 0;
+        let tempcombinedCurrentValue = 0;
+        let tempcombinedUnrealizedGains = 0;
+        let tempcombinedReturn = 0;
+        if (this.props.intelligenceState?.net_return) {
+          tempcombinedReturn = this.props.intelligenceState?.net_return;
+        }
+        if (this.props.intelligenceState?.total_bal) {
+          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+        }
+        if (this.props.intelligenceState?.total_cost) {
+          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+        }
+        if (this.props.intelligenceState?.total_gain) {
+          tempcombinedUnrealizedGains =
+            this.props.intelligenceState?.total_gain;
+        }
+
+        this.setState({
+          combinedCostBasis: tempcombinedCostBasis,
+          combinedCurrentValue: tempcombinedCurrentValue,
+          combinedUnrealizedGains: tempcombinedUnrealizedGains,
+          combinedReturn: tempcombinedReturn,
+        });
+      }
     }
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
@@ -687,21 +701,28 @@ class Cost extends Component {
     }
   };
 
-  handleDust = (ishide) => {
-    if (!ishide) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue >= 1
-      ); //all data
-      this.props.updateAverageCostBasis(array, this);
-    } else {
-      this.props.ResetAverageCostBasis(this);
-    }
+  handleDust = () => {
+    this.setState(
+      {
+        showDust: !this.state.showDust,
+      },
+      () => {
+        if (this.state.showDust) {
+          let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+            (e) => e.CurrentValue >= 1
+          ); //all data
+          this.props.updateAverageCostBasis(array, this);
+        } else {
+          this.props.ResetAverageCostBasis(this);
+        }
 
-    CostHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
+        CostHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.updateTimer();
+      }
+    );
   };
 
   handleShare = () => {
@@ -1283,6 +1304,8 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1381,6 +1404,7 @@ class Cost extends Component {
                   ishideDust={true}
                   totalPercentage={this.props.intelligenceState.totalPercentage}
                   handleDust={this.handleDust}
+                  showDust={this.state.showDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"

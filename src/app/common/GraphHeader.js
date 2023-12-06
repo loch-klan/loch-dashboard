@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Image } from "react-bootstrap";
+import { Button, Form, Image } from "react-bootstrap";
 import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
 import {
   TitleAssetValueHover,
@@ -16,15 +16,6 @@ import {
   ExportIcon,
 } from "../../assets/images/icons";
 export const GraphHeader = (props) => {
-  const [showDust, setDust] = useState(false);
-
-  const toggleDust = () => {
-    setDust(!showDust);
-
-    setTimeout(() => {
-      props.handleDust(showDust);
-    }, 200);
-  };
   const handleClickPass = () => {
     if (props.disableOnLoading) {
       if (!props.isLoading && props.handleClick) {
@@ -134,12 +125,29 @@ export const GraphHeader = (props) => {
         <div className="show-percentage-cost-basis">
           {props.ishideDust && (
             <div
-              className="inter-display-medium f-s-15 lh-15 cp grey-ADA dust-style m-r-12"
-              onClick={toggleDust}
+              onClick={props.handleDust}
+              className="pageHeaderShareContainer"
+              style={{ marginRight: props.ShareBtn ? "0.4rem" : "" }}
             >
-              {showDust
-                ? "Reveal dust (less than $1)"
-                : "Hide dust (less than $1)"}
+              <div className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                <Form.Check
+                  type="switch"
+                  checked={props.showDust}
+                  // onChange={(e) => {
+                  //   this.setState({
+                  //     switchselected: e.target.checked,
+                  //   });
+                  //   if (this.props.setSwitch) {
+                  //     this.props.setSwitch();
+                  //   }
+                  // }}
+                  label={
+                    props.showDust
+                      ? "Reveal dust (less than $1)"
+                      : "Hide dust (less than $1)"
+                  }
+                />
+              </div>
             </div>
           )}
           {props.isGainLoss && (

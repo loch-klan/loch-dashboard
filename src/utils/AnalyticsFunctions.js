@@ -3832,6 +3832,20 @@ export const UpgradeSignInPopup = ({ session_id, from }) => {
 };
 
 //14. Whale pods pop up: email added - done
+export const FollowSignInPopupEmailVerified = ({
+  session_id,
+  email_address,
+  from,
+}) => {
+  const event_name = "Follow sign in pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 export const FollowSignInPopupEmailAdded = ({
   session_id,
   email_address,
