@@ -255,6 +255,17 @@ export const LPC_Go = ({
 };
 
 //3. Landing Page Conversion:privacy message
+export const SmartMoneyButtonClickedWelcome = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Smart money clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const ConnectWalletButtonClickedWelcome = ({
   session_id,
   email_address,
@@ -1424,6 +1435,41 @@ export const CounterpartyFeesSpecificBar = ({
 };
 
 //84. Profile:first name added
+export const UserCreditGoClickedMP = ({ session_id, email_address, task }) => {
+  const event_name = "Profile:user credit: go clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    task: task,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Profile:first name added");
+};
+export const UserCreditRightScrollClickedMP = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Profile:user credit: right scroll clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Profile:first name added");
+};
+export const UserCreditLeftScrollClickedMP = ({
+  session_id,
+  email_address,
+  task,
+}) => {
+  const event_name = "Profile:user credit: left scroll clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Profile:first name added");
+};
 export const FirstNameAdded = ({ session_id, email_address, first_name }) => {
   const event_name = "Profile:first name added";
   const eventProperties = {

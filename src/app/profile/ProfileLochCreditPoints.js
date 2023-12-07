@@ -16,11 +16,19 @@ import {
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
 import { getUserCredits } from "./Api.js";
 import Loading from "../common/Loading.js";
+import { getCurrentUser } from "../../utils/ManageToken.js";
+import {
+  UserCreditGoClickedMP,
+  UserCreditLeftScrollClickedMP,
+  UserCreditRightScrollClickedMP,
+} from "../../utils/AnalyticsFunctions.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isLeftArrowDisabled: true,
+      isRightArrowDisabled: false,
       loading: false,
       lochScore: "",
       topPercentage: "",
@@ -36,7 +44,15 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       ],
     };
   }
+
   scrollRight = () => {
+    if (this.state.isRightArrowDisabled) {
+      return;
+    }
+    UserCreditRightScrollClickedMP({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
     var myElement = document.getElementById("profileCreditPointsScrollBody");
     var myElementWidth = document.getElementById(
       "profileCreditPointsScrollBody"
@@ -44,12 +60,32 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     var myElementCurrentScrollPos = document.getElementById(
       "profileCreditPointsScrollBody"
     ).scrollLeft;
+
+    const newPos = myElementCurrentScrollPos + myElementWidth;
     myElement.scroll({
-      left: myElementCurrentScrollPos + myElementWidth,
+      left: newPos,
       behavior: "smooth",
     });
+    if (newPos === (this.state.tasksList.length / 3 - 1) * myElementWidth) {
+      this.setState({
+        isRightArrowDisabled: true,
+        isLeftArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isRightArrowDisabled: false,
+        isLeftArrowDisabled: false,
+      });
+    }
   };
   scrollLeft = () => {
+    if (this.state.isLeftArrowDisabled) {
+      return;
+    }
+    UserCreditLeftScrollClickedMP({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
     var myElement = document.getElementById("profileCreditPointsScrollBody");
     var myElementWidth = document.getElementById(
       "profileCreditPointsScrollBody"
@@ -57,14 +93,62 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     var myElementCurrentScrollPos = document.getElementById(
       "profileCreditPointsScrollBody"
     ).scrollLeft;
+    const newPos = myElementCurrentScrollPos - myElementWidth;
+
     myElement.scroll({
-      left: myElementCurrentScrollPos - myElementWidth,
+      left: newPos,
       behavior: "smooth",
     });
+
+    if (newPos <= 0) {
+      this.setState({
+        isLeftArrowDisabled: true,
+        isRightArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isLeftArrowDisabled: false,
+        isRightArrowDisabled: false,
+      });
+    }
+  };
+  handleCreditScroll = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      var myElementWidth = document.getElementById(
+        "profileCreditPointsScrollBody"
+      ).clientWidth;
+      var newPos = document.getElementById(
+        "profileCreditPointsScrollBody"
+      ).scrollLeft;
+
+      if (newPos === 0) {
+        this.setState({
+          isLeftArrowDisabled: true,
+          isRightArrowDisabled: false,
+        });
+      } else if (
+        newPos ===
+        (this.state.tasksList.length / 3 - 1) * myElementWidth
+      ) {
+        this.setState({
+          isLeftArrowDisabled: false,
+          isRightArrowDisabled: true,
+        });
+      } else {
+        this.setState({
+          isLeftArrowDisabled: false,
+          isRightArrowDisabled: false,
+        });
+      }
+    }, 150);
   };
   componentDidMount() {
     this.callApi();
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.isUpdate !== prevProps.isUpdate) {
       this.callApi();
@@ -102,6 +186,55 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         document.getElementById("topbar-connect-exchange-btn").click();
       }
     };
+
+    const goClickAddAddress = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Added one wallet address",
+      });
+      openAddressModal();
+    };
+    const goClickAddEns = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Added one ENS",
+      });
+      openAddressModal();
+    };
+    const goClickAddTwoOrMoreAddresses = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Added two or more wallet addresses",
+      });
+      openAddressModal();
+    };
+    const goClickAddEmail = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Verified email",
+      });
+      openEmailModal();
+    };
+    const goClickConnectWallet = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Connected wallet",
+      });
+      openConnectWalletModal();
+    };
+    const goClickConnectExchange = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Connected exchange",
+      });
+      openConnectExchangeModal();
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -110,7 +243,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openAddressModal}
+          onClick={goClickAddAddress}
         />
       );
     } else if (whichBlock === "ens_added") {
@@ -121,7 +254,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditDiamondIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openAddressModal}
+          onClick={goClickAddEns}
         />
       );
     } else if (whichBlock === "email_added") {
@@ -132,7 +265,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditMailIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openEmailModal}
+          onClick={goClickAddEmail}
         />
       );
     } else if (whichBlock === "wallet_connected") {
@@ -143,7 +276,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openConnectWalletModal}
+          onClick={goClickConnectWallet}
         />
       );
     } else if (whichBlock === "multiple_address_added") {
@@ -154,7 +287,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openAddressModal}
+          onClick={goClickAddTwoOrMoreAddresses}
         />
       );
     } else if (whichBlock === "exchange_connected") {
@@ -165,7 +298,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openConnectExchangeModal}
+          onClick={goClickConnectExchange}
         />
       );
     }
@@ -195,7 +328,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             <div>
               <span className="profileCreditPointsHeaderLeftGreyText inter-display-medium f-s-13">
                 <span className="profileCreditPointsHeaderLeftGreenText">
-                  {this.state.tasksDone.length} steps
+                  {this.state.tasksDone.length > this.state.tasksList.length
+                    ? this.state.tasksList.length
+                    : this.state.tasksDone.length}{" "}
+                  steps
                 </span>
                 {this.state.tasksList && this.state.tasksList.length > 0
                   ? ` out of ${this.state.tasksList.length} steps`
@@ -225,12 +361,16 @@ class ProfileLochCreditPoints extends BaseReactComponent {
               style={{
                 marginRight: "3rem",
                 marginLeft: "2.5rem",
+                opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
               }}
               onClick={this.scrollLeft}
               className="profileCreditPointsHeaderRightArrowIcon"
               src={UserCreditScrollLeftArrowIcon}
             />
             <Image
+              style={{
+                opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
+              }}
               onClick={this.scrollRight}
               className="profileCreditPointsHeaderRightArrowIcon"
               src={UserCreditScrollRightArrowIcon}
@@ -241,7 +381,9 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           <div
             style={{
               width: `${
-                (this.state.tasksDone.length / this.state.tasksList.length) *
+                (this.state.tasksDone.length > this.state.tasksList.length
+                  ? this.state.tasksList.length
+                  : this.state.tasksDone.length / this.state.tasksList.length) *
                 100
               }%`,
             }}
@@ -252,10 +394,22 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         <div
           id="profileCreditPointsScrollBody"
           className="profileCreditPointsBody"
+          onScroll={this.handleCreditScroll}
         >
-          {this.state.tasksList.map((singleTask, singleTaskIndex) => {
-            return this.returnWhichBlock(singleTask, singleTaskIndex);
-          })}
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(0, 3)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(3, 6)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
           {/* <ProfileLochCreditPointsBlock
             title="Add a wallet address"
             earnPoints={1}

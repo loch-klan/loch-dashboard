@@ -228,73 +228,82 @@
         }
       }
       .profileCreditPointsBody {
-        padding: 2.5rem;
+        padding: 2.5rem 0rem;
         display: flex;
         align-items: center;
         overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        // -webkit-overflow-scrolling: touch;
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;
         }
-        .profileLochCreditPointsBlock {
+        .profileCreditPointsSection {
           display: flex;
           align-items: center;
-
-          .profileLochCreditPointsBlockIconContainer {
-            min-height: 5rem;
-            min-width: 5rem;
-            max-height: 5rem;
-            max-width: 5rem;
-            border-radius: 1.2rem;
-            background-color: #e5e5e680;
+          min-width: 100%;
+          justify-content: space-around;
+          scroll-snap-align: start;
+          .profileLochCreditPointsBlock {
             display: flex;
             align-items: center;
-            justify-content: center;
-            .profileLochCreditPointsBlockIcon {
-              min-height: 2rem;
-              min-width: 2rem;
-              max-height: 2rem;
-              max-width: 2rem;
-            }
-          }
-          .profileLochCreditPointsBlockInfoBlock {
-            margin-left: 1.5rem;
-            white-space: nowrap;
-            .profileLochCreditPointsBlockInfoBlockDescContainer {
+            .profileLochCreditPointsBlockIconContainer {
+              min-height: 5rem;
+              min-width: 5rem;
+              max-height: 5rem;
+              max-width: 5rem;
+              border-radius: 1.2rem;
+              background-color: #e5e5e680;
               display: flex;
-              margin-top: 0.5rem;
-              min-width: 15rem;
-              justify-content: space-between;
-              .profileLochCreditPointsBlockInfoBlockDesc {
-                color: #96979a;
-                .profileLochCreditPointsBlockInfoBlockDescPoints {
-                  padding: 0.3rem 0.5rem;
-                  border-radius: 0.5rem;
-                  margin-left: 0.3rem;
-                }
-                .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
-                  background-color: #fcebd780;
-                  color: #f19938;
-                }
-                .profileLochCreditPointsBlockInfoBlockDescPointsDone {
-                  background-color: #bdfadea7;
-                  color: #18c278;
-                }
+              align-items: center;
+              justify-content: center;
+              .profileLochCreditPointsBlockIcon {
+                min-height: 2rem;
+                min-width: 2rem;
+                max-height: 2rem;
+                max-width: 2rem;
               }
-              .profileLochCreditPointsBlockInfoBlockDescGoContainer {
+            }
+            .profileLochCreditPointsBlockInfoBlock {
+              margin-left: 1.5rem;
+              white-space: nowrap;
+              .profileLochCreditPointsBlockInfoBlockDescContainer {
                 display: flex;
-                align-items: center;
-                transition-duration: 300ms;
-                &:hover {
-                  opacity: 0.5;
+                margin-top: 0.5rem;
+                min-width: 15rem;
+                justify-content: space-between;
+                .profileLochCreditPointsBlockInfoBlockDesc {
+                  color: #96979a;
+                  .profileLochCreditPointsBlockInfoBlockDescPoints {
+                    padding: 0.3rem 0.5rem;
+                    border-radius: 0.5rem;
+                    margin-left: 0.3rem;
+                  }
+                  .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
+                    background-color: #fcebd780;
+                    color: #f19938;
+                  }
+                  .profileLochCreditPointsBlockInfoBlockDescPointsDone {
+                    background-color: #bdfadea7;
+                    color: #18c278;
+                  }
                 }
-                cursor: pointer;
-                .profileLochCreditPointsBlockInfoBlockDescGo {
-                  font-weight: 600;
-                }
-                .profileLochCreditPointsBlockInfoBlockDescGoIcon {
-                  height: 12px;
-                  margin-left: 0.5rem;
+                .profileLochCreditPointsBlockInfoBlockDescGoContainer {
+                  display: flex;
+                  align-items: center;
+                  transition-duration: 300ms;
+                  &:hover {
+                    opacity: 0.5;
+                  }
+                  cursor: pointer;
+                  .profileLochCreditPointsBlockInfoBlockDescGo {
+                    font-weight: 600;
+                  }
+                  .profileLochCreditPointsBlockInfoBlockDescGoIcon {
+                    height: 12px;
+                    margin-left: 0.5rem;
+                  }
                 }
               }
             }
