@@ -31,8 +31,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "ens_added",
         "email_added",
         "wallet_connected",
-        "exchange_connected",
         "multiple_address_added",
+        "exchange_connected",
       ],
     };
   }
@@ -105,7 +105,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Add a wallet address"
+          title="Added one wallet address"
           earnPoints={1}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -116,7 +116,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "ens_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Add one ENS"
+          title="Added one ENS"
           earnPoints={2}
           imageIcon={UserCreditDiamondIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -127,7 +127,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "email_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Add email address"
+          title="Verified email"
           earnPoints={3}
           imageIcon={UserCreditMailIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -138,34 +138,34 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "wallet_connected") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Connect a wallet"
-          earnPoints={3}
+          title="Connected wallet"
+          earnPoints={4}
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={openConnectWalletModal}
         />
       );
-    } else if (whichBlock === "exchange_connected") {
-      return (
-        <ProfileLochCreditPointsBlock
-          title="Connect exchange"
-          earnPoints={3}
-          imageIcon={UserCreditLinkIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
-          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={openConnectExchangeModal}
-        />
-      );
     } else if (whichBlock === "multiple_address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Add multiple wallet address"
+          title="Added two or more wallet addresses"
           earnPoints={3}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={openAddressModal}
+        />
+      );
+    } else if (whichBlock === "exchange_connected") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Connected exchange"
+          earnPoints={3}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={openConnectExchangeModal}
         />
       );
     }
@@ -192,12 +192,24 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             <div className="inter-display-medium f-s-20">
               Collect Loch points
             </div>
+            <div>
+              <span className="profileCreditPointsHeaderLeftGreyText inter-display-medium f-s-13">
+                <span className="profileCreditPointsHeaderLeftGreenText">
+                  {this.state.tasksDone.length} steps
+                </span>
+                {this.state.tasksList && this.state.tasksList.length > 0
+                  ? ` out of ${this.state.tasksList.length} steps`
+                  : ""}
+              </span>
+            </div>
           </div>
           <div className="profileCreditPointsHeaderRight">
             {this.state.lochScore ? (
               <div className="inter-display-medium f-s-13">
                 <span className="profileCreditPointsHeaderRightGreyText">
-                  Your Loch score is {this.state.lochScore}
+                  <span className="profileCreditPointsHeaderRightYellowText">
+                    Your Loch score is {this.state.lochScore}
+                  </span>
                   {this.state.topPercentage
                     ? `, which puts you in
                   the top ${this.state.topPercentage}% of users`
@@ -225,7 +237,17 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             />
           </div>
         </div>
-        <div className="profileCreditPointsDivider" />
+        <div className="profileCreditPointsDividerContainer">
+          <div
+            style={{
+              width: `${
+                (this.state.tasksDone.length / this.state.tasksList.length) *
+                100
+              }%`,
+            }}
+            className="profileCreditPointsDivider"
+          ></div>
+        </div>
 
         <div
           id="profileCreditPointsScrollBody"

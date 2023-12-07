@@ -185,6 +185,15 @@
             height: 22px;
             margin-right: 10px;
           }
+          .profileCreditPointsHeaderLeftGreyText {
+            color: #b0b1b3;
+            font-weight: 500;
+            margin-left: 10px;
+          }
+          .profileCreditPointsHeaderLeftGreenText {
+            color: #18c278;
+            font-weight: 500;
+          }
         }
         .profileCreditPointsHeaderRight {
           display: flex;
@@ -208,8 +217,15 @@
           }
         }
       }
-      .profileCreditPointsDivider {
-        border-bottom: 0.06rem solid #e5e5e6;
+      .profileCreditPointsDividerContainer {
+        border-bottom: 0.25rem solid #e5e5e6;
+        position: relative;
+        .profileCreditPointsDivider {
+          border-bottom: 0.25rem solid #18c278;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
       .profileCreditPointsBody {
         padding: 2.5rem;
@@ -251,6 +267,19 @@
               justify-content: space-between;
               .profileLochCreditPointsBlockInfoBlockDesc {
                 color: #96979a;
+                .profileLochCreditPointsBlockInfoBlockDescPoints {
+                  padding: 0.3rem 0.5rem;
+                  border-radius: 0.5rem;
+                  margin-left: 0.3rem;
+                }
+                .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
+                  background-color: #fcebd780;
+                  color: #f19938;
+                }
+                .profileLochCreditPointsBlockInfoBlockDescPointsDone {
+                  background-color: #bdfadea7;
+                  color: #18c278;
+                }
               }
               .profileLochCreditPointsBlockInfoBlockDescGoContainer {
                 display: flex;
