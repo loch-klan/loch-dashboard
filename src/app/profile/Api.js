@@ -96,7 +96,6 @@ export const getUserCredits = (ctx) => {
     postLoginInstance
       .post("wallet/user-wallet/get-credits")
       .then((res) => {
-        console.log("get credits response ", res.data);
         if (ctx) {
           ctx.setState({
             loading: false,

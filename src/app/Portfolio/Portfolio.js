@@ -392,6 +392,16 @@ class Portfolio extends BaseReactComponent {
         ensCreditScore.append("credits", "ens_added");
         this.props.addUserCredits(ensCreditScore);
       }
+
+      const walletCredit = window.sessionStorage.getItem(
+        "connectWalletCreditOnce"
+      );
+      if (walletCredit) {
+        window.sessionStorage.removeItem("connectWalletCreditOnce");
+        const walletCreditScore = new URLSearchParams();
+        walletCreditScore.append("credits", "wallet_connected");
+        this.props.addUserCredits(walletCreditScore);
+      }
       if (obj.trigger) {
         this.setState(
           {
