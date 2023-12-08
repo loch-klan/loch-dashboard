@@ -46,6 +46,7 @@ import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);

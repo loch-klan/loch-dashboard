@@ -693,7 +693,6 @@ class FollowExitOverlay extends BaseReactComponent {
         FollowSignUpPopupEmailAdded({
           session_id: getCurrentUser().id,
           email_address: this.state.email,
-          from: "Follow sign up popup",
         });
         if (this.props.updateTimer) {
           this.props.updateTimer();

@@ -29,6 +29,7 @@ import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
 import { setHeaderReducer } from "../header/HeaderAction";
 import {
+  AddTextboxHome,
   AddWalletAddress,
   AddWalletAddressNickname,
   AddWalletAddressPodName,
@@ -624,6 +625,9 @@ class FixAddModal extends BaseReactComponent {
   }
 
   addAddress = () => {
+    AddTextboxHome({
+      session_id: getCurrentUser().id,
+    });
     // console.log(this.state.addWalletList.length, this.state.total_addresses);
     let total =
       this.state.addWalletList.length +

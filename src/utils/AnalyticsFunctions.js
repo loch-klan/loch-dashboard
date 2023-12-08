@@ -1589,6 +1589,23 @@ export const AddTextbox = ({ session_id }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
 };
+export const AddTextboxHome = ({ session_id }) => {
+  const event_name = "Home Page: add textbox";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+export const ClickTrendingAddress = ({ session_id, address }) => {
+  const event_name = "Landing Page Conversion: trending address clicked";
+  const eventProperties = {
+    "session id": session_id,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
 
 //94. Landing Page Conversion:Email not Found
 export const EmailNotFound = ({ session_id, email_address }) => {
@@ -3881,41 +3898,29 @@ export const UpgradeSignInPopup = ({ session_id, from }) => {
 export const FollowSignInPopupEmailVerified = ({
   session_id,
   email_address,
-  from,
 }) => {
   const event_name = "Follow sign in pop up: email verified";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    from: from,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
-export const FollowSignInPopupEmailAdded = ({
-  session_id,
-  email_address,
-  from,
-}) => {
+export const FollowSignInPopupEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Follow sign in pop up: email added";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    from: from,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
-export const FollowSignUpPopupEmailAdded = ({
-  session_id,
-  email_address,
-  from,
-}) => {
+export const FollowSignUpPopupEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Follow sign up pop up: email added";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    from: from,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");

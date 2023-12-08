@@ -10,7 +10,7 @@ import {
   SigninModalTrack,
   signInUser,
   signUpProperties,
-  FollowSignInPopupEmailAdded,
+
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
