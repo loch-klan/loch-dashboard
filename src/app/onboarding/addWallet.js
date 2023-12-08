@@ -339,9 +339,6 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
         wallet.address ? true : false
