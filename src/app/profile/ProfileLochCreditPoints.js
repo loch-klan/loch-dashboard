@@ -242,7 +242,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added one wallet address"
+          title="Added one address"
           earnPoints={1}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -286,7 +286,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "multiple_address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added two or more wallet addresses"
+          title="Added two or more addresses"
           earnPoints={3}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -328,19 +328,6 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             />
             <div className="inter-display-medium f-s-20">
               Collect Loch points
-            </div>
-            <div>
-              <span className="profileCreditPointsHeaderLeftGreyText inter-display-medium f-s-13">
-                <span className="profileCreditPointsHeaderLeftGreenText">
-                  {this.state.tasksDone.length > this.state.tasksList.length
-                    ? this.state.tasksList.length
-                    : this.state.tasksDone.length}{" "}
-                  steps
-                </span>
-                {this.state.tasksList && this.state.tasksList.length > 0
-                  ? ` out of ${this.state.tasksList.length} steps`
-                  : ""}
-              </span>
             </div>
           </div>
           <div className="profileCreditPointsHeaderRight">
