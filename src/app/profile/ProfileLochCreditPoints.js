@@ -152,6 +152,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   componentDidUpdate(prevProps) {
     if (this.props.isUpdate !== prevProps.isUpdate) {
       this.callApi();
+      this.setState({
+        isLeftArrowDisabled: true,
+        isRightArrowDisabled: false,
+      });
     }
   }
   callApi() {
