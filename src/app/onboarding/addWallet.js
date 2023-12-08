@@ -22,6 +22,7 @@ import {
   AddWalletAddress,
   AddTextbox,
   LPC_Go,
+  ClickTrendingAddress,
 } from "../../utils/AnalyticsFunctions.js";
 
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -41,11 +42,32 @@ import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 import { addExchangeTransaction } from "../home/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions.js";
+import {
+  TrendingFireIcon,
+  TrendingWalletIcon,
+} from "../../assets/images/icons/index.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      trendingAddresses: [
+        {
+          address: "vitalik.eth",
+          worth: 2162982.013,
+          trimmedAddress: "vitalik.eth",
+        },
+        {
+          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+          worth: 41734020.159,
+          trimmedAddress: "0x3e8...90c",
+        },
+        {
+          address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+          worth: 10687714.477,
+          trimmedAddress: "0x26f...5b5",
+        },
+      ],
       showModal: true,
       signIn: false,
       addButtonVisible: false,
@@ -98,7 +120,19 @@ class AddWallet extends BaseReactComponent {
   // upload csv
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
-
+  addTrendingAddress = (passedAddress) => {
+    ClickTrendingAddress({
+      session_id: getCurrentUser().id,
+      address: passedAddress,
+    });
+    const fakeElement = {
+      target: {
+        name: "wallet1",
+        value: passedAddress,
+      },
+    };
+    this.handleOnChange(fakeElement);
+  };
   EmailNotification = () => {
     // send notification for that user
     this.setState(
@@ -651,7 +685,9 @@ class AddWallet extends BaseReactComponent {
       this.setState({
         walletInput: this.state.walletInput,
       });
-      AddTextbox({});
+      AddTextbox({
+        session_id: getCurrentUser().id,
+      });
     } else {
       this.setState(
         {
@@ -1281,6 +1317,58 @@ class AddWallet extends BaseReactComponent {
                 <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another
                 </Button>
+              </div>
+            ) : null}
+            {this.state.walletInput &&
+            !this.state.walletInput[0].address &&
+            this.state.walletInput.length === 1 ? (
+              <div className="trendingAddressesContainer">
+                <div className="trendingAddressesBlock">
+                  <div className="trendingAddressesBlockHeader">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="trendingAddressesBlockFire"
+                    />
+                    <div className="inter-display-medium f-s-16 lh-15 ml-2 mr-2">
+                      Trending addresses
+                    </div>
+                    <div className="inter-display-medium f-s-12 lh-15 trendingAddressesBlockSubText">
+                      Most-visited addresses in the last 24 hours
+                    </div>
+                  </div>
+                  <div className="trendingAddressesBlockList">
+                    {this.state.trendingAddresses.map((data) => {
+                      return (
+                        <div className="trendingAddressesBlockItemContainer">
+                          <div
+                            onClick={() => {
+                              this.addTrendingAddress(data.address);
+                            }}
+                            className="trendingAddressesBlockItem"
+                          >
+                            <div className="trendingAddressesBlockItemWalletContainer">
+                              <Image
+                                className="trendingAddressesBlockItemWallet"
+                                src={TrendingWalletIcon}
+                              />
+                            </div>
+                            <div className="trendingAddressesBlockItemDataContainer">
+                              <div className="inter-display-medium f-s-13">
+                                {data.trimmedAddress}
+                              </div>
+                              <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                                $
+                                {numToCurrency(
+                                  data.worth.toFixed(2)
+                                ).toLocaleString("en-US")}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             ) : null}
 
