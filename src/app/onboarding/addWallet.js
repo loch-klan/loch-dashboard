@@ -40,6 +40,8 @@ import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 import { addExchangeTransaction } from "../home/Api";
+import { addUserCredits } from "../profile/Api.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -303,6 +305,9 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
         wallet.address ? true : false
@@ -344,6 +349,37 @@ class AddWallet extends BaseReactComponent {
     }
     if (this.state.walletInput !== prevState.walletInput) {
       this.props.copyWalletAddress(this.state.walletInput);
+    }
+    if (this.state.walletInput !== prevState.walletInput) {
+      let chainNotDetected = false;
+
+      this.state.walletInput.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
     }
   }
 
@@ -647,6 +683,35 @@ class AddWallet extends BaseReactComponent {
               ),
             });
           }
+          let chainNotDetected = false;
+
+          this.state.walletInput.forEach((indiWallet) => {
+            let anyCoinPresent = false;
+            if (
+              indiWallet.coins &&
+              indiWallet.coinFound &&
+              indiWallet.coins.length > 0
+            ) {
+              indiWallet.coins.forEach((indiCoin) => {
+                if (indiCoin?.chain_detected) {
+                  anyCoinPresent = true;
+                }
+              });
+            }
+            if (!anyCoinPresent) {
+              chainNotDetected = true;
+            }
+          });
+
+          if (chainNotDetected) {
+            this.setState({
+              disableGoBtn: true,
+            });
+          } else {
+            this.setState({
+              disableGoBtn: false,
+            });
+          }
         }
       );
     }
@@ -760,7 +825,28 @@ class AddWallet extends BaseReactComponent {
           id: `wallet${index + 1}`,
         };
       });
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
 
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        window.sessionStorage.setItem("addAddressCreditOnce", true);
+        if (addWallet.length > 1) {
+          window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        }
+      }
+      if (creditIsEns) {
+        window.sessionStorage.setItem("addEnsCreditOnce", true);
+      }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -852,10 +938,43 @@ class AddWallet extends BaseReactComponent {
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
-      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
       yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
       this.props.updateUserWalletApi(data, this, yieldData);
+
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
+
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credits", "address_added");
+        // this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          // this.props.addUserCredits(multipleAddressCreditScore);
+        }
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credits", "ens_added");
+        // this.props.addUserCredits(ensCreditScore);
+      }
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -1221,9 +1340,7 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  (this.state.addButtonVisible
-                    ? this.isDisabled(true)
-                    : false) || this.state.disableGoBtn
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
                   (this.state.addButtonVisible ? this.isDisabled() : true) ||
@@ -1410,6 +1527,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   GetAllPlan,
   addExchangeTransaction,
+  addUserCredits,
 };
 AddWallet.propTypes = {};
 

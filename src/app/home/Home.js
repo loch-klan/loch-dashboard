@@ -33,6 +33,7 @@ import {
   LPConnectExchange,
   LPDiscover,
   ConnectWalletButtonClickedWelcome,
+  SmartMoneyButtonClickedWelcome,
 } from "../../utils/AnalyticsFunctions";
 import {
   CompassWhiteIcon,
@@ -135,6 +136,10 @@ class Home extends BaseReactComponent {
     // this.props.history.push(`/top-accounts`);
   };
   goToSmartMoney = () => {
+    SmartMoneyButtonClickedWelcome({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
     let shareLink = BASE_URL_S3 + "smart-money";
     window.open(shareLink, "_blank", "noreferrer");
   };
@@ -150,6 +155,7 @@ class Home extends BaseReactComponent {
         const tempRes = await provider.send("eth_requestAccounts", []);
 
         if (tempRes && tempRes.length > 0) {
+          window.sessionStorage.setItem("connectWalletCreditOnce", true);
           this.addToList(tempRes);
         }
       } catch (error) {
