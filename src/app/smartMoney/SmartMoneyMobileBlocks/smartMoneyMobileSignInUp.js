@@ -35,7 +35,9 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       isSignInOtpPage: false,
 
       signInUpTitle: "Sign in",
-      signInUpSubTitle: "Get right back into your account",
+      signInUpSubTitle: props.showClickSignInText
+        ? "Sign in to access the smartest money on-chain"
+        : "Get right back into your account",
       signInUpBtnText: "Send verification",
       signInUpIsBtnDisabled: true,
       signInUpInputPlaceHolder: "Email",
@@ -103,7 +105,9 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       isSignInOtpPage: false,
       signInEmail: "",
       signInUpTitle: "Sign in",
-      signInUpSubTitle: "Get right back into your account",
+      signInUpSubTitle: this.props.showClickSignInText
+        ? "Sign in to access the smartest money on-chain"
+        : "Get right back into your account",
       signInUpBtnText: "Send verification",
       signInUpInputPlaceHolder: "Email",
       signInUpIsBtnDisabled: true,
