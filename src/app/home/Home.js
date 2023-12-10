@@ -923,7 +923,7 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
       });
