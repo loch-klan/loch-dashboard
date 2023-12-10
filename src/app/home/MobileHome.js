@@ -3,8 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import "../../assets/scss/onboarding/_onboarding.scss";
-import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-import { Button, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
@@ -23,6 +22,8 @@ import {
   CloseIcon,
   LochLogoWhiteIcon,
   MobileSearchGreyIcon,
+  TrendingFireIcon,
+  TrendingWalletIcon,
 } from "../../assets/images/icons";
 import LochBlackLogo from "../../image/Loch.svg";
 import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
@@ -35,10 +36,12 @@ import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import "./_welcomeMobilePage.scss";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { numToCurrency } from "../../utils/ReusableFunctions";
 class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isTrendingAddresses: true,
       startTime: "",
       showWhiteLogo: false,
       showBlackLogo: false,
@@ -53,7 +56,7 @@ class MobileHome extends BaseReactComponent {
           wallet_metadata: {},
           nickname: "",
           showAddress: true,
-          showNickname: false,
+          showNickname: true,
           showNameTag: true,
           apiAddress: "",
         },
@@ -64,42 +67,6 @@ class MobileHome extends BaseReactComponent {
       showCloseBtn: false,
     };
   }
-  FocusInInput = (e) => {
-    let { name } = e.target;
-    let walletCopy = [...this.state.addWalletList];
-
-    walletCopy?.forEach((address, i) => {
-      if (address.id === name) {
-        walletCopy[i].showAddress = true;
-        walletCopy[i].showNickname = true;
-      } else {
-        walletCopy[i].showAddress =
-          walletCopy[i].nickname === "" ? true : false;
-        walletCopy[i].showNickname =
-          walletCopy[i].nickname !== "" ? true : false;
-      }
-    });
-
-    this.setState({
-      addWalletList: walletCopy,
-    });
-  };
-  addInputField = () => {
-    this.state.addWalletList.push({
-      id: `wallet${this.state.addWalletList.length + 1}`,
-      address: "",
-      coins: [],
-      nickname: "",
-      showAddress: true,
-      showNickname: false,
-      showNameTag: true,
-      nameTag: "",
-    });
-    this.setState({
-      addWalletList: this.state.addWalletList,
-    });
-    // AddTextbox({});
-  };
   whiteLogoIconLoaded = () => {
     this.setState({
       showWhiteLogo: true,
@@ -217,6 +184,9 @@ class MobileHome extends BaseReactComponent {
     this.setState({
       showBorder: true,
     });
+    if (this.props.makeTrendingAddressesVisible) {
+      this.props.makeTrendingAddressesVisible();
+    }
   };
   hideBorder = () => {
     this.setState({
@@ -553,15 +523,10 @@ class MobileHome extends BaseReactComponent {
   render() {
     const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
-        <div
-          style={{
-            marginTop: index > 0 ? "2rem" : "",
-          }}
-          className="mwbAddWalletWrapper inter-display-regular f-s-15 lh-20"
-        >
+        <div className="mwbAddWalletWrapper inter-display-regular f-s-15 lh-20">
           <div
             className={`mwbAwInputWrapper ${
-              elem.showNickname || this.state.showBorder
+              elem.displayAddress || this.state.showBorder
                 ? "mwbAwInputWrapperSelected"
                 : ""
             }`}
@@ -599,57 +564,12 @@ class MobileHome extends BaseReactComponent {
                     onChange={(e) => this.handleOnchange(e)}
                     id={elem.id}
                     onKeyDown={this.handleTabPress}
-                    onFocus={(e) => {
-                      this.FocusInInput(e);
-                    }}
+                    onFocus={this.showBorder}
                     onBlur={this.hideBorder}
                     autocomplete="off"
                     onSubmit={this.onValidSubmit}
                   />
                 </form>
-                {this.state.addWalletList?.map((e, i) => {
-                  if (
-                    this.state.addWalletList[index].address &&
-                    e.id === `wallet${index + 1}`
-                  ) {
-                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                    if (e.coinFound && e.coins.length > 0) {
-                      return (
-                        <CustomCoin
-                          isStatic
-                          coins={e.coins.filter((c) => c.chain_detected)}
-                          key={i}
-                          isLoaded={true}
-                        />
-                      );
-                    } else {
-                      if (
-                        e.coins.length ===
-                        this.props.OnboardingState.coinsList.length
-                      ) {
-                        return (
-                          <CustomCoin
-                            isStatic
-                            coins={null}
-                            key={i}
-                            isLoaded={true}
-                          />
-                        );
-                      } else {
-                        return (
-                          <CustomCoin
-                            isStatic
-                            coins={null}
-                            key={i}
-                            isLoaded={false}
-                          />
-                        );
-                      }
-                    }
-                  } else {
-                    return "";
-                  }
-                })}
               </div>
             )}
           </div>
@@ -696,28 +616,72 @@ class MobileHome extends BaseReactComponent {
             </div>
           </div>
           <div className="mwbAddWalletWrapperContainer">
-            <div className="mwbAddWalletWrapperWalletsContainer">{wallets}</div>
-            {this.state.addWalletList ? (
+            {wallets}
+            {this.state.addWalletList &&
+            this.state.addWalletList[0].displayAddress ? (
               <div className="mwbAddWalletBtnContainer">
-                {this.state.addWalletList.length < 10 ? (
-                  <div className="addAnotherBtnContainer">
-                    <Button
-                      className="grey-btn w-100"
-                      onClick={this.addInputField}
-                    >
-                      <Image src={PlusIcon} />
-                      Add another
-                    </Button>
-                  </div>
-                ) : null}
                 <CustomButton
                   className="inter-display-regular f-s-15 lh-20 mwbAddWalletBtn"
                   type="submit"
                   handleClick={this.onValidSubmit}
-                  // isLoading={this.state.coinsLoading}
+                  isLoading={this.state.coinsLoading}
                   isDisabled={!this.state.coinsFound}
                   buttonText="Go"
                 />
+              </div>
+            ) : null}
+            {this.state.addWalletList &&
+            !this.state.addWalletList[0].address &&
+            this.state.addWalletList.length === 1 &&
+            this.props.isTrendingAddresses ? (
+              <div className="trendingAddressesMobileContainer">
+                <div className="trendingAddressesMobileBlock">
+                  <div className="trendingAddressesMobileBlockHeader">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="trendingAddressesMobileBlockFire"
+                    />
+                    <div className="inter-display-medium f-s-16 lh-15 ml-2 mr-2">
+                      Trending addresses
+                    </div>
+                    <div className="inter-display-medium f-s-12 lh-15 trendingAddressesMobileBlockSubText">
+                      Most-visited addresses in the last 24 hours
+                    </div>
+                  </div>
+                  <div className="trendingAddressesMobileBlockList">
+                    {this.props.trendingAddresses &&
+                      this.props.trendingAddresses.map((data, index) => {
+                        return (
+                          <div className="trendingAddressesMobileBlockItemContainer">
+                            <div
+                              onClick={() => {
+                                this.props.addTrendingAddress(index, true);
+                              }}
+                              className="trendingAddressesMobileBlockItem"
+                            >
+                              {/* <div className="trendingAddressesMobileBlockItemWalletContainer">
+                                <Image
+                                  className="trendingAddressesMobileBlockItemWallet"
+                                  src={TrendingWalletIcon}
+                                />
+                              </div> */}
+                              <div className="trendingAddressesMobileBlockItemDataContainer">
+                                <div className="inter-display-medium f-s-13">
+                                  {data.trimmedAddress}
+                                </div>
+                                <div className="inter-display-medium f-s-11 lh-15 trendingAddressesMobileBlockItemDataContainerAmount">
+                                  $
+                                  {numToCurrency(
+                                    data.worth.toFixed(2)
+                                  ).toLocaleString("en-US")}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
               </div>
             ) : null}
           </div>

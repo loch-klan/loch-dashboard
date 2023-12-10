@@ -51,23 +51,6 @@ class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      trendingAddresses: [
-        {
-          address: "vitalik.eth",
-          worth: 2162982.013,
-          trimmedAddress: "vitalik.eth",
-        },
-        {
-          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-          worth: 41734020.159,
-          trimmedAddress: "0x3e8...90c",
-        },
-        {
-          address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
-          worth: 10687714.477,
-          trimmedAddress: "0x26f...5b5",
-        },
-      ],
       showModal: true,
       signIn: false,
       addButtonVisible: false,
@@ -120,19 +103,7 @@ class AddWallet extends BaseReactComponent {
   // upload csv
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
-  addTrendingAddress = (passedAddress) => {
-    ClickTrendingAddress({
-      session_id: getCurrentUser().id,
-      address: passedAddress,
-    });
-    const fakeElement = {
-      target: {
-        name: "wallet1",
-        value: passedAddress,
-      },
-    };
-    this.handleOnChange(fakeElement);
-  };
+
   EmailNotification = () => {
     // send notification for that user
     this.setState(
@@ -339,9 +310,6 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
         wallet.address ? true : false
@@ -382,6 +350,7 @@ class AddWallet extends BaseReactComponent {
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
+      console.log("this.state.walletInput ", this.state.walletInput);
       this.props.copyWalletAddress(this.state.walletInput);
     }
     if (this.state.walletInput !== prevState.walletInput) {
@@ -1153,7 +1122,6 @@ class AddWallet extends BaseReactComponent {
                             <div className="awTopInputWrapper">
                               <div className="awInputContainer">
                                 <input
-                                  autoFocus
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
@@ -1163,6 +1131,14 @@ class AddWallet extends BaseReactComponent {
                                   onKeyDown={this.handleTabPress}
                                   onFocus={(e) => {
                                     this.FocusInInput(e);
+                                    this.setState({
+                                      isTrendingAddresses: true,
+                                    });
+                                    if (
+                                      this.props.makeTrendingAddressesVisible
+                                    ) {
+                                      this.props.makeTrendingAddressesVisible();
+                                    }
                                   }}
                                 />
                               </div>
@@ -1321,7 +1297,8 @@ class AddWallet extends BaseReactComponent {
             ) : null}
             {this.state.walletInput &&
             !this.state.walletInput[0].address &&
-            this.state.walletInput.length === 1 ? (
+            this.state.walletInput.length === 1 &&
+            this.props.isTrendingAddresses ? (
               <div className="trendingAddressesContainer">
                 <div className="trendingAddressesBlock">
                   <div className="trendingAddressesBlockHeader">
@@ -1337,36 +1314,37 @@ class AddWallet extends BaseReactComponent {
                     </div>
                   </div>
                   <div className="trendingAddressesBlockList">
-                    {this.state.trendingAddresses.map((data) => {
-                      return (
-                        <div className="trendingAddressesBlockItemContainer">
-                          <div
-                            onClick={() => {
-                              this.addTrendingAddress(data.address);
-                            }}
-                            className="trendingAddressesBlockItem"
-                          >
-                            <div className="trendingAddressesBlockItemWalletContainer">
-                              <Image
-                                className="trendingAddressesBlockItemWallet"
-                                src={TrendingWalletIcon}
-                              />
-                            </div>
-                            <div className="trendingAddressesBlockItemDataContainer">
-                              <div className="inter-display-medium f-s-13">
-                                {data.trimmedAddress}
+                    {this.props.trendingAddresses &&
+                      this.props.trendingAddresses.map((data, index) => {
+                        return (
+                          <div className="trendingAddressesBlockItemContainer">
+                            <div
+                              onClick={() => {
+                                this.props.addTrendingAddress(index, false);
+                              }}
+                              className="trendingAddressesBlockItem"
+                            >
+                              <div className="trendingAddressesBlockItemWalletContainer">
+                                <Image
+                                  className="trendingAddressesBlockItemWallet"
+                                  src={TrendingWalletIcon}
+                                />
                               </div>
-                              <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
-                                $
-                                {numToCurrency(
-                                  data.worth.toFixed(2)
-                                ).toLocaleString("en-US")}
+                              <div className="trendingAddressesBlockItemDataContainer">
+                                <div className="inter-display-medium f-s-13">
+                                  {data.trimmedAddress}
+                                </div>
+                                <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                                  $
+                                  {numToCurrency(
+                                    data.worth.toFixed(2)
+                                  ).toLocaleString("en-US")}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                 </div>
               </div>
