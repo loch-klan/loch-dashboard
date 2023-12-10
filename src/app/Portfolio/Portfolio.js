@@ -866,14 +866,24 @@ class Portfolio extends BaseReactComponent {
         let redirect = JSON.parse(
           window.sessionStorage.getItem("ShareRedirect")
         );
-        if (!redirect && redirectPath) {
-          window.sessionStorage.setItem(
-            "ShareRedirect",
-            JSON.stringify({
-              path: redirectPath,
-              hash: this.props?.location?.hash,
-            })
-          );
+        if (!redirect) {
+          if (redirectPath) {
+            window.sessionStorage.setItem(
+              "ShareRedirect",
+              JSON.stringify({
+                path: redirectPath,
+                hash: this.props?.location?.hash,
+              })
+            );
+          } else {
+            window.sessionStorage.setItem(
+              "ShareRedirect",
+              JSON.stringify({
+                path: "home",
+                hash: this.props?.location?.hash,
+              })
+            );
+          }
         }
         this.props.history.push({
           pathname: "/",
