@@ -496,7 +496,12 @@ class Portfolio extends BaseReactComponent {
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
 
-    if (passedAddress && getCurrentUser().id && tempPathName === "/home") {
+    if (
+      passedAddress &&
+      passedAddress !== "alreadyAdded" &&
+      getCurrentUser().id &&
+      tempPathName === "/home"
+    ) {
       // Call api
       const followAddressData = new URLSearchParams();
       followAddressData.append("wallet_address", passedAddress);
@@ -510,7 +515,7 @@ class Portfolio extends BaseReactComponent {
           ""
         );
       }, 3500);
-      window.sessionStorage.removeItem("followThisAddress");
+      window.sessionStorage.setItem("followThisAddress", "alreadyAdded");
     }
 
     if (mobileCheck()) {
