@@ -22,6 +22,7 @@ import {
   AddWalletAddress,
   AddTextbox,
   LPC_Go,
+  ClickTrendingAddress,
 } from "../../utils/AnalyticsFunctions.js";
 
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -41,7 +42,11 @@ import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 import { addExchangeTransaction } from "../home/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions.js";
+import {
+  TrendingFireIcon,
+  TrendingWalletIcon,
+} from "../../assets/images/icons/index.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -345,6 +350,7 @@ class AddWallet extends BaseReactComponent {
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
+      console.log("this.state.walletInput ", this.state.walletInput);
       this.props.copyWalletAddress(this.state.walletInput);
     }
     if (this.state.walletInput !== prevState.walletInput) {
@@ -648,7 +654,9 @@ class AddWallet extends BaseReactComponent {
       this.setState({
         walletInput: this.state.walletInput,
       });
-      AddTextbox({});
+      AddTextbox({
+        session_id: getCurrentUser().id,
+      });
     } else {
       this.setState(
         {
@@ -1114,7 +1122,6 @@ class AddWallet extends BaseReactComponent {
                             <div className="awTopInputWrapper">
                               <div className="awInputContainer">
                                 <input
-                                  autoFocus
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
@@ -1124,6 +1131,14 @@ class AddWallet extends BaseReactComponent {
                                   onKeyDown={this.handleTabPress}
                                   onFocus={(e) => {
                                     this.FocusInInput(e);
+                                    this.setState({
+                                      isTrendingAddresses: true,
+                                    });
+                                    if (
+                                      this.props.makeTrendingAddressesVisible
+                                    ) {
+                                      this.props.makeTrendingAddressesVisible();
+                                    }
                                   }}
                                 />
                               </div>
@@ -1278,6 +1293,60 @@ class AddWallet extends BaseReactComponent {
                 <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another
                 </Button>
+              </div>
+            ) : null}
+            {this.state.walletInput &&
+            !this.state.walletInput[0].address &&
+            this.state.walletInput.length === 1 &&
+            this.props.isTrendingAddresses ? (
+              <div className="trendingAddressesContainer">
+                <div className="trendingAddressesBlock">
+                  <div className="trendingAddressesBlockHeader">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="trendingAddressesBlockFire"
+                    />
+                    <div className="inter-display-medium f-s-16 lh-15 ml-2 mr-2">
+                      Trending addresses
+                    </div>
+                    <div className="inter-display-medium f-s-12 lh-15 trendingAddressesBlockSubText">
+                      Most-visited addresses in the last 24 hours
+                    </div>
+                  </div>
+                  <div className="trendingAddressesBlockList">
+                    {this.props.trendingAddresses &&
+                      this.props.trendingAddresses.map((data, index) => {
+                        return (
+                          <div className="trendingAddressesBlockItemContainer">
+                            <div
+                              onClick={() => {
+                                this.props.addTrendingAddress(index, false);
+                              }}
+                              className="trendingAddressesBlockItem"
+                            >
+                              <div className="trendingAddressesBlockItemWalletContainer">
+                                <Image
+                                  className="trendingAddressesBlockItemWallet"
+                                  src={TrendingWalletIcon}
+                                />
+                              </div>
+                              <div className="trendingAddressesBlockItemDataContainer">
+                                <div className="inter-display-medium f-s-13">
+                                  {data.trimmedAddress}
+                                </div>
+                                <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                                  $
+                                  {numToCurrency(
+                                    data.worth.toFixed(2)
+                                  ).toLocaleString("en-US")}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
               </div>
             ) : null}
 
