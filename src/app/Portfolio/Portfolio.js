@@ -496,7 +496,12 @@ class Portfolio extends BaseReactComponent {
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
 
-    if (passedAddress && getCurrentUser().id && tempPathName === "/home") {
+    if (
+      passedAddress &&
+      passedAddress !== "alreadyAdded" &&
+      getCurrentUser().id &&
+      tempPathName === "/home"
+    ) {
       // Call api
       const followAddressData = new URLSearchParams();
       followAddressData.append("wallet_address", passedAddress);
@@ -510,7 +515,7 @@ class Portfolio extends BaseReactComponent {
           ""
         );
       }, 3500);
-      window.sessionStorage.removeItem("followThisAddress");
+      window.sessionStorage.setItem("followThisAddress", "alreadyAdded");
     }
 
     if (mobileCheck()) {
@@ -843,14 +848,24 @@ class Portfolio extends BaseReactComponent {
         let redirect = JSON.parse(
           window.sessionStorage.getItem("ShareRedirect")
         );
-        if (!redirect && redirectPath) {
-          window.sessionStorage.setItem(
-            "ShareRedirect",
-            JSON.stringify({
-              path: redirectPath,
-              hash: this.props?.location?.hash,
-            })
-          );
+        if (!redirect) {
+          if (redirectPath) {
+            window.sessionStorage.setItem(
+              "ShareRedirect",
+              JSON.stringify({
+                path: redirectPath,
+                hash: this.props?.location?.hash,
+              })
+            );
+          } else {
+            window.sessionStorage.setItem(
+              "ShareRedirect",
+              JSON.stringify({
+                path: "home",
+                hash: this.props?.location?.hash,
+              })
+            );
+          }
         }
         this.props.history.push({
           pathname: "/",
