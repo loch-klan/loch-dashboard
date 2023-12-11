@@ -50,6 +50,7 @@ import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import Papa from "papaparse";
 import { CustomCoin } from "../../utils/commonComponent";
 import { MetamaskIcon } from "../../assets/images/icons";
+import { addUserCredits } from "../profile/Api";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -81,6 +82,7 @@ class FixAddModal extends BaseReactComponent {
           ];
     // console.log("addWalletList", addWalletList);
     this.state = {
+      disableGoBtn: false,
       onHide: props.onHide,
       show: props.show,
       modalIcon: props.modalIcon,
@@ -541,6 +543,40 @@ class FixAddModal extends BaseReactComponent {
       });
     }
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.addWalletList !== prevState.addWalletList) {
+      let chainNotDetected = false;
+
+      this.state.addWalletList.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
+    }
+  }
+
   componentDidMount() {
     const ssItem = window.sessionStorage.getItem(
       "setMetamaskConnectedSessionStorage"
@@ -641,9 +677,42 @@ class FixAddModal extends BaseReactComponent {
       w.apiAddress = w.address;
     });
 
-    this.setState({
-      addWalletList: this.state.addWalletList,
-    });
+    this.setState(
+      {
+        addWalletList: this.state.addWalletList,
+      },
+      () => {
+        let chainNotDetected = false;
+
+        this.state.addWalletList.forEach((indiWallet) => {
+          let anyCoinPresent = false;
+          if (
+            indiWallet.coins &&
+            indiWallet.coinFound &&
+            indiWallet.coins.length > 0
+          ) {
+            indiWallet.coins.forEach((indiCoin) => {
+              if (indiCoin?.chain_detected) {
+                anyCoinPresent = true;
+              }
+            });
+          }
+          if (!anyCoinPresent) {
+            chainNotDetected = true;
+          }
+        });
+
+        if (chainNotDetected) {
+          this.setState({
+            disableGoBtn: true,
+          });
+        } else {
+          this.setState({
+            disableGoBtn: false,
+          });
+        }
+      }
+    );
     // console.log("Delete", this.state.addWalletList);
     // console.log("Prev 1", this.state.deletedAddress);
   };
@@ -661,6 +730,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
+    console.log("One");
     // console.log(
     //   "add wallet list",
     //   this.state.total_addresses + this.state.addWalletList?.length >
@@ -762,7 +832,39 @@ class FixAddModal extends BaseReactComponent {
               isChangeFile: false,
             });
           }
+          let creditIsAddress = false;
+          let creditIsEns = false;
+          for (let i = 0; i < addressList.length; i++) {
+            const tempItem = addressList[i];
+            const endsWithEth = /\.eth$/i.test(tempItem);
 
+            if (endsWithEth) {
+              creditIsAddress = true;
+              creditIsEns = true;
+            } else {
+              creditIsAddress = true;
+            }
+          }
+
+          if (creditIsAddress) {
+            // Single address
+            const addressCreditScore = new URLSearchParams();
+            addressCreditScore.append("credits", "address_added");
+            this.props.addUserCredits(addressCreditScore);
+
+            // Multiple address
+            const multipleAddressCreditScore = new URLSearchParams();
+            multipleAddressCreditScore.append(
+              "credits",
+              "multiple_address_added"
+            );
+            this.props.addUserCredits(multipleAddressCreditScore);
+          }
+          if (creditIsEns) {
+            const ensCreditScore = new URLSearchParams();
+            ensCreditScore.append("credits", "ens_added");
+            this.props.addUserCredits(ensCreditScore);
+          }
           this.props.updateUserWalletApi(data, this, yieldData);
 
           // message for user
@@ -1563,8 +1665,8 @@ class FixAddModal extends BaseReactComponent {
                         }`}
                         disabled={
                           this.state.modalType === "addwallet"
-                            ? this.isDisabled()
-                            : this.isFixDisabled()
+                            ? this.isDisabled() || this.state.disableGoBtn
+                            : this.isFixDisabled() || this.state.disableGoBtn
                         }
                         onClick={
                           this.state.modalType === "addwallet"
@@ -1803,6 +1905,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   getDetectedChainsApi,
   detectNameTag,
+  addUserCredits,
 };
 FixAddModal.propTypes = {};
 

@@ -35,6 +35,7 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { addUserCredits } from "../profile/Api";
 import { ARCX_API_KEY } from "../../utils/Constant";
 class TopBar extends Component {
   constructor(props) {
@@ -435,6 +436,12 @@ class TopBar extends Component {
           console.log("ArcxAnalyticsSdk error ", error);
         }
         if (tempRes && tempRes.length > 0) {
+          setTimeout(() => {
+            this.props.handleUpdate();
+          }, 1000);
+          const walletCreditScore = new URLSearchParams();
+          walletCreditScore.append("credits", "wallet_connected");
+          this.props.addUserCredits(walletCreditScore);
           this.addToList(tempRes);
         }
         // Leaver console log: full signer too"
@@ -719,7 +726,7 @@ class TopBar extends Component {
           <div
             ref={this.props.buttonRef}
             className="topbar-btn maxWidth50"
-            id="address-button"
+            id="address-button-one"
             onClick={this.passAddWalletClick}
           >
             <Image className="topBarWalletAdd" src={PlusCircleIcon} />
@@ -737,7 +744,7 @@ class TopBar extends Component {
             <div
               ref={this.props.buttonRef}
               className="topbar-btn maxWidth50 ml-2"
-              id="address-button"
+              id="address-button-two"
               onClick={this.passAddWalletClick}
             >
               <Image className="topBarWalletAdd" src={PlusCircleIcon} />
@@ -783,6 +790,7 @@ class TopBar extends Component {
             <div
               onClick={this.connectWalletEthers}
               className="topbar-btn ml-2 maxWidth50"
+              id="topbar-connect-wallet-btn"
             >
               <Image className="topBarWalletAdd " src={WalletIcon} />
               <span className="dotDotText">Connect wallet</span>
@@ -790,6 +798,7 @@ class TopBar extends Component {
           )}
           <div
             onClick={this.passConnectExchangeClick}
+            id="topbar-connect-exchange-btn"
             className={`topbar-btn ml-2 ${
               this.state.walletList.length > 0 ? "maxWidth50" : ""
             }`}
@@ -838,6 +847,7 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   getAllCoins,
+  addUserCredits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

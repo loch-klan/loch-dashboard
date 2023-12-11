@@ -91,3 +91,52 @@ export const ManageLink = (ctx) => {
       console.log("fixwallet", err);
     });
 };
+export const getUserCredits = (ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/get-credits")
+      .then((res) => {
+        if (ctx) {
+          ctx.setState({
+            loading: false,
+          });
+        }
+        if (!res.data?.error) {
+          if (res.data?.data && res.data.data[0]) {
+            const tempHolder = res.data.data[0];
+            if (tempHolder.top) {
+              ctx.setState({ topPercentage: tempHolder.top });
+            }
+            if (tempHolder.total) {
+              ctx.setState({ lochScore: tempHolder.total });
+            }
+            if (tempHolder.credits) {
+              ctx.setState({ tasksDone: tempHolder.credits });
+            }
+          }
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        if (ctx) {
+          ctx.setState({
+            loading: false,
+          });
+        }
+        console.log("get credits error ", err);
+      });
+  };
+};
+export const addUserCredits = (data) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/add-credits", data)
+      .then((res) => {
+        // console.log("add credits response ", res.data);
+      })
+      .catch((err) => {
+        console.log("add credits error ", err);
+      });
+  };
+};
