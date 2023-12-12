@@ -262,6 +262,13 @@ class BarGraphSection extends Component {
                 display: "flex",
                 flexDirection: "column",
               }
+            : this.props.newHomeSetup
+            ? {
+                display: "flex",
+                flexDirection: "column",
+                paddingTop: "1.4rem",
+                paddingBottom: "0rem",
+              }
             : {
                 display: "flex",
                 flexDirection: "column",
@@ -289,7 +296,11 @@ class BarGraphSection extends Component {
           <span
             style={{
               flex: 1,
-              paddingTop: this.props.noSubtitleBottomPadding ? "2rem" : 0,
+              paddingTop:
+                this.props.noSubtitleBottomPadding &&
+                !this.props.noSubtitleTopPadding
+                  ? "2rem"
+                  : 0,
               overflow: this.props.noSubtitleBottomPadding ? "hidden" : "",
             }}
             className={`${comingSoon ? "blur-effect" : ""}`}
@@ -723,7 +734,7 @@ class BarGraphSection extends Component {
                           containerProps={{
                             style: {
                               height: this.props.noSubtitleBottomPadding
-                                ? "120%"
+                                ? "115%"
                                 : "",
                             },
                           }}

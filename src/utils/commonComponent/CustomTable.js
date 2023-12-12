@@ -141,7 +141,7 @@ class CustomTable extends BaseReactComponent {
                       }
                       height={
                         (this.props.showDataAtBottom && this.props.moreData
-                          ? 50
+                          ? 58
                           : 60) *
                           (tableData.length + 1) -
                         10
@@ -149,7 +149,7 @@ class CustomTable extends BaseReactComponent {
                       headerHeight={headerHeight ? headerHeight : 80}
                       rowHeight={
                         this.props.showDataAtBottom && this.props.moreData
-                          ? 50
+                          ? 58
                           : 60
                       }
                       rowCount={tableData.length}

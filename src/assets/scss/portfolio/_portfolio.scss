@@ -872,7 +872,40 @@
 
     .section-table {
       // width: 50%;
-
+      .section-table-toggle-container {
+        width: 100%;
+        padding: 1rem;
+        padding-bottom: 0rem;
+        .section-table-toggle {
+          background-color: #e5e5e680;
+          border-radius: 0.5rem;
+          padding: 0.4rem;
+          display: flex;
+          align-items: center;
+          .section-table-toggle-element {
+            font-size: 13px;
+            flex: 1;
+            padding: 0.5rem;
+            white-space: nowrap;
+            text-align: center;
+            color: #636467;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition-duration: 300ms;
+            &:hover {
+              background-color: rgba(225, 225, 225, 0.5);
+            }
+          }
+          .section-table-toggle-element-selected {
+            background-color: white;
+            color: #19191a;
+            cursor: default;
+            &:hover {
+              background-color: white;
+            }
+          }
+        }
+      }
       .transaction-table-section {
         .graph-header {
           h4 {
@@ -927,14 +960,17 @@
     }
   }
   .profit-chart {
-    min-height: 32rem;
+    // min-height: 28rem;
+
     .bar-graph-section {
-      height: 32rem;
-      min-height: 32rem;
+      height: 27.5rem;
+      min-height: 27.5rem;
+
       margin-bottom: 0;
       width: 100%;
+      box-shadow: none;
       .portfolio-profit-and-loss {
-        height: 75%;
+        height: 85%;
       }
     }
     // .ChartAreaWrapper,
