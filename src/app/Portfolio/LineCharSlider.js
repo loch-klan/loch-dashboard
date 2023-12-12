@@ -1227,13 +1227,13 @@ backdrop-filter: blur(15px);">
 
     const minVersion = {
       padding: "3.2rem 3.2rem 0rem 3.2rem",
-      height: "32rem",
+      height: "27.5rem",
     };
     const minGraphVersion = {
-      style: { height: "75%" },
+      style: { height: "100%" },
     };
     const minVersionSection = {
-      minHeight: "32rem",
+      minHeight: "27.5rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
@@ -1267,7 +1267,7 @@ backdrop-filter: blur(15px);">
             //   this.resetEvent();
             // }}
           >
-            {!this.props.isPage && (
+            {!this.props.isPage && !this.props.noSubtitleBottomPadding ? (
               <GraphHeader
                 isLoading={this.props.graphLoading}
                 disableOnLoading={this.props.disableOnLoading}
@@ -1280,7 +1280,7 @@ backdrop-filter: blur(15px);">
                 // loader={true}
                 // loaderText="Don't worry we're still loading all your data"
               />
-            )}
+            ) : null}
 
             {this.props.graphLoading ? (
               <div
@@ -1361,7 +1361,7 @@ backdrop-filter: blur(15px);">
                           width: "100%",
                           marginTop: "0.5rem",
                           paddingTop: this.props.noSubtitleBottomPadding
-                            ? "2rem"
+                            ? "0rem"
                             : "",
                         }
                       : {

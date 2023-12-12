@@ -152,6 +152,10 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      blockOneSelectedItem: 1,
+      blockTwoSelectedItem: 1,
+      blockThreeSelectedItem: 1,
+      blockFourSelectedItem: 1,
       isAddressFollowedCount: 0,
       followSignInModalAnimation: true,
       followSigninModal: false,
@@ -305,6 +309,26 @@ class Portfolio extends BaseReactComponent {
       waitForMixpannelCall: false,
     };
   }
+  changeBlockOneItem = (itemNum) => {
+    this.setState({
+      blockOneSelectedItem: itemNum,
+    });
+  };
+  changeBlockTwoItem = (itemNum) => {
+    this.setState({
+      blockTwoSelectedItem: itemNum,
+    });
+  };
+  changeBlockThreeItem = (itemNum) => {
+    this.setState({
+      blockThreeSelectedItem: itemNum,
+    });
+  };
+  changeBlockFourItem = (itemNum) => {
+    this.setState({
+      blockFourSelectedItem: itemNum,
+    });
+  };
   onCloseModal = () => {
     this.setState({
       followSignInModalAnimation: true,
@@ -2561,48 +2585,225 @@ class Portfolio extends BaseReactComponent {
                         marginBottom: 0,
                       }}
                     >
-                      <TransactionTable
-                        noSubtitleBottomPadding
-                        disableOnLoading
-                        isMiniversion
-                        title="Unrealized profit and loss"
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            this.props.history.push("/intelligence/costs");
-                            AverageCostBasisEView({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockOneSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(1);
+                            }}
+                          >
+                            Unrealized gains
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockOneSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(2);
+                            }}
+                          >
+                            Transactions
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockOneSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(3);
+                            }}
+                          >
+                            Networks
+                          </div>
+                        </div>
+                      </div>
+                      {this.state.blockOneSelectedItem === 1 ? (
+                        <TransactionTable
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          // title="Unrealized profit and loss"
+                          handleClick={() => {
+                            if (this.state.lochToken) {
+                              this.props.history.push("/intelligence/costs");
+                              AverageCostBasisEView({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
+                          // subTitle="Understand your unrealized profit and loss per token"
+                          tableData={tableDataCostBasis.slice(0, 3)}
+                          moreData={
+                            this.props.intelligenceState?.Average_cost_basis &&
+                            this.props.intelligenceState.Average_cost_basis
+                              .length > 3
+                              ? `${numToCurrency(
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length - 3,
+                                  true
+                                ).toLocaleString("en-US")}+ assets`
+                              : 0
                           }
-                        }}
-                        subTitle="Understand your unrealized profit and loss per token"
-                        tableData={tableDataCostBasis.slice(0, 3)}
-                        moreData={
-                          this.props.intelligenceState?.Average_cost_basis &&
-                          this.props.intelligenceState.Average_cost_basis
-                            .length > 3
-                            ? `${numToCurrency(
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length - 3,
-                                true
-                              ).toLocaleString("en-US")}+ assets`
-                            : 0
-                        }
-                        showDataAtBottom={
-                          this.props.intelligenceState?.Average_cost_basis &&
-                          this.props.intelligenceState.Average_cost_basis
-                            .length > 3
-                        }
-                        columnList={CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.AvgCostLoading}
-                        isAnalytics="average cost basis"
-                        addWatermark
-                      />
+                          showDataAtBottom={
+                            this.props.intelligenceState?.Average_cost_basis &&
+                            this.props.intelligenceState.Average_cost_basis
+                              .length > 3
+                          }
+                          columnList={CostBasisColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.state.AvgCostLoading}
+                          isAnalytics="average cost basis"
+                          addWatermark
+                        />
+                      ) : this.state.blockOneSelectedItem === 2 ? (
+                        <TransactionTable
+                          moreData={
+                            table_home_count && table_home_count > 3
+                              ? `${numToCurrency(
+                                  table_home_count - 3,
+                                  true
+                                ).toLocaleString("en-US")}+ transactions`
+                              : 0
+                          }
+                          showDataAtBottom={
+                            table_home_count && table_home_count > 3
+                          }
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          // title="Transactions"
+                          handleClick={() => {
+                            if (this.state.lochToken) {
+                              this.props.history.push(
+                                "/intelligence/transaction-history"
+                              );
+                            }
+                          }}
+                          // subTitle="Sort, filter, and dissect all your transactions from one place"
+                          tableData={tableData.slice(0, 3)}
+                          columnList={columnList}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.state.tableLoading}
+                          addWatermark
+                          addWatermarkMoveUp
+                        />
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
+                    <div
+                      className="m-r-16 section-table"
+                      style={{
+                        height: "32rem",
+                        minHeight: "32rem",
+                        marginBottom: 0,
+                      }}
+                    >
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockTwoSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(1);
+                            }}
+                          >
+                            Realized Gains
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockTwoSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(2);
+                            }}
+                          >
+                            Gas fees spend
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockTwoSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(3);
+                            }}
+                          >
+                            Counterparty volume
+                          </div>
+                        </div>
+                      </div>
+                      <div className="profit-chart">
+                        {this.state.blockTwoSelectedItem === 1 ? (
+                          <BarGraphSection
+                            newHomeSetup
+                            disableOnLoading
+                            noSubtitleBottomPadding
+                            noSubtitleTopPadding
+                            loaderHeight={15.5}
+                            // headerTitle="Realized profit and loss"
+                            // headerSubTitle="Understand your portfolio's net flows"
+                            isArrow={true}
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                ProfitLossEV({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                this.props.history.push(
+                                  "/intelligence#netflow"
+                                );
+                              }
+                            }}
+                            isScrollVisible={false}
+                            data={
+                              this.props.intelligenceState?.graphValue &&
+                              this.props.intelligenceState?.graphValue[0]
+                            }
+                            options={
+                              this.props.intelligenceState?.graphValue &&
+                              this.props.intelligenceState?.graphValue[1]
+                            }
+                            coinsList={this.props.OnboardingState.coinsList}
+                            marginBottom="m-b-32"
+                            showFooter={false}
+                            showBadges={false}
+                            // showPercentage={
+                            //   this.props.intelligenceState.graphValue &&
+                            //   this.props.intelligenceState.graphValue[2]
+                            // }
+                            showSwitch={true}
+                            isLoading={this.state.netFlowLoading}
+                            className={"portfolio-profit-and-loss"}
+                            isMinichart={true}
+                            ProfitLossAsset={
+                              this.props.intelligenceState.ProfitLossAsset
+                            }
+                            isSwitch={this.state.isSwitch}
+                            setSwitch={this.setSwitch}
+                            isSmallerToggle
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+                    {/* 
                     <div className="profit-chart">
                       <BarGraphSection
                         disableOnLoading
@@ -2648,7 +2849,8 @@ class Portfolio extends BaseReactComponent {
                         setSwitch={this.setSwitch}
                         isSmallerToggle
                       />
-                    </div>
+                    </div> 
+                    */}
                   </Col>
                 </Row>
               </div>
@@ -2668,217 +2870,123 @@ class Portfolio extends BaseReactComponent {
                         marginBottom: 0,
                       }}
                     >
-                      <TransactionTable
-                        moreData={
-                          table_home_count && table_home_count > 3
-                            ? `${numToCurrency(
-                                table_home_count - 3,
-                                true
-                              ).toLocaleString("en-US")}+ transactions`
-                            : 0
-                        }
-                        showDataAtBottom={
-                          table_home_count && table_home_count > 3
-                        }
-                        noSubtitleBottomPadding
-                        disableOnLoading
-                        isMiniversion
-                        title="Transactions"
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            this.props.history.push(
-                              "/intelligence/transaction-history"
-                            );
-                          }
-                        }}
-                        subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData.slice(0, 3)}
-                        columnList={columnList}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.tableLoading}
-                        addWatermark
-                        addWatermarkMoveUp
-                      />
-                    </div>
-                    {/* <div className="m-r-16 profit-chart">
-                      <div
-                        className={`bar-graph-section m-b-32`}
-                        style={{ paddingBottom: "0rem", position: "relative" }}
-                      >
-                        <GraphHeader
-                          title={"Insights"}
-                          subtitle={"Valuable insights based on your assets"}
-                          isArrow={true}
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              HomeInsightsExpand({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                              this.props.history.push("/intelligence/insights");
-                            }
-                          }}
-                        />
-                        <div className="insights-wrapper">
-                          {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                    {/* {this.state.isLoadingInsight ? (
-                            <div
-                              style={{
-                                height: "30rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Loading />
-                            </div>
-                          ) : (
-                            <>
-                              <div className="insight-slider">
-                                {this.props.intelligenceState
-                                  .updatedInsightList &&
-                                  this.props.intelligenceState
-                                    .updatedInsightList.length > 0 && (
-                                    <Slider {...this.state.settings}>
-                                      {this.props.intelligenceState.updatedInsightList
-                                        ?.slice(0, 3)
-                                        .map((insight, key) => {
-                                          return (
-                                            <div key={`sliderKey-${key}`}>
-                                              <div className="steps">
-                                                <div className="top-section">
-                                                  <Image
-                                                    src={
-                                                      insight.insight_type ===
-                                                      InsightType.COST_REDUCTION
-                                                        ? reduceCost
-                                                        : insight.insight_type ===
-                                                          InsightType.RISK_REDUCTION
-                                                        ? reduceRisk
-                                                        : increaseYield
-                                                    }
-                                                    className="insight-icon"
-                                                  />
-                                                  <div className="insight-title">
-                                                    <h5 className="inter-display-medium f-s-16 lh-19">
-                                                      {InsightType.getSmallText(
-                                                        insight.insight_type
-                                                      )}
-                                                    </h5>
-                                                    {insight?.sub_type ? (
-                                                      <h6
-                                                        className="inter-display-bold f-s-10 lh-12"
-                                                        style={{
-                                                          color: "#ffffff",
-                                                          background: "#19191A",
-                                                          borderRadius:
-                                                            "0.8rem",
-                                                          padding:
-                                                            "0.4rem 0.8rem",
-                                                          width: "fit-content",
-                                                          textTransform:
-                                                            "uppercase",
-                                                          marginTop: "0.4rem",
-                                                        }}
-                                                      >
-                                                        {InsightType.getRiskType(
-                                                          insight.sub_type
-                                                        )}
-                                                      </h6>
-                                                    ) : (
-                                                      <h6 className="inter-display-semi-bold f-s-10 lh-12 m-t-04">
-                                                        INSIGHT
-                                                      </h6>
-                                                    )}
-                                                  </div>
-                                                </div>
-
-                                                <div className="content-section">
-                                                  <p
-                                                    className="inter-display-medium f-s-13 lh-16 grey-969"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.sub_title,
-                                                    }}
-                                                  ></p>
-                                                  <h4
-                                                    className="inter-display-medium f-s-16 lh-19 grey-313 m-t-12"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.title,
-                                                    }}
-                                                  ></h4>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                    </Slider>
-                                  )}
-
-                                <div className="bottom-msg">
-                                  <div className="row-insight op">
-                                    <Image src={LightBulb} />
-                                    <h5 className="inter-display-medium f-s-13 lh-15 m-l-12">
-                                      Add all your wallets and <br />
-                                      exchanges to gain more insights
-                                    </h5>
-                                  </div>
-                                  <div
-                                    className="row-insight-arrow cp"
-                                    onClick={this.simulateButtonClick}
-                                  >
-                                    <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
-                                      Add more
-                                    </h6>
-                                    <Image src={ArrowRight} />
-                                  </div>
-                                </div>
-                              </div>
-                            </>
-                          )}
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockThreeSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(1);
+                            }}
+                          >
+                            Price gauage
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockThreeSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(2);
+                            }}
+                          >
+                            Historic performance
+                          </div>
                         </div>
                       </div>
-                    </div> */}
+                      {this.state.blockThreeSelectedItem === 2 ? (
+                        <div className="profit-chart">
+                          <LineChartSlider
+                            disableOnLoading
+                            noSubtitleBottomPadding
+                            assetValueData={
+                              this.props.portfolioState.assetValueDay &&
+                              this.props.portfolioState.assetValueDay
+                            }
+                            externalEvents={
+                              this.props.portfolioState.externalEvents &&
+                              this.props.portfolioState.externalEvents
+                            }
+                            coinLists={this.props.OnboardingState.coinsLists}
+                            isScrollVisible={false}
+                            handleGroupBy={(value) => this.handleGroupBy(value)}
+                            graphLoading={this.state.graphLoading}
+                            // graphLoading={true}
+                            isUpdate={this.state.isUpdate}
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                AssetValueExpandview({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                this.props.history.push(
+                                  "/intelligence/asset-value"
+                                );
+                              }
+                            }}
+                            hideTimeFilter={true}
+                            hideChainFilter={true}
+                            dataLoaded={this.state.assetValueDataLoaded}
+                            updateTimer={this.updateTimer}
+                            activeTab="day"
+                          />
+                        </div>
+                      ) : null}
+                    </div>
                   </Col>
                   <Col md={6}>
                     <div
-                      className="section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
+                      className="m-r-16 section-table"
+                      style={{
+                        height: "32rem",
+                        minHeight: "32rem",
+                        marginBottom: 0,
+                      }}
                     >
-                      <LineChartSlider
-                        disableOnLoading
-                        noSubtitleBottomPadding
-                        assetValueData={
-                          this.props.portfolioState.assetValueDay &&
-                          this.props.portfolioState.assetValueDay
-                        }
-                        externalEvents={
-                          this.props.portfolioState.externalEvents &&
-                          this.props.portfolioState.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            AssetValueExpandview({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push(
-                              "/intelligence/asset-value"
-                            );
-                          }
-                        }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={this.state.assetValueDataLoaded}
-                        updateTimer={this.updateTimer}
-                        activeTab="day"
-                      />
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockFourSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(1);
+                            }}
+                          >
+                            Defi
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockFourSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(2);
+                            }}
+                          >
+                            Yield opportunities
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockFourSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(3);
+                            }}
+                          >
+                            Insights
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </Col>
                   {/* <Col md={6}>
