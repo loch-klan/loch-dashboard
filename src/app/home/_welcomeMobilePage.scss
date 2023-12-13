@@ -56,6 +56,80 @@
       align-items: center;
       justify-content: flex-start;
       flex-direction: column;
+      .trendingAddressesMobileContainer {
+        padding: 0 2rem;
+        overflow: hidden;
+        width: 100%;
+        margin-top: -2rem;
+        .trendingAddressesMobileBlock {
+          padding: 1.5rem;
+          width: 100%;
+          border: 0.1rem solid #d4d4d4;
+          border-radius: 0.8rem;
+
+          .trendingAddressesMobileBlockHeader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            .trendingAddressesMobileBlockFire {
+              height: 18px;
+            }
+            .trendingAddressesMobileBlockSubText {
+              color: #b0b1b3;
+            }
+          }
+          .trendingAddressesMobileBlockList {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .trendingAddressesMobileBlockItemContainer {
+              width: 32%;
+              overflow: hidden;
+
+              .trendingAddressesMobileBlockItem {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                border: 0.1rem solid #e5e5e6;
+                border-radius: 1rem;
+                transition-duration: 300ms;
+                cursor: pointer;
+
+                .trendingAddressesMobileBlockItemWalletContainer {
+                  margin-right: 0.5rem;
+                  background-color: #e5e5e680;
+                  min-height: 3.6rem;
+                  min-width: 3.6rem;
+                  max-height: 3.6rem;
+                  max-width: 3.6rem;
+                  border-radius: 1rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  .trendingAddressesMobileBlockItemWallet {
+                    min-height: 1.5rem;
+                    min-width: 1.5rem;
+                    max-height: 1.5rem;
+                    max-width: 1.5rem;
+                  }
+                }
+                .trendingAddressesMobileBlockItemDataContainer {
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  .trendingAddressesMobileBlockItemDataContainerAmount {
+                    margin-top: 0.2rem;
+                    color: #96979a;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
       .mwbAddWalletBtnContainer {
         padding: 0;
         width: 100%;

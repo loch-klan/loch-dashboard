@@ -49,6 +49,7 @@ import {
   getAllParentChains,
 } from "../onboarding/Api";
 import { addExchangeTransaction } from "../home/Api";
+import { addUserCredits } from "../profile/Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -864,7 +865,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: false,
+              isOAuth: true,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
@@ -1195,6 +1196,9 @@ class ConnectModal extends BaseReactComponent {
             data.append("exchange", exchangename);
             data.append("access_code", code);
             data.append("account_name", cname);
+            const exchangeCreditScore = new URLSearchParams();
+            exchangeCreditScore.append("credits", "exchange_connected");
+            this.props.addUserCredits(exchangeCreditScore);
             updateAccessToken(
               data,
               parentState,
@@ -1286,7 +1290,9 @@ class ConnectModal extends BaseReactComponent {
           ) {
             data.append("api_passphrase", this.state.api_passphrase);
           }
-
+          const exchangeCreditScore = new URLSearchParams();
+          exchangeCreditScore.append("credits", "exchange_connected");
+          this.props.addUserCredits(exchangeCreditScore);
           addUpdateAccount(data, this);
         }
       }
@@ -1841,6 +1847,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   createAnonymousUserApi,
   addExchangeTransaction,
+  addUserCredits,
 };
 ConnectModal.propTypes = {};
 

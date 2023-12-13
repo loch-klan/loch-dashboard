@@ -31,71 +31,89 @@ const SmartMoneyPagination = (props) => {
     }
   };
   const onSubumit = (props) => {
-    if (props.onPageChange) {
-      props.onPageChange();
-    }
-    var pageNo = document.getElementById("pageNo");
-    if (input <= 0) {
-      const params = new URLSearchParams(props.location.search);
-      params.set("p", 0);
-      props.history.push(`${props.history.location.pathname}?${params}`);
-      pageNo.value = 1;
-    } else if (input < props.pageCount) {
-      const params = new URLSearchParams(props.location.search);
-      params.set("p", input - 1);
-      props.history.push(`${props.history.location.pathname}?${params}`);
+    if (!props.smartMoneyBlur) {
+      if (props.onPageChange) {
+        props.onPageChange();
+      }
+      var pageNo = document.getElementById("pageNo");
+      if (input <= 0) {
+        const params = new URLSearchParams(props.location.search);
+        params.set("p", 0);
+        props.history.push(`${props.history.location.pathname}?${params}`);
+        pageNo.value = 1;
+      } else if (input < props.pageCount) {
+        const params = new URLSearchParams(props.location.search);
+        params.set("p", input - 1);
+        props.history.push(`${props.history.location.pathname}?${params}`);
+      } else {
+        const params = new URLSearchParams(props.location.search);
+        params.set("p", props.pageCount - 1);
+        props.history.push(`${props.history.location.pathname}?${params}`);
+        pageNo.value = props.pageCount;
+      }
     } else {
-      const params = new URLSearchParams(props.location.search);
-      params.set("p", props.pageCount - 1);
-      props.history.push(`${props.history.location.pathname}?${params}`);
-      pageNo.value = props.pageCount;
+      if (props.openSignInOnclickModal) {
+        props.openSignInOnclickModal();
+      }
     }
   };
 
   const onLeftClick = (props) => {
-    if (props.onPageChange) {
-      props.onPageChange();
-    }
-    var pageNo = document.getElementById("pageNo");
-    //  TransactionHistoryPageBack({
-    //    session_id: getCurrentUser().id,
-    //    email_address: getCurrentUser().email,
-    //    page_no: pageNo,
-    //  });
-    // console.log("back", pageNo)
-    if (props.noUrl) {
-      props.loadData(props.page - 1);
+    if (!props.smartMoneyBlur) {
+      if (props.onPageChange) {
+        props.onPageChange();
+      }
+      var pageNo = document.getElementById("pageNo");
+      //  TransactionHistoryPageBack({
+      //    session_id: getCurrentUser().id,
+      //    email_address: getCurrentUser().email,
+      //    page_no: pageNo,
+      //  });
+      // console.log("back", pageNo)
+      if (props.noUrl) {
+        props.loadData(props.page - 1);
+      } else {
+        if (props.page > 1) {
+          const params = new URLSearchParams(props.location.search);
+          params.set("p", props.page - 2);
+          props.history.push(`${props.history.location.pathname}?${params}`);
+          // props.loadData(props.page - 1);
+          pageNo.value = props.page - 1;
+        }
+      }
     } else {
-      if (props.page > 1) {
-        const params = new URLSearchParams(props.location.search);
-        params.set("p", props.page - 2);
-        props.history.push(`${props.history.location.pathname}?${params}`);
-        // props.loadData(props.page - 1);
-        pageNo.value = props.page - 1;
+      if (props.openSignInOnclickModal) {
+        props.openSignInOnclickModal();
       }
     }
   };
 
   const onNextClick = (props) => {
-    if (props.onPageChange) {
-      props.onPageChange();
-    }
-    var pageNo = document.getElementById("pageNo");
-    // TransactionHistoryPageNext({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    //   page_no: pageNo,
-    // });
-    // console.log("next", pageNo);
-    if (props.noUrl) {
-      props.loadData(props.page + 1);
+    if (!props.smartMoneyBlur) {
+      if (props.onPageChange) {
+        props.onPageChange();
+      }
+      var pageNo = document.getElementById("pageNo");
+      // TransactionHistoryPageNext({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   page_no: pageNo,
+      // });
+      // console.log("next", pageNo);
+      if (props.noUrl) {
+        props.loadData(props.page + 1);
+      } else {
+        if (props.page < props.pageCount) {
+          const params = new URLSearchParams(props.location.search);
+          params.set("p", props.page);
+          props.history.push(`${props.history.location.pathname}?${params}`);
+          // props.loadData(props.page + 1);
+          pageNo.value = props.page + 1;
+        }
+      }
     } else {
-      if (props.page < props.pageCount) {
-        const params = new URLSearchParams(props.location.search);
-        params.set("p", props.page);
-        props.history.push(`${props.history.location.pathname}?${params}`);
-        // props.loadData(props.page + 1);
-        pageNo.value = props.page + 1;
+      if (props.openSignInOnclickModal) {
+        props.openSignInOnclickModal();
       }
     }
   };
@@ -107,7 +125,7 @@ const SmartMoneyPagination = (props) => {
   const rightLogoLoadingComplete = () => {
     setIsRightLogoLoaded(true);
   };
-  if (mobileCheck()) {
+  if (mobileCheck(true)) {
     return (
       <div className="mobileSmartMoneyPagingation">
         <div className="smartMoneyPaginationContainer">
@@ -163,30 +181,38 @@ const SmartMoneyPagination = (props) => {
       </div>
     );
   }
-
+  const changePageLimitPass = (res) => {
+    if (!props.smartMoneyBlur) {
+      if (props.changePageLimit) {
+        props.changePageLimit(res);
+      }
+    } else {
+      if (props.openSignInOnclickModal) {
+        props.openSignInOnclickModal();
+      }
+    }
+  };
   return (
     <div className="smartMoneyPaginationAndLimitSelectorContainer">
       <div className="smartMoneyPaginationAndLimitSelectorChild">
-        {props.smartMoneyBlur ? (
+        {/* {props.smartMoneyBlur ? (
           <div className="smartMoneyPaginationAndLimitSelectorChildCover" />
-        ) : null}
-        <div
-          style={{
-            opacity: props.smartMoneyBlur ? 0 : 1,
-          }}
-          className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer"
-        >
-          <div className="smartMoneyLimitSelectorTxts">Show:</div>
-          <DropDown
-            class="smartMoneyLimitSelectorInput"
-            list={[10, 50, 100]}
-            onSelect={props.changePageLimit}
-            title={props.pageLimit}
-            activetab={props.pageLimit}
-          />
+        ) : null} */}
+        {!props.isMobile ? (
+          <div className="inter-display-medium f-s-14 smartMoneyLimitSelectorContainer">
+            <div className="smartMoneyLimitSelectorTxts">Show:</div>
 
-          <div className="smartMoneyLimitSelectorTxts">Records</div>
-        </div>
+            <DropDown
+              class="smartMoneyLimitSelectorInput"
+              list={[10, 50, 100]}
+              onSelect={changePageLimitPass}
+              title={props.pageLimit}
+              activetab={props.pageLimit}
+            />
+
+            <div className="smartMoneyLimitSelectorTxts">Records</div>
+          </div>
+        ) : null}
         <div className="smartMoneyPaginationContainer">
           <div
             className={`smartMoneyPaginationArrowContainer ${

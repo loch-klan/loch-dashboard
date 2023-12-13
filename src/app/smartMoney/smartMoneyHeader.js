@@ -8,8 +8,14 @@ import {
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
+  ShareProfileIcon,
 } from "../../assets/images/icons";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+
+import { toast } from "react-toastify";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(
@@ -87,6 +93,24 @@ export default function SmartMoneyHeader(props) {
       props.history.replace("/smart-money");
     }
   };
+  const handleShare = () => {
+    SmartMoneyShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
+    });
+    let shareLink = BASE_URL_S3 + "smart-money";
+    copyTextToClipboard(shareLink);
+  };
+  const copyTextToClipboard = async (text) => {
+    if ("clipboard" in navigator) {
+      toast.success("Link copied");
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand("copy", true, text);
+    }
+  };
+
   return (
     <div className="smartMoneyHeaderContainer">
       <div className="smartMoneyHeader">
@@ -161,6 +185,18 @@ export default function SmartMoneyHeader(props) {
               localLochUser.first_name ||
               localLochUser.last_name) ? (
               <>
+                <div
+                  onClick={handleShare}
+                  className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                >
+                  <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                    <Image
+                      className="smarMoneyHeaderSignInIcon"
+                      src={ShareProfileIcon}
+                    />
+                  </div>
+                  <div className="smarMoneyHeaderSignInJustText">Share</div>
+                </div>
                 <div
                   onClick={props.openAddAddressModal}
                   className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -242,6 +278,18 @@ export default function SmartMoneyHeader(props) {
               <>
                 {!props.isFaq ? (
                   <>
+                    <div
+                      onClick={handleShare}
+                      className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="smarMoneyHeaderSignInIconContainer smarMoneyHeaderSignInIconNoColor">
+                        <Image
+                          className="smarMoneyHeaderSignInIcon"
+                          src={ShareProfileIcon}
+                        />
+                      </div>
+                      <div className="smarMoneyHeaderSignInJustText">Share</div>
+                    </div>
                     <div
                       onClick={props.showFaqModal}
                       className="smarMoneyHeaderSignInContainer smarMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"

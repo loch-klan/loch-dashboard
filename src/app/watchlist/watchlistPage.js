@@ -535,7 +535,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "account",
-        coumnWidth: 0.15,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -641,7 +641,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "nametag",
-        coumnWidth: 0.25,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "nametag") {
@@ -673,52 +673,7 @@ class WatchListPage extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className={`cp history-table-header-col goToCenter ${
-              this.state.tableData.length === 0 ? "no-hover" : ""
-            }`}
-            id="isAnalyzed"
-            onClick={() => {
-              if (this.state.tableData.length > 0) {
-                this.handleSort(this.state.tableSortOpt[1].title);
-              }
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Analyzed
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "isAnalyzed",
-        coumnWidth: 0.15,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "isAnalyzed") {
-            const passToggleAnalyzed = (isChecked) => {
-              this.updateWatchListAnalyzed(
-                rowData.nameTag,
-                rowData.address,
-                isChecked,
-                true
-              );
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={passToggleAnalyzed}
-                isChecked={rowData?.isAnalyzed}
-              />
-            );
-          }
-        },
-      },
+
       {
         labelName: (
           <div
@@ -744,7 +699,7 @@ class WatchListPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "remark",
-        coumnWidth: 0.3,
+        coumnWidth: 0.35,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
@@ -880,17 +835,17 @@ class WatchListPage extends BaseReactComponent {
               btnText="Add address"
               handleBtn={this.handleAddWatchlistAddress}
             />
-
-            <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {/* <div style={{ width: "60%" }}>
+            <div style={{ paddingBottom: "2rem" }}>
+              <div className="fillter_tabs_section">
+                <Form onValidSubmit={this.onValidSubmit}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {/* <div style={{ width: "60%" }}>
                     <CustomDropdown
                       filtername="Type"
                       options={[...[{ value: "Allasset", label: "All" }]]}
@@ -902,68 +857,68 @@ class WatchListPage extends BaseReactComponent {
                     />
                   </div> */}
 
-                  {/* {fillter_tabs} */}
-                  <div style={{ width: "100%" }}>
-                    <div className="searchBar top-account-search">
-                      <Image src={searchIcon} className="search-icon" />
-                      <div className="form-groupContainer">
-                        <FormElement
-                          valueLink={this.linkState(
-                            this,
-                            "search",
-                            this.onChangeMethod
-                          )}
-                          control={{
-                            type: CustomTextControl,
-                            settings: {
-                              placeholder: "Search",
-                            },
-                          }}
-                          classes={{
-                            inputField: "search-input watchListSearchInput",
-                            prefix: "search-prefix",
-                            suffix: "search-suffix",
-                          }}
-                        />
+                    {/* {fillter_tabs} */}
+                    <div style={{ width: "100%" }}>
+                      <div className="searchBar top-account-search">
+                        <Image src={searchIcon} className="search-icon" />
+                        <div className="form-groupContainer">
+                          <FormElement
+                            valueLink={this.linkState(
+                              this,
+                              "search",
+                              this.onChangeMethod
+                            )}
+                            control={{
+                              type: CustomTextControl,
+                              settings: {
+                                placeholder: "Search",
+                              },
+                            }}
+                            classes={{
+                              inputField: "search-input watchListSearchInput",
+                              prefix: "search-prefix",
+                              suffix: "search-suffix",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Form>
-            </div>
+                </Form>
+              </div>
 
-            <div className="transaction-history-table watchListTableContainer">
-              {this.state.tableLoading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "69rem",
-                  }}
-                >
-                  <Loading />
-                </div>
-              ) : (
-                <>
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    showHeaderOnEmpty
-                    tableData={this.state.tableData}
-                    columnList={columnList}
-                    message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    addWatermark
-                  />
-                </>
-              )}
+              <div className="transaction-history-table watchListTableContainer">
+                {this.state.tableLoading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "69rem",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <TransactionTable
+                      noSubtitleBottomPadding
+                      showHeaderOnEmpty
+                      tableData={this.state.tableData}
+                      columnList={columnList}
+                      message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      addWatermark
+                    />
+                  </>
+                )}
+              </div>
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
       </>

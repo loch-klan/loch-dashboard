@@ -55,43 +55,80 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         );
         const transHistorySorts = searchParams.get("transHistorySorts");
         const followThisAddressInLink = searchParams.get("followThisAddress");
-
+        let walletInUrl = false;
         let linkAddress = "";
         if (props.location?.pathname) {
-          const justAddress = props.location?.pathname.replace("/home/", "");
-          linkAddress = justAddress;
+          if (props.location?.pathname.includes("/wallet")) {
+            const justAddress = props.location?.pathname.replace(
+              "/wallet/",
+              ""
+            );
+            window.sessionStorage.setItem("urlWasWallet", true);
+            linkAddress = justAddress;
+            walletInUrl = true;
+          } else {
+            const wasWalletBefore =
+              window.sessionStorage.getItem("urlWasWallet");
+            if (wasWalletBefore) {
+              walletInUrl = true;
+            }
+            const justAddress = props.location?.pathname.replace("/home/", "");
+            linkAddress = justAddress;
+          }
         }
         let redirect = JSON.parse(
           window.sessionStorage.getItem("ShareRedirect")
         );
-        if (!redirect && redirectPath) {
-          window.sessionStorage.setItem(
-            "ShareRedirect",
-            JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
-          );
-          if (followThisAddressInLink === "true" && linkAddress) {
-            window.sessionStorage.setItem("followThisAddress", linkAddress);
-          }
-          if (passedRefrenceId) {
-            window.sessionStorage.setItem("PassedRefrenceId", passedRefrenceId);
-          }
-          if (transHistoryPageNumber) {
+
+        if (!redirect) {
+          if (redirectPath) {
             window.sessionStorage.setItem(
-              "transHistoryPageNumber",
-              transHistoryPageNumber
+              "ShareRedirect",
+              JSON.stringify({
+                path: redirectPath,
+                hash: props?.location?.hash,
+              })
             );
-          }
-          if (transHistoryConditions) {
+            if (followThisAddressInLink === "true" && linkAddress) {
+              window.sessionStorage.setItem("followThisAddress", linkAddress);
+            }
+            if (passedRefrenceId) {
+              window.sessionStorage.setItem(
+                "PassedRefrenceId",
+                passedRefrenceId
+              );
+            }
+            if (transHistoryPageNumber) {
+              window.sessionStorage.setItem(
+                "transHistoryPageNumber",
+                transHistoryPageNumber
+              );
+            }
+            if (transHistoryConditions) {
+              window.sessionStorage.setItem(
+                "transHistoryConditions",
+                transHistoryConditions
+              );
+            }
+            if (transHistorySorts) {
+              window.sessionStorage.setItem(
+                "transHistorySorts",
+                transHistorySorts
+              );
+            }
+          } else {
             window.sessionStorage.setItem(
-              "transHistoryConditions",
-              transHistoryConditions
+              "ShareRedirect",
+              JSON.stringify({
+                path: "home",
+                hash: props?.location?.hash,
+              })
             );
-          }
-          if (transHistorySorts) {
-            window.sessionStorage.setItem(
-              "transHistorySorts",
-              transHistorySorts
-            );
+            if (walletInUrl) {
+              window.sessionStorage.removeItem("urlWasWallet");
+            } else {
+              window.sessionStorage.setItem("followThisAddress", linkAddress);
+            }
           }
         }
         if (
