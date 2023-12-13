@@ -266,7 +266,7 @@ class BarGraphSection extends Component {
             ? {
                 display: "flex",
                 flexDirection: "column",
-                paddingTop: "1.4rem",
+                paddingTop: "0rem",
                 paddingBottom: "0rem",
               }
             : {
@@ -302,6 +302,7 @@ class BarGraphSection extends Component {
                   ? "2rem"
                   : 0,
               overflow: this.props.noSubtitleBottomPadding ? "hidden" : "",
+              marginTop: this.props.newHomeSetup ? "1.4rem" : "",
             }}
             className={`${comingSoon ? "blur-effect" : ""}`}
           >
@@ -692,7 +693,9 @@ class BarGraphSection extends Component {
                   </div>
                 ) : this.props.oldBar ? (
                   <div
-                    className="chartArea"
+                    className={`chartArea ${
+                      this.props.newHomeSetup ? "chartAreaOldBar" : ""
+                    }`}
                     style={
                       data.labels.length > 8 && isScroll
                         ? ScrollStyle
@@ -734,7 +737,7 @@ class BarGraphSection extends Component {
                           containerProps={{
                             style: {
                               height: this.props.noSubtitleBottomPadding
-                                ? "115%"
+                                ? "110%"
                                 : "",
                             },
                           }}
@@ -799,12 +802,21 @@ class BarGraphSection extends Component {
           </span>
         ) : (
           <div
-            style={{
-              flex: 1,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            style={
+              this.props.newHomeSetup
+                ? {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "38rem",
+                  }
+                : {
+                    flex: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }
+            }
           >
             <Loading />
           </div>

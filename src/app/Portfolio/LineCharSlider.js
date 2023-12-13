@@ -1227,13 +1227,13 @@ backdrop-filter: blur(15px);">
 
     const minVersion = {
       padding: "3.2rem 3.2rem 0rem 3.2rem",
-      height: "27.5rem",
+      height: "38rem",
     };
     const minGraphVersion = {
       style: { height: "100%" },
     };
     const minVersionSection = {
-      minHeight: "27.5rem",
+      minHeight: "38rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
