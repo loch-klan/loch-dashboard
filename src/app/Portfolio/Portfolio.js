@@ -499,6 +499,7 @@ class Portfolio extends BaseReactComponent {
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
+      passedAddress !== "/home" &&
       getCurrentUser().id &&
       tempPathName === "/home"
     ) {
