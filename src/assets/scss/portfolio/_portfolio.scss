@@ -963,14 +963,13 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 27.5rem;
-      min-height: 27.5rem;
-
+      height: 38rem;
+      min-height: 38rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
       .portfolio-profit-and-loss {
-        height: 85%;
+        height: 90%;
       }
     }
     // .ChartAreaWrapper,
@@ -980,6 +979,10 @@
     .chartArea {
       // min-height: 30rem;
       height: 100%;
+    }
+    .chartAreaOldBar {
+      height: 34rem;
+      min-height: 34rem;
     }
     .header {
       h4 {

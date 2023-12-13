@@ -88,6 +88,7 @@ import {
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
 import {
+  getAllFeeApi,
   getAvgCostBasis,
   ResetAverageCostBasis,
   updateAverageCostBasis,
@@ -148,6 +149,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      homeGraphFeesData: undefined,
+      gasFeesGraphLoading: false,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: 1,
@@ -527,6 +530,12 @@ class Portfolio extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue
+    ) {
+      this.trimGasFees();
+    }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -615,7 +624,32 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
     this.props.ResetAverageCostBasis();
   }
+  trimGasFees = () => {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue &&
+      this.props.intelligenceState.graphfeeValue[0] &&
+      this.props.intelligenceState.graphfeeValue[0].labels
+    ) {
+      const tempHolder = [
+        {
+          labels:
+            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
+              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
+              : this.props.intelligenceState.graphfeeValue[0].labels,
+          datasets: this.props.intelligenceState.graphfeeValue[0].datasets
+            ? this.props.intelligenceState.graphfeeValue[0].datasets
+            : [],
+        },
+        { ...this.props.intelligenceState.graphfeeValue[1] },
 
+        { ...this.props.intelligenceState.graphfeeValue[2] },
+      ];
+      this.setState({
+        homeGraphFeesData: tempHolder,
+      });
+    }
+  };
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.portfolioState?.assetValueDataLoaded !==
@@ -624,6 +658,15 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         dataLoaded: this.props.portfolioState.assetValueDataLoaded,
       });
+    }
+
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue &&
+      this.props.intelligenceState.graphfeeValue !==
+        prevProps.intelligenceState.graphfeeValue
+    ) {
+      this.trimGasFees();
     }
     // Wallet update response when press go
     // if (this.state.apiResponse) {
@@ -743,6 +786,12 @@ class Portfolio extends BaseReactComponent {
 
       // netflow breakdown
       this.props.getAssetProfitLoss(this, false, false, false);
+
+      // GAs fees
+      this.setState({
+        gasFeesGraphLoading: true,
+      });
+      this.props.getAllFeeApi(this, false, false);
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
@@ -1183,7 +1232,6 @@ class Portfolio extends BaseReactComponent {
     const { table_home, assetPriceList_home, table_home_count } =
       this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-
     //   "asset price state",
     //  this.state?.assetPrice? Object.keys(this.state?.assetPrice)?.length:""
     // );
@@ -2458,8 +2506,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -2519,14 +2569,14 @@ class Portfolio extends BaseReactComponent {
                             }
                           }}
                           // subTitle="Understand your unrealized profit and loss per token"
-                          tableData={tableDataCostBasis.slice(0, 3)}
+                          tableData={tableDataCostBasis.slice(0, 5)}
                           moreData={
                             this.props.intelligenceState?.Average_cost_basis &&
                             this.props.intelligenceState.Average_cost_basis
-                              .length > 3
+                              .length > 5
                               ? `${numToCurrency(
                                   this.props.intelligenceState
-                                    .Average_cost_basis.length - 3,
+                                    .Average_cost_basis.length - 5,
                                   true
                                 ).toLocaleString("en-US")}+ assets`
                               : 0
@@ -2534,7 +2584,7 @@ class Portfolio extends BaseReactComponent {
                           showDataAtBottom={
                             this.props.intelligenceState?.Average_cost_basis &&
                             this.props.intelligenceState.Average_cost_basis
-                              .length > 3
+                              .length > 5
                           }
                           columnList={CostBasisColumnData}
                           headerHeight={60}
@@ -2546,15 +2596,15 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockOneSelectedItem === 2 ? (
                         <TransactionTable
                           moreData={
-                            table_home_count && table_home_count > 3
+                            table_home_count && table_home_count > 5
                               ? `${numToCurrency(
-                                  table_home_count - 3,
+                                  table_home_count - 5,
                                   true
                                 ).toLocaleString("en-US")}+ transactions`
                               : 0
                           }
                           showDataAtBottom={
-                            table_home_count && table_home_count > 3
+                            table_home_count && table_home_count > 5
                           }
                           noSubtitleBottomPadding
                           disableOnLoading
@@ -2568,13 +2618,12 @@ class Portfolio extends BaseReactComponent {
                             }
                           }}
                           // subTitle="Sort, filter, and dissect all your transactions from one place"
-                          tableData={tableData.slice(0, 3)}
+                          tableData={tableData.slice(0, 5)}
                           columnList={columnList}
                           headerHeight={60}
                           isArrow={true}
                           isLoading={this.state.tableLoading}
                           addWatermark
-                          addWatermarkMoveUp
                         />
                       ) : null}
                     </div>
@@ -2583,8 +2632,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -2678,6 +2729,28 @@ class Portfolio extends BaseReactComponent {
                             setSwitch={this.setSwitch}
                             isSmallerToggle
                           />
+                        ) : this.state.blockTwoSelectedItem === 2 ? (
+                          <BarGraphSection
+                            data={
+                              this.state.homeGraphFeesData &&
+                              this.state.homeGraphFeesData[0]
+                            }
+                            options={
+                              this.state.homeGraphFeesData &&
+                              this.state.homeGraphFeesData[1]
+                            }
+                            options2={
+                              this.state.homeGraphFeesData &&
+                              this.state.homeGraphFeesData[2]
+                            }
+                            isScrollVisible={false}
+                            isScroll={true}
+                            isLoading={this.state.gasFeesGraphLoading}
+                            oldBar
+                            noSubtitleBottomPadding
+                            newHomeSetup
+                            noSubtitleTopPadding
+                          />
                         ) : null}
                       </div>
                     </div>
@@ -2743,8 +2816,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -2820,8 +2895,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -3000,6 +3077,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   addAddressToWatchList,
+  getAllFeeApi,
 };
 Portfolio.propTypes = {};
 
