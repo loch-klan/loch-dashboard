@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   yieldOpportunities: false,
   defi_home: false,
   smart_money: false,
+  profile_credit: false,
 
   // top account
   top_home: false,
@@ -58,6 +59,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         cost: false,
         defi_home: false,
         smart_money: false,
+        profile_credit: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {

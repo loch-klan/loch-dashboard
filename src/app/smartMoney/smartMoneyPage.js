@@ -73,6 +73,7 @@ import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
 import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
+import CheckboxCustomTable from "../common/customCheckboxTable.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -82,6 +83,7 @@ class SmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
       signUpModal: false,
@@ -154,9 +156,16 @@ class SmartMoneyPage extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("previewAddress")),
       ],
       goToBottom: false,
+
+      showClickSignInText: false,
     };
     this.delayTimer = 0;
   }
+  hideTheMobilePopupModal = () => {
+    this.setState({
+      mobilePopupModal: false,
+    });
+  };
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
@@ -240,6 +249,7 @@ class SmartMoneyPage extends BaseReactComponent {
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+
     if (token && lochUser && lochUser.email) {
       this.setState({
         blurTable: false,
@@ -248,8 +258,9 @@ class SmartMoneyPage extends BaseReactComponent {
       this.setState({
         blurTable: true,
       });
+      this.createEmptyUser();
     }
-    this.createEmptyUser();
+
     if (API_LIMIT) {
       if (mobileCheck()) {
         this.setState({
@@ -331,7 +342,31 @@ class SmartMoneyPage extends BaseReactComponent {
       goToBottom: true,
     });
   };
+
+  openSignInOnclickModal = () => {
+    this.setState(
+      {
+        showClickSignInText: true,
+      },
+      () => {
+        this.showSignInModal();
+      }
+    );
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.signUpModal !== this.state.signUpModal ||
+      prevState.signInModal !== this.state.signInModal
+    ) {
+      if (!this.state.signUpModal && !this.state.signInModal) {
+        this.setState({
+          showClickSignInText: false,
+        });
+      }
+    }
+    if (prevState.blurTable !== this.state.blurTable) {
+      this.callApi(this.state.currentPage || START_INDEX);
+    }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
@@ -653,7 +688,40 @@ class SmartMoneyPage extends BaseReactComponent {
     this.closeSignOutModal();
     this.createEmptyUser();
   };
-
+  handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    let tempWatchListata = new URLSearchParams();
+    if (addItem) {
+      // TopAccountAddAccountToWatchList({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   address: tagName ? tagName : walletAddress,
+      // });
+      this.updateTimer();
+      tempWatchListata.append("wallet_address", walletAddress);
+      tempWatchListata.append("analysed", false);
+      tempWatchListata.append("remarks", "");
+      tempWatchListata.append("name_tag", tagName);
+      this.props.updateAddToWatchList(tempWatchListata);
+      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+        "smartMoneyMobilePopupModal"
+      );
+      if (!tempIsModalPopuRemoved) {
+        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        this.setState({
+          mobilePopupModal: true,
+        });
+      }
+    } else {
+      // TopAccountRemoveAccountFromWatchList({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   address: tagName ? tagName : walletAddress,
+      // });
+      this.updateTimer();
+      tempWatchListata.append("address", walletAddress);
+      this.props.removeFromWatchList(tempWatchListata);
+    }
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -728,27 +796,31 @@ class SmartMoneyPage extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  let lochUser = getCurrentUser().id;
+                  if (!this.state.blurTable) {
+                    let lochUser = getCurrentUser().id;
 
-                  let slink = rowData.account;
-                  let shareLink =
-                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                  if (lochUser) {
-                    const alreadyPassed =
-                      window.sessionStorage.getItem("PassedRefrenceId");
-                    if (alreadyPassed) {
-                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                    } else {
-                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    let slink = rowData.account;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    if (lochUser) {
+                      const alreadyPassed =
+                        window.sessionStorage.getItem("PassedRefrenceId");
+                      if (alreadyPassed) {
+                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                      } else {
+                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      }
                     }
+                    SmartMoneyWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: false,
+                    });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  } else {
+                    this.openSignInOnclickModal();
                   }
-                  SmartMoneyWalletClicked({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    wallet: slink,
-                    isMobile: false,
-                  });
-                  window.open(shareLink, "_blank", "noreferrer");
                 }}
                 className="top-account-address"
               >
@@ -778,7 +850,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.225,
+        coumnWidth: 0.222,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -829,7 +901,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.175,
+        coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -881,7 +953,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.175,
+        coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -959,7 +1031,7 @@ class SmartMoneyPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unealized PnL
+              Unrealized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -971,7 +1043,7 @@ class SmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.175,
+        coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -1037,6 +1109,51 @@ class SmartMoneyPage extends BaseReactComponent {
                   </div>
                 </div>
               </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className=" history-table-header-col no-hover"
+            id="netflows"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Follow
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "following",
+
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "following") {
+            const handleOnClick = (addItem) => {
+              if (!this.state.blurTable) {
+                this.handleFollowUnfollow(
+                  rowData.account,
+                  addItem,
+                  rowData.tagName
+                );
+              } else {
+                this.openSignInOnclickModal();
+              }
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={rowData.following}
+                dontSelectIt={this.state.blurTable}
+              />
             );
           }
         },
@@ -1130,7 +1247,7 @@ class SmartMoneyPage extends BaseReactComponent {
       // },
     ];
 
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       return (
         // <MobileDevice isSmartMoney />
         <SmartMoneyMobilePage
@@ -1146,6 +1263,9 @@ class SmartMoneyPage extends BaseReactComponent {
           onPageChange={this.onPageChange}
           blurTable={this.state.blurTable}
           signOutFun={this.signOutFun}
+          handleFollowUnfollow={this.handleFollowUnfollow}
+          mobilePopupModal={this.state.mobilePopupModal}
+          hideThePopupModal={this.hideTheMobilePopupModal}
         />
       );
     }
@@ -1206,10 +1326,15 @@ class SmartMoneyPage extends BaseReactComponent {
                 iconImage={SignInIcon}
                 hideSkip={true}
                 title="Sign in"
-                description="Get right back into your account"
+                description={
+                  this.state.showClickSignInText
+                    ? "Sign in to access the smartest money on-chain"
+                    : "Get right back into your account"
+                }
                 stopUpdate={true}
                 tracking="Sign in button"
                 goToSignUp={this.openSignUpModal}
+                showClickSignInText
               />
             ) : null}
             {this.state.signUpModal ? (
@@ -1288,6 +1413,7 @@ class SmartMoneyPage extends BaseReactComponent {
                 ) : (
                   <div className="smartMoneyTable">
                     <TransactionTable
+                      openSignInOnclickModal={this.openSignInOnclickModal}
                       smartMoneyBlur={this.state.blurTable}
                       blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney

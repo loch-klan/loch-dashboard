@@ -14,6 +14,7 @@ function SidebarModal(props) {
           history={props.history}
           popupType={props.popupType}
           tracking={props.tracking}
+          openSignupModalDirect={props.openSignupModalDirect}
         />
       ) : null}
     </div>

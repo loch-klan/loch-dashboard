@@ -1954,7 +1954,10 @@ form {
       }
     }
   }
-
+  .topMarginForCombiedValues {
+    margin-top: 60px;
+    background-color: green;
+  }
   .tableWatermark {
     background: url(../../images/graph-logo.svg) no-repeat center center;
     background-size: 104px 39px;
@@ -2175,6 +2178,11 @@ textarea {
     filter: brightness(0.5);
   }
 }
+.copy-icon-top-bar {
+  &:hover {
+    filter: brightness(0.2);
+  }
+}
 
 // .coin-badges{
 //   .white-scroll::-webkit-scrollbar-thumb, .white-scroll::-webkit-scrollbar-track{
@@ -2302,6 +2310,57 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .pageHeaderShareContainer {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .pageHeaderShareImg {
+      width: 1.6rem;
+      margin-right: 0.6rem;
+    }
+    .pageHeaderShareBtn {
+      background: transparent;
+      border: none;
+      color: $grey-B0B;
+      outline: none;
+      box-shadow: none;
+      padding: 0;
+      .custom-control {
+        .custom-control-label {
+          &::before {
+            background-color: #f2f2f2;
+          }
+          cursor: pointer;
+        }
+        .custom-control-input:checked ~ .custom-control-label::before {
+          background-color: $grey-B0B;
+        }
+      }
+    }
+
+    &:hover {
+      .pageHeaderShareBtn {
+        color: $primary;
+        .custom-control {
+          color: $primary;
+          .custom-control-label {
+            color: $primary;
+            &::after {
+              background-color: $primary;
+            }
+            &::before {
+              border-color: $primary;
+            }
+          }
+        }
+      }
+      .pageHeaderShareImg {
+        filter: brightness(0);
+      }
+    }
+  }
   .content {
     padding: 0.8rem 1rem;
     border-radius: 0.8rem;

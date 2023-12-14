@@ -22,6 +22,8 @@ import {
   CloseIcon,
   LochLogoWhiteIcon,
   MobileSearchGreyIcon,
+  TrendingFireIcon,
+  TrendingWalletIcon,
 } from "../../assets/images/icons";
 import LochBlackLogo from "../../image/Loch.svg";
 import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
@@ -34,10 +36,12 @@ import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import "./_welcomeMobilePage.scss";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { numToCurrency } from "../../utils/ReusableFunctions";
 class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isTrendingAddresses: true,
       startTime: "",
       showWhiteLogo: false,
       showBlackLogo: false,
@@ -180,6 +184,9 @@ class MobileHome extends BaseReactComponent {
     this.setState({
       showBorder: true,
     });
+    if (this.props.makeTrendingAddressesVisible) {
+      this.props.makeTrendingAddressesVisible();
+    }
   };
   hideBorder = () => {
     this.setState({
@@ -621,6 +628,60 @@ class MobileHome extends BaseReactComponent {
                   isDisabled={!this.state.coinsFound}
                   buttonText="Go"
                 />
+              </div>
+            ) : null}
+            {this.state.addWalletList &&
+            !this.state.addWalletList[0].address &&
+            this.state.addWalletList.length === 1 &&
+            this.props.isTrendingAddresses ? (
+              <div className="trendingAddressesMobileContainer">
+                <div className="trendingAddressesMobileBlock">
+                  <div className="trendingAddressesMobileBlockHeader">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="trendingAddressesMobileBlockFire"
+                    />
+                    <div className="inter-display-medium f-s-16 lh-15 ml-2 mr-2">
+                      Trending addresses
+                    </div>
+                    <div className="inter-display-medium f-s-12 lh-15 trendingAddressesMobileBlockSubText">
+                      Most-visited addresses in the last 24 hours
+                    </div>
+                  </div>
+                  <div className="trendingAddressesMobileBlockList">
+                    {this.props.trendingAddresses &&
+                      this.props.trendingAddresses.map((data, index) => {
+                        return (
+                          <div className="trendingAddressesMobileBlockItemContainer">
+                            <div
+                              onClick={() => {
+                                this.props.addTrendingAddress(index, true);
+                              }}
+                              className="trendingAddressesMobileBlockItem"
+                            >
+                              {/* <div className="trendingAddressesMobileBlockItemWalletContainer">
+                                <Image
+                                  className="trendingAddressesMobileBlockItemWallet"
+                                  src={TrendingWalletIcon}
+                                />
+                              </div> */}
+                              <div className="trendingAddressesMobileBlockItemDataContainer">
+                                <div className="inter-display-medium f-s-13">
+                                  {data.trimmedAddress}
+                                </div>
+                                <div className="inter-display-medium f-s-11 lh-15 trendingAddressesMobileBlockItemDataContainerAmount">
+                                  $
+                                  {numToCurrency(
+                                    data.worth.toFixed(2)
+                                  ).toLocaleString("en-US")}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
               </div>
             ) : null}
           </div>

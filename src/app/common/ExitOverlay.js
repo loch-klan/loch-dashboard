@@ -56,6 +56,7 @@ import {
   signUpProperties,
   resetUser,
   signInUser,
+  SignupEmail,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from "../../utils/form";
 import moment from "moment";
@@ -670,6 +671,10 @@ class ExitOverlay extends BaseReactComponent {
       data.append("email", this.state.email);
       data.append("mobile", this.state.mobileNumber);
       this.props.updateUser(data, this);
+      SignupEmail({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
     } else {
       // signUpProperties({
       //   userId: getCurrentUser().id,
@@ -1070,7 +1075,7 @@ class ExitOverlay extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
-              {this.props.goToSignIn ? (
+              {this.props.goToSignIn && !this.props.comingDirectly ? (
                 <Image
                   className="back-icon cp"
                   src={BackIcon}

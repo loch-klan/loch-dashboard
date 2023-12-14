@@ -30,6 +30,11 @@
           height: 60px;
           display: flex;
           align-items: center;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          margin-top: 64px;
           .bottomCombinedItemBlock {
             display: flex;
             align-items: center;
@@ -39,6 +44,22 @@
             line-height: 1.6rem;
             color: #313233;
             text-align: center;
+            .cost-common-container {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              .cost-common {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                box-sizing: border-box;
+                border-radius: 0.4rem;
+                padding: 0.6rem;
+                width: fit-content;
+                background: rgba(229, 229, 230, 0.5);
+              }
+            }
             .gainLossContainer {
               width: 100%;
               display: flex;
@@ -103,6 +124,14 @@
               .ReactVirtualized__Table__row {
                 .coin-chip {
                   margin: 0 auto;
+                }
+              }
+              .testerRed {
+                position: relative;
+                .testerRed {
+                  position: -webkit-sticky; /* Safari */
+                  position: sticky;
+                  top: 0;
                 }
               }
             }

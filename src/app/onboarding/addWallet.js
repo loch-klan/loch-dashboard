@@ -22,6 +22,7 @@ import {
   AddWalletAddress,
   AddTextbox,
   LPC_Go,
+  ClickTrendingAddress,
 } from "../../utils/AnalyticsFunctions.js";
 
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -40,6 +41,12 @@ import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 import { addExchangeTransaction } from "../home/Api";
+import { addUserCredits } from "../profile/Api.js";
+import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions.js";
+import {
+  TrendingFireIcon,
+  TrendingWalletIcon,
+} from "../../assets/images/icons/index.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -343,7 +350,39 @@ class AddWallet extends BaseReactComponent {
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
+      console.log("this.state.walletInput ", this.state.walletInput);
       this.props.copyWalletAddress(this.state.walletInput);
+    }
+    if (this.state.walletInput !== prevState.walletInput) {
+      let chainNotDetected = false;
+
+      this.state.walletInput.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
     }
   }
 
@@ -615,7 +654,9 @@ class AddWallet extends BaseReactComponent {
       this.setState({
         walletInput: this.state.walletInput,
       });
-      AddTextbox({});
+      AddTextbox({
+        session_id: getCurrentUser().id,
+      });
     } else {
       this.setState(
         {
@@ -645,6 +686,35 @@ class AddWallet extends BaseReactComponent {
               addButtonVisible: this.state.walletInput.some((wallet) =>
                 wallet.address ? true : false
               ),
+            });
+          }
+          let chainNotDetected = false;
+
+          this.state.walletInput.forEach((indiWallet) => {
+            let anyCoinPresent = false;
+            if (
+              indiWallet.coins &&
+              indiWallet.coinFound &&
+              indiWallet.coins.length > 0
+            ) {
+              indiWallet.coins.forEach((indiCoin) => {
+                if (indiCoin?.chain_detected) {
+                  anyCoinPresent = true;
+                }
+              });
+            }
+            if (!anyCoinPresent) {
+              chainNotDetected = true;
+            }
+          });
+
+          if (chainNotDetected) {
+            this.setState({
+              disableGoBtn: true,
+            });
+          } else {
+            this.setState({
+              disableGoBtn: false,
             });
           }
         }
@@ -760,7 +830,28 @@ class AddWallet extends BaseReactComponent {
           id: `wallet${index + 1}`,
         };
       });
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
 
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        window.sessionStorage.setItem("addAddressCreditOnce", true);
+        if (addWallet.length > 1) {
+          window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        }
+      }
+      if (creditIsEns) {
+        window.sessionStorage.setItem("addEnsCreditOnce", true);
+      }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -852,10 +943,43 @@ class AddWallet extends BaseReactComponent {
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       data.append("wallet_addresses", JSON.stringify(addressList));
-      console.log("JSON.stringify(addressList) ", JSON.stringify(addressList));
       yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
       this.props.updateUserWalletApi(data, this, yieldData);
+
+      let creditIsAddress = false;
+      let creditIsEns = false;
+      for (let i = 0; i < addressList.length; i++) {
+        const tempItem = addressList[i];
+        const endsWithEth = /\.eth$/i.test(tempItem);
+
+        if (endsWithEth) {
+          creditIsAddress = true;
+          creditIsEns = true;
+        } else {
+          creditIsAddress = true;
+        }
+      }
+      if (creditIsAddress) {
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credits", "address_added");
+        // this.props.addUserCredits(addressCreditScore);
+
+        if (addWallet.length > 1) {
+          // Multiple address
+          const multipleAddressCreditScore = new URLSearchParams();
+          multipleAddressCreditScore.append(
+            "credits",
+            "multiple_address_added"
+          );
+          // this.props.addUserCredits(multipleAddressCreditScore);
+        }
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credits", "ens_added");
+        // this.props.addUserCredits(ensCreditScore);
+      }
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -998,7 +1122,6 @@ class AddWallet extends BaseReactComponent {
                             <div className="awTopInputWrapper">
                               <div className="awInputContainer">
                                 <input
-                                  autoFocus
                                   name={`wallet${index + 1}`}
                                   value={c.address || ""}
                                   className={`inter-display-regular f-s-15 lh-20 awInput`}
@@ -1008,6 +1131,14 @@ class AddWallet extends BaseReactComponent {
                                   onKeyDown={this.handleTabPress}
                                   onFocus={(e) => {
                                     this.FocusInInput(e);
+                                    this.setState({
+                                      isTrendingAddresses: true,
+                                    });
+                                    if (
+                                      this.props.makeTrendingAddressesVisible
+                                    ) {
+                                      this.props.makeTrendingAddressesVisible();
+                                    }
                                   }}
                                 />
                               </div>
@@ -1164,6 +1295,60 @@ class AddWallet extends BaseReactComponent {
                 </Button>
               </div>
             ) : null}
+            {this.state.walletInput &&
+            !this.state.walletInput[0].address &&
+            this.state.walletInput.length === 1 &&
+            this.props.isTrendingAddresses ? (
+              <div className="trendingAddressesContainer">
+                <div className="trendingAddressesBlock">
+                  <div className="trendingAddressesBlockHeader">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="trendingAddressesBlockFire"
+                    />
+                    <div className="inter-display-medium f-s-16 lh-15 ml-2 mr-2">
+                      Trending addresses
+                    </div>
+                    <div className="inter-display-medium f-s-12 lh-15 trendingAddressesBlockSubText">
+                      Most-visited addresses in the last 24 hours
+                    </div>
+                  </div>
+                  <div className="trendingAddressesBlockList">
+                    {this.props.trendingAddresses &&
+                      this.props.trendingAddresses.map((data, index) => {
+                        return (
+                          <div className="trendingAddressesBlockItemContainer">
+                            <div
+                              onClick={() => {
+                                this.props.addTrendingAddress(index, false);
+                              }}
+                              className="trendingAddressesBlockItem"
+                            >
+                              <div className="trendingAddressesBlockItemWalletContainer">
+                                <Image
+                                  className="trendingAddressesBlockItemWallet"
+                                  src={TrendingWalletIcon}
+                                />
+                              </div>
+                              <div className="trendingAddressesBlockItemDataContainer">
+                                <div className="inter-display-medium f-s-13">
+                                  {data.trimmedAddress}
+                                </div>
+                                <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                                  $
+                                  {numToCurrency(
+                                    data.worth.toFixed(2)
+                                  ).toLocaleString("en-US")}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             {this.state.connectExchange && (
               <div className="ob-connect-exchange">
@@ -1221,9 +1406,7 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  (this.state.addButtonVisible
-                    ? this.isDisabled(true)
-                    : false) || this.state.disableGoBtn
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
                   (this.state.addButtonVisible ? this.isDisabled() : true) ||
@@ -1410,6 +1593,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   GetAllPlan,
   addExchangeTransaction,
+  addUserCredits,
 };
 AddWallet.propTypes = {};
 
