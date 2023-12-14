@@ -1363,7 +1363,7 @@ class Cost extends Component {
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized profit and loss"
+                  title="Assets"
                   subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}

@@ -3243,11 +3243,16 @@ export const TransactionHistoryMethodFilter = ({
 };
 
 // Transaction History: sort date - done
-export const YieldOpportunitiesSortAsset = ({ session_id, email_address }) => {
+export const YieldOpportunitiesSortAsset = ({
+  session_id,
+  email_address,
+  homePage,
+}) => {
   const event_name = "Yield opportunities: sort asset";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -3255,11 +3260,13 @@ export const YieldOpportunitiesSortAsset = ({ session_id, email_address }) => {
 export const YieldOpportunitiesSortUSDvalue = ({
   session_id,
   email_address,
+  homePage,
 }) => {
   const event_name = "Yield opportunities: sort USD value";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -3267,38 +3274,55 @@ export const YieldOpportunitiesSortUSDvalue = ({
 export const YieldOpportunitiesSortProject = ({
   session_id,
   email_address,
+  homePage,
 }) => {
   const event_name = "Yield opportunities: sort project";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const YieldOpportunitiesSortPool = ({ session_id, email_address }) => {
+export const YieldOpportunitiesSortPool = ({
+  session_id,
+  email_address,
+  homePage,
+}) => {
   const event_name = "Yield opportunities: sort pool";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const YieldOpportunitiesSortTVL = ({ session_id, email_address }) => {
+export const YieldOpportunitiesSortTVL = ({
+  session_id,
+  email_address,
+  homePage,
+}) => {
   const event_name = "Yield opportunities: sort tvl";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const YieldOpportunitiesSortAPY = ({ session_id, email_address }) => {
+export const YieldOpportunitiesSortAPY = ({
+  session_id,
+  email_address,
+  homePage,
+}) => {
   const event_name = "Yield opportunities: sort apy";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    homePage: homePage,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -4047,6 +4071,17 @@ export const AverageCostBasisEView = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Home:average cost basis expanded view");
+};
+export const YieldOppurtunitiesExpandediew = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home Page: Yield opportunities expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Home Page: insight add more address clicked - done
