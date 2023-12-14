@@ -54,6 +54,12 @@ import {
   InsightType,
   DEFAULT_PRICE,
   BASE_URL_S3,
+  API_LIMIT,
+  SORT_BY_TVL,
+  SORT_BY_APY,
+  SORT_BY_POOL,
+  SORT_BY_PROJECT,
+  SORT_BY_VALUE,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
@@ -87,10 +93,18 @@ import {
   CostCurrentValueHover,
   TransactionHistoryWalletClicked,
   HomeShare,
+  YieldOpportunitiesSortAsset,
+  YieldOpportunitiesSortUSDvalue,
+  YieldOpportunitiesSortProject,
+  YieldOpportunitiesSortPool,
+  YieldOpportunitiesSortTVL,
+  YieldOpportunitiesSortAPY,
+  YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
 import {
+  getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
   ResetAverageCostBasis,
@@ -129,6 +143,8 @@ import {
 import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
 import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
+import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
+import CoinChip from "../wallet/CoinChip.js";
 import { addUserCredits } from "../profile/Api.js";
 
 class Portfolio extends BaseReactComponent {
@@ -154,7 +170,12 @@ class Portfolio extends BaseReactComponent {
 
     this.state = {
       homeGraphFeesData: undefined,
+      homeCounterpartyVolumeData: undefined,
       gasFeesGraphLoading: false,
+      counterGraphLoading: false,
+      yieldOpportunitiesList: [],
+      yieldOpportunitiesTotalCount: 0,
+      yieldOpportunitiesTableLoading: false,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: 1,
@@ -198,10 +219,43 @@ class Portfolio extends BaseReactComponent {
 
       // sort
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      yieldOppSort: [{ key: SORT_BY_TVL, value: false }],
 
       // transaction history table row limit
       limit: 6,
 
+      // yield opp sort
+      yieldOppTableSortOpt: [
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "amount",
+          up: false,
+        },
+        {
+          title: "usdValue",
+          up: false,
+        },
+
+        {
+          title: "project",
+          up: false,
+        },
+        {
+          title: "pool",
+          up: false,
+        },
+        {
+          title: "tvl",
+          up: true,
+        },
+        {
+          title: "apy",
+          up: false,
+        },
+      ],
       // transaction history sort
       tableSortOpt: [
         {
@@ -542,6 +596,26 @@ class Portfolio extends BaseReactComponent {
       this.afterAddressFollowed(passedAddress);
     }
   };
+  callYieldOppApi = () => {
+    let addressList = [];
+    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : this.state.userWalletList;
+    tempUserWalletList.map((wallet) => addressList.push(wallet.address));
+
+    let listOfAddresses = JSON.stringify(addressList);
+
+    this.setState({ yieldOpportunitiesTableLoading: true });
+    let data = new URLSearchParams();
+    data.append("start", 0);
+    data.append("conditions", JSON.stringify([]));
+    data.append("limit", 5);
+    data.append("sorts", JSON.stringify(this.state.yieldOppSort));
+    data.append("wallet_addresses", listOfAddresses);
+    if (listOfAddresses) {
+      this.props.getYieldOpportunities(data, 0);
+    }
+  };
   componentDidMount() {
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
@@ -573,6 +647,15 @@ class Portfolio extends BaseReactComponent {
       this.props.intelligenceState.graphfeeValue
     ) {
       this.trimGasFees();
+    }
+    if (this.props.yieldOpportunitiesState) {
+      this.trimCounterpartyVolume();
+    }
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
+      this.callYieldOppApi();
     }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
@@ -688,6 +771,35 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  trimCounterpartyVolume = () => {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue &&
+      this.props.intelligenceState.counterPartyValue[0] &&
+      this.props.intelligenceState.counterPartyValue[0].labels
+    ) {
+      const tempHolder = [
+        {
+          labels:
+            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
+              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
+                  0,
+                  3
+                )
+              : this.props.intelligenceState.counterPartyValue[0].labels,
+          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
+            ? this.props.intelligenceState.counterPartyValue[0].datasets
+            : [],
+        },
+        { ...this.props.intelligenceState.counterPartyValue[1] },
+
+        { ...this.props.intelligenceState.counterPartyValue[2] },
+      ];
+      this.setState({
+        homeCounterpartyVolumeData: tempHolder,
+      });
+    }
+  };
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.portfolioState?.assetValueDataLoaded !==
@@ -705,6 +817,29 @@ class Portfolio extends BaseReactComponent {
         prevProps.intelligenceState.graphfeeValue
     ) {
       this.trimGasFees();
+    }
+    if (prevState.yieldOppSort !== this.state.yieldOppSort) {
+      this.callYieldOppApi();
+    }
+    if (
+      prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
+    ) {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
+          : [],
+        yieldOpportunitiesTotalCount:
+          this.props.yieldOpportunitiesState.total_count,
+        yieldOpportunitiesTableLoading: false,
+      });
+    }
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue &&
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
+    ) {
+      this.trimCounterpartyVolume();
     }
     // Wallet update response when press go
     // if (this.state.apiResponse) {
@@ -825,11 +960,21 @@ class Portfolio extends BaseReactComponent {
       // netflow breakdown
       this.props.getAssetProfitLoss(this, false, false, false);
 
-      // GAs fees
+      // Gas fees api call
       this.setState({
         gasFeesGraphLoading: true,
       });
       this.props.getAllFeeApi(this, false, false);
+
+      // Counterparty volume api call
+      this.setState({
+        gasFeesGraphLoading: true,
+      });
+      this.props.getAllCounterFeeApi(this, false, false);
+
+      // Yield opp api call
+
+      this.callYieldOppApi();
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
@@ -1081,6 +1226,103 @@ class Portfolio extends BaseReactComponent {
     this.props.setPageFlagDefault();
   };
 
+  handleYieldOppTableSort = (val) => {
+    let sort = [...this.state.yieldOppTableSortOpt];
+    let obj = [];
+    sort?.forEach((el) => {
+      if (el.title === val) {
+        if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "usdValue") {
+          obj = [
+            {
+              key: SORT_BY_VALUE,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortUSDvalue({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "project") {
+          obj = [
+            {
+              key: SORT_BY_PROJECT,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortProject({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "pool") {
+          obj = [
+            {
+              key: SORT_BY_POOL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortPool({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "tvl") {
+          obj = [
+            {
+              key: SORT_BY_TVL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortTVL({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "apy") {
+          obj = [
+            {
+              key: SORT_BY_APY,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAPY({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
+    this.setState({
+      yieldOppSort: obj,
+      yieldOppTableSortOpt: sort,
+    });
+  };
   // sort transaction history api
   handleTableSort = (val) => {
     let sort = [...this.state.tableSortOpt];
@@ -2026,6 +2268,223 @@ class Portfolio extends BaseReactComponent {
       }
       tableData = temptableData;
     }
+
+    let yieldOpportunitiesListTemp = this.state.yieldOpportunitiesList;
+    if (yieldOpportunitiesListTemp.length < 6) {
+      const tempyieldOpportunitiesListTemp = [...yieldOpportunitiesListTemp];
+      for (let i = yieldOpportunitiesListTemp.length; i < 6; i++) {
+        tempyieldOpportunitiesListTemp.push("EMPTY");
+      }
+      yieldOpportunitiesListTemp = tempyieldOpportunitiesListTemp;
+    }
+
+    const YieldOppColumnData = [
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="asset"
+            onClick={() => this.handleYieldOppTableSort("asset")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[0].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "asset",
+        coumnWidth: 0.25,
+        isCell: true,
+        className: "",
+        headerClassName: "",
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "asset") {
+            if (rowData.asset && rowData.asset.code) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.asset.code ? rowData.asset.code : ""}
+                >
+                  <div className="dotDotText">
+                    {rowData.asset.code ? rowData.asset.code : ""}
+                  </div>
+                </CustomOverlay>
+              );
+            }
+            return null;
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="project"
+            onClick={() => this.handleYieldOppTableSort("project")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Project
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[3].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "project",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "project") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.project ? rowData.project : "-"}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="tvl"
+            onClick={() => this.handleYieldOppTableSort("tvl")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              TVL
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[5].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "tvl",
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "tvl") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.currency?.rate
+                    ? CurrencyType(false) +
+                      amountFormat(
+                        rowData.tvlUsd * this.state.currency?.rate,
+                        "en-US",
+                        "USD"
+                      )
+                    : CurrencyType(false) +
+                      amountFormat(rowData.tvlUsd, "en-US", "USD")
+                }
+              >
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {this.state.currency?.rate
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.tvlUsd * this.state.currency?.rate
+                          )
+                        : CurrencyType(false) + numToCurrency(rowData.tvlUsd)}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="apy"
+            onClick={() => this.handleYieldOppTableSort("apy")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              APY
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "apy",
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "apy") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.apy ? rowData.apy + "%" : "-"}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
+                    : "-"}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+    ];
     const CostBasisColumnData = [
       {
         labelName: (
@@ -2647,7 +3106,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockOneItem(1);
                             }}
                           >
-                            Unrealized gains
+                            Assets
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -2797,7 +3256,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(3);
                             }}
                           >
-                            Counterparty volume
+                            Counterparties
                           </div>
                         </div>
                       </div>
@@ -2852,27 +3311,78 @@ class Portfolio extends BaseReactComponent {
                             isSmallerToggle
                           />
                         ) : this.state.blockTwoSelectedItem === 2 ? (
-                          <BarGraphSection
-                            data={
-                              this.state.homeGraphFeesData &&
-                              this.state.homeGraphFeesData[0]
-                            }
-                            options={
-                              this.state.homeGraphFeesData &&
-                              this.state.homeGraphFeesData[1]
-                            }
-                            options2={
-                              this.state.homeGraphFeesData &&
-                              this.state.homeGraphFeesData[2]
-                            }
-                            isScrollVisible={false}
-                            isScroll={true}
-                            isLoading={this.state.gasFeesGraphLoading}
-                            oldBar
-                            noSubtitleBottomPadding
-                            newHomeSetup
-                            noSubtitleTopPadding
-                          />
+                          <div
+                            style={{
+                              position: "relative",
+                            }}
+                          >
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <BarGraphSection
+                              data={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[0]
+                              }
+                              options={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[1]
+                              }
+                              options2={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[2]
+                              }
+                              isScrollVisible={false}
+                              isScroll={true}
+                              isLoading={this.state.gasFeesGraphLoading}
+                              oldBar
+                              noSubtitleBottomPadding
+                              newHomeSetup
+                              noSubtitleTopPadding
+                            />
+                          </div>
+                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                          <div
+                            style={{
+                              position: "relative",
+                            }}
+                          >
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              <div>Loch</div>
+                              <div>Loch</div>
+                            </div>
+                            <BarGraphSection
+                              data={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[0]
+                              }
+                              options={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[1]
+                              }
+                              options2={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[2]
+                              }
+                              isScrollVisible={false}
+                              isScroll={false}
+                              isLoading={this.state.counterGraphLoading}
+                              oldBar
+                              noSubtitleBottomPadding
+                              newHomeSetup
+                              noSubtitleTopPadding
+                            />
+                          </div>
                         ) : null}
                       </div>
                     </div>
@@ -2938,7 +3448,6 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
                         minHeight: "43rem",
@@ -3063,6 +3572,47 @@ class Portfolio extends BaseReactComponent {
                             Insights
                           </div>
                         </div>
+                        {this.state.blockFourSelectedItem === 2 ? (
+                          <TransactionTable
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Unrealized profit and loss"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push("/yield-opportunities");
+                                YieldOppurtunitiesExpandediew({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Understand your unrealized profit and loss per token"
+                            tableData={yieldOpportunitiesListTemp.slice(0, 5)}
+                            moreData={
+                              this.state.yieldOpportunitiesTotalCount &&
+                              this.state.yieldOpportunitiesTotalCount > 5
+                                ? `${numToCurrency(
+                                    this.state.yieldOpportunitiesTotalCount - 5,
+                                    true
+                                  ).toLocaleString(
+                                    "en-US"
+                                  )}+ yield opportunities`
+                                : 0
+                            }
+                            showDataAtBottom={
+                              this.state.yieldOpportunitiesTotalCount &&
+                              this.state.yieldOpportunitiesTotalCount > 5
+                            }
+                            columnList={YieldOppColumnData}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={
+                              this.state.yieldOpportunitiesTableLoading
+                            }
+                            addWatermark
+                          />
+                        ) : null}
                       </div>
                     </div>
                   </Col>
@@ -3170,6 +3720,8 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   defiState: state.DefiState,
+  yieldOpportunitiesState: state.YieldOpportunitiesState,
+  walletState: state.walletState,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -3199,7 +3751,9 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   addAddressToWatchList,
+  getAllCounterFeeApi,
   getAllFeeApi,
+  getYieldOpportunities,
   addUserCredits,
 };
 Portfolio.propTypes = {};
