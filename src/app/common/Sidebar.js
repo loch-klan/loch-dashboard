@@ -20,6 +20,7 @@ import {
   CoinsIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
+  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
@@ -491,6 +492,9 @@ function Sidebar(props) {
     setSignupModal(true);
     setSigninModal(false);
     setSigninPopup(false);
+  };
+  const openLochTwitter = () => {
+    window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
   const openSigninModal = () => {
     setComingDirectly(false);
@@ -2366,6 +2370,26 @@ function Sidebar(props) {
                       </ul>
                     )}
                   </div>
+                  <div className="sidebar-footer-content-closed sidebar-footer-content-closed-for-twitter">
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={"Follow us"}
+                    >
+                      <div
+                        onClick={openLochTwitter}
+                        className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedForTwitter inter-display-medium f-s-13 lh-19 "
+                        id="sidebar-closed-sign-in-btn"
+                      >
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
+                          src={XFormallyTwitterLogoIcon}
+                        />
+                      </div>
+                    </CustomOverlay>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -2559,6 +2583,19 @@ function Sidebar(props) {
                         {/* </li> */}
                       </ul>
                     )}
+                    <div
+                      onClick={openLochTwitter}
+                      className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
+                      id="sidebar-open-sign-in-btn"
+                    >
+                      <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
+                          src={XFormallyTwitterLogoIcon}
+                        />
+                      </div>
+                      <div>Follow us</div>
+                    </div>
 
                     <div
                       className="m-b-12 footer-divOne"
