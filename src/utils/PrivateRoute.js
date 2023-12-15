@@ -55,8 +55,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         );
         const transHistorySorts = searchParams.get("transHistorySorts");
         const followThisAddressInLink = searchParams.get("followThisAddress");
-        let walletInUrl = false;
+
         let linkAddress = "";
+
         if (props.location?.pathname) {
           if (props.location?.pathname.includes("/wallet")) {
             const justAddress = props.location?.pathname.replace(
@@ -65,15 +66,17 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             );
             window.sessionStorage.setItem("urlWasWallet", true);
             linkAddress = justAddress;
-            walletInUrl = true;
           } else {
             const wasWalletBefore =
               window.sessionStorage.getItem("urlWasWallet");
-            if (wasWalletBefore) {
-              walletInUrl = true;
-            }
             const justAddress = props.location?.pathname.replace("/home/", "");
             linkAddress = justAddress;
+            if (!wasWalletBefore) {
+              if (!window.sessionStorage.getItem("followThisAddress")) {
+                console.log("linkAddress ? ", linkAddress);
+                window.sessionStorage.setItem("followThisAddress", linkAddress);
+              }
+            }
           }
         }
         let redirect = JSON.parse(
@@ -124,11 +127,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 hash: props?.location?.hash,
               })
             );
-            if (walletInUrl) {
-              window.sessionStorage.removeItem("urlWasWallet");
-            } else {
-              window.sessionStorage.setItem("followThisAddress", linkAddress);
-            }
           }
         }
         if (
