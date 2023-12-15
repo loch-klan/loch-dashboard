@@ -1304,6 +1304,8 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1390,7 +1392,7 @@ class Cost extends Component {
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized profit and loss"
+                  title="Assets"
                   subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
