@@ -6,5 +6,33 @@
 @import "common/information-modal";
 @import "common/custom-modal";
 @import "common/sidebar";
+@import "common/confirmLeaveModal";
+@import "common/exit-overlay-modal";
+@import "common/share-potfolio-modal";
 @import "onboarding/onboarding";
-@import "onboarding/onboarding2";
+@import "common/login";
+@import "common/feedback-form";
+@import "portfolio/portfolio";
+@import "common/fix-add-modal";
+@import "intelligence/intelligence";
+@import "intelligence/transactionHistory";
+@import "intelligence/volumeTradedpage";
+@import "intelligence/insightsPage";
+@import "common/commonTable";
+@import "common/commonPagination";
+@import "common/page-header";
+@import "common/coin-badge";
+@import "common/dropdown";
+@import "common/chartArea";
+@import "common/upgrade-modal";
+@import "wallet/wallet";
+@import "wallet/edit-wallet";
+@import "cost/cost";
+@import "graph/bar-graph-section";
+@import "common/bar-graph-footer";
+@import "cohort/cohort";
+@import "profile-page/profile-page";
+@import "common/LineChartSlider";
+@import "defi/defi";
+
+

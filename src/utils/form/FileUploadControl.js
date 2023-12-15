@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import FileUploader from "./FileUploader";
 
-
-const FileUploadControl = props => {
+const FileUploadControl = (props) => {
   const {
     moduleName,
     subModule,
@@ -13,7 +12,7 @@ const FileUploadControl = props => {
     maxFileSize,
     columns,
     valueLink,
-    onSelect
+    onSelect,
   } = props;
   return (
     <div>
@@ -39,14 +38,14 @@ FileUploadControl.propTypes = {
   maxFiles: PropTypes.number,
   maxFileSize: PropTypes.number,
   columns: PropTypes.number,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
 };
 
 FileUploadControl.defaultProps = {
   extensions: ["*"],
   maxFiles: 1,
   maxFileSize: 2000000,
-  columns: 1
+  columns: 1,
 };
 
 export default FileUploadControl;

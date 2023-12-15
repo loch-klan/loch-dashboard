@@ -1,81 +1,184 @@
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import ReactDOM from 'react-dom';
-import CustomButton from "../../utils/form/CustomButton";
-import CustomTextControl from "../../utils/form/CustomTextControl";
-import Form from "../../utils/form/Form";
-import FormElement from "../../utils/form/FormElement";
-import { Col, Container, Row } from 'react-bootstrap';
-
+import {
+  BaseReactComponent,
+  CustomButton,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormValidator,
+} from "../../utils/form";
+import ReactDOM from "react-dom";
+import { signIn, verifyUser } from "./Api.js";
+import {
+  EmailAddressAdded,
+  InvalidEmail,
+} from "../../utils/AnalyticsFunctions.js";
+import { Image } from "react-bootstrap";
+import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
+// import { getCurrentUser } from '../../utils/ManageToken';
 class SignIn extends BaseReactComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: true,
-            signIn: false,
-            email: "",
-            isVerificationRequired: props.isVerificationRequired
-        }
-    }
-
-    componentDidMount() { }
-
-    setValue = (value) => {
-        this.setState({ value });
-        ReactDOM.findDOMNode(this.form).dispatchEvent(new Event("submit"));
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: true,
+      signIn: false,
+      email: "",
+      isVerificationRequired: props.isVerificationRequired,
+      text: "",
+      isVallidSignIn: false,
+      activemodal: props.activemodal,
+      signinReq: props.signinReq,
+      emailError: false,
+      prevEmail: "",
     };
+  }
 
-    onValidSubmit = (done, event) => {
-        console.log("Value submitted" + this.state.email);
-    };
+  componentDidMount() {}
 
-    render() {
+  setValue = (value) => {
+    this.setState({ value });
+    ReactDOM.findDOMNode(this.form).dispatchEvent(new Event("submit"));
+  };
 
-        return (
-            <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
-                <Container>
-                    <Row className="show-grid">
-                        <Col md={12} className={`${this.state.isVerificationRequired ? "verification-input-field" : "email-input-field"}`}>
-                            <FormElement
-                                className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
-                                valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
-                                // required
-                                // validations={[
-                                //     {
-                                //         validate: FormValidator.isRequired,
-                                //         message: "Field cannot be empty"
-                                //     },
-                                //     !this.state.isVerificationRequired ? {
-                                //         validate: FormValidator.isEmail,
-                                //         message: "Please enter valid email id"
-                                //     } : null
-                                // ]}
+  onValidSubmit = (done, event) => {
+    const data = new URLSearchParams();
+    if (
+      (this.state.email && !this.state.isVerificationRequired) ||
+      this.props.activemodal === "signIn"
+    ) {
+      data.append("email", this.state.email);
+      EmailAddressAdded({ email_address: this.state.email, session_id: "" });
+      signIn(this, data);
+    } else if (this.state.text && this.state.isVerificationRequired) {
+      data.append("email", this.state.email);
+      data.append("otp_token", this.state.text);
 
-                                control={{
-                                    type: CustomTextControl,
-                                    settings: {
-                                        placeholder: !this.state.isVerificationRequired ? "Your email" : "Verification code"
-                                    }
-                                }}
-                            />
-                        </Col>
-                        <Col className='ob-modal-verification' md={12}>
-                            <CustomButton className="primary-btn" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send verification" : "Enter code"} />
-                        </Col>
-                    </Row>
-                </Container>
-            </Form>
-
-        )
+      this.props.verifyUser(this, data);
     }
+  };
+
+  render() {
+    return (
+      <div className="sign-in-modal">
+        <Form onValidSubmit={this.onValidSubmit} ref={(el) => (this.form = el)}>
+          <div className="ob-modal-body-wrapper">
+            <div
+              className={`ob-modal-body-1 sign-in ${
+                this.state.isVerificationRequired &&
+                this.props.activemodal === "verifyCode"
+                  ? "verification-code"
+                  : ""
+              }`}
+            >
+              {/* {console.log("ACTVIVEMODAL",this.props.activemodal)} */}
+              {!this.state.isVerificationRequired ||
+              this.props.activemodal === "signIn" ? (
+                <>
+                  <FormElement
+                    className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
+                    valueLink={this.linkState(this, "email")}
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "Please enter a valid email id",
+                      },
+                      // {
+                      //   validate: FormValidator.isEmail,
+                      //   message: "Please enter valid email id",
+                      // },
+                      {
+                        validate: () => {
+                          let isvalid = FormValidator.isEmail(this.state.email);
+
+                          if (
+                            !isvalid &&
+                            this.state.prevEmail !== this.state.email
+                          ) {
+                            InvalidEmail({
+                              email_address: this.state.email,
+                            });
+                            this.setState({ prevEmail: this.state.email });
+                          }
+                          return isvalid;
+                        },
+                        message: "Please enter a valid email id",
+                      },
+                    ]}
+                    control={{
+                      type: CustomTextControl,
+                      settings: {
+                        placeholder: "Your email",
+                      },
+                    }}
+                    classes={{
+                      inputField: `${this.state.emailError && `email-error`}`,
+                    }}
+                    isCancel={true}
+                  />
+                  {this.state.emailError ? (
+                    <span className="email-not-found">
+                      <Image
+                        src={EmailNotFoundCross}
+                        onClick={() => this.setState({ emailError: false })}
+                        style={{ cursor: "pointer" }}
+                      />
+                      <p className="inter-display-medium f-s-16 lh-19">
+                        Email not found
+                      </p>
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </>
+              ) : (
+                <FormElement
+                  className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
+                  valueLink={this.linkState(this, "text")}
+                  required
+                  validations={[
+                    {
+                      validate: FormValidator.isRequired,
+                      message: "Field cannot be empty",
+                    },
+                  ]}
+                  control={{
+                    type: CustomTextControl,
+                    settings: {
+                      placeholder: "Verification code",
+                    },
+                  }}
+                  hideOnblur={true}
+                />
+              )}
+            </div>
+          </div>
+          <CustomButton
+            className={`primary-btn send-verification ${
+              this.state.email || this.state.text ? "" : "inactive-state"
+            }`}
+            type={"submit"}
+            buttonText={
+              !this.state.isVerificationRequired ||
+              this.props.activemodal === "signIn"
+                ? "Send verification"
+                : "Enter code"
+            }
+            isDisabled={!this.state.email}
+          />
+        </Form>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
-}
-SignIn.propTypes = {
+  verifyUser,
 };
+SignIn.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -1,0 +1,8 @@
+<svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.96191 30.0002L6.96191 21.3848" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.8599 2.08851C18.58 1.46849 26.5162 3.82456 28.5002 18.2089H25.4001V22.3413C25.4001 22.8922 25.3823 23.455 25.1568 23.9576C24.6249 25.1432 23.2498 26.4518 20.44 25.649V29.9891" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="9.03366" cy="10.6802" rx="8.68023" ry="2.79007" transform="rotate(90 9.03366 10.6802)" fill="#D9D9D9" fill-opacity="0.1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="8.68022" cy="2.79007" rx="8.68022" ry="2.79007" transform="matrix(0.88356 -0.468317 0.468316 0.883561 0.5 12.0518)" fill="#D9D9D9" fill-opacity="0.2" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="8.68022" cy="2.79007" rx="8.68022" ry="2.79007" transform="matrix(0.866025 0.500001 -0.499999 0.866026 3.37207 4.1543)" fill="#D9D9D9" fill-opacity="0.2" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="8.03857" y="9.53809" width="2.15387" height="2.15387" rx="1.07693" fill="#F2F2F2"/>
+</svg>

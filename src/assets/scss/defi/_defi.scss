@@ -1,0 +1,277 @@
+.balance-sheet-card {
+  background-color: #ffffff;
+  box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
+    0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+  border-radius: 12px;
+  margin-top: 2.2rem;
+  margin-bottom: 1.6rem;
+  user-select: none;
+  //   cursor: pointer;
+  position: relative;
+  // border: 1px solid #f2f2f2;
+  cursor: pointer;
+  transition-duration: 300ms;
+  &:hover {
+    // border: 1px solid $grey-E5E;
+  }
+  .balance-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // margin-bottom: 1rem;
+    img {
+      height: 1.25rem;
+      width: 1.25rem;
+      margin-bottom: 5px;
+    }
+  }
+  .balance-sheet-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.4rem 1.6rem 1.6rem;
+    padding-bottom: 2rem;
+    cursor: pointer;
+    img {
+      height: 1.25rem;
+      width: 1.25rem;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+    .balance-sheet-title-text {
+      margin-right: 0.8rem;
+      color: #636467;
+    }
+    .balance-sheet-title-amount {
+      color: #b0b1b3;
+    }
+    .balance-sheet-title-text-selected {
+      color: #000000;
+    }
+    &:hover {
+      .defiMenu {
+        filter: opacity(1);
+      }
+      .balance-sheet-title-text {
+        color: #000000;
+      }
+      .balance-sheet-title-amount {
+        color: #000000;
+      }
+    }
+  }
+  .balance-dropdown {
+    //   position: absolute;
+    //     top: 4rem;
+    background-color: #ffffff;
+    left: 0;
+    // box-shadow:0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+    border-radius: 12px;
+    //   padding: 1.6rem 2rem;
+    width: 100%;
+    z-index: 1;
+
+    .balance-list-content {
+      //  max-height: 25rem;
+      // overflow-y: scroll;
+      width: 100%;
+      // background-color: green;
+      .row {
+        margin: 0;
+        .col-md-6 {
+          padding: 0;
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 0.4rem;
+        height: 0.4rem;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.8rem;
+        background-color: $scrollBar-thumb;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba(229, 229, 230, 0.5);
+        // background-color: $grey-E5E;
+        border-radius: 0.8rem;
+      }
+    }
+    .balance-sheet-list-container {
+      padding: 0 1.6rem 1.6rem;
+    }
+    .balance-sheet-list {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.15rem 0rem;
+      border-top: 1px solid rgba(229, 229, 230, 0.5);
+      // margin-right: 1.6rem;
+
+      .balance-amt {
+        background-color: rgba(229, 229, 230, 0.5);
+        border-radius: 4px;
+        padding: 6px;
+      }
+    }
+  }
+}
+
+// sortby section begin
+.sortby-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .dropdown-section {
+    display: flex;
+    .naming {
+      padding: 1.2rem 0;
+    }
+    .sort-by-title {
+      display: flex;
+      align-items: center;
+      padding: 1.2rem 1.6rem;
+
+      cursor: pointer;
+      user-select: none;
+
+      .rotateUp {
+        transform: rotate(180deg);
+        margin-left: 1rem;
+      }
+      .rotateDown {
+        transform: rotate(0deg);
+        margin-left: 1rem;
+      }
+    }
+    .sort-by-title:hover {
+      span {
+        color: $primary;
+      }
+      img {
+        filter: brightness(0.5);
+      }
+    }
+    // .dropdown {
+    //     margin-right: 3.6rem;
+
+    //     .dropdown-toggle {
+    //         border: none;
+    //         background: none;
+    //         color: $grey-7C7;
+    //         padding: 0px;
+    //     }
+    // }
+  }
+}
+
+.defi.animation-wrapper {
+  box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+    0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+  width: 100%;
+  background-color: #fff;
+  padding: 2rem 0rem 4rem;
+  border-radius: 1.2rem;
+}
+
+.defi-card-wrapper {
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  width: 100%;
+  margin-bottom: 3.2rem;
+
+  .top-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+
+    .heading-image {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 1.6rem;
+        width: 4.3rem;
+        border-radius: 8px;
+        box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+          0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+      }
+    }
+  }
+
+  .col-md-3,
+  .col-md-2,
+  .col-md-6 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 0rem 2rem;
+  }
+
+  .table-head {
+    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    padding: 2.2rem 0rem 2.2rem;
+    margin: 0;
+
+    .header-col {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      // justify-content: center;
+
+      .rotateUp {
+        transform: rotate(180deg);
+        margin-left: 1rem;
+      }
+      .rotateDown {
+        transform: rotate(0deg);
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .table-content-row {
+    margin: 0;
+    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    padding: 2.2rem 0rem 2.2rem;
+
+    .gray-chip {
+      background: rgba(229, 229, 230, 0.5);
+      border-radius: 8px;
+      padding: 0.8rem;
+      text-align: center;
+    }
+  }
+  .overflowValueWrapContainer {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-wrap: wrap;
+  }
+  .textOverflowElipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .overflowValueContainer {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .overlap-img {
+    min-width: 2.6rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    img {
+      // box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+      border-radius: 8px;
+      width: 2.6rem;
+      // height: 60px;
+      position: relative;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.yeildOppYourPortfolioContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #e5e5e640;
+}
+.yeildOppTitleContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+  min-width: 85rem;
+  .yeildOppTitleItems {
+    display: flex;
+    padding: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 0.3rem solid;
+  }
+  .yeildOppTitleLeft {
+    width: 32%;
+    border-color: #cacbcc;
+  }
+  .yeildOppTitleRight {
+    width: 68%;
+    border-color: #e5e5e6;
+  }
+}

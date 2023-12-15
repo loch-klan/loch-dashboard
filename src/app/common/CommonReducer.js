@@ -1,18 +1,84 @@
-import { SET_COMMON_REDUCER } from "./ActionTypes";
+import {
+  LOCAL_ADD_WALLET_LIST,
+  PAGE_POPUP,
+  SET_COMMON_REDUCER,
+  SET_DEFAULT_VALUE,
+  TOP_SET_DEFAULT_VALUE,
+  WALLET_LIST_UPDATED,
+} from "./ActionTypes";
 
 const INITIAL_STATE = {
   isSidebarOpen: false,
+  isPopup: true,
+  home: false,
+  intelligence: false,
+  transactionHistory: false,
+  cost: false,
+  whaleWatch: false,
+  whaleWatchIndividual: false,
+  asset_value: false,
+  insight: false,
+  defi: false,
+  yieldOpportunities: false,
+  defi_home: false,
+  smart_money: false,
+  profile_credit: false,
+
+  // top account
+  top_home: false,
+  top_intelligence: false,
+  top_asset_value: false,
+  top_insight: false,
+  top_defi: false,
 };
 
-const CommonReducer = (state = INITIAL_STATE, action) => {
+export const CommonReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_COMMON_REDUCER:
       return {
         ...state,
         ...action.payload,
       };
+    case WALLET_LIST_UPDATED:
+      // console.log("value", action.payload);
+      return { ...state, ...action.payload };
+    case PAGE_POPUP:
+      return { ...state, isPopup: action.payload };
+    case SET_DEFAULT_VALUE:
+      return {
+        ...state,
+        home: false,
+        intelligence: false,
+        asset_value: false,
+        insight: false,
+        defi: false,
+        yieldOpportunities: false,
+        transactionHistory: false,
+        whaleWatch: false,
+        whaleWatchIndividual: false,
+        cost: false,
+        defi_home: false,
+        smart_money: false,
+        profile_credit: false,
+      };
+    case TOP_SET_DEFAULT_VALUE:
+      return {
+        ...state,
+        top_home: false,
+        top_intelligence: false,
+        top_asset_value: false,
+        top_insight: false,
+        top_defi: false,
+      };
     default:
-      return state
+      return state;
   }
 };
-export default CommonReducer
+export const AddLocalAddWalletReducer = (state = [], action) => {
+  switch (action.type) {
+    case LOCAL_ADD_WALLET_LIST:
+      return action.payload;
+    default:
+      return state;
+  }
+};

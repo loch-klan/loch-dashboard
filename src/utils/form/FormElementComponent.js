@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, FormGroup } from "react-bootstrap";
+import { Form, FormGroup, Image } from "react-bootstrap";
 import BaseReactComponent from "./BaseReactComponent";
+import cancelIcon from "../../assets/images/icons/EmailNotFoundCross.svg";
 
 class FormElementComponent extends BaseReactComponent {
   constructor(props) {
@@ -32,16 +33,16 @@ class FormElementComponent extends BaseReactComponent {
     let isInvalidState = null;
 
     if (validations) {
-      failedValidation = validations.find(
-        validation => {
-          return validation.validate(valueLink.value || stateValue) === false
-        }
-      );
+      failedValidation = validations.find((validation) => {
+        return validation.validate(valueLink.value || stateValue) === false;
+      });
       failedValidation =
         failedValidation !== undefined ? failedValidation : null;
       // console.log('failedValidation', failedValidation);
-      isInvalidState = failedValidation && failedValidation.message ? true : false;
-      isValidState = failedValidation && failedValidation.message ? false : true;
+      isInvalidState =
+        failedValidation && failedValidation.message ? true : false;
+      isValidState =
+        failedValidation && failedValidation.message ? false : true;
     }
 
     // console.log('isInvalidState', isInvalidState);
@@ -56,6 +57,17 @@ class FormElementComponent extends BaseReactComponent {
     return failedValidation === null;
   };
 
+  hideOnblur = () => {
+    // console.log("hide")
+    this.setState({
+      failedValidation: null,
+      isInvalid: null,
+      isValid: null,
+      isInvalidState: null,
+      // isValidState:null,
+    });
+  };
+
   render() {
     const {
       classes,
@@ -67,71 +79,100 @@ class FormElementComponent extends BaseReactComponent {
       toolTipText,
       isValid,
       isInvalid,
-      control: { type, settings }
+      isCancel = false,
+      hideOnblur = this.props.hideOnblur ? true : false,
+      control: { type, settings },
     } = this.props;
     // console.log('this.props', this.props);
     const { failedValidation, isInvalidState, isValidState } = this.state;
     const FormElementControl = type;
 
     const requiredStyle = {
-      color: "red"
+      color: "red",
     };
     // console.log('valueLink', valueLink);
     return (
-
-      <div>
-
-        <FormGroup
-          controlId={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
-          // validationState={failedValidation ? "error" : ""}
-          // validated={failedValidation}
-          className={classes.formGroup}
-        >
-          {
-            label && (
-              required ?
-                (
-                  // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
-                  <Form.Label className={classes.label}>{label} <span style={requiredStyle}>*</span></Form.Label>
-                )
-                :
-                (
-                  // <ControlLabel className={classes.label} > {label}</ControlLabel>
-                  <Form.Label className={classes.label}>{label}</Form.Label>
-                )
-
-            )
-          }
-          <FormElementControl
-            valueLink={valueLink}
-            onBlur={this.validate}
-            failedValidation={this.state.failedValidation}
-            classes={classes}
-            disabled={disabled}
-            isValid={isValid || isValidState}
-            isInvalid={isInvalid || isInvalidState}
-            {...settings}
-          />
-          {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
-          {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
-          {
-
-          }
-          {
-            (failedValidation || helpText) &&
-            <Form.Text className={`${failedValidation ? "has-error" : ""}`}>
-              {failedValidation ? failedValidation.message : helpText}
-            </Form.Text>
-          }
-
-          {
-            (toolTipText) &&
-            <Form.Control.Feedback tooltip type={`${failedValidation ? "invalid" : "valid"}`}>{failedValidation ? failedValidation.message : toolTipText}</Form.Control.Feedback>
-          }
-
-        </FormGroup>
-      </div>
-
+      <FormGroup
+        controlId={
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+        }
+        // validationState={failedValidation ? "error" : ""}
+        // validated={failedValidation}
+        className={classes.formGroup}
+      >
+        {label &&
+          (required ? (
+            // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
+            <Form.Label className={classes.label}>
+              {label} <span style={requiredStyle}>*</span>
+            </Form.Label>
+          ) : (
+            // <ControlLabel className={classes.label} > {label}</ControlLabel>
+            <Form.Label className={classes.label}>{label}</Form.Label>
+          ))}
+        <FormElementControl
+          valueLink={valueLink}
+          onBlur={hideOnblur ? this.hideOnblur : this.validate}
+          failedValidation={this.state.failedValidation}
+          classes={classes}
+          disabled={disabled}
+          isValid={isValid || isValidState}
+          isInvalid={isInvalid || isInvalidState}
+          {...settings}
+        />
+        {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
+        {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
+        {(failedValidation && failedValidation.message) || helpText ? (
+          <Form.Text
+            className={`${
+              failedValidation ? "has-error" : ""
+            } custom-form-error`}
+            onClick={() => {
+              if (!isCancel) {
+                this.setState({
+                  failedValidation: null,
+                  isInvalid: null,
+                  isValid: null,
+                  isInvalidState: null,
+                });
+              }
+            }}
+          >
+            {isCancel && (
+              <Image
+                src={cancelIcon}
+                onClick={() => {
+                  this.setState({
+                    failedValidation: null,
+                    isInvalid: null,
+                    isValid: null,
+                    isInvalidState: null,
+                  });
+                }}
+                className="cancel-icon"
+              />
+            )}
+            {failedValidation ? failedValidation.message : helpText + "ab"}
+          </Form.Text>
+        ) : this.props.showHiddenError ? (
+          <Form.Text
+            className="has-error custom-form-error"
+            style={{ opacity: 0 }}
+          >
+            {isCancel && <Image src={cancelIcon} className="cancel-icon" />}
+            Please enter valid email id
+          </Form.Text>
+        ) : null}
+        {toolTipText && (
+          <Form.Control.Feedback
+            tooltip
+            type={`${failedValidation ? "invalid" : "valid"}`}
+          >
+            {failedValidation ? failedValidation.message : toolTipText}
+          </Form.Control.Feedback>
+        )}
+      </FormGroup>
     );
   }
 }
@@ -156,7 +197,7 @@ FormElementComponent.defaultProps = {
   helpText: "",
   toolTipText: "",
   validations: [],
-  classes: {}
+  classes: {},
 };
 
 export default FormElementComponent;

@@ -1,18 +1,31 @@
 import { receivedPosts } from "./HomeAction";
-import { preLoginInstance } from "../../utils";
+import { postLoginInstance, preLoginInstance } from "../../utils";
 
-const fetchPosts = (cityName) => {
-    return function (dispatch, getState) {
-        // dispatch(requestPosts());
-        console.log('====================================');
-        console.log('clicked', getState());
-        console.log('====================================');
-        return preLoginInstance.get(`weather?q=${cityName},uk&APPID=${process.env.REACT_APP_WEATHER_API}/`)
-            .then(res => {
-                console.log('res', res);
-                dispatch(receivedPosts(res.data));
-            });
-    };
-}
+export const fetchPosts = (cityName) => {
+  return function (dispatch, getState) {
+    // dispatch(requestPosts());
+    console.log("clicked", getState());
+    return preLoginInstance
+      .get(
+        `weather?q=${cityName},uk&APPID=${process.env.REACT_APP_WEATHER_API}/`
+      )
+      .then((res) => {
+        console.log("res", res);
+        dispatch(receivedPosts(res.data));
+      });
+  };
+};
+export const addExchangeTransaction = (data) => {
+  return async function () {
+    console.log("add-exchange-transactions called");
+    postLoginInstance
 
-export default fetchPosts;
+      .post("wallet/user-wallet/add-exchange-transactions", data)
+      .then((response) => {
+        console.log("add-exchange-transactions response is ", response);
+      })
+      .catch((error) => {
+        console.log("add-exchange-transactions error is ", error);
+      });
+  };
+};

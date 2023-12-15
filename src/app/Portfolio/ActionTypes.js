@@ -1,0 +1,33 @@
+const COIN_RATE_LIST = "COIN_RATE_LIST";
+const USER_WALLET_LIST = "USER_WALLET_LIST";
+const DEFAULT_VALUES = "DEFAULT_VALUES";
+
+// asset value chart graphValue
+const ASSET_VALUE_GRAPH = "ASSET_VALUE_GRAPH";
+
+// asset value chart graphValue
+const ASSET_VALUE_GRAPH_YEAR = "ASSET_VALUE_GRAPH_YEAR";
+
+// asset value chart graphValue
+const ASSET_VALUE_GRAPH_MONTH = "ASSET_VALUE_GRAPH_MONTH";
+
+// asset value chart graphValue
+const ASSET_VALUE_GRAPH_DAY = "ASSET_VALUE_GRAPH_DAY";
+
+// External events
+const EXTERNAL_EVENTS = "EXTERNAL_EVENTS";
+
+// get yesterday balance
+const YESTERDAY_BALANCE = "YESTERDAY_BALANCE";
+
+export {
+  COIN_RATE_LIST,
+  USER_WALLET_LIST,
+  DEFAULT_VALUES,
+  YESTERDAY_BALANCE,
+  ASSET_VALUE_GRAPH,
+  EXTERNAL_EVENTS,
+  ASSET_VALUE_GRAPH_DAY,
+  ASSET_VALUE_GRAPH_MONTH,
+  ASSET_VALUE_GRAPH_YEAR,
+};

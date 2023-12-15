@@ -1,0 +1,30 @@
+.Y-axis {
+  width: 6rem;
+}
+.ChartAreaWrapper {
+  width: 100%;
+}
+
+.ScrollArea {
+  overflow-x: scroll;
+  width: calc(100% - 6rem);
+  padding-bottom: 0.8rem;
+
+  &:hover {
+    &::-webkit-scrollbar {
+      height: 0.4rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.8rem;
+      // background-color: #E5E5E6;
+      background-color: $scrollBar-thumb;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(229, 229, 230, 0.5);
+      // background-color: $grey-E5E;
+      border-radius: 0.8rem;
+    }
+  }
+}

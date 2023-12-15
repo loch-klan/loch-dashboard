@@ -1,0 +1,288 @@
+.mobileSmartMoneyPagingation {
+  padding: 2rem;
+  padding-top: 0rem;
+  .smartMoneyPaginationContainer {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .smartMoneyPaginationOfTxt {
+      margin: 0rem 1rem;
+      color: #b0b1b3;
+      font-weight: 500;
+    }
+    .smartMoneyPaginationArrowContainer {
+      background-color: #e5e5e6;
+      height: 4rem;
+      width: 4rem;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+    .smartMoneyPaginationArrowContainerDisabled {
+      cursor: default;
+      &:hover {
+        filter: brightness(1);
+      }
+      .smartMoneyPaginationArrow {
+        filter: opacity(0.5);
+        height: 1rem;
+      }
+    }
+
+    button {
+      background-color: #0d0d0d;
+      border-color: #0d0d0d;
+      box-shadow: 0 0 10px #d3d3d3;
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #0d0d0d;
+        color: white;
+      }
+      &:disabled {
+        color: #000000;
+      }
+      img {
+        width: 2rem;
+      }
+    }
+    h5 {
+      display: inline-block;
+      margin: 0 1.5rem;
+    }
+    input {
+      // display: flex;
+      background: white;
+      border: 0.1rem solid #d4d4d4;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      border-radius: 0.8rem;
+      height: 4rem;
+      width: 3.5rem;
+      text-align: center;
+      &:focus-visible {
+        outline: none;
+      }
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+.smartMoneyPaginationAndLimitSelectorContainer {
+  margin-bottom: 0;
+  margin-top: 0;
+  position: absolute;
+  bottom: -5rem;
+  right: 0;
+  width: 100%;
+  .smartMoneyPaginationAndLimitSelectorChild {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    .smartMoneyPaginationAndLimitSelectorChildCover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+    .smartMoneyLimitSelectorContainer {
+      display: flex;
+      align-items: center;
+      .smartMoneyLimitSelectorInput {
+        text-align: left !important;
+        margin-top: 0rem;
+        margin: 0rem 1rem;
+
+        .dropdown-menu {
+          width: 100%;
+          padding: 0.4rem;
+          .dropdown-item {
+            padding: 0.8rem;
+            color: #313233;
+            font-family: "Inter-Medium";
+            font-size: 1.3rem;
+            font-weight: 500;
+            line-height: 1.6rem;
+          }
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active {
+          background-color: transparent !important;
+          border: 0.1rem solid transparent !important;
+          color: #19191a;
+          padding: 0rem 1rem;
+          height: 3rem;
+          padding: 0rem 1.5rem;
+          border-radius: 0.8rem;
+        }
+
+        .btn-primary.dropdown-toggle {
+          background-color: transparent !important;
+          border: 0.1rem solid #d4d4d4 !important;
+          color: #19191a;
+          padding: 0rem 1rem;
+          height: 3rem;
+          padding: 0rem 1.5rem;
+          border-radius: 0.8rem;
+
+          &:hover {
+            border: 0.1rem solid #0d0d0d !important;
+          }
+        }
+
+        .btn-primary.dropdown-toggle:focus {
+          box-shadow: none;
+          background-color: transparent !important;
+          border: 0.1rem solid #0d0d0d !important;
+          color: #19191a;
+        }
+
+        .dropdown-toggle {
+          background-color: transparent;
+          color: #19191a;
+          padding: 0rem 1rem;
+          height: 3rem;
+          padding: 0rem 1.5rem;
+          border-radius: 0.8rem;
+        }
+
+        .dropdown-toggle::after {
+          margin-left: 0.6rem;
+          display: inline-block;
+          vertical-align: 0.255em;
+          content: "";
+          border-top: 0.35em solid;
+          border-right: 0.35em solid transparent;
+          border-bottom: 0;
+          border-left: 0.35em solid transparent;
+        }
+      }
+    }
+    .smarMoneyHeaderSignInContainer {
+      color: #313233;
+      padding: 1rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.8rem;
+      transition-duration: 300ms;
+      border: 1.3px #e5e5e6 solid;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      background-color: white;
+      margin-right: 3rem;
+      &:hover {
+        box-shadow: none;
+        background-color: #f2f2f2;
+        color: #19191a;
+        .smarMoneyHeaderSignInIconContainer {
+          background-color: white;
+        }
+      }
+
+      .smarMoneyHeaderSignInIconContainer {
+        transition-duration: 300ms;
+        margin-right: 0.5rem;
+        border: 0.1rem solid #e5e5e6;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        max-width: 2.5rem;
+        max-height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.8rem;
+        background-color: white;
+        .smarMoneyHeaderSignInIcon {
+          height: 1.3rem;
+        }
+      }
+    }
+    .smartMoneyPaginationContainer {
+      text-align: center;
+      display: flex;
+      align-items: center;
+
+      .smartMoneyPaginationOfTxt {
+        margin: 0rem 1rem;
+        color: #b0b1b3;
+        font-weight: 500;
+      }
+      .smartMoneyPaginationArrowContainer {
+        background-color: #e5e5e6;
+        height: 4rem;
+        width: 4rem;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        &:hover {
+          filter: brightness(0.9);
+        }
+      }
+      .smartMoneyPaginationArrowContainerDisabled {
+        cursor: default;
+        &:hover {
+          filter: brightness(1);
+        }
+        .smartMoneyPaginationArrow {
+          filter: opacity(0.5);
+          height: 1rem;
+        }
+      }
+
+      button {
+        background-color: #0d0d0d;
+        border-color: #0d0d0d;
+        box-shadow: 0 0 10px #d3d3d3;
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: #0d0d0d;
+          color: white;
+        }
+        &:disabled {
+          color: #000000;
+        }
+        img {
+          width: 2rem;
+        }
+      }
+      h5 {
+        display: inline-block;
+        margin: 0 1.5rem;
+      }
+      input {
+        // display: flex;
+        background: white;
+        border: 0.1rem solid #d4d4d4;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        border-radius: 0.8rem;
+        height: 4rem;
+        width: 3.5rem;
+        text-align: center;
+        &:focus-visible {
+          outline: none;
+        }
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+}

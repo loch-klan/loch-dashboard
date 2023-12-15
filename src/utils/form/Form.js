@@ -10,34 +10,34 @@ class Form extends BaseReactComponent {
     this.submitButtons = [];
     this.state = {};
     this.formContextValue = {
-      registerElement: element => {
+      registerElement: (element) => {
         this.elements.push(element);
       },
-      unRegisterElement: element => {
+      unRegisterElement: (element) => {
         this.elements.splice(this.elements.indexOf(element), 1);
       },
-      registerSubmitButton: submitButton => {
+      registerSubmitButton: (submitButton) => {
         this.submitButtons.push(submitButton);
       },
-      unRegisterSubmitButton: submitButton => {
+      unRegisterSubmitButton: (submitButton) => {
         this.submitButtons.splice(this.submitButtons.indexOf(submitButton));
-      }
+      },
     };
 
     this.submitProgressCallback = {
       done: () => {
-        this.submitButtons.forEach(submitButton => {
+        this.submitButtons.forEach((submitButton) => {
           submitButton.updateInProgress(false);
         });
-      }
+      },
     };
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     // console.log('onSubmit');
     event.preventDefault();
     if (this.validateAll()) {
-      this.submitButtons.forEach(submitButton => {
+      this.submitButtons.forEach((submitButton) => {
         submitButton.updateInProgress(true);
       });
       this.props.onValidSubmit(this.submitProgressCallback, event);
@@ -48,7 +48,7 @@ class Form extends BaseReactComponent {
   validateAll = () => {
     // console.log('this.elements', this.elements);
     const failedElements = [];
-    this.elements.forEach(element => {
+    this.elements.forEach((element) => {
       if (!element.validate()) {
         failedElements.push(element);
       }
@@ -76,7 +76,7 @@ class Form extends BaseReactComponent {
 
 Form.propTypes = {
   classes: PropTypes.object,
-  onValidSubmit: PropTypes.func.isRequired
+  onValidSubmit: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {};

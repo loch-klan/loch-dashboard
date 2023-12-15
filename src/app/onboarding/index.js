@@ -1,76 +1,193 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
+
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
-import SignInIcon from "../../image/profile-icon.png";
+import UpgradeModal from "../common/upgradeModal";
+import ConnectModal from "../common/ConnectModal";
+import { Image } from "react-bootstrap";
 import AddWallet from "./addWallet";
 import SignIn from "./signIn";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { Image } from "react-bootstrap";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-// export { default as OnboardingReducer } from "./OnboardingReducer";
 
+import {
+  OnboardingPage,
+  PrivacyMessage,
+  TimeSpentOnboarding,
+} from "../../utils/AnalyticsFunctions.js";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 class OnBoarding extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: true,
-            signInReq: false,
-            isVerificationRequired: false,
-            isVerified: false
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      startTime: "",
+    };
+  }
+
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    OnboardingPage({});
+    // Inactivity Check
+    window.checkOnboardingTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
+    if (!mobileCheck()) {
+      this.startPageView();
+      this.updateTimer(true);
     }
-
-    componentDidMount() { }
-
-    onClose = () => {
-        this.setState({ showModal: false })
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
     }
-
-    switchSignIn = () => {
-        this.setState({ signInReq: !this.state.signInReq })
+    const tempExpiryTime = Date.now() + 1800000;
+    window.sessionStorage.setItem("onboardingPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkOnboardingTimer);
+    window.sessionStorage.removeItem("onboardingPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentOnboarding({ time_spent: TimeSpent });
     }
-
-    render() {
-
-        return (
-            <>
-                <OnboardingModal
-                    show={this.state.showModal}
-                    showImage={true}
-                    onHide={this.onClose}
-                    title={this.state.signInReq ? "Sign In" : "Welcome to Loch"}
-                    subTitle={this.state.signInReq ? "Get right back into your account" : "Add your wallet address(es) to get started"}
-                    icon={this.state.signInReq ? SignInIcon : WalletIcon}
-                    isSignInActive={this.state.signInReq}
-                    handleBack={this.switchSignIn}>
-
-                    {this.state.signInReq ? <SignIn isVerificationRequired={this.state.isVerificationRequired} /> : <AddWallet />}
-                    <div className="ob-modal-body-info">
-                        {this.state.signInReq ? null : <h4 className='inter-display-medium f-s-14 grey-636'>Already have an account? <span className='cp' onClick={this.switchSignIn}>Sign in</span></h4>}
-                        <p className='inter-display-medium lh-16 grey-ADA'>Don't worry. All your information remains private and anonymous.
-                            <CustomOverlay
-                                text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                                position="top"
-                                isIcon={true}
-                                IconImage ={LockIcon}
-                                isInfo = {true}
-                            ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay> </p>
-                    </div>
-                </OnboardingModal>
-            </>
-
-        )
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
     }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+  }
+
+  privacymessage = () => {
+    PrivacyMessage({});
+    this.updateTimer();
+  };
+  render() {
+    return (
+      <>
+        {this.props.showPrevModal ? (
+          <OnboardingModal
+            show={this.props.showModal}
+            showImage={true}
+            onHide={this.props.onboardingOnClose}
+            title={this.props.signInReq ? "Sign in" : "Welcome to Loch"}
+            subTitle={
+              this.props.signInReq
+                ? "Get right back into your account"
+                : "Add your wallet address(es) to get started"
+            }
+            icon={this.props.signInReq ? SignInIcon : WalletIcon}
+            isSignInActive={this.props.signInReq}
+            handleBack={this.props.onboardingSwitchSignIn}
+            modalAnimation={this.props.modalAnimation}
+          >
+            {this.props.signInReq ? (
+              <SignIn
+                isVerificationRequired={this.props.isVerificationRequired}
+                history={this.props.history}
+                activemodal={this.props.currentActiveModal}
+                signInReq={this.props.signInReq}
+                handleStateChange={this.props.onboardingHandleStateChange}
+              />
+            ) : (
+              <AddWallet
+                {...this.props}
+                makeTrendingAddressesVisible={
+                  this.props.makeTrendingAddressesVisible
+                }
+                addTrendingAddress={this.props.addTrendingAddress}
+                trendingAddresses={this.props.trendingAddresses}
+                isTrendingAddresses={this.props.isTrendingAddresses}
+                switchSignIn={this.props.onboardingSwitchSignIn}
+                hideModal={this.props.hideModal}
+                upgradeModal={this.props.onboardingHandleUpgradeModal}
+                walletAddress={this.props.onboardingWalletAddress}
+                connectWallet={this.props.onboardingShowConnectModal}
+                exchanges={this.props.exchanges}
+                copyWalletAddress={this.props.copyWalletAddress}
+              />
+            )}
+            <div className="ob-modal-body-info">
+              <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
+                Don't worry. All your information remains private and anonymous.
+                <CustomOverlay
+                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                  position="top"
+                  isIcon={true}
+                  IconImage={LockIcon}
+                  isInfo={true}
+                  className={"fix-width"}
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    onMouseEnter={this.privacymessage}
+                    style={{ cursor: "pointer" }}
+                  />
+                </CustomOverlay>
+              </p>
+            </div>
+          </OnboardingModal>
+        ) : null}
+        {this.props.upgradeModal && (
+          <UpgradeModal
+            show={this.props.upgradeModal}
+            onHide={this.props.onboardingHandleUpgradeModal}
+            history={this.props.history}
+            triggerId={this.props.triggerId}
+            signinBack={true}
+            from="home"
+            pname="index"
+          />
+        )}
+
+        {this.props.connectExchangeModal && (
+          <ConnectModal
+            show={this.props.connectExchangeModal}
+            onHide={this.props.onboardingHideConnectModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+            ishome={true}
+            tracking="landing page"
+            walletAddress={this.props?.onboardingWalletAddress}
+            exchanges={this.props.exchanges}
+            handleBackConnect={this.props.onboardingHandleBackConnect}
+            onboardingHandleUpdateConnect={
+              this.props.onboardingHandleUpdateConnect
+            }
+            modalAnimation={this.props.modalAnimation}
+          />
+        )}
+      </>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-});
-const mapDispatchToProps = {
-}
-OnBoarding.propTypes = {
-};
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
+OnBoarding.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

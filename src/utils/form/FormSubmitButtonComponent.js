@@ -7,7 +7,7 @@ class FormSubmitButtonComponent extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      inProgress: false
+      inProgress: false,
     };
   }
 
@@ -23,20 +23,26 @@ class FormSubmitButtonComponent extends BaseReactComponent {
     this.props.formContext.unRegisterSubmitButton(this);
   }
 
-  updateInProgress = inProgress => {
+  updateInProgress = (inProgress) => {
     this.setState({ inProgress });
   };
 
   render() {
-    const { progressMessage, fullWidth, children, formError = false, customClass = '', name = "" } = this.props;
-    const inProgress = (this.state.inProgress && formError);
+    const {
+      progressMessage,
+      children,
+      formError = false,
+      customClass = "",
+      name = "",
+    } = this.props;
+    const inProgress = this.state.inProgress && formError;
     return (
       <Button
         variant="raised"
-        bsStyle="primary"
+        bsstyle="primary"
         type="submit"
         disabled={inProgress}
-        bsSize={fullWidth}
+        // bssize={fullWidth}
         className={customClass}
         name={name}
       >
@@ -49,12 +55,12 @@ class FormSubmitButtonComponent extends BaseReactComponent {
 FormSubmitButtonComponent.propTypes = {
   classes: PropTypes.object,
   formContext: PropTypes.object.isRequired,
-  progressMessage: PropTypes.string.isRequired,
-  fullWidth: PropTypes.bool
+  progressMessage: PropTypes.string,
+  // fullWidth: PropTypes.bool
 };
 
 FormSubmitButtonComponent.defaultProps = {
-  fullWidth: false
+  // fullWidth: false
 };
 
 export default FormSubmitButtonComponent;
