@@ -20,6 +20,7 @@ import {
   CoinsIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
+  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import CohortIcon from "../../assets/images/icons/cohort.svg";
@@ -117,6 +118,8 @@ function Sidebar(props) {
   const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
+  const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
@@ -482,7 +485,20 @@ function Sidebar(props) {
   };
   useSelector((state) => state.LochUserState);
 
+  const openSignupModalDirect = () => {
+    setComingDirectly(true);
+    setSignUpModalAnimation(true);
+    setSignInModalAnimation(false);
+    setSignupModal(true);
+    setSigninModal(false);
+    setSigninPopup(false);
+  };
+  const openLochTwitter = () => {
+    window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
+  };
   const openSigninModal = () => {
+    setComingDirectly(false);
+    setSignUpModalAnimation(false);
     setSignupModal(false);
     setSigninModal(true);
 
@@ -491,12 +507,16 @@ function Sidebar(props) {
     });
   };
   const onCloseModal = () => {
+    setComingDirectly(true);
+    setSignUpModalAnimation(true);
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
   };
 
   const openSignUpModal = () => {
+    setComingDirectly(false);
+    setSignUpModalAnimation(false);
     setSignInModalAnimation(false);
     setSigninModal(false);
     setSignupModal(true);
@@ -954,6 +974,44 @@ function Sidebar(props) {
                                 src={TwoPeopleIcon}
                                 style={
                                   activeTab === "/watchlist"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Profile"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/profile"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={ProfileIcon}
+                                style={
+                                  activeTab === "/profile"
                                     ? {
                                         filter: "brightness(0)",
                                       }
@@ -1719,6 +1777,33 @@ function Sidebar(props) {
                               Following
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/profile"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/profile"
+                                    ? ActiveProfileIcon
+                                    : ProfileIcon
+                                }
+                              />
+                              Profile
+                            </NavLink>
+                          </li>
                           {/* <li>
                           <NavLink
                             exact={true}
@@ -2273,6 +2358,7 @@ function Sidebar(props) {
                             <div
                               onClick={openSigninModal}
                               className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                              id="sidebar-closed-sign-in-btn"
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
@@ -2283,6 +2369,26 @@ function Sidebar(props) {
                         )}
                       </ul>
                     )}
+                  </div>
+                  <div className="sidebar-footer-content-closed sidebar-footer-content-closed-for-twitter">
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={"Follow us"}
+                    >
+                      <div
+                        onClick={openLochTwitter}
+                        className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedForTwitter inter-display-medium f-s-13 lh-19 "
+                        id="sidebar-closed-sign-in-btn"
+                      >
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
+                          src={XFormallyTwitterLogoIcon}
+                        />
+                      </div>
+                    </CustomOverlay>
                   </div>
                 </div>
               ) : (
@@ -2351,6 +2457,7 @@ function Sidebar(props) {
                           <div
                             onClick={openSigninModal}
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                            id="sidebar-open-sign-in-btn"
                           >
                             <div className="sideBarFooterSignInIconContainer">
                               <Image
@@ -2476,6 +2583,19 @@ function Sidebar(props) {
                         {/* </li> */}
                       </ul>
                     )}
+                    <div
+                      onClick={openLochTwitter}
+                      className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
+                      id="sidebar-open-sign-in-btn"
+                    >
+                      <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
+                          src={XFormallyTwitterLogoIcon}
+                        />
+                      </div>
+                      <div>Follow us</div>
+                    </div>
 
                     <div
                       className="m-b-12 footer-divOne"
@@ -2638,9 +2758,10 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError
-          modalAnimation={false}
+          modalAnimation={signUpModalAnimation}
           show={signupModal}
           onHide={onCloseModal}
           history={history}
@@ -2669,6 +2790,7 @@ function Sidebar(props) {
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
+          openSignupModalDirect={openSignupModalDirect}
         />
       ) : null}
     </>

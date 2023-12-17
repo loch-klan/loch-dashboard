@@ -86,6 +86,7 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
@@ -110,6 +111,7 @@ class Cost extends Component {
       gasFeesGraphLoading: true,
 
       AvgCostLoading: true,
+      showDust: true,
 
       // counter party
       // counterPartyData: [],
@@ -322,29 +324,41 @@ class Cost extends Component {
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
     ) {
-      let tempcombinedCostBasis = 0;
-      let tempcombinedCurrentValue = 0;
-      let tempcombinedUnrealizedGains = 0;
-      let tempcombinedReturn = 0;
-      if (this.props.intelligenceState?.net_return) {
-        tempcombinedReturn = this.props.intelligenceState?.net_return;
-      }
-      if (this.props.intelligenceState?.total_bal) {
-        tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-      }
-      if (this.props.intelligenceState?.total_cost) {
-        tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-      }
-      if (this.props.intelligenceState?.total_gain) {
-        tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
-      }
+      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+        (e) => e.CurrentValue < 1
+      );
 
-      this.setState({
-        combinedCostBasis: tempcombinedCostBasis,
-        combinedCurrentValue: tempcombinedCurrentValue,
-        combinedUnrealizedGains: tempcombinedUnrealizedGains,
-        combinedReturn: tempcombinedReturn,
-      });
+      if (array.length > 0 && this.state.showDust) {
+        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+          (e) => e.CurrentValue >= 1
+        );
+        this.props.updateAverageCostBasis(array, this);
+      } else {
+        let tempcombinedCostBasis = 0;
+        let tempcombinedCurrentValue = 0;
+        let tempcombinedUnrealizedGains = 0;
+        let tempcombinedReturn = 0;
+        if (this.props.intelligenceState?.net_return) {
+          tempcombinedReturn = this.props.intelligenceState?.net_return;
+        }
+        if (this.props.intelligenceState?.total_bal) {
+          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+        }
+        if (this.props.intelligenceState?.total_cost) {
+          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+        }
+        if (this.props.intelligenceState?.total_gain) {
+          tempcombinedUnrealizedGains =
+            this.props.intelligenceState?.total_gain;
+        }
+
+        this.setState({
+          combinedCostBasis: tempcombinedCostBasis,
+          combinedCurrentValue: tempcombinedCurrentValue,
+          combinedUnrealizedGains: tempcombinedUnrealizedGains,
+          combinedReturn: tempcombinedReturn,
+        });
+      }
     }
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
@@ -717,21 +731,28 @@ class Cost extends Component {
     }
   };
 
-  handleDust = (ishide) => {
-    if (!ishide) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue >= 1
-      ); //all data
-      this.props.updateAverageCostBasis(array, this);
-    } else {
-      this.props.ResetAverageCostBasis(this);
-    }
+  handleDust = () => {
+    this.setState(
+      {
+        showDust: !this.state.showDust,
+      },
+      () => {
+        if (this.state.showDust) {
+          let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+            (e) => e.CurrentValue >= 1
+          ); //all data
+          this.props.updateAverageCostBasis(array, this);
+        } else {
+          this.props.ResetAverageCostBasis(this);
+        }
 
-    CostHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
+        CostHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.updateTimer();
+      }
+    );
   };
 
   handleShare = () => {
@@ -801,7 +822,7 @@ class Cost extends Component {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={Number(noExponents(index, 1)).toLocaleString("en-US")}
+                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
               >
                 <span className="inter-display-medium f-s-13">
                   {Number(noExponents(index + 1)).toLocaleString("en-US")}
@@ -834,33 +855,35 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.AssetCode}
+              <div
+                onMouseEnter={() => {
+                  CostAssetHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    asset_hover: rowData.AssetCode,
+                  });
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostAssetHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      asset_hover: rowData.AssetCode,
-                    });
-                  }}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.AssetCode}
                 >
-                  <CoinChip
-                    coin_img_src={rowData.Asset}
-                    coin_code={rowData.AssetCode}
-                    chain={rowData?.chain}
-                  />
-                </div>
-              </CustomOverlay>
+                  <div>
+                    <CoinChip
+                      coin_img_src={rowData.Asset}
+                      coin_code={rowData.AssetCode}
+                      chain={rowData?.chain}
+                    />
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -888,41 +911,38 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
+              <div
+                onMouseEnter={() => {
+                  CostAverageCostPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostAverageCostPriceHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="cost-common-container"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.AverageCostPrice.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.AverageCostPrice === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            rowData.AverageCostPrice.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        numToCurrency(
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -950,37 +970,34 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentPrice.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
+              <div
+                onMouseEnter={() => {
+                  CostCurrentPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostCurrentPriceHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="cost-common-container"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentPrice.toFixed(2))
+                    ).toLocaleString("en-US")
+                  }
                 >
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentPrice.toFixed(2)
-                        ).toLocaleString("en-US")}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1008,26 +1025,28 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(rowData.Amount)).toLocaleString(
-                  "en-US"
-                )}
+              <span
+                onMouseEnter={() => {
+                  CostAmountHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
               >
-                <span
-                  onMouseEnter={() => {
-                    CostAmountHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(noExponents(rowData.Amount)).toLocaleString(
+                    "en-US"
+                  )}
                 >
-                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
+                  <span>
+                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </span>
             );
           }
         },
@@ -1055,36 +1074,40 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
-              >
-                <span
-                  onMouseEnter={() => {
-                    CostCostBasisHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
                 >
-                  {rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CostBasis.toFixed(2)
-                      ).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCostBasisHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {rowData.CostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1112,32 +1135,38 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentValue.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
-              >
-                <span
-                  onMouseEnter={() => {
-                    CostCurrentValueHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentValue.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
                 >
-                  {CurrencyType(false) +
-                    numToCurrency(
-                      rowData.CurrentValue.toFixed(2)
-                    ).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCurrentValueHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1166,29 +1195,29 @@ class Cost extends Component {
           if (dataKey === "GainAmount") {
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.GainAmount
-                    ? CurrencyType(false) +
-                      Math.abs(
-                        Number(noExponents(rowData.GainAmount.toFixed(2)))
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"
-                }
-                colorCode="#000"
+              <div
+                onMouseEnter={() => {
+                  CostGainHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
               >
-                <div
-                  onMouseEnter={() => {
-                    CostGainHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="gainLossContainer"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainAmount
+                      ? CurrencyType(false) +
+                        Math.abs(
+                          Number(noExponents(rowData.GainAmount.toFixed(2)))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                  colorCode="#000"
                 >
                   <div className={`gainLoss`}>
                     {rowData.GainAmount !== 0 ? (
@@ -1212,8 +1241,8 @@ class Cost extends Component {
                         : "0.00"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1244,26 +1273,26 @@ class Cost extends Component {
               noExponents(rowData.GainLoss.toFixed(2))
             );
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempDataHolder
-                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                    : "0%"
-                }
-                colorCode="#000"
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
               >
-                <div
-                  onMouseEnter={() => {
-                    CostGainLossHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
-                  className="gainLossContainer"
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0%"
+                  }
+                  colorCode="#000"
                 >
                   <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
@@ -1286,8 +1315,8 @@ class Cost extends Component {
                         : "0.00%"}
                     </span>
                   </div>
-                </div>
-              </CustomOverlay>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1405,6 +1434,7 @@ class Cost extends Component {
                   ishideDust={true}
                   totalPercentage={this.props.intelligenceState.totalPercentage}
                   handleDust={this.handleDust}
+                  showDust={this.state.showDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
                   className="cost-basis-table"

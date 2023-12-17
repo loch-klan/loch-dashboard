@@ -173,6 +173,39 @@
         left: 1rem;
       }
     }
+    .dropdownMinMaxHeader {
+      padding: 1rem;
+      padding-bottom: 0rem;
+    }
+    .dropdown-search-wrapper-min-max {
+      // display: flex;
+      // align-items: center;
+      // justify-content: space-between;
+      padding: 0.5rem 1rem;
+      padding-top: 0rem;
+      padding-bottom: 0.8rem;
+
+      .dropdown-min-max-input {
+        width: 100%;
+        border: none;
+        margin-top: 0.5rem;
+        border-radius: 8px;
+        padding: 0.8rem;
+        border: 0.1rem solid #b0b1b3;
+        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+
+        &:focus,
+        :active,
+        :focus-visible {
+          border-color: black;
+          outline: none;
+        }
+
+        &::placeholder {
+          @include font(#b0b1b3, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        }
+      }
+    }
 
     .dropdown-footer {
       display: flex;

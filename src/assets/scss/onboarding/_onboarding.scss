@@ -447,7 +447,78 @@
         padding: 0 9rem;
         margin-top: 1rem;
       }
+      .trendingAddressesContainer {
+        padding: 0 9rem;
+        .trendingAddressesBlock {
+          padding: 1.5rem;
+          width: 100%;
+          border: 0.1rem solid #d4d4d4;
+          border-radius: 0.8rem;
 
+          .trendingAddressesBlockHeader {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            .trendingAddressesBlockFire {
+              height: 18px;
+            }
+            .trendingAddressesBlockSubText {
+              color: #b0b1b3;
+            }
+          }
+          .trendingAddressesBlockList {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .trendingAddressesBlockItemContainer {
+              width: 30%;
+              overflow: hidden;
+
+              .trendingAddressesBlockItem {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                border: 0.1rem solid #e5e5e6;
+                border-radius: 1rem;
+                transition-duration: 300ms;
+                cursor: pointer;
+                &:hover {
+                  border-color: #19191a;
+                }
+                .trendingAddressesBlockItemWalletContainer {
+                  margin-right: 0.5rem;
+                  background-color: #e5e5e680;
+                  min-height: 3.6rem;
+                  min-width: 3.6rem;
+                  max-height: 3.6rem;
+                  max-width: 3.6rem;
+                  border-radius: 1rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  .trendingAddressesBlockItemWallet {
+                    min-height: 1.5rem;
+                    min-width: 1.5rem;
+                    max-height: 1.5rem;
+                    max-width: 1.5rem;
+                  }
+                }
+                .trendingAddressesBlockItemDataContainer {
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  .trendingAddressesBlockItemDataContainerAmount {
+                    margin-top: 0.2rem;
+                    color: #96979a;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
       .addWalletWrapperContainerParent {
         padding-left: 2rem;
         padding-right: 3rem;

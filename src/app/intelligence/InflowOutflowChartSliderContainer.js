@@ -6,6 +6,7 @@ import { GraphHeader } from "../common/GraphHeader";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
@@ -24,6 +25,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { CustomDropdownPrice } from "../../utils/form";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { Image } from "react-bootstrap";
 
 require("highcharts/modules/annotations")(Highcharts);
@@ -498,6 +500,36 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       />
                     </div>
                   ) : null}
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CustomOverlay
+                      position="bottom"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      isLeftText
+                      className={"fix-width tool-tip-container-bottom-arrow"}
+                      heading="These are all the tokens ever owned by this wallet."
+                      subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                    >
+                      <Image
+                        src={InfoIcon}
+                        className="infoIcon"
+                        style={{
+                          cursor: "pointer",
+                          height: "1.6rem",
+                          marginLeft: "1rem",
+                        }}
+                      />
+                    </CustomOverlay>
+                  </div>
+
                   {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}

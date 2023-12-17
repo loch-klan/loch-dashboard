@@ -29,6 +29,7 @@ import backIcon from "../../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../../utils/ManageToken";
 import {
   ConnectExPopupEmailAdded,
+  FollowSignInPopupEmailAdded,
   GeneralPopupEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
@@ -106,6 +107,10 @@ class FollowAuthModal extends BaseReactComponent {
     data.append("email", this.state.email);
     data.append("follow_address", this.props.followedAddress);
     SendOtp(data, this);
+    FollowSignInPopupEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+    });
   };
 
   handleOtp = () => {

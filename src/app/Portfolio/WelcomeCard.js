@@ -337,6 +337,7 @@ export default function WelcomeCard(props) {
               buttonRef={buttonRef}
               handleAddWalletClick={handleAddWalletClick}
               handleConnectModal={handleConnectModal}
+              handleUpdate={props.handleUpdate}
             />
           ) : // <div className="topBarContainer">
           //   <div

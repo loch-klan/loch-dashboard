@@ -12,13 +12,30 @@ import { Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
 import { BASE_URL_S3 } from "../../../utils/Constant.js";
 import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
+import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+} from "../../../assets/images/icons/index.js";
+import CheckboxCustomTable from "../../common/customCheckboxTable.js";
 
 class smartMoneyMobileBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
+  handleOnClick = (addItem) => {
+    if (!this.props.smartMoneyBlur) {
+      this.props.handleFollowUnfollow(
+        this.props.mapData.account,
+        addItem,
+        this.props.mapData.tagName
+      );
+    } else {
+      if (this.props.openSignInOnclickModal) {
+        this.props.openSignInOnclickModal();
+      }
+    }
+  };
   render() {
     return (
       <div className="mobileSmartMoneyBlock">
@@ -37,27 +54,33 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             {this.props.mapData.account ? (
               <div
                 onClick={() => {
-                  let lochUser = getCurrentUser().id;
+                  if (!this.props.smartMoneyBlur) {
+                    let lochUser = getCurrentUser().id;
 
-                  let slink = this.props.mapData.account;
-                  let shareLink =
-                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                  if (lochUser) {
-                    const alreadyPassed =
-                      window.sessionStorage.getItem("PassedRefrenceId");
-                    if (alreadyPassed) {
-                      shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                    } else {
-                      shareLink = shareLink + "&refrenceId=" + lochUser;
+                    let slink = this.props.mapData.account;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    if (lochUser) {
+                      const alreadyPassed =
+                        window.sessionStorage.getItem("PassedRefrenceId");
+                      if (alreadyPassed) {
+                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                      } else {
+                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      }
+                    }
+                    SmartMoneyWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: true,
+                    });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  } else {
+                    if (this.props.openSignInOnclickModal) {
+                      this.props.openSignInOnclickModal();
                     }
                   }
-                  SmartMoneyWalletClicked({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    wallet: slink,
-                    isMobile: true,
-                  });
-                  window.open(shareLink, "_blank", "noreferrer");
                 }}
                 className="inter-display-medium msmbHeaderAccount"
               >
@@ -76,16 +99,18 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className="inter-display-medium msmbBITitle">
               Realized PnL (1yr)
             </div>
-            <div
-              className={`inter-display-medium msmbBIAmount ${
-                this.props.netFlows >= 0
-                  ? "msmbBIAmountGain"
-                  : "msmbBIAmountLoss"
-              }`}
-            >
+            <div className={`inter-display-medium msmbBIAmount`}>
               {this.props.netFlows !== 0 ? (
                 <Image
-                  src={this.props.netFlows < 0 ? LossIcon : GainIcon}
+                  style={{
+                    height: "1.3rem",
+                    width: "1.3rem",
+                  }}
+                  src={
+                    this.props.netFlows < 0
+                      ? ArrowDownLeftSmallIcon
+                      : ArrowUpRightSmallIcon
+                  }
                   className="mr-2"
                 />
               ) : null}
@@ -96,18 +121,20 @@ class smartMoneyMobileBlock extends BaseReactComponent {
           </div>
           <div className="msmbBodyItem">
             <div className="inter-display-medium msmbBITitle">
-              Unealized PnL
+              Unrealized PnL
             </div>
-            <div
-              className={`inter-display-medium msmbBIAmount ${
-                this.props.profits >= 0
-                  ? "msmbBIAmountGain"
-                  : "msmbBIAmountLoss"
-              }`}
-            >
+            <div className={`inter-display-medium msmbBIAmount`}>
               {this.props.profits !== 0 ? (
                 <Image
-                  src={this.props.profits < 0 ? LossIcon : GainIcon}
+                  style={{
+                    height: "1.3rem",
+                    width: "1.3rem",
+                  }}
+                  src={
+                    this.props.profits < 0
+                      ? ArrowDownLeftSmallIcon
+                      : ArrowUpRightSmallIcon
+                  }
                   className="mr-2"
                 />
               ) : null}
@@ -115,6 +142,17 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               <span>
                 {CurrencyType(false) + numToCurrency(this.props.profits)}
               </span>
+            </div>
+          </div>
+          <div className="msmbBodyItem">
+            <div className="inter-display-medium msmbBITitle">Follow</div>
+            <div className={`inter-display-medium msmbBIAmount`}>
+              <CheckboxCustomTable
+                handleOnClick={this.handleOnClick}
+                isChecked={this.props.mapData.following}
+                noMargin
+                dontSelectIt={this.props.smartMoneyBlur}
+              />
             </div>
           </div>
         </div>
