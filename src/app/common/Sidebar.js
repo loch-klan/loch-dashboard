@@ -812,7 +812,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
+                        {/* <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -926,7 +926,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1002,7 +1002,7 @@ function Sidebar(props) {
                               Home
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               className={`nav-link
@@ -1206,7 +1206,7 @@ function Sidebar(props) {
                                 </NavLink>
                               </li>
                             </>
-                          )}
+                          )} */}
 
                           {/* <li>
                           <NavLink
@@ -1246,7 +1246,7 @@ function Sidebar(props) {
                             DeFi
                           </NavLink>
                         </li> */}
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               className={`nav-link ${
@@ -1341,7 +1341,7 @@ function Sidebar(props) {
                                 </NavLink>
                               </li>
                             </>
-                          )}
+                          )} */}
                           {/* <li>
                           <NavLink
                             exact={true}

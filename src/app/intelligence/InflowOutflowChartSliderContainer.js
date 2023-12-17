@@ -9,6 +9,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
+  ChartSeeMoreArrowIcon,
 } from "../../assets/images/icons/index.js";
 import { DropDownWithIcons } from "../common/index.js";
 import CustomDropdown from "../../utils/form/CustomDropdown";
@@ -23,6 +24,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { CustomDropdownPrice } from "../../utils/form";
+import { Image } from "react-bootstrap";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -308,12 +310,26 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
   };
   render() {
     return (
-      <div className="welcome-card-section lineChartSlider">
+      <div
+        className="welcome-card-section lineChartSlider"
+        style={{
+          boxShadow: this.props.hideTimeFilter ? "none" : "",
+          paddingTop: this.props.hideTimeFilter ? "1rem" : "",
+          margin: this.props.hideTimeFilter ? "0rem" : "",
+          padding: this.props.hideTimeFilter ? "0rem" : "",
+          minWidth: this.props.hideTimeFilter ? "100%" : "",
+          // height: "30rem",
+        }}
+      >
         <>
           <div
             className="line-chart-section"
             style={{
-              padding: "0rem 4.8rem",
+              padding: `0rem ${
+                this.props.hideTimeFilter ? "3.2rem" : "4.8rem"
+              }`,
+              width: this.props.hideTimeFilter ? "100%" : "",
+              paddingTop: `${this.props.hideTimeFilter ? "2.8rem" : ""}`,
             }}
           >
             {!this.props.isPage && (
@@ -328,8 +344,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
 
             {this.props.graphLoading ? (
               <div
+                className={
+                  this.props.hideTimeFilter
+                    ? "portfolioHomepricegaugeloader"
+                    : ""
+                }
                 style={{
-                  height: "50rem",
+                  height: this.props.hideTimeFilter ? "35.2rem" : "50rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -371,17 +392,74 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   // className="chart-y-selection"
 
                   className="inflowOutflowChartTopInfo"
+                  style={{
+                    padding: this.props.hideTimeFilter ? "0rem" : "",
+                  }}
                 >
-                  <div className="inflowOutflowChartTopInfoLeft">
-                    <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
-                      {CurrencyType()}
+                  <div
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      alignItems: this.props.hideTimeFilter
+                        ? "flex-start"
+                        : "centre",
+                    }}
+                    className="inflowOutflowChartTopInfoLeft"
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
+                    >
+                      <div>{CurrencyType()}</div>
+                      {this.props.openChartPage ? (
+                        <p onClick={this.props.openChartPage}>
+                          <div className="seeMoreBtn cp">
+                            <div>See more</div>
+
+                            <Image
+                              src={ChartSeeMoreArrowIcon}
+                              className="seeMoreBtnIcon"
+                            />
+                          </div>
+                        </p>
+                      ) : null}
                     </div>
                     <div
                       onClick={this.changeThePriceTodefault}
                       className="ioPriceContainer"
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        paddingLeft: this.props.hideTimeFilter ? "1.5rem" : "",
+                      }}
                     >
-                      <div className="ioPrice inter-display-medium">
-                        <span>Price </span>
+                      <div
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          fontSize: this.props.hideTimeFilter ? "15px" : "",
+                        }}
+                        className="ioPrice inter-display-medium"
+                      >
+                        <span
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {this.props.hideTimeFilter &&
+                          this.state.activeAssetTabName
+                            ? `${this.state.activeAssetTabName} `
+                            : ""}
+                          Price{" "}
+                        </span>
                         <span>
                           {CurrencyType(false)}
                           {this.state.currentPriceValue
@@ -401,23 +479,25 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      zIndex: 4,
-                    }}
-                  >
-                    <CustomDropdownPrice
-                      filtername="All chains selected"
-                      options={this.state.assetList}
-                      action={null}
-                      handleClick={this.handleAssetSelect}
-                      isChain={true}
-                      selectedTokens={[this.state.activeAssetTab]}
-                      selectedTokenName={this.state.activeAssetTabName}
-                      singleSelect
-                      searchIsUsed={this.chainSearchIsUsed}
-                    />
-                  </div>
+                  {!this.props.hideTimeFilter ? (
+                    <div
+                      style={{
+                        zIndex: 4,
+                      }}
+                    >
+                      <CustomDropdownPrice
+                        filtername="All chains selected"
+                        options={this.state.assetList}
+                        action={null}
+                        handleClick={this.handleAssetSelect}
+                        isChain={true}
+                        selectedTokens={[this.state.activeAssetTab]}
+                        selectedTokenName={this.state.activeAssetTabName}
+                        singleSelect
+                        searchIsUsed={this.chainSearchIsUsed}
+                      />
+                    </div>
+                  ) : null}
                   {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}
@@ -438,6 +518,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   changeThePrice={this.changeThePrice}
                   activeAssetTab={this.state.activeAssetTab}
                   assetList={this.props.assetList}
+                  hideTimeFilter={this.props.hideTimeFilter}
                 />
               </>
             )}

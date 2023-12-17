@@ -27,7 +27,11 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import OutsideClickHandler from "react-outside-click-handler";
 import Calendar from "react-calendar";
 import moment from "moment";
-import { CheckIcon, ThickCheckMarkIcon } from "../../assets/images/icons";
+import {
+  ChartSeeMoreArrowIcon,
+  CheckIcon,
+  ThickCheckMarkIcon,
+} from "../../assets/images/icons";
 
 HC_rounded(Highcharts);
 
@@ -543,9 +547,32 @@ class BarGraphSection extends Component {
                   marginBottom: showToken || isMinichart ? "1rem" : "0rem",
                 }}
               >
-                <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
-                  {CurrencyType()}{" "}
-                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
+                    {CurrencyType()}
+                  </p>
+                  {this.props.openChartPage ? (
+                    <p
+                      onClick={this.props.openChartPage}
+                      className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label"
+                    >
+                      <div className="seeMoreBtn cp">
+                        <div>See more</div>
+                        <Image
+                          src={ChartSeeMoreArrowIcon}
+                          className="seeMoreBtnIcon"
+                        />
+                      </div>
+                    </p>
+                  ) : null}
+                </div>
+
                 {showToken && (
                   <div
                     style={{
@@ -757,6 +784,46 @@ class BarGraphSection extends Component {
                               }
                         }
                       >
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
                         <HighchartsReact
                           highcharts={Highcharts}
                           options={this.props?.ProfitLossAsset}
@@ -766,7 +833,7 @@ class BarGraphSection extends Component {
                           containerProps={{
                             style: {
                               height: this.props.noSubtitleBottomPadding
-                                ? "120%"
+                                ? "110%"
                                 : "",
                             },
                           }}

@@ -111,6 +111,30 @@
     }
   }
 }
+.insights-wrapper-container {
+  .bottomExtraInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    color: #adadad;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    .bottomExtraInfoText {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem 1rem;
+      cursor: pointer;
+      transition-duration: 300ms;
+      &:hover {
+        color: #000000;
+      }
+    }
+  }
+}
 .insights-wrapper {
   h2 {
     margin-bottom: 2rem;
@@ -125,6 +149,16 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 2rem;
+    .insights-cards-home-left {
+      .risk-chip {
+        width: max-content;
+        padding: 4px 8px;
+        border-radius: 8px;
+        background-color: $black-191;
+        color: #ffffff;
+        text-transform: uppercase;
+      }
+    }
     .insight-icon {
       width: 4.4rem;
       height: 4.4rem;
@@ -161,7 +195,26 @@
     margin: 0 auto 4rem;
   }
 }
+.insights-wrapper-portfolio-home {
+  // &:hover {
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0rem;
+  }
 
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.8rem;
+    background-color: #cacbcc;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(229, 229, 230, 0.5);
+    // background-color: $grey-E5E;
+    margin-top: 1.5rem;
+    border-radius: 0.8rem;
+  }
+  // }
+}
 .Insight-upgrade-wrapper {
   position: relative;
   margin-bottom: 8rem;
