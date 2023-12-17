@@ -701,7 +701,7 @@ class PortfolioHomeDefiBlock extends Component {
                 this.state.totalDefiPositions - 3,
                 true
               ).toLocaleString("en-US")}
-              + defi positions
+              + defi position{this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
             </div>
           </div>
         ) : null}

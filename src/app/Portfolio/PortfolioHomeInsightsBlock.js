@@ -165,7 +165,9 @@ class PortfolioHomeInsightsBlock extends Component {
                   {`${numToCurrency(
                     this.props.updatedInsightList.length - 3,
                     true
-                  ).toLocaleString("en-US")}+ insights`}
+                  ).toLocaleString("en-US")}+ insight${
+                    this.props.updatedInsightList.length - 3 > 1 ? "s" : ""
+                  }`}
                 </div>
               </div>
             ) : null}
