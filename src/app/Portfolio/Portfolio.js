@@ -145,6 +145,10 @@ import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
+import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
+
+import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
+import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
 
 class Portfolio extends BaseReactComponent {
@@ -169,6 +173,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      callChildPriceGaugeApi: 0,
+      insightsBlockLoading: false,
       homeGraphFeesData: undefined,
       homeCounterpartyVolumeData: undefined,
       gasFeesGraphLoading: false,
@@ -337,7 +343,7 @@ class Portfolio extends BaseReactComponent {
       lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
 
       // insight
-      updatedInsightList: "",
+      updatedInsightList: [],
       isLoadingInsight: false,
 
       // Asset value data loaded
@@ -596,6 +602,11 @@ class Portfolio extends BaseReactComponent {
       this.afterAddressFollowed(passedAddress);
     }
   };
+  callPriceGaugeApi = () => {
+    this.setState({
+      callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
+    });
+  };
   callYieldOppApi = () => {
     let addressList = [];
     const tempUserWalletList = window.sessionStorage.getItem("addWallet")
@@ -617,6 +628,16 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
 
@@ -657,12 +678,23 @@ class Portfolio extends BaseReactComponent {
     if (this.props.yieldOpportunitiesState) {
       this.trimCounterpartyVolume();
     }
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+        insightsBlockLoading: false,
+      });
+    }
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.counterPartyValue
     ) {
       this.callYieldOppApi();
     }
+    this.callPriceGaugeApi();
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -828,6 +860,20 @@ class Portfolio extends BaseReactComponent {
       this.callYieldOppApi();
     }
     if (
+      prevProps.intelligenceState.updatedInsightList !==
+      this.props.intelligenceState.updatedInsightList
+    ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+        insightsBlockLoading: false,
+      });
+    }
+    if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
       this.setState({
@@ -978,9 +1024,18 @@ class Portfolio extends BaseReactComponent {
       });
       this.props.getAllCounterFeeApi(this, false, false);
 
+      // Counterparty volume api call
+      this.setState({
+        insightsBlockLoading: true,
+      });
+      this.props.getAllInsightsApi(this);
+
       // Yield opp api call
 
       this.callYieldOppApi();
+
+      // Price gauge api call
+      this.callPriceGaugeApi();
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
@@ -1523,6 +1578,21 @@ class Portfolio extends BaseReactComponent {
       .catch(() => {
         console.log("something went wrong");
       });
+  };
+  goToRealizedGainsPage = () => {
+    this.props.history.push("/intelligence#netflow");
+  };
+  goToGasFeesSpentPage = () => {
+    this.props.history.push("/intelligence/costs#gasfeesspent");
+  };
+  goToCounterPartyVolumePage = () => {
+    this.props.history.push("/intelligence/costs#counterpartyvolume");
+  };
+  goToHistoricPerformancePage = () => {
+    this.props.history.push("/intelligence/asset-value");
+  };
+  goToPriceGaugePage = () => {
+    this.props.history.push("/intelligence#price");
   };
   render() {
     const { table_home, assetPriceList_home, table_home_count } =
@@ -3269,6 +3339,7 @@ class Portfolio extends BaseReactComponent {
                       <div className="profit-chart">
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
+                            openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
                             disableOnLoading
                             noSubtitleBottomPadding
@@ -3331,6 +3402,7 @@ class Portfolio extends BaseReactComponent {
                               Loch
                             </div>
                             <BarGraphSection
+                              openChartPage={this.goToGasFeesSpentPage}
                               data={
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[0]
@@ -3368,6 +3440,7 @@ class Portfolio extends BaseReactComponent {
                               <div>Loch</div>
                             </div>
                             <BarGraphSection
+                              openChartPage={this.goToCounterPartyVolumePage}
                               data={
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[0]
@@ -3488,9 +3561,19 @@ class Portfolio extends BaseReactComponent {
                           </div>
                         </div>
                       </div>
-                      {this.state.blockThreeSelectedItem === 2 ? (
+                      {this.state.blockThreeSelectedItem === 1 ? (
+                        <InflowOutflowPortfolioHome
+                          openChartPage={this.goToPriceGaugePage}
+                          userWalletList={this.state.userWalletList}
+                          lochToken={this.state.lochToken}
+                          callChildPriceGaugeApi={
+                            this.state.callChildPriceGaugeApi
+                          }
+                        />
+                      ) : (
                         <div className="profit-chart">
                           <LineChartSlider
+                            openChartPage={this.goToHistoricPerformancePage}
                             disableOnLoading
                             noSubtitleBottomPadding
                             assetValueData={
@@ -3525,7 +3608,7 @@ class Portfolio extends BaseReactComponent {
                             activeTab="day"
                           />
                         </div>
-                      ) : null}
+                      )}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -3578,7 +3661,12 @@ class Portfolio extends BaseReactComponent {
                             Insights
                           </div>
                         </div>
-                        {this.state.blockFourSelectedItem === 2 ? (
+                        {this.state.blockFourSelectedItem === 1 ? (
+                          <PortfolioHomeDefiBlock
+                            lochToken={this.state.lochToken}
+                            history={this.props.history}
+                          />
+                        ) : this.state.blockFourSelectedItem === 2 ? (
                           <TransactionTable
                             noSubtitleBottomPadding
                             disableOnLoading
@@ -3617,6 +3705,14 @@ class Portfolio extends BaseReactComponent {
                               this.state.yieldOpportunitiesTableLoading
                             }
                             addWatermark
+                          />
+                        ) : this.state.blockFourSelectedItem === 3 ? (
+                          <PortfolioHomeInsightsBlock
+                            history={this.props.history}
+                            updatedInsightList={this.state.updatedInsightList}
+                            insightsBlockLoading={
+                              this.state.insightsBlockLoading
+                            }
                           />
                         ) : null}
                       </div>
@@ -3728,6 +3824,7 @@ const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   yieldOpportunitiesState: state.YieldOpportunitiesState,
   walletState: state.walletState,
+  inflowsOutflowsList: state.inflowsOutflowsList,
 });
 const mapDispatchToProps = {
   getCoinRate,
