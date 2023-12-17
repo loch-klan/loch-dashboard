@@ -3235,7 +3235,14 @@ class Portfolio extends BaseReactComponent {
                                   this.props.intelligenceState
                                     .Average_cost_basis.length - 5,
                                   true
-                                ).toLocaleString("en-US")}+ assets`
+                                ).toLocaleString("en-US")}+ asset${
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length -
+                                    5 >
+                                  1
+                                    ? "s"
+                                    : ""
+                                }`
                               : 0
                           }
                           showDataAtBottom={
@@ -3257,7 +3264,9 @@ class Portfolio extends BaseReactComponent {
                               ? `${numToCurrency(
                                   table_home_count - 5,
                                   true
-                                ).toLocaleString("en-US")}+ transactions`
+                                ).toLocaleString("en-US")}+ transaction${
+                                  table_home_count - 5 > 1 ? "s" : ""
+                                }`
                               : 0
                           }
                           showDataAtBottom={
@@ -3689,9 +3698,13 @@ class Portfolio extends BaseReactComponent {
                                 ? `${numToCurrency(
                                     this.state.yieldOpportunitiesTotalCount - 5,
                                     true
-                                  ).toLocaleString(
-                                    "en-US"
-                                  )}+ yield opportunities`
+                                  ).toLocaleString("en-US")}+ yield ${
+                                    this.state.yieldOpportunitiesTotalCount -
+                                      5 >
+                                    1
+                                      ? "opportunities"
+                                      : "opportunity"
+                                  }`
                                 : 0
                             }
                             showDataAtBottom={
