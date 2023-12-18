@@ -38,19 +38,20 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     data.append("wallet_addresses", tempAdd);
 
     if (
-      (this.props.InflowOutflowSelectedAssetState === null ||
-        this.props.InflowOutflowChartState.length === 0 ||
-        this.props.InflowOutflowAssetListState.length === 0 ||
-        this.props.InflowOutflowWalletState !== tempAdd) &&
-      this.props.lochToken
+      this.props.InflowOutflowSelectedAssetState === null ||
+      this.props.InflowOutflowChartState.length === 0 ||
+      this.props.InflowOutflowAssetListState.length === 0 ||
+      this.props.InflowOutflowWalletState !== tempAdd
     ) {
-      this.setState({ graphLoading: true, selectedAsset: "" }, () => {
-        this.props.setSelectedInflowOutflowsAssetBlank();
-        this.props.getInflowsAndOutflowsAssetsApi(data, this);
-        this.setState({
-          callApi: true,
+      if (this.props.lochToken) {
+        this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+          this.props.setSelectedInflowOutflowsAssetBlank();
+          this.props.getInflowsAndOutflowsAssetsApi(data, this);
+          this.setState({
+            callApi: true,
+          });
         });
-      });
+      }
     } else {
       this.setState({
         selectedAsset: this.props.InflowOutflowSelectedAssetState,

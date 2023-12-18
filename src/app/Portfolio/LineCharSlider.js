@@ -1229,7 +1229,7 @@ backdrop-filter: blur(15px);">
       padding: "2.4rem 3.2rem 0rem 3.2rem",
       height: "38rem",
       width: "100%",
-      paddingTop: "2.8rem",
+      paddingTop: "2.3rem",
     };
     const minGraphVersion = {
       style: { height: "100%" },
@@ -1376,18 +1376,35 @@ backdrop-filter: blur(15px);">
                         }
                   }
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    className="line-chart-dropdown-y-axis"
-                  >
-                    <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
-                      {CurrencyType()}
-                    </div>
-                    {this.props.openChartPage ? (
+                  {this.props.openChartPage ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div>
+                      {this.state.emailLoader &&
+                      this.props.activeTab === "day" ? (
+                        <div
+                          style={{
+                            zIndex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <SwitchButton
+                            handleEmail={this.handleAskEmail}
+                            isTopAccount={this.props?.isTopAccountPage}
+                          />
+                          <Image src={LoaderIcon} className="rotate-loader" />
+                        </div>
+                      ) : null}
                       <p
                         onClick={this.props.openChartPage}
                         className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-b-20 custom-label"
@@ -1400,9 +1417,24 @@ backdrop-filter: blur(15px);">
                           />
                         </div>
                       </p>
-                    ) : null}
-                  </div>
-                  {this.state.emailLoader && this.props.activeTab === "day" ? (
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div>
+                    </div>
+                  )}
+                  {!this.props.hideTimeFilter &&
+                  this.state.emailLoader &&
+                  this.props.activeTab === "day" ? (
                     <div
                       style={{
                         position: "absolute",

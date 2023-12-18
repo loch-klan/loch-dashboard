@@ -100,6 +100,10 @@ import {
   YieldOpportunitiesSortTVL,
   YieldOpportunitiesSortAPY,
   YieldOppurtunitiesExpandediew,
+  TransactionHistoryEView,
+  GasFeesEV,
+  VolumeTradeByCP,
+  PriceGaugeEV,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -1581,18 +1585,38 @@ class Portfolio extends BaseReactComponent {
   };
   goToRealizedGainsPage = () => {
     this.props.history.push("/intelligence#netflow");
+    ProfitLossEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   goToGasFeesSpentPage = () => {
     this.props.history.push("/intelligence/costs#gasfeesspent");
+    GasFeesEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   goToCounterPartyVolumePage = () => {
     this.props.history.push("/intelligence/costs#counterpartyvolume");
+    VolumeTradeByCP({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   goToHistoricPerformancePage = () => {
     this.props.history.push("/intelligence/asset-value");
+    AssetValueExpandview({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   goToPriceGaugePage = () => {
-    this.props.history.push("/intelligence#price");
+    this.props.history.push("/pricegauge");
+    PriceGaugeEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   render() {
     const { table_home, assetPriceList_home, table_home_count } =
@@ -3022,6 +3046,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  afterAddressFollowed={this.afterAddressFollowed}
                   isAddressFollowedCount={this.state.isAddressFollowedCount}
                   handleShare={this.handleShare}
                   isSidebarClosed={this.props.isSidebarClosed}
@@ -3243,7 +3268,7 @@ class Portfolio extends BaseReactComponent {
                                     ? "s"
                                     : ""
                                 }`
-                              : 0
+                              : "See more"
                           }
                           showDataAtBottom={
                             this.props.intelligenceState?.Average_cost_basis &&
@@ -3267,7 +3292,7 @@ class Portfolio extends BaseReactComponent {
                                 ).toLocaleString("en-US")}+ transaction${
                                   table_home_count - 5 > 1 ? "s" : ""
                                 }`
-                              : 0
+                              : "See more"
                           }
                           showDataAtBottom={
                             table_home_count && table_home_count > 5
@@ -3281,6 +3306,10 @@ class Portfolio extends BaseReactComponent {
                               this.props.history.push(
                                 "/intelligence/transaction-history"
                               );
+                              TransactionHistoryEView({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
                             }
                           }}
                           // subTitle="Sort, filter, and dissect all your transactions from one place"
@@ -3329,7 +3358,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(2);
                             }}
                           >
-                            Gas fees spend
+                            Gas fees
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3554,7 +3583,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(1);
                             }}
                           >
-                            Price gauage
+                            Price gauge
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3705,7 +3734,7 @@ class Portfolio extends BaseReactComponent {
                                       ? "opportunities"
                                       : "opportunity"
                                   }`
-                                : 0
+                                : "See more"
                             }
                             showDataAtBottom={
                               this.state.yieldOpportunitiesTotalCount &&

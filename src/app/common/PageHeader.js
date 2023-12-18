@@ -60,10 +60,10 @@ export default function PageHeader(props) {
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
     let linkName = e;
-    if (linkName === "transaction-history") {
+    if (linkName === "intelligence") {
+      return null;
+    } else if (linkName === "transaction-history") {
       linkName = "transactions";
-    } else if (linkName === "intelligence") {
-      linkName = "portfolio";
     } else if (linkName === "asset-value") {
       linkName = "historic performance";
     } else if (linkName === "top-accounts") {

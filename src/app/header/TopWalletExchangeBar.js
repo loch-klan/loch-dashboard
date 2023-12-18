@@ -46,11 +46,19 @@ import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
+import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      followSignInModalAnimation: true,
+      followSigninModal: false,
+      followSignupModal: false,
+      followedAddress: "",
+      isAddressFollowedCount: 0,
       totalWallets: "",
       firstWallet: "",
       firstFullWallet: "",
@@ -109,8 +117,21 @@ class TopWalletExchangeBar extends Component {
   showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
     this.setState({ isFollowingAddress: true });
     window.sessionStorage.setItem("isFollowingAddress", true);
-    if (this.props.afterAddressFollowed && openModal) {
-      this.props.afterAddressFollowed(passedAddress);
+    if (openModal) {
+      this.afterAddressFollowed(passedAddress);
+    }
+  };
+  afterAddressFollowed = (passedAddress) => {
+    if (!getCurrentUser().email) {
+      this.setState(
+        {
+          followedAddress: passedAddress,
+          isAddressFollowedCount: this.state.isAddressFollowedCount + 1,
+        },
+        () => {
+          this.openSigninModal();
+        }
+      );
     }
   };
   addressDeleted = () => {
@@ -223,7 +244,7 @@ class TopWalletExchangeBar extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
+      prevState.isAddressFollowedCount !== this.state.isAddressFollowedCount
     ) {
       const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
 
@@ -789,6 +810,26 @@ class TopWalletExchangeBar extends Component {
     yieldData.append("wallet_addresses", JSON.stringify(addressList));
     this.props.updateUserWalletApi(data, this, yieldData);
   };
+  onCloseModal = () => {
+    this.setState({
+      followSignInModalAnimation: true,
+      followSigninModal: false,
+      followSignupModal: false,
+    });
+  };
+  openSignUpModal = () => {
+    this.setState({
+      followSignInModalAnimation: false,
+      followSigninModal: false,
+      followSignupModal: true,
+    });
+  };
+  openSigninModal = () => {
+    this.setState({
+      followSigninModal: true,
+      followSignupModal: false,
+    });
+  };
   render() {
     if (this.props.isMobileRender) {
       if (this.state.walletList && this.state.walletList.length > 0) {
@@ -864,6 +905,47 @@ class TopWalletExchangeBar extends Component {
           this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
         }`}
       >
+        {this.state.followSigninModal ? (
+          <FollowAuthModal
+            followedAddress={this.state.followedAddress}
+            hideOnblur
+            showHiddenError
+            modalAnimation={this.state.followSignInModalAnimation}
+            show={this.state.followSigninModal}
+            onHide={this.onCloseModal}
+            history={this.props.history}
+            modalType={"create_account"}
+            iconImage={SignInIcon}
+            hideSkip={true}
+            title="You’re now following this wallet"
+            description="Sign in so you’ll be the first to see what they buy and sell"
+            stopUpdate={true}
+            tracking="Follow sign in popup"
+            goToSignUp={this.openSignUpModal}
+          />
+        ) : null}
+        {this.state.followSignupModal ? (
+          <FollowExitOverlay
+            followedAddress={this.state.followedAddress}
+            hideOnblur
+            showHiddenError
+            modalAnimation={false}
+            show={this.state.followSignupModal}
+            onHide={this.onCloseModal}
+            history={this.props.history}
+            modalType={"exitOverlay"}
+            handleRedirection={() => {
+              // resetUser();
+              // setTimeout(function () {
+              //   if (this.props.history) {
+              //     this.props.history.push("/welcome");
+              //   }
+              // }, 3000);
+            }}
+            signup={true}
+            goToSignIn={this.openSigninModal}
+          />
+        ) : null}
         {this.state.walletList.length > 0 ? (
           <>
             <div className="topWalletDropdownContainer maxWidth50">
@@ -1028,10 +1110,10 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   getAllCoins,
-  addUserCredits,
   isFollowedByUser,
   removeAddressFromWatchList,
   addAddressToWatchList,
+  addUserCredits,
 };
 
 export default connect(

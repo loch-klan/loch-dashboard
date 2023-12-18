@@ -203,6 +203,13 @@ class PortfolioHomeDefiBlock extends Component {
       });
     }
   };
+  curToNumToTwoDec = (e) => {
+    let tempHolder = convertNtoNumber(e);
+    if (tempHolder && !isNaN(tempHolder)) {
+      return numToCurrency(tempHolder.toFixed(2), "en-US", "USD");
+    }
+    return "";
+  };
   render() {
     if (!this.props.defiState?.defiList) {
       return (
@@ -224,6 +231,7 @@ class PortfolioHomeDefiBlock extends Component {
         </div>
       );
     }
+
     return (
       <div className="balance-sheet-card-portfolio-home">
         <div
@@ -444,7 +452,13 @@ class PortfolioHomeDefiBlock extends Component {
             </div>
           </div>
         )}
-        <div className="portfolioHomeDefiCard">
+        <div
+          style={{
+            opacity:
+              this.state.isDebtToggle || this.state.isYeildToggle ? 0 : 1,
+          }}
+          className="portfolioHomeDefiCard"
+        >
           {this.props.defiState?.defiList &&
           this.props.defiState.defiList.length !== 0 ? (
             this.props.defiState?.defiList.slice(0, 1).map((card, index) => {
@@ -453,16 +467,16 @@ class PortfolioHomeDefiBlock extends Component {
                   <div className="top-title-wrapper">
                     <div className="heading-image">
                       <Image src={card?.logoUrl} />
-                      <h3 className="inter-display-medium f-s-13">
+                      <h3 className="inter-display-medium f-s-15">
                         {card?.name}
                       </h3>
                     </div>
-                    <h3 className="inter-display-medium f-s-13">
+                    <h3 className="inter-display-medium f-s-15">
                       {CurrencyType(false)}
                       {numToCurrency(
                         card?.netBalance * (this.state.currency?.rate || 1)
                       )}{" "}
-                      <span className="inter-display-medium f-s-13 lh-19 grey-ADA">
+                      <span className="inter-display-medium f-s-15 lh-19 grey-ADA">
                         {CurrencyType(true)}
                       </span>
                     </h3>
@@ -586,18 +600,14 @@ class PortfolioHomeDefiBlock extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } inter-display-medium f-s-15 lh-15`}
+                                                          } inter-display-medium f-s-13 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e
                                                             ? isNaN(e)
                                                               ? e
-                                                              : numToCurrency(
-                                                                  convertNtoNumber(
-                                                                    e
-                                                                  ).toFixed(2),
-                                                                  "en-US",
-                                                                  "USD"
+                                                              : this.curToNumToTwoDec(
+                                                                  e
                                                                 )
                                                             : "0.00"}
                                                         </div>
@@ -625,7 +635,7 @@ class PortfolioHomeDefiBlock extends Component {
                                                   )
                                                 }
                                               >
-                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
                                                   {CurrencyType(false)}
                                                   {numToCurrency(
                                                     rowData.usdValue.toFixed(2),
@@ -644,7 +654,7 @@ class PortfolioHomeDefiBlock extends Component {
                                                 isText={true}
                                                 text={"$0.00"}
                                               >
-                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
                                                   $0.00
                                                 </div>
                                               </CustomOverlay>
@@ -669,7 +679,7 @@ class PortfolioHomeDefiBlock extends Component {
             <div
               style={{
                 textAlign: "center",
-                height: "27rem",
+                height: "26.5rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -704,7 +714,13 @@ class PortfolioHomeDefiBlock extends Component {
               + defi position{this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div className="inter-display-medium bottomExtraInfo">
+            <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
+              See more
+            </div>
+          </div>
+        )}
       </div>
     );
   }

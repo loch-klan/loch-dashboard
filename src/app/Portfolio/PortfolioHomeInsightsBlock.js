@@ -8,10 +8,16 @@ import { Image } from "react-bootstrap";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import Loading from "../common/Loading";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
+import { InsightsEV } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class PortfolioHomeInsightsBlock extends Component {
   goToInsightsPage = () => {
     this.props.history.push("/intelligence/insights");
+    InsightsEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   render() {
     if (this.props.insightsBlockLoading) {
@@ -45,11 +51,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height:
-                  this.props.updatedInsightList &&
-                  this.props.updatedInsightList.length < 3
-                    ? "36.5rem"
-                    : "34.5rem",
+                height: "34.5rem",
                 padding: "0rem 0.5rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"
@@ -170,7 +172,16 @@ class PortfolioHomeInsightsBlock extends Component {
                   }`}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <div className="inter-display-medium bottomExtraInfo">
+                <div
+                  className="bottomExtraInfoText"
+                  onClick={this.goToInsightsPage}
+                >
+                  See more
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <div
