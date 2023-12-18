@@ -113,6 +113,12 @@ class OnBoarding extends Component {
             ) : (
               <AddWallet
                 {...this.props}
+                makeTrendingAddressesVisible={
+                  this.props.makeTrendingAddressesVisible
+                }
+                addTrendingAddress={this.props.addTrendingAddress}
+                trendingAddresses={this.props.trendingAddresses}
+                isTrendingAddresses={this.props.isTrendingAddresses}
                 switchSignIn={this.props.onboardingSwitchSignIn}
                 hideModal={this.props.hideModal}
                 upgradeModal={this.props.onboardingHandleUpgradeModal}

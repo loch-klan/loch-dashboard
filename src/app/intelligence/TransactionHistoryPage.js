@@ -75,6 +75,7 @@ import {
   TransactionHistorySortTo,
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
+  TransactionHistoryWalletClicked,
   TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
@@ -97,6 +98,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
 import { ExportIconWhite } from "../../assets/images/icons";
 import DropDown from "../common/DropDown";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -113,9 +115,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         key: SEARCH_BY_WALLET_ADDRESS_IN,
         value: address,
       },
+      { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
-      isShowingAge: false,
+      minAmount: "1",
+      maxAmount: "1000000000",
+      isShowingAge: true,
       selectedTimes: [],
       selectedAssets: [],
       selectedMethods: [],
@@ -177,7 +182,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
-      showDust: false,
+      showDust: true,
       // add new wallet
       // userWalletList: window.sessionStorage.getItem("addWallet")
       //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
@@ -559,58 +564,19 @@ class TransactionHistoryPage extends BaseReactComponent {
       );
     }
   };
-  handleAmount = (e) => {
-    let title = "";
-
-    if (e.split(" ")[1] !== undefined) {
-      title = title + " " + e.split(" ")[1];
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmount: min,
+          maxAmount: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addCondition(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
     }
-    if (e.split(" ")[2] !== undefined) {
-      title = title + " " + e.split(" ")[2];
-    }
-    if (e.split(" ")[3] !== "undefined") {
-      title = title + " " + e.split(" ")[3];
-    }
-    title = title.trim();
-    if (title === this.state.amountFilter) {
-      this.addCondition(SEARCH_BETWEEN_VALUE, "allAmounts");
-      this.setState({
-        amountFilter: "Size",
-      });
-      return;
-    }
-    this.setState({
-      amountFilter: title,
-    });
-    TransactionHistoryAmountFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      amount_filter: title,
-    });
-    let min = 0;
-    let max = 0;
-
-    if (title === "$10K or less") {
-      min = 0;
-      max = 10000;
-    } else if (title === "$10K - $100K") {
-      min = 10000;
-      max = 100000;
-    } else if (title === "$100K - $1M") {
-      min = 100000;
-      max = 1000000;
-    } else if (title === "$1M - $10M") {
-      min = 1000000;
-      max = 10000000;
-    } else if (title === "$10M - $100M") {
-      min = 10000000;
-      max = 100000000;
-    } else if (title === "$100M or more") {
-      min = 100000000;
-      max = 10000000000;
-    }
-    const value = { min_value: min, max_value: max };
-    this.addCondition(SEARCH_BETWEEN_VALUE, value);
   };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
@@ -1118,6 +1084,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.from?.address) {
               showThis = TruncateText(rowData.from?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.from?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1173,7 +1153,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
 
                     <Image
                       src={CopyClipboardIcon}
@@ -1199,7 +1181,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
 
                       <Image
                         src={CopyClipboardIcon}
@@ -1222,7 +1209,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1244,7 +1236,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.from.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.from.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -1267,7 +1264,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.from.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.from.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1289,7 +1288,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
+
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
@@ -1337,6 +1339,20 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else if (rowData.to?.address) {
               showThis = TruncateText(rowData.to?.address);
             }
+            const goToAddress = () => {
+              let slink = rowData.to?.address;
+              if (slink) {
+                let shareLink =
+                  BASE_URL_S3 + "home/" + slink + "?redirect=home";
+
+                TransactionHistoryWalletClicked({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet: slink,
+                });
+                window.open(shareLink, "_blank", "noreferrer");
+              }
+            };
             return (
               <CustomOverlay
                 position="top"
@@ -1392,7 +1408,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1417,7 +1435,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {showThis}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {showThis}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1439,7 +1462,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.metaData?.nickname)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.metaData?.nickname)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1461,7 +1489,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         this.updateTimer();
                       }}
                     >
-                      {TruncateText(rowData.to.wallet_metaData.text)}
+                      <span
+                        onClick={goToAddress}
+                        className="top-account-address"
+                      >
+                        {TruncateText(rowData.to.wallet_metaData.text)}
+                      </span>
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.to.address)}
@@ -1484,7 +1517,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {TruncateText(rowData.to.metaData?.displayAddress)}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {TruncateText(rowData.to.metaData?.displayAddress)}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1506,7 +1541,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {showThis}
+                    <span onClick={goToAddress} className="top-account-address">
+                      {showThis}
+                    </span>
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.to.address)}
@@ -1923,7 +1960,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               <Form onValidSubmit={this.onValidSubmit}>
                 <Row>
                   <Col className="transactionHistoryCol">
-                    <DropDown
+                    {/* <DropDown
                       class="cohort-dropdown"
                       list={[
                         // "All time",
@@ -1945,6 +1982,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                       customArrow={true}
                       relative={true}
                       arrowClassName="singleArrowClassName"
+                    /> */}
+                    <CustomMinMaxDropdown
+                      filtername="Size"
+                      handleClick={(min, max) => this.handleAmount(min, max)}
+                      minAmount={this.state.minAmount}
+                      maxAmount={this.state.maxAmount}
                     />
                   </Col>
                   <Col className="transactionHistoryCol">

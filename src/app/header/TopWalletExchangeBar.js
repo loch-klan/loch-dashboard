@@ -5,6 +5,7 @@ import arrowUp from "../../assets/images/arrow-up.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
+import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
@@ -43,6 +44,8 @@ import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+import { addUserCredits } from "../profile/Api";
+import { ARCX_API_KEY } from "../../utils/Constant";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
@@ -50,6 +53,7 @@ class TopWalletExchangeBar extends Component {
       totalWallets: "",
       firstWallet: "",
       firstFullWallet: "",
+      fullWalletList: "",
       walletList: [],
       exchangeList: [],
       exchangeListImages: [],
@@ -281,6 +285,10 @@ class TopWalletExchangeBar extends Component {
           tempFullWalletAdd[0].length > 0
             ? tempFullWalletAdd[0][0]
             : "",
+        fullWalletList:
+          tempFullWalletAdd && tempFullWalletAdd.length
+            ? tempFullWalletAdd
+            : [[]],
         totalWallets: tempWalletAdd.length,
         walletList: tempWalletAdd,
       });
@@ -353,6 +361,8 @@ class TopWalletExchangeBar extends Component {
             tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
               ? tempFullWalletList[0][0]
               : "",
+          fullWalletList:
+            tempFullWalletList.length > 0 ? tempFullWalletList : [[]],
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
           exchangeList: tempExchangeList,
@@ -431,6 +441,9 @@ class TopWalletExchangeBar extends Component {
             tempFullWalletList.length > 0 && tempFullWalletList[0].length > 0
               ? tempFullWalletList[0][0]
               : "",
+          fullWalletList:
+            tempFullWalletList.length > 0 ? tempFullWalletList : [[]],
+
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
         });
@@ -567,8 +580,24 @@ class TopWalletExchangeBar extends Component {
 
       try {
         const tempRes = await provider.send("eth_requestAccounts", []);
-
+        try {
+          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+          if (tempRes && tempRes.length > 0 && sdk) {
+            sdk.wallet({
+              account: tempRes[0],
+              chainId: window.ethereum.networkVersion,
+            });
+          }
+        } catch (error) {
+          console.log("ArcxAnalyticsSdk error ", error);
+        }
         if (tempRes && tempRes.length > 0) {
+          setTimeout(() => {
+            this.props.handleUpdate();
+          }, 1000);
+          const walletCreditScore = new URLSearchParams();
+          walletCreditScore.append("credits", "wallet_connected");
+          this.props.addUserCredits(walletCreditScore);
           this.addToList(tempRes);
         }
         // Leaver console log: full signer too"
@@ -876,7 +905,7 @@ class TopWalletExchangeBar extends Component {
           <div
             ref={this.props.buttonRef}
             className="topbar-btn maxWidth50"
-            id="address-button"
+            id="address-button-one"
             onClick={this.passAddWalletClick}
           >
             <Image className="topBarWalletAdd" src={PlusCircleIcon} />
@@ -894,7 +923,7 @@ class TopWalletExchangeBar extends Component {
             <div
               ref={this.props.buttonRef}
               className="topbar-btn maxWidth50 ml-2"
-              id="address-button"
+              id="address-button-two"
               onClick={this.passAddWalletClick}
             >
               <Image className="topBarWalletAdd" src={PlusCircleIcon} />
@@ -967,6 +996,7 @@ class TopWalletExchangeBar extends Component {
             <div
               onClick={this.connectWalletEthers}
               className="topbar-btn ml-2 maxWidth50"
+              id="topbar-connect-wallet-btn"
             >
               <Image className="topBarWalletAdd " src={WalletIcon} />
               <span className="dotDotText">Connect wallet</span>
@@ -998,6 +1028,7 @@ const mapDispatchToProps = {
   isFollowedByUser,
   removeAddressFromWatchList,
   addAddressToWatchList,
+  addUserCredits,
 };
 
 export default connect(
