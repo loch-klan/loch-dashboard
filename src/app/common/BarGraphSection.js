@@ -539,64 +539,128 @@ class BarGraphSection extends Component {
             </>
 
             {!this.props.dontShowAssets ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: showToken || isMinichart ? "1rem" : "0rem",
-                }}
-              >
+              this.props.newHomeSetup ? (
                 <div
                   style={{
                     display: "flex",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    justifyContent: "center",
+                    marginBottom: showToken || isMinichart ? "2.5rem" : "0rem",
                   }}
                 >
-                  <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
-                    {CurrencyType()}
-                  </p>
-                  {this.props.openChartPage ? (
-                    <p
-                      onClick={this.props.openChartPage}
-                      className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label"
-                    >
-                      <div className="seeMoreBtn cp">
-                        <div>See more</div>
-                        <Image
-                          src={ChartSeeMoreArrowIcon}
-                          className="seeMoreBtnIcon"
-                        />
-                      </div>
-                    </p>
-                  ) : null}
-                </div>
-
-                {showToken && (
                   <div
                     style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                       width: "100%",
-                      minWidth: "15rem",
-                      maxWidth: "18rem",
-                      zIndex: "2",
+                      height: "100%",
                     }}
                   >
-                    <CustomDropdown
-                      filtername="All assets selected"
-                      options={this.props.assetList}
-                      action={null}
-                      handleClick={this.props.handleAssetSelected}
-                      // isChain={true}
-                      LightTheme={true}
-                      placeholderName={"asset"}
-                      getObj={this.props?.getObj}
-                      searchIsUsed={this.props.assetSearchIsUsed}
-                      // selectedTokens={this.state.activeBadge}
-                    />
+                    <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label">
+                      {CurrencyType()}
+                    </p>
+
+                    <div
+                      style={{
+                        opacity: showSwitch ? 1 : 0,
+                      }}
+                      className="showBreakdownContainer"
+                    >
+                      <div
+                        className={`inter-display-medium portFolioHomeToggle f-s-13 lh-16 hideShowBreakdownToggle ${
+                          showSwitch ? "" : "noCp"
+                        } ${
+                          this.state.isSmallerToggle
+                            ? "smaller-toggle grey-ADA"
+                            : "primary-color"
+                        }`}
+                      >
+                        <Form.Check
+                          type="switch"
+                          id="custom-switch"
+                          label={
+                            this.state.switchselected
+                              ? "Hide breakdown"
+                              : "Show breakdown"
+                          }
+                          checked={this.state.switchselected}
+                          onChange={(e) => {
+                            if (showSwitch) {
+                              this.setState({
+                                switchselected: e.target.checked,
+                              });
+                              if (this.props.setSwitch) {
+                                this.props.setSwitch();
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {this.props.openChartPage ? (
+                      <p
+                        onClick={this.props.openChartPage}
+                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label"
+                      >
+                        <div className="seeMoreBtn cp">
+                          <div>See more</div>
+                          <Image
+                            src={ChartSeeMoreArrowIcon}
+                            className="seeMoreBtnIcon"
+                          />
+                        </div>
+                      </p>
+                    ) : null}
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: showToken || isMinichart ? "1rem" : "0rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
+                      {CurrencyType()}
+                    </p>
+                  </div>
+
+                  {showToken && (
+                    <div
+                      style={{
+                        width: "100%",
+                        minWidth: "15rem",
+                        maxWidth: "18rem",
+                        zIndex: "2",
+                      }}
+                    >
+                      <CustomDropdown
+                        filtername="All assets selected"
+                        options={this.props.assetList}
+                        action={null}
+                        handleClick={this.props.handleAssetSelected}
+                        // isChain={true}
+                        LightTheme={true}
+                        placeholderName={"asset"}
+                        getObj={this.props?.getObj}
+                        searchIsUsed={this.props.assetSearchIsUsed}
+                        // selectedTokens={this.state.activeBadge}
+                      />
+                    </div>
+                  )}
+                </div>
+              )
             ) : null}
             {showPercentage || showSwitch ? (
               <div
@@ -629,52 +693,6 @@ class BarGraphSection extends Component {
                   >
                     <Image src={showPercentage?.icon} className="m-r-4" />
                     {showPercentage?.percent}% {showPercentage?.status}
-                  </div>
-                )}
-
-                {showSwitch && (
-                  <div className="showBreakdownContainer">
-                    <div
-                      className={`inter-display-medium f-s-13 lh-16 hideShowBreakdownToggle ${
-                        this.state.isSmallerToggle
-                          ? "smaller-toggle grey-ADA"
-                          : "primary-color"
-                      }`}
-                    >
-                      <Form.Check
-                        type="switch"
-                        id="custom-switch"
-                        label={
-                          this.state.switchselected
-                            ? "Hide breakdown"
-                            : "Show breakdown"
-                        }
-                        checked={this.state.switchselected}
-                        onChange={(e) => {
-                          this.setState({
-                            switchselected: e.target.checked,
-                          });
-                          if (this.props.setSwitch) {
-                            this.props.setSwitch();
-                          }
-                        }}
-                      />
-                    </div>
-
-                    {!this.props.isSmallerToggle ? (
-                      <CustomOverlay
-                        position="bottom"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                        subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
-                        className={"fix-width tool-tip-container-bottom-arrow"}
-                        isLeftText
-                      >
-                        <Image src={InfoIcon} className="infoIcon" />
-                      </CustomOverlay>
-                    ) : null}
                   </div>
                 )}
               </div>

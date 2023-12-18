@@ -3115,7 +3115,7 @@ class Portfolio extends BaseReactComponent {
                                     ? "s"
                                     : ""
                                 }`
-                              : 0
+                              : "See more"
                           }
                           showDataAtBottom={
                             this.props.intelligenceState?.Average_cost_basis &&
@@ -3139,7 +3139,7 @@ class Portfolio extends BaseReactComponent {
                                 ).toLocaleString("en-US")}+ transaction${
                                   table_home_count - 5 > 1 ? "s" : ""
                                 }`
-                              : 0
+                              : "See more"
                           }
                           showDataAtBottom={
                             table_home_count && table_home_count > 5
@@ -3201,7 +3201,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(2);
                             }}
                           >
-                            Gas fees spend
+                            Gas fees
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3426,7 +3426,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(1);
                             }}
                           >
-                            Price gauage
+                            Price gauge
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3577,7 +3577,7 @@ class Portfolio extends BaseReactComponent {
                                       ? "opportunities"
                                       : "opportunity"
                                   }`
-                                : 0
+                                : "See more"
                             }
                             showDataAtBottom={
                               this.state.yieldOpportunitiesTotalCount &&

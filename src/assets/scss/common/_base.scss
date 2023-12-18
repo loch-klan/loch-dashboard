@@ -2243,6 +2243,17 @@ textarea {
   border-color: $primary;
   cursor: pointer;
 }
+.noCp {
+  .custom-control {
+    .custom-control-input {
+      cursor: default !important;
+    }
+    .custom-control-label {
+      cursor: default !important;
+    }
+  }
+}
+
 .smaller-toggle {
   .custom-control-input {
     &:focus:not(:checked) ~ .custom-control-label::before {
@@ -2263,6 +2274,26 @@ textarea {
     }
     &::before {
       border-color: $grey-ADA;
+    }
+  }
+}
+.portFolioHomeToggle {
+  &:hover {
+    color: $primary !important;
+    .custom-control {
+      color: $primary !important;
+      .custom-control-label {
+        color: $primary !important;
+        &::before {
+          border-color: $primary !important;
+        }
+        &::after {
+          background-color: $primary !important;
+        }
+      }
+    }
+    .pageHeaderShareImg {
+      filter: brightness(0);
     }
   }
 }

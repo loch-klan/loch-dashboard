@@ -203,6 +203,13 @@ class PortfolioHomeDefiBlock extends Component {
       });
     }
   };
+  curToNumToTwoDec = (e) => {
+    let tempHolder = convertNtoNumber(e);
+    if (tempHolder && !isNaN(tempHolder)) {
+      return numToCurrency(tempHolder.toFixed(2), "en-US", "USD");
+    }
+    return "";
+  };
   render() {
     if (!this.props.defiState?.defiList) {
       return (
@@ -224,6 +231,7 @@ class PortfolioHomeDefiBlock extends Component {
         </div>
       );
     }
+
     return (
       <div className="balance-sheet-card-portfolio-home">
         <div
@@ -592,12 +600,8 @@ class PortfolioHomeDefiBlock extends Component {
                                                           {e
                                                             ? isNaN(e)
                                                               ? e
-                                                              : numToCurrency(
-                                                                  convertNtoNumber(
-                                                                    e
-                                                                  ).toFixed(2),
-                                                                  "en-US",
-                                                                  "USD"
+                                                              : this.curToNumToTwoDec(
+                                                                  e
                                                                 )
                                                             : "0.00"}
                                                         </div>
@@ -669,7 +673,7 @@ class PortfolioHomeDefiBlock extends Component {
             <div
               style={{
                 textAlign: "center",
-                height: "27rem",
+                height: "26.5rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -704,7 +708,13 @@ class PortfolioHomeDefiBlock extends Component {
               + defi position{this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div className="inter-display-medium bottomExtraInfo">
+            <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
+              See more
+            </div>
+          </div>
+        )}
       </div>
     );
   }

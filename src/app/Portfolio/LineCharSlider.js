@@ -1373,18 +1373,19 @@ backdrop-filter: blur(15px);">
                         }
                   }
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    className="line-chart-dropdown-y-axis"
-                  >
-                    <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
-                      {CurrencyType()}
-                    </div>
-                    {this.props.openChartPage ? (
+                  {this.props.openChartPage ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div>
                       <p
                         onClick={this.props.openChartPage}
                         className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-b-20 custom-label"
@@ -1397,8 +1398,21 @@ backdrop-filter: blur(15px);">
                           />
                         </div>
                       </p>
-                    ) : null}
-                  </div>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div>
+                    </div>
+                  )}
                   {this.state.emailLoader && this.props.activeTab === "day" ? (
                     <div
                       style={{

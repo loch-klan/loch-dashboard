@@ -404,79 +404,103 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       alignItems: this.props.hideTimeFilter
                         ? "flex-start"
                         : "centre",
+                      justifyContent: this.props.hideTimeFilter
+                        ? "space-between"
+                        : "",
+                      width: "100%",
                     }}
                     className="inflowOutflowChartTopInfoLeft"
                   >
                     <div
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
-                    >
-                      <div>{CurrencyType()}</div>
-                      {this.props.openChartPage ? (
-                        <p onClick={this.props.openChartPage}>
-                          <div className="seeMoreBtn cp">
-                            <div>See more</div>
-
-                            <Image
-                              src={ChartSeeMoreArrowIcon}
-                              className="seeMoreBtnIcon"
-                            />
-                          </div>
-                        </p>
-                      ) : null}
-                    </div>
-                    <div
-                      onClick={this.changeThePriceTodefault}
-                      className="ioPriceContainer"
-                      style={{
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        paddingLeft: this.props.hideTimeFilter ? "1.5rem" : "",
+                        alignItems: this.props.hideTimeFilter
+                          ? "flex-start"
+                          : "centre",
                       }}
                     >
                       <div
                         style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
+                      >
+                        <div>{CurrencyType()}</div>
+                      </div>
+                      <div
+                        onClick={this.changeThePriceTodefault}
+                        className="ioPriceContainer"
+                        style={{
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
-                          fontSize: this.props.hideTimeFilter ? "15px" : "",
+                          paddingLeft: this.props.hideTimeFilter
+                            ? "1.5rem"
+                            : "",
                         }}
-                        className="ioPrice inter-display-medium"
                       >
-                        <span
+                        <div
                           style={{
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            fontSize: this.props.hideTimeFilter ? "14px" : "",
+                            fontWeight: this.props.hideTimeFilter ? "500" : "",
                           }}
+                          className="ioPrice inter-display-medium"
                         >
-                          {this.props.hideTimeFilter &&
-                          this.state.activeAssetTabName
-                            ? `${this.state.activeAssetTabName} `
-                            : ""}
-                          Price{" "}
-                        </span>
-                        <span>
-                          {CurrencyType(false)}
-                          {this.state.currentPriceValue
-                            ? numToCurrency(this.state.currentPriceValue)
-                            : "0.00"}
-                        </span>
-                      </div>
+                          <span
+                            style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {this.props.hideTimeFilter &&
+                            this.state.activeAssetTabName
+                              ? `${this.state.activeAssetTabName} `
+                              : ""}
+                            Price{" "}
+                          </span>
+                          <span>
+                            {CurrencyType(false)}
+                            {this.state.currentPriceValue
+                              ? numToCurrency(this.state.currentPriceValue)
+                              : "0.00"}
+                          </span>
+                        </div>
 
-                      <div
-                        style={{ opacity: this.state.currentPriceDate ? 1 : 0 }}
-                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
-                      >
-                        {this.state.currentPriceDate
-                          ? this.state.currentPriceDate
-                          : 0}
+                        <div
+                          style={{
+                            opacity: this.state.currentPriceDate ? 1 : 0,
+                          }}
+                          className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                        >
+                          {this.state.currentPriceDate
+                            ? this.state.currentPriceDate
+                            : 0}
+                        </div>
                       </div>
                     </div>
+                    {this.props.openChartPage ? (
+                      <p
+                        onClick={this.props.openChartPage}
+                        class="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label"
+                      >
+                        <div className="seeMoreBtn cp f-s-10 grey-7C7">
+                          <div>See more</div>
+
+                          <Image
+                            src={ChartSeeMoreArrowIcon}
+                            className="seeMoreBtnIcon"
+                          />
+                        </div>
+                      </p>
+                    ) : null}
                   </div>
 
                   {!this.props.hideTimeFilter ? (

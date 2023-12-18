@@ -45,11 +45,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height:
-                  this.props.updatedInsightList &&
-                  this.props.updatedInsightList.length < 3
-                    ? "36.5rem"
-                    : "34.5rem",
+                height: "34.5rem",
                 padding: "0rem 0.5rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"
@@ -170,7 +166,16 @@ class PortfolioHomeInsightsBlock extends Component {
                   }`}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <div className="inter-display-medium bottomExtraInfo">
+                <div
+                  className="bottomExtraInfoText"
+                  onClick={this.goToInsightsPage}
+                >
+                  See more
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <div
