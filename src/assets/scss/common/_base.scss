@@ -2286,6 +2286,9 @@ textarea {
   }
 }
 .portFolioHomeToggle {
+  .custom-switch {
+    transform: scale(1.45) !important;
+  }
   &:hover {
     color: $primary !important;
     .custom-control {

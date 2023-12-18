@@ -190,12 +190,12 @@ class InflowOutflowChart extends BaseReactComponent {
   render() {
     return (
       <div className="inflowOutflowBlock">
-        <PageHeader
+        {/* <PageHeader
           showExplainers
           explainerText="This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
           title="Price gauge"
           showImg={InflowOutflowIcon}
-        />
+        /> */}
         <div className="graph-container">
           <InflowOutflowChartSliderContainer
             inflowOutflowData={

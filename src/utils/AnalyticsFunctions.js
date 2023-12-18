@@ -654,6 +654,33 @@ export const TransactionHistoryAddress = ({
 };
 
 //22. Home:volume traded by counterparty expanded view
+export const InsightsEV = ({ session_id, email_address }) => {
+  const event_name = "Home:insights expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home:volume traded by counterparty expanded view");
+};
+export const PriceGaugeEV = ({ session_id, email_address }) => {
+  const event_name = "Home:price gauge expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home:volume traded by counterparty expanded view");
+};
+export const GasFeesEV = ({ session_id, email_address }) => {
+  const event_name = "Home:gas fees expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home:volume traded by counterparty expanded view");
+};
 export const VolumeTradeByCP = ({ session_id, email_address }) => {
   const event_name = "Home:volume traded by counterparty expanded view";
   const eventProperties = {

@@ -8,10 +8,16 @@ import { Image } from "react-bootstrap";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import Loading from "../common/Loading";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
+import { InsightsEV } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class PortfolioHomeInsightsBlock extends Component {
   goToInsightsPage = () => {
     this.props.history.push("/intelligence/insights");
+    InsightsEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
   render() {
     if (this.props.insightsBlockLoading) {

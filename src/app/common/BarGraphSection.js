@@ -604,7 +604,12 @@ class BarGraphSection extends Component {
                         onClick={this.props.openChartPage}
                         className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label"
                       >
-                        <div className="seeMoreBtn cp">
+                        <div
+                          style={{
+                            marginLeft: "0rem",
+                          }}
+                          className="seeMoreBtn cp"
+                        >
                           <div>See more</div>
                           <Image
                             src={ChartSeeMoreArrowIcon}

@@ -36,6 +36,7 @@ import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
+import PriceGauge from "./app/PriceGauge/PriceGauge";
 const routes = [
   {
     path: "/",
@@ -72,6 +73,12 @@ const routes = [
     name: "Intelligence",
     type: PrivateRoute,
     component: Intelligence,
+  },
+  {
+    path: "/pricegauge",
+    name: "PriceGauge",
+    type: PrivateRoute,
+    component: PriceGauge,
   },
   {
     path: "/intelligence/transaction-history",

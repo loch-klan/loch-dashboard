@@ -452,7 +452,13 @@ class PortfolioHomeDefiBlock extends Component {
             </div>
           </div>
         )}
-        <div className="portfolioHomeDefiCard">
+        <div
+          style={{
+            opacity:
+              this.state.isDebtToggle || this.state.isYeildToggle ? 0 : 1,
+          }}
+          className="portfolioHomeDefiCard"
+        >
           {this.props.defiState?.defiList &&
           this.props.defiState.defiList.length !== 0 ? (
             this.props.defiState?.defiList.slice(0, 1).map((card, index) => {
@@ -461,16 +467,16 @@ class PortfolioHomeDefiBlock extends Component {
                   <div className="top-title-wrapper">
                     <div className="heading-image">
                       <Image src={card?.logoUrl} />
-                      <h3 className="inter-display-medium f-s-13">
+                      <h3 className="inter-display-medium f-s-15">
                         {card?.name}
                       </h3>
                     </div>
-                    <h3 className="inter-display-medium f-s-13">
+                    <h3 className="inter-display-medium f-s-15">
                       {CurrencyType(false)}
                       {numToCurrency(
                         card?.netBalance * (this.state.currency?.rate || 1)
                       )}{" "}
-                      <span className="inter-display-medium f-s-13 lh-19 grey-ADA">
+                      <span className="inter-display-medium f-s-15 lh-19 grey-ADA">
                         {CurrencyType(true)}
                       </span>
                     </h3>
@@ -594,7 +600,7 @@ class PortfolioHomeDefiBlock extends Component {
                                                             indexFour > 0
                                                               ? "mt-3"
                                                               : ""
-                                                          } inter-display-medium f-s-15 lh-15`}
+                                                          } inter-display-medium f-s-13 lh-15`}
                                                           key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
                                                         >
                                                           {e
@@ -629,7 +635,7 @@ class PortfolioHomeDefiBlock extends Component {
                                                   )
                                                 }
                                               >
-                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
                                                   {CurrencyType(false)}
                                                   {numToCurrency(
                                                     rowData.usdValue.toFixed(2),
@@ -648,7 +654,7 @@ class PortfolioHomeDefiBlock extends Component {
                                                 isText={true}
                                                 text={"$0.00"}
                                               >
-                                                <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
                                                   $0.00
                                                 </div>
                                               </CustomOverlay>
