@@ -1386,9 +1386,9 @@ backdrop-filter: blur(15px);">
                       }}
                       className="line-chart-dropdown-y-axis"
                     >
-                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                      {/* <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
                         {CurrencyType()}
-                      </div>
+                      </div> */}
                       {this.state.emailLoader &&
                       this.props.activeTab === "day" ? (
                         <div
@@ -1404,7 +1404,9 @@ backdrop-filter: blur(15px);">
                           />
                           <Image src={LoaderIcon} className="rotate-loader" />
                         </div>
-                      ) : null}
+                      ) : (
+                        <div></div>
+                      )}
                       <p
                         onClick={this.props.openChartPage}
                         className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-b-20 custom-label"

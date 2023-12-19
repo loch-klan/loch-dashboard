@@ -424,7 +424,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           : "centre",
                       }}
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -432,7 +432,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
                       >
                         <div>{CurrencyType()}</div>
-                      </div>
+                      </div> */}
                       <div
                         onClick={this.changeThePriceTodefault}
                         className="ioPriceContainer"
@@ -491,7 +491,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     {this.props.openChartPage ? (
                       <p
                         onClick={this.props.openChartPage}
-                        class="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label"
+                        class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
                       >
                         <div className="seeMoreBtn cp f-s-10 grey-7C7">
                           <div>See more</div>

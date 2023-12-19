@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PageHeader from "../common/PageHeader.js";
+import BarGraphSection from "../common/BarGraphSection.js";
 import { getAllCoins } from "../onboarding/Api.js";
 import {
   IntelligencePage,
@@ -11,8 +12,8 @@ import {
   netflowExplainer1,
   netflowExplainer2,
   NetflowSwitch,
-  PriceGaugePageTimeSpentMP,
-  PriceGaugePageViewMP,
+  RealizedGainsPageTimeSpentMP,
+  RealizedGainsPageViewMP,
   TimeSpentIntelligence,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
@@ -22,7 +23,9 @@ import {
   getAssetProfitLoss,
   getProfitAndLossApi,
   getTransactionAsset,
-} from "../intelligence/Api.js";
+  getAllInsightsApi,
+} from "../intelligence/Api";
+import Loading from "../common/Loading.js";
 
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -45,9 +48,9 @@ import UpgradeModal from "../common/upgradeModal.js";
 import { toast } from "react-toastify";
 import Footer from "../common/footer.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
-import InflowOutflowChart from "../intelligence/InflowOutflowChart";
+import { EyeThinIcon } from "../../assets/images/icons/index.js";
 
-class PriceGauge extends Component {
+class RealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -163,7 +166,7 @@ class PriceGauge extends Component {
     this.setState({
       startTime: new Date() * 1,
     });
-    PriceGaugePageViewMP({
+    RealizedGainsPageViewMP({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -177,15 +180,6 @@ class PriceGauge extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -305,7 +299,11 @@ class PriceGauge extends Component {
     if (prevProps.intelligenceState !== this.props.intelligenceState) {
       this.setState({ isGraphLoading: false });
     }
-    if (prevState.apiResponse !== this.state.apiResponse) {
+    if (prevState.apiResponse != this.state.apiResponse) {
+      // this.props.getAllCoins();
+      // this.timeFilter(0);
+      // this.props.getAllInsightsApi(this);
+      // this.assetList();
       this.setState({
         apiResponse: false,
       });
@@ -323,6 +321,11 @@ class PriceGauge extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+    }
+
+    if (!this.props.commonState.insight) {
+      this.props.updateWalletListFlag("insight", true);
+      this.props.getAllInsightsApi(this);
     }
 
     if (
@@ -379,7 +382,7 @@ class PriceGauge extends Component {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      PriceGaugePageTimeSpentMP({
+      RealizedGainsPageTimeSpentMP({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -572,7 +575,8 @@ class PriceGauge extends Component {
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
-    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=price-gauge";
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=realized-profit-and-loss";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -620,27 +624,89 @@ class PriceGauge extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
-            <div className="m-b-32">
-              <PageHeader
-                title="Price gauge"
-                subTitle="temp"
-                showpath
-                currentPage="price-gauge"
-                ShareBtn={true}
-                handleShare={this.handleShare}
-                updateTimer={this.updateTimer}
-                hoverText={`This chart reflects the final balance on last day, month, or year. It includes spot positions only, not DeFi positions.`}
-              />
-            </div>
 
-            <div
-              id="price"
-              style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
-            >
-              <InflowOutflowChart userWalletList={this.state.userWalletList} />
-            </div>
+            <div className="portfolio-bar-graph">
+              <div className="m-b-32">
+                <PageHeader
+                  showNetflowExplainers
+                  title="Realized profit and loss"
+                  subTitle="Understand your portfolio's net flows"
+                  showpath
+                  currentPage="realized-profit-and-loss"
+                  ShareBtn={true}
+                  handleShare={this.handleShare}
+                  updateTimer={this.updateTimer}
+                />
+              </div>
 
-            <Footer />
+              <div
+                style={{
+                  position: "relative",
+                  minWidth: "85rem",
+                }}
+              >
+                {this.props.intelligenceState.graphValue ? (
+                  <BarGraphSection
+                    dontShowAssets
+                    showToCalendar={this.showToCalendar}
+                    hideToCalendar={this.hideToCalendar}
+                    hideFromCalendar={this.hideFromCalendar}
+                    showFromCalendar={this.showFromCalendar}
+                    changeToDate={this.changeToDate}
+                    changeFromDate={this.changeFromDate}
+                    isFromCalendar={this.state.isFromCalendar}
+                    toDate={this.state.toDate}
+                    isToCalendar={this.state.isToCalendar}
+                    fromDate={this.state.fromDate}
+                    maxDate={this.state.maxDate}
+                    minDate={this.state.minDate}
+                    showFromAndTo
+                    isScrollVisible={false}
+                    data={this.props.intelligenceState.graphValue[0]}
+                    options={this.props.intelligenceState.graphValue[1]}
+                    coinsList={this.props.OnboardingState.coinsList}
+                    isSwitch={this.state.isSwitch}
+                    setSwitch={this.setSwitch}
+                    marginBottom="m-b-32"
+                    // showFooter={false}
+                    showFooterDropdown={false}
+                    // showFooter={true}
+                    showToken={true}
+                    activeTitle={this.state.title}
+                    assetList={this.state.AssetList}
+                    showPercentage={this.props.intelligenceState.graphValue[2]}
+                    handleBadge={(activeBadgeList, activeFooter) =>
+                      this.handleBadge(activeBadgeList, activeFooter)
+                    }
+                    ProfitLossAsset={
+                      this.props.intelligenceState.ProfitLossAsset
+                    }
+                    handleAssetSelected={this.handleAssetSelected}
+                    getObj={true}
+                    isGraphLoading={this.state.isGraphLoading}
+                    chainSearchIsUsed={this.chainSearchIsUsed}
+                    assetSearchIsUsed={this.assetSearchIsUsed}
+                  />
+                ) : (
+                  <div
+                    className="loading-wrapper"
+                    style={{
+                      height: "57.8rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Loading />
+                    <br />
+                    <br />
+                  </div>
+                )}
+              </div>
+
+              {/* footer */}
+              <Footer />
+            </div>
           </div>
           {this.state.addModal && (
             <FixAddModal
@@ -679,7 +745,7 @@ const mapDispatchToProps = {
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
-
+  getAllInsightsApi,
   getProfitAndLossApi,
   getAssetProfitLoss,
   updateWalletListFlag,
@@ -689,6 +755,11 @@ const mapDispatchToProps = {
   getUser,
 };
 
-PriceGauge.propTypes = {};
+RealizedProfitAndLoss.propTypes = {
+  // getPosts: PropTypes.func
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceGauge);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RealizedProfitAndLoss);

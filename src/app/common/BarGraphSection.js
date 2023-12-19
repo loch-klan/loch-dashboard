@@ -557,9 +557,9 @@ class BarGraphSection extends Component {
                       height: "100%",
                     }}
                   >
-                    <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label">
+                    {/* <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label">
                       {CurrencyType()}
-                    </p>
+                    </p> */}
 
                     <div
                       style={{
@@ -575,6 +575,9 @@ class BarGraphSection extends Component {
                             ? "smaller-toggle grey-ADA"
                             : "primary-color"
                         }`}
+                        style={{
+                          marginLeft: "3rem",
+                        }}
                       >
                         <Form.Check
                           type="switch"
@@ -602,7 +605,7 @@ class BarGraphSection extends Component {
                     {this.props.openChartPage ? (
                       <p
                         onClick={this.props.openChartPage}
-                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label"
+                        className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
                       >
                         <div
                           style={{

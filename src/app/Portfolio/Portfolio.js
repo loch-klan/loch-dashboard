@@ -1584,7 +1584,7 @@ class Portfolio extends BaseReactComponent {
       });
   };
   goToRealizedGainsPage = () => {
-    this.props.history.push("/intelligence#netflow");
+    this.props.history.push("/realized-profit-and-loss");
     ProfitLossEV({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -1612,7 +1612,7 @@ class Portfolio extends BaseReactComponent {
     });
   };
   goToPriceGaugePage = () => {
-    this.props.history.push("/pricegauge");
+    this.props.history.push("/price-gauge");
     PriceGaugeEV({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -3243,7 +3243,7 @@ class Portfolio extends BaseReactComponent {
                           // title="Unrealized profit and loss"
                           handleClick={() => {
                             if (this.state.lochToken) {
-                              this.props.history.push("/intelligence/costs");
+                              this.props.history.push("/assets");
                               AverageCostBasisEView({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
@@ -3472,9 +3472,19 @@ class Portfolio extends BaseReactComponent {
                               style={{
                                 position: "absolute",
                                 opacity: 0,
+                                left: "5rem",
+                                top: "5rem",
                               }}
                             >
                               <div>Loch</div>
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                                left: "5rem",
+                              }}
+                            >
                               <div>Loch</div>
                             </div>
                             <BarGraphSection
