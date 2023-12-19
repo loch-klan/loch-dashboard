@@ -1976,6 +1976,117 @@ export const IntelligencePage = ({ session_id, email_address }) => {
 };
 
 // Page View: Cost page
+export const AssetsPageViewMP = ({ session_id, email_address }) => {
+  const event_name = "Page View: Assets";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Cost");
+};
+export const AssetsPageTimeSpentMP = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Assets:time spent on Assets page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent cost": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const RealizedGainsPageViewMP = ({ session_id, email_address }) => {
+  const event_name = "Page View: Realized gains";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Cost");
+};
+export const RealizedGainsPageTimeSpentMP = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Realized gains:time spent on Realized gains page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent cost": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const GasFeesPageViewMP = ({ session_id, email_address }) => {
+  const event_name = "Page View: Gas fees";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Cost");
+};
+export const GasFeesPageTimeSpentMP = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Gas fees:time spent on Gas fees page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent cost": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CounterpartyVolumePageViewMP = ({ session_id, email_address }) => {
+  const event_name = "Page View: Counterparty volume";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Cost");
+};
+export const CounterpartyVolumePageTimeSpentMP = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Counterparty volume:time spent on Counterparty volume page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent cost": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PriceGaugePageViewMP = ({ session_id, email_address }) => {
+  const event_name = "Page View: Price gauge";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Cost");
+};
+export const PriceGaugePageTimeSpentMP = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Price gauge:time spent on Price gauge page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent cost": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CostsPage = ({ session_id, email_address }) => {
   const event_name = "Page View: Costs";
   const eventProperties = {

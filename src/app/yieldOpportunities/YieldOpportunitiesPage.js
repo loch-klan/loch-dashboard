@@ -195,6 +195,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -985,11 +994,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               subTitle={
                 "Yield bearing opportunties personalized for your portfolio"
               }
-              currentPage={"transaction-history"}
+              currentPage={"yield-opportunities"}
               history={this.props.history}
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
+              showpath
             />
 
             <div className="fillter_tabs_section">
