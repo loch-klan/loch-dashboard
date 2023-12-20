@@ -631,7 +631,6 @@ class RealizedProfitAndLoss extends Component {
                   showNetflowExplainers
                   title="Realized profit and loss"
                   subTitle="Understand your portfolio's net flows"
-                  showpath
                   currentPage="realized-profit-and-loss"
                   ShareBtn={true}
                   handleShare={this.handleShare}

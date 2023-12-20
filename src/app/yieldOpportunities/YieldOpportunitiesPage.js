@@ -999,7 +999,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               ShareBtn={true}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
-              showpath
             />
 
             <div className="fillter_tabs_section">

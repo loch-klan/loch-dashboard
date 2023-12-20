@@ -217,7 +217,15 @@ class CounterPartyVolume extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.getAllCoins();
     this.getCounterPartyFee(0, true);
     this.props.GetAllPlan();
@@ -598,7 +606,6 @@ class CounterPartyVolume extends Component {
               subTitle="Understand where you’ve exchanged the most value"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
               currentPage={"counterparty-volume"}
               ShareBtn={true}
               ExportBtn

@@ -536,7 +536,6 @@ class Defi extends Component {
               subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}

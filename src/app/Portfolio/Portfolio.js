@@ -1591,14 +1591,14 @@ class Portfolio extends BaseReactComponent {
     });
   };
   goToGasFeesSpentPage = () => {
-    this.props.history.push("/intelligence/costs#gasfeesspent");
+    this.props.history.push("/gas-fees");
     GasFeesEV({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
   };
   goToCounterPartyVolumePage = () => {
-    this.props.history.push("/intelligence/costs#counterpartyvolume");
+    this.props.history.push("/counterparty-volume");
     VolumeTradeByCP({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

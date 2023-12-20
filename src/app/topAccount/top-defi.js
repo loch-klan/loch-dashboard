@@ -477,7 +477,7 @@ class TopDefi extends Component {
               subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
+
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}

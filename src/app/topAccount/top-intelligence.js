@@ -688,7 +688,6 @@ class TopIntelligence extends Component {
             <PageHeader
               title="Portfolio"
               subTitle="Automated and personalized financial intelligence"
-              showpath={true}
               currentPage={"intelligence"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
