@@ -35,12 +35,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
 
       tasksDone: [],
       tasksList: [
-        "address_added",
-        "ens_added",
-        "email_added",
-        "wallet_connected",
-        "multiple_address_added",
-        "exchange_connected",
+        "follow_address",
+        "twitter_spaces",
+        "follow_on_twitter",
+        "join_telegram",
+        "provide_feedback",
+        "use_referral_code",
       ],
     };
   }
@@ -239,70 +239,70 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
-    if (whichBlock === "address_added") {
+    if (whichBlock === "follow_address") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added one address"
-          earnPoints={1}
+          title="Following an Address"
+          earnPoints={2}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddAddress}
         />
       );
-    } else if (whichBlock === "ens_added") {
+    } else if (whichBlock === "twitter_spaces") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added one ENS"
+          title="Attended Twitter Spaces"
+          earnPoints={1}
+          imageIcon={UserCreditTwitterIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddEns}
+        />
+      );
+    } else if (whichBlock === "follow_on_twitter") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Followed @‌loch_chain on Twitter"
           earnPoints={2}
-          imageIcon={UserCreditDiamondIcon}
+          imageIcon={UserCreditTwitterIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickAddEns}
+          // onClick={goClickAddEmail}
         />
       );
-    } else if (whichBlock === "email_added") {
+    } else if (whichBlock === "join_telegram") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Verified email"
-          earnPoints={3}
-          imageIcon={UserCreditMailIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
-          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickAddEmail}
-        />
-      );
-    } else if (whichBlock === "wallet_connected") {
-      return (
-        <ProfileLochCreditPointsBlock
-          title="Connected wallet"
-          earnPoints={4}
-          imageIcon={UserCreditLinkIcon}
+          title="Joined Telegram chat"
+          earnPoints={2}
+          imageIcon={UserCreditTelegramIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectWallet}
         />
       );
-    } else if (whichBlock === "multiple_address_added") {
+    } else if (whichBlock === "provide_feedback") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added two or more addresses"
+          title="Provided feedback"
           earnPoints={3}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickAddTwoOrMoreAddresses}
+          // onClick={goClickAddTwoOrMoreAddresses}
         />
       );
-    } else if (whichBlock === "exchange_connected") {
+    } else if (whichBlock === "use_referral_code") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Connected exchange"
-          earnPoints={3}
+          title="Referral code used"
+          earnPoints={1}
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickConnectExchange}
+          // onClick={goClickConnectExchange}
         />
       );
     }
