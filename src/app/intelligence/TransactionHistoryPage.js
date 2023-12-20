@@ -1969,7 +1969,6 @@ class TransactionHistoryPage extends BaseReactComponent {
               subTitle={
                 "Sort, filter, and dissect all your transactions from one place"
               }
-              showpath={true}
               currentPage={"transaction-history"}
               history={this.props.history}
               // btnText={"Add wallet"}

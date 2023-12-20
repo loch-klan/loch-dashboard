@@ -452,10 +452,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             textOverflow: "ellipsis",
                             fontSize: this.props.hideTimeFilter ? "14px" : "",
                             fontWeight: this.props.hideTimeFilter ? "500" : "",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-start",
                           }}
                           className="ioPrice inter-display-medium"
                         >
-                          <span
+                          <div
                             style={{
                               whiteSpace: "nowrap",
                               overflow: "hidden",
@@ -466,14 +469,44 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             this.state.activeAssetTabName
                               ? `${this.state.activeAssetTabName} `
                               : ""}
-                            Price{" "}
-                          </span>
-                          <span>
+                            Price
+                          </div>
+                          <div
+                            style={{
+                              marginLeft: "0.5rem",
+                              marginRight: "0.5rem",
+                            }}
+                          >
                             {CurrencyType(false)}
                             {this.state.currentPriceValue
                               ? numToCurrency(this.state.currentPriceValue)
                               : "0.00"}
-                          </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                            }}
+                          >
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
+                              }
+                            >
+                              <Image
+                                src={InfoIcon}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
                         </div>
 
                         <div

@@ -345,7 +345,6 @@ class AssetValueGraph extends Component {
             <PageHeader
               title={"Historic performance"}
               subTitle={"Analyze your portfolio value over time"}
-              showpath={true}
               currentPage={"asset-value"}
               history={this.props.history}
               // btnText={"Add wallet"}

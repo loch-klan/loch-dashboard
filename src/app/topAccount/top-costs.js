@@ -961,7 +961,7 @@ class TopCost extends Component {
               subTitle="Bring light to your hidden costs"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
+
               currentPage={"costs"}
               ShareBtn={true}
               handleShare={this.handleShare}

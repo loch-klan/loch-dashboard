@@ -1082,7 +1082,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
               currentPage={"costs"}
               ShareBtn={true}
               ExportBtn

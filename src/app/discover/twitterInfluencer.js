@@ -745,7 +745,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             <PageHeader
               title={"Twitter influencers"}
               subTitle={"Popular twitter influencers "}
-              // showpath={true}
+              //
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}

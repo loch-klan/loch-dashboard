@@ -332,7 +332,6 @@ class TopInsightsPage extends Component {
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
-              showpath={true}
               currentPage={"insights"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

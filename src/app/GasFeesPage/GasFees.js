@@ -184,7 +184,15 @@ class GasFeesPage extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.getAllCoins();
     this.getBlockchainFee(0, true);
 
@@ -544,7 +552,6 @@ class GasFeesPage extends Component {
               subTitle="Understand your gas costs"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
               currentPage={"gas-fees"}
               ShareBtn={true}
               ExportBtn
