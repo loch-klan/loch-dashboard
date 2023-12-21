@@ -4982,11 +4982,11 @@ export const CostHideDust = ({ session_id, email_address }) => {
 
 // Home: Asset Mobile version : hide dust - done
 export const CostHideDustMobile = ({ session_id, email_address }) => {
-  const event_name = "Home : Asset Mobile version : hide dust";
+  const event_name = "Mobile: Home: asset hide dust";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "isMobile": true,
+    isMobile: true,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
