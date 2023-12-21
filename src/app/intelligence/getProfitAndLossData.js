@@ -199,7 +199,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
       series: {
         stacking: "normal",
         // grouping: false,
-
+        showInLegend: false,
         dataLabels: {
           enabled: false,
         },

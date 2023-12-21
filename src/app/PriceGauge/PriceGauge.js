@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PageHeader from "../common/PageHeader";
-import insight from "../../assets/images/icons/insight.svg";
-import BarGraphSection from "../common/BarGraphSection";
+import PageHeader from "../common/PageHeader.js";
 import { getAllCoins } from "../onboarding/Api.js";
-import { Col, Image, Row } from "react-bootstrap";
 import {
-  InsightsViewMore,
   IntelligencePage,
   IntShare,
   netflowAssetFilter,
@@ -15,48 +11,43 @@ import {
   netflowExplainer1,
   netflowExplainer2,
   NetflowSwitch,
-  netflowTimeFilter,
+  PriceGaugePageTimeSpentMP,
+  PriceGaugePageViewMP,
   TimeSpentIntelligence,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+} from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken.js";
 import moment from "moment/moment";
-import { getAllWalletListApi } from "../wallet/Api";
+import { getAllWalletListApi } from "../wallet/Api.js";
 import {
   getAssetProfitLoss,
   getProfitAndLossApi,
   getTransactionAsset,
-} from "./Api";
-import Loading from "../common/Loading";
-import reduceCost from "../../assets/images/icons/reduce-cost.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi } from "./Api";
-import { BASE_URL_S3, InsightType } from "../../utils/Constant";
+} from "../intelligence/Api.js";
+
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import NetflowImg from "../../assets/images/icons/netflow.svg";
-import NetflowClose from "../../assets/images/icons/netflow-close.svg";
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api.js";
 
 // Add new Wallet
 import {
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
-} from "../Portfolio/Api";
+} from "../Portfolio/Api.js";
 
-import FixAddModal from "../common/FixAddModal";
-import { GetAllPlan, getUser } from "../common/Api";
-import { UpgradeTriggered, mobileCheck } from "../../utils/ReusableFunctions";
-import UpgradeModal from "../common/upgradeModal";
+import FixAddModal from "../common/FixAddModal.js";
+import { GetAllPlan, getUser } from "../common/Api.js";
+import {
+  UpgradeTriggered,
+  mobileCheck,
+} from "../../utils/ReusableFunctions.js";
+import UpgradeModal from "../common/upgradeModal.js";
 import { toast } from "react-toastify";
-import Footer from "../common/footer";
-import WelcomeCard from "../Portfolio/WelcomeCard";
-import InflowOutflowChart from "./InflowOutflowChart";
-import { EyeThinIcon } from "../../assets/images/icons";
-import Calendar from "react-calendar";
-import OutsideClickHandler from "react-outside-click-handler";
+import Footer from "../common/footer.js";
+import WelcomeCard from "../Portfolio/WelcomeCard.js";
+import InflowOutflowChart from "../intelligence/InflowOutflowChart";
 
-class Intelligence extends Component {
+class PriceGauge extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -172,7 +163,7 @@ class Intelligence extends Component {
     this.setState({
       startTime: new Date() * 1,
     });
-    IntelligencePage({
+    PriceGaugePageViewMP({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -186,6 +177,15 @@ class Intelligence extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -305,11 +305,7 @@ class Intelligence extends Component {
     if (prevProps.intelligenceState !== this.props.intelligenceState) {
       this.setState({ isGraphLoading: false });
     }
-    if (prevState.apiResponse != this.state.apiResponse) {
-      // this.props.getAllCoins();
-      // this.timeFilter(0);
-      // this.props.getAllInsightsApi(this);
-      // this.assetList();
+    if (prevState.apiResponse !== this.state.apiResponse) {
       this.setState({
         apiResponse: false,
       });
@@ -327,11 +323,6 @@ class Intelligence extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
-    }
-
-    if (!this.props.commonState.insight) {
-      this.props.updateWalletListFlag("insight", true);
-      this.props.getAllInsightsApi(this);
     }
 
     if (
@@ -388,7 +379,7 @@ class Intelligence extends Component {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentIntelligence({
+      PriceGaugePageTimeSpentMP({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -458,206 +449,6 @@ class Intelligence extends Component {
       });
     }
   };
-  // timeFilter = (option, first) => {
-  //   let selectedChains = [];
-  //   // if(activeBadgeList){
-  //   //   this.props.OnboardingState.coinsList.map((item)=>{
-  //   //     if(activeBadgeList.includes(item.id)){
-  //   //       selectedChains.push(item.code)
-  //   //     }
-  //   //   })
-  //   // }
-  //   let handleSelected = "All";
-  //   this.setState({
-  //     graphValue: "",
-  //     netFlowLoading: true,
-  //     isGraphLoading: true,
-  //   });
-  //   const today = moment().unix();
-  //   if (option == 0) {
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       false,
-  //       false,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     // for asset Breakdown
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       false,
-  //       false,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     handleSelected = "All";
-  //   } else if (option == 1) {
-  //     const fiveyear = moment().subtract(5, "years").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       fiveyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     // for asset Breakdown
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       fiveyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     handleSelected = "5 years";
-  //   } else if (option == 2) {
-  //     handleSelected = "4 years";
-  //     const fouryear = moment().subtract(4, "years").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       fouryear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       fouryear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 3) {
-  //     handleSelected = "3 years";
-  //     const threeyear = moment().subtract(3, "years").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       threeyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       threeyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 4) {
-  //     handleSelected = "2 years";
-  //     const twoyear = moment().subtract(2, "years").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       twoyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       twoyear,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 5) {
-  //     handleSelected = "1 year";
-  //     const year = moment().subtract(1, "years").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       year,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       year,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 6) {
-  //     handleSelected = "6 months";
-  //     const sixmonth = moment().subtract(6, "months").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       sixmonth,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       sixmonth,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 7) {
-  //     handleSelected = "1 month";
-  //     const month = moment().subtract(1, "month").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       month,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       month,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 8) {
-  //     handleSelected = "1 week";
-  //     const week = moment().subtract(1, "week").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       week,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       week,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   } else if (option == 9) {
-  //     handleSelected = "1 day";
-  //     const day = moment().subtract(1, "day").unix();
-  //     this.props.getProfitAndLossApi(
-  //       this,
-  //       day,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //     this.props.getAssetProfitLoss(
-  //       this,
-  //       day,
-  //       today,
-  //       selectedChains,
-  //       this.state.selectedAssets
-  //     );
-  //   }
-  //   if (!first) {
-  //     netflowTimeFilter({
-  //       session_id: getCurrentUser().id,
-  //       email_address: getCurrentUser().email,
-  //       selected: handleSelected,
-  //     });
-  //     this.updateTimer();
-  //   }
-  //   this.setState({
-  //     title: option,
-  //   });
-  // };
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
     this.setState({
@@ -781,8 +572,7 @@ class Intelligence extends Component {
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
-    let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence#netflow";
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=price-gauge";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -832,235 +622,24 @@ class Intelligence extends Component {
             )}
             <div className="m-b-32">
               <PageHeader
-                title="Portfolio"
-                subTitle="Automated and personalized financial intelligence"
-                // btnText={"Add wallet"}
-                // handleBtn={this.handleAddModal}
+                title="Price gauge"
+                subTitle="Understand when this token was bought and sold"
+                currentPage="price-gauge"
                 ShareBtn={true}
                 handleShare={this.handleShare}
                 updateTimer={this.updateTimer}
+                hoverText={`This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high.`}
               />
             </div>
 
-            {/* <div className="insights-image m-b-32">
-              <PageHeader
-                title="Insights"
-                showImg={insight}
-                viewMore={true}
-                // viewMoreRedirect={"/intelligence/insights"}
-                handleClick={() => {
-                  this.props.history.push("/intelligence/insights");
-                  InsightsViewMore({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                updateTimer={this.updateTimer}
-              />
-              <div style={{ position: "relative" }}>
-                <div className="insights-wrapper">
-                  {this.state.isLoading ? (
-                    <Loading />
-                  ) : this.state.updatedInsightList &&
-                    this.state.updatedInsightList.length > 0 ? (
-                    this.state.updatedInsightList
-                      ?.slice(0, 2)
-                      .map((insight, key) => {
-                        return (
-                          <div
-                            style={{
-                              marginBottom: key === 1 ? "0rem" : "",
-                            }}
-                            className="insights-card"
-                            key={key}
-                          >
-                            <Image
-                              src={
-                                insight.insight_type ===
-                                InsightType.COST_REDUCTION
-                                  ? reduceCost
-                                  : insight.insight_type ===
-                                    InsightType.RISK_REDUCTION
-                                  ? reduceRisk
-                                  : increaseYield
-                              }
-                              className="insight-icon"
-                            />
-                            <div className="insights-content">
-                              <div className="chips-wrapper">
-                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                  {InsightType.getText(insight.insight_type)}
-                                </h5>
-                                {insight?.sub_type && (
-                                  <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                    {InsightType.getRiskType(insight.sub_type)}
-                                  </h5>
-                                )}
-                              </div>
-                              <p
-                                className="inter-display-medium f-s-13 lh-16 grey-969"
-                                dangerouslySetInnerHTML={{
-                                  __html: insight.sub_title,
-                                }}
-                              ></p>
-                              <h4
-                                className="inter-display-medium f-s-16 lh-19 grey-313"
-                                dangerouslySetInnerHTML={{
-                                  __html: insight.title,
-                                }}
-                              ></h4>
-                            </div>
-                          </div>
-                        );
-                      })
-                  ) : (
-                    <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                      {
-                        "This wallet is not active enough for us to generate any useful insights here :)."
-                      }
-                    </h5>
-                  )}
-                </div>
-              </div>
-            </div> */}
             <div
               id="price"
               style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
             >
               <InflowOutflowChart userWalletList={this.state.userWalletList} />
             </div>
-            <div className="portfolio-bar-graph">
-              <div id="netflow" style={{ paddingTop: "0.4rem" }}>
-                <PageHeader
-                  showNetflowExplainers
-                  title="Realized profit and loss"
-                  showImg={EyeThinIcon}
-                />
-              </div>
-              {/* Netflow Info Start */}
 
-              {/* Second */}
-              {/* Netflow Info End */}
-              {/* <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <OutsideClickHandler onOutsideClick={this.hideFromCalendar}>
-                  <div className="intelligenceCalendarContainer">
-                    <div onClick={this.showFromCalendar}>From</div>
-                    {this.state.isFromCalendar ? (
-                      <div className="intelligenceCalendar">
-                        <Calendar
-                          date={this.state.fromDate}
-                          className={
-                            "calendar-select inter-display-medium f-s-13 lh-16"
-                          }
-                          onChange={this.changeFromDate}
-                          maxDate={this.state.maxDate}
-                          minDate={this.state.minDate}
-                          defaultValue={this.state.fromDate}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                </OutsideClickHandler>
-                <OutsideClickHandler onOutsideClick={this.hideToCalendar}>
-                  <div className="intelligenceCalendarContainer">
-                    <div onClick={this.showToCalendar}>To</div>
-                    {this.state.isToCalendar ? (
-                      <div className="intelligenceCalendar">
-                        <Calendar
-                          date={this.state.toDate}
-                          className={
-                            "calendar-select inter-display-medium f-s-13 lh-16"
-                          }
-                          onChange={this.changeToDate}
-                          maxDate={this.state.maxDate}
-                          minDate={this.state.minDate}
-                          defaultValue={this.state.toDate}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                </OutsideClickHandler>
-              </div> */}
-
-              <div
-                style={{
-                  position: "relative",
-                  minWidth: "85rem",
-                }}
-              >
-                {this.props.intelligenceState.graphValue ? (
-                  <BarGraphSection
-                    dontShowAssets
-                    showToCalendar={this.showToCalendar}
-                    hideToCalendar={this.hideToCalendar}
-                    hideFromCalendar={this.hideFromCalendar}
-                    showFromCalendar={this.showFromCalendar}
-                    changeToDate={this.changeToDate}
-                    changeFromDate={this.changeFromDate}
-                    isFromCalendar={this.state.isFromCalendar}
-                    toDate={this.state.toDate}
-                    isToCalendar={this.state.isToCalendar}
-                    fromDate={this.state.fromDate}
-                    maxDate={this.state.maxDate}
-                    minDate={this.state.minDate}
-                    showFromAndTo
-                    isScrollVisible={false}
-                    data={this.props.intelligenceState.graphValue[0]}
-                    options={this.props.intelligenceState.graphValue[1]}
-                    coinsList={this.props.OnboardingState.coinsList}
-                    isSwitch={this.state.isSwitch}
-                    setSwitch={this.setSwitch}
-                    marginBottom="m-b-32"
-                    // showFooter={false}
-                    showFooterDropdown={false}
-                    // showFooter={true}
-                    showToken={true}
-                    activeTitle={this.state.title}
-                    assetList={this.state.AssetList}
-                    showPercentage={this.props.intelligenceState.graphValue[2]}
-                    handleBadge={(activeBadgeList, activeFooter) =>
-                      this.handleBadge(activeBadgeList, activeFooter)
-                    }
-                    ProfitLossAsset={
-                      this.props.intelligenceState.ProfitLossAsset
-                    }
-                    handleAssetSelected={this.handleAssetSelected}
-                    getObj={true}
-                    isGraphLoading={this.state.isGraphLoading}
-                    chainSearchIsUsed={this.chainSearchIsUsed}
-                    assetSearchIsUsed={this.assetSearchIsUsed}
-                    // hiding loader for now
-                    // isLoading={this.state.netFlowLoading}
-                    // loaderHeight={57.8}
-
-                    // comingSoon={true}
-                  />
-                ) : (
-                  <div
-                    className="loading-wrapper"
-                    style={{
-                      height: "57.8rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Loading />
-                    <br />
-                    <br />
-                  </div>
-                )}
-              </div>
-
-              {/* footer */}
-              <Footer />
-            </div>
+            <Footer />
           </div>
           {this.state.addModal && (
             <FixAddModal
@@ -1099,7 +678,7 @@ const mapDispatchToProps = {
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
-  getAllInsightsApi,
+
   getProfitAndLossApi,
   getAssetProfitLoss,
   updateWalletListFlag,
@@ -1109,18 +688,6 @@ const mapDispatchToProps = {
   getUser,
 };
 
-// const mapDispatchToProps = {
-//   getCoinRate,
-//   getUserWallet,
-//   settingDefaultValues,
-//   getAllCoins,
-//   searchTransactionApi,
-//   getAssetGraphDataApi,
-//   getDetailsByLinkApi,
-// };
+PriceGauge.propTypes = {};
 
-Intelligence.propTypes = {
-  // getPosts: PropTypes.func
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Intelligence);
+export default connect(mapStateToProps, mapDispatchToProps)(PriceGauge);

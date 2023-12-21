@@ -143,6 +143,15 @@ class Defi extends Component {
     this.startPageView();
     this.updateTimer(true);
 
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     return () => {
       clearInterval(window.checkDefiTimer);
     };
@@ -479,6 +488,8 @@ class Defi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -525,7 +536,6 @@ class Defi extends Component {
               subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // showpath={true}
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
