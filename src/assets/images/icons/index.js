@@ -63,3 +63,6 @@ export { default as UserCreditTwitterIcon } from "./userCreditTwitter.svg";
 export { default as UserCreditWalletIcon } from "./userCreditWallet.svg";
 export { default as UserCreditScrollLeftArrowIcon } from "./userCreditScrollLeftArrow.svg";
 export { default as UserCreditScrollRightArrowIcon } from "./userCreditScrollRightArrow.svg";
+export { default as TrendingFireIcon } from "./trendingFire.svg";
+export { default as TrendingWalletIcon } from "./trendingWallet.svg";
+export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";

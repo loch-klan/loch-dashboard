@@ -62,7 +62,7 @@ const routes = [
     component: Profile,
   },
   {
-    path: ["/home", "/home/:id"],
+    path: ["/home", "/home/:id", "/wallet/:id"],
     name: "Portfolio",
     type: PrivateRoute,
     component: Portfolio,
