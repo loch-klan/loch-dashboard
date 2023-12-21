@@ -10,7 +10,7 @@ import {
   getExternalEventsApi,
   getExchangeBalances,
 } from "./Api";
-import { Image } from "react-bootstrap";
+import { Form, Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/search-icon.svg";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -75,6 +75,7 @@ class PortfolioMobile extends BaseReactComponent {
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
+      showHideDustVal:true
     };
   }
   searchIconLoaded = () => {
@@ -218,6 +219,11 @@ class PortfolioMobile extends BaseReactComponent {
     if (tempExpiryTime) {
       this.endPageView();
     }
+  }
+  handleDust = () => {
+    this.setState({
+      showHideDustVal: !this.state.showHideDustVal,
+    });
   }
   handleShare = () => {
     Mobile_Home_Share({
@@ -989,25 +995,50 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
-              <h2
-                style={{
-                  marginTop: "3rem",
-                }}
-                className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
-              >
-                {/* Unrealized profit and loss */}
-                Assets
-              </h2>
-              <p
-                class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Scroll left and right to view more
-              </p>
+              <div className="d-flex justify-content-between" style={{
+                    marginTop: "3rem",
+                    alignItems:"start"
+                  }}>
+                
+              <div>
+                <h2
+                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
+                >
+                  {/* Unrealized profit and loss */}
+                  Assets
+                </h2>
+                <p
+                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Scroll left and right to view more
+                </p>
+              </div>
+
+                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                </div>
               <div className="section-table section-table-mobile-scroll">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
@@ -1029,7 +1060,19 @@ class PortfolioMobile extends BaseReactComponent {
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
                     this.props.intelligenceState.Average_cost_basis.length > 0
-                      ? [{}, ...this.props.intelligenceState.Average_cost_basis]
+                      ?
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length > 0)
+                      ? 
+                      [
+                        {},
+                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                          return item.CurrentValue > 1;
+                        })
+                      ]
+                      :
+                       [{}, ...this.props.intelligenceState.Average_cost_basis]
                       : []
                   }
                   columnList={columnData}
