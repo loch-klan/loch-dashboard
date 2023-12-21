@@ -48,6 +48,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import {
+  CostHideDustMobile,
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
   Mobile_Home_Share,
@@ -224,6 +225,11 @@ class PortfolioMobile extends BaseReactComponent {
     this.setState({
       showHideDustVal: !this.state.showHideDustVal,
     });
+    CostHideDustMobile({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
   }
   handleShare = () => {
     Mobile_Home_Share({
