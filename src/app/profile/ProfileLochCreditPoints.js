@@ -41,6 +41,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
+        "follow_address",
+        "twitter_spaces",
+        "follow_on_twitter",
+        "join_telegram",
+        "provide_feedback",
+        "use_referral_code",
       ],
     };
   }
@@ -305,6 +311,72 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickConnectExchange}
         />
       );
+    } else if (whichBlock === "follow_address") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Following an Address"
+          earnPoints={2}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickAddAddress}
+        />
+      );
+    } else if (whichBlock === "twitter_spaces") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Attended Twitter Spaces"
+          earnPoints={1}
+          imageIcon={UserCreditTwitterIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddEns}
+        />
+      );
+    } else if (whichBlock === "follow_on_twitter") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Followed @‌loch_chain on Twitter"
+          earnPoints={2}
+          imageIcon={UserCreditTwitterIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddEmail}
+        />
+      );
+    } else if (whichBlock === "join_telegram") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Joined Telegram chat"
+          earnPoints={2}
+          imageIcon={UserCreditTelegramIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickConnectWallet}
+        />
+      );
+    } else if (whichBlock === "provide_feedback") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Provided feedback"
+          earnPoints={3}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddTwoOrMoreAddresses}
+        />
+      );
+    } else if (whichBlock === "use_referral_code") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Referral code used"
+          earnPoints={1}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickConnectExchange}
+        />
+      );
     }
     return null;
   };
@@ -397,6 +469,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           <div className="profileCreditPointsSection">
             {this.state.tasksList
               .slice(3, 6)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(6, 9)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(9, 12)
               .map((singleTask, singleTaskIndex) => {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
