@@ -58,6 +58,8 @@ import {
   TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
+  TransactionHistoryHashCopied,
+  TransactionHistoryHashHover,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
@@ -1935,11 +1937,29 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.hash ? rowData.hash : ""}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div
+                onMouseEnter={() => {
+                  // console.log('here');
+                  TransactionHistoryHashHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    hash_hovered: rowData.hash,
+                  });
+                  this.updateTimer();
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                   {tempHashVal}
                   <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.hash)}
+                      onClick={() => {
+                        this.copyContent(rowData.hash)
+                        TransactionHistoryHashCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          hash_copied: rowData.hash,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
