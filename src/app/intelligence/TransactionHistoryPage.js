@@ -58,6 +58,7 @@ import {
   TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
+  TransactionHistoryHashCopied,
   TransactionHistoryHashHover,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
@@ -1913,7 +1914,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   TransactionHistoryHashHover({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
-                    hovered_hash: rowData.hash,
+                    hash_hovered: rowData.hash,
                   });
                   this.updateTimer();
                 }}
@@ -1921,7 +1922,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                   {tempHashVal}
                   <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.hash)}
+                      onClick={() => {
+                        this.copyContent(rowData.hash)
+                        TransactionHistoryHashCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          hash_copied: rowData.hash,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
