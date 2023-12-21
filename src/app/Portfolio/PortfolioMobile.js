@@ -1059,8 +1059,10 @@ class PortfolioMobile extends BaseReactComponent {
                   subTitle=""
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length > 0
+                    this.props.intelligenceState.Average_cost_basis.length < 1
                       ?
+                      []
+                      :
                       (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
                         return item.CurrentValue > 1;
                       }).length > 0)
@@ -1072,8 +1074,13 @@ class PortfolioMobile extends BaseReactComponent {
                         })
                       ]
                       :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length < 1)
+                      ? 
+                      []
+                      :
                        [{}, ...this.props.intelligenceState.Average_cost_basis]
-                      : []
                   }
                   columnList={columnData}
                   headerHeight={60}
