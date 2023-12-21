@@ -245,6 +245,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
+    const goClickFollowTwitter = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Followed @loch_chain on Twitter",
+      });
+      window.open("https://twitter.com/loch_chain", "_blank");
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -319,7 +327,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickAddAddress}
+          // onClick={goClickAddAddress}
         />
       );
     } else if (whichBlock === "twitter_spaces") {
@@ -336,12 +344,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "follow_on_twitter") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Followed @‌loch_chain on Twitter"
+          title="Followed @loch_chain on Twitter"
           earnPoints={2}
           imageIcon={UserCreditTwitterIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          // onClick={goClickAddEmail}
+          onClick={goClickFollowTwitter}
         />
       );
     } else if (whichBlock === "join_telegram") {
@@ -352,7 +360,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditTelegramIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          onClick={goClickConnectWallet}
+          // onClick={goClickConnectWallet}
         />
       );
     } else if (whichBlock === "provide_feedback") {
