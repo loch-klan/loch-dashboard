@@ -5192,6 +5192,17 @@ export const CostHideDust = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: Average Cost Basis: hide dust");
 };
+
+// Home: Asset Mobile version : hide dust - done
+export const CostHideDustMobile = ({ session_id, email_address }) => {
+  const event_name = "Mobile: Home: asset hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    isMobile: true,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const costFeesChainFilter = ({
   session_id,
   email_address,
