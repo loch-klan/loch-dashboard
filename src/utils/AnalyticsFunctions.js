@@ -653,7 +653,23 @@ export const TransactionHistoryAddress = ({
   //console.log("Home:transaction history addresses");
 };
 
-//22. Home:volume traded by counterparty expanded view
+//22. Home:transaction history hash hover
+export const TransactionHistoryHashHover = ({
+  session_id,
+  email_address,
+  hovered_hash
+}) => {
+  const event_name = "Home:transaction history Hash Hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "hovered_hash":hovered_hash
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home:transaction history hash hovered");
+};
+
+//23. Home:volume traded by counterparty expanded view
 export const VolumeTradeByCP = ({ session_id, email_address }) => {
   const event_name = "Home:volume traded by counterparty expanded view";
   const eventProperties = {
