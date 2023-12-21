@@ -41,6 +41,7 @@ import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAnd
 import GasFees from "./app/GasFeesPage/GasFees";
 import CounterPartyVolume from "./app/CounterPartyVolumePage/CounterPartyVolume";
 import AssetsUnrealizedProfitAndLoss from "./app/AssetsUnrealizedProfitAndLoss/AssetsUnrealizedProfitAndLoss";
+import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 const routes = [
   {
     path: "/",
@@ -167,6 +168,12 @@ const routes = [
     name: "Smart Money",
     type: PrivateRoute,
     component: SmartMoneyPage,
+  },
+  {
+    path: "/home-smart-money",
+    name: "Home Smart Money",
+    type: PrivateRoute,
+    component: homeSmartMoneyPage,
   },
 
   {

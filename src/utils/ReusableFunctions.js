@@ -14,9 +14,7 @@ export const mobileCheck = (isSmartMoney) => {
       navigator.userAgent
     )
   ) {
-    if (isSmartMoney) {
-      return true;
-    }
+    return true;
   }
   return false;
 };

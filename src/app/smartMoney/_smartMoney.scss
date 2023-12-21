@@ -1254,6 +1254,232 @@
     }
   }
 }
+.homeSmartMoneyHeaderContainer {
+  .homeSmartMoneyHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    .homeSmartMoneyHeaderSignInContainer {
+      color: #313233;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.8rem;
+      transition-duration: 300ms;
+      border: 1.3px white solid;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      background-color: white;
+      margin-right: 3rem;
+      .homeSmartMoneyHeaderSignInDataName {
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: 500;
+      }
+      .homeSmartMoneyHeaderSignInJustText {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #19191a;
+        font-weight: 500;
+      }
+      &:hover {
+        box-shadow: none;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-color: transparent;
+
+        color: #19191a;
+        .homeSmartMoneyHeaderSignInIconContainer {
+          background-color: white;
+        }
+      }
+
+      .homeSmartMoneyHeaderSignInIconContainer {
+        transition-duration: 300ms;
+        margin-right: 0.5rem;
+        border: 0.1rem solid #e5e5e6;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        max-width: 2.5rem;
+        max-height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.8rem;
+        background-color: white;
+        .homeSmartMoneyHeaderSignInIcon {
+          height: 1.3rem;
+        }
+      }
+      .homeSmartMoneyHeaderSignInIconNoColor {
+        background-color: transparent;
+        border-color: transparent;
+        min-width: 1.3rem;
+        max-height: 1.3rem;
+        &:hover {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+    .homeSmartMoneyHeaderFaqContainer {
+      background-color: white;
+      border-color: white;
+      box-shadow: none;
+      margin-right: 2.5rem;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-color: transparent;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+      }
+    }
+    .homeSmartMoneyHeaderSignedInContainer {
+      .homeSmartMoneyHeaderSignInData {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        white-space: nowrap;
+      }
+
+      .homeSmartMoneyHeaderSignedInIconContainer {
+        background-color: #f2f2f2;
+      }
+      .homeSmartMoneyHeaderSignedInLeaveContainer {
+        display: flex;
+
+        .navbar-button {
+          background: none;
+          border: none;
+          color: #b0b1b3;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        img {
+          width: 1.6rem;
+          margin-left: 6rem;
+        }
+        &:hover {
+          .navbar-button {
+            color: #0d0d0d;
+          }
+        }
+      }
+    }
+    .leftSmartMoneyContainer {
+      width: 28rem;
+      padding: 0rem 3rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .leftSmartMoneyLogos {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+        img {
+          width: 4rem;
+          margin-right: 1rem;
+        }
+        .leftSmartMoneyLogoText {
+          color: #0d0d0d;
+          font-family: "Inter-Medium";
+          font-size: 2.4rem;
+          font-weight: 500;
+          line-height: 24px;
+          vertical-align: middle;
+        }
+      }
+      .leftSmartMoneyFAQLogos {
+        cursor: pointer;
+        transition-duration: 300ms;
+        &:hover {
+          filter: opacity(0.65);
+        }
+      }
+      .currency-wrapper {
+        .dropdown {
+          text-align: left;
+
+          #currency-dropdown {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 1.2rem;
+            border-radius: 8px;
+            color: #96979a;
+            font-family: "Inter-SemiBold";
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 12px;
+            &:focus {
+              border: 1px solid #e5e5e6;
+            }
+
+            &:hover {
+              border: 1px solid #e5e5e6;
+            }
+          }
+          .dropdown-menu {
+            &.show {
+              width: 9.3rem;
+              height: 22rem;
+              overflow-y: auto;
+              background: white;
+              left: -9px !important;
+              .dropdown-item {
+                display: flex;
+                justify-content: space-between;
+              }
+            }
+          }
+        }
+      }
+    }
+    .rightSmartMoneyContainer {
+      flex: 1;
+      padding: 0rem;
+      margin-right: 1rem;
+      .rightSmartMoneyContainerHeadingParent {
+        display: flex;
+        align-items: center;
+        .rscHowItWorks {
+          color: #adadad;
+          font-size: 1.3rem;
+          margin-left: 1rem;
+          transition-duration: 300ms;
+          cursor: pointer;
+          &:hover {
+            color: #0d0d0d;
+          }
+        }
+        .rightSmartMoneyContainerHeading {
+          color: #0d0d0d;
+          font-size: 2rem;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .rightSmartMoneyContainerHeadingSmartMoney {
+          cursor: pointer;
+          transition-duration: 300ms;
+          &:hover {
+            filter: opacity(0.65);
+          }
+        }
+      }
+      .rightSmartMoneyContainerSubHeading {
+        color: #adadad;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
 @media screen and (max-width: 1150px) {
   .smartMoneyFAQContainer {
     padding: 0 10rem;

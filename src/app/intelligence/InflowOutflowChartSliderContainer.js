@@ -482,31 +482,33 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               ? numToCurrency(this.state.currentPriceValue)
                               : "0.00"}
                           </div>
-                          <div
-                            style={{
-                              display: "flex",
-                            }}
-                          >
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
-                              }
+                          {this.props.hideTimeFilter ? (
+                            <div
+                              style={{
+                                display: "flex",
+                              }}
                             >
-                              <Image
-                                src={InfoIcon}
-                                className="infoIcon"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "14px",
-                                }}
-                              />
-                            </CustomOverlay>
-                          </div>
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
+                                }
+                              >
+                                <Image
+                                  src={InfoIcon}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                            </div>
+                          ) : null}
                         </div>
 
                         <div
