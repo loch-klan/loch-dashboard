@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
-import TopBarDropDown from "./TopBarDropDown";
 import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
+import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
@@ -39,16 +39,17 @@ import {
 import { ethers } from "ethers";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { ARCX_API_KEY } from "../../utils/Constant";
 import { isFollowedByUser } from "../Portfolio/Api";
+import { addUserCredits } from "../profile/Api";
 import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
-import { addUserCredits } from "../profile/Api";
-import { ARCX_API_KEY } from "../../utils/Constant";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
@@ -958,6 +959,7 @@ class TopWalletExchangeBar extends Component {
                 totalWallets={this.state.totalWallets}
                 firstWallet={this.state.firstWallet}
                 firstFullWallet={this.state.firstFullWallet}
+                fullWalletList={this.state.fullWalletList}
               />
             </div>
             {this.state.showFollowingAddress ? (
@@ -1017,6 +1019,7 @@ class TopWalletExchangeBar extends Component {
             className={`topbar-btn ml-2 ${
               this.state.walletList.length > 0 ? "maxWidth50" : ""
             }`}
+            id="topbar-connect-exchange-btn"
           >
             {this.state.exchangeList.length > 0 ? (
               <>
