@@ -58,6 +58,8 @@ import {
   TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
+  TransactionHistoryHashCopied,
+  TransactionHistoryHashHover,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
@@ -182,6 +184,10 @@ class TransactionHistoryPage extends BaseReactComponent {
           title: "method",
           up: false,
         },
+        {
+          title: "hash",
+          up: false,
+        }
       ],
       showDust: true,
       // add new wallet
@@ -993,6 +999,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           },
           // method: row.transaction_type
           method: row.method,
+          hash: row.transaction_id,
         };
       });
 
@@ -1892,6 +1899,72 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </div>
                 )}
               </>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="hash"
+            // onClick={() => this.handleTableSort("hash")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Hash
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find(s=>s.title=='hash').up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "hash",
+
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "hash") {
+            // return rowData.hash.value?.toFixed(2)
+            const tempHashVal = TruncateText(rowData.hash);
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.hash ? rowData.hash : ""}
+              >
+                <div
+                onMouseEnter={() => {
+                  // console.log('here');
+                  TransactionHistoryHashHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    hash_hovered: rowData.hash,
+                  });
+                  this.updateTimer();
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {tempHashVal}
+                  <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => {
+                        this.copyContent(rowData.hash)
+                        TransactionHistoryHashCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          hash_copied: rowData.hash,
+                        });
+                        this.updateTimer();
+                      }}
+                      className="m-l-10 cp copy-icon"
+                      style={{ width: "1rem" }}
+                    />
+                </div>
+              </CustomOverlay>
             );
           }
         },
