@@ -1910,7 +1910,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 <div
                 onMouseEnter={() => {
-                  console.log('here');
+                  // console.log('here');
                   TransactionHistoryHashHover({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
