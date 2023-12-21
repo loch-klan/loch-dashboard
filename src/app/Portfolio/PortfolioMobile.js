@@ -1018,7 +1018,9 @@ class PortfolioMobile extends BaseReactComponent {
                   Scroll left and right to view more
                 </p>
               </div>
+                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
 
+                    
                 <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
                     <Form.Check
                       type="switch"
@@ -1037,6 +1039,7 @@ class PortfolioMobile extends BaseReactComponent {
                           : "Hide dust (less than $1)"
                       }
                     />
+                  </div>
                   </div>
                 </div>
               <div className="section-table section-table-mobile-scroll">
