@@ -56,7 +56,7 @@ export default function HomeSmartMoneyHeader(props) {
               localLochUser.last_name) ? (
               <>
                 <div
-                  // onClick={props.openAddAddressModal}
+                  onClick={props.openAddAddressModal}
                   className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                 >
                   <div className="homeSmartMoneyHeaderSignInIconContainer homeSmartMoneyHeaderSignInIconNoColor">
@@ -87,7 +87,7 @@ export default function HomeSmartMoneyHeader(props) {
                       </div>
                     </div>
                     <div
-                      // onClick={props.showHowItWorksModal}
+                      onClick={props.showHowItWorksModal}
                       className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                       style={{
                         marginRight: "0rem",
