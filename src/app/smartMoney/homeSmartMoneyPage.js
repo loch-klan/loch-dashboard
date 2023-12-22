@@ -252,6 +252,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1269,29 +1272,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       //   },
       // },
     ];
-
-    if (mobileCheck()) {
-      return (
-        // <MobileDevice isSmartMoney />
-        <SmartMoneyMobilePage
-          location={this.props.location}
-          history={this.props.history}
-          accountList={this.state.accountList}
-          currency={this.state.currency}
-          isLoading={this.state.tableLoading}
-          currentPage={this.state.currentPage}
-          totalPage={this.state.totalPage}
-          pageLimit={this.state.pageLimit}
-          changePageLimit={this.changePageLimit}
-          onPageChange={this.onPageChange}
-          blurTable={this.state.blurTable}
-          signOutFun={this.signOutFun}
-          handleFollowUnfollow={this.handleFollowUnfollow}
-          mobilePopupModal={this.state.mobilePopupModal}
-          hideThePopupModal={this.hideTheMobilePopupModal}
-        />
-      );
-    }
 
     return (
       <>
