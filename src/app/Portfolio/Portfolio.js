@@ -3326,6 +3326,7 @@ class Portfolio extends BaseReactComponent {
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
+                          chainLoader={this.state.chainLoader}
                         />
                       ) : null}
                     </div>

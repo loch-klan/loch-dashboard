@@ -45,7 +45,7 @@ class PortfolioHomeNetworksBlock extends Component {
     }
   };
   render() {
-    if (this.props.insightsBlockLoading) {
+    if (this.props.chainLoader) {
       return (
         <div
           style={{
@@ -73,8 +73,7 @@ class PortfolioHomeNetworksBlock extends Component {
         }}
         className="insights-wrapper-container"
       >
-        {this.props.updatedInsightList &&
-        this.props.updatedInsightList.length > 0 ? (
+        {this.state.chainList && this.state.chainList.length > 0 ? (
           <div
             style={{
               overflow: "scroll",
