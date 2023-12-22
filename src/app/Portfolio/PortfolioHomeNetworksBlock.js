@@ -9,7 +9,7 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import Loading from "../common/Loading";
-
+import LinkIcon from "../../assets/images/link.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class PortfolioHomeNetworksBlock extends Component {
@@ -80,7 +80,7 @@ class PortfolioHomeNetworksBlock extends Component {
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
               position: "relative",
-              height: "37rem",
+              height: "36.5rem",
               padding: "0rem 0.5rem",
               paddingRight: "1rem",
             }}
@@ -127,51 +127,82 @@ class PortfolioHomeNetworksBlock extends Component {
                   : this.state.chainList?.length + 1 + " Networks"}
               </span>
             </div>
-            {this.state.chainList &&
-              this.state.chainList?.map((chain, i) => {
-                return (
-                  <div
-                    className="chain-list-item"
-                    key={`chainContentChainList-${i}`}
-                    style={{
-                      paddingBottom: "1rem",
-                    }}
-                  >
-                    <span className="inter-display-medium f-s-16 lh-19">
-                      <Image
-                        src={chain?.symbol}
-                        style={{
-                          width: "2.6rem",
-                          height: "2.6rem",
-                          borderRadius: "6px",
-                          objectFit: "cover",
-                          border: `1px solid ${lightenDarkenColor(
-                            chain?.color,
-                            -0.15
-                          )}`,
-                        }}
-                      />
-                      {chain?.name}
-                    </span>
-                    <CustomOverlay
-                      text={
-                        CurrencyType(false) +
-                        amountFormat(chain?.total.toFixed(2), "en-US", "USD")
-                      }
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      position="top"
-                      className={"fix-width"}
+            {this.state.chainList
+              ? this.state.chainList?.map((chain, i) => {
+                  return (
+                    <div
+                      className="chain-list-item"
+                      key={`chainContentChainList-${i}`}
+                      style={{
+                        paddingBottom: "1rem",
+                      }}
                     >
-                      <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                        {CurrencyType(false)}
-                        {numToCurrency(chain?.total)}
+                      <span className="inter-display-medium f-s-16 lh-19">
+                        <Image
+                          src={chain?.symbol}
+                          style={{
+                            width: "2.6rem",
+                            height: "2.6rem",
+                            borderRadius: "6px",
+                            objectFit: "cover",
+                            border: `1px solid ${lightenDarkenColor(
+                              chain?.color,
+                              -0.15
+                            )}`,
+                          }}
+                        />
+                        {chain?.name}
                       </span>
-                    </CustomOverlay>
-                  </div>
-                );
-              })}
+                      <CustomOverlay
+                        text={
+                          CurrencyType(false) +
+                          amountFormat(chain?.total.toFixed(2), "en-US", "USD")
+                        }
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        position="top"
+                        className={"fix-width"}
+                      >
+                        <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                          {CurrencyType(false)}
+                          {numToCurrency(chain?.total)}
+                        </span>
+                      </CustomOverlay>
+                    </div>
+                  );
+                })
+              : null}
+            <div
+              className="chain-list-item"
+              // key={this.state.chainList.length + 1}
+              style={{
+                paddingBottom: "0rem",
+              }}
+            >
+              <span className="inter-display-medium f-s-16 lh-19">
+                <Image
+                  src={LinkIcon}
+                  style={{
+                    width: "2.6rem",
+                    height: "2.6rem",
+                    padding: "0.55rem",
+                    borderRadius: "6px",
+                    objectFit: "cover",
+                    border: `1px solid ${lightenDarkenColor("#000000", -0.15)}`,
+                  }}
+                />
+                Centralized Exchanges
+              </span>
+              <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                {CurrencyType(false)}
+                {amountFormat(
+                  this.props.portfolioState?.centralizedExchanges.toFixed(2),
+                  "en-US",
+                  "USD"
+                )}
+              </span>
+            </div>
           </div>
         ) : null}
       </div>
