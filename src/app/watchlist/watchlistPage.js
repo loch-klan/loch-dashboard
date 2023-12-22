@@ -911,7 +911,6 @@ class WatchListPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
-                    addWatermark
                   />
                 </>
               )}
