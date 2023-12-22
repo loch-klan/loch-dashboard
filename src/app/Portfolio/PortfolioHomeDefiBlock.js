@@ -206,6 +206,7 @@ class PortfolioHomeDefiBlock extends Component {
   curToNumToTwoDec = (e) => {
     let tempHolder = convertNtoNumber(e);
     if (tempHolder && !isNaN(tempHolder)) {
+      tempHolder = Number(tempHolder);
       return numToCurrency(tempHolder.toFixed(2), "en-US", "USD");
     }
     return "";
