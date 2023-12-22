@@ -186,7 +186,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         {
           title: "hash",
           up: false,
-        }
+        },
       ],
       showDust: true,
       // add new wallet
@@ -770,8 +770,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             email_address: getCurrentUser().email,
           });
           this.updateTimer();
-        } 
-         else if (val === "method") {
+        } else if (val === "method") {
           obj = [
             {
               key: SORT_BY_METHOD,
@@ -1779,10 +1778,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="network"
-          >
+          <div className="cp history-table-header-col" id="network">
             Network
             {/* <Image
               src={sortByIcon}
@@ -1795,11 +1791,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         dataKey: "network",
 
         className: "usd-value",
-        coumnWidth: 0.225,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "network") {
-            
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1810,10 +1805,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                   text={rowData.network}
                 >
                   <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
-                  {rowData.network}
+                    {rowData.network}
                   </div>
                 </CustomOverlay>
-                
               </div>
             );
           }
@@ -1854,31 +1848,32 @@ class TransactionHistoryPage extends BaseReactComponent {
                 text={rowData.hash ? rowData.hash : ""}
               >
                 <div
-                onMouseEnter={() => {
-                  // console.log('here');
-                  TransactionHistoryHashHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    hash_hovered: rowData.hash,
-                  });
-                  this.updateTimer();
-                }}
-                className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  onMouseEnter={() => {
+                    // console.log('here');
+                    TransactionHistoryHashHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hash_hovered: rowData.hash,
+                    });
+                    this.updateTimer();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                >
                   {tempHashVal}
                   <Image
-                      src={CopyClipboardIcon}
-                      onClick={() => {
-                        this.copyContent(rowData.hash)
-                        TransactionHistoryHashCopied({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          hash_copied: rowData.hash,
-                        });
-                        this.updateTimer();
-                      }}
-                      className="m-l-10 cp copy-icon"
-                      style={{ width: "1rem" }}
-                    />
+                    src={CopyClipboardIcon}
+                    onClick={() => {
+                      this.copyContent(rowData.hash);
+                      TransactionHistoryHashCopied({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        hash_copied: rowData.hash,
+                      });
+                      this.updateTimer();
+                    }}
+                    className="m-l-10 cp copy-icon"
+                    style={{ width: "1rem" }}
+                  />
                 </div>
               </CustomOverlay>
             );
