@@ -196,6 +196,25 @@
   }
 }
 .insights-wrapper-portfolio-home {
+  .chain-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 0rem;
+    border-top: 1px solid rgba(229, 229, 230, 0.5);
+
+    span img {
+      position: relative;
+      margin-right: 1rem;
+      z-index: 1;
+    }
+
+    .chain-list-amt {
+      background-color: rgba(229, 229, 230, 0.5);
+      border-radius: 4px;
+      padding: 6px;
+    }
+  }
   // &:hover {
   &::-webkit-scrollbar {
     width: 0.4rem;

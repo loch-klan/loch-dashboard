@@ -252,6 +252,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1270,29 +1273,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       // },
     ];
 
-    if (mobileCheck()) {
-      return (
-        // <MobileDevice isSmartMoney />
-        <SmartMoneyMobilePage
-          location={this.props.location}
-          history={this.props.history}
-          accountList={this.state.accountList}
-          currency={this.state.currency}
-          isLoading={this.state.tableLoading}
-          currentPage={this.state.currentPage}
-          totalPage={this.state.totalPage}
-          pageLimit={this.state.pageLimit}
-          changePageLimit={this.changePageLimit}
-          onPageChange={this.onPageChange}
-          blurTable={this.state.blurTable}
-          signOutFun={this.signOutFun}
-          handleFollowUnfollow={this.handleFollowUnfollow}
-          mobilePopupModal={this.state.mobilePopupModal}
-          hideThePopupModal={this.hideTheMobilePopupModal}
-        />
-      );
-    }
-
     return (
       <>
         {/* topbar */}
@@ -1331,7 +1311,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           </div>
         </div>
         <div className="history-table-section m-t-80">
-          <div className="history-table page">
+          <div className="history-table homeSmartMoneyPage page">
             {this.state.showSignOutModal ? (
               <ConformSmartMoneyLeaveModal
                 show={this.state.showSignOutModal}
@@ -1382,6 +1362,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 handleRedirection={this.handleSignUpRedirection}
                 signup={true}
                 goToSignIn={this.showSignInModal}
+                fromInsideHome
               />
             ) : null}
             {this.state.howItWorksModal ? (
@@ -1398,6 +1379,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 history={this.props.history}
                 signInVar={this.state.showWithLogin}
                 blurTable={this.state.blurTable}
+                fromInsideHome
               />
             ) : null}
             {/* <Button onClick={this.loginFunction}>Login</Button>
