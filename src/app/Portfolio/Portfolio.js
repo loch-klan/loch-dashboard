@@ -154,6 +154,7 @@ import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
+import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -3319,6 +3320,12 @@ class Portfolio extends BaseReactComponent {
                           isArrow={true}
                           isLoading={this.state.tableLoading}
                           addWatermark
+                        />
+                      ) : this.state.blockOneSelectedItem === 3 ? (
+                        <PortfolioHomeNetworksBlock
+                          history={this.props.history}
+                          updatedInsightList={this.state.updatedInsightList}
+                          insightsBlockLoading={this.state.insightsBlockLoading}
                         />
                       ) : null}
                     </div>

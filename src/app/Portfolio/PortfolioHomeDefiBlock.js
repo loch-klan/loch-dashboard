@@ -75,7 +75,6 @@ class PortfolioHomeDefiBlock extends Component {
     });
     let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
     //  console.log("wallet_address", UserWallet);
-    console.log("UserWallet is ", UserWallet);
 
     if (UserWallet?.length !== 0) {
       const allAddresses = [];
@@ -241,6 +240,8 @@ class PortfolioHomeDefiBlock extends Component {
               this.state.isYeildToggle || this.state.isDebtToggle ? "0rem" : "",
             borderBottomRightRadius:
               this.state.isYeildToggle || this.state.isDebtToggle ? "0rem" : "",
+            marginBottom: "1rem",
+            marginTop: "0.5rem",
           }}
           className="balance-sheet-card "
         >
@@ -464,7 +465,13 @@ class PortfolioHomeDefiBlock extends Component {
           this.props.defiState.defiList.length !== 0 ? (
             this.props.defiState?.defiList.slice(0, 1).map((card, index) => {
               return (
-                <div key={`sortedList-${index}`} className="defi-card-wrapper">
+                <div
+                  style={{
+                    marginBottom: "0rem",
+                  }}
+                  key={`sortedList-${index}`}
+                  className="defi-card-wrapper"
+                >
                   <div className="top-title-wrapper">
                     <div className="heading-image">
                       <Image src={card?.logoUrl} />
@@ -485,7 +492,7 @@ class PortfolioHomeDefiBlock extends Component {
 
                   {/* Table Content */}
                   {card.items
-                    ? card.items.map((groupComp, i) => {
+                    ? card.items.slice(0, 1).map((groupComp, i) => {
                         return (
                           <>
                             <Row key={`carItem-${i}`} className="table-head">
