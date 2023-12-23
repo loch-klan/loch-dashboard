@@ -33,6 +33,7 @@ import {
   SortByGainAmount,
   AssetsPageViewMP,
   AssetsPageTimeSpentMP,
+  CostSortByPortfolio,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
@@ -129,6 +130,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         { title: "Current value", down: false },
         { title: "Gain amount", down: true },
         { title: "Gain percentage", down: true },
+        { title: "Portfolio perc", down: true },
       ],
     };
   }
@@ -173,7 +175,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-    
+
     this.props.getAllCoins();
 
     this.props.getAvgCostBasis(this);
@@ -196,7 +198,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-   
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -446,6 +447,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
+    } else if (e.title === "Portfolio perc") {
+      this.sortArray("weight", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      CostSortByPortfolio({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     }
   };
 
@@ -536,8 +547,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "Asset",
-        // coumnWidth: 118,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -592,8 +603,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "AverageCostPrice",
-        // coumnWidth: 153,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -651,8 +662,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "CurrentPrice",
-        // coumnWidth: 128,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -706,8 +717,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "Amount",
-        // coumnWidth: 108,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -755,8 +766,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "CostBasis",
-        // coumnWidth: 100,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -816,8 +827,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "CurrentValue",
-        // coumnWidth: 140,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -875,8 +886,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "GainAmount",
-        // coumnWidth: 128,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
@@ -951,8 +962,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           </div>
         ),
         dataKey: "GainLoss",
-        // coumnWidth: 128,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -977,7 +988,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   text={
                     tempDataHolder
                       ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0%"
+                      : "0.00%"
                   }
                   colorCode="#000"
                 >
@@ -996,6 +1007,66 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         }
                       />
                     ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Portfolio perc"
+            onClick={() => this.handleSort(this.state.sortBy[8])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "PortfolioPercentage") {
+            const tempDataHolder = Number(
+              noExponents(rowData.weight.toFixed(2))
+            );
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"

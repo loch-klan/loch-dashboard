@@ -2886,24 +2886,24 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
+            id="PortfolioPer"
+            // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Return
+              Portfolio (%)
             </span>
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
+            /> */}
           </div>
         ),
-        dataKey: "GainLoss",
+        dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "GainLoss") {
+          if (dataKey === "PortfolioPercentage") {
             if (rowData === "EMPTY") {
               return null;
             }
@@ -2915,7 +2915,7 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainLoss
+                    rowData.weight
                       ? Math.abs(
                           Number(noExponents(rowData.GainLoss.toFixed(2)))
                         ).toLocaleString("en-US") + "%"
@@ -2924,24 +2924,10 @@ class Portfolio extends BaseReactComponent {
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.GainLoss
+                      {rowData.weight
                         ? Math.abs(
-                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                            Number(noExponents(rowData.weight.toFixed(2)))
                           ).toLocaleString("en-US") + "%"
                         : "0.00%"}
                     </span>

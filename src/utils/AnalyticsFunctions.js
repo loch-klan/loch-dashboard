@@ -4578,6 +4578,15 @@ export const SortByGainLoss = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: Average Cost Basis: sort % gain loss");
 };
+export const CostSortByPortfolio = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average Cost Basis: sort portfolio %";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort % gain loss");
+};
 
 // ------------
 
