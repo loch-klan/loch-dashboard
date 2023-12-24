@@ -93,6 +93,7 @@ import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import UserFeedbackModal from "./UserFeedbackModal.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -119,6 +120,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [userFeedbackModal , setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -526,6 +528,9 @@ function Sidebar(props) {
   };
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
+  };
+  const handleUserFeedbackModal = () => {
+    setUserFeedbackModal(!userFeedbackModal);
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -2269,6 +2274,24 @@ function Sidebar(props) {
                           </li>
                         </>
                       )}
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={() => {
+                            handleUserFeedbackModal();
+                          }}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image
+                            src={TwoPeopleIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
+                          Feedback
+                        </NavLink>
+
+                      </li>
                       {/* <li>
                         <NavLink
                           exact={true}
@@ -2793,6 +2816,18 @@ function Sidebar(props) {
           openSignupModalDirect={openSignupModalDirect}
         />
       ) : null}
+
+      {
+        userFeedbackModal ? (
+          <UserFeedbackModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
+          onHide={handleUserFeedbackModal}
+          history={history}
+          popupType="general_popup"
+          tracking={history.location.pathname.substring(1)}
+          />) :null
+      }
     </>
   );
 }
