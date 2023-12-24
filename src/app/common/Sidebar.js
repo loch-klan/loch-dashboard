@@ -92,9 +92,14 @@ import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import {
+  CurrencyType,
+  amountFormat,
+  numToCurrency,
+} from "../../utils/ReusableFunctions.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -107,6 +112,7 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [showNetWortj, setShowNetWortj] = useState(false);
   const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
@@ -411,6 +417,7 @@ function Sidebar(props) {
 
   React.useEffect(() => {
     getWalletFunction();
+    // Add here
   }, []);
 
   const getWalletFunction = () => {
@@ -733,7 +740,22 @@ function Sidebar(props) {
       setDragPosition(JSON.parse(floatingModalPosition));
     }
   }, []);
+  const getTotalAssetValue = () => {
+    if (props.portfolioState) {
+      const tempWallet = props.portfolioState.walletTotal
+        ? props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = props.defiState.totalYield
+        ? props.defiState.totalYield
+        : 0;
+      const tempDebt = props.defiState.totalDebt
+        ? props.defiState.totalDebt
+        : 0;
 
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   return (
     <>
       <div className="sidebar-section">
@@ -1063,6 +1085,32 @@ function Sidebar(props) {
                 </div>
               ) : (
                 <div className="scroll-menu-wrapper">
+                  <div className="sideBarAmountsContainer">
+                    <div className="sideBarAmountsNetworth">
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          CurrencyType(false) +
+                          amountFormat(getTotalAssetValue(), "en-US", "USD") +
+                          " " +
+                          CurrencyType(true)
+                        }
+                        className="tool-tip-container-bottom-arrow"
+                      >
+                        <h3
+                          style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                          className="space-grotesk-medium wallet-amount"
+                        >
+                          {CurrencyType(false)}
+                          {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                          {numToCurrency(getTotalAssetValue())}{" "}
+                        </h3>
+                      </CustomOverlay>
+                    </div>
+                  </div>
                   <nav>
                     <ul>
                       {isSubmenu.me && (
@@ -2859,5 +2907,10 @@ function Sidebar(props) {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
+});
+const mapDispatchToProps = {};
 
-export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

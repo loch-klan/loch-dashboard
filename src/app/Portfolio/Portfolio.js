@@ -612,6 +612,54 @@ class Portfolio extends BaseReactComponent {
       callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
     });
   };
+  callNetworksApi = () => {
+    // Resetting the user wallet list, total and chain wallet
+    this.props.settingDefaultValues(this);
+
+    // Loops on coins to fetch details of each coin which exist in wallet
+    let isFound = false;
+    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : this.state.userWalletList;
+    tempUserWalletList?.forEach((wallet, i) => {
+      if (wallet.coinFound) {
+        isFound = true;
+        wallet.coins.forEach((coin) => {
+          if (coin.chain_detected) {
+            let userCoinWallet = {
+              address: wallet.address,
+              coinCode: coin.coinCode,
+            };
+            this.props.getUserWallet(userCoinWallet, this, false, i);
+          }
+        });
+      }
+
+      if (i === tempUserWalletList?.length - 1) {
+        // run this api if itws value 0
+        this.props.getYesterdaysBalanceApi(this);
+
+        this.setState({
+          // overview loader and net worth loader
+          // isLoading: false,
+          // isLoadingNet: false,
+        });
+      }
+    });
+
+    // connect exchange api
+    // this.props.getExchangeBalance("binance", this);
+    // this.props.getExchangeBalance("coinbase", this);
+    this.props.getExchangeBalances(this, false);
+
+    if (!isFound) {
+      this.setState({
+        // overview loader and net worth loader
+        // isLoading: false,
+        // isLoadingNet: false,
+      });
+    }
+  };
   callYieldOppApi = () => {
     let addressList = [];
     const tempUserWalletList = window.sessionStorage.getItem("addWallet")
@@ -698,6 +746,9 @@ class Portfolio extends BaseReactComponent {
       this.props.intelligenceState.counterPartyValue
     ) {
       this.callYieldOppApi();
+    }
+    if (this.state.lochToken) {
+      this.callNetworksApi();
     }
     this.callPriceGaugeApi();
     if (this.props.portfolioState?.assetValueDataLoaded) {
@@ -929,52 +980,7 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList &&
         this.state.userWalletList?.length > 0
       ) {
-        // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues(this);
-
-        // Loops on coins to fetch details of each coin which exist in wallet
-        let isFound = false;
-        const tempUserWalletList = window.sessionStorage.getItem("addWallet")
-          ? JSON.parse(window.sessionStorage.getItem("addWallet"))
-          : this.state.userWalletList;
-        tempUserWalletList?.forEach((wallet, i) => {
-          if (wallet.coinFound) {
-            isFound = true;
-            wallet.coins.forEach((coin) => {
-              if (coin.chain_detected) {
-                let userCoinWallet = {
-                  address: wallet.address,
-                  coinCode: coin.coinCode,
-                };
-                this.props.getUserWallet(userCoinWallet, this, false, i);
-              }
-            });
-          }
-
-          if (i === tempUserWalletList?.length - 1) {
-            // run this api if itws value 0
-            this.props.getYesterdaysBalanceApi(this);
-
-            this.setState({
-              // overview loader and net worth loader
-              // isLoading: false,
-              // isLoadingNet: false,
-            });
-          }
-        });
-
-        // connect exchange api
-        // this.props.getExchangeBalance("binance", this);
-        // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this, false);
-
-        if (!isFound) {
-          this.setState({
-            // overview loader and net worth loader
-            // isLoading: false,
-            // isLoadingNet: false,
-          });
-        }
+        this.callNetworksApi();
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
@@ -2886,24 +2892,24 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
+            id="PortfolioPer"
+            // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Return
+              Portfolio (%)
             </span>
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
+            /> */}
           </div>
         ),
-        dataKey: "GainLoss",
+        dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "GainLoss") {
+          if (dataKey === "PortfolioPercentage") {
             if (rowData === "EMPTY") {
               return null;
             }
@@ -2915,7 +2921,7 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainLoss
+                    rowData.weight
                       ? Math.abs(
                           Number(noExponents(rowData.GainLoss.toFixed(2)))
                         ).toLocaleString("en-US") + "%"
@@ -2924,24 +2930,10 @@ class Portfolio extends BaseReactComponent {
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.GainLoss
+                      {rowData.weight
                         ? Math.abs(
-                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                            Number(noExponents(rowData.weight.toFixed(2)))
                           ).toLocaleString("en-US") + "%"
                         : "0.00%"}
                     </span>
