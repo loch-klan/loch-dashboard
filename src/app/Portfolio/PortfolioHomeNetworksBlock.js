@@ -65,6 +65,7 @@ class PortfolioHomeNetworksBlock extends Component {
         </div>
       );
     }
+    console.log("this.state.chainList ", this.state.chainList);
     return (
       <div
         style={{
