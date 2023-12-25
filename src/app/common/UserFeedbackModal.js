@@ -193,11 +193,15 @@ class UserFeedbackModal extends BaseReactComponent {
                               </div>
                             )}
 
-                            <div
-                              className="closebtnContainer"
-                              style={{ marginRight: "12px" }}
-                            >
-                              <div
+                           
+                              {
+                               (( this.state.questions[this.state.currentQuestion].type=="radio"&&this.state.questions[this.state.currentQuestion].value) || this.state.questions[this.state.currentQuestion].type!="radio")
+                                ?
+                                <div
+                                className="closebtnContainer"
+                                style={{ marginRight: this.state.questions[this.state.currentQuestion].type=="radio"?"0px":'12px' }}
+                              >
+                                <div
                                 className={`closebtn  ${
                                   this.state.email ? "active" : ""
                                 }`}
@@ -227,8 +231,14 @@ class UserFeedbackModal extends BaseReactComponent {
                                   src={RightIcons}
                                 />
                               </div>
-                            </div>
-                            <div className="closebtnContainer">
+                              </div>
+                              :
+                               null
+                              }
+                              {
+                                (( this.state.questions[this.state.currentQuestion].type=="radio"&&!this.state.questions[this.state.currentQuestion].value) || this.state.questions[this.state.currentQuestion].type!="radio")
+                                ?
+                                <div className="closebtnContainer">
                               <div
                                 className="closebtn"
                                 onClick={() => {
@@ -241,6 +251,10 @@ class UserFeedbackModal extends BaseReactComponent {
                                 />
                               </div>
                             </div>
+                            : null
+                              }
+
+                            
                           </Form>
                         </div>
                       </div>
