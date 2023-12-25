@@ -20,6 +20,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import FormValidator from "../../utils/form/FormValidator";
 import { CheckGreenIcon } from "../../assets/images/icons";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import RightIcons from "../../assets/images/icons/caveronRight.svg";
 import CustomTextControl from "../../utils/form/CustomTextControl";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
@@ -119,7 +120,7 @@ class UserFeedbackModal extends BaseReactComponent {
                           style={{ paddingRight: "0px" }}
                         >
                           {/* For Signin or Signup */}
-                          <Form onValidSubmit={this.handleNext}>
+                          <Form onValidSubmit={this.handleNext} style={{alignItems:'center'}}>
                             {this.state.questions[this.state.currentQuestion]
                               .type == "radio" ? (
                               <div className="d-flex" style={{ gap: "16px", marginRight:'52px' }}>
@@ -186,7 +187,7 @@ class UserFeedbackModal extends BaseReactComponent {
                               className="closebtnContainer"
                               style={{ marginRight: "12px" }}
                             >
-                              <Button
+                              <div
                                 className={`closebtn  ${
                                   this.state.email ? "active" : ""
                                 }`}
@@ -208,8 +209,11 @@ class UserFeedbackModal extends BaseReactComponent {
                                   background: "#19191A",
                                 }}
                               >
-                                {`>`}
-                              </Button>
+                                <Image
+                                  className="closebtnIcon"
+                                  src={RightIcons}
+                                />
+                              </div>
                             </div>
                             <div className="closebtnContainer">
                               <div
