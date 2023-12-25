@@ -296,151 +296,239 @@ class BarGraphSection extends Component {
           ""
         )}
 
-        {data && options && !isLoading ? (
-          <span
-            style={{
-              flex: 1,
-              paddingTop:
-                this.props.noSubtitleBottomPadding &&
-                !this.props.noSubtitleTopPadding
-                  ? "2rem"
-                  : 0,
-              overflow: this.props.noSubtitleBottomPadding ? "hidden" : "",
-              marginTop: this.props.newHomeSetup ? "1.4rem" : "",
-            }}
-            className={`${comingSoon ? "blur-effect" : ""}`}
-          >
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "start",
-                }}
-              >
-                {showFooter && (
-                  <div
-                    style={{
-                      width: "75%",
-                    }}
-                  >
-                    <BarGraphFooter
-                      handleFooterClick={this.handleFooter}
-                      active={this.state.activeFooter}
-                      footerLabels={footerLabels}
-                    />
-                  </div>
-                )}
-                {showFromAndTo && (
-                  <div className="intelligenceRealisedLeftContainer">
-                    <div class="bar-graph-footer ">
-                      <div class="timeCalendarBadgeWrapper ">
-                        <div
-                          id="0"
-                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
-                        >
-                          From
-                        </div>
-                        <div
-                          id="1"
-                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
-                        >
-                          <OutsideClickHandler
-                            onOutsideClick={this.props.hideFromCalendar}
+        {!isLoading ? (
+          data && options ? (
+            <span
+              style={{
+                flex: 1,
+                paddingTop:
+                  this.props.noSubtitleBottomPadding &&
+                  !this.props.noSubtitleTopPadding
+                    ? "2rem"
+                    : 0,
+                overflow: this.props.noSubtitleBottomPadding ? "hidden" : "",
+                marginTop: this.props.newHomeSetup ? "1.4rem" : "",
+              }}
+              className={`${comingSoon ? "blur-effect" : ""}`}
+            >
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                  }}
+                >
+                  {showFooter && (
+                    <div
+                      style={{
+                        width: "75%",
+                      }}
+                    >
+                      <BarGraphFooter
+                        handleFooterClick={this.handleFooter}
+                        active={this.state.activeFooter}
+                        footerLabels={footerLabels}
+                      />
+                    </div>
+                  )}
+                  {showFromAndTo && (
+                    <div className="intelligenceRealisedLeftContainer">
+                      <div class="bar-graph-footer ">
+                        <div class="timeCalendarBadgeWrapper ">
+                          <div
+                            id="0"
+                            class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
                           >
-                            <div className="timeBadgeCalendarContainer">
-                              <div
-                                className="timeBadgeCalendarText"
-                                onClick={this.props.showFromCalendar}
-                              >
-                                {this.props.fromDate
-                                  ? moment(this.props.fromDate).format(
-                                      "D MMM YYYY"
-                                    )
-                                  : ""}
-                              </div>
-                              {this.props.isFromCalendar ? (
-                                <div className="intelligenceCalendar">
-                                  <Calendar
-                                    date={this.props.fromDate}
-                                    className={
-                                      "calendar-select inter-display-medium f-s-13 lh-16"
-                                    }
-                                    onChange={this.props.changeFromDate}
-                                    maxDate={this.props.maxDate}
-                                    minDate={this.props.minDate}
-                                    defaultValue={this.props.fromDate}
-                                  />
-                                </div>
-                              ) : null}
-                            </div>
-                          </OutsideClickHandler>
-                        </div>
-                        <div
-                          id="2"
-                          class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
-                        >
-                          To
-                        </div>
-                        <div
-                          id="3"
-                          class="inter-display-medium f-s-13 lh-16 timeCalBadge"
-                        >
-                          <OutsideClickHandler
-                            onOutsideClick={this.props.hideToCalendar}
+                            From
+                          </div>
+                          <div
+                            id="1"
+                            class="inter-display-medium f-s-13 lh-16 timeCalBadge"
                           >
-                            <div className="timeBadgeCalendarContainer">
-                              <div
-                                className="timeBadgeCalendarText"
-                                onClick={this.props.showToCalendar}
-                              >
-                                {this.props.toDate
-                                  ? moment(this.props.toDate).format(
-                                      "D MMM YYYY"
-                                    )
-                                  : ""}
-                              </div>
-                              {this.props.isToCalendar ? (
-                                <div className="intelligenceCalendar">
-                                  <Calendar
-                                    date={this.props.toDate}
-                                    className={
-                                      "calendar-select inter-display-medium f-s-13 lh-16"
-                                    }
-                                    onChange={this.props.changeToDate}
-                                    maxDate={this.props.maxDate}
-                                    minDate={this.props.minDate}
-                                    defaultValue={this.props.toDate}
-                                  />
+                            <OutsideClickHandler
+                              onOutsideClick={this.props.hideFromCalendar}
+                            >
+                              <div className="timeBadgeCalendarContainer">
+                                <div
+                                  className="timeBadgeCalendarText"
+                                  onClick={this.props.showFromCalendar}
+                                >
+                                  {this.props.fromDate
+                                    ? moment(this.props.fromDate).format(
+                                        "D MMM YYYY"
+                                      )
+                                    : ""}
                                 </div>
-                              ) : null}
-                            </div>
-                          </OutsideClickHandler>
+                                {this.props.isFromCalendar ? (
+                                  <div className="intelligenceCalendar">
+                                    <Calendar
+                                      date={this.props.fromDate}
+                                      className={
+                                        "calendar-select inter-display-medium f-s-13 lh-16"
+                                      }
+                                      onChange={this.props.changeFromDate}
+                                      maxDate={this.props.maxDate}
+                                      minDate={this.props.minDate}
+                                      defaultValue={this.props.fromDate}
+                                    />
+                                  </div>
+                                ) : null}
+                              </div>
+                            </OutsideClickHandler>
+                          </div>
+                          <div
+                            id="2"
+                            class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                          >
+                            To
+                          </div>
+                          <div
+                            id="3"
+                            class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                          >
+                            <OutsideClickHandler
+                              onOutsideClick={this.props.hideToCalendar}
+                            >
+                              <div className="timeBadgeCalendarContainer">
+                                <div
+                                  className="timeBadgeCalendarText"
+                                  onClick={this.props.showToCalendar}
+                                >
+                                  {this.props.toDate
+                                    ? moment(this.props.toDate).format(
+                                        "D MMM YYYY"
+                                      )
+                                    : ""}
+                                </div>
+                                {this.props.isToCalendar ? (
+                                  <div className="intelligenceCalendar">
+                                    <Calendar
+                                      date={this.props.toDate}
+                                      className={
+                                        "calendar-select inter-display-medium f-s-13 lh-16"
+                                      }
+                                      onChange={this.props.changeToDate}
+                                      maxDate={this.props.maxDate}
+                                      minDate={this.props.minDate}
+                                      defaultValue={this.props.toDate}
+                                    />
+                                  </div>
+                                ) : null}
+                              </div>
+                            </OutsideClickHandler>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* <BarGraphFooter
+                      {/* <BarGraphFooter
                       handleFooterClick={this.handleFooter}
                       active={this.state.activeFooter}
                       footerLabels={footerLabels}
                     /> */}
-                  </div>
-                )}
-                {showFromAndTo ? (
-                  <div className="intelligenceRealisedRightContainer">
+                    </div>
+                  )}
+                  {showFromAndTo ? (
+                    <div className="intelligenceRealisedRightContainer">
+                      <div
+                        className="intelligenceRealisedRightItems"
+                        // style={{
+                        //   width: "100%",
+                        //   minWidth: "18rem",
+                        //   maxWidth: "20rem",
+                        //   marginLeft: "1rem",
+                        //   zIndex: 4,
+                        // }}
+                      >
+                        <CustomDropdown
+                          filtername="All chains"
+                          options={coinsList}
+                          action={null}
+                          handleClick={this.handleFunction}
+                          isChain={true}
+                          searchIsUsed={this.props.chainSearchIsUsed}
+                          // selectedTokens={this.state.activeBadge}
+                        />
+                      </div>
+                      <div
+                        className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
+                        // style={{
+                        //   width: "100%",
+                        //   minWidth: "15rem",
+                        //   maxWidth: "18rem",
+                        //   zIndex: "2",
+                        // }}
+                      >
+                        <CustomDropdown
+                          filtername="All assets"
+                          options={this.props.assetList}
+                          action={null}
+                          handleClick={this.props.handleAssetSelected}
+                          // isChain={true}
+                          LightTheme={true}
+                          placeholderName={"asset"}
+                          getObj={this.props?.getObj}
+                          searchIsUsed={this.props.assetSearchIsUsed}
+
+                          // selectedTokens={this.state.activeBadge}
+                        />
+                      </div>
+                      <div
+                        className="intelligenceRealisedRightItems"
+                        // style={{
+                        //   width: "100%",
+                        //   minWidth: "15rem",
+                        //   maxWidth: "18rem",
+                        //   zIndex: "2",
+                        // }}
+                      >
+                        <div
+                          onClick={this.toggleBreakdownSelected}
+                          className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                            this.state.switchselected
+                              ? "IRRIbreakdownContainerSelected"
+                              : ""
+                          }`}
+                        >
+                          <div>Breakdown</div>
+                          <div className="IRRIbreakdownImageContainer">
+                            <Image
+                              className="IRRIbreakdownImage"
+                              src={ThickCheckMarkIcon}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="intelligenceRealisedInfoIcon">
+                        <CustomOverlay
+                          position="bottom"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                          subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                          className={
+                            "fix-width tool-tip-container-bottom-arrow"
+                          }
+                          isLeftText
+                        >
+                          <Image src={InfoIcon} className="infoIcon" />
+                        </CustomOverlay>
+                      </div>
+                    </div>
+                  ) : null}
+                  {showBadges && (
                     <div
-                      className="intelligenceRealisedRightItems"
-                      // style={{
-                      //   width: "100%",
-                      //   minWidth: "18rem",
-                      //   maxWidth: "20rem",
-                      //   marginLeft: "1rem",
-                      //   zIndex: 4,
-                      // }}
+                      style={{
+                        width: "100%",
+                        minWidth: "18rem",
+                        maxWidth: "20rem",
+                        marginLeft: "1rem",
+                        zIndex: 4,
+                      }}
                     >
                       <CustomDropdown
-                        filtername="All chains"
+                        filtername="All chains selected"
                         options={coinsList}
                         action={null}
                         handleClick={this.handleFunction}
@@ -449,450 +537,369 @@ class BarGraphSection extends Component {
                         // selectedTokens={this.state.activeBadge}
                       />
                     </div>
-                    <div
-                      className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
-                      // style={{
-                      //   width: "100%",
-                      //   minWidth: "15rem",
-                      //   maxWidth: "18rem",
-                      //   zIndex: "2",
-                      // }}
-                    >
-                      <CustomDropdown
-                        filtername="All assets"
-                        options={this.props.assetList}
-                        action={null}
-                        handleClick={this.props.handleAssetSelected}
-                        // isChain={true}
-                        LightTheme={true}
-                        placeholderName={"asset"}
-                        getObj={this.props?.getObj}
-                        searchIsUsed={this.props.assetSearchIsUsed}
+                  )}
+                </div>
+              </>
 
-                        // selectedTokens={this.state.activeBadge}
-                      />
-                    </div>
-                    <div
-                      className="intelligenceRealisedRightItems"
-                      // style={{
-                      //   width: "100%",
-                      //   minWidth: "15rem",
-                      //   maxWidth: "18rem",
-                      //   zIndex: "2",
-                      // }}
-                    >
-                      <div
-                        onClick={this.toggleBreakdownSelected}
-                        className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
-                          this.state.switchselected
-                            ? "IRRIbreakdownContainerSelected"
-                            : ""
-                        }`}
-                      >
-                        <div>Breakdown</div>
-                        <div className="IRRIbreakdownImageContainer">
-                          <Image
-                            className="IRRIbreakdownImage"
-                            src={ThickCheckMarkIcon}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="intelligenceRealisedInfoIcon">
-                      <CustomOverlay
-                        position="bottom"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                        subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
-                        className={"fix-width tool-tip-container-bottom-arrow"}
-                        isLeftText
-                      >
-                        <Image src={InfoIcon} className="infoIcon" />
-                      </CustomOverlay>
-                    </div>
-                  </div>
-                ) : null}
-                {showBadges && (
-                  <div
-                    style={{
-                      width: "100%",
-                      minWidth: "18rem",
-                      maxWidth: "20rem",
-                      marginLeft: "1rem",
-                      zIndex: 4,
-                    }}
-                  >
-                    <CustomDropdown
-                      filtername="All chains selected"
-                      options={coinsList}
-                      action={null}
-                      handleClick={this.handleFunction}
-                      isChain={true}
-                      searchIsUsed={this.props.chainSearchIsUsed}
-                      // selectedTokens={this.state.activeBadge}
-                    />
-                  </div>
-                )}
-              </div>
-            </>
-
-            {!this.props.dontShowAssets ? (
-              this.props.newHomeSetup ? (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: showToken || isMinichart ? "2.5rem" : "0rem",
-                  }}
-                >
+              {!this.props.dontShowAssets ? (
+                this.props.newHomeSetup ? (
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
                       justifyContent: "space-between",
-                      width: "100%",
-                      height: "100%",
+                      alignItems: "center",
+                      marginBottom:
+                        showToken || isMinichart ? "2.5rem" : "0rem",
                     }}
                   >
-                    {/* <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      {/* <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7  custom-label">
                       {CurrencyType()}
                     </p> */}
 
-                    <div
-                      style={{
-                        opacity: showSwitch ? 1 : 0,
-                      }}
-                      className="showBreakdownContainer"
-                    >
                       <div
-                        className={`inter-display-medium portFolioHomeToggle f-s-13 lh-16 hideShowBreakdownToggle ${
-                          showSwitch ? "" : "noCp"
-                        } ${
-                          this.state.isSmallerToggle
-                            ? "smaller-toggle grey-ADA"
-                            : "primary-color"
-                        }`}
                         style={{
-                          marginLeft: "3rem",
+                          opacity: showSwitch ? 1 : 0,
                         }}
-                      >
-                        <Form.Check
-                          type="switch"
-                          id="custom-switch"
-                          label={
-                            this.state.switchselected
-                              ? "Hide breakdown"
-                              : "Show breakdown"
-                          }
-                          checked={this.state.switchselected}
-                          onChange={(e) => {
-                            if (showSwitch) {
-                              this.setState({
-                                switchselected: e.target.checked,
-                              });
-                              if (this.props.setSwitch) {
-                                this.props.setSwitch();
-                              }
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {this.props.openChartPage ? (
-                      <p
-                        onClick={this.props.openChartPage}
-                        className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+                        className="showBreakdownContainer"
                       >
                         <div
+                          className={`inter-display-medium portFolioHomeToggle f-s-13 lh-16 hideShowBreakdownToggle ${
+                            showSwitch ? "" : "noCp"
+                          } ${
+                            this.state.isSmallerToggle
+                              ? "smaller-toggle grey-ADA"
+                              : "primary-color"
+                          }`}
                           style={{
-                            marginLeft: "0rem",
+                            marginLeft: "3rem",
                           }}
-                          className="seeMoreBtn cp"
                         >
-                          <div>See more</div>
-                          <Image
-                            src={ChartSeeMoreArrowIcon}
-                            className="seeMoreBtnIcon"
+                          <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            label={
+                              this.state.switchselected
+                                ? "Hide breakdown"
+                                : "Show breakdown"
+                            }
+                            checked={this.state.switchselected}
+                            onChange={(e) => {
+                              if (showSwitch) {
+                                this.setState({
+                                  switchselected: e.target.checked,
+                                });
+                                if (this.props.setSwitch) {
+                                  this.props.setSwitch();
+                                }
+                              }
+                            }}
                           />
                         </div>
-                      </p>
-                    ) : null}
+                      </div>
+
+                      {this.props.openChartPage ? (
+                        <p
+                          onClick={this.props.openChartPage}
+                          className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+                        >
+                          <div
+                            style={{
+                              marginLeft: "0rem",
+                            }}
+                            className="seeMoreBtn cp"
+                          >
+                            <div>See more</div>
+                            <Image
+                              src={ChartSeeMoreArrowIcon}
+                              className="seeMoreBtnIcon"
+                            />
+                          </div>
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: showToken || isMinichart ? "1rem" : "0rem",
-                  }}
-                >
+                ) : (
                   <div
                     style={{
                       display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      justifyContent: "center",
+                      marginBottom: showToken || isMinichart ? "1rem" : "0rem",
                     }}
                   >
-                    <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
-                      {CurrencyType()}
-                    </p>
-                  </div>
-
-                  {showToken && (
                     <div
                       style={{
-                        width: "100%",
-                        minWidth: "15rem",
-                        maxWidth: "18rem",
-                        zIndex: "2",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      <CustomDropdown
-                        filtername="All assets selected"
-                        options={this.props.assetList}
-                        action={null}
-                        handleClick={this.props.handleAssetSelected}
-                        // isChain={true}
-                        LightTheme={true}
-                        placeholderName={"asset"}
-                        getObj={this.props?.getObj}
-                        searchIsUsed={this.props.assetSearchIsUsed}
-                        // selectedTokens={this.state.activeBadge}
-                      />
+                      <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
+                        {CurrencyType()}
+                      </p>
+                    </div>
+
+                    {showToken && (
+                      <div
+                        style={{
+                          width: "100%",
+                          minWidth: "15rem",
+                          maxWidth: "18rem",
+                          zIndex: "2",
+                        }}
+                      >
+                        <CustomDropdown
+                          filtername="All assets selected"
+                          options={this.props.assetList}
+                          action={null}
+                          handleClick={this.props.handleAssetSelected}
+                          // isChain={true}
+                          LightTheme={true}
+                          placeholderName={"asset"}
+                          getObj={this.props?.getObj}
+                          searchIsUsed={this.props.assetSearchIsUsed}
+                          // selectedTokens={this.state.activeBadge}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )
+              ) : null}
+              {showPercentage || showSwitch ? (
+                <div
+                  className="show-percentage-div"
+                  style={
+                    showSwitch && !showPercentage
+                      ? {
+                          marginBottom: "1rem",
+                          marginTop: "-2.5rem",
+                          justifyContent: "end",
+                        }
+                      : showSwitch
+                      ? { marginBottom: "2rem" }
+                      : {
+                          justifyContent: "flex-end",
+                          visibility: "hidden",
+                          display: "none",
+                        }
+                  }
+                >
+                  {showPercentage && (
+                    <div
+                      className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                        showPercentage?.status === "Increase"
+                          ? "inc"
+                          : showPercentage?.status === "No Change"
+                          ? "inc"
+                          : "dec"
+                      }`}
+                    >
+                      <Image src={showPercentage?.icon} className="m-r-4" />
+                      {showPercentage?.percent}% {showPercentage?.status}
                     </div>
                   )}
-                </div>
-              )
-            ) : null}
-            {showPercentage || showSwitch ? (
-              <div
-                className="show-percentage-div"
-                style={
-                  showSwitch && !showPercentage
-                    ? {
-                        marginBottom: "1rem",
-                        marginTop: "-2.5rem",
-                        justifyContent: "end",
-                      }
-                    : showSwitch
-                    ? { marginBottom: "2rem" }
-                    : {
-                        justifyContent: "flex-end",
-                        visibility: "hidden",
-                        display: "none",
-                      }
-                }
-              >
-                {showPercentage && (
-                  <div
-                    className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                      showPercentage?.status === "Increase"
-                        ? "inc"
-                        : showPercentage?.status === "No Change"
-                        ? "inc"
-                        : "dec"
-                    }`}
-                  >
-                    <Image src={showPercentage?.icon} className="m-r-4" />
-                    {showPercentage?.percent}% {showPercentage?.status}
-                  </div>
-                )}
-              </div>
-            ) : (
-              ""
-            )}
-            {/* Graph Section */}
-            <div className={className} style={{ display: "flex" }}>
-              {options2 != undefined && isScroll && data.labels.length > 8 ? (
-                <div style={{ width: `${digit}rem` }}>
-                  <Bar options={options2} data={data} />
                 </div>
               ) : (
                 ""
               )}
-
-              <div
-                className={
-                  options2 != undefined && isScroll && data.labels.length > 8
-                    ? "ScrollArea"
-                    : "ChartAreaWrapper"
-                }
-                style={{
-                  width: `${
-                    options2 != undefined && isScroll && data.labels.length > 8
-                      ? "calc(100 % - " + digit + "rem)"
-                      : "100%"
-                  }`,
-                }}
-              >
-                {this.props.isGraphLoading ? (
-                  <div
-                    style={{
-                      height: this?.props?.loaderHeight
-                        ? this?.props?.loaderHeight + "rem"
-                        : "30rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Loading />
-                  </div>
-                ) : this.props.oldBar ? (
-                  <div
-                    className={`chartArea ${
-                      this.props.newHomeSetup ? "chartAreaOldBar" : ""
-                    }`}
-                    style={
-                      data.labels.length > 8 && isScroll
-                        ? ScrollStyle
-                        : NormalStyle
-                    }
-                  >
-                    <Bar options={options} data={data} />
+              {/* Graph Section */}
+              <div className={className} style={{ display: "flex" }}>
+                {options2 != undefined && isScroll && data.labels.length > 8 ? (
+                  <div style={{ width: `${digit}rem` }}>
+                    <Bar options={options2} data={data} />
                   </div>
                 ) : (
-                  <>
-                    {!this.state.switchselected ? (
-                      <div
-                        className="chartArea"
-                        style={
-                          showSwitch && !showPercentage
-                            ? {
-                                maxHeight: "35.55rem",
-                                overflow: "hidden",
-                              }
-                            : {
-                                overflow: "hidden",
-                              }
-                        }
-                      >
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <HighchartsReact
-                          highcharts={Highcharts}
-                          options={options}
-                          // constructorType={"stockChart"}
-                          // allowChartUpdate={true}
-                          // updateArgs={[true]}
-                          containerProps={{
-                            style: {
-                              height: this.props.noSubtitleBottomPadding
-                                ? "110%"
-                                : "",
-                            },
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className="chartArea"
-                        style={
-                          showSwitch && !showPercentage
-                            ? {
-                                maxHeight: "35.55rem",
-                                overflow: "hidden",
-                              }
-                            : {
-                                overflow: "hidden",
-                              }
-                        }
-                      >
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <HighchartsReact
-                          highcharts={Highcharts}
-                          options={this.props?.ProfitLossAsset}
-                          // constructorType={"stockChart"}
-                          // allowChartUpdate={true}
-                          // updateArgs={[true]}
-                          containerProps={{
-                            style: {
-                              height: this.props.noSubtitleBottomPadding
-                                ? "110%"
-                                : "",
-                            },
-                          }}
-                        />
-                      </div>
-                    )}
-                  </>
+                  ""
                 )}
-              </div>
-            </div>
 
-            {/* Grapgh Section End */}
-
-            {showFooterDropdown ? (
-              <div className="chart-x-selection">
-                <DropDown
-                  class="line-chart-dropdown"
-                  list={footerDropdownLabels}
-                  onSelect={(opt) => {
-                    this.setState({
-                      activeBadge: [{ name: "All", id: "" }],
-                      activeBadgeList: [],
-                    });
-                    handleSelect(opt);
+                <div
+                  className={
+                    options2 != undefined && isScroll && data.labels.length > 8
+                      ? "ScrollArea"
+                      : "ChartAreaWrapper"
+                  }
+                  style={{
+                    width: `${
+                      options2 != undefined &&
+                      isScroll &&
+                      data.labels.length > 8
+                        ? "calc(100 % - " + digit + "rem)"
+                        : "100%"
+                    }`,
                   }}
-                  title={this.props.activeDropdown}
-                  activetab={this.props.activeDropdown}
-                />
+                >
+                  {this.props.isGraphLoading ? (
+                    <div
+                      style={{
+                        height: this?.props?.loaderHeight
+                          ? this?.props?.loaderHeight + "rem"
+                          : "30rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Loading />
+                    </div>
+                  ) : this.props.oldBar ? (
+                    <div
+                      className={`chartArea ${
+                        this.props.newHomeSetup ? "chartAreaOldBar" : ""
+                      }`}
+                      style={
+                        data.labels.length > 8 && isScroll
+                          ? ScrollStyle
+                          : NormalStyle
+                      }
+                    >
+                      <Bar options={options} data={data} />
+                    </div>
+                  ) : (
+                    <>
+                      {!this.state.switchselected ? (
+                        <div
+                          className="chartArea"
+                          style={
+                            showSwitch && !showPercentage
+                              ? {
+                                  maxHeight: "35.55rem",
+                                  overflow: "hidden",
+                                }
+                              : {
+                                  overflow: "hidden",
+                                }
+                          }
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <HighchartsReact
+                            highcharts={Highcharts}
+                            options={options}
+                            // constructorType={"stockChart"}
+                            // allowChartUpdate={true}
+                            // updateArgs={[true]}
+                            containerProps={{
+                              style: {
+                                height: this.props.noSubtitleBottomPadding
+                                  ? "110%"
+                                  : "",
+                              },
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="chartArea"
+                          style={
+                            showSwitch && !showPercentage
+                              ? {
+                                  maxHeight: "35.55rem",
+                                  overflow: "hidden",
+                                }
+                              : {
+                                  overflow: "hidden",
+                                }
+                          }
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <HighchartsReact
+                            highcharts={Highcharts}
+                            options={this.props?.ProfitLossAsset}
+                            // constructorType={"stockChart"}
+                            // allowChartUpdate={true}
+                            // updateArgs={[true]}
+                            containerProps={{
+                              style: {
+                                height: this.props.noSubtitleBottomPadding
+                                  ? "110%"
+                                  : "",
+                              },
+                            }}
+                          />
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-            ) : (
-              ""
-            )}
-          </span>
+
+              {/* Grapgh Section End */}
+
+              {showFooterDropdown ? (
+                <div className="chart-x-selection">
+                  <DropDown
+                    class="line-chart-dropdown"
+                    list={footerDropdownLabels}
+                    onSelect={(opt) => {
+                      this.setState({
+                        activeBadge: [{ name: "All", id: "" }],
+                        activeBadgeList: [],
+                      });
+                      handleSelect(opt);
+                    }}
+                    title={this.props.activeDropdown}
+                    activetab={this.props.activeDropdown}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </span>
+          ) : null
         ) : (
           <div
             style={
