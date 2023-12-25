@@ -748,7 +748,7 @@ class Portfolio extends BaseReactComponent {
       this.callYieldOppApi();
     }
     if (this.state.lochToken) {
-      this.callNetworksApi();
+      // this.callNetworksApi();
     }
     this.callPriceGaugeApi();
     if (this.props.portfolioState?.assetValueDataLoaded) {
@@ -2923,7 +2923,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.weight
                       ? Math.abs(
-                          Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          Number(noExponents(rowData.weight.toFixed(2)))
                         ).toLocaleString("en-US") + "%"
                       : "0.00%"
                   }

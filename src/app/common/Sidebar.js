@@ -112,7 +112,7 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
-  const [showNetWortj, setShowNetWortj] = useState(false);
+  const [showAmountsAtTop, setShowAmountsAtTop] = useState(false);
   const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
@@ -418,6 +418,11 @@ function Sidebar(props) {
   React.useEffect(() => {
     getWalletFunction();
     // Add here
+    if (window.location.pathname === "/home") {
+      setShowAmountsAtTop(true);
+    } else {
+      setShowAmountsAtTop(false);
+    }
   }, []);
 
   const getWalletFunction = () => {
@@ -1085,32 +1090,34 @@ function Sidebar(props) {
                 </div>
               ) : (
                 <div className="scroll-menu-wrapper">
-                  <div className="sideBarAmountsContainer">
-                    <div className="sideBarAmountsNetworth">
-                      <CustomOverlay
-                        position="bottom"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        text={
-                          CurrencyType(false) +
-                          amountFormat(getTotalAssetValue(), "en-US", "USD") +
-                          " " +
-                          CurrencyType(true)
-                        }
-                        className="tool-tip-container-bottom-arrow"
-                      >
-                        <h3
-                          style={{ whiteSpace: "nowrap", cursor: "pointer" }}
-                          className="space-grotesk-medium wallet-amount"
+                  {showAmountsAtTop ? (
+                    <div className="sideBarAmountsContainer">
+                      <div className="sideBarAmountsNetworth">
+                        <CustomOverlay
+                          position="bottom"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text={
+                            CurrencyType(false) +
+                            amountFormat(getTotalAssetValue(), "en-US", "USD") +
+                            " " +
+                            CurrencyType(true)
+                          }
+                          className="tool-tip-container-bottom-arrow"
                         >
-                          {CurrencyType(false)}
-                          {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                          {numToCurrency(getTotalAssetValue())}{" "}
-                        </h3>
-                      </CustomOverlay>
+                          <h3
+                            style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                            className="space-grotesk-medium wallet-amount"
+                          >
+                            {CurrencyType(false)}
+                            {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                            {numToCurrency(getTotalAssetValue())}{" "}
+                          </h3>
+                        </CustomOverlay>
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
                   <nav>
                     <ul>
                       {isSubmenu.me && (
