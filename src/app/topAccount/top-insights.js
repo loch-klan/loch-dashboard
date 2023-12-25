@@ -286,6 +286,8 @@ class TopInsightsPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -330,7 +332,6 @@ class TopInsightsPage extends Component {
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
-              showpath={true}
               currentPage={"insights"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

@@ -231,7 +231,9 @@
 
   .line-chart-section {
     position: relative;
-
+    .portfolioHomepricegaugeloader {
+      transform: translateY(-1.4rem);
+    }
     .chart-y-selection {
       position: relative;
       .line-chart-dropdown-y-axis {

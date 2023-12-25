@@ -415,6 +415,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         type: "category",
         labels: {
           formatter: function () {
+            if (parent.props.hideTimeFilter) {
+              return "";
+            }
             if (
               parent.state.formattedXAxis &&
               this.pos < parent.state.formattedXAxis.length &&
@@ -670,12 +673,16 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         },
       },
     };
+    const minGraphVersion = {
+      style: { height: "32rem" },
+    };
     return (
       <div onMouseLeave={this.props.changeThePriceTodefault}>
         <HighchartsReact
           highcharts={Highcharts}
           options={options}
           constructorType={"stockChart"}
+          containerProps={this.props.hideTimeFilter ? minGraphVersion : null}
         />
       </div>
     );

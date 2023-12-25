@@ -418,6 +418,7 @@ export const getAvgCostBasis = (ctx) => {
               CostBasis: costBasis,
               GainAmount: item.gain ? item.gain : 0,
               CurrentValue: current_price,
+              weight: item.weight,
               GainLoss:
                 costBasis == 0
                   ? 0

@@ -10,7 +10,7 @@ import {
   getExternalEventsApi,
   getExchangeBalances,
 } from "./Api";
-import { Image } from "react-bootstrap";
+import { Form, Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/search-icon.svg";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -48,6 +48,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import {
+  CostHideDustMobile,
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
   Mobile_Home_Share,
@@ -75,6 +76,7 @@ class PortfolioMobile extends BaseReactComponent {
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
+      showHideDustVal:true
     };
   }
   searchIconLoaded = () => {
@@ -219,6 +221,16 @@ class PortfolioMobile extends BaseReactComponent {
       this.endPageView();
     }
   }
+  handleDust = () => {
+    this.setState({
+      showHideDustVal: !this.state.showHideDustVal,
+    });
+    CostHideDustMobile({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  }
   handleShare = () => {
     Mobile_Home_Share({
       session_id: getCurrentUser().id,
@@ -285,7 +297,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Asset") {
@@ -331,7 +343,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "AverageCostPrice") {
@@ -380,7 +392,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentPrice") {
@@ -429,7 +441,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Amount") {
@@ -472,7 +484,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CostBasis") {
@@ -555,7 +567,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentValue") {
@@ -638,7 +650,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainAmount") {
@@ -753,7 +765,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainLoss") {
@@ -773,7 +785,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempDataHolder
                       ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0%"
+                      : "0.00%"
                   }
                   colorCode="#000"
                 >
@@ -849,6 +861,88 @@ class PortfolioMobile extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gain loss"
+            // onClick={() => this.handleSort(this.state.sortBy[7])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "PortfolioPercentage") {
+            if (dataIndex === 0) {
+              let tempTempVal = 100;
+              let tempDataHolder = undefined;
+              if (tempTempVal) {
+                tempDataHolder = Number(noExponents(tempTempVal.toFixed(2)));
+              }
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className="gainLossContainer">
+                    <div className={`gainLoss`}>
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {tempDataHolder
+                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                            "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              );
+            }
+            let tempDataHolder = undefined;
+
+            if (rowData.weight) {
+              tempDataHolder = Number(noExponents(rowData.weight.toFixed(2)));
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  tempDataHolder
+                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                    : "0%"
+                }
+                colorCode="#000"
+              >
+                <div className="gainLossContainer">
+                  <div className={`gainLoss`}>
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
     ];
     return (
       <div className="mobilePortfolioContainer">
@@ -903,6 +997,8 @@ class PortfolioMobile extends BaseReactComponent {
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 changeWalletList={this.props.handleChangeList}
                 apiResponse={(e) => this.props.CheckApiResponse(e)}
                 showNetworth={true}
@@ -989,25 +1085,53 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
-              <h2
-                style={{
-                  marginTop: "3rem",
-                }}
-                className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
-              >
-                {/* Unrealized profit and loss */}
-                Assets
-              </h2>
-              <p
-                class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Scroll left and right to view more
-              </p>
+              <div className="d-flex justify-content-between" style={{
+                    marginTop: "3rem",
+                    alignItems:"start"
+                  }}>
+                
+              <div>
+                <h2
+                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
+                >
+                  {/* Unrealized profit and loss */}
+                  Assets
+                </h2>
+                <p
+                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Scroll left and right to view more
+                </p>
+              </div>
+                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
+
+                    
+                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                  </div>
+                </div>
               <div className="section-table section-table-mobile-scroll">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
@@ -1028,9 +1152,28 @@ class PortfolioMobile extends BaseReactComponent {
                   subTitle=""
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length > 0
-                      ? [{}, ...this.props.intelligenceState.Average_cost_basis]
-                      : []
+                    this.props.intelligenceState.Average_cost_basis.length < 1
+                      ?
+                      []
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length > 0)
+                      ? 
+                      [
+                        {},
+                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                          return item.CurrentValue > 1;
+                        })
+                      ]
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length < 1)
+                      ? 
+                      []
+                      :
+                       [{}, ...this.props.intelligenceState.Average_cost_basis]
                   }
                   columnList={columnData}
                   headerHeight={60}

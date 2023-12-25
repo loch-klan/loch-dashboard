@@ -17,7 +17,9 @@ import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import {
+  ActiveSmartMoneySidebarIcon,
   CoinsIcon,
+  InactiveSmartMoneySidebarIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
@@ -90,10 +92,15 @@ import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import UserFeedbackModal from "./UserFeedbackModal.js";
+import {
+  CurrencyType,
+  amountFormat,
+  numToCurrency,
+} from "../../utils/ReusableFunctions.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -106,6 +113,7 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [showNetWortj, setShowNetWortj] = useState(false);
   const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
@@ -120,7 +128,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
-  const [userFeedbackModal , setUserFeedbackModal] = useState(false);
+  const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -411,6 +419,7 @@ function Sidebar(props) {
 
   React.useEffect(() => {
     getWalletFunction();
+    // Add here
   }, []);
 
   const getWalletFunction = () => {
@@ -736,7 +745,22 @@ function Sidebar(props) {
       setDragPosition(JSON.parse(floatingModalPosition));
     }
   }, []);
+  const getTotalAssetValue = () => {
+    if (props.portfolioState) {
+      const tempWallet = props.portfolioState.walletTotal
+        ? props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = props.defiState.totalYield
+        ? props.defiState.totalYield
+        : 0;
+      const tempDebt = props.defiState.totalDebt
+        ? props.defiState.totalDebt
+        : 0;
 
+      return tempWallet + tempCredit - tempDebt;
+    }
+    return 0;
+  };
   return (
     <>
       <div className="sidebar-section">
@@ -837,7 +861,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
+                        {/* <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -951,7 +975,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -996,6 +1020,39 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
+                            text={"Smart Money"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/home-smart-money"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-smart-money"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
                             text={"Profile"}
                           >
                             <NavLink
@@ -1033,6 +1090,32 @@ function Sidebar(props) {
                 </div>
               ) : (
                 <div className="scroll-menu-wrapper">
+                  <div className="sideBarAmountsContainer">
+                    <div className="sideBarAmountsNetworth">
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          CurrencyType(false) +
+                          amountFormat(getTotalAssetValue(), "en-US", "USD") +
+                          " " +
+                          CurrencyType(true)
+                        }
+                        className="tool-tip-container-bottom-arrow"
+                      >
+                        <h3
+                          style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                          className="space-grotesk-medium wallet-amount"
+                        >
+                          {CurrencyType(false)}
+                          {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                          {numToCurrency(getTotalAssetValue())}{" "}
+                        </h3>
+                      </CustomOverlay>
+                    </div>
+                  </div>
                   <nav>
                     <ul>
                       {isSubmenu.me && (
@@ -1065,7 +1148,7 @@ function Sidebar(props) {
                               Home
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               className={`nav-link
@@ -1269,7 +1352,7 @@ function Sidebar(props) {
                                 </NavLink>
                               </li>
                             </>
-                          )}
+                          )} */}
 
                           {/* <li>
                           <NavLink
@@ -1309,7 +1392,7 @@ function Sidebar(props) {
                             DeFi
                           </NavLink>
                         </li> */}
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               className={`nav-link ${
@@ -1404,7 +1487,7 @@ function Sidebar(props) {
                                 </NavLink>
                               </li>
                             </>
-                          )}
+                          )} */}
                           {/* <li>
                           <NavLink
                             exact={true}
@@ -1796,6 +1879,33 @@ function Sidebar(props) {
                                 }
                               }}
                               className="nav-link"
+                              to="/home-smart-money"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-smart-money"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                              Smart Money
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
                               to="/profile"
                               activeclassname="active"
                             >
@@ -1809,6 +1919,7 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
+
                           {/* <li>
                           <NavLink
                             exact={true}
@@ -2290,7 +2401,6 @@ function Sidebar(props) {
                           />
                           Feedback
                         </NavLink>
-
                       </li>
                       {/* <li>
                         <NavLink
@@ -2817,19 +2927,23 @@ function Sidebar(props) {
         />
       ) : null}
 
-      {
-        userFeedbackModal ? (
-          <UserFeedbackModal
+      {userFeedbackModal ? (
+        <UserFeedbackModal
           trackPos={trackPos}
           dragPosition={dragPosition}
           onHide={handleUserFeedbackModal}
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
-          />) :null
-      }
+        />
+      ) : null}
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
+});
+const mapDispatchToProps = {};
 
-export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

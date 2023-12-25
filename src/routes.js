@@ -36,6 +36,12 @@ import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
+import PriceGauge from "./app/PriceGauge/PriceGauge";
+import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAndLoss";
+import GasFees from "./app/GasFeesPage/GasFees";
+import CounterPartyVolume from "./app/CounterPartyVolumePage/CounterPartyVolume";
+import AssetsUnrealizedProfitAndLoss from "./app/AssetsUnrealizedProfitAndLoss/AssetsUnrealizedProfitAndLoss";
+import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 const routes = [
   {
     path: "/",
@@ -72,6 +78,36 @@ const routes = [
     name: "Intelligence",
     type: PrivateRoute,
     component: Intelligence,
+  },
+  {
+    path: "/price-gauge",
+    name: "PriceGauge",
+    type: PrivateRoute,
+    component: PriceGauge,
+  },
+  {
+    path: "/realized-profit-and-loss",
+    name: "Realized Profit And Loss",
+    type: PrivateRoute,
+    component: RealizedProfitAndLoss,
+  },
+  {
+    path: "/gas-fees",
+    name: "Gas Fees",
+    type: PrivateRoute,
+    component: GasFees,
+  },
+  {
+    path: "/counterparty-volume",
+    name: "Counterparty Volume",
+    type: PrivateRoute,
+    component: CounterPartyVolume,
+  },
+  {
+    path: "/assets",
+    name: "Assets",
+    type: PrivateRoute,
+    component: AssetsUnrealizedProfitAndLoss,
   },
   {
     path: "/intelligence/transaction-history",
@@ -132,6 +168,12 @@ const routes = [
     name: "Smart Money",
     type: PrivateRoute,
     component: SmartMoneyPage,
+  },
+  {
+    path: "/home-smart-money",
+    name: "Home Smart Money",
+    type: PrivateRoute,
+    component: homeSmartMoneyPage,
   },
 
   {

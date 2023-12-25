@@ -350,7 +350,6 @@ class AddWallet extends BaseReactComponent {
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
-      console.log("this.state.walletInput ", this.state.walletInput);
       this.props.copyWalletAddress(this.state.walletInput);
     }
     if (this.state.walletInput !== prevState.walletInput) {
