@@ -153,7 +153,17 @@ class UserFeedbackModal extends BaseReactComponent {
                                     style={{
                                         cursor: "pointer", 
                                         color:this.state.questions[this.state.currentQuestion].value == item?'#19191A':'#96979A',
-                                        }}>
+                                        }}
+                                        onClick={()=>{
+                                            let questions = this.state.questions;
+                                        questions[
+                                          this.state.currentQuestion
+                                        ].value = item;
+                                        this.setState({
+                                          questions,
+                                        });
+                                        }}
+                                        >
                                         {item}
                                     </div>
                                   </div>
@@ -192,6 +202,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                   this.state.email ? "active" : ""
                                 }`}
                                 onClick={() => {
+                                    if(this.state.questions[this.state.currentQuestion].value){
                                   if (
                                     this.state.currentQuestion ==
                                     this.state.questions.length - 1
@@ -202,11 +213,13 @@ class UserFeedbackModal extends BaseReactComponent {
                                       currentQuestion:
                                         this.state.currentQuestion + 1,
                                     });
-                                }}
+                                }}}
                                 type="submit"
                                 style={{
                                   border: "none",
                                   background: "#19191A",
+                                  opacity:this.state.questions[this.state.currentQuestion].value?"1":"0.5",
+                                  cursor:this.state.questions[this.state.currentQuestion].value?"pointer":"disabled",
                                 }}
                               >
                                 <Image
