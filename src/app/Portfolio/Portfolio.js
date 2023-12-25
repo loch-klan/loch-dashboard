@@ -178,6 +178,27 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      // Should call block one
+      shouldCallTransactionTableApi: true,
+      shouldCallAssetsAvgCostBasisApi: true,
+      // Should call block one
+
+      // Should call block two
+      shouldCallProfitAndLossApi: true,
+      shouldCallGraphFeesApi: true,
+      shouldCallCounterPartyVolumeApi: true,
+      // Should call block two
+
+      // Should call block three
+      shouldCallHistoricPerformanceApi: true,
+      shouldCallPriceGaugeApi: true,
+      // Should call block three
+
+      // Should call block four
+      shouldCallYieldOppApi: true,
+      shouldCallInsightsApi: true,
+      // Should call block four
+
       callChildPriceGaugeApi: 0,
       insightsBlockLoading: false,
       homeGraphFeesData: undefined,
@@ -510,13 +531,9 @@ class Portfolio extends BaseReactComponent {
       }
     } else {
       this.setState({
-        isLoadingInsight: true,
-        netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
-        graphLoading: true,
-        tableLoading: true,
-        AvgCostLoading: true,
+
         chainLoader: true,
       });
     }
@@ -543,12 +560,10 @@ class Portfolio extends BaseReactComponent {
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
       isLoadingInsight: true,
-      netFlowLoading: true,
+
       isLoading: true,
       isLoadingNet: true,
-      graphLoading: true,
-      tableLoading: true,
-      AvgCostLoading: true,
+
       chainLoader: true,
     });
   };
@@ -741,16 +756,7 @@ class Portfolio extends BaseReactComponent {
         insightsBlockLoading: false,
       });
     }
-    if (
-      this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue
-    ) {
-      this.callYieldOppApi();
-    }
-    if (this.state.lochToken) {
-      this.callNetworksApi();
-    }
-    this.callPriceGaugeApi();
+
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -895,6 +901,135 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    // Block One
+    if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
+      // Asssets avg cost basis
+      if (
+        this.state.blockOneSelectedItem === 1 &&
+        (!this.props.intelligenceState?.Average_cost_basis ||
+          this.state.shouldCallAssetsAvgCostBasisApi)
+      ) {
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
+      // Transaction table
+      if (
+        this.state.blockOneSelectedItem === 2 &&
+        (!this.props.intelligenceState.table_home ||
+          this.state.shouldCallTransactionTableApi)
+      ) {
+        this.setState({
+          shouldCallTransactionTableApi: false,
+        });
+        this.getTableData();
+      }
+    }
+
+    // Block Two
+    if (prevState.blockTwoSelectedItem !== this.state.blockTwoSelectedItem) {
+      // Realized gains api call
+      if (
+        this.state.blockTwoSelectedItem === 1 &&
+        (!(
+          this.props.intelligenceState?.graphValue &&
+          this.props.intelligenceState?.graphValue[0]
+        ) ||
+          this.state.shouldCallProfitAndLossApi)
+      ) {
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
+      // Gas fees api call
+      else if (
+        this.state.blockTwoSelectedItem === 2 &&
+        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
+          this.state.shouldCallGraphFeesApi)
+      ) {
+        this.setState({
+          gasFeesGraphLoading: true,
+          shouldCallGraphFeesApi: false,
+        });
+        this.props.getAllFeeApi(this, false, false);
+      }
+      // Counterparty volume api call
+      else if (
+        this.state.blockTwoSelectedItem === 3 &&
+        (!(
+          this.state.homeCounterpartyVolumeData &&
+          this.state.homeCounterpartyVolumeData[0]
+        ) ||
+          this.state.shouldCallCounterPartyVolumeApi)
+      ) {
+        this.setState({
+          counterGraphLoading: true,
+          shouldCallCounterPartyVolumeApi: false,
+        });
+        this.props.getAllCounterFeeApi(this, false, false);
+      }
+    }
+    // Block Three
+    if (
+      prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
+    ) {
+      if (
+        this.state.blockThreeSelectedItem === 1 &&
+        this.state.shouldCallPriceGaugeApi
+      ) {
+        this.setState({
+          shouldCallPriceGaugeApi: false,
+        });
+        this.callPriceGaugeApi();
+      }
+      if (
+        this.state.blockThreeSelectedItem === 2 &&
+        (!this.props.portfolioState?.assetValueDay ||
+          this.state.shouldCallHistoricPerformanceApi)
+      ) {
+        this.setState({
+          shouldCallHistoricPerformanceApi: false,
+        });
+        this.getGraphData();
+      }
+    }
+    // Block Four
+    if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
+      if (
+        this.state.blockFourSelectedItem === 2 &&
+        (!(
+          this.state.yieldOpportunitiesList &&
+          this.state.yieldOpportunitiesList.length > 0
+        ) ||
+          this.state.shouldCallYieldOppApi)
+      ) {
+        this.setState({
+          shouldCallYieldOppApi: false,
+        });
+        this.callYieldOppApi();
+      }
+      if (
+        this.state.blockFourSelectedItem === 3 &&
+        (!(
+          this.state.updatedInsightList &&
+          this.state.updatedInsightList.length > 0
+        ) ||
+          this.state.shouldCallInsightsApi)
+      ) {
+        this.setState({
+          insightsBlockLoading: true,
+          shouldCallInsightsApi: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
+    }
+
     if (
       prevProps.portfolioState?.assetValueDataLoaded !==
       this.props.portfolioState?.assetValueDataLoaded
@@ -964,21 +1099,28 @@ class Portfolio extends BaseReactComponent {
     if (!this.props.commonState.home && this.state.lochToken) {
       this.props.updateWalletListFlag("home", true);
       this.setState({
-        isLoadingInsight: true,
-        netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
-        graphLoading: true,
-        tableLoading: true,
-        AvgCostLoading: true,
+
         chainLoader: true,
+        // Handeling changes
+        shouldCallProfitAndLossApi: true,
+        shouldCallGraphFeesApi: true,
+        shouldCallCounterPartyVolumeApi: true,
+        shouldCallAssetsAvgCostBasisApi: true,
+        shouldCallTransactionTableApi: true,
+        shouldCallYieldOppApi: true,
+        shouldCallInsightsApi: true,
+        shouldCallHistoricPerformanceApi: true,
+        shouldCallPriceGaugeApi: true,
       });
 
       // if wallet address change
+      const tempAddWall = window.sessionStorage.getItem("addWallet");
       if (
-        this.state &&
-        this.state.userWalletList &&
-        this.state.userWalletList?.length > 0
+        tempAddWall &&
+        JSON.parse(tempAddWall) &&
+        JSON.parse(tempAddWall)?.length > 0
       ) {
         this.callNetworksApi();
       } else {
@@ -1011,48 +1153,86 @@ class Portfolio extends BaseReactComponent {
       //   })
       // }
 
-      this.getGraphData();
-
       // - remove form home
       // getAllCounterFeeApi(this, false, false);
 
       // run when graphValue == null and  GraphData: [],
-      // add loader
-      this.props.getProfitAndLossApi(this, false, false, false);
 
-      // netflow breakdown
-      this.props.getAssetProfitLoss(this, false, false, false);
+      // BLOCK ONE
+      // Assets average cost basis api call
+      if (this.state.blockOneSelectedItem === 1) {
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
+
+      // Transaction history api call
+      if (this.state.blockOneSelectedItem === 2) {
+        this.setState({
+          shouldCallTransactionTableApi: false,
+        });
+        this.getTableData();
+      }
+
+      // BLOCK TWO
+      // Realized gains api call
+      if (this.state.blockTwoSelectedItem === 1) {
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
 
       // Gas fees api call
-      this.setState({
-        gasFeesGraphLoading: true,
-      });
-      this.props.getAllFeeApi(this, false, false);
+      if (this.state.blockTwoSelectedItem === 2) {
+        this.setState({
+          gasFeesGraphLoading: true,
+          shouldCallGraphFeesApi: false,
+        });
+        this.props.getAllFeeApi(this, false, false);
+      }
 
       // Counterparty volume api call
-      this.setState({
-        gasFeesGraphLoading: true,
-      });
-      this.props.getAllCounterFeeApi(this, false, false);
+      if (this.state.blockTwoSelectedItem === 3) {
+        this.setState({
+          counterGraphLoading: true,
+          shouldCallCounterPartyVolumeApi: false,
+        });
+        this.props.getAllCounterFeeApi(this, false, false);
+      }
 
-      // Counterparty volume api call
-      this.setState({
-        insightsBlockLoading: true,
-      });
-      this.props.getAllInsightsApi(this);
+      // BLOCK Three
+      if (this.state.blockThreeSelectedItem === 1) {
+        this.setState({
+          shouldCallPriceGaugeApi: false,
+        });
+        this.callPriceGaugeApi();
+      }
+      if (this.state.blockThreeSelectedItem === 2) {
+        this.setState({
+          shouldCallHistoricPerformanceApi: false,
+        });
+        this.getGraphData();
+      }
 
-      // Yield opp api call
-
-      this.callYieldOppApi();
-
-      // Price gauge api call
-      this.callPriceGaugeApi();
-
-      // run when updatedInsightList === ""
-      this.props.getAllInsightsApi(this);
-
-      this.props.getAvgCostBasis(this);
-      this.getTableData();
+      // BLOCK FOUR
+      if (this.state.blockFourSelectedItem === 2) {
+        this.setState({
+          shouldCallYieldOppApi: false,
+        });
+        this.callYieldOppApi();
+      }
+      if (this.state.blockFourSelectedItem === 3) {
+        this.setState({
+          insightsBlockLoading: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
 
       // for chain detect
       setTimeout(() => {
@@ -2923,7 +3103,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.weight
                       ? Math.abs(
-                          Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          Number(noExponents(rowData.weight.toFixed(2)))
                         ).toLocaleString("en-US") + "%"
                       : "0.00%"
                   }

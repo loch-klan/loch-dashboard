@@ -211,7 +211,7 @@ class PortfolioHomeDefiBlock extends Component {
     return "";
   };
   render() {
-    if (!this.props.defiState?.defiList) {
+    if (this.state.defiLoader) {
       return (
         <div
           style={{
