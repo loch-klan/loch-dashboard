@@ -106,7 +106,7 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
                   fontWeight: "bold",
                 }}
               >
-                Follow the smart money.
+                Follow the leaderboard.
               </span>
             </div>
 
@@ -131,7 +131,7 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
             </div>
             <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
               You’ll become more proficient in the most valuable skill in
-              crypto, which is finding and analyzing smart money.
+              crypto, which is finding and analyzing leaderboard.
             </div>
             <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
               Loch’s team has benefited immensely from this leaderboard.

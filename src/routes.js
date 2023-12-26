@@ -135,7 +135,7 @@ const routes = [
     component: SmartMoneyPage,
   },
   {
-    path: "/home-smart-money",
+    path: "/home-leaderboard",
     name: "Home Leaderboard",
     type: PrivateRoute,
     component: HomeSmartMoneyPage,

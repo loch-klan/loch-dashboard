@@ -1424,9 +1424,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 }}
               >
                 <PageHeader
-                  title="Loch’s Smart Money Leaderboard"
+                  title="Loch’s Leaderboard"
                   subTitle="The lazy analyst’s guide to alpha"
-                  currentPage={"home-smart-money"}
+                  currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />
               </div>

@@ -23,7 +23,7 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
         },
         {
           ques: "How often are addresses added?",
-          ans: "Smart money addresses are added every day.",
+          ans: "Leaderboard addresses are added every day.",
         },
         {
           ques: "What’s net worth?",
@@ -43,11 +43,11 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
         },
         {
           ques: "Should I be worried about my privacy?",
-          ans: "No you should not be worried at all. All your information remains confidential and private. Customer data added on app.loch.one is not used to populate smart money. We don’t sell any user data to third parties.",
+          ans: "No you should not be worried at all. All your information remains confidential and private. Customer data added on app.loch.one is not used to populate leaderboard. We don’t sell any user data to third parties.",
         },
         {
-          ques: "How are smart money addresses ranked?",
-          ans: "The community generated smart money leaderboard is ranked in descending order by net worth. Soon, you’ll be able to sort it by any of the other columns.",
+          ques: "How are leaderboard addresses ranked?",
+          ans: "The community generated leaderboard leaderboard is ranked in descending order by net worth. Soon, you’ll be able to sort it by any of the other columns.",
         },
         {
           ques: "How long will it take for an address I added to get listed?",
