@@ -12,6 +12,7 @@ import {
   UserCreditTelegramIcon,
   UserCreditTwitterIcon,
   UserCreditWalletIcon,
+  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons/index.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
 import { getUserCredits } from "./Api.js";
@@ -41,6 +42,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
+        "follow_address",
+        "twitter_spaces",
+        "follow_on_twitter",
+        "join_telegram",
+        "provide_feedback",
+        "use_referral_code",
       ],
     };
   }
@@ -239,6 +246,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
+    const goClickFollowTwitter = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Followed @loch_chain",
+      });
+      window.open("https://twitter.com/loch_chain", "_blank");
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -303,6 +318,72 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectExchange}
+        />
+      );
+    } else if (whichBlock === "follow_address") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Following an Address"
+          earnPoints={2}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddAddress}
+        />
+      );
+    } else if (whichBlock === "twitter_spaces") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Attended Twitter Spaces"
+          earnPoints={1}
+          imageIcon={XFormallyTwitterLogoIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddEns}
+        />
+      );
+    } else if (whichBlock === "follow_on_twitter") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Followed @loch_chain"
+          earnPoints={2}
+          imageIcon={XFormallyTwitterLogoIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickFollowTwitter}
+        />
+      );
+    } else if (whichBlock === "join_telegram") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Joined Telegram chat"
+          earnPoints={2}
+          imageIcon={UserCreditTelegramIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickConnectWallet}
+        />
+      );
+    } else if (whichBlock === "provide_feedback") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Provided feedback"
+          earnPoints={3}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddTwoOrMoreAddresses}
+        />
+      );
+    } else if (whichBlock === "use_referral_code") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Referral code used"
+          earnPoints={1}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickConnectExchange}
         />
       );
     }
@@ -397,6 +478,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           <div className="profileCreditPointsSection">
             {this.state.tasksList
               .slice(3, 6)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(6, 9)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(9, 12)
               .map((singleTask, singleTaskIndex) => {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
