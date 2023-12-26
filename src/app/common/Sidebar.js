@@ -1018,6 +1018,39 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Leaderboard"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/home-leaderboard"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-leaderboard"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
 
                         <li>
                           <CustomOverlay
@@ -1886,17 +1919,17 @@ function Sidebar(props) {
                                 }
                               }}
                               className="nav-link"
-                              to="/home-smart-money"
+                              to="/home-leaderboard"
                               activeclassname="active"
                             >
                               <Image
                                 src={
-                                  activeTab === "/home-smart-money"
+                                  activeTab === "/home-leaderboard"
                                     ? ActiveSmartMoneySidebarIcon
                                     : InactiveSmartMoneySidebarIcon
                                 }
                               />
-                              Smart Money
+                              Leaderboard
                             </NavLink>
                           </li>
                           <li>

@@ -66,10 +66,10 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
           >
             <div className="exit-overlay-body" style={{ padding: "0rem" }}>
               <h6 className="inter-display-medium f-s-25 w-100 text-left">
-                About Loch Smart Money
+                About Loch Leaderboard
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 w-100 text-left">
-                The intelligent way to manage your asset
+              The intelligent way to manage your portfolio
               </p>
             </div>
             <div className="smartMoneyHowItWorksModalBodyScrollContainer">
@@ -99,7 +99,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
                       fontWeight: "bold",
                     }}
                   >
-                    Follow the smart money.
+                    Follow the leaderboard.
                   </span>
                 </div>
 
@@ -125,7 +125,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
                 </div>
                 <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
                   You’ll become more proficient in the most valuable skill in
-                  crypto, which is finding and analyzing smart money.
+                  crypto, which is finding and analyzing leaderboard.
                 </div>
                 <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
                   Loch’s team has benefited immensely from this leaderboard.
