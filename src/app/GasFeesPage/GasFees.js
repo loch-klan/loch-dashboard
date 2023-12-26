@@ -193,12 +193,24 @@ class GasFeesPage extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-    this.props.getAllCoins();
-    this.getBlockchainFee(0, true);
 
-    this.props.GetAllPlan();
-    this.props.getUser();
+    if (
+      !this.props.commonState.gasFeesPage ||
+      !(
+        this.props.intelligenceState.graphfeeValue &&
+        this.props.intelligenceState.graphfeeValue[0]
+      )
+    ) {
+      this.props.getAllCoins();
+      this.getBlockchainFee(0, true);
 
+      this.props.GetAllPlan();
+      this.props.getUser();
+    } else {
+      this.setState({
+        gasFeesGraphLoading: false,
+      });
+    }
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const addAddress = params.get("add-address");
@@ -256,9 +268,11 @@ class GasFeesPage extends Component {
       }
     }
     // add wallet
-    if (prevState.apiResponse !== this.state.apiResponse) {
-      // console.log("update");
-
+    if (
+      prevState.apiResponse !== this.state.apiResponse ||
+      !this.props.commonState.gasFeesPage
+    ) {
+      this.props.updateWalletListFlag("gasFeesPage", true);
       this.props.getAllCoins();
       this.getBlockchainFee(0);
 
@@ -266,8 +280,8 @@ class GasFeesPage extends Component {
         apiResponse: false,
       });
     }
-    if (!this.props.commonState.cost) {
-      this.props.updateWalletListFlag("cost", true);
+    if (!this.props.commonState.gasFeesPage) {
+      this.props.updateWalletListFlag("gasFeesPage", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));

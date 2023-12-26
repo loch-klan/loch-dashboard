@@ -949,29 +949,33 @@ class Portfolio extends BaseReactComponent {
       }
       // Gas fees api call
       else if (
-        this.state.blockTwoSelectedItem === 2 &&
-        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
-          this.state.shouldCallGraphFeesApi)
+        (this.state.blockTwoSelectedItem === 2 &&
+          !(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0])) ||
+        !this.props.commonState.gasFeesPage ||
+        this.state.shouldCallGraphFeesApi
       ) {
         this.setState({
           gasFeesGraphLoading: true,
           shouldCallGraphFeesApi: false,
         });
+        this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
       }
       // Counterparty volume api call
       else if (
-        this.state.blockTwoSelectedItem === 3 &&
-        (!(
-          this.state.homeCounterpartyVolumeData &&
-          this.state.homeCounterpartyVolumeData[0]
-        ) ||
-          this.state.shouldCallCounterPartyVolumeApi)
+        (this.state.blockTwoSelectedItem === 3 &&
+          !(
+            this.state.homeCounterpartyVolumeData &&
+            this.state.homeCounterpartyVolumeData[0]
+          )) ||
+        !this.props.commonState.counterpartyVolumePage ||
+        this.state.shouldCallCounterPartyVolumeApi
       ) {
         this.setState({
           counterGraphLoading: true,
           shouldCallCounterPartyVolumeApi: false,
         });
+        this.props.updateWalletListFlag("counterpartyVolumePage", true);
         this.props.getAllCounterFeeApi(this, false, false);
       }
     }
@@ -1189,20 +1193,36 @@ class Portfolio extends BaseReactComponent {
       }
 
       // Gas fees api call
-      if (this.state.blockTwoSelectedItem === 2) {
+      if (
+        this.state.blockTwoSelectedItem === 2 &&
+        (!this.props.commonState.gasFeesPage ||
+          !(
+            this.props.intelligenceState.graphfeeValue &&
+            this.props.intelligenceState.graphfeeValue[0]
+          ))
+      ) {
         this.setState({
           gasFeesGraphLoading: true,
           shouldCallGraphFeesApi: false,
         });
+        this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
       }
 
       // Counterparty volume api call
-      if (this.state.blockTwoSelectedItem === 3) {
+      if (
+        this.state.blockTwoSelectedItem === 3 &&
+        (!this.props.commonState.counterpartyVolumePage ||
+          !(
+            this.props.intelligenceState.counterPartyValue &&
+            this.props.intelligenceState.counterPartyValue[0]
+          ))
+      ) {
         this.setState({
           counterGraphLoading: true,
           shouldCallCounterPartyVolumeApi: false,
         });
+        this.props.updateWalletListFlag("counterpartyVolumePage", true);
         this.props.getAllCounterFeeApi(this, false, false);
       }
 
