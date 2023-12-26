@@ -820,7 +820,6 @@ class FixAddModal extends BaseReactComponent {
           if (addWallet) {
             this.props.setHeaderReducer(addWallet);
           }
-          console.log("JSON.stringify(addWallet) ", JSON.stringify(addWallet));
           window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();

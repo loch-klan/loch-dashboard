@@ -949,9 +949,8 @@ class Portfolio extends BaseReactComponent {
       }
       // Gas fees api call
       else if (
-        this.state.blockTwoSelectedItem === 2 &&
-        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
-          this.state.shouldCallGraphFeesApi) &&
+        (this.state.blockTwoSelectedItem === 2 &&
+          !(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0])) ||
         !this.props.commonState.gasFeesPage
       ) {
         this.setState({
@@ -963,12 +962,11 @@ class Portfolio extends BaseReactComponent {
       }
       // Counterparty volume api call
       else if (
-        this.state.blockTwoSelectedItem === 3 &&
-        (!(
-          this.state.homeCounterpartyVolumeData &&
-          this.state.homeCounterpartyVolumeData[0]
-        ) ||
-          this.state.shouldCallCounterPartyVolumeApi) &&
+        (this.state.blockTwoSelectedItem === 3 &&
+          !(
+            this.state.homeCounterpartyVolumeData &&
+            this.state.homeCounterpartyVolumeData[0]
+          )) ||
         !this.props.commonState.counterpartyVolumePage
       ) {
         this.setState({
@@ -1195,11 +1193,11 @@ class Portfolio extends BaseReactComponent {
       // Gas fees api call
       if (
         this.state.blockTwoSelectedItem === 2 &&
-        !this.props.commonState.gasFeesPage &&
-        !(
-          this.props.intelligenceState.graphfeeValue &&
-          this.props.intelligenceState.graphfeeValue[0]
-        )
+        (!this.props.commonState.gasFeesPage ||
+          !(
+            this.props.intelligenceState.graphfeeValue &&
+            this.props.intelligenceState.graphfeeValue[0]
+          ))
       ) {
         this.setState({
           gasFeesGraphLoading: true,
@@ -1212,11 +1210,11 @@ class Portfolio extends BaseReactComponent {
       // Counterparty volume api call
       if (
         this.state.blockTwoSelectedItem === 3 &&
-        !this.props.commonState.counterpartyVolumePage &&
-        !(
-          this.props.intelligenceState.counterPartyValue &&
-          this.props.intelligenceState.counterPartyValue[0]
-        )
+        (!this.props.commonState.counterpartyVolumePage ||
+          !(
+            this.props.intelligenceState.counterPartyValue &&
+            this.props.intelligenceState.counterPartyValue[0]
+          ))
       ) {
         this.setState({
           counterGraphLoading: true,
