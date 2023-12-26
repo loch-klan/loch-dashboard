@@ -55,6 +55,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
+  TransactionHistoryAddressCopied,
   TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
@@ -1166,7 +1167,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1197,7 +1206,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1224,7 +1241,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1251,7 +1276,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1276,7 +1309,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1301,7 +1342,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1420,7 +1469,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1450,7 +1507,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1477,7 +1542,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1504,7 +1577,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1529,7 +1610,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1553,7 +1642,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address)
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />

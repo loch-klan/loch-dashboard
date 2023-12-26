@@ -673,13 +673,32 @@ export const TransactionHistoryHashHover = ({
 export const TransactionHistoryHashCopied = ({
   session_id,
   email_address,
-  hash_copied
+  hash_copied,
+  isMobile = false
 }) => {
   const event_name = "Transaction :transaction history Hash Copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "hash_copied":hash_copied
+    "hash_copied":hash_copied,
+    "isMobile":isMobile
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+//23. Home:transaction history hash copied
+export const TransactionHistoryAddressCopied = ({
+  session_id,
+  email_address,
+  address_copied,
+  isMobile=false
+}) => {
+  const event_name = "Transaction :transaction Address Copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "address_copied":address_copied,
+    "is mobile":isMobile
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -3548,11 +3567,12 @@ export const TransactionHistorySortMethod = ({ session_id, email_address }) => {
 
 // Transaction History: hide dust - done
 
-export const TransactionHistoryHideDust = ({ session_id, email_address }) => {
+export const TransactionHistoryHideDust = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: hide dust";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "is mobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -4588,12 +4608,14 @@ export const TransactionHistoryWalletClicked = ({
   session_id,
   email_address,
   wallet,
+  isMobile=false
 }) => {
   const event_name = "Transaction history: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
+    isMobile: isMobile
   };
   sendAmplitudeData(event_name, eventProperties);
 };

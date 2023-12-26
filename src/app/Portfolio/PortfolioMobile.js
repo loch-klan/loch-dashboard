@@ -45,28 +45,47 @@ import {
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { BASE_URL_S3 } from "../../utils/Constant";
+import { API_LIMIT, BASE_URL_S3, DEFAULT_PRICE, SEARCH_BY_NOT_DUST, SEARCH_BY_WALLET_ADDRESS_IN, SORT_BY_TIMESTAMP, START_INDEX } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import {
   CostHideDustMobile,
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
+  TransactionHistoryHideDust,
   Mobile_Home_Share,
   TimeSpentMobileHome,
+  TransactionHistoryHashCopied,
+  TransactionHistoryWalletClicked,
+  TransactionHistoryAddressCopied,
 } from "../../utils/AnalyticsFunctions";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import {
   CurrencyType,
+  TruncateText,
+  convertNtoNumber,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CoinChip from "../wallet/CoinChip.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import { CopyClipboardIcon } from "../../assets/images/index.js";
+import moment from "moment";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
 
+    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const address = walletList?.map((wallet) => {
+      return wallet.address;
+    });
+    const cond = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+      { key: SEARCH_BY_NOT_DUST, value: true },
+    ];
     this.state = {
       startTime: "",
       showPopupModal: true,
@@ -76,7 +95,56 @@ class PortfolioMobile extends BaseReactComponent {
       combinedCurrentValue: 0,
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
-      showHideDustVal:true
+      showHideDustVal:true,
+      showHideDustValTrans:true,
+      isShowingAge:false,
+      currentPage:0,
+      walletList: walletList,
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      condition: cond || [],
+      tableSortOpt: [
+        {
+          title: "time",
+          up: true,
+        },
+        {
+          title: "from",
+          up: false,
+        },
+        {
+          title: "to",
+          up: false,
+        },
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "amount",
+          up: false,
+        },
+        {
+          title: "usdThen",
+          up: false,
+        },
+        {
+          title: "usdToday",
+          up: false,
+        },
+        {
+          title: "usdTransaction",
+          up: false,
+        },
+        {
+          title: "method",
+          up: false,
+        },
+        {
+          title: "hash",
+          up: false,
+        }
+      ],
+      currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
   searchIconLoaded = () => {
@@ -84,6 +152,13 @@ class PortfolioMobile extends BaseReactComponent {
       showSearchIcon: true,
     });
   };
+
+  toggleAgeTimestamp = () => {
+    this.setState({
+      isShowingAge: !this.state.isShowingAge,
+    });
+  };
+
   shareIconLoaded = () => {
     this.setState({
       showShareIcon: true,
@@ -135,6 +210,10 @@ class PortfolioMobile extends BaseReactComponent {
         combinedReturn: tempcombinedReturn,
       });
     }
+
+    if(prevState.condition !== this.state.condition){
+      this.callApi(this.state.currentPage || START_INDEX);
+    }
   }
   componentDidMount() {
     if (this.props.intelligenceState.Average_cost_basis) {
@@ -176,6 +255,8 @@ class PortfolioMobile extends BaseReactComponent {
       window.scrollTo(0, 0);
     }, 500);
 
+    this.callApi(this.state.currentPage || START_INDEX);
+
     this.startPageView();
     this.updateTimer(true);
     return () => {
@@ -192,6 +273,15 @@ class PortfolioMobile extends BaseReactComponent {
     const tempExpiryTime = Date.now() + 1800000;
     window.sessionStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
   };
+  callApi = (page = START_INDEX) => {
+    this.setState({ tableLoading: true });
+    let data = new URLSearchParams();
+    data.append("start", page * API_LIMIT);
+    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("limit", API_LIMIT);
+    data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.searchTransactionApi(data, this, page);
+  };
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
     window.sessionStorage.removeItem("mobileHomePageExpiryTime");
@@ -204,6 +294,18 @@ class PortfolioMobile extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     }
+  };
+  copyContent = (text) => {
+    // const text = props.display_address ? props.display_address : props.wallet_account_number
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+    // toggleCopied(true)
   };
   checkForInactivity = () => {
     const tempExpiryTime = window.sessionStorage.getItem(
@@ -228,6 +330,25 @@ class PortfolioMobile extends BaseReactComponent {
     CostHideDustMobile({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  }
+
+  handleDustTrans = () => {
+    const d = this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN);
+    this.setState({
+      showHideDustValTrans: !this.state.showHideDustValTrans,
+      
+      condition: [
+        d,
+        { key: SEARCH_BY_NOT_DUST, value: !this.state.showHideDustValTrans },
+      ],
+    });
+
+    TransactionHistoryHideDust({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      isMobile: true,
     });
     this.updateTimer();
   }
@@ -267,6 +388,946 @@ class PortfolioMobile extends BaseReactComponent {
     this.props.history.push("/welcome?FromMobileHome=true");
   };
   render() {
+
+    const {currency} = this.state
+    const {assetPriceList, table} = this.props.intelligenceState;
+
+    let tableDataTransaction =
+      table &&
+      table?.map((row) => {
+        let walletFromData = null;
+        let walletToData = null;
+
+        this.state.walletList &&
+        this.state.walletList?.map((wallet) => {
+            if (
+              wallet.address?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase()
+            ) {
+              walletFromData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
+              };
+            }
+            if (
+              wallet.address?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase()
+            ) {
+              walletToData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
+              };
+            }
+          });
+
+        return {
+          time: row.timestamp,
+          age: row.age,
+          from: {
+            address: row.from_wallet.address,
+            metaData: walletFromData,
+            wallet_metaData: {
+              symbol: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.symbol
+                : null,
+              text: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.name
+                : null,
+            },
+          },
+          to: {
+            address: row.to_wallet.address,
+            // wallet_metaData: row.to_wallet.wallet_metaData,
+            metaData: walletToData,
+            wallet_metaData: {
+              symbol: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.symbol
+                : null,
+              text: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.name
+                : null,
+            },
+          },
+          asset: {
+            code: row.asset.code,
+            symbol: row.asset.symbol,
+          },
+          amount: {
+            value: parseFloat(row.asset.value),
+            id: row.asset.id,
+          },
+          usdValueThen: {
+            value: row.asset.value,
+            id: row.asset.id,
+            assetPrice: row.asset_price,
+          },
+          usdValueToday: {
+            value: row.asset.value,
+            id: row.asset.id,
+          },
+          usdTransactionFee: {
+            value: row.transaction_fee,
+            id: row.asset.id,
+          },
+          // method: row.transaction_type
+          method: row.method,
+          hash: row.transaction_id,
+          network: row.chain.name,
+        };
+      });
+
+      console.log('ii', this.props.intelligenceState);
+    
+      const columnListTransaction = [
+        {
+          labelName: (
+            <div className="cp history-table-header-col" id="time">
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
+              >
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
+              {/* <Image
+                onClick={() => this.handleTableSort("time")}
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+                }
+              /> */}
+            </div>
+          ),
+          dataKey: "time",
+  
+          coumnWidth: 0.225,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "time") {
+              let tempVal = "-";
+              let tempOpp = "-";
+              if (this.state.isShowingAge && rowData.age) {
+                tempVal = rowData.age;
+                tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              } else if (!this.state.isShowingAge && rowData.time) {
+                tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+                tempOpp = rowData.age;
+              }
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={tempOpp ? tempOpp : "-"}
+                >
+                  <span>{tempVal}</span>
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="from"
+              // onClick={() => this.handleTableSort("from")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                From
+              </span>
+              {/* <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                }
+              /> */}
+            </div>
+          ),
+          dataKey: "from",
+  
+          coumnWidth: 0.125,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "from") {
+              let showThis = "";
+              if (rowData.from?.metaData?.nickname) {
+                showThis = TruncateText(rowData.from?.metaData?.nickname);
+              } else if (rowData.from?.wallet_metaData?.text) {
+                showThis = TruncateText(rowData.from?.wallet_metaData.text);
+              } else if (rowData.from?.metaData?.displayAddress) {
+                showThis = TruncateText(rowData.from?.metaData?.displayAddress);
+              } else if (rowData.from?.address) {
+                showThis = TruncateText(rowData.from?.address);
+              }
+              const goToAddress = () => {
+                let slink = rowData.from?.address;
+                if (slink) {
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    TransactionHistoryWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: true,
+                    });
+                  window.open(shareLink, "_blank", "noreferrer");
+                }
+              };
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  // text={rowData.from?.address}
+                  text={
+                    // rowData.from?.wallet_metaData?.text
+                    //   ? rowData.from?.wallet_metaData?.text +
+                    //     ": " +
+                    //     rowData.from?.address
+                    //   : rowData.from?.metaData?.displayAddress &&
+                    //     rowData.from?.metaData?.displayAddress !==
+                    //       rowData.from?.address
+                    //   ? rowData.from?.metaData?.displayAddress +
+                    //     ": " +
+                    //     rowData.from?.address
+                    //   : rowData.from?.metaData?.nickname
+                    //   ? rowData.from?.metaData?.nickname +
+                    //     ": " +
+                    //     (rowData.from?.wallet_metaData?.text ?
+                    //       (rowData.from?.wallet_metaData?.text + ": "):"") +
+                    //     ((rowData.from?.metaData?.displayAddress &&
+                    //       rowData.from?.metaData?.displayAddress !==
+                    //         rowData.from?.address) ? (rowData.from?.metaData?.displayAddress + ": ") : "") +
+                    //     rowData.from?.address
+                    //   : rowData.from?.address
+                    (rowData.from?.metaData?.nickname
+                      ? rowData.from?.metaData?.nickname + ": "
+                      : "") +
+                    (rowData.from?.wallet_metaData?.text
+                      ? rowData.from?.wallet_metaData?.text + ": "
+                      : "") +
+                    (rowData.from?.metaData?.displayAddress &&
+                    rowData.from?.metaData?.displayAddress !== rowData.from?.address
+                      ? rowData.from?.metaData?.displayAddress + ": "
+                      : "") +
+                    rowData.from?.address
+                  }
+                >
+                  {rowData.from?.metaData?.wallet_metaData ? (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {showThis}
+                      </span>
+  
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : rowData.from?.wallet_metaData.symbol ||
+                    rowData.from?.wallet_metaData.text ||
+                    rowData.from?.metaData?.nickname ? (
+                    rowData.from?.wallet_metaData.symbol ? (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {showThis}
+                        </span>
+  
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.from.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.from.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    ) : rowData.from?.metaData?.nickname ? (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {TruncateText(rowData.from?.metaData?.nickname)}
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.from.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.from.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    ) : (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {TruncateText(rowData.from?.wallet_metaData.text)}
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.from.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.from.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    )
+                  ) : rowData.from?.metaData?.displayAddress ? (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {TruncateText(rowData.from?.metaData?.displayAddress)}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {showThis}
+                      </span>
+  
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  )}
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="to"
+              // onClick={() => this.handleTableSort("to")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                To
+              </span>
+            </div>
+          ),
+          dataKey: "to",
+  
+          coumnWidth: 0.125,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "to") {
+              let showThis = "";
+              if (rowData.to?.metaData?.nickname) {
+                showThis = TruncateText(rowData.to?.metaData?.nickname);
+              } else if (rowData.to?.wallet_metaData?.text) {
+                showThis = TruncateText(rowData.to?.wallet_metaData?.text);
+              } else if (rowData.to?.metaData?.displayAddress) {
+                showThis = TruncateText(rowData.to?.metaData?.displayAddress);
+              } else if (rowData.to?.address) {
+                showThis = TruncateText(rowData.to?.address);
+              }
+              const goToAddress = () => {
+                let slink = rowData.to?.address;
+                if (slink) {
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    TransactionHistoryWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: true,
+                    });
+                  window.open(shareLink, "_blank", "noreferrer");
+                }
+              };
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    (rowData.to?.metaData?.nickname
+                      ? rowData.to?.metaData?.nickname + ": "
+                      : "") +
+                    (rowData.to?.wallet_metaData?.text
+                      ? rowData.to?.wallet_metaData?.text + ": "
+                      : "") +
+                    (rowData.to?.metaData?.displayAddress &&
+                    rowData.to?.metaData?.displayAddress !== rowData.to?.address
+                      ? rowData.to?.metaData?.displayAddress + ": "
+                      : "") +
+                    rowData.to?.address
+                    // rowData.to?.wallet_metaData?.text
+                    //   ? rowData.to?.wallet_metaData?.text +
+                    //     ": " +
+                    //     rowData.to?.address
+                    //   : rowData.to?.metaData?.displayAddress &&
+                    //     rowData.to?.metaData?.displayAddress !== rowData.to?.address
+                    //   ? rowData.to?.metaData?.displayAddress +
+                    //     ": " +
+                    //     rowData.to?.address
+                    //   : rowData.to?.metaData?.nickname
+                    //   ? (rowData.to?.metaData?.nickname ? rowData.to?.metaData?.nickname +
+                    //     ": " : "") +
+                    //     (rowData.to?.wallet_metaData?.text
+                    //       ? rowData.to?.wallet_metaData?.text + ": "
+                    //       : "") +
+                    //     (rowData.to?.metaData?.displayAddress &&
+                    //     rowData.to?.metaData?.displayAddress !== rowData.to?.address
+                    //       ? rowData.to?.metaData?.displayAddress + ": "
+                    //       : "") +
+                    //     rowData.to?.address
+                    //   : rowData.to?.address
+                  }
+                >
+                  {rowData.to?.metaData?.wallet_metaData ? (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {showThis}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : rowData.to?.wallet_metaData.symbol ||
+                    rowData.to?.wallet_metaData.text ||
+                    rowData.to?.metaData?.nickname ? (
+                    rowData.to?.wallet_metaData.symbol ? (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {showThis}
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.to.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.to.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    ) : rowData.to?.metaData?.nickname ? (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {TruncateText(rowData.to?.metaData?.nickname)}
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.to.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.to.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    ) : (
+                      <span
+                      >
+                        <span
+                          onClick={goToAddress}
+                          className="top-account-address"
+                        >
+                          {TruncateText(rowData.to?.wallet_metaData.text)}
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => {
+                            this.copyContent(rowData.to.address)
+                            TransactionHistoryAddressCopied({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              address_copied: rowData.to.address,
+                              isMobile: true,
+                            });
+                            this.updateTimer();
+                          }}
+                          className="m-l-10 cp copy-icon"
+                          style={{ width: "1rem" }}
+                        />
+                      </span>
+                    )
+                  ) : rowData.to?.metaData?.displayAddress ? (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {TruncateText(rowData.to?.metaData?.displayAddress)}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : (
+                    <span
+                    >
+                      <span onClick={goToAddress} className="top-account-address">
+                        {showThis}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address)
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  )}
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="asset"
+              // onClick={() => this.handleTableSort("asset")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                Asset
+              </span>
+            </div>
+          ),
+          dataKey: "asset",
+  
+          coumnWidth: 0.125,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "asset") {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.asset.code}
+                >
+                  {/* <CoinChip
+                                  coin_img_src={rowData.asset.symbol}
+                                  // coin_code={rowData.asset.code}
+                              /> */}
+                  <Image src={rowData.asset.symbol} className="asset-symbol" />
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="amount"
+              // onClick={() => this.handleTableSort("amount")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                Amount
+              </span>
+            </div>
+          ),
+          dataKey: "amount",
+  
+          coumnWidth: 0.125,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "amount") {
+              // return rowData.amount.value?.toFixed(2)
+              const tempAmountVal = convertNtoNumber(rowData.amount?.value);
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={tempAmountVal ? tempAmountVal : "0.00"}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {numToCurrency(tempAmountVal).toLocaleString("en-US")}
+                  </div>
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="usdValueThen"
+              // onClick={() => this.handleTableSort("usdThen")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+                true
+              )} amount (then)`}</span>
+            </div>
+          ),
+          dataKey: "usdValueThen",
+  
+          className: "usd-value",
+          coumnWidth: 0.225,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "usdValueThen") {
+              let chain = Object.entries(assetPriceList);
+              let valueThen;
+              let valueToday;
+              chain.find((chain) => {
+                if (chain[0] === rowData.usdValueToday.id) {
+                  valueToday =
+                    rowData.usdValueToday.value *
+                      chain[1].quote.USD.price *
+                      currency?.rate || DEFAULT_PRICE;
+                }
+                if (chain[0] === rowData.usdValueThen.id) {
+                  valueThen =
+                    rowData.usdValueThen.value *
+                    rowData.usdValueThen.assetPrice *
+                    currency?.rate;
+                }
+              });
+              const tempValueToday = convertNtoNumber(valueToday);
+              const tempValueThen = convertNtoNumber(valueThen);
+              return (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      tempValueToday && tempValueToday !== "0"
+                        ? CurrencyType(false) + tempValueToday
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                      {CurrencyType(false) +
+                        numToCurrency(tempValueToday).toLocaleString("en-US")}
+                    </div>
+                  </CustomOverlay>
+                  <span style={{ padding: "2px" }}></span>(
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      tempValueThen
+                        ? CurrencyType(false) + tempValueThen
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                      {tempValueThen
+                        ? CurrencyType(false) +
+                          numToCurrency(tempValueThen).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </div>
+                  </CustomOverlay>
+                  )
+                </div>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="method"
+              // onClick={() => this.handleTableSort("method")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                Method
+              </span>
+            </div>
+          ),
+          dataKey: "method",
+  
+          coumnWidth: 0.15,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "method") {
+              return (
+                <>
+                  {rowData.method &&
+                  (rowData.method.toLowerCase() === "send" ||
+                    rowData.method.toLowerCase() === "receive") ? (
+                    <div className="gainLossContainer">
+                      <div
+                        className={`gainLoss ${
+                          rowData.method.toLowerCase() === "send"
+                            ? "loss"
+                            : "gain"
+                        }`}
+                      >
+                        <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
+                          {rowData.method}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                      {rowData.method}
+                    </div>
+                  )}
+                </>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="network"
+            >
+              Network
+              {/* <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+                }
+              /> */}
+            </div>
+          ),
+          dataKey: "network",
+  
+          className: "usd-value",
+          coumnWidth: 0.225,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "network") {
+              
+              return (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={rowData.network}
+                  >
+                    <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
+                    {rowData.network}
+                    </div>
+                  </CustomOverlay>
+                  
+                </div>
+              );
+            }
+          },
+        },
+        {
+          labelName: (
+            <div
+              className="cp history-table-header-col"
+              id="hash"
+              // onClick={() => this.handleTableSort("hash")}
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+                Hash
+              </span>
+              {/* <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=='hash').up ? "rotateDown" : "rotateUp"
+                }
+              /> */}
+            </div>
+          ),
+          dataKey: "hash",
+  
+          coumnWidth: 0.125,
+          isCell: true,
+          cell: (rowData, dataKey) => {
+            if (dataKey === "hash") {
+              // return rowData.hash.value?.toFixed(2)
+              const tempHashVal = TruncateText(rowData.hash);
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.hash ? rowData.hash : ""}
+                >
+                  <div
+                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {tempHashVal}
+                    <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => {
+                          this.copyContent(rowData.hash)
+                          TransactionHistoryHashCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            hash_copied: rowData.hash,
+                            isMobile: true,
+                          });
+                          this.updateTimer();
+                        }}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                  </div>
+                </CustomOverlay>
+              );
+            }
+          },
+        },
+      ];
+
+
     const columnData = [
       // {
       //   labelName: "",
@@ -1050,7 +2111,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               <div className="section-table section-table-mobile-scroll">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
+                {/* <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion
@@ -1092,6 +2153,82 @@ class PortfolioMobile extends BaseReactComponent {
                        [{}, ...this.props.intelligenceState.Average_cost_basis]
                   }
                   columnList={columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  // isLoading={this.props.AvgCostLoading}
+                  isAnalytics="average cost basis"
+                  addWatermark
+                  xAxisScrollable
+                  // yAxisScrollable
+                /> */}
+              </div>
+              <div className="d-flex justify-content-between" style={{
+                    marginTop: "3rem",
+                    alignItems:"start"
+                  }}>
+                
+              <div>
+                <h2
+                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
+                >
+                  {/* Unrealized profit and loss */}
+                  Transactions
+                </h2>
+                <p
+                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Scroll left and right to view more
+                </p>
+              </div>
+              <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
+
+                    
+                <div onClick={this.handleDustTrans} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustValTrans}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                  </div>
+                </div>
+              <div className="section-table section-table-mobile-scroll">
+                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  handleClick={() => {
+                    if (this.state.lochToken) {
+                      this.props.history.push("/intelligence/costs");
+                      // AverageCostBasisEView({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }
+                  }}
+                  message=" "
+                  subTitle=""
+                  tableData={tableDataTransaction}
+                  columnList={columnListTransaction}
                   headerHeight={60}
                   isArrow={true}
                   // isLoading={this.props.AvgCostLoading}
@@ -1141,6 +2278,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   // avg cost
   getAvgCostBasis,
+  
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
