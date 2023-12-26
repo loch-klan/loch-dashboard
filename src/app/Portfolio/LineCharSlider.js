@@ -7,7 +7,7 @@ import HighchartsReact from "highcharts-react-official";
 import { GraphHeader } from "../common/GraphHeader";
 
 import GraphLogo from "../../assets/images/graph-logo.svg";
-import { LoaderIcon } from "../../assets/images/icons";
+import { ChartSeeMoreArrowIcon, LoaderIcon } from "../../assets/images/icons";
 import {
   AssetValueChartWalletOpen,
   AssetValueFilter,
@@ -596,7 +596,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -1226,14 +1226,16 @@ backdrop-filter: blur(15px);">
     };
 
     const minVersion = {
-      padding: "3.2rem 3.2rem 0rem 3.2rem",
-      height: "32rem",
+      padding: "2.4rem 3.2rem 0rem 3.2rem",
+      height: "38rem",
+      width: "100%",
+      paddingTop: "2.3rem",
     };
     const minGraphVersion = {
-      style: { height: "75%" },
+      style: { height: "100%" },
     };
     const minVersionSection = {
-      minHeight: "32rem",
+      minHeight: "38rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
@@ -1267,7 +1269,7 @@ backdrop-filter: blur(15px);">
             //   this.resetEvent();
             // }}
           >
-            {!this.props.isPage && (
+            {!this.props.isPage && !this.props.noSubtitleBottomPadding ? (
               <GraphHeader
                 isLoading={this.props.graphLoading}
                 disableOnLoading={this.props.disableOnLoading}
@@ -1280,12 +1282,17 @@ backdrop-filter: blur(15px);">
                 // loader={true}
                 // loaderText="Don't worry we're still loading all your data"
               />
-            )}
+            ) : null}
 
             {this.props.graphLoading ? (
               <div
+                className={
+                  this.props.hideTimeFilter
+                    ? "portfolioHomepricegaugeloader"
+                    : ""
+                }
                 style={{
-                  height: this.props.hideTimeFilter ? "15.5rem" : "30rem",
+                  height: this.props.hideTimeFilter ? "35.2rem" : "35rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -1361,7 +1368,7 @@ backdrop-filter: blur(15px);">
                           width: "100%",
                           marginTop: "0.5rem",
                           paddingTop: this.props.noSubtitleBottomPadding
-                            ? "2rem"
+                            ? "0rem"
                             : "",
                         }
                       : {
@@ -1369,10 +1376,67 @@ backdrop-filter: blur(15px);">
                         }
                   }
                 >
-                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
-                    {CurrencyType()}
-                  </span>
-                  {this.state.emailLoader && this.props.activeTab === "day" ? (
+                  {this.props.openChartPage ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      {/* <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div> */}
+                      {this.state.emailLoader &&
+                      this.props.activeTab === "day" ? (
+                        <div
+                          style={{
+                            zIndex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <SwitchButton
+                            handleEmail={this.handleAskEmail}
+                            isTopAccount={this.props?.isTopAccountPage}
+                          />
+                          <Image src={LoaderIcon} className="rotate-loader" />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                      <p
+                        onClick={this.props.openChartPage}
+                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-b-20 custom-label"
+                      >
+                        <div className="seeMoreBtn cp">
+                          <div>See more</div>
+                          <Image
+                            src={ChartSeeMoreArrowIcon}
+                            className="seeMoreBtnIcon"
+                          />
+                        </div>
+                      </p>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      className="line-chart-dropdown-y-axis"
+                    >
+                      <div className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 ">
+                        {CurrencyType()}
+                      </div>
+                    </div>
+                  )}
+                  {!this.props.hideTimeFilter &&
+                  this.state.emailLoader &&
+                  this.props.activeTab === "day" ? (
                     <div
                       style={{
                         position: "absolute",

@@ -1247,7 +1247,7 @@ class SmartMoneyPage extends BaseReactComponent {
       // },
     ];
 
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       return (
         // <MobileDevice isSmartMoney />
         <SmartMoneyMobilePage

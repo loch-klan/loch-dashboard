@@ -195,6 +195,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -557,6 +566,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortAsset({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "usdValue") {
@@ -569,6 +579,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortUSDvalue({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "project") {
@@ -581,6 +592,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortProject({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "pool") {
@@ -593,6 +605,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortPool({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "tvl") {
@@ -605,6 +618,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortTVL({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "apy") {
@@ -617,6 +631,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortAPY({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         }
@@ -931,6 +946,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -977,7 +994,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               subTitle={
                 "Yield bearing opportunties personalized for your portfolio"
               }
-              currentPage={"transaction-history"}
+              currentPage={"yield-opportunities"}
               history={this.props.history}
               ShareBtn={true}
               handleShare={this.handleShare}

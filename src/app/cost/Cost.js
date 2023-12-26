@@ -257,10 +257,14 @@ class Cost extends Component {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView();
+          window.scrollTo({
+            top:
+              element.getBoundingClientRect().top -
+              document.body.getBoundingClientRect().top -
+              100,
+          });
         }
       }, 0);
     } else {
@@ -290,6 +294,32 @@ class Cost extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/intelligence/costs#gasfeesspent" ||
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/intelligence/costs#counterpartyvolume"
+    ) {
+      if (this.props.location.hash !== "") {
+        setTimeout(() => {
+          const id = this.props.location.hash.replace("#", "");
+          const element = document.getElementById(id);
+          if (element) {
+            window.scrollTo({
+              top:
+                element.getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                100,
+            });
+          }
+        }, 0);
+      } else {
+        window.scrollTo(0, 0);
+      }
+      setTimeout(() => {
+        this.props.history.replace("/intelligence/costs");
+      }, 1000);
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -1304,6 +1334,8 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1363,7 +1395,6 @@ class Cost extends Component {
               subTitle="Bring light to your hidden costs"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
               currentPage={"costs"}
               ShareBtn={true}
               ExportBtn
@@ -1390,7 +1421,7 @@ class Cost extends Component {
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized profit and loss"
+                  title="Assets"
                   subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
@@ -1416,6 +1447,7 @@ class Cost extends Component {
                 // minHeight: "66.25rem",
                 minWidth: "85rem",
               }}
+              id="gasfeesspent"
             >
               <BarGraphSection
                 ExportBtn
@@ -1458,12 +1490,12 @@ class Cost extends Component {
               />
             </div>
             <div
-              id="cp"
               style={{
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
               }}
+              id="counterpartyvolume"
             >
               {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />

@@ -137,6 +137,15 @@ class InsightsPage extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -417,6 +426,8 @@ class InsightsPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -463,7 +474,6 @@ class InsightsPage extends Component {
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
-              showpath={true}
               currentPage={"insights"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

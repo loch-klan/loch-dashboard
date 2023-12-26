@@ -175,7 +175,6 @@ export const getProfitAndLossData = (arr, parentctx) => {
         }
 
         let netColor = "#16182B";
-        console.log("totalNetflow ", totalNetflow);
         if (this.x === "Net") {
           if (totalNetflow > 0) {
             netColor = "#18C278";
@@ -199,7 +198,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
       series: {
         stacking: "normal",
         // grouping: false,
-
+        showInLegend: false,
         dataLabels: {
           enabled: false,
         },
