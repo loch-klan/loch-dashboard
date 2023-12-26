@@ -416,7 +416,7 @@ export const verifyEmailLinkApi = (ctx, data) => {
 
         // ctx.setState({ error: false });
         ctx.props.history.push({
-          pathname: "/smart-money",
+          pathname: "/leaderboard",
         });
       } else {
         // ctx.setState({ error: true });

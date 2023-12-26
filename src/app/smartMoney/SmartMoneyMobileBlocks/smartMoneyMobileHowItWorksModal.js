@@ -73,10 +73,10 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
           className="msmpModalTexts msmpModalAboutHeading"
         >
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-4">
-            About Loch Smart Money
+            About Loch Leaderboard
           </h6>
           <p className="inter-display-medium f-s-14 lh-19 m-b-24 text-center  grey-7C7">
-            The intelligent way to manage your asset
+          The intelligent way to manage your portfolio
           </p>
         </div>
         <div className="msmpModalAboutContentContainer">
@@ -106,7 +106,7 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
                   fontWeight: "bold",
                 }}
               >
-                Follow the smart money.
+                Follow the leaderboard.
               </span>
             </div>
 
@@ -131,7 +131,7 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
             </div>
             <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
               You’ll become more proficient in the most valuable skill in
-              crypto, which is finding and analyzing smart money.
+              crypto, which is finding and analyzing leaderboard.
             </div>
             <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
               Loch’s team has benefited immensely from this leaderboard.

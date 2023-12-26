@@ -623,7 +623,7 @@ class Home extends BaseReactComponent {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     window.open(shareLink, "_blank", "noreferrer");
   };
   connectWalletEthers = async () => {
@@ -1183,7 +1183,7 @@ class Home extends BaseReactComponent {
                       src={SmartMoneyWhiteIcon}
                       alt="ProfileVectorIcon"
                     />
-                    <div>Smart Money</div>
+                    <div>Leaderboard</div>
                   </div>
                   <div
                     onClick={this.connectWalletEthers}
