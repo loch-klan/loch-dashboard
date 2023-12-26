@@ -2072,106 +2072,6 @@ class PortfolioMobile extends BaseReactComponent {
                   className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
                 >
                   {/* Unrealized profit and loss */}
-                  Assets
-                </h2>
-                <p
-                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Scroll left and right to view more
-                </p>
-              </div>
-                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
-
-                    
-                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
-                    <Form.Check
-                      type="switch"
-                      checked={this.state.showHideDustVal}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
-                      label={
-                        this.state.showHideDustVal
-                          ? "Reveal dust (less than $1)"
-                          : "Hide dust (less than $1)"
-                      }
-                    />
-                  </div>
-                  </div>
-                </div>
-              <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                {/* <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message=" "
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ?
-                      []
-                      :
-                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                        return item.CurrentValue > 1;
-                      }).length > 0)
-                      ? 
-                      [
-                        {},
-                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                          return item.CurrentValue > 1;
-                        })
-                      ]
-                      :
-                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                        return item.CurrentValue > 1;
-                      }).length < 1)
-                      ? 
-                      []
-                      :
-                       [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  addWatermark
-                  xAxisScrollable
-                  // yAxisScrollable
-                /> */}
-              </div>
-              <div className="d-flex justify-content-between" style={{
-                    marginTop: "3rem",
-                    alignItems:"start"
-                  }}>
-                
-              <div>
-                <h2
-                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
-                >
-                  {/* Unrealized profit and loss */}
                   Transactions
                 </h2>
                 <p
@@ -2229,6 +2129,106 @@ class PortfolioMobile extends BaseReactComponent {
                   subTitle=""
                   tableData={tableDataTransaction}
                   columnList={columnListTransaction}
+                  headerHeight={60}
+                  isArrow={true}
+                  // isLoading={this.props.AvgCostLoading}
+                  isAnalytics="average cost basis"
+                  addWatermark
+                  xAxisScrollable
+                  // yAxisScrollable
+                />
+              </div>
+              <div className="d-flex justify-content-between" style={{
+                    marginTop: "3rem",
+                    alignItems:"start"
+                  }}>
+                
+              <div>
+                <h2
+                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
+                >
+                  {/* Unrealized profit and loss */}
+                  Assets
+                </h2>
+                <p
+                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Scroll left and right to view more
+                </p>
+              </div>
+                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
+
+                    
+                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                  </div>
+                </div>
+              <div className="section-table section-table-mobile-scroll">
+                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  handleClick={() => {
+                    if (this.state.lochToken) {
+                      this.props.history.push("/intelligence/costs");
+                      // AverageCostBasisEView({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }
+                  }}
+                  message=" "
+                  subTitle=""
+                  tableData={
+                    this.props.intelligenceState.Average_cost_basis &&
+                    this.props.intelligenceState.Average_cost_basis.length < 1
+                      ?
+                      []
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length > 0)
+                      ? 
+                      [
+                        {},
+                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                          return item.CurrentValue > 1;
+                        })
+                      ]
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length < 1)
+                      ? 
+                      []
+                      :
+                       [{}, ...this.props.intelligenceState.Average_cost_basis]
+                  }
+                  columnList={columnData}
                   headerHeight={60}
                   isArrow={true}
                   // isLoading={this.props.AvgCostLoading}
