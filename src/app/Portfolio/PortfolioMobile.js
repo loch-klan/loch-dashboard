@@ -12,6 +12,7 @@ import {
 } from "./Api";
 import { Form, Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import {
@@ -45,7 +46,7 @@ import {
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { API_LIMIT, BASE_URL_S3, DEFAULT_PRICE, SEARCH_BY_NOT_DUST, SEARCH_BY_WALLET_ADDRESS_IN, SORT_BY_TIMESTAMP, START_INDEX } from "../../utils/Constant";
+import { API_LIMIT, BASE_URL_S3, DEFAULT_PRICE, SEARCH_BY_NOT_DUST, SEARCH_BY_WALLET_ADDRESS_IN, SORT_BY_AMOUNT, SORT_BY_ASSET, SORT_BY_FROM_WALLET, SORT_BY_METHOD, SORT_BY_TIMESTAMP, SORT_BY_TO_WALLET, SORT_BY_TRANSACTION_FEE, SORT_BY_USD_VALUE_THEN, START_INDEX } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import {
   CostHideDustMobile,
@@ -57,6 +58,14 @@ import {
   TransactionHistoryHashCopied,
   TransactionHistoryWalletClicked,
   TransactionHistoryAddressCopied,
+  TransactionHistorySortDate,
+  TransactionHistorySortFrom,
+  TransactionHistorySortTo,
+  TransactionHistorySortAsset,
+  TransactionHistorySortAmount,
+  TransactionHistorySortUSDAmount,
+  TransactionHistorySortUSDFee,
+  TransactionHistorySortMethod,
 } from "../../utils/AnalyticsFunctions";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import {
@@ -137,6 +146,122 @@ class PortfolioMobile extends BaseReactComponent {
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
+  handleTableSort = (val) => {
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort?.map((el) => {
+      if (el.title === val) {
+        if (val === "time") {
+          obj = [
+            {
+              key: SORT_BY_TIMESTAMP,
+              value: !el.up,
+            },
+          ];
+
+          TransactionHistorySortDate({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "from") {
+          obj = [
+            {
+              key: SORT_BY_FROM_WALLET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortFrom({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "to") {
+          obj = [
+            {
+              key: SORT_BY_TO_WALLET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortTo({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "amount") {
+          obj = [
+            {
+              key: SORT_BY_AMOUNT,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "usdThen") {
+          obj = [
+            {
+              key: SORT_BY_USD_VALUE_THEN,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortUSDAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "usdTransaction") {
+          obj = [
+            {
+              key: SORT_BY_TRANSACTION_FEE,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortUSDFee({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        } else if (val === "method") {
+          obj = [
+            {
+              key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortMethod({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort,
+    });
+  };
   searchIconLoaded = () => {
     this.setState({
       showSearchIcon: true,
@@ -201,7 +326,7 @@ class PortfolioMobile extends BaseReactComponent {
       });
     }
 
-    if(prevState.condition !== this.state.condition){
+    if(prevState.condition !== this.state.condition || prevState.sort !== this.state.sort){
       this.callApi(this.state.currentPage || START_INDEX);
     }
   }
@@ -512,13 +637,13 @@ class PortfolioMobile extends BaseReactComponent {
                 >
                   {this.state.isShowingAge ? "Age" : "Timestamp"}
                 </span>
-              {/* <Image
+              <Image
                 onClick={() => this.handleTableSort("time")}
                 src={sortByIcon}
                 className={
                   this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
                 }
-              /> */}
+              />
             </div>
           ),
           dataKey: "time",
@@ -555,17 +680,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="from"
-              // onClick={() => this.handleTableSort("from")}
+              onClick={() => this.handleTableSort("from")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 From
               </span>
-              {/* <Image
+              <Image
                 src={sortByIcon}
                 className={
                   this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
                 }
-              /> */}
+              />
             </div>
           ),
           dataKey: "from",
@@ -798,11 +923,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="to"
-              // onClick={() => this.handleTableSort("to")}
+              onClick={() => this.handleTableSort("to")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 To
               </span>
+              <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=="to").up ? "rotateDown" : "rotateUp"
+                }
+              />
             </div>
           ),
           dataKey: "to",
@@ -1032,11 +1163,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="asset"
-              // onClick={() => this.handleTableSort("asset")}
+              onClick={() => this.handleTableSort("asset")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 Asset
               </span>
+              <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=="asset").up ? "rotateDown" : "rotateUp"
+                }
+              />
             </div>
           ),
           dataKey: "asset",
@@ -1068,11 +1205,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="amount"
-              // onClick={() => this.handleTableSort("amount")}
+              onClick={() => this.handleTableSort("amount")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 Amount
               </span>
+              <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=="amount").up ? "rotateDown" : "rotateUp"
+                }
+              />
             </div>
           ),
           dataKey: "amount",
@@ -1104,11 +1247,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="usdValueThen"
-              // onClick={() => this.handleTableSort("usdThen")}
+              onClick={() => this.handleTableSort("usdThen")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
                 true
               )} amount (then)`}</span>
+              <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=="usdThen").up ? "rotateDown" : "rotateUp"
+                }
+              />
             </div>
           ),
           dataKey: "usdValueThen",
@@ -1185,11 +1334,17 @@ class PortfolioMobile extends BaseReactComponent {
             <div
               className="cp history-table-header-col"
               id="method"
-              // onClick={() => this.handleTableSort("method")}
+              onClick={() => this.handleTableSort("method")}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 Method
               </span>
+              <Image
+                src={sortByIcon}
+                className={
+                  this.state.tableSortOpt.find(s=>s.title=="method").up ? "rotateDown" : "rotateUp"
+                }
+              />
             </div>
           ),
           dataKey: "method",
@@ -2063,6 +2218,107 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
+               <div className="d-flex justify-content-between" style={{
+                    marginTop: "3rem",
+                    alignItems:"start"
+                  }}>
+                
+              <div>
+                <h2
+                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
+                >
+                  {/* Unrealized profit and loss */}
+                  Assets
+                </h2>
+                <p
+                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Scroll left and right to view more
+                </p>
+              </div>
+                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
+
+                    
+                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                  </div>
+                </div>
+              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  handleClick={() => {
+                    if (this.state.lochToken) {
+                      this.props.history.push("/intelligence/costs");
+                      // AverageCostBasisEView({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }
+                  }}
+                  message=" "
+                  subTitle=""
+                  tableData={
+                    this.props.intelligenceState.Average_cost_basis &&
+                    this.props.intelligenceState.Average_cost_basis.length < 1
+                      ?
+                      []
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length > 0)
+                      ? 
+                      [
+                        {},
+                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                          return item.CurrentValue > 1;
+                        })
+                      ]
+                      :
+                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
+                        return item.CurrentValue > 1;
+                      }).length < 1)
+                      ? 
+                      []
+                      :
+                       [{}, ...this.props.intelligenceState.Average_cost_basis]
+                  }
+                  columnList={columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  // isLoading={this.props.AvgCostLoading}
+                  isAnalytics="average cost basis"
+                  addWatermark
+                  xAxisScrollable
+                  bodyHeight={'1000px'}
+                  yAxisScrollable
+                />
+              </div>
               <div className="d-flex justify-content-between" style={{
                     marginTop: "3rem",
                     alignItems:"start"
@@ -2139,106 +2395,7 @@ class PortfolioMobile extends BaseReactComponent {
                   // yAxisScrollable
                 />
               </div>
-              <div className="d-flex justify-content-between" style={{
-                    marginTop: "3rem",
-                    alignItems:"start"
-                  }}>
-                
-              <div>
-                <h2
-                  className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5"
-                >
-                  {/* Unrealized profit and loss */}
-                  Assets
-                </h2>
-                <p
-                  class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Scroll left and right to view more
-                </p>
-              </div>
-                  <div className="d-flex" style={{alignItems:'center', paddingTop:'2px'}}>
-
-                    
-                <div onClick={this.handleDust} className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
-                    <Form.Check
-                      type="switch"
-                      checked={this.state.showHideDustVal}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
-                      label={
-                        this.state.showHideDustVal
-                          ? "Reveal dust (less than $1)"
-                          : "Hide dust (less than $1)"
-                      }
-                    />
-                  </div>
-                  </div>
-                </div>
-              <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message=" "
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ?
-                      []
-                      :
-                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                        return item.CurrentValue > 1;
-                      }).length > 0)
-                      ? 
-                      [
-                        {},
-                        ...this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                          return item.CurrentValue > 1;
-                        })
-                      ]
-                      :
-                      (this.state.showHideDustVal && this.props.intelligenceState.Average_cost_basis.filter((item) => {
-                        return item.CurrentValue > 1;
-                      }).length < 1)
-                      ? 
-                      []
-                      :
-                       [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  addWatermark
-                  xAxisScrollable
-                  // yAxisScrollable
-                />
-              </div>
+             
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
