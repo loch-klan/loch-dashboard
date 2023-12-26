@@ -131,23 +131,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         }
         if (
           props.location.pathname &&
-          props.location.pathname.includes("/smart-money")
+          props.location.pathname.includes("/leaderboard")
         ) {
-          const isMobile = mobileCheck();
-          // if (isMobile) {
-          //   return (
-          //     <Redirect
-          //       to={{
-          //         pathname: "/",
-          //         state: {
-          //           from: props.location,
-          //           params: props.match.params,
-          //           page: "route",
-          //         },
-          //       }}
-          //     />
-          //   );
-          // }
           return (
             <div className="main-section">
               <div className={`main-section-right`}>
@@ -184,7 +169,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               }`}
             >
               <div className="main-content-wrapper">
-                <Component key={props.location.pathname} {...props} />
+                <Component
+                  isSidebarClosed={isSidebarClosed}
+                  key={props.location.pathname}
+                  {...props}
+                />
               </div>
             </div>
           </div>

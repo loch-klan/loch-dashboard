@@ -30,7 +30,6 @@ class VolumeTradedByCounterparty extends Component {
           <PageHeader
             title={"Volume Traded By Counterparty"}
             subTitle={"Valuable insights based on your assets"}
-            showpath={true}
             currentPage={"volume-traded-by-counterparty"}
             history={this.props.history}
           />

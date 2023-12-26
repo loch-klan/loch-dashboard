@@ -55,7 +55,7 @@ export default function HomeSmartMoneyHeader(props) {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     copyTextToClipboard(shareLink);
   };
   const copyTextToClipboard = async (text) => {

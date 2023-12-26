@@ -1184,6 +1184,8 @@ class TopAccountPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1226,7 +1228,7 @@ class TopAccountPage extends BaseReactComponent {
             <PageHeader
               title={"Leaderboard"}
               subTitle={"Analyze the top accounts here"}
-              // showpath={true}
+              //
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}

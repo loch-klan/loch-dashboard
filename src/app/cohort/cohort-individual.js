@@ -857,6 +857,8 @@ class CohortPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -913,7 +915,6 @@ class CohortPage extends BaseReactComponent {
               title={this.state.cohortName ? this.state.cohortName : PageName}
               subTitle={`
               Added ${moment(this.state?.createOn).format("MM/DD/YY")}`}
-              showpath={true}
               currentPage={nav_list[2]}
               btnText={this.state.userId ? "Edit" : false}
               history={this.props.history}
