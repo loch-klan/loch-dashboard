@@ -226,10 +226,22 @@ class CounterPartyVolume extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-    this.props.getAllCoins();
-    this.getCounterPartyFee(0, true);
-    this.props.GetAllPlan();
-    this.props.getUser();
+    if (
+      !this.props.commonState.counterpartyVolumePage ||
+      !(
+        this.props.intelligenceState.counterPartyValue &&
+        this.props.intelligenceState.counterPartyValue[0]
+      )
+    ) {
+      this.props.getAllCoins();
+      this.getCounterPartyFee(0, true);
+      this.props.GetAllPlan();
+      this.props.getUser();
+    } else {
+      this.setState({
+        counterGraphLoading: false,
+      });
+    }
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -297,8 +309,8 @@ class CounterPartyVolume extends Component {
         apiResponse: false,
       });
     }
-    if (!this.props.commonState.cost) {
-      this.props.updateWalletListFlag("cost", true);
+    if (!this.props.commonState.counterpartyVolumePage) {
+      this.props.updateWalletListFlag("counterpartyVolumePage", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));

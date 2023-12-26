@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   defi_home: false,
   smart_money: false,
   profile_credit: false,
-
+  gasFeesPage: false,
   // top account
   top_home: false,
   top_intelligence: false,
