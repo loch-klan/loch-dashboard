@@ -278,7 +278,9 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     const url = new URLSearchParams();
     url.append("email", this.state.signUpEmailId);
     url.append("signed_up_from", "leaving");
-    url.append("type", "smart-money");
+    if (!this.props.fromInsideHome) {
+      url.append("type", "smart-money");
+    }
     this.props.smartMoneySignUpApi(this, url, this.state.signUpEmailId);
   };
   onVerifyOtp = () => {
@@ -289,7 +291,12 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     data.append("email", this.state.signInEmailId);
     data.append("otp_token", this.state.verificationOtp);
     data.append("signed_up_from", "smart money");
-    this.props.VerifySmartMoneyEmailOtp(data, this, this.state.signInEmailId,false);
+    this.props.VerifySmartMoneyEmailOtp(
+      data,
+      this,
+      this.state.signInEmailId,
+      false
+    );
   };
   emailIsVerified = () => {
     this.hideModal();

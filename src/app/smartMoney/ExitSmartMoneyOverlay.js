@@ -693,7 +693,9 @@ class ExitSmartMoneyOverlay extends BaseReactComponent {
       const url = new URLSearchParams();
       url.append("email", this.state.email);
       url.append("signed_up_from", "leaving");
-      url.append("type", "smart-money");
+      if (!this.props.fromInsideHome) {
+        url.append("type", "smart-money");
+      }
       this.props.smartMoneySignUpApi(this, url, this.state.email);
       // LeaveEmailAdded({
       //   session_id: getCurrentUser().id,

@@ -17,7 +17,9 @@ import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import {
+  ActiveSmartMoneySidebarIcon,
   CoinsIcon,
+  InactiveSmartMoneySidebarIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
@@ -984,6 +986,39 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Smart Money"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/home-smart-money"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-smart-money"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
 
                         <li>
                           <CustomOverlay
@@ -1775,6 +1810,33 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                               Following
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/home-smart-money"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-smart-money"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                              Smart Money
                             </NavLink>
                           </li>
                           <li>
