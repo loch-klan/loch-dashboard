@@ -117,7 +117,7 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
         <div className="msmpModalTexts">
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-4">FAQ</h6>
           <p className="inter-display-medium f-s-14 lh-19 m-b-24 text-center grey-7C7 p-r-30 p-l-30">
-            Frequently asked questions about the smart-money leaderboard
+            Frequently asked questions about the leaderboard
           </p>
         </div>
         <div className="msmpFaqListContainer">

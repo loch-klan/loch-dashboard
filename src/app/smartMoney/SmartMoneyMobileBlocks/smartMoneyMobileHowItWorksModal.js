@@ -73,10 +73,10 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
           className="msmpModalTexts msmpModalAboutHeading"
         >
           <h6 className="inter-display-medium f-s-20 lh-24 m-b-4">
-            About Loch Smart Money
+            About Loch Leaderboard
           </h6>
           <p className="inter-display-medium f-s-14 lh-19 m-b-24 text-center  grey-7C7">
-            The intelligent way to manage your asset
+          The intelligent way to manage your portfolio
           </p>
         </div>
         <div className="msmpModalAboutContentContainer">

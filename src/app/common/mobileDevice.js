@@ -130,7 +130,7 @@ class MobileDevice extends BaseReactComponent {
         </div>
         <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-t-20">
           Add your email so you can be the first to know when we’ve launched
-          mobile for {this.props.isSmartMoney ? "Loch’s Smart Money " : "Loch"}.
+          mobile for {this.props.isSmartMoney ? "Loch’s Leaderboard " : "Loch"}.
         </h4>
         <Form onValidSubmit={this.handleSave}>
           <FormElement
