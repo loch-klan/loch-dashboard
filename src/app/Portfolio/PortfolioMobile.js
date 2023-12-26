@@ -75,17 +75,7 @@ class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
 
-    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
-    const address = walletList?.map((wallet) => {
-      return wallet.address;
-    });
-    const cond = [
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-      { key: SEARCH_BY_NOT_DUST, value: true },
-    ];
+    
     this.state = {
       startTime: "",
       showPopupModal: true,
@@ -99,9 +89,9 @@ class PortfolioMobile extends BaseReactComponent {
       showHideDustValTrans:true,
       isShowingAge:false,
       currentPage:0,
-      walletList: walletList,
+      walletList: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-      condition: cond || [],
+      condition:  [],
       tableSortOpt: [
         {
           title: "time",
@@ -259,6 +249,24 @@ class PortfolioMobile extends BaseReactComponent {
 
     this.startPageView();
     this.updateTimer(true);
+
+    setTimeout(()=>{
+      const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      const address = walletList?.map((wallet) => {
+        return wallet.address;
+      });
+      const cond = [
+        {
+          key: SEARCH_BY_WALLET_ADDRESS_IN,
+          value: address,
+        },
+        { key: SEARCH_BY_NOT_DUST, value: true },
+      ];
+      this.setState({
+        condition: cond || [],
+        walletList: walletList || [],
+      });
+    }, 1500)
     return () => {
       clearInterval(window.checkMobileHomeTimer);
     };
@@ -280,7 +288,12 @@ class PortfolioMobile extends BaseReactComponent {
     data.append("conditions", JSON.stringify(this.state.condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    if(this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN)?.value){
+      this.props.searchTransactionApi(data, this, page);
+    }
+    else{
+      console.log('cought');
+    }
   };
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
