@@ -698,7 +698,7 @@ export const TransactionHistoryAddressCopied = ({
     "session id": session_id,
     "email address": email_address,
     "address_copied":address_copied,
-    "is mobile":isMobile
+    "isMobile":isMobile
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -3572,7 +3572,7 @@ export const TransactionHistoryHideDust = ({ session_id, email_address, isMobile
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "is mobile": isMobile,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
