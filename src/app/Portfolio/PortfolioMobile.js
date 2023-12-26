@@ -2089,7 +2089,7 @@ class PortfolioMobile extends BaseReactComponent {
                       //   }
                       // }}
                       label={
-                        this.state.showHideDustVal
+                        this.state.showHideDustValTrans
                           ? "Reveal dust (less than $1)"
                           : "Hide dust (less than $1)"
                       }
