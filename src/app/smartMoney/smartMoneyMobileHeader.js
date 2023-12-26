@@ -21,7 +21,7 @@ export default function SmartMoneyMobileHeader(props) {
         />
         <div className="smheaderText">
           <div className="smheaderTextHeading inter-display-medium">
-            Loch’s Smart Money Leaderboard
+            Loch’s Leaderboard
           </div>
           <div
             style={{

@@ -60,10 +60,10 @@ export default function PageHeader(props) {
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
     let linkName = e;
-    if (linkName === "transaction-history") {
+    if (linkName === "intelligence") {
+      return null;
+    } else if (linkName === "transaction-history") {
       linkName = "transactions";
-    } else if (linkName === "intelligence") {
-      linkName = "portfolio";
     } else if (linkName === "asset-value") {
       linkName = "historic performance";
     } else if (linkName === "top-accounts") {
@@ -137,38 +137,14 @@ export default function PageHeader(props) {
           <div>
             <div style={{ display: "flex" }}>
               <h4
-                className={`inter-display-medium f-s-24 lh-30 ${
+                className={`inter-display-medium f-s-24 ${
                   props.showImg || props.multipleImg ? "" : "m-b-8"
                 }`}
               >
                 {props.title}
               </h4>
-              {props.showNetflowExplainers ? (
-                <div
-                  style={{
-                    marginLeft: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <CustomOverlay
-                    showNetflowExplainers={props.showNetflowExplainers}
-                    position="bottom"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
-                    isLeftText
-                  >
-                    <Image
-                      src={InfoIcon}
-                      className="infoIcon"
-                      style={{ cursor: "pointer", height: "1.6rem" }}
-                    />
-                  </CustomOverlay>
-                </div>
-              ) : props.showExplainers && props.explainerText ? (
+              {props.showNetflowExplainers ? null : props.showExplainers &&
+                props.explainerText ? (
                 <div
                   style={{
                     marginLeft: "1rem",
@@ -195,9 +171,25 @@ export default function PageHeader(props) {
               ) : null}
             </div>
             {props.subTitle ? (
-              <p className="inter-display-medium f-s-16 lh-19">
+              <p className="pageHeaderSubtitles inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}
-                {props.hoverText ? (
+                {props.showNetflowExplainers ? (
+                  <CustomOverlay
+                    showNetflowExplainers={props.showNetflowExplainers}
+                    position="bottom"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    isLeftText
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="infoIcon"
+                      style={{ cursor: "pointer", height: "1.6rem" }}
+                    />
+                  </CustomOverlay>
+                ) : props.hoverText ? (
                   <CustomOverlay
                     position="bottom"
                     isIcon={false}
@@ -299,7 +291,7 @@ export default function PageHeader(props) {
                   </div>
                 </div>
               )}
-              {props.ShareBtn && (
+              {/* {props.ShareBtn && (
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -320,7 +312,7 @@ export default function PageHeader(props) {
                     </div>
                   </div>
                 </CustomOverlay>
-              )}
+              )} */}
               {props.btnText && (
                 <Button
                   className={`${

@@ -354,6 +354,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isLastEle={index === walletList.length - 1}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

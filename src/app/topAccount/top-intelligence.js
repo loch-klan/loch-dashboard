@@ -660,6 +660,8 @@ class TopIntelligence extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -686,7 +688,6 @@ class TopIntelligence extends Component {
             <PageHeader
               title="Portfolio"
               subTitle="Automated and personalized financial intelligence"
-              showpath={true}
               currentPage={"intelligence"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

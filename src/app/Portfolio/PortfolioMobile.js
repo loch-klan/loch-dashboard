@@ -1346,7 +1346,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Asset") {
@@ -1392,7 +1392,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "AverageCostPrice") {
@@ -1441,7 +1441,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentPrice") {
@@ -1490,7 +1490,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.137,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Amount") {
@@ -1533,7 +1533,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CostBasis") {
@@ -1616,7 +1616,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentValue") {
@@ -1699,7 +1699,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainAmount") {
@@ -1814,7 +1814,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.13,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainLoss") {
@@ -1834,7 +1834,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempDataHolder
                       ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0%"
+                      : "0.00%"
                   }
                   colorCode="#000"
                 >
@@ -1910,6 +1910,88 @@ class PortfolioMobile extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gain loss"
+            // onClick={() => this.handleSort(this.state.sortBy[7])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "PortfolioPercentage") {
+            if (dataIndex === 0) {
+              let tempTempVal = 100;
+              let tempDataHolder = undefined;
+              if (tempTempVal) {
+                tempDataHolder = Number(noExponents(tempTempVal.toFixed(2)));
+              }
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className="gainLossContainer">
+                    <div className={`gainLoss`}>
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {tempDataHolder
+                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                            "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              );
+            }
+            let tempDataHolder = undefined;
+
+            if (rowData.weight) {
+              tempDataHolder = Number(noExponents(rowData.weight.toFixed(2)));
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  tempDataHolder
+                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                    : "0%"
+                }
+                colorCode="#000"
+              >
+                <div className="gainLossContainer">
+                  <div className={`gainLoss`}>
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
     ];
     return (
       <div className="mobilePortfolioContainer">
@@ -1964,6 +2046,8 @@ class PortfolioMobile extends BaseReactComponent {
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 changeWalletList={this.props.handleChangeList}
                 apiResponse={(e) => this.props.CheckApiResponse(e)}
                 showNetworth={true}
