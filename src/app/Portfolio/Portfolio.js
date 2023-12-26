@@ -329,7 +329,7 @@ class Portfolio extends BaseReactComponent {
       externalEvents: [],
 
       // netflow loader
-      netFlowLoading: false,
+      netFlowLoading: true,
 
       // when go btn clicked run all api
       isUpdate: 0,
@@ -388,7 +388,7 @@ class Portfolio extends BaseReactComponent {
         { title: "Current value", down: false },
         { title: "Gain loss", down: true },
       ],
-      AvgCostLoading: false,
+      AvgCostLoading: true,
 
       chainLoader: false,
       totalChainDetechted: 0,
@@ -949,10 +949,9 @@ class Portfolio extends BaseReactComponent {
       }
       // Gas fees api call
       else if (
-        (this.state.blockTwoSelectedItem === 2 &&
-          !(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0])) ||
-        !this.props.commonState.gasFeesPage ||
-        this.state.shouldCallGraphFeesApi
+        this.state.blockTwoSelectedItem === 2 &&
+        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
+          !this.props.commonState.gasFeesPage)
       ) {
         this.setState({
           gasFeesGraphLoading: true,
@@ -963,13 +962,12 @@ class Portfolio extends BaseReactComponent {
       }
       // Counterparty volume api call
       else if (
-        (this.state.blockTwoSelectedItem === 3 &&
-          !(
-            this.state.homeCounterpartyVolumeData &&
-            this.state.homeCounterpartyVolumeData[0]
-          )) ||
-        !this.props.commonState.counterpartyVolumePage ||
-        this.state.shouldCallCounterPartyVolumeApi
+        this.state.blockTwoSelectedItem === 3 &&
+        (!(
+          this.state.homeCounterpartyVolumeData &&
+          this.state.homeCounterpartyVolumeData[0]
+        ) ||
+          !this.props.commonState.counterpartyVolumePage)
       ) {
         this.setState({
           counterGraphLoading: true,
