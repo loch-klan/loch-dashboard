@@ -951,7 +951,8 @@ class Portfolio extends BaseReactComponent {
       else if (
         (this.state.blockTwoSelectedItem === 2 &&
           !(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0])) ||
-        !this.props.commonState.gasFeesPage
+        !this.props.commonState.gasFeesPage ||
+        this.state.shouldCallGraphFeesApi
       ) {
         this.setState({
           gasFeesGraphLoading: true,
@@ -967,7 +968,8 @@ class Portfolio extends BaseReactComponent {
             this.state.homeCounterpartyVolumeData &&
             this.state.homeCounterpartyVolumeData[0]
           )) ||
-        !this.props.commonState.counterpartyVolumePage
+        !this.props.commonState.counterpartyVolumePage ||
+        this.state.shouldCallCounterPartyVolumeApi
       ) {
         this.setState({
           counterGraphLoading: true,
