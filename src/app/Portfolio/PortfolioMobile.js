@@ -488,17 +488,6 @@ class PortfolioMobile extends BaseReactComponent {
         {
           labelName: (
             <div className="cp history-table-header-col" id="time">
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  this.state.isShowingAge
-                    ? "Click to view Timestamp"
-                    : "Click to view Age"
-                }
-              >
                 <span
                   onClick={() => {
                     this.toggleAgeTimestamp();
@@ -510,7 +499,6 @@ class PortfolioMobile extends BaseReactComponent {
                 >
                   {this.state.isShowingAge ? "Age" : "Timestamp"}
                 </span>
-              </CustomOverlay>
               {/* <Image
                 onClick={() => this.handleTableSort("time")}
                 src={sortByIcon}
