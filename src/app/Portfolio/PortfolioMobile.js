@@ -162,6 +162,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortDate({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "from") {
@@ -174,6 +175,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortFrom({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "to") {
@@ -186,6 +188,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortTo({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "asset") {
@@ -198,6 +201,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortAsset({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "amount") {
@@ -210,6 +214,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortAmount({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "usdThen") {
@@ -222,6 +227,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortUSDAmount({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "usdTransaction") {
@@ -234,6 +240,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortUSDFee({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         } else if (val === "method") {
@@ -246,6 +253,7 @@ class PortfolioMobile extends BaseReactComponent {
           TransactionHistorySortMethod({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            isMobile: true,
           });
           this.updateTimer();
         }
