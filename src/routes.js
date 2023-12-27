@@ -23,6 +23,7 @@ import GasFees from "./app/GasFeesPage/GasFees";
 import PriceGauge from "./app/PriceGauge/PriceGauge";
 import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAndLoss";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import Referral from "./app/referral/Referral";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
@@ -39,6 +40,12 @@ const routes = [
     name: "Home",
     type: Route,
     component: Home,
+  },
+  {
+    path: "/Referral",
+    name: "Referral",
+    type: Route,
+    component: Referral,
   },
   {
     path: "/profile",
