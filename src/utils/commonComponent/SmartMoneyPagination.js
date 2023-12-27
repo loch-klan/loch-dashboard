@@ -127,7 +127,7 @@ const SmartMoneyPagination = (props) => {
   };
   if (mobileCheck(true)) {
     return (
-      <div className="mobileSmartMoneyPagingation">
+      <div className="mobileSmartMoneyPagingation" style={props.style}>
         <div className="smartMoneyPaginationContainer">
           <div
             className={`smartMoneyPaginationArrowContainer ${

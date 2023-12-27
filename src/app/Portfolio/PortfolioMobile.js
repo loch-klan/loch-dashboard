@@ -1,45 +1,56 @@
+import moment from "moment";
 import React from "react";
+import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-
-import { Form, Image } from "react-bootstrap";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
-import { getAllWalletListApi } from "../wallet/Api";
-
-import Loading from "../common/Loading";
-import "./_mobilePortfolio.scss";
-import PieChart2 from "./PieChart2";
-import Footer from "../common/footer";
-import WelcomeCard from "./WelcomeCard";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import { getCurrentUser } from "../../utils/ManageToken";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import { CopyClipboardIcon } from "../../assets/images/index.js";
+import {
+  CostHideDustMobile,
+  MobileHomePageView,
+  Mobile_Home_Search_New_Address,
+  Mobile_Home_Share,
+  TimeSpentMobileHome,
+  TransactionHistoryAddressCopied,
+  TransactionHistoryHashCopied,
+  TransactionHistoryHideDust,
+  TransactionHistoryPageBack,
+  TransactionHistoryPageNext,
+  TransactionHistoryPageSearch,
+  TransactionHistorySortAmount,
+  TransactionHistorySortAsset,
+  TransactionHistorySortDate,
+  TransactionHistorySortFrom,
+  TransactionHistorySortMethod,
+  TransactionHistorySortTo,
+  TransactionHistorySortUSDAmount,
+  TransactionHistorySortUSDFee,
+  TransactionHistoryWalletClicked,
+} from "../../utils/AnalyticsFunctions";
 import {
   API_LIMIT,
   BASE_URL_S3,
   DEFAULT_PRICE,
   SEARCH_BY_NOT_DUST,
   SEARCH_BY_WALLET_ADDRESS_IN,
+  SORT_BY_AMOUNT,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_METHOD,
   SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_TRANSACTION_FEE,
+  SORT_BY_USD_VALUE_THEN,
   START_INDEX,
 } from "../../utils/Constant";
-import {
-  CostHideDustMobile,
-  MobileHomePageView,
-  Mobile_Home_Search_New_Address,
-  TransactionHistoryHideDust,
-  Mobile_Home_Share,
-  TimeSpentMobileHome,
-  TransactionHistoryHashCopied,
-  TransactionHistoryWalletClicked,
-  TransactionHistoryAddressCopied,
-} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -48,6 +59,8 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import {
   GetAllPlan,
   getAllCurrencyRatesApi,
@@ -56,7 +69,8 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-
+import Loading from "../common/Loading";
+import Footer from "../common/footer";
 import {
   ResetAverageCostBasis,
   getAvgCostBasis,
@@ -69,6 +83,8 @@ import {
   searchTransactionApi,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip.js";
 import {
   getAssetGraphDataApi,
@@ -80,15 +96,17 @@ import {
   getYesterdaysBalanceApi,
   settingDefaultValues,
 } from "./Api";
-
+import PieChart2 from "./PieChart2";
+import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
-import { CopyClipboardIcon } from "../../assets/images/index.js";
-import moment from "moment";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
 
+    const search = props.location.search;
+    const params = new URLSearchParams(search);
+    const page = params.get("p");
     this.state = {
       startTime: "",
       showPopupModal: true,
@@ -101,7 +119,7 @@ class PortfolioMobile extends BaseReactComponent {
       showHideDustVal: true,
       showHideDustValTrans: true,
       isShowingAge: false,
-      currentPage: 0,
+      currentPage: page ? parseInt(page, 10) : START_INDEX,
       walletList: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       condition: [],
@@ -150,6 +168,130 @@ class PortfolioMobile extends BaseReactComponent {
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
+  handleTableSort = (val) => {
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort?.map((el) => {
+      if (el.title === val) {
+        if (val === "time") {
+          obj = [
+            {
+              key: SORT_BY_TIMESTAMP,
+              value: !el.up,
+            },
+          ];
+
+          TransactionHistorySortDate({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "from") {
+          obj = [
+            {
+              key: SORT_BY_FROM_WALLET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortFrom({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "to") {
+          obj = [
+            {
+              key: SORT_BY_TO_WALLET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortTo({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "amount") {
+          obj = [
+            {
+              key: SORT_BY_AMOUNT,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "usdThen") {
+          obj = [
+            {
+              key: SORT_BY_USD_VALUE_THEN,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortUSDAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "usdTransaction") {
+          obj = [
+            {
+              key: SORT_BY_TRANSACTION_FEE,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortUSDFee({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (val === "method") {
+          obj = [
+            {
+              key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
+          TransactionHistorySortMethod({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            isMobile: true,
+          });
+          this.updateTimer();
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort,
+    });
+  };
   searchIconLoaded = () => {
     this.setState({
       showSearchIcon: true,
@@ -214,8 +356,56 @@ class PortfolioMobile extends BaseReactComponent {
       });
     }
 
-    if (prevState.condition !== this.state.condition) {
+    if (
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort
+    ) {
       this.callApi(this.state.currentPage || START_INDEX);
+    }
+
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort ||
+      prevState.pageLimit !== this.state.pageLimit
+    ) {
+      this.callApi(page);
+      this.setState({
+        currentPage: page,
+      });
+      if (prevPage !== page) {
+        if (prevPage - 1 === page) {
+          TransactionHistoryPageBack({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (prevPage + 1 === page) {
+          TransactionHistoryPageNext({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else {
+          TransactionHistoryPageSearch({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_search: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        }
+      }
     }
   }
   componentDidMount() {
@@ -306,8 +496,6 @@ class PortfolioMobile extends BaseReactComponent {
         ?.value
     ) {
       this.props.searchTransactionApi(data, this, page);
-    } else {
-      console.log("cought");
     }
   };
   endPageView = () => {
@@ -419,7 +607,7 @@ class PortfolioMobile extends BaseReactComponent {
   };
   render() {
     const { currency } = this.state;
-    const { assetPriceList, table } = this.props.intelligenceState;
+    const { assetPriceList, table, totalPage } = this.props.intelligenceState;
 
     let tableDataTransaction =
       table &&
@@ -511,8 +699,6 @@ class PortfolioMobile extends BaseReactComponent {
         };
       });
 
-    console.log("ii", this.props.intelligenceState);
-
     const columnListTransaction = [
       {
         labelName: (
@@ -528,13 +714,13 @@ class PortfolioMobile extends BaseReactComponent {
             >
               {this.state.isShowingAge ? "Age" : "Timestamp"}
             </span>
-            {/* <Image
-                onClick={() => this.handleTableSort("time")}
-                src={sortByIcon}
-                className={
-                  this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
-                }
-              /> */}
+            <Image
+              onClick={() => this.handleTableSort("time")}
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "time",
@@ -571,17 +757,17 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="from"
-            // onClick={() => this.handleTableSort("from")}
+            onClick={() => this.handleTableSort("from")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               From
             </span>
-            {/* <Image
-                src={sortByIcon}
-                className={
-                  this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
-                }
-              /> */}
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "from",
@@ -809,11 +995,19 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="to"
-            // onClick={() => this.handleTableSort("to")}
+            onClick={() => this.handleTableSort("to")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               To
             </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find((s) => s.title == "to").up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "to",
@@ -1037,11 +1231,19 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="asset"
-            // onClick={() => this.handleTableSort("asset")}
+            onClick={() => this.handleTableSort("asset")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Asset
             </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find((s) => s.title == "asset").up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "asset",
@@ -1073,11 +1275,19 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="amount"
-            // onClick={() => this.handleTableSort("amount")}
+            onClick={() => this.handleTableSort("amount")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Amount
             </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find((s) => s.title == "amount").up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "amount",
@@ -1109,11 +1319,19 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="usdValueThen"
-            // onClick={() => this.handleTableSort("usdThen")}
+            onClick={() => this.handleTableSort("usdThen")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
             )} amount (then)`}</span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find((s) => s.title == "usdThen").up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "usdValueThen",
@@ -1190,11 +1408,19 @@ class PortfolioMobile extends BaseReactComponent {
           <div
             className="cp history-table-header-col"
             id="method"
-            // onClick={() => this.handleTableSort("method")}
+            onClick={() => this.handleTableSort("method")}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Method
             </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find((s) => s.title == "method").up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
           </div>
         ),
         dataKey: "method",
@@ -1357,7 +1583,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.137,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Asset") {
@@ -1403,7 +1629,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.137,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "AverageCostPrice") {
@@ -1452,7 +1678,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.137,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentPrice") {
@@ -1501,7 +1727,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.137,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Amount") {
@@ -1544,7 +1770,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CostBasis") {
@@ -1627,7 +1853,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "CurrentValue") {
@@ -1710,7 +1936,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainAmount") {
@@ -1825,7 +2051,7 @@ class PortfolioMobile extends BaseReactComponent {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.13,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "GainLoss") {
@@ -1845,7 +2071,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempDataHolder
                       ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
+                      : "0%"
                   }
                   colorCode="#000"
                 >
@@ -1921,88 +2147,6 @@ class PortfolioMobile extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Gain loss"
-            // onClick={() => this.handleSort(this.state.sortBy[7])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Portfolio (%)
-            </span>
-          </div>
-        ),
-        dataKey: "PortfolioPercentage",
-
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey, dataIndex) => {
-          if (dataKey === "PortfolioPercentage") {
-            if (dataIndex === 0) {
-              let tempTempVal = 100;
-              let tempDataHolder = undefined;
-              if (tempTempVal) {
-                tempDataHolder = Number(noExponents(tempTempVal.toFixed(2)));
-              }
-              return (
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
-                  }
-                  colorCode="#000"
-                >
-                  <div className="gainLossContainer">
-                    <div className={`gainLoss`}>
-                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                        {tempDataHolder
-                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
-                            "%"
-                          : "0.00%"}
-                      </span>
-                    </div>
-                  </div>
-                </CustomOverlay>
-              );
-            }
-            let tempDataHolder = undefined;
-
-            if (rowData.weight) {
-              tempDataHolder = Number(noExponents(rowData.weight.toFixed(2)));
-            }
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempDataHolder
-                    ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                    : "0%"
-                }
-                colorCode="#000"
-              >
-                <div className="gainLossContainer">
-                  <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
     ];
     return (
       <div className="mobilePortfolioContainer">
@@ -2057,8 +2201,6 @@ class PortfolioMobile extends BaseReactComponent {
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
-                handleShare={this.handleShare}
-                isSidebarClosed={this.props.isSidebarClosed}
                 changeWalletList={this.props.handleChangeList}
                 apiResponse={(e) => this.props.CheckApiResponse(e)}
                 showNetworth={true}
@@ -2155,6 +2297,113 @@ class PortfolioMobile extends BaseReactComponent {
                 <div>
                   <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
                     {/* Unrealized profit and loss */}
+                    Assets
+                  </h2>
+                  <p
+                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Scroll left and right to view more
+                  </p>
+                </div>
+                <div
+                  className="d-flex"
+                  style={{ alignItems: "center", paddingTop: "2px" }}
+                >
+                  <div
+                    onClick={this.handleDust}
+                    className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
+                  >
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustVal}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustVal
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  handleClick={() => {
+                    if (this.state.lochToken) {
+                      this.props.history.push("/intelligence/costs");
+                      // AverageCostBasisEView({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }
+                  }}
+                  message=" "
+                  subTitle=""
+                  tableData={
+                    this.props.intelligenceState.Average_cost_basis &&
+                    this.props.intelligenceState.Average_cost_basis.length < 1
+                      ? []
+                      : this.state.showHideDustVal &&
+                        this.props.intelligenceState.Average_cost_basis.filter(
+                          (item) => {
+                            return item.CurrentValue > 1;
+                          }
+                        ).length > 0
+                      ? [
+                          {},
+                          ...this.props.intelligenceState.Average_cost_basis.filter(
+                            (item) => {
+                              return item.CurrentValue > 1;
+                            }
+                          ),
+                        ]
+                      : this.state.showHideDustVal &&
+                        this.props.intelligenceState.Average_cost_basis.filter(
+                          (item) => {
+                            return item.CurrentValue > 1;
+                          }
+                        ).length < 1
+                      ? []
+                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
+                  }
+                  columnList={columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  // isLoading={this.props.AvgCostLoading}
+                  isAnalytics="average cost basis"
+                  addWatermark
+                  xAxisScrollable
+                  bodyHeight={"1000px"}
+                  yAxisScrollable
+                />
+              </div>
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "3rem",
+                  alignItems: "start",
+                }}
+              >
+                <div>
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
+                    {/* Unrealized profit and loss */}
                     Transactions
                   </h2>
                   <p
@@ -2225,112 +2474,21 @@ class PortfolioMobile extends BaseReactComponent {
                   // yAxisScrollable
                 />
               </div>
-              <div
-                className="d-flex justify-content-between"
-                style={{
-                  marginTop: "3rem",
-                  alignItems: "start",
-                }}
-              >
-                <div>
-                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
-                    {/* Unrealized profit and loss */}
-                    Assets
-                  </h2>
-                  <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Scroll left and right to view more
-                  </p>
-                </div>
-                <div
-                  className="d-flex"
-                  style={{ alignItems: "center", paddingTop: "2px" }}
-                >
-                  <div
-                    onClick={this.handleDust}
-                    className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
-                  >
-                    <Form.Check
-                      type="switch"
-                      checked={this.state.showHideDustVal}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
-                      label={
-                        this.state.showHideDustVal
-                          ? "Reveal dust (less than $1)"
-                          : "Hide dust (less than $1)"
-                      }
-                    />
-                  </div>
-                </div>
+              <div style={{ marginTop: "2rem" }}>
+                {totalPage > 1 && (
+                  <SmartMoneyPagination
+                    history={this.props.history}
+                    location={this.props.location}
+                    page={this.state.currentPage + 1}
+                    pageCount={totalPage}
+                    pageLimit={API_LIMIT}
+                    onPageChange={(e) => {}}
+                    style={{ padding: "0px" }}
+                    isMobile
+                  />
+                )}
               </div>
-              <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message=" "
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ? []
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length > 0
-                      ? [
-                          {},
-                          ...this.props.intelligenceState.Average_cost_basis.filter(
-                            (item) => {
-                              return item.CurrentValue > 1;
-                            }
-                          ),
-                        ]
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length < 1
-                      ? []
-                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  addWatermark
-                  xAxisScrollable
-                  // yAxisScrollable
-                />
-              </div>
+
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
