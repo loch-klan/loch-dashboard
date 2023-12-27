@@ -1,58 +1,43 @@
 import React from "react";
-import { Image, Row, Col } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
-import TransactionTable from "../intelligence/TransactionTable";
+import { Col, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
+import searchIcon from "../../assets/images/icons/search-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import PageHeader from "../common/PageHeader";
+import TransactionTable from "../intelligence/TransactionTable";
 import "./_yieldOpportunities.scss";
 
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  Method,
   API_LIMIT,
-  START_INDEX,
-  SEARCH_BY_ASSETS_IN,
-  SEARCH_BY_TEXT,
-  SORT_BY_ASSET,
   BASE_URL_S3,
-  SORT_BY_VALUE,
+  Method,
+  SEARCH_BY_ASSETS_IN,
   SEARCH_BY_CHAIN_IN,
+  SEARCH_BY_TEXT,
   SORT_BY_APY,
+  SORT_BY_ASSET,
   SORT_BY_POOL,
   SORT_BY_PROJECT,
   SORT_BY_TVL,
+  SORT_BY_VALUE,
+  START_INDEX,
 } from "../../utils/Constant";
 import { searchTransactionApi } from "../intelligence/Api";
 import { getYieldOpportunities } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
-import {
-  FormElement,
-  Form,
-  CustomTextControl,
-  BaseReactComponent,
-} from "../../utils/form";
+import { toast } from "react-toastify";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  amountFormat,
-  CurrencyType,
-  mobileCheck,
-  noExponents,
-  numToCurrency,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   TimeSpentYieldOpportunities,
+  YieldOpportunitiesAssetFilter,
+  YieldOpportunitiesNetworkFilter,
   YieldOpportunitiesPageBack,
   YieldOpportunitiesPageNext,
   YieldOpportunitiesPageSearch,
   YieldOpportunitiesPageView,
   YieldOpportunitiesSearch,
   YieldOpportunitiesShare,
-  YieldOpportunitiesAssetFilter,
-  YieldOpportunitiesNetworkFilter,
   YieldOpportunitiesSortAPY,
   YieldOpportunitiesSortAsset,
   YieldOpportunitiesSortPool,
@@ -60,23 +45,37 @@ import {
   YieldOpportunitiesSortTVL,
   YieldOpportunitiesSortUSDvalue,
 } from "../../utils/AnalyticsFunctions";
-import Loading from "../common/Loading";
-import { toast } from "react-toastify";
-import FixAddModal from "../common/FixAddModal";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
-import { getFilters } from "../intelligence/Api";
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  CurrencyType,
+  UpgradeTriggered,
+  amountFormat,
+  mobileCheck,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "../../utils/form";
+import CustomDropdown from "../../utils/form/CustomDropdown";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   GetAllPlan,
   getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import FixAddModal from "../common/FixAddModal";
+import Loading from "../common/Loading";
 import Footer from "../common/footer";
-import CoinChip from "../wallet/CoinChip";
+import UpgradeModal from "../common/upgradeModal";
+import { getFilters } from "../intelligence/Api";
+import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
+import CoinChip from "../wallet/CoinChip";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -195,6 +194,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -557,6 +565,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortAsset({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "usdValue") {
@@ -569,6 +578,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortUSDvalue({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "project") {
@@ -581,6 +591,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortProject({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "pool") {
@@ -593,6 +604,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortPool({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "tvl") {
@@ -605,6 +617,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortTVL({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         } else if (val === "apy") {
@@ -617,6 +630,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           YieldOpportunitiesSortAPY({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
+            homePage: true,
           });
           this.updateTimer();
         }
@@ -931,6 +945,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -977,7 +993,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               subTitle={
                 "Yield bearing opportunties personalized for your portfolio"
               }
-              currentPage={"transaction-history"}
+              currentPage={"yield-opportunities"}
               history={this.props.history}
               ShareBtn={true}
               handleShare={this.handleShare}

@@ -1,12 +1,13 @@
 import React from "react";
-import { Form, FormElement, CustomTextControl } from "../../utils/form";
-import { Row, Col, Image, Button } from "react-bootstrap";
-import profileInfoIcon from "../../image/ProfileInfoIcon.svg";
+import { Button, Col, Row } from "react-bootstrap";
+import { CustomTextControl, Form, FormElement } from "../../utils/form";
 // import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import ReactDOM from 'react-dom';
-import { ManageLink, updateUser } from "./Api.js";
+import { ethers } from "ethers";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import {
   EmailAdded,
   FirstNameAdded,
@@ -15,12 +16,9 @@ import {
   ProfileSaved,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import UpgradeModal from "../common/upgradeModal";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { SigninWallet } from "../common/Api";
-import { ethers } from "ethers";
-import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
+import UpgradeModal from "../common/upgradeModal";
+import { ManageLink, updateUser } from "./Api.js";
 
 class ProfileForm extends BaseReactComponent {
   constructor(props) {

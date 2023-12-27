@@ -1,30 +1,30 @@
 import React from "react";
-import { Modal, Image, Button } from "react-bootstrap";
+import { Button, Image, Modal } from "react-bootstrap";
 // import closeIcon from '../../assets/images/icons/close-icon.svg'
-import closeIcon from "../../assets/images/icons/dummyX.svg";
 import { connect } from "react-redux";
-import {
-  updateWalletApi,
-  getAllWalletListApi,
-  getAllWalletApi,
-  deleteWallet,
-} from "./Api.js";
+import closeIcon from "../../assets/images/icons/dummyX.svg";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import {
-  SelectControl,
-  FormElement,
-  CustomTextControl,
-  FormValidator,
-  BaseReactComponent,
-  Form,
-} from "../../utils/form";
-import { lightenDarkenColor } from "../../utils/ReusableFunctions";
 import {
   AddNameTag,
   DeleteWallet,
   EditSpecificWallet,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { lightenDarkenColor } from "../../utils/ReusableFunctions";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormValidator,
+  SelectControl,
+} from "../../utils/form";
+import {
+  deleteWallet,
+  getAllWalletApi,
+  getAllWalletListApi,
+  updateWalletApi,
+} from "./Api.js";
 class EditWalletModal extends BaseReactComponent {
   constructor(props) {
     super(props);

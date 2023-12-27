@@ -1,4 +1,3 @@
-import { receivedPosts } from "./HomeAction";
 import { postLoginInstance, preLoginInstance } from "../../utils";
 
 export const fetchPosts = (cityName) => {
@@ -11,7 +10,6 @@ export const fetchPosts = (cityName) => {
       )
       .then((res) => {
         console.log("res", res);
-        dispatch(receivedPosts(res.data));
       });
   };
 };
