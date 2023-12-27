@@ -96,7 +96,7 @@ class PortfolioHomeDefiBlock extends Component {
         () => {
           setTimeout(() => {
             this.getYieldBalance();
-          }, 1000);
+          }, 5000);
         }
       );
     }

@@ -94,6 +94,96 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
         if (!res.data.error) {
+          const allChains = ctx.props.OnboardingState.coinsList;
+          let newAddWallet = [];
+          const apiResponse = res.data.data;
+          // console.log("res", apiResponse)
+          for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
+            let obj = {}; // <----- new Object
+            obj["address"] = apiResponse.user.user_wallets[i].address;
+            obj["displayAddress"] =
+              apiResponse.user.user_wallets[i]?.display_address;
+
+            // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+
+            const chainsDetected =
+              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+                ?.chains ||
+              apiResponse.wallets[
+                apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+              ]?.chains;
+
+            obj["coins"] = allChains.map((chain) => {
+              let coinDetected = false;
+              chainsDetected.map((item) => {
+                if (item.id === chain.id) {
+                  coinDetected = true;
+                }
+              });
+              return {
+                coinCode: chain.code,
+                coinSymbol: chain.symbol,
+                coinName: chain.name,
+                chain_detected: coinDetected,
+                coinColor: chain.color,
+              };
+            });
+            obj["wallet_metadata"] = apiResponse.user.user_wallets[i].wallet;
+            obj["id"] = `wallet${i + 1}`;
+            // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+            let chainLength =
+              apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
+                ?.chains?.length ||
+              apiResponse.wallets[
+                apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+              ]?.chains?.length;
+            obj["coinFound"] = chainLength > 0 ? true : false;
+
+            obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+            obj["showAddress"] =
+              apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
+            obj["showNickname"] =
+              apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
+            obj["nameTag"] = apiResponse.user.user_wallets[i].tag
+              ? apiResponse.user.user_wallets[i].tag
+              : "";
+            obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
+              ? true
+              : false;
+            newAddWallet.push(obj);
+          }
+          // console.log('newAddWallet',newAddWallet);
+          window.sessionStorage.setItem(
+            "addWallet",
+            JSON.stringify(newAddWallet)
+          );
+          if (ctx.props.addLocalWalletList) {
+            ctx.props.addLocalWalletList(JSON.stringify(newAddWallet));
+          }
+          ctx.state.changeList && ctx.state.changeList(newAddWallet);
+          if (ctx.props.apiResponse) {
+            // ctx.setState({
+            //    recievedResponse: true
+            // })
+
+            ctx.props.apiResponse(true);
+          }
+
+          if (ctx.props.handleUpdateWallet) {
+            ctx.props.handleUpdateWallet();
+          }
+          if (ctx.state.pageName == "Landing Page") {
+            ctx.props.history?.push("/home");
+          } else {
+            ctx.props.history?.push({
+              pathname: ctx.props.pathName,
+              state: {
+                addWallet: JSON.parse(
+                  window.sessionStorage.getItem("addWallet")
+                ),
+              },
+            });
+          }
           postLoginInstance
             .post("wallet/user-wallet/add-yield-pools", yieldData)
             .then(() => {
@@ -102,203 +192,8 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
                 payload: res,
               });
               // const allChains = getState().OnboardingState.coinsList;
-              const allChains = ctx.props.OnboardingState.coinsList;
-              let newAddWallet = [];
-              const apiResponse = res.data.data;
-              // console.log("res", apiResponse)
-              for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
-                let obj = {}; // <----- new Object
-                obj["address"] = apiResponse.user.user_wallets[i].address;
-                obj["displayAddress"] =
-                  apiResponse.user.user_wallets[i]?.display_address;
-
-                // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
-
-                const chainsDetected =
-                  apiResponse.wallets[
-                    apiResponse?.user?.user_wallets[i]?.address
-                  ]?.chains ||
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-                  ]?.chains;
-
-                obj["coins"] = allChains.map((chain) => {
-                  let coinDetected = false;
-                  chainsDetected.map((item) => {
-                    if (item.id === chain.id) {
-                      coinDetected = true;
-                    }
-                  });
-                  return {
-                    coinCode: chain.code,
-                    coinSymbol: chain.symbol,
-                    coinName: chain.name,
-                    chain_detected: coinDetected,
-                    coinColor: chain.color,
-                  };
-                });
-                obj["wallet_metadata"] =
-                  apiResponse.user.user_wallets[i].wallet;
-                obj["id"] = `wallet${i + 1}`;
-                // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
-                let chainLength =
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address
-                  ]?.chains?.length ||
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-                  ]?.chains?.length;
-                obj["coinFound"] = chainLength > 0 ? true : false;
-
-                obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
-                obj["showAddress"] =
-                  apiResponse.user.user_wallets[i]?.nickname === ""
-                    ? true
-                    : false;
-                obj["showNickname"] =
-                  apiResponse.user.user_wallets[i]?.nickname !== ""
-                    ? true
-                    : false;
-                obj["nameTag"] = apiResponse.user.user_wallets[i].tag
-                  ? apiResponse.user.user_wallets[i].tag
-                  : "";
-                obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
-                  ? true
-                  : false;
-                newAddWallet.push(obj);
-              }
-              // console.log('newAddWallet',newAddWallet);
-              window.sessionStorage.setItem(
-                "addWallet",
-                JSON.stringify(newAddWallet)
-              );
-              if (ctx.props.addLocalWalletList) {
-                ctx.props.addLocalWalletList(JSON.stringify(newAddWallet));
-              }
-              ctx.state.changeList && ctx.state.changeList(newAddWallet);
-              if (ctx.props.apiResponse) {
-                // ctx.setState({
-                //    recievedResponse: true
-                // })
-
-                ctx.props.apiResponse(true);
-              }
-
-              if (ctx.props.handleUpdateWallet) {
-                ctx.props.handleUpdateWallet();
-              }
-              if (ctx.state.pageName == "Landing Page") {
-                ctx.props.history?.push("/home");
-              } else {
-                ctx.props.history?.push({
-                  pathname: ctx.props.pathName,
-                  state: {
-                    addWallet: JSON.parse(
-                      window.sessionStorage.getItem("addWallet")
-                    ),
-                  },
-                });
-              }
             })
-            .catch((err) => {
-              const allChains = ctx.props.OnboardingState.coinsList;
-              let newAddWallet = [];
-              const apiResponse = res.data.data;
-              // console.log("res", apiResponse)
-              for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
-                let obj = {}; // <----- new Object
-                obj["address"] = apiResponse.user.user_wallets[i].address;
-                obj["displayAddress"] =
-                  apiResponse.user.user_wallets[i]?.display_address;
-
-                // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
-
-                const chainsDetected =
-                  apiResponse.wallets[
-                    apiResponse?.user?.user_wallets[i]?.address
-                  ]?.chains ||
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-                  ]?.chains;
-
-                obj["coins"] = allChains.map((chain) => {
-                  let coinDetected = false;
-                  chainsDetected.map((item) => {
-                    if (item.id === chain.id) {
-                      coinDetected = true;
-                    }
-                  });
-                  return {
-                    coinCode: chain.code,
-                    coinSymbol: chain.symbol,
-                    coinName: chain.name,
-                    chain_detected: coinDetected,
-                    coinColor: chain.color,
-                  };
-                });
-                obj["wallet_metadata"] =
-                  apiResponse.user.user_wallets[i].wallet;
-                obj["id"] = `wallet${i + 1}`;
-                // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
-                let chainLength =
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address
-                  ]?.chains?.length ||
-                  apiResponse.wallets[
-                    apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-                  ]?.chains?.length;
-                obj["coinFound"] = chainLength > 0 ? true : false;
-
-                obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
-                obj["showAddress"] =
-                  apiResponse.user.user_wallets[i]?.nickname === ""
-                    ? true
-                    : false;
-                obj["showNickname"] =
-                  apiResponse.user.user_wallets[i]?.nickname !== ""
-                    ? true
-                    : false;
-                obj["nameTag"] = apiResponse.user.user_wallets[i].tag
-                  ? apiResponse.user.user_wallets[i].tag
-                  : "";
-                obj["showNameTag"] = apiResponse.user.user_wallets[i].tag
-                  ? true
-                  : false;
-                newAddWallet.push(obj);
-              }
-              // console.log('newAddWallet',newAddWallet);
-              window.sessionStorage.setItem(
-                "addWallet",
-                JSON.stringify(newAddWallet)
-              );
-              if (ctx.props.addLocalWalletList) {
-                ctx.props.addLocalWalletList(JSON.stringify(newAddWallet));
-              }
-              ctx.state.changeList && ctx.state.changeList(newAddWallet);
-              if (ctx.props.apiResponse) {
-                // ctx.setState({
-                //    recievedResponse: true
-                // })
-
-                ctx.props.apiResponse(true);
-              }
-
-              if (ctx.props.handleUpdateWallet) {
-                ctx.props.handleUpdateWallet();
-              }
-              if (ctx.state.pageName == "Landing Page") {
-                ctx.props.history?.push("/home");
-              } else {
-                ctx.props.history?.push({
-                  pathname: ctx.props.pathName,
-                  state: {
-                    addWallet: JSON.parse(
-                      window.sessionStorage.getItem("addWallet")
-                    ),
-                  },
-                });
-              }
-            });
+            .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
         }

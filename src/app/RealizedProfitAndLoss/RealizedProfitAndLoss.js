@@ -215,13 +215,26 @@ class RealizedProfitAndLoss extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    this.startPageView();
-    this.props.getAllCoins();
-    //here this.timeFilter(0, true);
-    this.callTimeFilter();
-    this.props.GetAllPlan();
-    this.props.getUser();
-    this.assetList();
+    if (
+      !this.props.commonState.realizedGainsPage ||
+      !(
+        this.props.intelligenceState?.graphValue &&
+        this.props.intelligenceState?.graphValue.length > 0
+      )
+    ) {
+      this.startPageView();
+      this.props.getAllCoins();
+      //here this.timeFilter(0, true);
+      this.callTimeFilter();
+      this.props.GetAllPlan();
+      this.props.getUser();
+      this.assetList();
+    } else {
+      this.props.updateWalletListFlag("realizedGainsPage", true);
+      this.setState({
+        isGraphLoading: false,
+      });
+    }
 
     let obj = UpgradeTriggered();
 
@@ -306,8 +319,8 @@ class RealizedProfitAndLoss extends Component {
       });
     }
 
-    if (!this.props.commonState.intelligence) {
-      this.props.updateWalletListFlag("intelligence", true);
+    if (!this.props.commonState.realizedGainsPage) {
+      this.props.updateWalletListFlag("realizedGainsPage", true);
       this.props.getAllCoins();
       //here this.timeFilter(0);
       this.callTimeFilter();
@@ -318,11 +331,6 @@ class RealizedProfitAndLoss extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
-    }
-
-    if (!this.props.commonState.insight) {
-      this.props.updateWalletListFlag("insight", true);
-      this.props.getAllInsightsApi(this);
     }
 
     if (

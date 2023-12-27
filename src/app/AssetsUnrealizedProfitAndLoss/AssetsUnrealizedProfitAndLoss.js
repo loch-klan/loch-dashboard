@@ -174,12 +174,25 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.props.history.push("/home");
     }
 
-    this.props.getAllCoins();
+    if (
+      !this.props.commonState.assetsPage ||
+      !(
+        this.props.intelligenceState?.graphValue &&
+        this.props.intelligenceState?.graphValue.length > 0
+      )
+    ) {
+      this.props.getAllCoins();
 
-    this.props.getAvgCostBasis(this);
-    this.props.GetAllPlan();
-    this.props.getUser();
-
+      this.props.getAvgCostBasis(this);
+      this.props.GetAllPlan();
+      this.props.getUser();
+    } else {
+      this.props.updateWalletListFlag("assetsPage", true);
+      this.setState({
+        AvgCostLoading: false,
+      });
+      this.combinedResults();
+    }
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const addAddress = params.get("add-address");
@@ -210,30 +223,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         );
         this.props.updateAverageCostBasis(array, this);
       } else {
-        let tempcombinedCostBasis = 0;
-        let tempcombinedCurrentValue = 0;
-        let tempcombinedUnrealizedGains = 0;
-        let tempcombinedReturn = 0;
-        if (this.props.intelligenceState?.net_return) {
-          tempcombinedReturn = this.props.intelligenceState?.net_return;
-        }
-        if (this.props.intelligenceState?.total_bal) {
-          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-        }
-        if (this.props.intelligenceState?.total_cost) {
-          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-        }
-        if (this.props.intelligenceState?.total_gain) {
-          tempcombinedUnrealizedGains =
-            this.props.intelligenceState?.total_gain;
-        }
-
-        this.setState({
-          combinedCostBasis: tempcombinedCostBasis,
-          combinedCurrentValue: tempcombinedCurrentValue,
-          combinedUnrealizedGains: tempcombinedUnrealizedGains,
-          combinedReturn: tempcombinedReturn,
-        });
+        this.combinedResults();
       }
     }
     // add wallet
@@ -257,7 +247,31 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.props.getAllWalletListApi(tempData, this);
     }
   }
+  combinedResults = (data) => {
+    let tempcombinedCostBasis = 0;
+    let tempcombinedCurrentValue = 0;
+    let tempcombinedUnrealizedGains = 0;
+    let tempcombinedReturn = 0;
+    if (this.props.intelligenceState?.net_return) {
+      tempcombinedReturn = this.props.intelligenceState?.net_return;
+    }
+    if (this.props.intelligenceState?.total_bal) {
+      tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+    }
+    if (this.props.intelligenceState?.total_cost) {
+      tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+    }
+    if (this.props.intelligenceState?.total_gain) {
+      tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+    }
 
+    this.setState({
+      combinedCostBasis: tempcombinedCostBasis,
+      combinedCurrentValue: tempcombinedCurrentValue,
+      combinedUnrealizedGains: tempcombinedUnrealizedGains,
+      combinedReturn: tempcombinedReturn,
+    });
+  };
   // For add new address
   handleAddModal = () => {
     this.setState({

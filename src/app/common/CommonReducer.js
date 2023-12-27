@@ -25,6 +25,8 @@ const INITIAL_STATE = {
   profile_credit: false,
   gasFeesPage: false,
   counterpartyVolumePage: false,
+  assetsPage: false,
+  realizedGainsPage: false,
   // top account
   top_home: false,
   top_intelligence: false,
@@ -63,6 +65,8 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         profile_credit: false,
         gasFeesPage: false,
         counterpartyVolumePage: false,
+        assetsPage: false,
+        realizedGainsPage: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {
