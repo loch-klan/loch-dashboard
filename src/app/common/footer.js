@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import mediumIcon from "../../assets/images/icons/medium.png";
-import TwitterIcon from "../../assets/images/icons/twitter.png";
-import TelegramIcon from "../../assets/images/icons/telegram.png";
 import moment from "moment";
+import React, { Component } from "react";
 import { Image } from "react-bootstrap";
+import TelegramIcon from "../../assets/images/icons/telegram.png";
+import TwitterIcon from "../../assets/images/icons/twitter.png";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class Footer extends Component {

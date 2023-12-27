@@ -1,18 +1,16 @@
-import { useState } from "react";
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
   CounterpartyFeesSpecificBar,
   FeesSpecificBar,
   HomeCounterPartyHover,
 } from "../../utils/AnalyticsFunctions";
-import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
-  amountFormat,
   CurrencyType,
+  amountFormat,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import GraphLogo from "../../assets/images/graph-logo.svg";
 
 export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;

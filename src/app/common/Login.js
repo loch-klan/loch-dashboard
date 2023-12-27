@@ -1,19 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  BaseReactComponent,
-  CustomTextControl,
-  Form,
-  FormElement,
-  FormSubmitButton,
-  FormValidator,
-} from "../../utils/form";
-import { deleteToken, setLocalStoraage } from "../../utils/ManageToken";
+import { setLocalStoraage } from "../../utils/ManageToken";
+import { BaseReactComponent } from "../../utils/form";
 import { GetDefaultPlan, loginApi } from "./Api";
 // import { loginApi } from './Api';
-import logo from "../../image/Loch.svg";
-import beta from "../../image/BetaIcon.svg";
-import { Image } from "react-bootstrap";
 import { getDetailsByLinkApi } from "../Portfolio/Api";
 import { createAnonymousUserApi, getAllCoins } from "../onboarding/Api";
 import Loading from "./Loading";

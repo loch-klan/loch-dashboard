@@ -1,159 +1,132 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import WelcomeCard from "./WelcomeCard";
-import LineChartSlider from "./LineCharSlider";
-import prevIcon from "../../assets/images/icons/prev-arrow.svg";
-import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import LightBulb from "../../assets/images/icons/lightbulb.svg";
-import ArrowRight from "../../assets/images/icons/arrow-right.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import LineChartSlider from "./LineCharSlider";
+import WelcomeCard from "./WelcomeCard";
 
-import {
-  getCoinRate,
-  getDetailsByLinkApi,
-  getUserWallet,
-  getYesterdaysBalanceApi,
-  settingDefaultValues,
-  getExternalEventsApi,
-  getExchangeBalances,
-} from "./Api";
-import { Image, Row, Col } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from "../common/FixAddModal";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import TransactionTable from "../intelligence/TransactionTable";
-import BarGraphSection from "./../common/BarGraphSection";
-import { getAllWalletListApi } from "../wallet/Api";
+import FixAddModal from "../common/FixAddModal";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
+import TransactionTable from "../intelligence/TransactionTable";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
+import BarGraphSection from "./../common/BarGraphSection";
+import {
+  getCoinRate,
+  getDetailsByLinkApi,
+  getExchangeBalances,
+  getExternalEventsApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api";
 
+import moment from "moment";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import {
+  BASE_URL_S3,
+  GROUP_BY_DATE,
+  GroupByOptions,
+  SEARCH_BY_WALLET_ADDRESS_IN,
+  SORT_BY_APY,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_METHOD,
+  SORT_BY_POOL,
+  SORT_BY_PROJECT,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_TVL,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_VALUE,
+  START_INDEX,
+} from "../../utils/Constant";
 import {
   getDetectedChainsApi,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
+
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  START_INDEX,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_METHOD,
-  GroupByOptions,
-  GROUP_BY_DATE,
-  InsightType,
-  DEFAULT_PRICE,
-  BASE_URL_S3,
-  API_LIMIT,
-  SORT_BY_TVL,
-  SORT_BY_APY,
-  SORT_BY_POOL,
-  SORT_BY_PROJECT,
-  SORT_BY_VALUE,
-} from "../../utils/Constant";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import moment from "moment";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
-import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
-import {
-  ManageWallets,
-  AverageCostBasisEView,
-  TimeSpentHome,
-  TransactionHistoryAddress,
-  TransactionHistoryDate,
-  TransactionHistoryFrom,
-  TransactionHistoryTo,
-  TransactionHistoryAsset,
-  TransactionHistoryUSD,
-  ProfitLossEV,
-  HomePage,
-  HomeInsightsExpand,
   AddMoreAddres,
   AssetValueExpandview,
+  AverageCostBasisEView,
+  GasFeesEV,
   HomeCostSortByAsset,
+  HomePage,
+  HomeShare,
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
-  HomeCostAssetHover,
+  ManageWallets,
   NetflowSwitchHome,
-  resetUser,
-  CostCostBasisHover,
-  CostCurrentValueHover,
-  TransactionHistoryWalletClicked,
-  HomeShare,
-  YieldOpportunitiesSortAsset,
-  YieldOpportunitiesSortUSDvalue,
-  YieldOpportunitiesSortProject,
-  YieldOpportunitiesSortPool,
-  YieldOpportunitiesSortTVL,
-  YieldOpportunitiesSortAPY,
-  YieldOppurtunitiesExpandediew,
-  TransactionHistoryEView,
-  GasFeesEV,
-  VolumeTradeByCP,
   PriceGaugeEV,
+  ProfitLossEV,
+  TimeSpentHome,
+  TransactionHistoryAddress,
+  TransactionHistoryAsset,
+  TransactionHistoryDate,
+  TransactionHistoryEView,
+  TransactionHistoryFrom,
+  TransactionHistoryTo,
+  TransactionHistoryWalletClicked,
+  VolumeTradeByCP,
+  YieldOpportunitiesSortAPY,
+  YieldOpportunitiesSortAsset,
+  YieldOpportunitiesSortPool,
+  YieldOpportunitiesSortProject,
+  YieldOpportunitiesSortTVL,
+  YieldOpportunitiesSortUSDvalue,
+  YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
-import { getAssetGraphDataApi } from "./Api";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import {
-  getAllCounterFeeApi,
-  getAllFeeApi,
-  getAvgCostBasis,
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
-import Loading from "../common/Loading";
-import {
-  amountFormat,
   CurrencyType,
-  lightenDarkenColor,
-  loadingAnimation,
+  TruncateText,
+  UpgradeTriggered,
+  amountFormat,
   mobileCheck,
   noExponents,
   numToCurrency,
-  TruncateText,
-  UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import PieChart2 from "./PieChart2";
-import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
-import { GraphHeader } from "../common/GraphHeader";
+import Loading from "../common/Loading";
+import UpgradeModal from "../common/upgradeModal";
+import {
+  ResetAverageCostBasis,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+} from "../cost/Api";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
-import Slider from "react-slick";
+import { getAssetGraphDataApi } from "./Api";
 
+import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
-import { toast } from "react-toastify";
-import "./_mobilePortfolio.scss";
-import arrowUp from "../../assets/images/arrow-up.svg";
-import LinkIcon from "../../assets/images/link.svg";
 import PortfolioMobile from "./PortfolioMobile";
-import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-} from "../../assets/images/icons/index.js";
-import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
-import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
+import "./_mobilePortfolio.scss";
+
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
-import CoinChip from "../wallet/CoinChip.js";
+import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
+import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
-import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
+import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 
 class Portfolio extends BaseReactComponent {
@@ -2950,142 +2923,7 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Amount"
-      //       onClick={() => this.handleSort(this.state.sortBy[3])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Amount
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "Amount",
-      //   // coumnWidth: 108,
-      //   coumnWidth: 0.16,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "Amount") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={Number(noExponents(rowData.Amount)).toLocaleString(
-      //             "en-US"
-      //           )}
-      //         >
-      //           <span>
-      //             {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Cost Basis"
-      //       onClick={() => this.handleSort(this.state.sortBy[4])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Cost basis
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CostBasis",
-      //   // coumnWidth: 100,
-      //   coumnWidth: 0.34,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CostBasis") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             rowData.CostBasis === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CostBasis.toFixed(2))
-      //               ).toLocaleString("en-US")
-      //           }
-      //         >
-      //           <span>
-      //             {rowData.CostBasis === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CostBasis.toFixed(2))
-      //               ).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Current Value"
-      //       onClick={() => this.handleSort(this.state.sortBy[5])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Current value
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CurrentValue",
-      //   // coumnWidth: 140,
-      //   coumnWidth: 0.37,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CurrentValue") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             CurrencyType(false) +
-      //             Number(
-      //               noExponents(rowData.CurrentValue.toFixed(2))
-      //             ).toLocaleString("en-US")
-      //           }
-      //         >
-      //           <span>
-      //             {CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CurrentValue.toFixed(2))
-      //               ).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
+
       {
         labelName: (
           <div
@@ -3292,86 +3130,7 @@ class Portfolio extends BaseReactComponent {
                   minWidth: "85rem",
                   marginTop: "11rem",
                 }}
-              >
-                {/* <PieChart2
-                  isAddressFollowedCount={this.state.isAddressFollowedCount}
-                  afterAddressFollowed={this.afterAddressFollowed}
-                  setLoader={this.setLoader}
-                  chainLoader={this.state.chainLoader}
-                  totalChainDetechted={this.state.totalChainDetechted}
-                  userWalletData={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.chainWallet &&
-                    Object.keys(this.props.portfolioState.chainWallet).length >
-                      0
-                      ? Object.values(this.props.portfolioState.chainWallet)
-                      : null
-                  }
-                  chainPortfolio={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.chainPortfolio &&
-                    Object.keys(this.props.portfolioState.chainPortfolio)
-                      .length > 0
-                      ? Object.values(this.props.portfolioState.chainPortfolio)
-                      : null
-                  }
-                  allCoinList={
-                    this.props.OnboardingState &&
-                    this.props.OnboardingState.coinsList &&
-                    Object.keys(this.props.OnboardingState.coinsList).length > 0
-                      ? Object.values(this.props.OnboardingState.coinsList)
-                      : null
-                  }
-                  assetTotal={getTotalAssetValue()}
-                  assetPrice={
-                    this.props.portfolioState.assetPrice &&
-                    Object.keys(this.props.portfolioState.assetPrice).length > 0
-                      ? Object.values(this.props.portfolioState.assetPrice)
-                      : null
-                  }
-                  isLoading={this.state.isLoading}
-                  isUpdate={this.state.isUpdate}
-                  walletTotal={this.props.portfolioState.walletTotal}
-                  // handleAddModal={this.handleAddModal}
-                  // handleManage={() => {
-                  //   this.props.history.push("/wallets");
-                  //   ManageWallets({
-                  //     session_id: getCurrentUser().id,
-                  //     email_address: getCurrentUser().email,
-                  //   });
-                  // }}
-                  undetectedWallet={(e) => this.undetectedWallet(e)}
-                  getProtocolTotal={this.getProtocolTotal}
-                  updateTimer={this.updateTimer}
-                  userWalletList={this.state.userWalletList}
-                /> */}
-                {/* {this.state.userWalletList?.findIndex(
-                  (w) => w.coinFound !== true
-                ) > -1 && this.state.userWalletList[0]?.address !== "" ? (
-                  <div
-                    className="fix-div"
-                    id="fixbtn"
-                    style={this.state.showBtn ? { display: "none" } : {}}
-                  >
-                    <div className="m-r-8 decribe-div">
-                      <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
-                        Wallet undetected
-                      </div>
-                      <div className="inter-display-medium f-s-13 lh-16 grey-737">
-                        One or more wallets were not detected{" "}
-                      </div>
-                    </div>
-                    <Button
-                      className="secondary-btn"
-                      onClick={this.handleFixModal}
-                    >
-                      Fix
-                    </Button>
-                  </div>
-                ) : (
-                  ""
-                )} */}
-              </div>
+              ></div>
 
               <div className="m-b-22 graph-table-section">
                 <Row>
@@ -3711,54 +3470,6 @@ class Portfolio extends BaseReactComponent {
                         ) : null}
                       </div>
                     </div>
-                    {/* 
-                    <div className="profit-chart">
-                      <BarGraphSection
-                        disableOnLoading
-                        noSubtitleBottomPadding
-                        loaderHeight={15.5}
-                        headerTitle="Realized profit and loss"
-                        headerSubTitle="Understand your portfolio's net flows"
-                        isArrow={true}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/intelligence#netflow");
-                          }
-                        }}
-                        isScrollVisible={false}
-                        data={
-                          this.props.intelligenceState?.graphValue &&
-                          this.props.intelligenceState?.graphValue[0]
-                        }
-                        options={
-                          this.props.intelligenceState?.graphValue &&
-                          this.props.intelligenceState?.graphValue[1]
-                        }
-                        coinsList={this.props.OnboardingState.coinsList}
-                        marginBottom="m-b-32"
-                        showFooter={false}
-                        showBadges={false}
-                        // showPercentage={
-                        //   this.props.intelligenceState.graphValue &&
-                        //   this.props.intelligenceState.graphValue[2]
-                        // }
-                        showSwitch={true}
-                        isLoading={this.state.netFlowLoading}
-                        className={"portfolio-profit-and-loss"}
-                        isMinichart={true}
-                        ProfitLossAsset={
-                          this.props.intelligenceState.ProfitLossAsset
-                        }
-                        isSwitch={this.state.isSwitch}
-                        setSwitch={this.setSwitch}
-                        isSmallerToggle
-                      />
-                    </div> 
-                    */}
                   </Col>
                 </Row>
               </div>
@@ -3968,43 +3679,6 @@ class Portfolio extends BaseReactComponent {
                       </div>
                     </div>
                   </Col>
-                  {/* <Col md={6}>
-                    <div className="profit-chart">
-                      <BarGraphSection
-                        headerTitle="Net Flows"
-                        headerSubTitle="Understand your portfolio's net flows"
-                        isArrow={true}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/intelligence#netflow");
-                          }
-                        }}
-                        isScrollVisible={false}
-                        data={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[0]
-                        }
-                        options={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[1]
-                        }
-                        coinsList={this.props.OnboardingState.coinsList}
-                        marginBottom="m-b-32"
-                        showFooter={false}
-                        showBadges={false}
-                        showPercentage={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[2]
-                        }
-                        isLoading={this.state.netFlowLoading}
-                        className={"portfolio-profit-and-loss"}
-                      />
-                    </div>
-                  </Col> */}
                 </Row>
               </div>
 

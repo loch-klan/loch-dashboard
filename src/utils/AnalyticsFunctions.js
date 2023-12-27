@@ -5371,26 +5371,8 @@ export const MenuDiscoverTab = ({ session_id, email_address }) => {
 };
 
 //Menu: Top accounts - done
-export const MenuTopAccounts = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts");
-};
 
 //Menu: Twitter influencers - done
-export const MenuTwitterInfluencers = ({ session_id, email_address }) => {
-  const event_name = "Menu: Twitter influencers";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Twitter influencers");
-};
 
 //Menu: Watchlist - done
 export const MenuWatchlist = ({ session_id, email_address }) => {
@@ -5436,103 +5418,6 @@ export const TopbarSignin = ({ session_id, email_address }) => {
   ////console.log("Topbar: sign up");
 };
 
-//Menu: Top accounts: home - done
-export const MenuTopAccountsHome = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: home";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: home");
-};
-
-//Menu: Top accounts: intelligence - done
-export const MenuTopAccountsInt = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: intelligence";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: intelligence");
-};
-
-//Menu: Top accounts: netflows - done
-export const MenuTopAccountsNetflow = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: netflows";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: netflows");
-};
-
-//Menu: Top accounts: asst value chart - done
-export const MenuTopAccountsAssetValue = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: asst value chart";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: asst value chart");
-};
-
-//Menu: Top accounts: costs - done
-export const MenuTopAccountsCosts = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: costs";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: costs");
-};
-//Menu: Top accounts: transaction history - done
-export const MenuTopAccountsTH = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: transaction history";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: transaction history");
-};
-
-//Menu: Top accounts: insights - done
-export const MenuTopAccountsInsight = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: insights";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: insights");
-};
-
-//Menu: Top accounts: defi - done
-export const MenuTopAccountsDefi = ({ session_id, email_address }) => {
-  const event_name = "Menu: Top accounts: defi";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Menu: Top accounts: defi");
-};
-
-//Page View: Top accounts - done
-export const TopAccountPageView = ({ session_id, email_address }) => {
-  const event_name = "Page View: Top accounts";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Page View: Top accounts");
-};
 export const SmartMoneyPageView = ({ session_id, email_address, isMobile }) => {
   const event_name = "Page View: Smart money";
   const eventProperties = {
@@ -5568,64 +5453,7 @@ export const SmartMoneyShare = ({ session_id, email_address, isMobile }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:go");
 };
-export const TopAccountTimeSpent = ({
-  session_id,
-  email_address,
-  time_spent,
-}) => {
-  const event_name = "Top accounts: time spents on top accounts page";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "time spent": time_spent,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: time spents on top accounts page");
-};
 
-//Top accounts: time filter - done
-export const TopAccountTimeFilter = ({
-  session_id,
-  email_address,
-  selected,
-}) => {
-  const event_name = "Top accounts: time filter";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "selected time": selected,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: time filter");
-};
-
-//Top accounts: net worth filter - done
-export const TopAccountNetworthFilter = ({
-  session_id,
-  email_address,
-  selected,
-}) => {
-  const event_name = "Top accounts: net worth filter";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "selected net worth": selected,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: net worth filter");
-};
-
-//Top accounts: search - done
-export const TopAccountSearch = ({ session_id, email_address, search }) => {
-  const event_name = "Top accounts: search";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    searched: search,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: search");
-};
 //Watchlist : search
 export const WatchlistSearch = ({ session_id, email_address, search }) => {
   const event_name = "Watchlist: search";
@@ -5720,93 +5548,6 @@ export const WatchlistAnalyzedCheckbox = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const TopAccountAddAccountToWatchList = ({
-  session_id,
-  email_address,
-  address,
-}) => {
-  const event_name = "Top accounts: add account to watch list";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    address: address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-};
-export const TopAccountRemoveAccountFromWatchList = ({
-  session_id,
-  email_address,
-  address,
-}) => {
-  const event_name = "Top accounts: remove account from watch list";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    address: address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-};
-
-//Top accounts: sort by name tag - done
-export const TopAccountSortByTag = ({ session_id, email_address }) => {
-  const event_name = "Top accounts: sort by name tag";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: sort by name tag");
-};
-
-//Top accounts: sort by net worth- done
-export const TopAccountSortByNetWorth = ({ session_id, email_address }) => {
-  const event_name = "Top accounts: sort by net worth";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: sort by net worth");
-};
-
-//Top accounts: sort by net flows - done
-export const TopAccountSortByNetflows = ({ session_id, email_address }) => {
-  const event_name = "Top accounts: sort by net flows";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: sort by net flows");
-};
-
-//Top accounts: largest inflows hover - done
-export const TopAccountInflowHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Top accounts: largest inflows hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    hovered: hover,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: largest inflows hover");
-};
-
-//Top accounts: largest outflows hover- done
-export const TopAccountOutflowHover = ({
-  session_id,
-  email_address,
-  hover,
-}) => {
-  const event_name = "Top accounts: largest outflows hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    hovered: hover,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: largest outflows hover");
-};
 
 //Whale watch individual: account clicked - done
 export const WhaleIndividualClickedAccount = ({
@@ -5825,22 +5566,7 @@ export const WhaleIndividualClickedAccount = ({
 };
 
 //Top accounts: account clicked - done
-export const TopAccountClickedAccount = ({
-  session_id,
-  email_address,
-  account,
-  name_tag,
-}) => {
-  const event_name = "Top accounts: account clicked";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "selected account": account,
-    "name tag": name_tag,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: account clicked");
-};
+
 export const WatchlistClickedAccount = ({
   session_id,
   email_address,
@@ -5857,17 +5583,6 @@ export const WatchlistClickedAccount = ({
   sendAmplitudeData(event_name, eventProperties);
 };
 
-//Top accounts: name tag hover - done
-export const TopAccountNameHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Top accounts: name tag hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    hovered: hover,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: name tag hover");
-};
 export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
   const event_name = "Watchlist: name tag hover";
   const eventProperties = {
@@ -5876,18 +5591,6 @@ export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
     hovered: hover,
   };
   sendAmplitudeData(event_name, eventProperties);
-};
-
-//Top accounts: net worth hover - done
-export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
-  const event_name = "Top accounts: net worth hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    hovered: hover,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: net worth hover");
 };
 
 export const SmartMoneySignUp = ({ session_id, email_address, isMobile }) => {
@@ -6057,56 +5760,7 @@ export const SmartMoneyReturnHover = ({ session_id, email_address, hover }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const TopAccountNetflowHover = ({
-  session_id,
-  email_address,
-  hover,
-}) => {
-  const event_name = "Top accounts: net flows hover";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    hovered: hover,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: net flows hover");
-};
 
-//Top accounts: page next - done
-export const TopAccountPageNext = ({ session_id, email_address, page }) => {
-  const event_name = "Top accounts: next page";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    page: page,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: page next");
-};
-
-//Top accounts: page previous - done
-export const TopAccountPagePrev = ({ session_id, email_address, page }) => {
-  const event_name = "Top accounts: previous page";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    page: page,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: page previous");
-};
-
-//Top accounts: page search- done
-export const TopAccountPageSearch = ({ session_id, email_address, page }) => {
-  const event_name = "Top accounts: page search";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "page searched": page,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Top accounts: page search");
-};
 export const SmartMoneyPageNext = ({
   session_id,
   email_address,
@@ -6175,28 +5829,6 @@ export const WhaleShare = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");
-};
-
-//46. top account: share - done
-export const TopAccountShare = ({ session_id, email_address }) => {
-  const event_name = "Top accounts: share";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Top Accounts: share");
-};
-
-//46.Twitter Influencers: share- done
-export const TwitterInfluencerShare = ({ session_id, email_address }) => {
-  const event_name = "Twitter Influencers: share";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Twitter Influencers: share");
 };
 
 //46. Watchlist: share - done

@@ -1,11 +1,14 @@
 import { Component } from "react";
+import { Col, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { AssetType, InsightType } from "../../utils/Constant";
-import { Col, Image, Row } from "react-bootstrap";
+import {
+  DefiBlockExpandediew,
+  HomeDefiDebt,
+  HomeDefiYield,
+} from "../../utils/AnalyticsFunctions";
+import { AssetType } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   amountFormat,
@@ -13,17 +16,11 @@ import {
   loadingAnimation,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import Loading from "../common/Loading";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { updateDefiData } from "../defi/Api";
 import { updateWalletListFlag } from "../common/Api";
+import Loading from "../common/Loading";
+import { updateDefiData } from "../defi/Api";
 import { getProtocolBalanceApi } from "./Api";
-import {
-  DefiBlockExpandediew,
-  HomeDefiDebt,
-  HomeDefiYield,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 
 class PortfolioHomeDefiBlock extends Component {
   constructor(props) {

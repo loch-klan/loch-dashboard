@@ -1,10 +1,7 @@
+import moment from "moment/moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PageHeader from "../common/PageHeader.js";
-import BarGraphSection from "../common/BarGraphSection.js";
-import { getAllCoins } from "../onboarding/Api.js";
 import {
-  IntelligencePage,
   IntShare,
   netflowAssetFilter,
   netflowChainFilter,
@@ -14,21 +11,22 @@ import {
   NetflowSwitch,
   RealizedGainsPageTimeSpentMP,
   RealizedGainsPageViewMP,
-  TimeSpentIntelligence,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
-import moment from "moment/moment";
-import { getAllWalletListApi } from "../wallet/Api.js";
+import BarGraphSection from "../common/BarGraphSection.js";
+import Loading from "../common/Loading.js";
+import PageHeader from "../common/PageHeader.js";
 import {
+  getAllInsightsApi,
   getAssetProfitLoss,
   getProfitAndLossApi,
   getTransactionAsset,
-  getAllInsightsApi,
 } from "../intelligence/Api";
-import Loading from "../common/Loading.js";
+import { getAllCoins } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api.js";
 
-import { BASE_URL_S3 } from "../../utils/Constant.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api.js";
 
 // Add new Wallet
@@ -38,17 +36,16 @@ import {
   settingDefaultValues,
 } from "../Portfolio/Api.js";
 
-import FixAddModal from "../common/FixAddModal.js";
-import { GetAllPlan, getUser } from "../common/Api.js";
-import {
-  UpgradeTriggered,
-  mobileCheck,
-} from "../../utils/ReusableFunctions.js";
-import UpgradeModal from "../common/upgradeModal.js";
 import { toast } from "react-toastify";
+import {
+  mobileCheck,
+  UpgradeTriggered,
+} from "../../utils/ReusableFunctions.js";
+import { GetAllPlan, getUser } from "../common/Api.js";
+import FixAddModal from "../common/FixAddModal.js";
 import Footer from "../common/footer.js";
+import UpgradeModal from "../common/upgradeModal.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
-import { EyeThinIcon } from "../../assets/images/icons/index.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {

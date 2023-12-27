@@ -1,15 +1,10 @@
 import React from "react";
 
-import CustomTable from "./../../utils/commonComponent/CustomTable";
-import { GraphHeader } from "../common/GraphHeader";
-import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
-import ActivePrevBtn from "../../assets/images/icons/ActivePrevBtn.svg";
 import ActiveNextBtn from "../../assets/images/icons/ActiveNextBtn.svg";
+import ActivePrevBtn from "../../assets/images/icons/ActivePrevBtn.svg";
 import InactivePrevBtn from "../../assets/images/icons/InactivePrevBtn.svg";
-import transactionTableImage from "../../assets/images/transactionTableImage.png";
-import Loading from "../common/Loading";
-import { TransactionHistoryHover } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { GraphHeader } from "../common/GraphHeader";
+import CustomTable from "./../../utils/commonComponent/CustomTable";
 function TransactionTable(props) {
   return (
     <div

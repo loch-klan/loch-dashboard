@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Image, Button } from "react-bootstrap";
+import { Image, Modal } from "react-bootstrap";
 
 import { CloseIcon, TrophyIcon } from "../../assets/images/icons";
 import { BaseReactComponent, CustomButton } from "../../utils/form";

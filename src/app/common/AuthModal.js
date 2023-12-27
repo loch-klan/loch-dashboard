@@ -1,47 +1,43 @@
 import React from "react";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button } from "react-bootstrap";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import FormValidator from "./../../utils/form/FormValidator";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
-  fixWalletApi,
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding//Api";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import {
   SendOtp,
-  setPageFlagDefault,
   SigninWallet,
   VerifyEmail,
+  fixWalletApi,
+  setPageFlagDefault,
 } from "./Api.js";
 
-import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
-import { getCurrentUser } from "../../utils/ManageToken";
 import {
   ConnectExPopupEmailAdded,
   GeneralPopupEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
-  WhaleCreateAccountEmailSaved,
   WhaleCreateAccountPrivacyHover,
-  WhalePopup,
   WhalePopupEmailAdded,
 } from "../../utils/AnalyticsFunctions";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
-import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {

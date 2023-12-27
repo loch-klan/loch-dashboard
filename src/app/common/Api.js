@@ -3,30 +3,27 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   SigninMenuEmailVerified,
-  SigninModalTrack,
-  signInUser,
-  signUpProperties,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
   WhalePopupEmailVerified,
-  FollowSignInPopupEmailVerified,
+  signInUser,
+  signUpProperties,
 } from "../../utils/AnalyticsFunctions";
-import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
   LOCAL_ADD_WALLET_LIST,
-  PAGE_POPUP,
   SET_DEFAULT_VALUE,
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
-import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance

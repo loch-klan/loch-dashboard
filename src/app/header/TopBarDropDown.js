@@ -1,11 +1,10 @@
 import React, { useRef, useState } from "react";
-import { EyeIcon, RoundedGreyArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CopyClipboardIcon } from "../../assets/images";
 import { toast } from "react-toastify";
+import { CopyClipboardIcon } from "../../assets/images";
+import { EyeIcon, RoundedGreyArrowDownIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const list = props.list.map((li, index) => {

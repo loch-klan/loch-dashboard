@@ -1,31 +1,24 @@
 import React from "react";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button } from "react-bootstrap";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
-import Form from "../../utils/form/Form";
-import FormElement from "../../utils/form/FormElement";
-import FormValidator from "./../../utils/form/FormValidator";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CreatePyment, fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
-import { updateUser } from "../profile/Api";
-import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
-import backIcon from "../../assets/images/icons/Icon-back.svg";
-import { getCurrentUser } from "../../utils/ManageToken";
 import {
   WhaleCreateAccountEmailSaved,
   WhaleCreateAccountPrivacyHover,
 } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding//Api";
+import { CreatePyment, SendOtp, fixWalletApi } from "./Api.js";
 import AuthModal from "./AuthModal";
 
 class CheckoutModal extends BaseReactComponent {

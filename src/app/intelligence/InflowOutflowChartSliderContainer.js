@@ -1,21 +1,19 @@
+import Highcharts from "highcharts/highstock";
 import moment from "moment";
 import { connect } from "react-redux";
-import Highcharts from "highcharts/highstock";
-import Loading from "../common/Loading";
-import { GraphHeader } from "../common/GraphHeader";
-import { BarGraphFooter } from "../common/BarGraphFooter";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
   ChartSeeMoreArrowIcon,
 } from "../../assets/images/icons/index.js";
-import { DropDownWithIcons } from "../common/index.js";
-import CustomDropdown from "../../utils/form/CustomDropdown";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { BarGraphFooter } from "../common/BarGraphFooter";
+import { GraphHeader } from "../common/GraphHeader";
+import Loading from "../common/Loading";
 
-import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
+import { Image } from "react-bootstrap";
 import {
   PriceChartFilter,
   PriceChartMax,
@@ -24,9 +22,9 @@ import {
   PriceChartYear,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CustomDropdownPrice } from "../../utils/form";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import { Image } from "react-bootstrap";
+import { CustomDropdownPrice } from "../../utils/form";
+import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
 
 require("highcharts/modules/annotations")(Highcharts);
 

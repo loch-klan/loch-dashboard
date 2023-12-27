@@ -2,15 +2,15 @@ import { Component } from "react";
 import { connect } from "react-redux";
 
 import { Image } from "react-bootstrap";
+import LinkIcon from "../../assets/images/link.svg";
 import {
   CurrencyType,
   amountFormat,
   lightenDarkenColor,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import Loading from "../common/Loading";
-import LinkIcon from "../../assets/images/link.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import Loading from "../common/Loading";
 
 class PortfolioHomeNetworksBlock extends Component {
   constructor(props) {

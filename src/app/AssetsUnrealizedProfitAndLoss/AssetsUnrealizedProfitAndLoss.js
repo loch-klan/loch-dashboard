@@ -1,63 +1,62 @@
 import React, { Component } from "react";
-import PageHeader from "../common/PageHeader.js";
 import { connect } from "react-redux";
+import PageHeader from "../common/PageHeader.js";
 import { getAllCoins } from "../onboarding/Api.js";
 
 import { Image } from "react-bootstrap";
-import CoinChip from "../wallet/CoinChip.js";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import CoinChip from "../wallet/CoinChip.js";
 
 import {
-  TimeSpentCosts,
-  CostsPage,
-  CostShare,
-  CostHideDust,
+  AssetsPageTimeSpentMP,
+  AssetsPageViewMP,
   CAverageCostBasisSort,
+  CostAmountHover,
+  CostAssetHover,
+  CostAverageCostPriceHover,
+  CostAvgCostBasisExport,
+  CostCostBasisHover,
+  CostCurrentPriceHover,
+  CostCurrentValueHover,
+  CostGainHover,
+  CostGainLossHover,
+  CostHideDust,
+  CostShare,
+  CostSortByAmount,
   CostSortByAsset,
   CostSortByCostPrice,
   CostSortByCurrentPrice,
-  CostSortByAmount,
-  SortByCurrentValue,
-  SortByGainLoss,
-  CostAssetHover,
-  CostAverageCostPriceHover,
-  CostCurrentPriceHover,
-  CostAmountHover,
-  CostCostBasisHover,
-  CostCurrentValueHover,
-  CostGainLossHover,
-  CostAvgCostBasisExport,
-  CostGainHover,
-  SortByGainAmount,
-  AssetsPageViewMP,
-  AssetsPageTimeSpentMP,
   CostSortByPortfolio,
+  SortByCurrentValue,
+  SortByGainAmount,
+  SortByGainLoss,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
-import {
-  getAllFeeApi,
-  getAllCounterFeeApi,
-  updateCounterParty,
-  updateFeeGraph,
-  getAvgCostBasis,
-  updateAverageCostBasis,
-  ResetAverageCostBasis,
-} from "../cost/Api.js";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
+import {
+  ResetAverageCostBasis,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+  updateCounterParty,
+  updateFeeGraph,
+} from "../cost/Api.js";
 
 // add wallet
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { toast } from "react-toastify";
 import {
-  GetAllPlan,
-  getUser,
-  setPageFlagDefault,
-  updateWalletListFlag,
-} from "../common/Api.js";
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  ExportIconWhite,
+} from "../../assets/images/icons/index.js";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   mobileCheck,
@@ -65,15 +64,14 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
-import ExitOverlay from "../common/ExitOverlay.js";
 import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-  ExportIconWhite,
-} from "../../assets/images/icons/index.js";
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api.js";
+import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
