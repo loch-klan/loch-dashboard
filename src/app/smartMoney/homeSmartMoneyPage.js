@@ -170,7 +170,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
-      this.props.history.push("/smart-money");
+      this.props.history.push("/leaderboard");
     }, 3000);
   };
   showSignInModal = () => {
@@ -744,7 +744,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   render() {
@@ -1408,9 +1408,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 }}
               >
                 <PageHeader
-                  title="Loch’s Smart Money Leaderboard"
+                  title="Loch’s Leaderboard"
                   subTitle="The lazy analyst’s guide to alpha"
-                  currentPage={"home-smart-money"}
+                  currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />
               </div>

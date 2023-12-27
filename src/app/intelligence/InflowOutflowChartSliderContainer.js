@@ -558,27 +558,36 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     </div>
                   ) : null}
                   {!this.props.hideTimeFilter ? (
-                    <CustomOverlay
-                      position="bottom"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      isLeftText
-                      className={"fix-width tool-tip-container-bottom-arrow"}
-                      heading="These are all the tokens ever owned by this wallet."
-                      subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      <Image
-                        src={InfoIcon}
-                        className="infoIcon"
-                        style={{
-                          cursor: "pointer",
-                          height: "1.6rem",
-                          marginLeft: "1rem",
-                        }}
-                      />
-                    </CustomOverlay>
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        isLeftText
+                        className={"fix-width tool-tip-container-bottom-arrow"}
+                        heading="These are all the tokens ever owned by this wallet."
+                        subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                      >
+                        <Image
+                          src={InfoIcon}
+                          className="infoIcon"
+                          style={{
+                            cursor: "pointer",
+                            height: "1.6rem",
+                            marginLeft: "1rem",
+                          }}
+                        />
+                      </CustomOverlay>
+                    </div>
                   ) : null}
+
                   {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}

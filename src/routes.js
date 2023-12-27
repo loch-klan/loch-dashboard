@@ -22,7 +22,7 @@ import CounterPartyVolume from "./app/CounterPartyVolumePage/CounterPartyVolume"
 import GasFees from "./app/GasFeesPage/GasFees";
 import PriceGauge from "./app/PriceGauge/PriceGauge";
 import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAndLoss";
-import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
@@ -103,18 +103,17 @@ const routes = [
   },
 
   {
-    path: "/smart-money",
-    name: "Smart Money",
+    path: "/leaderboard",
+    name: "Leaderboard",
     type: PrivateRoute,
     component: SmartMoneyPage,
   },
   {
-    path: "/home-smart-money",
-    name: "Home Smart Money",
+    path: "/home-leaderboard",
+    name: "Home Leaderboard",
     type: PrivateRoute,
-    component: homeSmartMoneyPage,
+    component: HomeSmartMoneyPage,
   },
-
   {
     path: "/yield-opportunities",
     name: "Yield Opportunities",
@@ -142,7 +141,7 @@ const routes = [
   },
   {
     path: "/verify-email-smart-money",
-    name: "Verify Smart Money Email",
+    name: "Verify Leaderboard Email",
     type: Route,
     component: VerifySmartMoneyEmailLink,
   },

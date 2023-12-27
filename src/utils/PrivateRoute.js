@@ -131,7 +131,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         }
         if (
           props.location.pathname &&
-          props.location.pathname.includes("/smart-money")
+          props.location.pathname.includes("/leaderboard")
         ) {
           return (
             <div className="main-section">

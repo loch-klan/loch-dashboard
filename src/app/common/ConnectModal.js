@@ -865,7 +865,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: false,
+              isOAuth: true,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
