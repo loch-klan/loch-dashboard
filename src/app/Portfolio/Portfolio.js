@@ -681,7 +681,8 @@ class Portfolio extends BaseReactComponent {
     }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
-
+    this.props.updateWalletListFlag("assetsPage", true);
+    this.props.updateWalletListFlag("realizedGainsPage", true);
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
@@ -729,7 +730,43 @@ class Portfolio extends BaseReactComponent {
         insightsBlockLoading: false,
       });
     }
+    if (
+      this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      if (this.props.commonState.assetsPage) {
+        this.setState({
+          AvgCostLoading: false,
+        });
+      } else {
+        this.props.updateWalletListFlag("assetsPage", true);
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
+    }
 
+    if (
+      this.props.intelligenceState?.graphValue &&
+      this.props.intelligenceState?.graphValue.length > 0
+    ) {
+      if (this.props.commonState.realizedGainsPage) {
+        this.setState({
+          netFlowLoading: false,
+        });
+      } else {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
+    }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -877,11 +914,13 @@ class Portfolio extends BaseReactComponent {
     // Block One
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
       // Asssets avg cost basis
+
       if (
         this.state.blockOneSelectedItem === 1 &&
         (!this.props.intelligenceState?.Average_cost_basis ||
-          this.state.shouldCallAssetsAvgCostBasisApi)
+          !this.props.commonState.assetsPage)
       ) {
+        this.props.updateWalletListFlag("assetsPage", true);
         this.setState({
           shouldCallAssetsAvgCostBasisApi: false,
           AvgCostLoading: true,
@@ -910,8 +949,9 @@ class Portfolio extends BaseReactComponent {
           this.props.intelligenceState?.graphValue &&
           this.props.intelligenceState?.graphValue[0]
         ) ||
-          this.state.shouldCallProfitAndLossApi)
+          !this.props.commonState.realizedGainsPage)
       ) {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
         this.setState({
           netFlowLoading: true,
           shouldCallProfitAndLossApi: false,
@@ -1135,7 +1175,16 @@ class Portfolio extends BaseReactComponent {
 
       // BLOCK ONE
       // Assets average cost basis api call
-      if (this.state.blockOneSelectedItem === 1) {
+
+      if (
+        this.state.blockOneSelectedItem === 1 &&
+        (!(
+          this.props.intelligenceState?.Average_cost_basis &&
+          this.props.intelligenceState?.Average_cost_basis.length > 0
+        ) ||
+          !this.props.commonState.assetsPage)
+      ) {
+        this.props.updateWalletListFlag("assetsPage", true);
         this.setState({
           shouldCallAssetsAvgCostBasisApi: false,
           AvgCostLoading: true,
@@ -1153,7 +1202,15 @@ class Portfolio extends BaseReactComponent {
 
       // BLOCK TWO
       // Realized gains api call
-      if (this.state.blockTwoSelectedItem === 1) {
+      if (
+        this.state.blockTwoSelectedItem === 1 &&
+        (!this.props.commonState.realizedGainsPage ||
+          !(
+            this.props.intelligenceState?.graphValue &&
+            this.props.intelligenceState?.graphValue.length > 0
+          ))
+      ) {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
         this.setState({
           netFlowLoading: true,
           shouldCallProfitAndLossApi: false,
@@ -3220,11 +3277,7 @@ class Portfolio extends BaseReactComponent {
                                 }`
                               : "See more"
                           }
-                          showDataAtBottom={
-                            this.props.intelligenceState?.Average_cost_basis &&
-                            this.props.intelligenceState.Average_cost_basis
-                              .length > 5
-                          }
+                          showDataAtBottom
                           columnList={CostBasisColumnData}
                           headerHeight={60}
                           isArrow={true}
@@ -3244,9 +3297,7 @@ class Portfolio extends BaseReactComponent {
                                 }`
                               : "See more"
                           }
-                          showDataAtBottom={
-                            table_home_count && table_home_count > 5
-                          }
+                          showDataAtBottom
                           noSubtitleBottomPadding
                           disableOnLoading
                           isMiniversion
@@ -3655,10 +3706,7 @@ class Portfolio extends BaseReactComponent {
                                   }`
                                 : "See more"
                             }
-                            showDataAtBottom={
-                              this.state.yieldOpportunitiesTotalCount &&
-                              this.state.yieldOpportunitiesTotalCount > 5
-                            }
+                            showDataAtBottom
                             columnList={YieldOppColumnData}
                             headerHeight={60}
                             isArrow={true}
