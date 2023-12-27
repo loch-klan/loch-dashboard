@@ -18,7 +18,10 @@ export default class VerifyEmail extends BaseReactComponent {
       otp6: "",
       disable: true,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  
 
   handleChange(value1, event) {
     this.setState({ [value1]: event.target.value });
@@ -42,8 +45,10 @@ export default class VerifyEmail extends BaseReactComponent {
 
   handleSubmit(event) {
       event.preventDefault();
-    console.log(this.state);
+      this.props.ChangeNextStep(4)
+    // console.log(this.state);
   }
+
 
   render() {
     return (
@@ -133,7 +138,7 @@ export default class VerifyEmail extends BaseReactComponent {
               className={"referral-main-container__mid-box__action-holder__cta"}
               onClick={this.handleSubmit}
             >
-              Join Waitlist
+              Verify
             </Button>
             <div className="referral-main-container__mid-box__last-cta">
               <div className="referral-main-container__mid-box__last-cta--pointer">

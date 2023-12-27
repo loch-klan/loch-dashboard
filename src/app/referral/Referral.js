@@ -10,6 +10,7 @@ import ReferralForm from "./ReferralForm";
 import EmailForm from "./EmailForm";
 import WaitList from "./WaitList";
 import VerifyEmail from "./VerifyEmail";
+import ThanksBanner from "./ThanksBanner";
 
 export default class Referral extends BaseReactComponent {
   constructor(props) {
@@ -43,6 +44,9 @@ ChangeNextStep = (ss) =>{
                 :
                 this.state.step === 3 ?
                 <VerifyEmail ChangeNextStep={this.ChangeNextStep}/>
+                :
+                this.state.step === 4 ?
+                <ThanksBanner ChangeNextStep={this.ChangeNextStep}/>
                 :
                 this.state.step === 6 ?
                 <WaitList ChangeNextStep={this.ChangeNextStep}/>
