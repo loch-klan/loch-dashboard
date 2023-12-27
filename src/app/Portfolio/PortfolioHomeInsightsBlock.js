@@ -1,15 +1,15 @@
 import { Component } from "react";
+import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
+import increaseYield from "../../assets/images/icons/increase-yield.svg";
+import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
+import { InsightsEV } from "../../utils/AnalyticsFunctions";
 import { InsightType } from "../../utils/Constant";
-import { Image } from "react-bootstrap";
+import { getCurrentUser } from "../../utils/ManageToken";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import Loading from "../common/Loading";
-import InsightImg from "../../assets/images/icons/insight-msg.svg";
-import { InsightsEV } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 
 class PortfolioHomeInsightsBlock extends Component {
   goToInsightsPage = () => {

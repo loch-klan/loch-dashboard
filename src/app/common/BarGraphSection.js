@@ -1,37 +1,36 @@
-import React, { Component } from "react";
-import { GraphHeader } from "./GraphHeader";
-import { BarGraphFooter } from "./BarGraphFooter";
-import { connect } from "react-redux";
-import { Form, Image } from "react-bootstrap";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
+import React, { Component } from "react";
+import { Form, Image } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
+import { connect } from "react-redux";
+import { BarGraphFooter } from "./BarGraphFooter";
+import { GraphHeader } from "./GraphHeader";
 
-import Loading from "./Loading";
-import { CurrencyType } from "../../utils/ReusableFunctions";
-import DropDown from "./DropDown";
-import CustomDropdown from "../../utils/form/CustomDropdown";
+import ChartjsPluginWatermark from "chartjs-plugin-watermark";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HC_rounded from "highcharts-rounded-corners";
-import ChartjsPluginWatermark from "chartjs-plugin-watermark";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import OutsideClickHandler from "react-outside-click-handler";
-import Calendar from "react-calendar";
 import moment from "moment";
+import Calendar from "react-calendar";
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   ChartSeeMoreArrowIcon,
-  CheckIcon,
   ThickCheckMarkIcon,
 } from "../../assets/images/icons";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import { CurrencyType } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import CustomDropdown from "../../utils/form/CustomDropdown";
+import DropDown from "./DropDown";
+import Loading from "./Loading";
 
 HC_rounded(Highcharts);
 

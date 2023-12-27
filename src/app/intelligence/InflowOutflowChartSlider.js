@@ -1,16 +1,10 @@
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts/highstock";
 import moment from "moment";
 import { connect } from "react-redux";
-import Highcharts from "highcharts/highstock";
-import HighchartsReact from "highcharts-react-official";
 
 import GraphLogo from "../../assets/images/graph-logo.svg";
 import handle from "../../assets/images/handle.svg";
-import {
-  CurrencyType,
-  noExponents,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
@@ -20,6 +14,12 @@ import {
   PriceChartHoverOutflow,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
 require("highcharts/modules/annotations")(Highcharts);
 

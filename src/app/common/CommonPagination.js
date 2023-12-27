@@ -1,8 +1,8 @@
 import React from "react";
-import ActivePrevBtn from "../../assets/images/icons/ActivePrevBtn.svg";
-import ActiveNextBtn from "../../assets/images/icons/ActiveNextBtn.svg";
-import InactivePrevBtn from "../../assets/images/icons/InactivePrevBtn.svg";
 import { Image, Pagination } from "react-bootstrap";
+import ActiveNextBtn from "../../assets/images/icons/ActiveNextBtn.svg";
+import ActivePrevBtn from "../../assets/images/icons/ActivePrevBtn.svg";
+import InactivePrevBtn from "../../assets/images/icons/InactivePrevBtn.svg";
 
 export const CommonPagination = (props) => {
   let items = [];

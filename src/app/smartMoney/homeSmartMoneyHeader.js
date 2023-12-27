@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Image } from "react-bootstrap";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 import {
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
 } from "../../assets/images/icons";
+import { getAllCurrencyRatesApi } from "../common/Api";
 
 export default function HomeSmartMoneyHeader(props) {
   const [localLochUser, setLocalLochUser] = React.useState(

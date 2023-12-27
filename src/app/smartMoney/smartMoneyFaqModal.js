@@ -1,6 +1,6 @@
 import React from "react";
+import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image } from "react-bootstrap";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,

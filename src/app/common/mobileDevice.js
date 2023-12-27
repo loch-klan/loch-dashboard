@@ -5,29 +5,20 @@ import {
   CustomTextControl,
   Form,
   FormElement,
-  FormSubmitButton,
   FormValidator,
 } from "../../utils/form";
-import { deleteToken } from "../../utils/ManageToken";
-import { loginApi } from "./Api";
 // import { loginApi } from './Api';
-import logo from "../../image/Loch.svg";
-import beta from "../../image/BetaIcon.svg";
 import { Button, Image } from "react-bootstrap";
-import { getDetailsByLinkApi } from "../Portfolio/Api";
-import { createAnonymousUserApi, getAllCoins } from "../onboarding/Api";
-import Loading from "./Loading";
 
+import { ToastContainer, toast } from "react-toastify";
+import BackIcon from "../../assets/images/icons/backIcon.svg";
 import DesktopImg from "../../assets/images/icons/desktop.svg";
 import LochIcon from "../../assets/images/icons/grey-loch.svg";
-import BackIcon from "../../assets/images/icons/backIcon.svg";
 import {
   MobileEmail,
   MobileEmailPageView,
   SmartMobileEmail,
 } from "../../utils/AnalyticsFunctions";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
 
 class MobileDevice extends BaseReactComponent {
   constructor(props) {

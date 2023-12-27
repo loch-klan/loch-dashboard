@@ -1,52 +1,50 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import BarGraphSection from "../common/BarGraphSection.js";
 import PageHeader from "../common/PageHeader.js";
-import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 
+import moment from "moment/moment";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import {
-  TimeSpentCosts,
-  CounterpartyFeesTimeFilter,
-  CostsPage,
-  CostShare,
-  costFeesChainFilter,
-  costVolumeChainFilter,
   CostAvgCostBasisExport,
   CostBlockchainFeesExport,
   CostCounterpartyFeesExport,
-  CounterpartyVolumePageViewMP,
+  CostShare,
+  CounterpartyFeesTimeFilter,
   CounterpartyVolumePageTimeSpentMP,
+  CounterpartyVolumePageViewMP,
+  costFeesChainFilter,
+  costVolumeChainFilter,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
-import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
-import {
-  getAllFeeApi,
-  getAllCounterFeeApi,
-  updateCounterParty,
-  updateFeeGraph,
-  updateAverageCostBasis,
-  ResetAverageCostBasis,
-} from "../cost/Api.js";
-import moment from "moment/moment";
-import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
+import {
+  ResetAverageCostBasis,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  updateAverageCostBasis,
+  updateCounterParty,
+  updateFeeGraph,
+} from "../cost/Api.js";
+import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 
 // add wallet
+import { toast } from "react-toastify";
+import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
   getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
-import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import ExitOverlay from "../common/ExitOverlay.js";
-import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import Footer from "../common/footer.js";
 
 class CounterPartyVolume extends Component {

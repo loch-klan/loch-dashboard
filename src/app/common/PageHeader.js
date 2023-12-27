@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import { Button, Breadcrumb, Image, Form } from "react-bootstrap";
+import React from "react";
+import { Breadcrumb, Button, Form, Image } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { ExportIcon } from "../../assets/images/icons";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
-import { Link } from "react-router-dom";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
-import ConnectModal from "./ConnectModal";
-import { useHistory } from "react-router-dom";
 import {
   AssetValueExplainer,
   ConnectExPopup,
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { ExportIcon, SharePortfolioIconWhite } from "../../assets/images/icons";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import ConnectModal from "./ConnectModal";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");

@@ -1,16 +1,12 @@
 import React from "react";
 import { Button, Image } from "react-bootstrap";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
-import CoinChip from "./CoinChip";
 import EditIcon from "../../assets/images/EditIcon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import EditWalletModal from "./EditWalletModal";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import {
-  amountFormat,
-  CurrencyType,
-  numToCurrency,
-} from "./../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { CurrencyType, numToCurrency } from "./../../utils/ReusableFunctions";
+import CoinChip from "./CoinChip";
+import EditWalletModal from "./EditWalletModal";
 // import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from "../common/FixAddModal";
 // import Loading from '../common/Loading';

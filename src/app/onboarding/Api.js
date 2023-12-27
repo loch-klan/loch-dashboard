@@ -1,20 +1,19 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COINS_LIST, WALLET_LIST, PARENT_COINS_LIST } from "./ActionTypes";
 import {
-  WalletAddressTextbox,
   EmailAddressVerified,
+  EmailNotFound,
   UserSignedinCorrectly,
   UserWrongCode,
-  EmailNotFound,
+  WalletAddressTextbox,
   WhaleWalletAddressTextbox,
-  setUserProperties,
   signInUser,
   signUpProperties,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
-import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { addLocalWalletList } from "../common/Api";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { COINS_LIST, PARENT_COINS_LIST, WALLET_LIST } from "./ActionTypes";
 export const getAllCoins = (handleShareLinkUser = null) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -653,25 +652,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
       // );
 
       window.sessionStorage.setItem("stopClick", true);
-      // window.sessionStorage.setItem("defi_access", true);
-      // window.sessionStorage.setItem("isPopup", true);
-      // // window.sessionStorage.setItem("whalepodview", true);
-      // window.sessionStorage.setItem(
-      //   "whalepodview",
-      //   JSON.stringify({ access: true, id: "" })
-      // );
-      // window.sessionStorage.setItem("previewAddress", "");
 
-      //  window.sessionStorage.setItem(
-      //    "isSubmenu",
-      //    JSON.stringify({
-      //      me: true,
-      //      discover: false,
-      //      intelligence: false,
-      //      topAccount: false,
-      //      topAccountintelligence: false,
-      //    })
-      //  );
       setLocalStoraage();
 
       signUpProperties({

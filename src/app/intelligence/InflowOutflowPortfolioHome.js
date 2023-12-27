@@ -1,19 +1,16 @@
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
-import { InflowOutflowIcon } from "../../assets/images/icons";
-
-import PageHeader from "../common/PageHeader";
 import { TimeFilterInflowOutflowType } from "../../utils/Constant";
 import {
-  getInflowsAndOutflowsGraphDataApi,
   getInflowsAndOutflowsAssetsApi,
+  getInflowsAndOutflowsGraphDataApi,
   setInflowsAndOutflowsTimeTab,
   setInflowsAndOutflowsWalletList,
   setSelectedInflowOutflowsAssetBlank,
 } from "./Api";
-import "./intelligenceScss/_inflowOutflowChart.scss";
 import InflowOutflowChartSliderContainer from "./InflowOutflowChartSliderContainer";
+import "./intelligenceScss/_inflowOutflowChart.scss";
 class InflowOutflowPortfolioHome extends BaseReactComponent {
   constructor(props) {
     super(props);

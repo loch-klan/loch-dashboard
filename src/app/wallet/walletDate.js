@@ -1,7 +1,7 @@
 // import PhantomWalletIcon from '../../assets/images/icons/PhantomWalletIcon.svg'
-import SolanaIcon from "../../assets/images/icons/SolanoIcon.svg";
 import EthereumCoinIcon from "../../assets/images/Ethereum_Coin_Tag.svg";
 import MetamaskIcon from "../../assets/images/MetamaskIcon.svg";
+import SolanaIcon from "../../assets/images/icons/SolanoIcon.svg";
 export const data = [
   {
     wallet_icon: MetamaskIcon,

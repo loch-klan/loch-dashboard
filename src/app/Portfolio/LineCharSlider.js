@@ -2,11 +2,18 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 // import Highcharts from "highcharts/highstock";
-import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts/highstock";
 import { GraphHeader } from "../common/GraphHeader";
 
+import moment from "moment";
+import { Image } from "react-bootstrap";
+import { toast } from "react-toastify";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
+import CalenderIcon from "../../assets/images/calendar.svg";
+import DoubleArrow from "../../assets/images/double-arrow.svg";
 import GraphLogo from "../../assets/images/graph-logo.svg";
+import handle from "../../assets/images/handle.svg";
 import { ChartSeeMoreArrowIcon, LoaderIcon } from "../../assets/images/icons";
 import {
   AssetValueChartWalletOpen,
@@ -23,27 +30,18 @@ import {
   IntlAssetValueNavigator,
   IntlAssetValueYear,
 } from "../../utils/AnalyticsFunctions.js";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import { getCurrentUser } from "../../utils/ManageToken";
-import moment from "moment";
-import Loading from "../common/Loading";
 import {
   CurrencyType,
-  TruncateText,
   noExponents,
-  numToCurrency,
+  numToCurrency
 } from "../../utils/ReusableFunctions";
-import { Image } from "react-bootstrap";
-import CalenderIcon from "../../assets/images/calendar.svg";
-import DoubleArrow from "../../assets/images/double-arrow.svg";
-import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { toast } from "react-toastify";
-import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
-import { BarGraphFooter } from "../common/BarGraphFooter";
-import SwitchButton from "./SwitchButton";
+import Loading from "../common/Loading";
 import AssetValueEmailModal from "./AssetValueEmailModal";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
+import SwitchButton from "./SwitchButton";
 
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {

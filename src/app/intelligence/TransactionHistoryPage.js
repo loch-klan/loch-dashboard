@@ -1,65 +1,47 @@
 import React from "react";
-import { Image, Row, Col } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
-import TransactionTable from "./TransactionTable";
+import { Col, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
+import searchIcon from "../../assets/images/icons/search-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import PageHeader from "../common/PageHeader";
+import TransactionTable from "./TransactionTable";
 
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  Method,
   API_LIMIT,
-  START_INDEX,
+  BASE_URL_S3,
+  DEFAULT_PRICE,
+  Method,
+  SEARCH_BETWEEN_VALUE,
   SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_CHAIN_IN,
+  SEARCH_BY_METHOD_IN,
+  SEARCH_BY_NOT_DUST,
   SEARCH_BY_TEXT,
   SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
+  SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
   SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
-  BASE_URL_S3,
-  SEARCH_BY_CHAIN_IN,
-  SEARCH_BETWEEN_VALUE,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_TRANSACTION_FEE,
+  SORT_BY_USD_VALUE_THEN,
+  START_INDEX,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
-import { searchTransactionApi, getFilters } from "./Api";
+import { getFilters, searchTransactionApi } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
-import {
-  FormElement,
-  Form,
-  CustomTextControl,
-  BaseReactComponent,
-} from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
+import { toast } from "react-toastify";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  convertNtoNumber,
-  CurrencyType,
-  mobileCheck,
-  noExponents,
-  numToCurrency,
-  TruncateText,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
-  TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
   TransactionHistoryHideDust,
-  TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
@@ -76,29 +58,41 @@ import {
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
   TransactionHistoryWalletClicked,
-  TransactionHistoryYearFilter,
+  TransactionHistoryYearFilter
 } from "../../utils/AnalyticsFunctions";
-import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
-import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
-import { toast } from "react-toastify";
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  CurrencyType,
+  TruncateText,
+  UpgradeTriggered,
+  convertNtoNumber,
+  mobileCheck,
+  numToCurrency
+} from "../../utils/ReusableFunctions";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "../../utils/form";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 import FixAddModal from "../common/FixAddModal";
+import Loading from "../common/Loading";
 
 // add wallet
+import { ExportIconWhite } from "../../assets/images/icons";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   GetAllPlan,
   getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
-import { ExportIconWhite } from "../../assets/images/icons";
-import DropDown from "../common/DropDown";
-import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import UpgradeModal from "../common/upgradeModal";
+import { getAllCoins } from "../onboarding/Api.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {

@@ -1,66 +1,67 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { connect } from "react-redux";
-import {
-  getCoinRate,
-  getDetailsByLinkApi,
-  getUserWallet,
-  getYesterdaysBalanceApi,
-  settingDefaultValues,
-  getExternalEventsApi,
-  getExchangeBalances,
-} from "./Api";
 import { Image } from "react-bootstrap";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
-import { getAllWalletListApi } from "../wallet/Api";
-import {
-  getAllInsightsApi,
-  getAssetProfitLoss,
-  getProfitAndLossApi,
-  searchTransactionApi,
-} from "../intelligence/Api.js";
-import {
-  getAllCurrencyRatesApi,
-  getDetectedChainsApi,
-  setPageFlagDefault,
-  updateWalletListFlag,
-} from "../common/Api";
-import { getAssetGraphDataApi } from "./Api";
-import {
-  getAvgCostBasis,
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
-import Loading from "../common/Loading";
-import { GetAllPlan, getUser } from "../common/Api";
-import "./_mobilePortfolio.scss";
-import PieChart2 from "./PieChart2";
-import Footer from "../common/footer";
-import WelcomeCard from "./WelcomeCard";
+import { connect } from "react-redux";
+import { toast } from "react-toastify";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
 import {
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
   Mobile_Home_Share,
   TimeSpentMobileHome,
 } from "../../utils/AnalyticsFunctions";
-import TransactionTable from "../intelligence/TransactionTable.js";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import CoinChip from "../wallet/CoinChip.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import {
+  GetAllPlan,
+  getAllCurrencyRatesApi,
+  getDetectedChainsApi,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
+import Loading from "../common/Loading";
+import Footer from "../common/footer";
+import {
+  ResetAverageCostBasis,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+} from "../cost/Api";
+import {
+  getAllInsightsApi,
+  getAssetProfitLoss,
+  getProfitAndLossApi,
+  searchTransactionApi,
+} from "../intelligence/Api.js";
+import TransactionTable from "../intelligence/TransactionTable.js";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
+import CoinChip from "../wallet/CoinChip.js";
+import {
+  getAssetGraphDataApi,
+  getCoinRate,
+  getDetailsByLinkApi,
+  getExchangeBalances,
+  getExternalEventsApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api";
+import PieChart2 from "./PieChart2";
+import WelcomeCard from "./WelcomeCard";
+import "./_mobilePortfolio.scss";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {

@@ -1,11 +1,20 @@
+import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
+import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import {
+  EyeIcon,
+  FollowTopBarIcon,
+  PlusCircleIcon,
+  ShareTopBarIcon,
+  WalletIcon,
+  XCircleIcon,
+  XCircleRedIcon,
+} from "../../assets/images/icons";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
-import TopBarDropDown from "./TopBarDropDown";
-import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
@@ -15,40 +24,25 @@ import {
   HomeUnFollow,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
+import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
+import { isFollowedByUser } from "../Portfolio/Api";
+import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
+import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
+import { updateUserWalletApi } from "../common/Api";
+import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { addUserCredits } from "../profile/Api";
+import {
+  addAddressToWatchList,
+  removeAddressFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 import {
   setHeaderReducer,
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
-import {
-  CurrencyType,
-  TruncateText,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
-import {
-  EyeIcon,
-  FollowTopBarIcon,
-  MetamaskIcon,
-  PlusCircleIcon,
-  ShareTopBarIcon,
-  WalletIcon,
-  XCircleIcon,
-  XCircleRedIcon,
-} from "../../assets/images/icons";
-import { ethers } from "ethers";
-import { updateUserWalletApi } from "../common/Api";
-import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
-import { isFollowedByUser } from "../Portfolio/Api";
-import {
-  addAddressToWatchList,
-  removeAddressFromWatchList,
-} from "../watchlist/redux/WatchListApi";
-import { addUserCredits } from "../profile/Api";
-import { ARCX_API_KEY } from "../../utils/Constant";
-import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
-import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import TopBarDropDown from "./TopBarDropDown";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);

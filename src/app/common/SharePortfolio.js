@@ -1,23 +1,15 @@
 import React, { useEffect } from "react";
-import { Modal, Image, Button } from "react-bootstrap";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
-import {
-  CustomTextControl,
-  FormElement,
-  FormValidator,
-} from "../../utils/form";
+import { Image, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 import CopyLink from "../../assets/images/icons/CopyLink.svg";
-import ViewOnlyImage from "../../assets/images/icons/ViewOnlyImage.svg";
-import share from "../../assets/images/icons/share.svg";
-import ShareLink from "../../assets/images/icons/ShareLink.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
 import { ShareLinkCopy } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 function SharePortfolio(props) {
   let lochUser = getCurrentUser().id;

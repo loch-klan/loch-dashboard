@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import { Button, Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
+import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, sendAmount } from "./Api";
-import { BASE_URL_S3, InsightType } from "../../utils/Constant";
-import Loading from "../common/Loading";
-import { getAllWalletListApi } from "../wallet/Api";
 import {
   AllInsights,
   InsightPage,
@@ -20,24 +15,29 @@ import {
   RiskTypeSelected,
   TimeSpentInsights,
 } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import Loading from "../common/Loading";
+import PageHeader from "../common/PageHeader";
+import { getAllWalletListApi } from "../wallet/Api";
+import { getAllInsightsApi, sendAmount } from "./Api";
 
 // add wallet
+import { connect } from "react-redux";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import GradientImg from "../../assets/images/insight-upgrade.png";
-import { getAllCoins } from "../onboarding/Api.js";
-import { connect } from "react-redux";
-import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
 import UpgradeModal from "../common/upgradeModal";
+import { getAllCoins } from "../onboarding/Api.js";
 
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { toast } from "react-toastify";
-import Footer from "../common/footer";
-import DropDown from "../common/DropDown";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import DropDown from "../common/DropDown";
+import Footer from "../common/footer";
 
 class InsightsPage extends Component {
   constructor(props) {

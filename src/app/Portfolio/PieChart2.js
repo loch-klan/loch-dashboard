@@ -1,9 +1,37 @@
-import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { connect } from "react-redux";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import React from "react";
+import { Col, Image, Row } from "react-bootstrap";
+import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import arrowUp from "../../assets/images/arrow-up.svg";
+import {
+  PieChartWatermarkIcon,
+  SharePortfolioIconWhite,
+  TwoPeopleLightIcon,
+} from "../../assets/images/icons";
+import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import LinkIcon from "../../assets/images/link.svg";
+import unrecognized from "../../image/unrecognized.svg";
+import {
+  HomeDefiDebt,
+  HomeDefiYield,
+  HomeFollow,
+  HomeRefreshButton,
+  HomeShare,
+  HomeUnFollow,
+  NetworkTab,
+  PiechartChainName,
+} from "../../utils/AnalyticsFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import {
+  AssetType,
+  BASE_URL_S3,
+  DEFAULT_COLOR,
+  DEFAULT_PRICE,
+} from "../../utils/Constant";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   amountFormat,
   CurrencyType,
@@ -13,49 +41,19 @@ import {
   numToCurrency,
   TruncateText,
 } from "../../utils/ReusableFunctions";
-import unrecognized from "../../image/unrecognized.svg";
-import {
-  AssetType,
-  BASE_URL_S3,
-  DEFAULT_COLOR,
-  DEFAULT_PRICE,
-} from "../../utils/Constant";
-import { Button, Col, Image, Row } from "react-bootstrap";
-import Loading from "../common/Loading";
-import {
-  HomeDefiDebt,
-  HomeDefiYield,
-  HomeFollow,
-  HomeUnFollow,
-  HomeRefreshButton,
-  HomeShare,
-  NetworkTab,
-  PiechartChainName,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import arrowUp from "../../assets/images/arrow-up.svg";
-import {
-  getAllProtocol,
-  getYieldBalanceApi,
-  getUserWallet,
-  getProtocolBalanceApi,
-  getExchangeBalances,
-  isFollowedByUser,
-} from "./Api";
-import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
+import Loading from "../common/Loading";
 import { updateDefiData } from "../defi/Api";
-import {
-  PieChartWatermarkIcon,
-  SharePortfolioIconWhite,
-  TwoPeopleLightIcon,
-} from "../../assets/images/icons";
-import { toast } from "react-toastify";
 import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+import {
+  getExchangeBalances,
+  getProtocolBalanceApi,
+  getUserWallet,
+  isFollowedByUser,
+} from "./Api";
 import PieChart2Mobile from "./PieChart2Mobile";
 
 class PieChart2 extends BaseReactComponent {
