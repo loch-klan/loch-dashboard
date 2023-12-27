@@ -1,7 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
-import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import {
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
@@ -9,19 +8,18 @@ import {
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
   UserCreditStarIcon,
-  UserCreditTelegramIcon,
-  UserCreditTwitterIcon,
   UserCreditWalletIcon,
 } from "../../assets/images/icons/index.js";
-import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
-import { getUserCredits } from "./Api.js";
-import Loading from "../common/Loading.js";
-import { getCurrentUser } from "../../utils/ManageToken.js";
 import {
   UserCreditGoClickedMP,
   UserCreditLeftScrollClickedMP,
   UserCreditRightScrollClickedMP,
 } from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken.js";
+import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
+import Loading from "../common/Loading.js";
+import { getUserCredits } from "./Api.js";
+import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {

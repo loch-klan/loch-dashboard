@@ -1,42 +1,39 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
+import "../../assets/scss/onboarding/_onboarding.scss";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
 
 import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
 
-import {
-  Mobile_Go_Back_Home,
-  Mobile_LPC_Go,
-  Mobile_Update_Address,
-  OnboardingMobilePage,
-  TimeSpentDiscountEmail,
-  TimeSpentOnboardingMobile,
-} from "../../utils/AnalyticsFunctions";
 import {
   CloseIcon,
   LochLogoWhiteIcon,
   MobileSearchGreyIcon,
   TrendingFireIcon,
-  TrendingWalletIcon,
 } from "../../assets/images/icons";
 import LochBlackLogo from "../../image/Loch.svg";
-import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
+import {
+  Mobile_Go_Back_Home,
+  Mobile_LPC_Go,
+  Mobile_Update_Address,
+  OnboardingMobilePage,
+  TimeSpentOnboardingMobile,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { numToCurrency } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { CustomButton } from "../../utils/form";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
 } from "../header/HeaderAction";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CustomCoin } from "../../utils/commonComponent";
-import { CustomButton } from "../../utils/form";
+import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
 import "./_welcomeMobilePage.scss";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { numToCurrency } from "../../utils/ReusableFunctions";
 class MobileHome extends BaseReactComponent {
   constructor(props) {
     super(props);

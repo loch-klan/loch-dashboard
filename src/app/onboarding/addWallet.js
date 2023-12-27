@@ -1,52 +1,51 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Button, Image } from "react-bootstrap";
+import { connect } from "react-redux";
 
+import {
+  AddTextbox,
+  AddWalletAddress,
+  DeleteWalletAddress,
+  LPC_Go,
+  LandingPageNickname,
+} from "../../utils/AnalyticsFunctions.js";
 import {
   BaseReactComponent,
   CustomTextControl,
-  FormValidator,
-  FormElement,
   Form,
+  FormElement,
+  FormValidator,
 } from "../../utils/form";
-import {
-  createAnonymousUserApi,
-  getAllParentChains,
-  getAllCoins,
-  detectCoin,
-} from "./Api";
 import { detectNameTag } from "../common/Api";
 import {
-  DeleteWalletAddress,
-  LandingPageNickname,
-  AddWalletAddress,
-  AddTextbox,
-  LPC_Go,
-  ClickTrendingAddress,
-} from "../../utils/AnalyticsFunctions.js";
+  createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "./Api";
 
-import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
-import { GetAllPlan, updateUserWalletApi } from "../common/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
-import CustomButton from "../../utils/form/CustomButton";
-import { CustomCoin } from "../../utils/commonComponent";
-import { getCurrentUser } from "../../utils/ManageToken";
+import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { CustomCoin } from "../../utils/commonComponent";
+import CustomButton from "../../utils/form/CustomButton";
+import { GetAllPlan, updateUserWalletApi } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
+import { setHeaderReducer } from "../header/HeaderAction";
 
 // upload csv
+import Papa from "papaparse";
 import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
-import Papa from "papaparse";
-import { addExchangeTransaction } from "../home/Api";
-import { addUserCredits } from "../profile/Api.js";
-import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions.js";
 import {
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons/index.js";
+import { numToCurrency } from "../../utils/ReusableFunctions.js";
+import { addExchangeTransaction } from "../home/Api";
+import { addUserCredits } from "../profile/Api.js";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -119,17 +118,7 @@ class AddWallet extends BaseReactComponent {
     );
   };
 
-  getPodStatusFunction = () => {
-    // get current status of address
-    // const data = new URLSearchParams();
-    // data.append("user_id", getCurrentUser().id);
-    // getPodStatus(data, this);
-    // setTimeout(() => {
-    //   if (!this.state.isIndexed && !this.state.emailAdded) {
-    //     this.getPodStatusFunction();
-    //   }
-    // }, 2000);
-  };
+  getPodStatusFunction = () => {};
 
   handleUpload = () => {
     if (this.state.userPlan?.upload_csv) {
@@ -350,7 +339,6 @@ class AddWallet extends BaseReactComponent {
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
-      console.log("this.state.walletInput ", this.state.walletInput);
       this.props.copyWalletAddress(this.state.walletInput);
     }
     if (this.state.walletInput !== prevState.walletInput) {

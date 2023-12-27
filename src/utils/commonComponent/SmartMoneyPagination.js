@@ -125,9 +125,9 @@ const SmartMoneyPagination = (props) => {
   const rightLogoLoadingComplete = () => {
     setIsRightLogoLoaded(true);
   };
-  if (mobileCheck()) {
+  if (mobileCheck(true)) {
     return (
-      <div className="mobileSmartMoneyPagingation">
+      <div className="mobileSmartMoneyPagingation" style={props.style}>
         <div className="smartMoneyPaginationContainer">
           <div
             className={`smartMoneyPaginationArrowContainer ${

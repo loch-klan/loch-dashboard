@@ -1,21 +1,17 @@
 import React from "react";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button, Row, Col, Container } from "react-bootstrap";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
+  BaseReactComponent,
+  CustomTextControl,
   Form,
   FormElement,
   FormValidator,
-  BaseReactComponent,
-  CustomTextControl,
 } from "../../utils/form";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import backIcon from "../../assets/images/icons/backIcon.svg";
-import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import { WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
 import { updateUser } from "../profile/Api";

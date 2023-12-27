@@ -1,8 +1,7 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button } from "react-bootstrap";
-import { resetUser } from "../../utils/AnalyticsFunctions";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
 class ConformSmartMoneyLeaveModal extends BaseReactComponent {
   constructor(props) {

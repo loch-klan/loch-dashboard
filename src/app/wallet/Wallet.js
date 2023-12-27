@@ -1,35 +1,31 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import WalletCard from "./WalletCard";
-import PageHeader from "../common/PageHeader";
-import CoinBadges from "./../common/CoinBadges";
-import { getAllWalletListApi, getAllWalletApi } from "./Api";
-import { getAllCoins } from "../onboarding/Api.js";
-import {
-  SEARCH_BY_CHAIN_IN,
-  SORT_BY_NAME,
-  SORT_BY_PORTFOLIO_AMOUNT,
-  SORT_BY_CREATED_ON,
-} from "../../utils/Constant.js";
-import FixAddModal from "../common/FixAddModal";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import netWorthIcon from "../../assets/images/icons/net-worth.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import { Image } from "react-bootstrap";
-import Loading from "../common/Loading";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   FilterBasedAssest,
   SortByAmount,
   SortByDate,
   SortByName,
-  TimeSpentWallet,
-  WalletsPage,
 } from "../../utils/AnalyticsFunctions";
+import {
+  SEARCH_BY_CHAIN_IN,
+  SORT_BY_CREATED_ON,
+  SORT_BY_NAME,
+  SORT_BY_PORTFOLIO_AMOUNT,
+} from "../../utils/Constant.js";
 import { getCurrentUser } from "../../utils/ManageToken";
-import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
+import Loading from "../common/Loading";
+import PageHeader from "../common/PageHeader";
+import { getAllCoins } from "../onboarding/Api.js";
+import CoinBadges from "./../common/CoinBadges";
+import { getAllWalletApi, getAllWalletListApi } from "./Api";
+import WalletCard from "./WalletCard";
 
 class Wallet extends Component {
   constructor(props) {
@@ -354,6 +350,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isLastEle={index === walletList.length - 1}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

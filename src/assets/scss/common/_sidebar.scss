@@ -487,12 +487,28 @@
         background-color: white;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        // justify-content: space-between;
         height: 100%;
         padding-top: 2.4rem;
         padding-bottom: 1rem;
         width: 100%;
         overflow: scroll;
+        .sideBarAmountsContainer {
+          padding: 0rem 2.4rem;
+          .sideBarAmountsNetworth {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 0.1rem solid #e5e5e680;
+            width: 100%;
+            padding-bottom: 1.2rem;
+            margin-bottom: 1.2rem;
+            .wallet-amount {
+              font-size: 3rem;
+              color: #1d2129;
+            }
+          }
+        }
 
         &::-webkit-scrollbar {
           width: 0.4rem;
