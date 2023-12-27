@@ -66,6 +66,9 @@ import {
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
   TransactionHistorySortMethod,
+  TransactionHistoryPageBack,
+  TransactionHistoryPageNext,
+  TransactionHistoryPageSearch,
 } from "../../utils/AnalyticsFunctions";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import {
@@ -79,12 +82,15 @@ import CoinChip from "../wallet/CoinChip.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import moment from "moment";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
-
     
+    const search = props.location.search;
+    const params = new URLSearchParams(search);
+    const page = params.get("p");
     this.state = {
       startTime: "",
       showPopupModal: true,
@@ -97,7 +103,7 @@ class PortfolioMobile extends BaseReactComponent {
       showHideDustVal:true,
       showHideDustValTrans:true,
       isShowingAge:false,
-      currentPage:0,
+      currentPage:page ? parseInt(page, 10) : START_INDEX,
       walletList: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       condition:  [],
@@ -337,6 +343,51 @@ class PortfolioMobile extends BaseReactComponent {
     if(prevState.condition !== this.state.condition || prevState.sort !== this.state.sort){
       this.callApi(this.state.currentPage || START_INDEX);
     }
+
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort ||
+      prevState.pageLimit !== this.state.pageLimit
+    ) {
+      this.callApi(page);
+      this.setState({
+        currentPage: page,
+      });
+      if (prevPage !== page) {
+        if (prevPage - 1 === page) {
+          TransactionHistoryPageBack({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else if (prevPage + 1 === page) {
+          TransactionHistoryPageNext({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        } else {
+          TransactionHistoryPageSearch({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_search: page + 1,
+            isMobile: true,
+          });
+          this.updateTimer();
+        }
+      }
+    }
   }
   componentDidMount() {
     if (this.props.intelligenceState.Average_cost_basis) {
@@ -423,9 +474,6 @@ class PortfolioMobile extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     if(this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN)?.value){
       this.props.searchTransactionApi(data, this, page);
-    }
-    else{
-      console.log('cought');
     }
   };
   endPageView = () => {
@@ -536,7 +584,7 @@ class PortfolioMobile extends BaseReactComponent {
   render() {
 
     const {currency} = this.state
-    const {assetPriceList, table} = this.props.intelligenceState;
+    const {assetPriceList, table, totalPage} = this.props.intelligenceState;
 
     let tableDataTransaction =
       table &&
@@ -628,7 +676,6 @@ class PortfolioMobile extends BaseReactComponent {
         };
       });
 
-      console.log('ii', this.props.intelligenceState);
     
       const columnListTransaction = [
         {
@@ -2402,6 +2449,22 @@ class PortfolioMobile extends BaseReactComponent {
                   xAxisScrollable
                   // yAxisScrollable
                 />
+              </div>
+              <div style={{marginTop:'2rem'}}>
+                {
+                  totalPage > 1 &&<SmartMoneyPagination
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={this.state.currentPage+1}
+                  pageCount={totalPage}
+                  pageLimit={API_LIMIT}
+                  onPageChange={(e)=>{
+                    
+                  }}
+                  style={{padding:'0px'}}
+                  isMobile
+                  />
+                }
               </div>
              
               <div className="mobileFooterContainer">

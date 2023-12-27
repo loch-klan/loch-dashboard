@@ -3620,12 +3620,14 @@ export const TransactionHistoryPageNext = ({
   session_id,
   email_address,
   page_no,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page next";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3637,12 +3639,14 @@ export const TransactionHistoryPageBack = ({
   session_id,
   email_address,
   page_no,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page back";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3653,12 +3657,14 @@ export const TransactionHistoryPageSearch = ({
   session_id,
   email_address,
   page_search,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page search": page_search,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
