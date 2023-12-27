@@ -129,14 +129,14 @@ const routes = [
     component: CohortSharePage,
   },
   {
-    path: "/smart-money",
-    name: "Smart Money",
+    path: "/leaderboard",
+    name: "Leaderboard",
     type: PrivateRoute,
     component: SmartMoneyPage,
   },
   {
-    path: "/home-smart-money",
-    name: "Home Smart Money",
+    path: "/home-leaderboard",
+    name: "Home Leaderboard",
     type: PrivateRoute,
     component: HomeSmartMoneyPage,
   },
@@ -221,7 +221,7 @@ const routes = [
   },
   {
     path: "/verify-email-smart-money",
-    name: "Verify Smart Money Email",
+    name: "Verify Leaderboard Email",
     type: Route,
     component: VerifySmartMoneyEmailLink,
   },
