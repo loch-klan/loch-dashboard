@@ -17,7 +17,6 @@ import BarGraphSection from "../common/BarGraphSection.js";
 import Loading from "../common/Loading.js";
 import PageHeader from "../common/PageHeader.js";
 import {
-  getAllInsightsApi,
   getAssetProfitLoss,
   getProfitAndLossApi,
   getTransactionAsset,
@@ -230,7 +229,6 @@ class RealizedProfitAndLoss extends Component {
       this.props.getUser();
       this.assetList();
     } else {
-      this.props.updateWalletListFlag("realizedGainsPage", true);
       this.setState({
         isGraphLoading: false,
       });
@@ -310,16 +308,17 @@ class RealizedProfitAndLoss extends Component {
       this.setState({ isGraphLoading: false });
     }
     if (prevState.apiResponse != this.state.apiResponse) {
-      // this.props.getAllCoins();
-      // this.timeFilter(0);
-      // this.props.getAllInsightsApi(this);
-      // this.assetList();
+      this.props.getAllCoins();
+      this.timeFilter(0);
+
+      this.assetList();
       this.setState({
         apiResponse: false,
       });
     }
 
     if (!this.props.commonState.realizedGainsPage) {
+      console.log("Coming????");
       this.props.updateWalletListFlag("realizedGainsPage", true);
       this.props.getAllCoins();
       //here this.timeFilter(0);
@@ -749,7 +748,7 @@ const mapDispatchToProps = {
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
-  getAllInsightsApi,
+
   getProfitAndLossApi,
   getAssetProfitLoss,
   updateWalletListFlag,

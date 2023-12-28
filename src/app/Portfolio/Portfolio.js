@@ -680,8 +680,7 @@ class Portfolio extends BaseReactComponent {
     }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
-    this.props.updateWalletListFlag("assetsPage", true);
-    this.props.updateWalletListFlag("realizedGainsPage", true);
+
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
