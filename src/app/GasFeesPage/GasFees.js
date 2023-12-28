@@ -199,7 +199,6 @@ class GasFeesPage extends Component {
         this.props.intelligenceState.graphfeeValue[0]
       )
     ) {
-      this.props.updateWalletListFlag("gasFeesPage", true);
       this.props.getAllCoins();
       this.getBlockchainFee(0, true);
 
