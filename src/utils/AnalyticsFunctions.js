@@ -673,13 +673,32 @@ export const TransactionHistoryHashHover = ({
 export const TransactionHistoryHashCopied = ({
   session_id,
   email_address,
-  hash_copied
+  hash_copied,
+  isMobile = false
 }) => {
   const event_name = "Transaction :transaction history Hash Copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "hash_copied":hash_copied
+    "hash_copied":hash_copied,
+    "isMobile":isMobile
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+//23. Home:transaction history hash copied
+export const TransactionHistoryAddressCopied = ({
+  session_id,
+  email_address,
+  address_copied,
+  isMobile=false
+}) => {
+  const event_name = "Transaction :transaction Address Copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "address_copied":address_copied,
+    "isMobile":isMobile
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -3453,55 +3472,60 @@ export const YieldOpportunitiesNetworkFilter = ({
   //console.log("Menu:intelligence menu");
 };
 
-export const TransactionHistorySortDate = ({ session_id, email_address }) => {
+export const TransactionHistorySortDate = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort date";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort from - done
-export const TransactionHistorySortFrom = ({ session_id, email_address }) => {
+export const TransactionHistorySortFrom = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort from";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort to - done
-export const TransactionHistorySortTo = ({ session_id, email_address }) => {
+export const TransactionHistorySortTo = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort to";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort asset - done
-export const TransactionHistorySortAsset = ({ session_id, email_address }) => {
+export const TransactionHistorySortAsset = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort asset";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort amount - done
-export const TransactionHistorySortAmount = ({ session_id, email_address }) => {
+export const TransactionHistorySortAmount = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort amount";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3512,11 +3536,13 @@ export const TransactionHistorySortAmount = ({ session_id, email_address }) => {
 export const TransactionHistorySortUSDAmount = ({
   session_id,
   email_address,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: sort usd amount";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3524,11 +3550,12 @@ export const TransactionHistorySortUSDAmount = ({
 
 // Transaction History: sort usd fee - done
 
-export const TransactionHistorySortUSDFee = ({ session_id, email_address }) => {
+export const TransactionHistorySortUSDFee = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort usd fee";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3536,11 +3563,12 @@ export const TransactionHistorySortUSDFee = ({ session_id, email_address }) => {
 
 // Transaction History: sort method - done
 
-export const TransactionHistorySortMethod = ({ session_id, email_address }) => {
+export const TransactionHistorySortMethod = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: sort method";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3548,11 +3576,12 @@ export const TransactionHistorySortMethod = ({ session_id, email_address }) => {
 
 // Transaction History: hide dust - done
 
-export const TransactionHistoryHideDust = ({ session_id, email_address }) => {
+export const TransactionHistoryHideDust = ({ session_id, email_address, isMobile=false }) => {
   const event_name = "Transaction History: hide dust";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3591,12 +3620,14 @@ export const TransactionHistoryPageNext = ({
   session_id,
   email_address,
   page_no,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page next";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3608,12 +3639,14 @@ export const TransactionHistoryPageBack = ({
   session_id,
   email_address,
   page_no,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page back";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3624,12 +3657,14 @@ export const TransactionHistoryPageSearch = ({
   session_id,
   email_address,
   page_search,
+  isMobile=false
 }) => {
   const event_name = "Transaction History: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page search": page_search,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -4588,12 +4623,14 @@ export const TransactionHistoryWalletClicked = ({
   session_id,
   email_address,
   wallet,
+  isMobile=false
 }) => {
   const event_name = "Transaction history: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
+    isMobile: isMobile
   };
   sendAmplitudeData(event_name, eventProperties);
 };

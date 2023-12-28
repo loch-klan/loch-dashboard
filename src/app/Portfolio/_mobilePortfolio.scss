@@ -7,6 +7,12 @@
   display: flex;
   flex-direction: column;
 
+  .asset-mobile-table{
+    .table-wrapper-mobile-y-scroll{
+      max-height: 65rem !important;
+    }
+  }
+
   .mpLoadingContainer {
     display: flex;
     align-items: center;
