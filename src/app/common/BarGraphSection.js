@@ -46,6 +46,7 @@ ChartJS.register(
 
 class BarGraphSection extends Component {
   constructor(props) {
+    console.log("props.data is ", props.data);
     super(props);
     this.state = {
       headerTitle: props.headerTitle,
@@ -296,7 +297,7 @@ class BarGraphSection extends Component {
         )}
 
         {!isLoading ? (
-          data && options ? (
+          (data && options) || this.props.ProfitLossAsset?.series ? (
             <span
               style={{
                 flex: 1,
@@ -472,32 +473,34 @@ class BarGraphSection extends Component {
                           // selectedTokens={this.state.activeBadge}
                         />
                       </div>
-                      <div
-                        className="intelligenceRealisedRightItems"
-                        // style={{
-                        //   width: "100%",
-                        //   minWidth: "15rem",
-                        //   maxWidth: "18rem",
-                        //   zIndex: "2",
-                        // }}
-                      >
+                      {this.props.showSwitch ? (
                         <div
-                          onClick={this.toggleBreakdownSelected}
-                          className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
-                            this.state.switchselected
-                              ? "IRRIbreakdownContainerSelected"
-                              : ""
-                          }`}
+                          className="intelligenceRealisedRightItems"
+                          // style={{
+                          //   width: "100%",
+                          //   minWidth: "15rem",
+                          //   maxWidth: "18rem",
+                          //   zIndex: "2",
+                          // }}
                         >
-                          <div>Breakdown</div>
-                          <div className="IRRIbreakdownImageContainer">
-                            <Image
-                              className="IRRIbreakdownImage"
-                              src={ThickCheckMarkIcon}
-                            />
+                          <div
+                            onClick={this.toggleBreakdownSelected}
+                            className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                              this.state.switchselected
+                                ? "IRRIbreakdownContainerSelected"
+                                : ""
+                            }`}
+                          >
+                            <div>Breakdown</div>
+                            <div className="IRRIbreakdownImageContainer">
+                              <Image
+                                className="IRRIbreakdownImage"
+                                src={ThickCheckMarkIcon}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ) : null}
                       <div className="intelligenceRealisedInfoIcon">
                         <CustomOverlay
                           position="bottom"

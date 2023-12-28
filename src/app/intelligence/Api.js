@@ -402,6 +402,13 @@ export const getAssetProfitLoss = (
               ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
             },
           });
+          if (ctx) {
+            ctx.setState({
+              //  GraphData: res.data.data.profit_loss,
+              netFlowLoading: false,
+              //  graphValue: getProfitAndLossData(res.data.data.profit_loss),
+            });
+          }
           //  ctx.setState({
           //    ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
           //    //    updatedInsightList: res.data.data.insights,
