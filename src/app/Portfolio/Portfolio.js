@@ -557,11 +557,10 @@ class Portfolio extends BaseReactComponent {
 
     if (userWallet?.length === 1) {
       let slink = userWallet[0].displayAddress || userWallet[0].address;
-      shareLink =
-        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
+      shareLink = BASE_URL_S3 + "home/" + slink;
     } else {
       let slink = lochUser;
-      shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      shareLink = BASE_URL_S3 + "wallet/" + slink;
     }
 
     navigator.clipboard.writeText(shareLink);

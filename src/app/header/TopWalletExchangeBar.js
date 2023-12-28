@@ -973,15 +973,17 @@ class TopWalletExchangeBar extends Component {
                 </span>
               </div>
             ) : null}
-            <div
-              ref={this.props.buttonRef}
-              className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
-              id="address-button"
-              onClick={this.props.handleShare}
-            >
-              <Image className="topBarWalletAdd" src={ShareTopBarIcon} />
-              <span className="dotDotText">Share</span>
-            </div>
+            {!this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
+                id="address-button"
+                onClick={this.props.handleShare}
+              >
+                <Image className="topBarWalletAdd" src={ShareTopBarIcon} />
+                <span className="dotDotText">Share</span>
+              </div>
+            ) : null}
           </>
         ) : (
           <div

@@ -334,6 +334,7 @@ export default function WelcomeCard(props) {
               handleAddWalletClick={handleAddWalletClick}
               handleConnectModal={handleConnectModal}
               handleUpdate={props.handleUpdate}
+              hideShare={props.hideShare}
             />
           ) : // <div className="topBarContainer">
           //   <div

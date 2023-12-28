@@ -780,6 +780,7 @@ class WatchListPage extends BaseReactComponent {
                 handleAddModal={this.handleAddModal}
                 hideButton={false}
                 updateOnFollow={this.callApi}
+                hideShare
               />
             </div>
           </div>
