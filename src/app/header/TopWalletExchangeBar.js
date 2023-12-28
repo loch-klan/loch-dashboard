@@ -108,6 +108,9 @@ class TopWalletExchangeBar extends Component {
     }
   };
   showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
+    if (this.props.updateOnFollow) {
+      this.props.updateOnFollow();
+    }
     this.setState({ isFollowingAddress: true });
     window.sessionStorage.setItem("isFollowingAddress", true);
     if (openModal) {
@@ -128,6 +131,9 @@ class TopWalletExchangeBar extends Component {
     }
   };
   addressDeleted = () => {
+    if (this.props.updateOnFollow) {
+      this.props.updateOnFollow();
+    }
     this.setState({ isFollowingAddress: false });
     window.sessionStorage.setItem("isFollowingAddress", false);
   };
