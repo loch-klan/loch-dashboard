@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import { Image } from "react-bootstrap";
+import checkIcon from "../../assets/images/icons/check-cohort.svg";
 
 class CheckboxCustomTable extends Component {
   constructor(props) {

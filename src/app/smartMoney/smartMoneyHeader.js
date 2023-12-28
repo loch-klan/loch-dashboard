@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { Dropdown, DropdownButton, Image } from "react-bootstrap";
-import logo from "../../image/Loch.svg";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 import {
   BlackManIcon,
   GreyManIcon,
@@ -10,12 +8,13 @@ import {
   QuestionmarkCircleSmartMoneyIcon,
   ShareProfileIcon,
 } from "../../assets/images/icons";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import logo from "../../image/Loch.svg";
+import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 
 import { toast } from "react-toastify";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { BASE_URL_S3 } from "../../utils/Constant";
 import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(

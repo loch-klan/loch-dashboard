@@ -1,63 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 // import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
-import OnBoarding from "../onboarding";
-import "../../assets/scss/onboarding/_onboarding.scss";
+import { ethers } from "ethers";
 import { Button, Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import Banner from "../../assets/images/bg-img-welcome.png";
 import {
-  deleteToken,
-  getToken,
-  setLocalStoraage,
-  getCurrentUser,
-} from "../../utils/ManageToken";
-import {
-  getAllCurrencyRatesApi,
-  GetDefaultPlan,
-  setPageFlagDefault,
-  updateUserWalletApi,
-} from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import FormElement from "../../utils/form/FormElement";
-import FormValidator from "./../../utils/form/FormValidator";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
-import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
-import Form from "../../utils/form/Form";
-import {
-  DiscountEmailPage,
-  DiscountEmailSkip,
-  EmailAddedDiscount,
-  TimeSpentDiscountEmail,
-  TimeSpentOnboarding,
-  LPConnectExchange,
-  LPDiscover,
-  ConnectWalletButtonClickedWelcome,
-  SmartMoneyButtonClickedWelcome,
-  ClickTrendingAddress,
-} from "../../utils/AnalyticsFunctions";
-import {
-  CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
   SmartMoneyWhiteIcon,
   WalletWhiteIcon,
 } from "../../assets/images/icons";
-import LinkIconBtn from "../../assets/images/link.svg";
+import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
+import "../../assets/scss/onboarding/_onboarding.scss";
 import {
-  AppFeaturesCreateUser,
-  createAnonymousUserApi,
-  detectCoin,
-} from "../onboarding/Api";
+  ClickTrendingAddress,
+  ConnectWalletButtonClickedWelcome,
+  DiscountEmailSkip,
+  EmailAddedDiscount,
+  LPConnectExchange,
+  SmartMoneyButtonClickedWelcome,
+  TimeSpentDiscountEmail,
+} from "../../utils/AnalyticsFunctions";
+import {
+  deleteToken,
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
+import Form from "../../utils/form/Form";
+import FormElement from "../../utils/form/FormElement";
+import {
+  GetDefaultPlan,
+  getAllCurrencyRatesApi,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
 } from "../header/HeaderAction";
-import { ethers } from "ethers";
+import OnBoarding from "../onboarding";
+import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import FormValidator from "./../../utils/form/FormValidator";
 
-import MobileHome from "./MobileHome";
-import { mobileCheck } from "../../utils/ReusableFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
+import { mobileCheck } from "../../utils/ReusableFunctions";
+import MobileHome from "./MobileHome";
 
 class Home extends BaseReactComponent {
   constructor(props) {

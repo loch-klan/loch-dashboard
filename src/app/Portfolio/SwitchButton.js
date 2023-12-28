@@ -1,12 +1,12 @@
 import React from "react";
 
-import { BellOffIcon, BellAssetIcon } from "../../assets/images/icons";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { BellAssetIcon, BellOffIcon } from "../../assets/images/icons";
 import {
   AssetValueEmailNotifyClicked,
   TopAssetValueEmailNotifyClicked,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 const SwitchButton = (props) => {
   let obj = JSON.parse(window.sessionStorage.getItem("assetValueLoader"));

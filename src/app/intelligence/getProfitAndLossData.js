@@ -1,18 +1,10 @@
+import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
+import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
 import {
   CurrencyType,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
-import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
-import {
-  homeInflowHover,
-  homeNetHover,
-  homeOutflowHover,
-  netflowInflowHover,
-  netflowNetHover,
-  netflowOutflowHover,
-} from "../../utils/AnalyticsFunctions";
 
 import GraphLogo from "../../assets/images/graph-logo.svg";
 export const getProfitAndLossData = (arr, parentctx) => {
@@ -175,7 +167,6 @@ export const getProfitAndLossData = (arr, parentctx) => {
         }
 
         let netColor = "#16182B";
-        console.log("totalNetflow ", totalNetflow);
         if (this.x === "Net") {
           if (totalNetflow > 0) {
             netColor = "#18C278";
@@ -199,7 +190,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
       series: {
         stacking: "normal",
         // grouping: false,
-
+        showInLegend: false,
         dataLabels: {
           enabled: false,
         },
