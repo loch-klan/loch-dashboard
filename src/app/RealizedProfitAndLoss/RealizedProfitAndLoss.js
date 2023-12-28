@@ -18,7 +18,7 @@ import Loading from "../common/Loading.js";
 import PageHeader from "../common/PageHeader.js";
 import {
   getAssetProfitLoss,
-  getProfitAndLossApi,
+  // getProfitAndLossApi,
   getTransactionAsset,
 } from "../intelligence/Api";
 import { getAllCoins } from "../onboarding/Api.js";
@@ -79,7 +79,7 @@ class RealizedProfitAndLoss extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      isSwitch: false,
+      isSwitch: true,
       AssetList: [],
       selectedAssets: [],
       selectedOption: 0,
@@ -90,7 +90,7 @@ class RealizedProfitAndLoss extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-      netFlowLoading: false,
+      netFlowLoading: true,
       isGraphLoading: true,
       isChainSearchUsed: false,
       isAssetSearchUsed: false,
@@ -217,8 +217,8 @@ class RealizedProfitAndLoss extends Component {
     if (
       !this.props.commonState.realizedGainsPage ||
       !(
-        this.props.intelligenceState?.graphValue &&
-        this.props.intelligenceState?.graphValue.length > 0
+        this.props.intelligenceState?.ProfitLossAsset?.series &&
+        this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
       )
     ) {
       this.startPageView();
@@ -228,10 +228,12 @@ class RealizedProfitAndLoss extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
       this.assetList();
+      this.assetList();
     } else {
       this.setState({
-        isGraphLoading: false,
+        netFlowLoading: false,
       });
+      this.assetList();
     }
 
     let obj = UpgradeTriggered();
@@ -274,13 +276,13 @@ class RealizedProfitAndLoss extends Component {
       [],
       this.state.selectedAssets
     );
-    this.props.getProfitAndLossApi(
-      this,
-      moment.utc(this.state.fromDate).add(1, "days").unix(),
-      moment.utc(this.state.toDate).add(1, "days").unix(),
-      [],
-      this.state.selectedAssets
-    );
+    // this.props.getProfitAndLossApi(
+    //   this,
+    //   moment.utc(this.state.fromDate).add(1, "days").unix(),
+    //   moment.utc(this.state.toDate).add(1, "days").unix(),
+    //   [],
+    //   this.state.selectedAssets
+    // );
   };
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -318,7 +320,6 @@ class RealizedProfitAndLoss extends Component {
     }
 
     if (!this.props.commonState.realizedGainsPage) {
-      console.log("Coming????");
       this.props.updateWalletListFlag("realizedGainsPage", true);
       this.props.getAllCoins();
       //here this.timeFilter(0);
@@ -474,13 +475,13 @@ class RealizedProfitAndLoss extends Component {
       }
     });
 
-    this.props.getProfitAndLossApi(
-      this,
-      startDate,
-      endDate,
-      selectedChains,
-      this.state.selectedAssets
-    );
+    // this.props.getProfitAndLossApi(
+    //   this,
+    //   startDate,
+    //   endDate,
+    //   selectedChains,
+    //   this.state.selectedAssets
+    // );
 
     // for asset Breakdown
     this.props.getAssetProfitLoss(
@@ -648,7 +649,7 @@ class RealizedProfitAndLoss extends Component {
                   minWidth: "85rem",
                 }}
               >
-                {this.props.intelligenceState.graphValue ? (
+                {!this.state.netFlowLoading ? (
                   <BarGraphSection
                     dontShowAssets
                     showToCalendar={this.showToCalendar}
@@ -665,8 +666,8 @@ class RealizedProfitAndLoss extends Component {
                     minDate={this.state.minDate}
                     showFromAndTo
                     isScrollVisible={false}
-                    data={this.props.intelligenceState.graphValue[0]}
-                    options={this.props.intelligenceState.graphValue[1]}
+                    data={null}
+                    options={null}
                     coinsList={this.props.OnboardingState.coinsList}
                     isSwitch={this.state.isSwitch}
                     setSwitch={this.setSwitch}
@@ -677,7 +678,6 @@ class RealizedProfitAndLoss extends Component {
                     showToken={true}
                     activeTitle={this.state.title}
                     assetList={this.state.AssetList}
-                    showPercentage={this.props.intelligenceState.graphValue[2]}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
                     }
@@ -689,6 +689,7 @@ class RealizedProfitAndLoss extends Component {
                     isGraphLoading={this.state.isGraphLoading}
                     chainSearchIsUsed={this.chainSearchIsUsed}
                     assetSearchIsUsed={this.assetSearchIsUsed}
+                    showSwitch={false}
                   />
                 ) : (
                   <div
@@ -749,7 +750,7 @@ const mapDispatchToProps = {
   getUserWallet,
   settingDefaultValues,
 
-  getProfitAndLossApi,
+  // getProfitAndLossApi,
   getAssetProfitLoss,
   updateWalletListFlag,
   setPageFlagDefault,
