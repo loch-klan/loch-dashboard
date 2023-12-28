@@ -689,11 +689,11 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Smart Money"}
+                            text={"Leaderboard"}
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/home-smart-money"
+                              to="/home-leaderboard"
                               onClick={(e) => {
                                 if (!isWallet) {
                                   e.preventDefault();
@@ -708,7 +708,7 @@ function Sidebar(props) {
                             >
                               <Image
                                 src={
-                                  activeTab === "/home-smart-money"
+                                  activeTab === "/home-leaderboard"
                                     ? ActiveSmartMoneySidebarIcon
                                     : InactiveSmartMoneySidebarIcon
                                 }
@@ -864,17 +864,17 @@ function Sidebar(props) {
                                 }
                               }}
                               className="nav-link"
-                              to="/home-smart-money"
+                              to="/home-leaderboard"
                               activeclassname="active"
                             >
                               <Image
                                 src={
-                                  activeTab === "/home-smart-money"
+                                  activeTab === "/home-leaderboard"
                                     ? ActiveSmartMoneySidebarIcon
                                     : InactiveSmartMoneySidebarIcon
                                 }
                               />
-                              Smart Money
+                              Leaderboard
                             </NavLink>
                           </li>
                           <li>

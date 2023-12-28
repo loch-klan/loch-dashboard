@@ -22,6 +22,7 @@ import {
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { BaseReactComponent } from "../../utils/form/index.js";
+
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
@@ -75,6 +76,8 @@ import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 import HomeSmartMoneyHeader from "./homeSmartMoneyHeader.js";
 import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
+
+import "./_smartMoney.scss";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -170,7 +173,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
-      this.props.history.push("/smart-money");
+      this.props.history.push("/leaderboard");
     }, 3000);
   };
   showSignInModal = () => {
@@ -744,7 +747,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   render() {
@@ -1183,93 +1186,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className=" history-table-header-col no-hover"
-      //       id="netflows"
-      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Unrealized
-      //       </span>
-      //       {/* <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       /> */}
-      //     </div>
-      //   ),
-      //   dataKey: "returns",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "returns") {
-      //       let tempReturns = rowData.returns ? rowData.returns : 0;
-      //       let tempCurrencyRate = this.state.currency?.rate
-      //         ? this.state.currency.rate
-      //         : 0;
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             tempReturns * tempCurrencyRate
-      //               ? amountFormat(
-      //                   Math.abs(tempReturns * tempCurrencyRate),
-      //                   "en-US",
-      //                   "USD"
-      //                 ) + "%"
-      //               : "0.00%"
-      //           }
-      //         >
-      //           <div className="gainLossContainer">
-      //             <div
-      //               className={`gainLoss `}
-      //               onMouseEnter={() => {
-      //                 SmartMoneyReturnHover({
-      //                   session_id: getCurrentUser().id,
-      //                   email_address: getCurrentUser().email,
-      //                   hover:
-      //                     tempReturns * tempCurrencyRate
-      //                       ? amountFormat(
-      //                           Math.abs(tempReturns * tempCurrencyRate),
-      //                           "en-US",
-      //                           "USD"
-      //                         ) + "%"
-      //                       : "0.00%",
-      //                 });
-      //                 this.updateTimer();
-      //               }}
-      //             >
-      //               {tempReturns !== 0 ? (
-      //                 <Image
-      //                   style={{
-      //                     height: "1.5rem",
-      //                     width: "1.5rem",
-      //                   }}
-      //                   src={
-      //                     tempReturns < 0
-      //                       ? ArrowDownLeftSmallIcon
-      //                       : ArrowUpRightSmallIcon
-      //                   }
-      //                   className="mr-2"
-      //                 />
-      //               ) : null}
-      //               <span className="inter-display-medium f-s-13 lh-16 grey-313">
-      //                 {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
-      //               </span>
-      //             </div>
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
     ];
 
     return (
@@ -1408,9 +1324,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 }}
               >
                 <PageHeader
-                  title="Loch’s Smart Money Leaderboard"
+                  title="Loch’s Leaderboard"
                   subTitle="The lazy analyst’s guide to alpha"
-                  currentPage={"home-smart-money"}
+                  currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />
               </div>

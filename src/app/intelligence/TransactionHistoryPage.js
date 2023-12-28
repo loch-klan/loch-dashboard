@@ -25,7 +25,6 @@ import {
   SORT_BY_METHOD,
   SORT_BY_TIMESTAMP,
   SORT_BY_TO_WALLET,
-  SORT_BY_TRANSACTION_FEE,
   SORT_BY_USD_VALUE_THEN,
   START_INDEX,
 } from "../../utils/Constant";
@@ -39,8 +38,11 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
+  TransactionHistoryAddressCopied,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
+  TransactionHistoryHashCopied,
+  TransactionHistoryHashHover,
   TransactionHistoryHideDust,
   TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
@@ -56,9 +58,8 @@ import {
   TransactionHistorySortMethod,
   TransactionHistorySortTo,
   TransactionHistorySortUSDAmount,
-  TransactionHistorySortUSDFee,
   TransactionHistoryWalletClicked,
-  TransactionHistoryYearFilter
+  TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -67,7 +68,7 @@ import {
   UpgradeTriggered,
   convertNtoNumber,
   mobileCheck,
-  numToCurrency
+  numToCurrency,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -164,7 +165,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
         {
-          title: "usdToday",
+          title: "network",
           up: false,
         },
         {
@@ -173,6 +174,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
         {
           title: "method",
+          up: false,
+        },
+        {
+          title: "hash",
           up: false,
         },
       ],
@@ -758,18 +763,6 @@ class TransactionHistoryPage extends BaseReactComponent {
             email_address: getCurrentUser().email,
           });
           this.updateTimer();
-        } else if (val === "usdTransaction") {
-          obj = [
-            {
-              key: SORT_BY_TRANSACTION_FEE,
-              value: !el.up,
-            },
-          ];
-          TransactionHistorySortUSDFee({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
         } else if (val === "method") {
           obj = [
             {
@@ -976,6 +969,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           },
           // method: row.transaction_type
           method: row.method,
+          hash: row.transaction_id,
+          network: row.chain.name,
         };
       });
 
@@ -1153,7 +1148,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1184,7 +1187,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1211,7 +1222,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1238,7 +1257,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.from.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.from.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1263,7 +1290,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1288,7 +1323,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.from.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.from.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1407,7 +1450,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1437,7 +1488,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1464,7 +1523,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1491,7 +1558,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                       </span>
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.to.address)}
+                        onClick={() => {
+                          this.copyContent(rowData.to.address);
+                          TransactionHistoryAddressCopied({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_copied: rowData.to.address,
+                          });
+                          this.updateTimer();
+                        }}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -1516,7 +1591,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1540,7 +1623,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </span>
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.to.address)}
+                      onClick={() => {
+                        this.copyContent(rowData.to.address);
+                        TransactionHistoryAddressCopied({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_copied: rowData.to.address,
+                        });
+                        this.updateTimer();
+                      }}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1726,93 +1817,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="usdTransactionFee"
-            onClick={() => this.handleTableSort("usdTransaction")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
-              true
-            )} fee (then)`}</span>
-            <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "usdTransactionFee",
-
-        className: "usd-value",
-        coumnWidth: 0.225,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "usdTransactionFee") {
-            let chain = Object.entries(assetPriceList);
-            let valueToday;
-            let valueThen;
-            chain.find((chain) => {
-              if (chain[0] === rowData.usdTransactionFee.id) {
-                valueToday =
-                  rowData.usdTransactionFee.value *
-                    chain[1].quote.USD.price *
-                    currency?.rate || DEFAULT_PRICE;
-                valueThen =
-                  rowData.usdTransactionFee.value *
-                  rowData.usdValueThen.assetPrice *
-                  currency?.rate;
-              }
-            });
-            const tempValueToday = convertNtoNumber(valueToday);
-            const tempValueThen = convertNtoNumber(valueThen);
-            return (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempValueToday
-                      ? CurrencyType(false) + tempValueToday
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {tempValueToday
-                      ? CurrencyType(false) +
-                        numToCurrency(tempValueToday).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </div>
-                </CustomOverlay>
-                <span style={{ padding: "2px" }}></span>(
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempValueThen
-                      ? CurrencyType(false) + tempValueThen
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                    {tempValueThen
-                      ? CurrencyType(false) +
-                        numToCurrency(tempValueThen).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </div>
-                </CustomOverlay>
-                )
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
@@ -1857,6 +1861,110 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </div>
                 )}
               </>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="cp history-table-header-col" id="network">
+            Network
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "network",
+
+        className: "usd-value",
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "network") {
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.network}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
+                    {rowData.network}
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="hash"
+            // onClick={() => this.handleTableSort("hash")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Hash
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt.find(s=>s.title=='hash').up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "hash",
+
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "hash") {
+            // return rowData.hash.value?.toFixed(2)
+            const tempHashVal = TruncateText(rowData.hash);
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.hash ? rowData.hash : ""}
+              >
+                <div
+                  onMouseEnter={() => {
+                    // console.log('here');
+                    TransactionHistoryHashHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hash_hovered: rowData.hash,
+                    });
+                    this.updateTimer();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                >
+                  {tempHashVal}
+                  <Image
+                    src={CopyClipboardIcon}
+                    onClick={() => {
+                      this.copyContent(rowData.hash);
+                      TransactionHistoryHashCopied({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        hash_copied: rowData.hash,
+                      });
+                      this.updateTimer();
+                    }}
+                    className="m-l-10 cp copy-icon"
+                    style={{ width: "1rem" }}
+                  />
+                </div>
+              </CustomOverlay>
             );
           }
         },

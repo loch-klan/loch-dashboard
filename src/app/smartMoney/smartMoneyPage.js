@@ -167,7 +167,7 @@ class SmartMoneyPage extends BaseReactComponent {
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
-      this.props.history.push("/smart-money");
+      this.props.history.push("/leaderboard");
     }, 3000);
   };
   showSignInModal = () => {

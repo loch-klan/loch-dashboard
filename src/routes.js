@@ -26,6 +26,7 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 const routes = [
   {
     path: "/",
@@ -103,10 +104,16 @@ const routes = [
   },
 
   {
-    path: "/smart-money",
-    name: "Smart Money",
+    path: "/leaderboard",
+    name: "Leaderboard",
     type: PrivateRoute,
     component: SmartMoneyPage,
+  },
+  {
+    path: "/home-leaderboard",
+    name: "Home Leaderboard",
+    type: PrivateRoute,
+    component: HomeSmartMoneyPage,
   },
   {
     path: "/home-smart-money",
@@ -142,7 +149,7 @@ const routes = [
   },
   {
     path: "/verify-email-smart-money",
-    name: "Verify Smart Money Email",
+    name: "Verify Leaderboard Email",
     type: Route,
     component: VerifySmartMoneyEmailLink,
   },

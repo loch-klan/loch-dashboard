@@ -3075,6 +3075,7 @@ class Portfolio extends BaseReactComponent {
           history={this.props.history}
           tableDataCostBasis={tableDataCostBasis}
           AvgCostLoading={this.state.AvgCostLoading}
+          location={this.props.location}
         />
       );
     }

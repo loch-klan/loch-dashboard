@@ -89,7 +89,7 @@ export default function SmartMoneyHeader(props) {
   };
   const goBackToSmartMoney = () => {
     if (props.history && props.isFaq) {
-      props.history.replace("/smart-money");
+      props.history.replace("/leaderboard");
     }
   };
   const handleShare = () => {
@@ -98,7 +98,7 @@ export default function SmartMoneyHeader(props) {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     copyTextToClipboard(shareLink);
   };
   const copyTextToClipboard = async (text) => {
@@ -164,7 +164,7 @@ export default function SmartMoneyHeader(props) {
                 props.isFaq ? "rightSmartMoneyContainerHeadingSmartMoney" : ""
               }`}
             >
-              Loch’s Smart Money Leaderboard
+              Loch’s Leaderboard
             </div>
           </div>
           <p
