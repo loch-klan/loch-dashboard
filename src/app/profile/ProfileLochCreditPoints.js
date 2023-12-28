@@ -15,7 +15,7 @@ import {
   XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons/index.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
-import { getUserCredits } from "./Api.js";
+import { addUserCredits, getUserCredits } from "./Api.js";
 import Loading from "../common/Loading.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import {
@@ -43,11 +43,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "multiple_address_added",
         "exchange_connected",
         "follow_address",
-        "twitter_spaces",
-        "follow_on_twitter",
-        "join_telegram",
-        "provide_feedback",
-        "use_referral_code",
+        "x_follower",
+        "joined_telegram",
+        // "twitter_spaces",
+        // "provide_feedback",
+        // "use_referral_code",
       ],
     };
   }
@@ -253,6 +253,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         task: "Followed @loch_chain",
       });
       window.open("https://twitter.com/loch_chain", "_blank");
+      const twitterFollow = new URLSearchParams();
+      twitterFollow.append("credits", "x_follower");
+      this.props.addUserCredits(twitterFollow);
+    };
+    const goClickJoinTelegram = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Joined Telegram chat",
+      });
+      window.open("https://t.me/loch_chain", "_blank");
+      const joinTelegram = new URLSearchParams();
+      joinTelegram.append("credits", "joined_telegram");
+      this.props.addUserCredits(joinTelegram);
     };
     if (whichBlock === "address_added") {
       return (
@@ -342,7 +356,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           // onClick={goClickAddEns}
         />
       );
-    } else if (whichBlock === "follow_on_twitter") {
+    } else if (whichBlock === "x_follower") {
       return (
         <ProfileLochCreditPointsBlock
           title="Followed @loch_chain"
@@ -353,7 +367,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickFollowTwitter}
         />
       );
-    } else if (whichBlock === "join_telegram") {
+    } else if (whichBlock === "joined_telegram") {
       return (
         <ProfileLochCreditPointsBlock
           title="Joined Telegram chat"
@@ -361,7 +375,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditTelegramIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          // onClick={goClickConnectWallet}
+          onClick={goClickJoinTelegram}
         />
       );
     } else if (whichBlock === "provide_feedback") {
@@ -489,13 +503,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
           </div>
-          <div className="profileCreditPointsSection">
+          {/* <div className="profileCreditPointsSection">
             {this.state.tasksList
               .slice(9, 12)
               .map((singleTask, singleTaskIndex) => {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
-          </div>
+          </div> */}
           {/* <ProfileLochCreditPointsBlock
             title="Add a wallet address"
             earnPoints={1}
@@ -550,6 +564,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   getUserCredits,
+  addUserCredits
 };
 ProfileLochCreditPoints.propTypes = {};
 
