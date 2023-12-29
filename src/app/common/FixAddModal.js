@@ -1,38 +1,22 @@
+import Papa from "papaparse";
 import React from "react";
-import {
-  BaseReactComponent,
-  CustomTextControl,
-  Form,
-  FormElement,
-  FormValidator,
-} from "../../utils/form";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button } from "react-bootstrap";
-import DeleteIcon from "../../assets/images/icons/delete-icon.png";
-import WalletIcon from "../../assets/images/icons/wallet-icon.png";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-import Banner from "../../image/Frame.png";
-import CustomChip from "../../utils/commonComponent/CustomChip";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CloseBtn from "../../assets/images/icons/CloseBtn.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from "../../assets/images/icons/CloseIcon.svg";
-import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
-import {
-  getDetectedChainsApi,
-  updateUserWalletApi,
-  updateWalletListFlag,
-  detectNameTag,
-} from "./Api";
-import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
-import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
-import { setHeaderReducer } from "../header/HeaderAction";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+import ClockIcon from "../../assets/images/icons/clock-icon.svg";
+import DeleteIcon from "../../assets/images/icons/delete-icon.png";
+import FileIcon from "../../assets/images/icons/file-text.svg";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
+import WalletIcon from "../../assets/images/icons/wallet-icon.png";
+import Banner from "../../image/Frame.png";
 import {
   AddTextboxHome,
   AddWalletAddress,
   AddWalletAddressNickname,
-  AddWalletAddressPodName,
   AnonymityWalletConnection,
   AssetValueAddWallet,
   CostAddWallet,
@@ -40,18 +24,28 @@ import {
   TransactionHistoryAddWallet,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { Plans } from "../../utils/Constant";
-import UpgradeModal from "./upgradeModal";
-import { searchCohort } from "../cohort/Api";
-import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
-import FileIcon from "../../assets/images/icons/file-text.svg";
-import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
-import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
-import ClockIcon from "../../assets/images/icons/clock-icon.svg";
-import Papa from "papaparse";
+import { getPadding, loadingAnimation } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
-import { MetamaskIcon } from "../../assets/images/icons";
+import CustomChip from "../../utils/commonComponent/CustomChip";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormValidator,
+} from "../../utils/form";
+import { setHeaderReducer } from "../header/HeaderAction";
+import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
+import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
+import {
+  detectNameTag,
+  getDetectedChainsApi,
+  updateUserWalletApi,
+  updateWalletListFlag,
+} from "./Api";
+import UpgradeModal from "./upgradeModal";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -154,17 +148,7 @@ class FixAddModal extends BaseReactComponent {
     );
   };
 
-  getPodStatusFunction = () => {
-    // get current status of address
-    // const data = new URLSearchParams();
-    // data.append("user_id", getCurrentUser().id);
-    // getPodStatus(data, this);
-    // setTimeout(() => {
-    //   if (!this.state.isIndexed && !this.state.emailAdded) {
-    //     this.getPodStatusFunction();
-    //   }
-    // }, 2000);
-  };
+  getPodStatusFunction = () => {};
 
   handleUpload = () => {
     // console.log("test", this.state.userPlan?.upload_csv);
@@ -304,18 +288,6 @@ class FixAddModal extends BaseReactComponent {
     // this.props.apiResponse(true);
     this.state.onHide();
     // this.state.changeList && this.state.changeList();
-  };
-
-  // for get cohort details
-  makeApiCall = (cond) => {
-    let data = new URLSearchParams();
-    data.append("start", this.state.start);
-    data.append("conditions", JSON.stringify(cond ? cond : []));
-    data.append("limit", 50);
-    // data.append("limit", API_LIMIT)
-    data.append("sorts", JSON.stringify(this.state.sorts));
-    searchCohort(data, this);
-    // console.log(data);
   };
 
   upgradeModal = () => {
@@ -734,7 +706,6 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-    console.log("One");
     // console.log(
     //   "add wallet list",
     //   this.state.total_addresses + this.state.addWalletList?.length >
@@ -742,6 +713,7 @@ class FixAddModal extends BaseReactComponent {
     //   this.state.total_addresses , this.state.addWalletList?.length ,
     //     this.state.userPlan.wallet_address_limit
     // );
+    console.log("One");
     if (
       this.state.total_addresses +
         this.state.addWalletList?.length -

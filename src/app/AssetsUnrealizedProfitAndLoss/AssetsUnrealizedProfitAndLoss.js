@@ -1,88 +1,80 @@
 import React, { Component } from "react";
-import BarGraphSection from "../common/BarGraphSection";
-import PageHeader from "../common/PageHeader";
-import { info } from "./dummyData.js";
 import { connect } from "react-redux";
+import PageHeader from "../common/PageHeader.js";
 import { getAllCoins } from "../onboarding/Api.js";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
 
 import { Image } from "react-bootstrap";
-import CoinChip from "../wallet/CoinChip";
-import TransactionTable from "../intelligence/TransactionTable";
-import { getAllWalletListApi } from "../wallet/Api";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import TransactionTable from "../intelligence/TransactionTable.js";
+import { getAllWalletListApi } from "../wallet/Api.js";
+import CoinChip from "../wallet/CoinChip.js";
 
 import {
-  TimeSpentCosts,
-  FeesTimePeriodFilter,
-  CounterpartyFeesTimeFilter,
-  CostsPage,
-  CostShare,
-  CostHideDust,
+  AssetsPageTimeSpentMP,
+  AssetsPageViewMP,
   CAverageCostBasisSort,
+  CostAmountHover,
+  CostAssetHover,
+  CostAverageCostPriceHover,
+  CostAvgCostBasisExport,
+  CostCostBasisHover,
+  CostCurrentPriceHover,
+  CostCurrentValueHover,
+  CostGainHover,
+  CostGainLossHover,
+  CostHideDust,
+  CostShare,
+  CostSortByAmount,
   CostSortByAsset,
   CostSortByCostPrice,
   CostSortByCurrentPrice,
-  CostSortByAmount,
+  CostSortByPortfolio,
   SortByCurrentValue,
-  SortByGainLoss,
-  costFeesChainFilter,
-  costVolumeChainFilter,
-  CostAssetHover,
-  CostAverageCostPriceHover,
-  CostCurrentPriceHover,
-  CostAmountHover,
-  CostCostBasisHover,
-  CostCurrentValueHover,
-  CostGainLossHover,
-  CostAvgCostBasisExport,
-  CostBlockchainFeesExport,
-  CostCounterpartyFeesExport,
-  CostGainHover,
   SortByGainAmount,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { getCounterGraphData, getGraphData } from "./getGraphData";
+  SortByGainLoss,
+} from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken.js";
+
+import LinkIcon from "../../assets/images/icons/link.svg";
+import ConnectModal from "../common/ConnectModal.js";
+import FixAddModal from "../common/FixAddModal.js";
 import {
-  getAllFeeApi,
+  ResetAverageCostBasis,
   getAllCounterFeeApi,
-  updateCounterParty,
-  updateFeeGraph,
+  getAllFeeApi,
   getAvgCostBasis,
   updateAverageCostBasis,
-  ResetAverageCostBasis,
-} from "./Api";
-import moment from "moment/moment";
-import LinkIcon from "../../assets/images/icons/link.svg";
-import ConnectModal from "../common/ConnectModal";
-import FixAddModal from "../common/FixAddModal";
+  updateCounterParty,
+  updateFeeGraph,
+} from "../cost/Api.js";
 
 // add wallet
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { toast } from "react-toastify";
 import {
-  GetAllPlan,
-  getUser,
-  setPageFlagDefault,
-  updateWalletListFlag,
-} from "../common/Api";
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  ExportIconWhite,
+} from "../../assets/images/icons/index.js";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   mobileCheck,
   noExponents,
   numToCurrency,
-} from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
-import WelcomeCard from "../Portfolio/WelcomeCard";
-import ExitOverlay from "../common/ExitOverlay";
+} from "../../utils/ReusableFunctions.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-  ExportIconWhite,
-} from "../../assets/images/icons";
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api.js";
+import ExitOverlay from "../common/ExitOverlay.js";
+import Footer from "../common/footer.js";
 
-class Cost extends Component {
+class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,11 +89,7 @@ class Cost extends Component {
       exportModal: false,
       callFeesOverTime: true,
       callCounterpartyVolumeOverTime: true,
-      durationgraphdata: {
-        data: info[0],
-        options: info[1],
-        options2: info[2],
-      },
+
       startTime: "",
       // gas fees
       // GraphfeeData: [],
@@ -140,6 +128,7 @@ class Cost extends Component {
         { title: "Current value", down: false },
         { title: "Gain amount", down: true },
         { title: "Gain percentage", down: true },
+        { title: "Portfolio perc", down: true },
       ],
     };
   }
@@ -168,80 +157,10 @@ class Cost extends Component {
       }
     );
   };
-  setBlockChainFeesExportModal = () => {
-    CostBlockchainFeesExport({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.setState(
-      {
-        exportHeaderTitle: "Download all blockchain fees",
-        exportHeaderSubTitle: "Export your blockchain fees over time from Loch",
-        exportSelectExportOption: 2,
-      },
-      () => {
-        this.setState({
-          exportModal: true,
-        });
-      }
-    );
-  };
-  setCounterpartyVolumeExportModal = () => {
-    CostCounterpartyFeesExport({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.setState(
-      {
-        exportHeaderTitle: "Download counterparty volume",
-        exportHeaderSubTitle:
-          "Export your counterparty volume over time from Loch",
-        exportSelectExportOption: 3,
-      },
-      () => {
-        this.setState({
-          exportModal: true,
-        });
-      }
-    );
-  };
-  feesOverTimeOn = () => {
-    if (!this.state.callFeesOverTime) {
-      this.setState({
-        callFeesOverTime: true,
-      });
-    }
-  };
-  feesOverTimeOff = () => {
-    if (this.state.callFeesOverTime) {
-      this.setState({
-        callFeesOverTime: false,
-      });
-    }
-  };
-  counterpartyVolumeOverTimeOn = () => {
-    if (!this.state.callCounterpartyVolumeOverTime) {
-      this.setState({
-        callCounterpartyVolumeOverTime: true,
-      });
-    }
-  };
-  counterpartyVolumeOverTimeOff = () => {
-    if (this.state.callCounterpartyVolumeOverTime) {
-      this.setState({
-        callCounterpartyVolumeOverTime: false,
-      });
-    }
-  };
-  feesChainSearchIsUsed = () => {
-    this.setState({ isFeesChainSearchUsed: true });
-  };
-  volumeChainSearchIsUsed = () => {
-    this.setState({ isVolumeChainSearchUsed: true });
-  };
+
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    CostsPage({
+    AssetsPageViewMP({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -254,26 +173,26 @@ class Cost extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-    if (this.props.location.hash !== "") {
-      setTimeout(() => {
-        const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView();
-        }
-      }, 0);
+
+    if (
+      !this.props.commonState.assetsPage ||
+      !(
+        this.props.intelligenceState?.graphValue &&
+        this.props.intelligenceState?.graphValue.length > 0
+      )
+    ) {
+      this.props.getAllCoins();
+
+      this.props.getAvgCostBasis(this);
+      this.props.GetAllPlan();
+      this.props.getUser();
     } else {
-      window.scrollTo(0, 0);
+      this.props.updateWalletListFlag("assetsPage", true);
+      this.setState({
+        AvgCostLoading: false,
+      });
+      this.combinedResults();
     }
-
-    this.props.getAllCoins();
-    this.getBlockchainFee(0, true);
-    this.getCounterPartyFee(0, true);
-    this.props.getAvgCostBasis(this);
-    this.props.GetAllPlan();
-    this.props.getUser();
-
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const addAddress = params.get("add-address");
@@ -304,30 +223,7 @@ class Cost extends Component {
         );
         this.props.updateAverageCostBasis(array, this);
       } else {
-        let tempcombinedCostBasis = 0;
-        let tempcombinedCurrentValue = 0;
-        let tempcombinedUnrealizedGains = 0;
-        let tempcombinedReturn = 0;
-        if (this.props.intelligenceState?.net_return) {
-          tempcombinedReturn = this.props.intelligenceState?.net_return;
-        }
-        if (this.props.intelligenceState?.total_bal) {
-          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-        }
-        if (this.props.intelligenceState?.total_cost) {
-          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-        }
-        if (this.props.intelligenceState?.total_gain) {
-          tempcombinedUnrealizedGains =
-            this.props.intelligenceState?.total_gain;
-        }
-
-        this.setState({
-          combinedCostBasis: tempcombinedCostBasis,
-          combinedCurrentValue: tempcombinedCurrentValue,
-          combinedUnrealizedGains: tempcombinedUnrealizedGains,
-          combinedReturn: tempcombinedReturn,
-        });
+        this.combinedResults();
       }
     }
     // add wallet
@@ -335,8 +231,7 @@ class Cost extends Component {
       // console.log("update");
 
       this.props.getAllCoins();
-      this.getBlockchainFee(0);
-      this.getCounterPartyFee(0);
+
       this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
@@ -352,7 +247,31 @@ class Cost extends Component {
       this.props.getAllWalletListApi(tempData, this);
     }
   }
+  combinedResults = (data) => {
+    let tempcombinedCostBasis = 0;
+    let tempcombinedCurrentValue = 0;
+    let tempcombinedUnrealizedGains = 0;
+    let tempcombinedReturn = 0;
+    if (this.props.intelligenceState?.net_return) {
+      tempcombinedReturn = this.props.intelligenceState?.net_return;
+    }
+    if (this.props.intelligenceState?.total_bal) {
+      tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+    }
+    if (this.props.intelligenceState?.total_cost) {
+      tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+    }
+    if (this.props.intelligenceState?.total_gain) {
+      tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+    }
 
+    this.setState({
+      combinedCostBasis: tempcombinedCostBasis,
+      combinedCurrentValue: tempcombinedCurrentValue,
+      combinedUnrealizedGains: tempcombinedUnrealizedGains,
+      combinedReturn: tempcombinedReturn,
+    });
+  };
   // For add new address
   handleAddModal = () => {
     this.setState({
@@ -378,93 +297,6 @@ class Cost extends Component {
     this.props.setPageFlagDefault();
   };
 
-  getBlockchainFee(option, first) {
-    const today = moment().valueOf();
-    let handleSelected = "";
-    // console.log("headle click");
-    if (option == 0) {
-      this.props.getAllFeeApi(this, false, false);
-      // console.log(option, "All");
-      handleSelected = "All";
-    } else if (option == 1) {
-      const fiveyear = moment().subtract(5, "years").valueOf();
-
-      this.props.getAllFeeApi(this, fiveyear, today);
-      // console.log(fiveyear, today, "5 years");
-      handleSelected = "5 Years";
-    } else if (option == 2) {
-      const year = moment().subtract(1, "years").valueOf();
-      this.props.getAllFeeApi(this, year, today);
-      // console.log(year, today, "1 year");
-      handleSelected = "1 Year";
-    } else if (option == 3) {
-      const sixmonth = moment().subtract(6, "months").valueOf();
-
-      this.props.getAllFeeApi(this, sixmonth, today);
-      // console.log(sixmonth, today, "6 months");
-      handleSelected = "6 Months";
-    } else if (option == 4) {
-      const month = moment().subtract(1, "month").valueOf();
-      this.props.getAllFeeApi(this, month, today);
-      // console.log(month, today, "1 month");
-      handleSelected = "1 Month";
-    } else if (option == 5) {
-      const week = moment().subtract(1, "week").valueOf();
-      this.props.getAllFeeApi(this, week, today);
-      // console.log(week, today, "week");
-      handleSelected = "Week";
-    }
-    // console.log("handle select", handleSelected);
-    if (!first) {
-      FeesTimePeriodFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        time_period_selected: handleSelected,
-      });
-      this.updateTimer();
-    }
-  }
-
-  getCounterPartyFee(option, first) {
-    const today = moment().unix();
-    let handleSelected = "";
-    // console.log("headle click");
-    if (option == 0) {
-      this.props.getAllCounterFeeApi(this, false, false);
-      // console.log(option, "All");
-      handleSelected = "All";
-    } else if (option == 1) {
-      const fiveyear = moment().subtract(5, "years").unix();
-
-      this.props.getAllCounterFeeApi(this, fiveyear, today);
-      handleSelected = "5 Years";
-    } else if (option == 2) {
-      const year = moment().subtract(1, "years").unix();
-      this.props.getAllCounterFeeApi(this, year, today);
-      handleSelected = "1 Year";
-    } else if (option == 3) {
-      const sixmonth = moment().subtract(6, "months").unix();
-
-      this.props.getAllCounterFeeApi(this, sixmonth, today);
-      handleSelected = "6 Months";
-    } else if (option == 4) {
-      const month = moment().subtract(1, "month").unix();
-      this.props.getAllCounterFeeApi(this, month, today);
-      handleSelected = "1 Month";
-    } else if (option == 5) {
-      const week = moment().subtract(1, "week").unix();
-      this.props.getAllCounterFeeApi(this, week, today);
-      handleSelected = "Week";
-    }
-    if (!first) {
-      CounterpartyFeesTimeFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        time_period_selected: handleSelected,
-      });
-      this.updateTimer();
-    }
-  }
   updateTimer = (first) => {
     const tempExistingExpiryTime =
       window.sessionStorage.getItem("costPageExpiryTime");
@@ -480,7 +312,7 @@ class Cost extends Component {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentCosts({
+      AssetsPageTimeSpentMP({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
@@ -501,77 +333,6 @@ class Cost extends Component {
     }
   }
 
-  handleBadge = (activeBadgeList, type) => {
-    let selectedChains = [];
-    this.props.OnboardingState.coinsList?.map((item) => {
-      if (activeBadgeList?.includes(item.id)) {
-        selectedChains.push(item.code);
-      }
-    });
-    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
-    let graphDataMaster = [];
-    let counterPartyDataMaster = [];
-    if (type === 1) {
-      GraphfeeData.gas_fee_overtime &&
-        GraphfeeData.gas_fee_overtime?.map((tempGraphData) => {
-          if (
-            activeBadgeList &&
-            (activeBadgeList.includes(tempGraphData?.chain?._id) ||
-              activeBadgeList.length === 0)
-          ) {
-            graphDataMaster.push(tempGraphData);
-          }
-        });
-      let gas_fee_overtime = graphDataMaster;
-      let asset_prices = GraphfeeData.asset_prices;
-      let graphDataObj = { asset_prices, gas_fee_overtime };
-      // this.setState({
-      //   graphfeeValue: getGraphData(graphDataObj, this),
-      // });
-      this.props.updateFeeGraph(
-        GraphfeeData,
-        getGraphData(graphDataObj, this),
-        this
-      );
-      const tempIsSearchUsed = this.state.isFeesChainSearchUsed;
-      costFeesChainFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        selected: selectedChains,
-        isSearchUsed: tempIsSearchUsed,
-      });
-      this.updateTimer();
-      this.setState({ isFeesChainSearchUsed: false });
-    } else {
-      counterPartyData &&
-        counterPartyData?.map((tempGraphData) => {
-          if (
-            activeBadgeList &&
-            (activeBadgeList.includes(tempGraphData?.chain?._id) ||
-              activeBadgeList.length === 0)
-          ) {
-            counterPartyDataMaster.push(tempGraphData);
-          }
-        });
-      // this.setState({
-      //   counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
-      // });
-      this.props.updateCounterParty(
-        counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this),
-        this
-      );
-      const tempIsSearchUsed = this.state.isVolumeChainSearchUsed;
-      costVolumeChainFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        selected: selectedChains,
-        isSearchUsed: tempIsSearchUsed,
-      });
-      this.updateTimer();
-      this.setState({ isVolumeChainSearchUsed: false });
-    }
-  };
   handleConnectModal = () => {
     this.setState({ connectModal: !this.state.connectModal });
   };
@@ -698,6 +459,16 @@ class Cost extends Component {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
+    } else if (e.title === "Portfolio perc") {
+      this.sortArray("weight", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      CostSortByPortfolio({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     }
   };
 
@@ -733,8 +504,7 @@ class Cost extends Component {
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
-    let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/costs";
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=assets";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -747,36 +517,6 @@ class Cost extends Component {
 
   render() {
     let tableData = this.props.intelligenceState.Average_cost_basis;
-    // const tableData = [
-    //   {
-    //     Asset: Ethereum,
-    //     AverageCostPrice: "$800.00",
-    //     CurrentPrice: "$1,390.00",
-    //     Amount: 3.97,
-    //     CostBasis: 1.75,
-    //     CurrentValue: "$5,514.00",
-    //     GainLoss: {
-    //       status: "gain",
-    //       symbol: GainIcon,
-    //       // "42.45%",
-    //       value: "42.45%",
-    //     },
-    //   },
-    //   {
-    //     Asset: Ethereum,
-    //     AverageCostPrice: "$25,000.00",
-    //     CurrentPrice: "$21,080.00",
-    //     Amount: 3.97,
-    //     CostBasis: 2.56,
-    //     CurrentValue: "$22,280.50",
-    //     GainLoss: {
-    //       status: "loss",
-    //       symbol: ArrowDownLeftSmallIcon,
-    //       // "-18.45%"
-    //       value: "-18.45%",
-    //     },
-    //   },
-    // ];
 
     const columnData = [
       {
@@ -819,8 +559,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "Asset",
-        // coumnWidth: 118,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -875,8 +615,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "AverageCostPrice",
-        // coumnWidth: 153,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -934,8 +674,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "CurrentPrice",
-        // coumnWidth: 128,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -989,8 +729,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "Amount",
-        // coumnWidth: 108,
-        coumnWidth: 0.125,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -1038,8 +778,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "CostBasis",
-        // coumnWidth: 100,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -1099,8 +839,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "CurrentValue",
-        // coumnWidth: 140,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -1158,8 +898,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "GainAmount",
-        // coumnWidth: 128,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
@@ -1234,8 +974,8 @@ class Cost extends Component {
           </div>
         ),
         dataKey: "GainLoss",
-        // coumnWidth: 128,
-        coumnWidth: 0.13,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -1260,7 +1000,7 @@ class Cost extends Component {
                   text={
                     tempDataHolder
                       ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0%"
+                      : "0.00%"
                   }
                   colorCode="#000"
                 >
@@ -1291,6 +1031,66 @@ class Cost extends Component {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Portfolio perc"
+            onClick={() => this.handleSort(this.state.sortBy[8])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "PortfolioPercentage") {
+            const tempDataHolder = Number(
+              noExponents(rowData.weight.toFixed(2))
+            );
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
     ];
 
     return (
@@ -1304,6 +1104,8 @@ class Cost extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -1359,11 +1161,10 @@ class Cost extends Component {
               />
             )}
             <PageHeader
-              title="Costs"
-              subTitle="Bring light to your hidden costs"
+              title="Assets"
+              subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              showpath={true}
               currentPage={"costs"}
               ShareBtn={true}
               ExportBtn
@@ -1371,18 +1172,16 @@ class Cost extends Component {
               handleExportModal={this.setAverageCostExportModal}
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
+              // DUST
+              showHideDust
+              showHideDustVal={this.state.showDust}
+              showHideDustFun={this.handleDust}
             />
             <div
               style={{ marginBottom: "2.8rem" }}
               className="cost-table-section"
             >
               <div style={{ position: "relative" }}>
-                {/* <div className="coming-soon-div">
-                <Image src={ExportIconWhite} className="coming-soon-img" />
-                <p className="inter-display-regular f-s-13 lh-16 black-191">
-                  This feature is coming soon.
-                </p>
-                </div> */}
                 <TransactionTable
                   bottomCombiedValues
                   combinedCostBasis={this.state.combinedCostBasis}
@@ -1390,8 +1189,6 @@ class Cost extends Component {
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  title="Unrealized profit and loss"
-                  subTitle="Understand your unrealized profit and loss per token"
                   tableData={tableData}
                   columnList={columnData}
                   headerHeight={64}
@@ -1410,107 +1207,8 @@ class Cost extends Component {
                 />
               </div>
             </div>
-            <div
-              style={{
-                position: "relative",
-                // minHeight: "66.25rem",
-                minWidth: "85rem",
-              }}
-            >
-              <BarGraphSection
-                ExportBtn
-                exportBtnTxt="Click to export blockchain fees"
-                handleExportModal={this.setBlockChainFeesExportModal}
-                headerTitle="Blockchain fees over time"
-                headerSubTitle="Understand your gas costs"
-                data={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[0]
-                }
-                options={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[1]
-                }
-                options2={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[2]
-                }
-                digit={this.state.GraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => {
-                  this.getBlockchainFee(e);
-                }}
-                marginBottom="marginBot2point8"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                isLoading={this.state.gasFeesGraphLoading}
-                // isLoading={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 1)
-                }
-                chainSearchIsUsed={this.feesChainSearchIsUsed}
-                oldBar
-                // height={420}
-                // width={824}
-                // comingSoon={false}
-              />
-            </div>
-            <div
-              id="cp"
-              style={{
-                position: "relative",
-                // minHeight: "66.5rem",
-                minWidth: "85rem",
-              }}
-            >
-              {/* <div className="coming-soon-div">
-              <Image src={ExportIconWhite} className="coming-soon-img" />
-              <p className="inter-display-regular f-s-13 lh-16 black-191">
-                This feature is coming soon.
-              </p>
-              </div> */}
 
-              <BarGraphSection
-                ExportBtn
-                exportBtnTxt="Click to export counterparty volume"
-                handleExportModal={this.setCounterpartyVolumeExportModal}
-                headerTitle="Counterparty volume over time"
-                headerSubTitle="Understand where you’ve exchanged the most value"
-                data={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[0]
-                }
-                options={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[1]
-                }
-                options2={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[2]
-                }
-                digit={this.state.counterGraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getCounterPartyFee(e)}
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                isLoading={this.state.counterGraphLoading}
-                // isLoading={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 2)
-                }
-                // height={"400px"}
-                // width={"824px"}
-                // comingSoon={true}
-                chainSearchIsUsed={this.volumeChainSearchIsUsed}
-                oldBar
-              />
-            </div>
-
-            {/* <FeedbackForm page={"Cost Page"} /> */}
+            <Footer />
           </div>
         </div>
       </>
@@ -1545,4 +1243,7 @@ const mapDispatchToProps = {
   GetAllPlan,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cost);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AssetsUnrealizedProfitAndLoss);

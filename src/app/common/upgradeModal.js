@@ -1,47 +1,46 @@
 import React from "react";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import { Button, Col, Image, Modal, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button, Col, Row } from "react-bootstrap";
-import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import FormValidator from "./../../utils/form/FormValidator";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
+import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
-import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import {
+  UpgradeSignInPopup,
+  WhaleCreateAccountPrivacyHover,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding//Api";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import {
   CreatePyment,
-  fixWalletApi,
-  getUser,
   SendOtp,
   SigninWallet,
   UpdateCryptoPayment,
   VerifyEmail,
+  fixWalletApi,
+  getUser,
 } from "./Api.js";
-import { updateUser } from "../profile/Api";
-import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
-import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
-import { getCurrentUser } from "../../utils/ManageToken";
-import {
-  UpgradeSignInPopup,
-  WhaleCreateAccountEmailSaved,
-  WhaleCreateAccountPrivacyHover,
-} from "../../utils/AnalyticsFunctions";
-import CheckoutModal from "./checkout-modal";
 import AuthModal from "./AuthModal";
-import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 
+import axios from "axios";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
 import NotificationLimitIcon from "../../assets/images/icons/upgrade-notification-limit.svg";
@@ -50,14 +49,9 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
-import { ethers } from "ethers";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
-import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
-import axios from "axios";
-import USDT_ABI from "./USDT_ABI.json";
-import USDC_ABI from "./USDC_ABI.json";
 import AskEmailModal from "./AskEmailModal";
+import USDT_ABI from "./USDT_ABI.json";
 
 class UpgradeModal extends BaseReactComponent {
   constructor(props) {

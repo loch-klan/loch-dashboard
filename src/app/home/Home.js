@@ -1,63 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 // import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
-import OnBoarding from "../onboarding";
-import "../../assets/scss/onboarding/_onboarding.scss";
+import { ethers } from "ethers";
 import { Button, Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import Banner from "../../assets/images/bg-img-welcome.png";
 import {
-  deleteToken,
-  getToken,
-  setLocalStoraage,
-  getCurrentUser,
-} from "../../utils/ManageToken";
-import {
-  getAllCurrencyRatesApi,
-  GetDefaultPlan,
-  setPageFlagDefault,
-  updateUserWalletApi,
-} from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import FormElement from "../../utils/form/FormElement";
-import FormValidator from "./../../utils/form/FormValidator";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
-import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
-import Form from "../../utils/form/Form";
-import {
-  DiscountEmailPage,
-  DiscountEmailSkip,
-  EmailAddedDiscount,
-  TimeSpentDiscountEmail,
-  TimeSpentOnboarding,
-  LPConnectExchange,
-  LPDiscover,
-  ConnectWalletButtonClickedWelcome,
-  SmartMoneyButtonClickedWelcome,
-  ClickTrendingAddress,
-} from "../../utils/AnalyticsFunctions";
-import {
-  CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
   SmartMoneyWhiteIcon,
   WalletWhiteIcon,
 } from "../../assets/images/icons";
-import LinkIconBtn from "../../assets/images/link.svg";
+import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
+import "../../assets/scss/onboarding/_onboarding.scss";
 import {
-  AppFeaturesCreateUser,
-  createAnonymousUserApi,
-  detectCoin,
-} from "../onboarding/Api";
+  ClickTrendingAddress,
+  ConnectWalletButtonClickedWelcome,
+  DiscountEmailSkip,
+  EmailAddedDiscount,
+  LPConnectExchange,
+  SmartMoneyButtonClickedWelcome,
+  TimeSpentDiscountEmail,
+} from "../../utils/AnalyticsFunctions";
+import {
+  deleteToken,
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
+import Form from "../../utils/form/Form";
+import FormElement from "../../utils/form/FormElement";
+import {
+  GetDefaultPlan,
+  getAllCurrencyRatesApi,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
 } from "../header/HeaderAction";
-import { ethers } from "ethers";
+import OnBoarding from "../onboarding";
+import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import FormValidator from "./../../utils/form/FormValidator";
 
-import MobileHome from "./MobileHome";
-import { mobileCheck } from "../../utils/ReusableFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
+import { mobileCheck } from "../../utils/ReusableFunctions";
+import MobileHome from "./MobileHome";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -66,14 +57,21 @@ class Home extends BaseReactComponent {
       isTrendingAddresses: false,
       trendingAddresses: [
         {
-          address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-          worth: 28891163.13,
-          trimmedAddress: "0x51C...a7F",
+          address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+          worth: 17723868.951,
+          trimmedAddress: "0x26f...5b5",
           fullData: [
             {
-              address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-              apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+              apiAddress: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
               coinFound: [
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
                 {
                   chain_detected: true,
                   coinCode: "ETH",
@@ -132,6 +130,13 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
                   coinCode: "LTC",
                   coinName: "Litecoin",
                   coinSymbol: "https://media.loch.one/loch-litecoin.svg",
@@ -146,27 +151,6 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
-                  coinCode: "BTC",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                  coinColor: "#F19938",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ALGO",
-                  coinName: "Algorand",
-                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
                   coinCode: "TRX",
                   coinName: "Tron",
                   coinSymbol: "https://media.loch.one/loch-tron.svg",
@@ -178,6 +162,13 @@ class Home extends BaseReactComponent {
                   coinName: "Cardano",
                   coinSymbol: "https://media.loch.one/loch-cardano.svg",
                   coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
                 },
               ],
               displayAddress: "",
@@ -1075,6 +1066,7 @@ class Home extends BaseReactComponent {
     });
   };
   render() {
+    console.log("onboardingWalletAddress ", this.state.onboardingWalletAddress);
     if (this.state.isMobileDevice) {
       return (
         <MobileHome

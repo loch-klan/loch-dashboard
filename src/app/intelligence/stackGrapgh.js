@@ -1,9 +1,9 @@
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
   CurrencyType,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import GraphLogo from "../../assets/images/graph-logo.svg";
 
 const labels = ["Inflow", "Outflow", "Net"];
 
