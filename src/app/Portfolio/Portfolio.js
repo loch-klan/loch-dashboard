@@ -128,6 +128,7 @@ import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHo
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
+import CoinChip from "../wallet/CoinChip.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -2851,16 +2852,21 @@ class Portfolio extends BaseReactComponent {
               //   coin_code={rowData.AssetCode}
               // />
               <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.AssetCode}
-              >
-                <div className="dotDotText">
-                  {rowData.AssetCode ? rowData.AssetCode : ""}
-                </div>
-              </CustomOverlay>
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.AssetCode}
+                >
+                  <div>
+                    <CoinChip
+                    hideText={true}
+                      coin_img_src={rowData.Asset}
+                      coin_code={rowData.AssetCode}
+                      chain={rowData?.chain}
+                    />
+                  </div>
+                </CustomOverlay>
             );
           }
         },
@@ -3263,7 +3269,7 @@ class Portfolio extends BaseReactComponent {
                             this.props.intelligenceState?.Average_cost_basis &&
                             this.props.intelligenceState.Average_cost_basis
                               .length > 5
-                              ? `${numToCurrency(
+                              ? `Click here to see ${numToCurrency(
                                   this.props.intelligenceState
                                     .Average_cost_basis.length - 5,
                                   true
@@ -3275,7 +3281,7 @@ class Portfolio extends BaseReactComponent {
                                     ? "s"
                                     : ""
                                 }`
-                              : "See more"
+                              : "Click here to see more"
                           }
                           showDataAtBottom
                           columnList={CostBasisColumnData}
@@ -3289,13 +3295,13 @@ class Portfolio extends BaseReactComponent {
                         <TransactionTable
                           moreData={
                             table_home_count && table_home_count > 5
-                              ? `${numToCurrency(
+                              ? `Click here to see ${numToCurrency(
                                   table_home_count - 5,
                                   true
                                 ).toLocaleString("en-US")}+ transaction${
                                   table_home_count - 5 > 1 ? "s" : ""
                                 }`
-                              : "See more"
+                              : "Click here to see more"
                           }
                           showDataAtBottom
                           noSubtitleBottomPadding
@@ -3694,7 +3700,7 @@ class Portfolio extends BaseReactComponent {
                             moreData={
                               this.state.yieldOpportunitiesTotalCount &&
                               this.state.yieldOpportunitiesTotalCount > 5
-                                ? `${numToCurrency(
+                                ? `Click here to see ${numToCurrency(
                                     this.state.yieldOpportunitiesTotalCount - 5,
                                     true
                                   ).toLocaleString("en-US")}+ yield ${
@@ -3704,7 +3710,7 @@ class Portfolio extends BaseReactComponent {
                                       ? "opportunities"
                                       : "opportunity"
                                   }`
-                                : "See more"
+                                : "Click here to see more"
                             }
                             showDataAtBottom
                             columnList={YieldOppColumnData}

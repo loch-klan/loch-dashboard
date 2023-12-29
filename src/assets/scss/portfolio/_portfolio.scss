@@ -876,9 +876,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        color: #adadad;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 500;
+        color: #000000;
         .bottomExtraInfoText {
           height: 100%;
           display: flex;
@@ -888,7 +888,7 @@
           cursor: pointer;
           transition-duration: 300ms;
           &:hover {
-            color: #000000;
+            color: #adadad;
           }
         }
       }
@@ -1205,17 +1205,18 @@
         margin-left: 1rem;
         display: flex;
         align-items: center;
-        color: #adadad;
-        font-size: 12px;
+        font-size: 13px;
+        color: black;
         font-weight: 500;
         .seeMoreBtnIcon {
+          filter: brightness(0);
           height: 9px;
           margin-left: 0.5rem;
         }
         &:hover {
-          color: black;
+          color: #adadad;
           .seeMoreBtnIcon {
-            filter: brightness(0);
+            filter: brightness(1);
           }
         }
       }

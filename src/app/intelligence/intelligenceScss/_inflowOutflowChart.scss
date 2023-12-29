@@ -14,17 +14,18 @@
           margin-left: 1rem;
           display: flex;
           align-items: center;
-          color: #adadad;
-          font-size: 12px;
+          color: black;
+          font-size: 13px;
           font-weight: 500;
           .seeMoreBtnIcon {
+            filter: brightness(0);
             height: 9px;
             margin-left: 0.5rem;
           }
           &:hover {
-            color: black;
+            color: #adadad;
             .seeMoreBtnIcon {
-              filter: brightness(0);
+              filter: brightness(1);
             }
           }
         }
