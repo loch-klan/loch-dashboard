@@ -2481,7 +2481,7 @@ class PortfolioMobile extends BaseReactComponent {
               <div
                 className="d-flex justify-content-between"
                 style={{
-                  marginTop: "3rem",
+                  marginTop: "4.8rem",
                   alignItems: "start",
                 }}
               >
