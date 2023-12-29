@@ -1370,10 +1370,21 @@
     line-height: 120%;
     }
 
+    .new-homepage-btn--white{
+      &:hover{
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+    }
+
   .new-homepage-btn--blur{
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(229, 229, 230, 0.20);
     color: white;
+    &:hover{
+      border: 1px solid rgba(229, 229, 230, 0.80);
+    }
   }
 }
