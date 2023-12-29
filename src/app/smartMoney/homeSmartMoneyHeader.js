@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { Image } from "react-bootstrap";
+import { toast } from "react-toastify";
 import {
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
   ShareProfileIcon,
 } from "../../assets/images/icons";
-import { getAllCurrencyRatesApi } from "../common/Api";
 import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { getAllCurrencyRatesApi } from "../common/Api";
 
 export default function HomeSmartMoneyHeader(props) {
   const [localLochUser, setLocalLochUser] = React.useState(

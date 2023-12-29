@@ -778,7 +778,9 @@ class WatchListPage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                // hideButton={true}
+                hideButton={false}
+                updateOnFollow={this.callApi}
+                hideShare
               />
             </div>
           </div>

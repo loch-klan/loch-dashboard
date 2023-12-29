@@ -238,6 +238,7 @@ class Profile extends Component {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
+                hideShare
               />
             </div>
           </div>

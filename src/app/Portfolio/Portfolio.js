@@ -367,7 +367,7 @@ class Portfolio extends BaseReactComponent {
       totalChainDetechted: 0,
 
       // netflow switch
-      isSwitch: false,
+      isSwitch: true,
       waitForMixpannelCall: false,
     };
   }
@@ -557,11 +557,10 @@ class Portfolio extends BaseReactComponent {
 
     if (userWallet?.length === 1) {
       let slink = userWallet[0].displayAddress || userWallet[0].address;
-      shareLink =
-        BASE_URL_S3 + "home/" + slink + "?redirect=home&followThisAddress=true";
+      shareLink = BASE_URL_S3 + "home/" + slink;
     } else {
       let slink = lochUser;
-      shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
+      shareLink = BASE_URL_S3 + "wallet/" + slink;
     }
 
     navigator.clipboard.writeText(shareLink);
@@ -681,8 +680,7 @@ class Portfolio extends BaseReactComponent {
     }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
-    this.props.updateWalletListFlag("assetsPage", true);
-    this.props.updateWalletListFlag("realizedGainsPage", true);
+
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
@@ -749,8 +747,9 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (
-      this.props.intelligenceState?.graphValue &&
-      this.props.intelligenceState?.graphValue.length > 0
+      this.props.intelligenceState?.ProfitLossAsset &&
+      this.props.intelligenceState?.ProfitLossAsset?.series &&
+      this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
     ) {
       if (this.props.commonState.realizedGainsPage) {
         this.setState({
@@ -762,7 +761,7 @@ class Portfolio extends BaseReactComponent {
           netFlowLoading: true,
           shouldCallProfitAndLossApi: false,
         });
-        this.props.getProfitAndLossApi(this, false, false, false);
+        // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
         this.props.getAssetProfitLoss(this, false, false, false);
       }
@@ -946,8 +945,8 @@ class Portfolio extends BaseReactComponent {
       if (
         this.state.blockTwoSelectedItem === 1 &&
         (!(
-          this.props.intelligenceState?.graphValue &&
-          this.props.intelligenceState?.graphValue[0]
+          this.props.intelligenceState?.ProfitLossAsset?.series &&
+          this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
         ) ||
           !this.props.commonState.realizedGainsPage)
       ) {
@@ -956,7 +955,7 @@ class Portfolio extends BaseReactComponent {
           netFlowLoading: true,
           shouldCallProfitAndLossApi: false,
         });
-        this.props.getProfitAndLossApi(this, false, false, false);
+        // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
         this.props.getAssetProfitLoss(this, false, false, false);
       }
@@ -1035,8 +1034,9 @@ class Portfolio extends BaseReactComponent {
           this.state.updatedInsightList &&
           this.state.updatedInsightList.length > 0
         ) ||
-          this.state.shouldCallInsightsApi)
+          !this.props.commonState.insight)
       ) {
+        this.props.updateWalletListFlag("insight", true);
         this.setState({
           insightsBlockLoading: true,
           shouldCallInsightsApi: false,
@@ -1206,8 +1206,8 @@ class Portfolio extends BaseReactComponent {
         this.state.blockTwoSelectedItem === 1 &&
         (!this.props.commonState.realizedGainsPage ||
           !(
-            this.props.intelligenceState?.graphValue &&
-            this.props.intelligenceState?.graphValue.length > 0
+            this.props.intelligenceState?.ProfitLossAsset?.series &&
+            this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
           ))
       ) {
         this.props.updateWalletListFlag("realizedGainsPage", true);
@@ -1215,7 +1215,7 @@ class Portfolio extends BaseReactComponent {
           netFlowLoading: true,
           shouldCallProfitAndLossApi: false,
         });
-        this.props.getProfitAndLossApi(this, false, false, false);
+        // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
         this.props.getAssetProfitLoss(this, false, false, false);
       }
@@ -1275,7 +1275,12 @@ class Portfolio extends BaseReactComponent {
         });
         this.callYieldOppApi();
       }
-      if (this.state.blockFourSelectedItem === 3) {
+      if (
+        this.state.blockFourSelectedItem === 3 &&
+        (!this.props.intelligenceState?.updatedInsightList ||
+          !this.props.commonState.insight)
+      ) {
+        this.props.updateWalletListFlag("insight", true);
         this.setState({
           insightsBlockLoading: false,
         });
@@ -3423,7 +3428,7 @@ class Portfolio extends BaseReactComponent {
                             //   this.props.intelligenceState.graphValue &&
                             //   this.props.intelligenceState.graphValue[2]
                             // }
-                            showSwitch={true}
+                            showSwitch={false}
                             isLoading={this.state.netFlowLoading}
                             className={"portfolio-profit-and-loss"}
                             isMinichart={true}

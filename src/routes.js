@@ -22,11 +22,13 @@ import CounterPartyVolume from "./app/CounterPartyVolumePage/CounterPartyVolume"
 import GasFees from "./app/GasFeesPage/GasFees";
 import PriceGauge from "./app/PriceGauge/PriceGauge";
 import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAndLoss";
-import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import NewHome from "./app/home/NewHome";
-import Referral from "./app/referral/Referral";
+import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
+
+import NewHome from "./app/home/NewHome";
+import Referral from "./app/referral/Referral";
+import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 
 const routes = [
   {
@@ -128,6 +130,13 @@ const routes = [
     type: PrivateRoute,
     component: HomeSmartMoneyPage,
   },
+  {
+    path: "/home-smart-money",
+    name: "Home Smart Money",
+    type: PrivateRoute,
+    component: homeSmartMoneyPage,
+  },
+
   {
     path: "/yield-opportunities",
     name: "Yield Opportunities",
