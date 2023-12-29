@@ -51,8 +51,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
       // calculating CentralizedExchanges,
 
       if (action.payload.userWalletList?.protocol) {
-        CentralizedExchanges =
-          CentralizedExchanges + action.payload.userWalletList?.total_amount;
+        let tempExchangeHolderAmt = action.payload.userWalletList?.total_amount;
+        if (tempExchangeHolderAmt) {
+          tempExchangeHolderAmt = tempExchangeHolderAmt * currencyRate;
+        } else {
+          tempExchangeHolderAmt = 0;
+        }
+        CentralizedExchanges = CentralizedExchanges + tempExchangeHolderAmt;
+        updateWalletTotal = updateWalletTotal + CentralizedExchanges;
       }
       if (
         action.payload &&
@@ -60,20 +66,26 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         action.payload.userWalletList.assets &&
         action.payload.userWalletList.assets.length > 0
       ) {
-        if (
-          action.payload.userWalletList?.chain &&
-          !(action.payload.userWalletList?.chain?.id in chainPortfolio)
-        ) {
-          chainPortfolio[action.payload.userWalletList?.chain?.id] =
-            action.payload.userWalletList?.chain;
+        if (action.payload.userWalletList?.chain) {
+          if (!(action.payload.userWalletList?.chain?.id in chainPortfolio)) {
+            chainPortfolio[action.payload.userWalletList?.chain?.id] =
+              action.payload.userWalletList?.chain;
+          }
 
           if (action.payload.userWalletList?.total_amount) {
             let tempTotalAmt = action.payload.userWalletList?.total_amount
               ? action.payload.userWalletList?.total_amount
               : 0;
             tempTotalAmt = tempTotalAmt * currencyRate;
+            let tempHolder = 0;
+            if (
+              chainPortfolio[action.payload.userWalletList?.chain?.id].total
+            ) {
+              tempHolder =
+                chainPortfolio[action.payload.userWalletList?.chain?.id].total;
+            }
             chainPortfolio[action.payload.userWalletList?.chain?.id].total =
-              tempTotalAmt;
+              tempHolder + tempTotalAmt;
             updateWalletTotal = updateWalletTotal + tempTotalAmt;
           } else {
             chainPortfolio[
@@ -89,7 +101,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         ...state,
         walletTotal: updateWalletTotal,
         chainPortfolio: { ...chainPortfolio },
-        centralizedExchanges: CentralizedExchanges * currencyRate,
+        centralizedExchanges: CentralizedExchanges,
       };
     case YESTERDAY_BALANCE:
       return { ...state, yesterdayBalance: action.payload.balance };
