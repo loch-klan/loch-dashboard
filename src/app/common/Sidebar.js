@@ -50,21 +50,23 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
+import AuthModal from "./AuthModal";
+import FeedbackModal from "./FeedbackModal";
+import SharePortfolio from "./SharePortfolio";
+import UpgradeModal from "./upgradeModal";
+
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
-import AuthModal from "./AuthModal";
 import ConfirmLeaveModal from "./ConformLeaveModal";
-import ConnectModal from "./ConnectModal";
 import ExitOverlay from "./ExitOverlay";
-import FeedbackModal from "./FeedbackModal";
-import SharePortfolio from "./SharePortfolio";
 import SidebarModal from "./SidebarModal";
-import UpgradeModal from "./upgradeModal";
+import UserFeedbackModal from "./UserFeedbackModal.js";
+import ConnectModal from "./ConnectModal.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -90,6 +92,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -380,6 +383,9 @@ function Sidebar(props) {
   };
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
+  };
+  const handleUserFeedbackModal = () => {
+    setUserFeedbackModal(!userFeedbackModal);
   };
 
   React.useEffect(() => {
@@ -682,7 +688,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -709,6 +714,40 @@ function Sidebar(props) {
                               <Image
                                 src={
                                   activeTab === "/home-leaderboard"
+                                    ? ActiveSmartMoneySidebarIcon
+                                    : InactiveSmartMoneySidebarIcon
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Smart Money"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/home-smart-money"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/home-smart-money"
                                     ? ActiveSmartMoneySidebarIcon
                                     : InactiveSmartMoneySidebarIcon
                                 }
@@ -906,6 +945,38 @@ function Sidebar(props) {
                           </li>
                         </>
                       )}
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={() => {
+                            handleUserFeedbackModal();
+                          }}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image
+                            src={TwoPeopleIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
+                          Feedback
+                        </NavLink>
+                      </li>
+                      {/* <li>
+                        <NavLink
+                          exact={true}
+                          onClick={handleConnectModal}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image
+                            src={LinkIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
+                          Connect Exchanges
+                        </NavLink>
+                      </li> */}
                     </ul>
                   </nav>
                 </div>
@@ -1289,6 +1360,17 @@ function Sidebar(props) {
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
           openSignupModalDirect={openSignupModalDirect}
+        />
+      ) : null}
+
+      {userFeedbackModal ? (
+        <UserFeedbackModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
+          onHide={handleUserFeedbackModal}
+          history={history}
+          popupType="general_popup"
+          tracking={history.location.pathname.substring(1)}
         />
       ) : null}
     </>
