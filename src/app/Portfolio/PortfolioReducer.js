@@ -60,7 +60,10 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         action.payload.userWalletList.assets &&
         action.payload.userWalletList.assets.length > 0
       ) {
-        if (!(action.payload.userWalletList?.chain?.id in chainPortfolio)) {
+        if (
+          action.payload.userWalletList?.chain &&
+          !(action.payload.userWalletList?.chain?.id in chainPortfolio)
+        ) {
           chainPortfolio[action.payload.userWalletList?.chain?.id] =
             action.payload.userWalletList?.chain;
 
