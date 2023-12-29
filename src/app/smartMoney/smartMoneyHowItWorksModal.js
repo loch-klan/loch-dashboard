@@ -1,16 +1,12 @@
 import React from "react";
+import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image } from "react-bootstrap";
+import { SmartMoneyAboutImage } from "../../assets/images";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,
-  SmartMoneyFaqModalIcon,
 } from "../../assets/images/icons";
 import { BaseReactComponent } from "../../utils/form";
-import {
-  SmartMoneyAboutImage,
-  SmartMoneyAboutMobileImage,
-} from "../../assets/images";
 
 class SmartMoneyHowItWorksModal extends BaseReactComponent {
   constructor(props) {

@@ -1,79 +1,77 @@
 import React from "react";
-import { Button, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 
 import { connect } from "react-redux";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
-  Method,
   API_LIMIT,
-  START_INDEX,
-  SORT_BY_AMOUNT,
   BASE_URL_S3,
+  Method,
+  SORT_BY_AMOUNT,
+  START_INDEX,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters } from "../intelligence/Api";
-import { BaseReactComponent } from "../../utils/form";
-import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import {
-  amountFormat,
   CurrencyType,
+  TruncateText,
+  amountFormat,
   mobileCheck,
   noExponents,
   numToCurrency,
-  TruncateText,
 } from "../../utils/ReusableFunctions";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
-import Loading from "../common/Loading";
-import FixAddModal from "../common/FixAddModal";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { BaseReactComponent } from "../../utils/form";
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
-  getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
+import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
+import { getFilters, searchTransactionApi } from "../intelligence/Api";
 import TransactionTable from "../intelligence/TransactionTable";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api";
+import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal";
 
 import {
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
-  SmartMoneyRealizedPNLHover,
   SmartMoneyNetWorthHover,
   SmartMoneyPageNext,
   SmartMoneyPagePrev,
   SmartMoneyPageSearch,
   SmartMoneyPageView,
-  SmartMoneyUnrealizedPNLHover,
+  SmartMoneyRealizedPNLHover,
   SmartMoneyTimeSpent,
+  SmartMoneyUnrealizedPNLHover,
   SmartMoneyWalletClicked,
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
-import SmartMoneyHeader from "./smartMoneyHeader";
-import "./_smartMoney.scss";
 import SmartMoneyMobilePage from "./SmartMoneyMobileBlocks/smartMoneyMobilePage.js";
+import "./_smartMoney.scss";
+import SmartMoneyHeader from "./smartMoneyHeader";
 
-import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
 } from "../../assets/images/icons/index.js";
-import MobileDevice from "../common/mobileDevice.js";
-import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
-import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
+import CheckboxCustomTable from "../common/customCheckboxTable.js";
 import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
 import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
-import CheckboxCustomTable from "../common/customCheckboxTable.js";
+import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
+import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
+import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 
 class SmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -448,168 +446,6 @@ class SmartMoneyPage extends BaseReactComponent {
     }
   }
 
-  // addCondition = (key, value) => {
-  //   let networthList = {
-  //     // "AllNetworth": "All",
-  //     "0-1": "less 1m",
-  //     "1-10": "1m-10m",
-  //     "10-100": "10m-100m",
-  //     "100-1000": "100m- 1b",
-  //     "1000-1000000": "more than 1b",
-  //   };
-  //   if (key === SEARCH_BY_NETWORTH) {
-  //     let selectedValue =
-  //       value === "AllNetworth" ? "All" : value?.map((e) => networthList[e]);
-
-  //     TopAccountNetworthFilter({
-  //       session_id: getCurrentUser().id,
-  //       email_address: getCurrentUser().email,
-  //       selected: selectedValue,
-  //     });
-  //     this.updateTimer();
-  //   }
-  //   let index = this.state.condition.findIndex((e) => e.key === key);
-  //   let arr = [...this.state.condition];
-  //   let search_index = this.state.condition.findIndex(
-  //     (e) => e.key === SEARCH_BY_TEXT
-  //   );
-  //   if (
-  //     index !== -1 &&
-  //     value !== "allchain" &&
-  //     value !== "AllNetworth" &&
-  //     value !== "Allasset" &&
-  //     value !== "Time" &&
-  //     value !== 1825
-  //   ) {
-  //     arr[index].value = value;
-  //   } else if (
-  //     value === "allchain" ||
-  //     value === "AllNetworth" ||
-  //     value === "Allasset" ||
-  //     value === "Time" ||
-  //     value === 1825
-  //   ) {
-  //     if (index !== -1) {
-  //       arr.splice(index, 1);
-  //     }
-  //   } else {
-  //     let obj = {};
-  //     obj = {
-  //       key: key,
-  //       value: value,
-  //     };
-  //     arr.push(obj);
-  //   }
-  //   if (search_index !== -1) {
-  //     if (value === "" && key === SEARCH_BY_TEXT) {
-  //       arr.splice(search_index, 1);
-  //     }
-  //   }
-  //   // On Filter start from page 0
-  //   this.props.history.replace({
-  //     search: `?p=${START_INDEX}`,
-  //   });
-  //   this.setState({
-  //     condition: arr,
-  //   });
-  // };
-  // onChangeMethod = () => {
-  //   clearTimeout(this.delayTimer);
-  //   this.delayTimer = setTimeout(() => {
-  //     this.addCondition(SEARCH_BY_TEXT, this.state.search);
-
-  //     TopAccountSearch({
-  //       session_id: getCurrentUser().id,
-  //       email_address: getCurrentUser().email,
-  //       search: this.state.search,
-  //     });
-  //     this.updateTimer();
-  //   }, 1000);
-  // };
-  // handleSort = (val) => {
-  //   let sort = [...this.state.tableSortOpt];
-  //   let obj = [];
-  //   sort?.map((el) => {
-  //     if (el.title === val) {
-  //       if (val === "account") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_ACCOUNT,
-  //             value: !el.up,
-  //           },
-  //         ];
-  //       } else if (val === "networth") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_AMOUNT,
-  //             value: !el.up,
-  //           },
-  //         ];
-  //         TopAccountSortByNetWorth({
-  //           session_id: getCurrentUser().id,
-  //           email_address: getCurrentUser().email,
-  //         });
-  //         this.updateTimer();
-  //       } else if (val === "netflows") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_NET_FLOW,
-  //             value: !el.up,
-  //           },
-  //         ];
-  //         let time = TimeFilterType.getText(
-  //           this.state.timeFIlter === "Time"
-  //             ? "6 months"
-  //             : this.state.timeFIlter
-  //         );
-  //         this.addCondition("SEARCH_BY_TIMESTAMP", time);
-  //         TopAccountSortByNetflows({
-  //           session_id: getCurrentUser().id,
-  //           email_address: getCurrentUser().email,
-  //         });
-  //         this.updateTimer();
-  //       } else if (val === "largestbought") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_LARGEST_BOUGHT,
-  //             value: !el.up,
-  //           },
-  //         ];
-  //       } else if (val === "largestsold") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_LARGEST_SOLD,
-  //             value: !el.up,
-  //           },
-  //         ];
-  //       } else if (val === "tagName") {
-  //         obj = [
-  //           {
-  //             key: SORT_BY_NAME,
-  //             value: !el.up,
-  //           },
-  //         ];
-
-  //         TopAccountSortByTag({
-  //           session_id: getCurrentUser().id,
-  //           email_address: getCurrentUser().email,
-  //         });
-  //         this.updateTimer();
-  //       }
-  //       el.up = !el.up;
-  //     } else {
-  //       el.up = false;
-  //     }
-  //   });
-  //   if (obj && obj.length > 0) {
-  //     obj = [{ key: obj[0].key, value: !obj[0].value }];
-  //   }
-  //   this.setState({
-  //     sort: obj,
-  //     tableSortOpt: sort,
-  //   });
-  // };
-
   handleAddModal = () => {};
 
   CheckApiResponse = (value) => {
@@ -691,11 +527,6 @@ class SmartMoneyPage extends BaseReactComponent {
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
-      // TopAccountAddAccountToWatchList({
-      //   session_id: getCurrentUser().id,
-      //   email_address: getCurrentUser().email,
-      //   address: tagName ? tagName : walletAddress,
-      // });
       this.updateTimer();
       tempWatchListata.append("wallet_address", walletAddress);
       tempWatchListata.append("analysed", false);
@@ -712,11 +543,6 @@ class SmartMoneyPage extends BaseReactComponent {
         });
       }
     } else {
-      // TopAccountRemoveAccountFromWatchList({
-      //   session_id: getCurrentUser().id,
-      //   email_address: getCurrentUser().email,
-      //   address: tagName ? tagName : walletAddress,
-      // });
       this.updateTimer();
       tempWatchListata.append("address", walletAddress);
       this.props.removeFromWatchList(tempWatchListata);
@@ -1247,7 +1073,7 @@ class SmartMoneyPage extends BaseReactComponent {
       // },
     ];
 
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       return (
         // <MobileDevice isSmartMoney />
         <SmartMoneyMobilePage

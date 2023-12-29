@@ -1,68 +1,49 @@
 import React from "react";
-import { Image, Row, Col } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
-import TransactionTable from "./TransactionTable";
+import { Col, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
+import searchIcon from "../../assets/images/icons/search-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import PageHeader from "../common/PageHeader";
+import TransactionTable from "./TransactionTable";
 
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  Method,
   API_LIMIT,
-  START_INDEX,
+  BASE_URL_S3,
+  DEFAULT_PRICE,
+  Method,
+  SEARCH_BETWEEN_VALUE,
   SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_CHAIN_IN,
+  SEARCH_BY_METHOD_IN,
+  SEARCH_BY_NOT_DUST,
   SEARCH_BY_TEXT,
   SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
+  SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
   SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
-  BASE_URL_S3,
-  SEARCH_BY_CHAIN_IN,
-  SEARCH_BETWEEN_VALUE,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_USD_VALUE_THEN,
+  START_INDEX,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
-import { searchTransactionApi, getFilters } from "./Api";
+import { getFilters, searchTransactionApi } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
-import {
-  FormElement,
-  Form,
-  CustomTextControl,
-  BaseReactComponent,
-} from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
+import { toast } from "react-toastify";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  convertNtoNumber,
-  CurrencyType,
-  mobileCheck,
-  noExponents,
-  numToCurrency,
-  TruncateText,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TimeSpentTransactionHistory,
   TransactionHistoryAddress,
   TransactionHistoryAddressCopied,
-  TransactionHistoryAmountFilter,
   TransactionHistoryAssetFilter,
   TransactionHistoryExport,
   TransactionHistoryHashCopied,
   TransactionHistoryHashHover,
   TransactionHistoryHideDust,
-  TransactionHistoryMethodFilter,
   TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
@@ -77,31 +58,42 @@ import {
   TransactionHistorySortMethod,
   TransactionHistorySortTo,
   TransactionHistorySortUSDAmount,
-  TransactionHistorySortUSDFee,
   TransactionHistoryWalletClicked,
   TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
-import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
-import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
-import { toast } from "react-toastify";
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  CurrencyType,
+  TruncateText,
+  UpgradeTriggered,
+  convertNtoNumber,
+  mobileCheck,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "../../utils/form";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 import FixAddModal from "../common/FixAddModal";
+import Loading from "../common/Loading";
 
 // add wallet
+import { ExportIconWhite } from "../../assets/images/icons";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   GetAllPlan,
   getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import WelcomeCard from "../Portfolio/WelcomeCard";
 import ExitOverlay from "../common/ExitOverlay";
-import { ExportIconWhite } from "../../assets/images/icons";
-import DropDown from "../common/DropDown";
-import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import UpgradeModal from "../common/upgradeModal";
+import { getAllCoins } from "../onboarding/Api.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -140,6 +132,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -209,6 +202,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -450,6 +444,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1157,7 +1160,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.from.address)
+                        this.copyContent(rowData.from.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1196,7 +1199,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.from.address)
+                          this.copyContent(rowData.from.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1231,7 +1234,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.from.address)
+                          this.copyContent(rowData.from.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1266,7 +1269,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.from.address)
+                          this.copyContent(rowData.from.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1299,7 +1302,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.from.address)
+                        this.copyContent(rowData.from.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1332,7 +1335,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.from.address)
+                        this.copyContent(rowData.from.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1459,7 +1462,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.to.address)
+                        this.copyContent(rowData.to.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1497,7 +1500,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.to.address)
+                          this.copyContent(rowData.to.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1532,7 +1535,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.to.address)
+                          this.copyContent(rowData.to.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1567,7 +1570,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => {
-                          this.copyContent(rowData.to.address)
+                          this.copyContent(rowData.to.address);
                           TransactionHistoryAddressCopied({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -1600,7 +1603,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.to.address)
+                        this.copyContent(rowData.to.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1632,7 +1635,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => {
-                        this.copyContent(rowData.to.address)
+                        this.copyContent(rowData.to.address);
                         TransactionHistoryAddressCopied({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1845,27 +1848,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
+                {actualMethod &&
+                (actualMethod === "send" || actualMethod === "receive") ? (
                   <div className="gainLossContainer">
                     <div
                       className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
+                        actualMethod === "send" ? "loss" : "gain"
                       }`}
                     >
                       <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
+                        {actualMethod}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </>
@@ -1990,6 +2011,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -2048,7 +2071,6 @@ class TransactionHistoryPage extends BaseReactComponent {
               subTitle={
                 "Sort, filter, and dissect all your transactions from one place"
               }
-              showpath={true}
               currentPage={"transaction-history"}
               history={this.props.history}
               // btnText={"Add wallet"}
