@@ -712,7 +712,7 @@ class PortfolioHomeDefiBlock extends Component {
         {this.state.totalDefiPositions > 3 ? (
           <div className="inter-display-medium bottomExtraInfo">
             <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
-              {numToCurrency(
+              Click here to see {numToCurrency(
                 this.state.totalDefiPositions - 3,
                 true
               ).toLocaleString("en-US")}
@@ -722,7 +722,7 @@ class PortfolioHomeDefiBlock extends Component {
         ) : (
           <div className="inter-display-medium bottomExtraInfo">
             <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
-              See more
+              Click here to see more
             </div>
           </div>
         )}
