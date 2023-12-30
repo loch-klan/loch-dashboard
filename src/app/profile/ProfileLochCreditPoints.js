@@ -8,7 +8,9 @@ import {
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
   UserCreditStarIcon,
+  UserCreditTelegramIcon,
   UserCreditWalletIcon,
+  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons/index.js";
 import {
   UserCreditGoClickedMP,
@@ -18,7 +20,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import Loading from "../common/Loading.js";
-import { getUserCredits } from "./Api.js";
+import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
@@ -39,6 +41,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
+        "following",
+        "x_follower",
+        "joined_telegram",
+        // "twitter_spaces",
+        // "provide_feedback",
+        // "use_referral_code",
       ],
     };
   }
@@ -237,6 +245,28 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
+    const goClickFollowTwitter = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Followed @loch_chain",
+      });
+      window.open("https://twitter.com/loch_chain", "_blank");
+      const twitterFollow = new URLSearchParams();
+      twitterFollow.append("credits", "x_follower");
+      this.props.addUserCredits(twitterFollow);
+    };
+    const goClickJoinTelegram = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Joined Telegram chat",
+      });
+      window.open("https://t.me/loch_chain", "_blank");
+      const joinTelegram = new URLSearchParams();
+      joinTelegram.append("credits", "joined_telegram");
+      this.props.addUserCredits(joinTelegram);
+    };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -301,6 +331,72 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectExchange}
+        />
+      );
+    } else if (whichBlock === "following") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Following an Address"
+          earnPoints={2}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddAddress}
+        />
+      );
+    } else if (whichBlock === "twitter_spaces") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Attended Twitter Spaces"
+          earnPoints={1}
+          imageIcon={XFormallyTwitterLogoIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddEns}
+        />
+      );
+    } else if (whichBlock === "x_follower") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Followed @loch_chain"
+          earnPoints={2}
+          imageIcon={XFormallyTwitterLogoIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickFollowTwitter}
+        />
+      );
+    } else if (whichBlock === "joined_telegram") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Joined Telegram chat"
+          earnPoints={2}
+          imageIcon={UserCreditTelegramIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickJoinTelegram}
+        />
+      );
+    } else if (whichBlock === "provide_feedback") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Provided feedback"
+          earnPoints={3}
+          imageIcon={UserCreditWalletIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickAddTwoOrMoreAddresses}
+        />
+      );
+    } else if (whichBlock === "use_referral_code") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Referral code used"
+          earnPoints={1}
+          imageIcon={UserCreditLinkIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickConnectExchange}
         />
       );
     }
@@ -399,6 +495,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
           </div>
+          <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(6, 9)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
+          {/* <div className="profileCreditPointsSection">
+            {this.state.tasksList
+              .slice(9, 12)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div> */}
           {/* <ProfileLochCreditPointsBlock
             title="Add a wallet address"
             earnPoints={1}
@@ -453,6 +563,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
   getUserCredits,
+  addUserCredits,
 };
 ProfileLochCreditPoints.propTypes = {};
 
