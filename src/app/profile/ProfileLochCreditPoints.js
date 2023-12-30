@@ -42,7 +42,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
-        "followin",
+        "following",
         "x_follower",
         "joined_telegram",
         // "twitter_spaces",
@@ -342,7 +342,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickConnectExchange}
         />
       );
-    } else if (whichBlock === "followin") {
+    } else if (whichBlock === "following") {
       return (
         <ProfileLochCreditPointsBlock
           title="Following an Address"
