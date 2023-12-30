@@ -42,7 +42,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
-        "following",
+        "followin",
         "x_follower",
         "joined_telegram",
         // "twitter_spaces",
@@ -246,6 +246,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
+    const goClickFollowAnAddress = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Follow an Address",
+      });
+      this.props.history.push("/leaderboard");
+    };
     const goClickFollowTwitter = () => {
       UserCreditGoClickedMP({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
@@ -334,7 +342,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickConnectExchange}
         />
       );
-    } else if (whichBlock === "following") {
+    } else if (whichBlock === "followin") {
       return (
         <ProfileLochCreditPointsBlock
           title="Following an Address"
@@ -342,7 +350,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          // onClick={goClickAddAddress}
+          onClick={goClickFollowAnAddress}
         />
       );
     } else if (whichBlock === "twitter_spaces") {

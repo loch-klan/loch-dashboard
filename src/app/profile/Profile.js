@@ -269,7 +269,7 @@ class Profile extends Component {
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
-                  <ProfileLochCreditPoints isUpdate={this.state.isUpdate} />
+                  <ProfileLochCreditPoints isUpdate={this.state.isUpdate} history={this.props.history} />
                 </Col>
               </Row>
             </div>
