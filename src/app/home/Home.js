@@ -1,63 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 // import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import BaseReactComponent from "./../../utils/form/BaseReactComponent";
-import OnBoarding from "../onboarding";
-import "../../assets/scss/onboarding/_onboarding.scss";
+import { ethers } from "ethers";
 import { Button, Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import Banner from "../../assets/images/bg-img-welcome.png";
 import {
-  deleteToken,
-  getToken,
-  setLocalStoraage,
-  getCurrentUser,
-} from "../../utils/ManageToken";
-import {
-  getAllCurrencyRatesApi,
-  GetDefaultPlan,
-  setPageFlagDefault,
-  updateUserWalletApi,
-} from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import FormElement from "../../utils/form/FormElement";
-import FormValidator from "./../../utils/form/FormValidator";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
-import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
-import Form from "../../utils/form/Form";
-import {
-  DiscountEmailPage,
-  DiscountEmailSkip,
-  EmailAddedDiscount,
-  TimeSpentDiscountEmail,
-  TimeSpentOnboarding,
-  LPConnectExchange,
-  LPDiscover,
-  ConnectWalletButtonClickedWelcome,
-  SmartMoneyButtonClickedWelcome,
-  ClickTrendingAddress,
-} from "../../utils/AnalyticsFunctions";
-import {
-  CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
   SmartMoneyWhiteIcon,
   WalletWhiteIcon,
 } from "../../assets/images/icons";
-import LinkIconBtn from "../../assets/images/link.svg";
+import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
+import "../../assets/scss/onboarding/_onboarding.scss";
 import {
-  AppFeaturesCreateUser,
-  createAnonymousUserApi,
-  detectCoin,
-} from "../onboarding/Api";
+  ClickTrendingAddress,
+  ConnectWalletButtonClickedWelcome,
+  DiscountEmailSkip,
+  EmailAddedDiscount,
+  LPConnectExchange,
+  SmartMoneyButtonClickedWelcome,
+  TimeSpentDiscountEmail,
+} from "../../utils/AnalyticsFunctions";
+import {
+  deleteToken,
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
+import Form from "../../utils/form/Form";
+import FormElement from "../../utils/form/FormElement";
+import {
+  GetDefaultPlan,
+  getAllCurrencyRatesApi,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
 } from "../header/HeaderAction";
-import { ethers } from "ethers";
+import OnBoarding from "../onboarding";
+import { createAnonymousUserApi, detectCoin } from "../onboarding/Api";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import FormValidator from "./../../utils/form/FormValidator";
 
-import MobileHome from "./MobileHome";
-import { mobileCheck } from "../../utils/ReusableFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
+import { mobileCheck } from "../../utils/ReusableFunctions";
+import MobileHome from "./MobileHome";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -66,255 +57,8 @@ class Home extends BaseReactComponent {
       isTrendingAddresses: false,
       trendingAddresses: [
         {
-          address: "vitalik.eth",
-          worth: 2162982.013,
-          trimmedAddress: "vitalik.eth",
-          fullData: [
-            {
-              address: "vitalik.eth",
-              apiAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-              coinFound: [
-                {
-                  chain_detected: false,
-                  coinCode: "BTC",
-                  coinColor: "#F19938",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "ETH",
-                  coinName: "Ethereum",
-                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                  coinColor: "#7B44DA",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "ARB",
-                  coinName: "Arbitrum",
-                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                  coinColor: "#2C374B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "AVAX",
-                  coinName: "Avalanche",
-                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                  coinColor: "#E84042",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "BSC",
-                  coinName: "BSC",
-                  coinSymbol: "https://media.loch.one/loch-binance.svg",
-                  coinColor: "#F0B90B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "CELO",
-                  coinName: "Celo",
-                  coinSymbol: "https://media.loch.one/loch-celo.svg",
-                  coinColor: "#F4CE6F",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "FTM",
-                  coinName: "Fantom",
-                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                  coinColor: "#13B5EC",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "OP",
-                  coinName: "Optimism",
-                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                  coinColor: "#FF0420",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "POLYGON",
-                  coinName: "Polygon",
-                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                  coinColor: "#8247E5",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ALGO",
-                  coinName: "Algorand",
-                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "SOL",
-                  coinName: "Solana",
-                  coinSymbol: "https://media.loch.one/loch-solana.svg",
-                  coinColor: "#5ADDA6",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "TRX",
-                  coinName: "Tron",
-                  coinSymbol: "https://media.loch.one/loch-tron.svg",
-                  coinColor: "#FF060A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ADA",
-                  coinName: "Cardano",
-                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                  coinColor: "#0033AD",
-                },
-              ],
-              displayAddress: "",
-              id: "wallet1",
-              loadingNameTag: false,
-              nameTag: "",
-              nickname: "",
-              showAddress: true,
-              showNameTag: false,
-              showNickname: false,
-              wallet_metadata: {},
-            },
-          ],
-        },
-        {
-          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-          worth: 41734020.159,
-          trimmedAddress: "0x3e8...90c",
-          fullData: [
-            {
-              address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-              apiAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-              coinFound: [
-                {
-                  chain_detected: true,
-                  coinCode: "ETH",
-                  coinName: "Ethereum",
-                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                  coinColor: "#7B44DA",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "ARB",
-                  coinName: "Arbitrum",
-                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                  coinColor: "#2C374B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "AVAX",
-                  coinName: "Avalanche",
-                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                  coinColor: "#E84042",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "BSC",
-                  coinName: "BSC",
-                  coinSymbol: "https://media.loch.one/loch-binance.svg",
-                  coinColor: "#F0B90B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "CELO",
-                  coinName: "Celo",
-                  coinSymbol: "https://media.loch.one/loch-celo.svg",
-                  coinColor: "#F4CE6F",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "FTM",
-                  coinName: "Fantom",
-                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                  coinColor: "#13B5EC",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "OP",
-                  coinName: "Optimism",
-                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                  coinColor: "#FF0420",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "POLYGON",
-                  coinName: "Polygon",
-                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                  coinColor: "#8247E5",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "LTC",
-                  coinName: "Litecoin",
-                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                  coinColor: "#345D9D",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "BTC",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                  coinColor: "#F19938",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "SOL",
-                  coinName: "Solana",
-                  coinSymbol: "https://media.loch.one/loch-solana.svg",
-                  coinColor: "#5ADDA6",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ALGO",
-                  coinName: "Algorand",
-                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "TRX",
-                  coinName: "Tron",
-                  coinSymbol: "https://media.loch.one/loch-tron.svg",
-                  coinColor: "#FF060A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ADA",
-                  coinName: "Cardano",
-                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                  coinColor: "#0033AD",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
-                },
-              ],
-              displayAddress: "",
-              id: "wallet1",
-              loadingNameTag: false,
-              nameTag: "",
-              nickname: "",
-              showAddress: true,
-              showNameTag: false,
-              showNickname: false,
-              wallet_metadata: {},
-            },
-          ],
-        },
-        {
           address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
-          worth: 10687714.477,
+          worth: 17723868.951,
           trimmedAddress: "0x26f...5b5",
           fullData: [
             {
@@ -386,20 +130,6 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
-                  coinCode: "SOL",
-                  coinName: "Solana",
-                  coinSymbol: "https://media.loch.one/loch-solana.svg",
-                  coinColor: "#5ADDA6",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "TRX",
-                  coinName: "Tron",
-                  coinSymbol: "https://media.loch.one/loch-tron.svg",
-                  coinColor: "#FF060A",
-                },
-                {
-                  chain_detected: false,
                   coinCode: "ALGO",
                   coinName: "Algorand",
                   coinSymbol: "https://media.loch.one/loch-algorand.svg",
@@ -414,10 +144,278 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
                   coinCode: "ADA",
                   coinName: "Cardano",
                   coinSymbol: "https://media.loch.one/loch-cardano.svg",
                   coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+        {
+          address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+          worth: 38993631.363,
+          trimmedAddress: "0xeB2...a4c",
+          fullData: [
+            {
+              address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+              apiAddress: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+              coinFound: [
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+        {
+          address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+          worth: 111935898.211,
+          trimmedAddress: "0x36c...fc6",
+          fullData: [
+            {
+              address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+              apiAddress: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+              coinFound: [
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
                 },
                 {
                   chain_detected: false,
@@ -616,7 +614,7 @@ class Home extends BaseReactComponent {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     window.open(shareLink, "_blank", "noreferrer");
   };
   connectWalletEthers = async () => {
@@ -923,7 +921,7 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
       });
@@ -980,10 +978,10 @@ class Home extends BaseReactComponent {
             if (!mobileCheck()) {
               deleteToken();
             }
-            //  localStorage.setItem("defi_access", true);
-            //  localStorage.setItem("isPopup", true);
-            //  // localStorage.setItem("whalepodview", true);
-            //  localStorage.setItem(
+            //  window.sessionStorage.setItem("defi_access", true);
+            //  window.sessionStorage.setItem("isPopup", true);
+            //  // window.sessionStorage.setItem("whalepodview", true);
+            //  window.sessionStorage.setItem(
             //    "whalepodview",
             //    JSON.stringify({ access: true, id: "" })
             //  );
@@ -1010,10 +1008,10 @@ class Home extends BaseReactComponent {
         if (!mobileCheck()) {
           deleteToken();
         }
-        // localStorage.setItem("defi_access", true);
-        // localStorage.setItem("isPopup", true);
-        // // localStorage.setItem("whalepodview", true);
-        // localStorage.setItem(
+        // window.sessionStorage.setItem("defi_access", true);
+        // window.sessionStorage.setItem("isPopup", true);
+        // // window.sessionStorage.setItem("whalepodview", true);
+        // window.sessionStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );
@@ -1068,6 +1066,7 @@ class Home extends BaseReactComponent {
     });
   };
   render() {
+    console.log("onboardingWalletAddress ", this.state.onboardingWalletAddress);
     if (this.state.isMobileDevice) {
       return (
         <MobileHome
@@ -1176,7 +1175,7 @@ class Home extends BaseReactComponent {
                       src={SmartMoneyWhiteIcon}
                       alt="ProfileVectorIcon"
                     />
-                    <div>Smart Money</div>
+                    <div>Leaderboard</div>
                   </div>
                   <div
                     onClick={this.connectWalletEthers}

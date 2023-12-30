@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
 export const BarGraphFooter = (props) => {
   const timeSeries = props.footerLabels
     ? props.footerLabels

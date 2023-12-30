@@ -10,6 +10,25 @@
       .inflowOutflowChartTopInfoLeft {
         display: flex;
         align-items: center;
+        .seeMoreBtn {
+          margin-left: 1rem;
+          display: flex;
+          align-items: center;
+          color: black;
+          font-size: 13px;
+          font-weight: 500;
+          .seeMoreBtnIcon {
+            filter: brightness(0);
+            height: 9px;
+            margin-left: 0.5rem;
+          }
+          &:hover {
+            color: #adadad;
+            .seeMoreBtnIcon {
+              filter: brightness(1);
+            }
+          }
+        }
         .ioPriceContainer {
           padding-left: 5rem;
           .ioPrice {

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Loading from "../common/Loading";
 import {
   AppFeaturesCreateUser,
   getAllCoins,
   getAllParentChains,
 } from "../onboarding/Api.js";
-import Loading from "../common/Loading";
 
-import { GetAllPlan, GetDefaultPlan, getUser } from "../common/Api";
 import { deleteToken } from "../../utils/ManageToken.js";
+import { GetDefaultPlan } from "../common/Api";
 
 class AppFeature extends Component {
   constructor(props) {

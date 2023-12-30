@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button, Image } from "react-bootstrap";
+import { Button, Image, Modal } from "react-bootstrap";
 import alertIcon from "../../assets/images/icons/alert-icon.svg";
 import successIcon from "../../assets/images/icons/success-icon.svg";
 // import closeIcon from "../../assets/images/close.png";
