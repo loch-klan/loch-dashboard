@@ -550,8 +550,7 @@ class BarGraphSection extends Component {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      marginBottom:
-                        showToken || isMinichart ? "2.5rem" : "0rem",
+                      marginBottom: showToken || isMinichart ? "1rem" : "0rem",
                     }}
                   >
                     <div

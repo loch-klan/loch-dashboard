@@ -930,9 +930,10 @@ class Portfolio extends BaseReactComponent {
       // Transaction table
       if (
         this.state.blockOneSelectedItem === 2 &&
-        (!this.props.intelligenceState.table_home ||
-          this.state.shouldCallTransactionTableApi)
+        (!this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory)
       ) {
+        this.props.updateWalletListFlag("transactionHistory", true);
         this.setState({
           shouldCallTransactionTableApi: false,
         });
@@ -1194,7 +1195,15 @@ class Portfolio extends BaseReactComponent {
       }
 
       // Transaction history api call
-      if (this.state.blockOneSelectedItem === 2) {
+      if (
+        this.state.blockOneSelectedItem === 2 &&
+        (!(
+          this.props.intelligenceState?.table &&
+          this.props.intelligenceState?.table.length > 0
+        ) ||
+          !this.props.commonState.transactionHistory)
+      ) {
+        this.props.updateWalletListFlag("transactionHistory", true);
         this.setState({
           shouldCallTransactionTableApi: false,
         });
@@ -1512,7 +1521,7 @@ class Portfolio extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
-    data.append("limit", this.state.limit);
+    data.append("limit", 10);
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.searchTransactionApi(data, this);
   };
@@ -1860,7 +1869,7 @@ class Portfolio extends BaseReactComponent {
     });
   };
   render() {
-    const { table_home, assetPriceList_home, table_home_count } =
+    const { table, assetPriceList_home, totalCount } =
       this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
     //   "asset price state",
@@ -1874,8 +1883,8 @@ class Portfolio extends BaseReactComponent {
 
     // transaction history calculations
     let tableData =
-      table_home &&
-      table_home.map((row) => {
+      table &&
+      table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
 
@@ -2858,21 +2867,21 @@ class Portfolio extends BaseReactComponent {
               //   coin_code={rowData.AssetCode}
               // />
               <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={rowData.AssetCode}
-                >
-                  <div>
-                    <CoinChip
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.AssetCode}
+              >
+                <div>
+                  <CoinChip
                     hideText={true}
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                    />
-                  </div>
-                </CustomOverlay>
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                  />
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -3300,12 +3309,12 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockOneSelectedItem === 2 ? (
                         <TransactionTable
                           moreData={
-                            table_home_count && table_home_count > 5
+                            totalCount && totalCount > 5
                               ? `Click here to see ${numToCurrency(
-                                  table_home_count - 5,
+                                  totalCount - 5,
                                   true
                                 ).toLocaleString("en-US")}+ transaction${
-                                  table_home_count - 5 > 1 ? "s" : ""
+                                  totalCount - 5 > 1 ? "s" : ""
                                 }`
                               : "Click here to see more"
                           }
