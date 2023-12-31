@@ -1034,8 +1034,9 @@ class Portfolio extends BaseReactComponent {
           this.state.updatedInsightList &&
           this.state.updatedInsightList.length > 0
         ) ||
-          this.state.shouldCallInsightsApi)
+          !this.props.commonState.insight)
       ) {
+        this.props.updateWalletListFlag("insight", true);
         this.setState({
           insightsBlockLoading: true,
           shouldCallInsightsApi: false,
@@ -1274,7 +1275,12 @@ class Portfolio extends BaseReactComponent {
         });
         this.callYieldOppApi();
       }
-      if (this.state.blockFourSelectedItem === 3) {
+      if (
+        this.state.blockFourSelectedItem === 3 &&
+        (!this.props.intelligenceState?.updatedInsightList ||
+          !this.props.commonState.insight)
+      ) {
+        this.props.updateWalletListFlag("insight", true);
         this.setState({
           insightsBlockLoading: false,
         });

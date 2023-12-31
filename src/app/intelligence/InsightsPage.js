@@ -133,6 +133,17 @@ class InsightsPage extends Component {
       }
     }
   };
+  applyInsightsPropsToState = () => {
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+      });
+    }
+  };
   componentDidMount() {
     if (mobileCheck()) {
       this.props.history.push("/home");
@@ -146,15 +157,25 @@ class InsightsPage extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-    if (this.props.intelligenceState?.updatedInsightList) {
-      const newTempHolder =
-        this.props.intelligenceState.updatedInsightList.filter(
-          (resRes) => resRes.insight_type !== 30
-        );
+    if (
+      !this.props.commonState.insight ||
+      !this.props.intelligenceState.updatedInsightList
+    ) {
+      this.props.updateWalletListFlag("insight", true);
       this.setState({
-        updatedInsightList: newTempHolder,
+        isLoading: true,
       });
+      this.props.getAllInsightsApi(this);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
+    } else {
+      this.applyInsightsPropsToState();
     }
+
     this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
@@ -233,18 +254,20 @@ class InsightsPage extends Component {
       });
     }
 
-    if (!this.props.commonState.insight) {
+    if (
+      prevState.apiResponse !== this.state.apiResponse ||
+      !this.props.commonState.insight
+    ) {
       this.props.updateWalletListFlag("insight", true);
-      this.setState({
-        isLoading: true,
-      });
-      this.props.getAllInsightsApi(this);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+      this.setState({
+        apiResponse: false,
+      });
     }
 
     // if (this.state.apiResponse) {

@@ -58,7 +58,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
           tempExchangeHolderAmt = 0;
         }
         CentralizedExchanges = CentralizedExchanges + tempExchangeHolderAmt;
-        updateWalletTotal = updateWalletTotal + CentralizedExchanges;
+        updateWalletTotal = updateWalletTotal + tempExchangeHolderAmt;
       }
       if (
         action.payload &&
@@ -79,7 +79,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
             tempTotalAmt = tempTotalAmt * currencyRate;
             let tempHolder = 0;
             if (
-              chainPortfolio[action.payload.userWalletList?.chain?.id].total
+              chainPortfolio[action.payload.userWalletList?.chain?.id]?.total
             ) {
               tempHolder =
                 chainPortfolio[action.payload.userWalletList?.chain?.id].total;
@@ -88,9 +88,15 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               tempHolder + tempTotalAmt;
             updateWalletTotal = updateWalletTotal + tempTotalAmt;
           } else {
-            chainPortfolio[
-              action.payload.userWalletList?.chain?.id
-            ].total = 0.0;
+            let tempHolder = 0;
+            if (
+              chainPortfolio[action.payload.userWalletList?.chain?.id]?.total
+            ) {
+              tempHolder =
+                chainPortfolio[action.payload.userWalletList?.chain?.id].total;
+            }
+            chainPortfolio[action.payload.userWalletList?.chain?.id].total =
+              tempHolder;
           }
         }
       }

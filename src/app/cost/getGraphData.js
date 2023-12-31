@@ -262,7 +262,21 @@ export const getGraphData = (apidata, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr ? arr?.map((e) => e.total_fees * currency?.rate) : [],
+        data: arr
+          ? arr?.map((e) => {
+              if (e.total_fees_amount && e.chain?.default_asset_code) {
+                return (
+                  e.total_fees_amount *
+                  assetPrices[e.chain.default_asset_code] *
+                  currency?.rate
+                );
+              } else if (e.total_fees) {
+                return e.total_fees * currency?.rate;
+              } else {
+                return 0;
+              }
+            })
+          : [],
         backgroundColor: arr
           ? arr?.map((e) =>
               e?.exchange == "coinbase"
