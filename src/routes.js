@@ -26,7 +26,10 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import NewHome from "./app/home/NewHome";
+import Referral from "./app/referral/Referral";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+
 const routes = [
   {
     path: "/",
@@ -40,6 +43,18 @@ const routes = [
     name: "Home",
     type: Route,
     component: Home,
+  },
+  {
+    path: "/new-welcome",
+    name: "Home",
+    type: Route,
+    component: NewHome,
+  },
+  {
+    path: "/Referral",
+    name: "Referral",
+    type: Route,
+    component: Referral,
   },
   {
     path: "/profile",

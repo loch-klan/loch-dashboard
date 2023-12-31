@@ -1,133 +1,134 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import WelcomeCard from "./WelcomeCard";
-import LineChartSlider from "./LineCharSlider";
-import prevIcon from "../../assets/images/icons/prev-arrow.svg";
-import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import LineChartSlider from "./LineCharSlider";
+import WelcomeCard from "./WelcomeCard";
 
-import {
-  getCoinRate,
-  getDetailsByLinkApi,
-  getUserWallet,
-  getYesterdaysBalanceApi,
-  settingDefaultValues,
-  getExternalEventsApi,
-  getExchangeBalances,
-} from "./Api";
-import { Image, Row, Col } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from "../common/FixAddModal";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import TransactionTable from "../intelligence/TransactionTable";
-import BarGraphSection from "./../common/BarGraphSection";
-import { getAllWalletListApi } from "../wallet/Api";
+import FixAddModal from "../common/FixAddModal";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
+import TransactionTable from "../intelligence/TransactionTable";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
+import BarGraphSection from "./../common/BarGraphSection";
+import {
+  getCoinRate,
+  getDetailsByLinkApi,
+  getExchangeBalances,
+  getExternalEventsApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api";
 
+import moment from "moment";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import {
+  BASE_URL_S3,
+  GROUP_BY_DATE,
+  GroupByOptions,
+  SEARCH_BY_WALLET_ADDRESS_IN,
+  SORT_BY_APY,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_METHOD,
+  SORT_BY_POOL,
+  SORT_BY_PROJECT,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_TVL,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_VALUE,
+  START_INDEX,
+} from "../../utils/Constant";
 import {
   getDetectedChainsApi,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  START_INDEX,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_METHOD,
-  GroupByOptions,
-  GROUP_BY_DATE,
-  BASE_URL_S3,
-  SORT_BY_TVL,
-  SORT_BY_APY,
-  SORT_BY_POOL,
-  SORT_BY_PROJECT,
-  SORT_BY_VALUE,
-} from "../../utils/Constant";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import moment from "moment";
 
 import {
-  ManageWallets,
-  AverageCostBasisEView,
-  TimeSpentHome,
-  TransactionHistoryAddress,
-  TransactionHistoryDate,
-  TransactionHistoryFrom,
-  TransactionHistoryTo,
-  TransactionHistoryAsset,
-  ProfitLossEV,
-  HomePage,
   AddMoreAddres,
   AssetValueExpandview,
+  AverageCostBasisEView,
+  GasFeesEV,
   HomeCostSortByAsset,
+  HomePage,
+  HomeShare,
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  ManageWallets,
   NetflowSwitchHome,
-  HomeShare,
-  YieldOpportunitiesSortAsset,
-  YieldOpportunitiesSortUSDvalue,
-  YieldOpportunitiesSortProject,
-  YieldOpportunitiesSortPool,
-  YieldOpportunitiesSortTVL,
-  YieldOpportunitiesSortAPY,
-  YieldOppurtunitiesExpandediew,
-  TransactionHistoryWalletClicked,
-  TransactionHistoryEView,
-  GasFeesEV,
-  VolumeTradeByCP,
   PriceGaugeEV,
+  ProfitLossEV,
+  TimeSpentHome,
+  TransactionHistoryAddress,
+  TransactionHistoryAsset,
+  TransactionHistoryDate,
+  TransactionHistoryEView,
+  TransactionHistoryFrom,
+  TransactionHistoryTo,
+  TransactionHistoryWalletClicked,
+  VolumeTradeByCP,
+  YieldOpportunitiesSortAPY,
+  YieldOpportunitiesSortAsset,
+  YieldOpportunitiesSortPool,
+  YieldOpportunitiesSortProject,
+  YieldOpportunitiesSortTVL,
+  YieldOpportunitiesSortUSDvalue,
+  YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
-import { getAssetGraphDataApi } from "./Api";
 import {
-  getAllCounterFeeApi,
-  getAllFeeApi,
-  getAvgCostBasis,
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
-import Loading from "../common/Loading";
-import {
-  amountFormat,
   CurrencyType,
+  TruncateText,
+  UpgradeTriggered,
+  amountFormat,
   mobileCheck,
   noExponents,
   numToCurrency,
-  TruncateText,
-  UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import Loading from "../common/Loading";
+import UpgradeModal from "../common/upgradeModal";
+import {
+  ResetAverageCostBasis,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+} from "../cost/Api";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
+import { getAssetGraphDataApi } from "./Api";
 
+import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
-import { toast } from "react-toastify";
-import "./_mobilePortfolio.scss";
 import PortfolioMobile from "./PortfolioMobile";
+import "./_mobilePortfolio.scss";
 
-import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
-import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
+import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
+import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
-import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
+import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
+import CoinChip from "../wallet/CoinChip.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -2872,8 +2873,13 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData.AssetCode}
               >
-                <div className="dotDotText">
-                  {rowData.AssetCode ? rowData.AssetCode : ""}
+                <div>
+                  <CoinChip
+                    hideText={true}
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                  />
                 </div>
               </CustomOverlay>
             );
@@ -3278,7 +3284,7 @@ class Portfolio extends BaseReactComponent {
                             this.props.intelligenceState?.Average_cost_basis &&
                             this.props.intelligenceState.Average_cost_basis
                               .length > 5
-                              ? `${numToCurrency(
+                              ? `Click here to see ${numToCurrency(
                                   this.props.intelligenceState
                                     .Average_cost_basis.length - 5,
                                   true
@@ -3290,7 +3296,7 @@ class Portfolio extends BaseReactComponent {
                                     ? "s"
                                     : ""
                                 }`
-                              : "See more"
+                              : "Click here to see more"
                           }
                           showDataAtBottom
                           columnList={CostBasisColumnData}
@@ -3304,13 +3310,13 @@ class Portfolio extends BaseReactComponent {
                         <TransactionTable
                           moreData={
                             totalCount && totalCount > 5
-                              ? `${numToCurrency(
+                              ? `Click here to see ${numToCurrency(
                                   totalCount - 5,
                                   true
                                 ).toLocaleString("en-US")}+ transaction${
                                   totalCount - 5 > 1 ? "s" : ""
                                 }`
-                              : "See more"
+                              : "Click here to see more"
                           }
                           showDataAtBottom
                           noSubtitleBottomPadding
@@ -3709,7 +3715,7 @@ class Portfolio extends BaseReactComponent {
                             moreData={
                               this.state.yieldOpportunitiesTotalCount &&
                               this.state.yieldOpportunitiesTotalCount > 5
-                                ? `${numToCurrency(
+                                ? `Click here to see ${numToCurrency(
                                     this.state.yieldOpportunitiesTotalCount - 5,
                                     true
                                   ).toLocaleString("en-US")}+ yield ${
@@ -3719,7 +3725,7 @@ class Portfolio extends BaseReactComponent {
                                       ? "opportunities"
                                       : "opportunity"
                                   }`
-                                : "See more"
+                                : "Click here to see more"
                             }
                             showDataAtBottom
                             columnList={YieldOppColumnData}

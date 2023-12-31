@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -1407,10 +1407,10 @@ backdrop-filter: blur(15px);">
                       )}
                       <p
                         onClick={this.props.openChartPage}
-                        className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-b-20 custom-label"
+                        className="inter-display-medium f-s-10 lh-12 grey-7C7 p-b-20 custom-label"
                       >
                         <div className="seeMoreBtn cp">
-                          <div>See more</div>
+                          <div>Click here to see more</div>
                           <Image
                             src={ChartSeeMoreArrowIcon}
                             className="seeMoreBtnIcon"
