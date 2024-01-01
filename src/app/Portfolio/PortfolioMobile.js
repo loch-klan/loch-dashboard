@@ -193,12 +193,14 @@ class PortfolioMobile extends BaseReactComponent {
       selectedMethods: [],
       selectedNetworks: [],
       amountFilter: "Size",
+      delayTimer: 0,
       year: "",
       search: "",
       method: "",
       asset: "",
       methodsDropdown: Method.opt,
     };
+    this.delayTimer = 0;
   }
   handleTableSort = (val) => {
     let sort = [...this.state.tableSortOpt];
@@ -545,6 +547,7 @@ class PortfolioMobile extends BaseReactComponent {
       );
     }
   };
+
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
     window.sessionStorage.removeItem("mobileHomePageExpiryTime");
@@ -2760,6 +2763,7 @@ class PortfolioMobile extends BaseReactComponent {
                             this.setState({
                               search: e.target.value,
                             });
+                            this.onChangeMethod();
                           }}
                         />
                       </div>
