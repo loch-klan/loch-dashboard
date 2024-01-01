@@ -266,6 +266,9 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       const twitterFollow = new URLSearchParams();
       twitterFollow.append("credits", "x_follower");
       this.props.addUserCredits(twitterFollow);
+      setTimeout(()=>{
+        this.callApi();
+      }, 1000)
     };
     const goClickJoinTelegram = () => {
       UserCreditGoClickedMP({
@@ -277,6 +280,9 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       const joinTelegram = new URLSearchParams();
       joinTelegram.append("credits", "joined_telegram");
       this.props.addUserCredits(joinTelegram);
+      setTimeout(()=>{
+        this.callApi();
+      }, 1000)
     };
     if (whichBlock === "address_added") {
       return (
