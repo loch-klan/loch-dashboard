@@ -8,6 +8,8 @@ import Check from "./../../assets/images/success-referral.svg"
 import TwitterIcon from "../../assets/images/icons/twitter-x-white.svg"
 import GlobeIcon from "../../assets/images/icons/globe-white.svg"
 import { hi } from "date-fns/locale";
+import { UserCreditTelegramIcon } from "../../assets/images/icons";
+import TelegramIcons from "./../../assets/images/icons/telegram-white.svg"
 
 export default class ThanksBanner extends BaseReactComponent {
   constructor(props) {
@@ -34,13 +36,11 @@ export default class ThanksBanner extends BaseReactComponent {
         </div>
         <div className="referral-main-container__mid-box__action-holder" style={{}}>
           <Button
-          onClick={()=>{
-            window.location.href = "/"
-          }}
+          onClick={()=>{window.open("https://t.me/loch_chain", "_blank");}}
           style={{display:'flex', alignItems:'center', padding:"12px 32px", gap:'8px'}} className={"referral-main-container__mid-box__action-holder__cta"}>
 
-            <img src={GlobeIcon} alt="" />
-            Go Home
+            <img src={TelegramIcons} style={{height:'17px', width:'17px'}} alt="" />
+            Join Us
           </Button>
           <Button onClick={()=>{window.open("https://twitter.com/loch_chain", "_blank");}} style={{display:'flex', alignItems:'center', padding:"12px 32px", gap:'8px'}} className={"referral-main-container__mid-box__action-holder__cta"}>
             <img src={TwitterIcon} alt="" />
