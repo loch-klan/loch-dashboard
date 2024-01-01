@@ -256,7 +256,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       this.props.history.push("/home-leaderboard");
     };
-    const goClickFollowTwitter = () => {
+    const goClickFollowTwitter = async() => {
       UserCreditGoClickedMP({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
         email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -265,12 +265,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       window.open("https://twitter.com/loch_chain", "_blank");
       const twitterFollow = new URLSearchParams();
       twitterFollow.append("credits", "x_follower");
-      this.props.addUserCredits(twitterFollow);
-      setTimeout(()=>{
-        this.callApi();
-      }, 1000)
+      this.props.addUserCredits(twitterFollow, this)
+      this.callApi();
     };
-    const goClickJoinTelegram = () => {
+    const goClickJoinTelegram = async() => {
       UserCreditGoClickedMP({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
         email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -279,10 +277,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       window.open("https://t.me/loch_chain", "_blank");
       const joinTelegram = new URLSearchParams();
       joinTelegram.append("credits", "joined_telegram");
-      this.props.addUserCredits(joinTelegram);
-      setTimeout(()=>{
-        this.callApi();
-      }, 1000)
+      await this.props.addUserCredits(joinTelegram, this);
+      this.callApi();
     };
     if (whichBlock === "address_added") {
       return (
