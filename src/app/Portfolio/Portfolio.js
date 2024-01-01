@@ -34,9 +34,9 @@ import {
 import moment from "moment";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import {
+  API_LIMIT,
   BASE_URL_S3,
   GROUP_BY_DATE,
-  GroupByOptions,
   SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_APY,
   SORT_BY_ASSET,
@@ -126,9 +126,9 @@ import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import { addUserCredits } from "../profile/Api.js";
+import CoinChip from "../wallet/CoinChip.js";
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
-import CoinChip from "../wallet/CoinChip.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -661,7 +661,7 @@ class Portfolio extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("start", 0);
     data.append("conditions", JSON.stringify([]));
-    data.append("limit", 5);
+    data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.yieldOppSort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
@@ -681,7 +681,21 @@ class Portfolio extends BaseReactComponent {
     }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
-
+    if (
+      this.props.yieldOpportunitiesState &&
+      this.props.yieldOpportunitiesState.yield_pools &&
+      this.props.yieldOpportunitiesState.total_count &&
+      this.props.commonState.yieldOpportunities
+    ) {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
+          : [],
+        yieldOpportunitiesTotalCount:
+          this.props.yieldOpportunitiesState.total_count,
+        yieldOpportunitiesTableLoading: false,
+      });
+    }
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
@@ -1004,27 +1018,43 @@ class Portfolio extends BaseReactComponent {
         });
         this.callPriceGaugeApi();
       }
+
       if (
         this.state.blockThreeSelectedItem === 2 &&
         (!this.props.portfolioState?.assetValueDay ||
-          this.state.shouldCallHistoricPerformanceApi)
+          !this.props.commonState.asset_value)
       ) {
+        this.props.updateWalletListFlag("asset_value", true);
         this.setState({
           shouldCallHistoricPerformanceApi: false,
         });
         this.getGraphData();
+      } else {
+        this.setState({
+          graphLoading: false,
+        });
       }
     }
     // Block Four
     if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
       if (
-        this.state.blockFourSelectedItem === 2 &&
-        (!(
-          this.state.yieldOpportunitiesList &&
-          this.state.yieldOpportunitiesList.length > 0
-        ) ||
-          this.state.shouldCallYieldOppApi)
+        this.state.blockFourSelectedItem === 1 &&
+        (!(this.state.defiState && this.state.defiState?.defiList) ||
+          !this.props.commonState.defi)
       ) {
+        this.props.updateWalletListFlag("defi", true);
+        this.setState({
+          insightsBlockLoading: true,
+          shouldCallInsightsApi: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
+      if (
+        this.state.blockFourSelectedItem === 2 &&
+        (!this.state.yieldOpportunitiesList ||
+          !this.props.commonState.yieldOpportunities)
+      ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
           shouldCallYieldOppApi: false,
         });
@@ -1032,11 +1062,7 @@ class Portfolio extends BaseReactComponent {
       }
       if (
         this.state.blockFourSelectedItem === 3 &&
-        (!(
-          this.state.updatedInsightList &&
-          this.state.updatedInsightList.length > 0
-        ) ||
-          !this.props.commonState.insight)
+        (!this.state.updatedInsightList || !this.props.commonState.insight)
       ) {
         this.props.updateWalletListFlag("insight", true);
         this.setState({
@@ -1162,7 +1188,7 @@ class Portfolio extends BaseReactComponent {
       // this.getTableData();
 
       // asset value run when its value null
-      // if (!this.props.portfolioState.assetValueMonth) {
+      // if (!this.props.portfolioState.assetValueDay) {
       //    this.getGraphData();
       // } else {
       //   this.setState({
@@ -1271,7 +1297,12 @@ class Portfolio extends BaseReactComponent {
         });
         this.callPriceGaugeApi();
       }
-      if (this.state.blockThreeSelectedItem === 2) {
+      if (
+        this.state.blockThreeSelectedItem === 2 &&
+        (!this.props.portfolioState?.assetValueDay ||
+          !this.props.commonState.asset_value)
+      ) {
+        this.props.updateWalletListFlag("asset_value", true);
         this.setState({
           shouldCallHistoricPerformanceApi: false,
         });
@@ -1279,7 +1310,13 @@ class Portfolio extends BaseReactComponent {
       }
 
       // BLOCK FOUR
-      if (this.state.blockFourSelectedItem === 2) {
+
+      if (
+        this.state.blockFourSelectedItem === 2 &&
+        (!this.props.yieldOpportunitiesState.yield_pools ||
+          !this.props.commonState.yieldOpportunities)
+      ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
           shouldCallYieldOppApi: false,
         });
@@ -1349,7 +1386,7 @@ class Portfolio extends BaseReactComponent {
 
   apiCall = () => {
     this.props.getAllCoins();
-    this.getGraphData();
+
     if (this.props.match.params.id) {
       // if share link call this app
       // if (this.state.portfolioLink) {
@@ -1503,10 +1540,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   // filter asset value chart
-  handleGroupBy = (value) => {
-    let groupByValue = GroupByOptions.getGroupBy(value);
-    this.getGraphData(groupByValue);
-  };
+  handleGroupBy = (value) => {};
 
   // transaction history table data
   getTableData = () => {
@@ -3694,6 +3728,7 @@ class Portfolio extends BaseReactComponent {
                           <PortfolioHomeDefiBlock
                             lochToken={this.state.lochToken}
                             history={this.props.history}
+                            userWalletList={this.state.userWalletList}
                           />
                         ) : this.state.blockFourSelectedItem === 2 ? (
                           <TransactionTable

@@ -153,6 +153,15 @@ class WatchListPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
