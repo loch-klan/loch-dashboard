@@ -235,6 +235,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
             hideTimeFilter
             openChartPage={this.props.openChartPage}
+            showDropdown
           />
         </div>
       </div>

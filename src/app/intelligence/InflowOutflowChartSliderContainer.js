@@ -401,9 +401,10 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      alignItems: this.props.hideTimeFilter
-                        ? "flex-start"
-                        : "centre",
+                      alignItems: this.props.hideTimeFilter &&this.props.showDropdown
+                          ? "center"
+                          :this.props.hideTimeFilter?"flex-start"
+                          : "centre",
                       justifyContent: this.props.hideTimeFilter
                         ? "space-between"
                         : "",
@@ -411,14 +412,16 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     }}
                     className="inflowOutflowChartTopInfoLeft"
                   >
+                    
                     <div
                       style={{
                         display: "flex",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        alignItems: this.props.hideTimeFilter
-                          ? "flex-start"
+                        alignItems: this.props.hideTimeFilter &&this.props.showDropdown
+                          ? "center"
+                          :this.props.hideTimeFilter?"flex-start"
                           : "centre",
                       }}
                     >
@@ -465,7 +468,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           >
                             {this.props.hideTimeFilter &&
                             this.state.activeAssetTabName
-                              ? `${this.state.activeAssetTabName} `
+                              ? ``
                               : ""}
                             Price
                           </div>
@@ -522,19 +525,45 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       </div>
                     </div>
                     {this.props.openChartPage ? (
+                      <div className="d-flex" style={{alignItems:'center', gap:'8px'}}>
                       <p
                         onClick={this.props.openChartPage}
                         class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
-                      >
+                        >
                         <div className="seeMoreBtn cp f-s-10 grey-7C7">
                           <div>Click here to see more</div>
 
                           <Image
                             src={ChartSeeMoreArrowIcon}
                             className="seeMoreBtnIcon"
-                          />
+                            />
                         </div>
                       </p>
+                      {
+                    this.props.showDropdown ? (
+                      <div
+                      style={{
+                        zIndex: 4,
+                      }}
+                    >
+                      <CustomDropdownPrice
+                        filtername="All chains selected"
+                        options={this.state.assetList}
+                        action={null}
+                        handleClick={this.handleAssetSelect}
+                        isChain={true}
+                        selectedTokens={[this.state.activeAssetTab]}
+                        selectedTokenName={this.state.activeAssetTabName}
+                        singleSelect
+                        searchIsUsed={this.chainSearchIsUsed}
+                      />
+                    </div>
+                    )
+                    :
+                    null
+                  }
+
+                            </div>
                     ) : null}
                   </div>
 
@@ -558,27 +587,36 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     </div>
                   ) : null}
                   {!this.props.hideTimeFilter ? (
-                    <CustomOverlay
-                      position="bottom"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      isLeftText
-                      className={"fix-width tool-tip-container-bottom-arrow"}
-                      heading="These are all the tokens ever owned by this wallet."
-                      subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      <Image
-                        src={InfoIcon}
-                        className="infoIcon"
-                        style={{
-                          cursor: "pointer",
-                          height: "1.6rem",
-                          marginLeft: "1rem",
-                        }}
-                      />
-                    </CustomOverlay>
+                      <CustomOverlay
+                        position="bottom"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        isLeftText
+                        className={"fix-width tool-tip-container-bottom-arrow"}
+                        heading="These are all the tokens ever owned by this wallet."
+                        subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                      >
+                        <Image
+                          src={InfoIcon}
+                          className="infoIcon"
+                          style={{
+                            cursor: "pointer",
+                            height: "1.6rem",
+                            marginLeft: "1rem",
+                          }}
+                        />
+                      </CustomOverlay>
+                    </div>
                   ) : null}
+
                   {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}
@@ -600,6 +638,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   activeAssetTab={this.state.activeAssetTab}
                   assetList={this.props.assetList}
                   hideTimeFilter={this.props.hideTimeFilter}
+                  showDropdown={this.props.showDropdown}
                 />
               </>
             )}
