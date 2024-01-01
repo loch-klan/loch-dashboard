@@ -484,7 +484,7 @@ class CustomDropdown extends Component {
         }`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
-        style={{ position: "relative" }}
+        style={{ position: "relative", ...this.props.style }}
       >
         <div
           className={`placeholderPriceDropdown ${
@@ -553,7 +553,7 @@ class CustomDropdown extends Component {
           }`}
           style={{
             minWidth: `${
-              this.props.isLineChart || this.props.isChain ? "100%" : "130px"
+              this.props.isLineChart || this.props.isChain ||this.props.isMobile ? "100%" : "130px"
             }`,
           }}
         >
