@@ -170,6 +170,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   callApi() {
     this.setState({
       loading: true,
+      isLeftArrowDisabled: true,
+      isRightArrowDisabled: false,
     });
     this.props.getUserCredits(this);
   }
