@@ -1,3 +1,5 @@
+@import "../../../assets/scss/common/variables";
+
 .inflowOutflowBlock {
   .graph-container {
     .inflowOutflowChartTopInfo {
@@ -14,15 +16,18 @@
           margin-left: 1rem;
           display: flex;
           align-items: center;
-          color: #adadad;
-          font-size: 12px;
+          color: #4f4f4f;
+          font-size: 13px;
           font-weight: 500;
+          // transition-duration: 300ms;
           .seeMoreBtnIcon {
+            // transition-duration: 300ms;
+            filter: brightness(0.5);
             height: 9px;
             margin-left: 0.5rem;
           }
           &:hover {
-            color: black;
+            color: #0d0d0d;
             .seeMoreBtnIcon {
               filter: brightness(0);
             }
