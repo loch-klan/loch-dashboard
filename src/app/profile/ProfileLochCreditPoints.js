@@ -163,6 +163,9 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         isRightArrowDisabled: false,
       });
     }
+    if(this.props.followFlag !== prevProps.followFlag){
+      this.callApi();
+    }
   }
   callApi() {
     this.setState({
@@ -251,7 +254,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         email_address: getCurrentUser ? getCurrentUser()?.email : "",
         task: "Follow an Address",
       });
-      this.props.history.push("/leaderboard");
+      this.props.history.push("/home-leaderboard");
     };
     const goClickFollowTwitter = () => {
       UserCreditGoClickedMP({
