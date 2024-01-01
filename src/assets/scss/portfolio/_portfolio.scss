@@ -886,7 +886,7 @@
           justify-content: center;
           padding: 0rem 1rem;
           cursor: pointer;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           &:hover {
             color: #0d0d0d;
           }
@@ -1208,9 +1208,9 @@
         font-size: 13px;
         color: #4f4f4f;
         font-weight: 500;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         .seeMoreBtnIcon {
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           filter: brightness(0.5);
           height: 9px;
           margin-left: 0.5rem;
