@@ -1,19 +1,16 @@
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
-import { GraphHeader } from "../common/GraphHeader";
-import CoinBadges from "./../common/CoinBadges";
-import DropDown from "../common/DropDown";
-import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
-import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
-import { GroupByOptions, Months } from "../../utils/Constant";
+import Highcharts from "highcharts/highstock";
+import moment from "moment";
+import { connect } from "react-redux";
 import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
-import moment from "moment";
-import Loading from "../common/Loading";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import DropDown from "../common/DropDown";
+import { GraphHeader } from "../common/GraphHeader";
+import Loading from "../common/Loading";
+import CoinBadges from "./../common/CoinBadges";
 class LineChart extends BaseReactComponent {
   constructor(props) {
     super(props);

@@ -68,12 +68,13 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        // width: calc(100% - 26rem);
-        width: 100%;
+        width: calc(100% - 26rem);
+
+        // width: 100%;
         position: relative;
         //
         padding-left: 14.5rem;
-        padding-right: 39rem;
+        padding-right: 13.4rem;
         .topWalletDropdownContainer {
           border-radius: 15px;
 
@@ -153,10 +154,10 @@
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
-            padding-left: 1.4rem;
-            padding-right: 1.4rem;
-            border: 1px $grey-50 solid;
-            box-shadow: 0 0 10px 4px $grey-50;
+            padding-left: 0rem;
+            padding-right: 0rem;
+            // border: 1px $grey-50 solid;
+            // box-shadow: 0 0 10px 4px $grey-50;
             .maxWidth50 {
               max-width: 50%;
             }
@@ -254,10 +255,14 @@
             }
           }
         }
+        .topbar-btn-white-with-border {
+          background-color: transparent;
+          border: 0.1rem solid #e5e5e6;
+        }
         .topbar-btn-transparent {
           background-color: transparent;
           border: none;
-          padding-left: 0rem;
+          // padding-left: 0rem;
           cursor: default;
           .topBarWalletArrowContainer {
             transition-duration: 300ms;
@@ -375,6 +380,10 @@
         .downfall {
           background-color: $red-FFE;
         }
+      }
+      .welcome-card-topbar-closed {
+        padding-left: 6rem;
+        padding-right: 21.9rem;
       }
     }
 
@@ -847,6 +856,7 @@
     // display: flex;
     .row {
       margin: 0rem;
+      flex-wrap: nowrap;
       .col-md-6 {
         padding: 0rem;
       }
@@ -861,8 +871,267 @@
     }
 
     .section-table {
-      // width: 50%;
+      .bottomExtraInfo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        color: #adadad;
+        font-size: 12px;
+        font-weight: 500;
+        .bottomExtraInfoText {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0rem 1rem;
+          cursor: pointer;
+          transition-duration: 300ms;
+          &:hover {
+            color: #000000;
+          }
+        }
+      }
+      .portfolioHomeDefiCard {
+        min-height: 28rem;
 
+        .defi-card-wrapper {
+          padding: 0;
+          .col-md-3 {
+            justify-content: center;
+            padding: 0rem;
+          }
+          border: 0.1rem solid #e5e5e680;
+
+          box-shadow: none;
+          .top-title-wrapper {
+            padding-bottom: 1.5rem;
+            .heading-image {
+              img {
+                margin-right: 0.5rem;
+                height: 30px;
+                width: auto;
+              }
+            }
+          }
+          .table-head {
+            border-top: none;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+          }
+          .table-content-row {
+            border-top: none;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+          }
+        }
+      }
+      .balance-sheet-card-portfolio-home {
+        position: relative;
+        .balance-dropdown {
+          position: absolute;
+          top: 5.3rem;
+          left: 0;
+          border-radius: 0px 0px 12px 12px;
+          border: 0.1rem solid #e5e5e680;
+          background-color: white;
+          border-top: none;
+          width: 100%;
+          z-index: 1;
+          .balance-dropdown-top-fake {
+            width: 100%;
+            height: 1.6rem;
+            display: flex;
+            .balance-dropdown-top-fake-left {
+              width: 50%;
+              height: 100%;
+            }
+            .balance-dropdown-top-fake-right {
+              width: 50%;
+              height: 100%;
+            }
+          }
+          .balance-list-content-parent {
+            .balance-list-content {
+              padding-top: 0;
+              max-height: 35rem;
+              overflow-y: scroll;
+              width: 100%;
+            }
+          }
+
+          .balance-sheet-list {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.15rem 0rem;
+            border-top: 1px solid rgba(229, 229, 230, 0.5);
+            padding-left: 2rem;
+            padding-right: 2rem;
+
+            .balance-amt {
+              background-color: rgba(229, 229, 230, 0.5);
+              border-radius: 4px;
+              padding: 6px;
+            }
+          }
+          .balance-sheet-list-no-border {
+            border-top: none;
+          }
+        }
+        .balance-sheet-card {
+          border: 0.1rem solid #e5e5e680;
+          box-shadow: none;
+          border-radius: 12px;
+          margin-top: 1.6rem;
+          margin-bottom: 1.6rem;
+          user-select: none;
+          cursor: pointer;
+          transition-duration: 0ms;
+          padding: 0;
+          .balance-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            // margin-bottom: 1rem;
+            // border-radius: 12px;
+
+            img {
+              height: 1.25rem;
+              width: 1.25rem;
+              margin-bottom: 5px;
+            }
+            // background-color: green;
+            .balance-sheet-card-credit {
+              margin: 0;
+              padding: 2rem 2rem 1.6rem;
+              padding-right: 0;
+              border-radius: 12px;
+              width: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              .defiMenu {
+                height: 10px;
+                margin: 0;
+              }
+              &:hover {
+                .defiMenu {
+                  filter: opacity(1);
+                }
+                .balance-sheet-card-credit-title {
+                  color: #000000;
+                }
+                .balance-sheet-card-credit-amount {
+                  color: #000000;
+                }
+              }
+            }
+            .balance-sheet-card-credit-loading {
+              cursor: default;
+              &:hover {
+                .defiMenu {
+                  filter: opacity(0.5);
+                }
+                .balance-sheet-card-credit-title {
+                  color: #636467;
+                }
+                .balance-sheet-card-credit-amount {
+                  color: #636467;
+                }
+              }
+            }
+            .balance-sheet-card-debt {
+              .defiMenu {
+                height: 10px;
+                margin: 0;
+              }
+              margin: 0;
+              padding: 2rem 2rem 1.6rem;
+              padding-left: 0;
+              border-radius: 12px;
+              width: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              &:hover {
+                .defiMenu {
+                  filter: opacity(1);
+                }
+                .balance-sheet-card-credit-title {
+                  color: #000000;
+                }
+                .balance-sheet-card-credit-amount {
+                  color: #000000;
+                }
+              }
+            }
+            .balance-sheet-card-debt-loading {
+              cursor: default;
+              &:hover {
+                .defiMenu {
+                  filter: opacity(0.5);
+                }
+                .balance-sheet-card-credit-title {
+                  color: #636467;
+                }
+                .balance-sheet-card-credit-amount {
+                  color: #636467;
+                }
+              }
+            }
+            .balance-sheet-card-credit-title {
+              margin-right: 0.8rem;
+              color: #636467;
+            }
+            .balance-sheet-card-credit-amount {
+              margin-right: 0.8rem;
+              color: #636467;
+            }
+            .balance-sheet-card-credit-title-selected {
+              color: #000000;
+            }
+            .balance-sheet-card-credit-amount-selected {
+              color: #000000;
+            }
+          }
+        }
+      }
+      // width: 50%;
+      .section-table-toggle-container {
+        width: 100%;
+        padding: 1rem;
+        padding-bottom: 0rem;
+        .section-table-toggle {
+          background-color: #e5e5e680;
+          border-radius: 0.5rem;
+          padding: 0.4rem;
+          display: flex;
+          align-items: center;
+          .section-table-toggle-element {
+            font-size: 13px;
+            flex: 1;
+            padding: 0.5rem;
+            white-space: nowrap;
+            text-align: center;
+            color: #636467;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition-duration: 300ms;
+            &:hover {
+              background-color: rgba(225, 225, 225, 0.5);
+            }
+          }
+          .section-table-toggle-element-selected {
+            background-color: white;
+            color: #19191a;
+            cursor: default;
+            &:hover {
+              background-color: white;
+            }
+          }
+        }
+      }
       .transaction-table-section {
         .graph-header {
           h4 {
@@ -917,23 +1186,47 @@
     }
   }
   .profit-chart {
-    min-height: 32rem;
+    // min-height: 28rem;
+
     .bar-graph-section {
-      height: 32rem;
-      min-height: 32rem;
+      height: 38rem;
+      min-height: 38rem;
       margin-bottom: 0;
       width: 100%;
+      box-shadow: none;
       .portfolio-profit-and-loss {
-        height: 75%;
+        height: 90%;
       }
     }
     // .ChartAreaWrapper,
     .custom-label {
       padding-bottom: 0;
+      .seeMoreBtn {
+        margin-left: 1rem;
+        display: flex;
+        align-items: center;
+        color: #adadad;
+        font-size: 12px;
+        font-weight: 500;
+        .seeMoreBtnIcon {
+          height: 9px;
+          margin-left: 0.5rem;
+        }
+        &:hover {
+          color: black;
+          .seeMoreBtnIcon {
+            filter: brightness(0);
+          }
+        }
+      }
     }
     .chartArea {
       // min-height: 30rem;
       height: 100%;
+    }
+    .chartAreaOldBar {
+      height: 34rem;
+      min-height: 34rem;
     }
     .header {
       h4 {

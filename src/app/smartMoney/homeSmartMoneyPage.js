@@ -1,85 +1,83 @@
 import React from "react";
-import { Button, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 
 import { connect } from "react-redux";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
-  Method,
   API_LIMIT,
-  START_INDEX,
-  SORT_BY_AMOUNT,
   BASE_URL_S3,
+  Method,
+  SORT_BY_AMOUNT,
+  START_INDEX,
 } from "../../utils/Constant.js";
-import { searchTransactionApi, getFilters } from "../intelligence/Api.js";
-import { BaseReactComponent } from "../../utils/form/index.js";
-import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal.js";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken.js";
 import {
-  amountFormat,
   CurrencyType,
+  TruncateText,
+  amountFormat,
   mobileCheck,
   noExponents,
   numToCurrency,
-  TruncateText,
 } from "../../utils/ReusableFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken.js";
-import Loading from "../common/Loading.js";
-import FixAddModal from "../common/FixAddModal.js";
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import { BaseReactComponent } from "../../utils/form/index.js";
+
 import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
-  getUser,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api.js";
+import FixAddModal from "../common/FixAddModal.js";
+import Loading from "../common/Loading.js";
 import UpgradeModal from "../common/upgradeModal.js";
+import { getFilters, searchTransactionApi } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api.js";
+import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal.js";
 
 import {
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
   SmartMoneyNameTagHover,
-  SmartMoneyRealizedPNLHover,
   SmartMoneyNetWorthHover,
   SmartMoneyPageNext,
   SmartMoneyPagePrev,
   SmartMoneyPageSearch,
   SmartMoneyPageView,
-  SmartMoneyUnrealizedPNLHover,
+  SmartMoneyRealizedPNLHover,
+  SmartMoneyShare,
   SmartMoneyTimeSpent,
+  SmartMoneyUnrealizedPNLHover,
   SmartMoneyWalletClicked,
   resetUser,
-  SmartMoneyShare,
 } from "../../utils/AnalyticsFunctions.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi.js";
-import SmartMoneyHeader from "./smartMoneyHeader.js";
 import "./_smartMoney.scss";
-import SmartMoneyMobilePage from "./SmartMoneyMobileBlocks/smartMoneyMobilePage.js";
 
-import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
+import { toast } from "react-toastify";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
-  InfoCircleSmartMoneyIcon,
 } from "../../assets/images/icons/index.js";
-import MobileDevice from "../common/mobileDevice.js";
-import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
-import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
-import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
-import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
-import CheckboxCustomTable from "../common/customCheckboxTable.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import PageHeader from "../common/PageHeader.js";
-import { toast } from "react-toastify";
+import CheckboxCustomTable from "../common/customCheckboxTable.js";
+import AuthSmartMoneyModal from "./AuthSmartMoneyModal.js";
+import ExitSmartMoneyOverlay from "./ExitSmartMoneyOverlay.js";
+import AddSmartMoneyAddressesModal from "./addSmartMoneyAddressesModal.js";
 import HomeSmartMoneyHeader from "./homeSmartMoneyHeader.js";
+import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
+import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
+
+import "./_smartMoney.scss";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -175,7 +173,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   handleSignUpRedirection = () => {
     resetUser();
     setTimeout(function () {
-      this.props.history.push("/smart-money");
+      this.props.history.push("/leaderboard");
     }, 3000);
   };
   showSignInModal = () => {
@@ -619,7 +617,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   //   });
   // };
 
-  handleAddModal = () => {};
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
 
   CheckApiResponse = (value) => {
     this.setState({
@@ -745,7 +747,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   render() {
@@ -1184,93 +1186,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className=" history-table-header-col no-hover"
-      //       id="netflows"
-      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Unrealized
-      //       </span>
-      //       {/* <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       /> */}
-      //     </div>
-      //   ),
-      //   dataKey: "returns",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "returns") {
-      //       let tempReturns = rowData.returns ? rowData.returns : 0;
-      //       let tempCurrencyRate = this.state.currency?.rate
-      //         ? this.state.currency.rate
-      //         : 0;
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             tempReturns * tempCurrencyRate
-      //               ? amountFormat(
-      //                   Math.abs(tempReturns * tempCurrencyRate),
-      //                   "en-US",
-      //                   "USD"
-      //                 ) + "%"
-      //               : "0.00%"
-      //           }
-      //         >
-      //           <div className="gainLossContainer">
-      //             <div
-      //               className={`gainLoss `}
-      //               onMouseEnter={() => {
-      //                 SmartMoneyReturnHover({
-      //                   session_id: getCurrentUser().id,
-      //                   email_address: getCurrentUser().email,
-      //                   hover:
-      //                     tempReturns * tempCurrencyRate
-      //                       ? amountFormat(
-      //                           Math.abs(tempReturns * tempCurrencyRate),
-      //                           "en-US",
-      //                           "USD"
-      //                         ) + "%"
-      //                       : "0.00%",
-      //                 });
-      //                 this.updateTimer();
-      //               }}
-      //             >
-      //               {tempReturns !== 0 ? (
-      //                 <Image
-      //                   style={{
-      //                     height: "1.5rem",
-      //                     width: "1.5rem",
-      //                   }}
-      //                   src={
-      //                     tempReturns < 0
-      //                       ? ArrowDownLeftSmallIcon
-      //                       : ArrowUpRightSmallIcon
-      //                   }
-      //                   className="mr-2"
-      //                 />
-      //               ) : null}
-      //               <span className="inter-display-medium f-s-13 lh-16 grey-313">
-      //                 {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
-      //               </span>
-      //             </div>
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
     ];
 
     return (
@@ -1282,21 +1197,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             style={{ overflow: "visible" }}
           >
             <div className="portfolio-section">
-              {/* welcome card */}
-              {/* <SmartMoneyHeader
-                openAddAddressModal={this.showAddSmartMoneyAddresses}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                // history
-                history={this.props.history}
-                // add wallet address modal
-                handleAddModal={this.handleAddModal}
-                hideButton={true}
-                onSignInClick={this.showSignInModal}
-                blurTable={this.state.blurTable}
-                signOutFun={this.openSignOutModal}
-                showFaqModal={this.showFaqModal}
-                showHowItWorksModal={this.showHowItWorksModal}
-              /> */}
               <WelcomeCard
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
@@ -1424,9 +1324,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 }}
               >
                 <PageHeader
-                  title="Loch’s Smart Money Leaderboard"
+                  title="Loch’s Leaderboard"
                   subTitle="The lazy analyst’s guide to alpha"
-                  currentPage={"home-smart-money"}
+                  currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />
               </div>

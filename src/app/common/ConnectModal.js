@@ -1,40 +1,36 @@
 import React from "react";
+import { Col, Container, Image, Modal, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Row, Col, Container } from "react-bootstrap";
+import BinanceIcon from "../../assets/images/icons/Binance.svg";
+import BitBtnIcon from "../../assets/images/icons/bitbns.png";
+import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import {
-  Form,
-  FormElement,
   BaseReactComponent,
   CustomTextControl,
+  Form,
+  FormElement,
 } from "../../utils/form";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import BinanceIcon from "../../assets/images/icons/Binance.svg";
-import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
-import BitBtnIcon from "../../assets/images/icons/bitbns.png";
 
 import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
-import BybitIcon from "../../assets/images/icons/bybit.jpg";
 import GeminiIcon from "../../assets/images/icons/Gemini.jpg";
 import HuobiIcon from "../../assets/images/icons/Huobi.jpg";
-import OkxIcon from "../../assets/images/icons/okx.jpg";
+import BybitIcon from "../../assets/images/icons/bybit.jpg";
 import krakanIcon from "../../assets/images/icons/krakan.svg";
 import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
+import OkxIcon from "../../assets/images/icons/okx.jpg";
 
-import prevIcon from "../../assets/images/icons/prev-arrow.svg";
-import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/backIcon.svg";
 import Slider from "react-slick";
-import { addUpdateAccount, getUserAccount } from "../cost/Api";
-import { getExchangeBalance } from "../Portfolio/Api";
-import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
-import CustomButton from "../../utils/form/CustomButton";
+import backIcon from "../../assets/images/icons/backIcon.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
 import {
   HomeConnectExchangeSelected,
   Home_CE_ApiSyncAttmepted,
   Home_CE_OAuthAttempted,
-  LPConnectExchangeSelected,
   LPC_Go,
+  LPConnectExchangeSelected,
   LP_CE_ApiSyncAttmepted,
   LP_CE_OAuthAttempted,
   WalletConnectExchangeSelected,
@@ -42,14 +38,18 @@ import {
   Wallet_CE_OAuthAttempted,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import CustomButton from "../../utils/form/CustomButton";
+import { getExchangeBalance } from "../Portfolio/Api";
+import { addUpdateAccount, getUserAccount } from "../cost/Api";
+import { addExchangeTransaction } from "../home/Api";
 import {
-  getAllCoins,
-  detectCoin,
   createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
   getAllParentChains,
 } from "../onboarding/Api";
-import { addExchangeTransaction } from "../home/Api";
 import { addUserCredits } from "../profile/Api";
+import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);

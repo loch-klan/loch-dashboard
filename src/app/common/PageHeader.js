@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import { Button, Breadcrumb, Image, Form } from "react-bootstrap";
+import React from "react";
+import { Breadcrumb, Button, Form, Image } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { ExportIcon } from "../../assets/images/icons";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
-import { Link } from "react-router-dom";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
-import ConnectModal from "./ConnectModal";
-import { useHistory } from "react-router-dom";
 import {
   AssetValueExplainer,
   ConnectExPopup,
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { ExportIcon, SharePortfolioIconWhite } from "../../assets/images/icons";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import ConnectModal from "./ConnectModal";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -60,10 +59,10 @@ export default function PageHeader(props) {
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
     let linkName = e;
-    if (linkName === "transaction-history") {
+    if (linkName === "intelligence") {
+      return null;
+    } else if (linkName === "transaction-history") {
       linkName = "transactions";
-    } else if (linkName === "intelligence") {
-      linkName = "portfolio";
     } else if (linkName === "asset-value") {
       linkName = "historic performance";
     } else if (linkName === "top-accounts") {
@@ -143,32 +142,8 @@ export default function PageHeader(props) {
               >
                 {props.title}
               </h4>
-              {props.showNetflowExplainers ? (
-                <div
-                  style={{
-                    marginLeft: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <CustomOverlay
-                    showNetflowExplainers={props.showNetflowExplainers}
-                    position="bottom"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    className={"fix-width tool-tip-container-bottom-arrow"}
-                    isLeftText
-                  >
-                    <Image
-                      src={InfoIcon}
-                      className="infoIcon"
-                      style={{ cursor: "pointer", height: "1.6rem" }}
-                    />
-                  </CustomOverlay>
-                </div>
-              ) : props.showExplainers && props.explainerText ? (
+              {props.showNetflowExplainers ? null : props.showExplainers &&
+                props.explainerText ? (
                 <div
                   style={{
                     marginLeft: "1rem",
@@ -197,7 +172,23 @@ export default function PageHeader(props) {
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
                 {props.subTitle}{" "}
-                {props.hoverText ? (
+                {props.showNetflowExplainers ? (
+                  <CustomOverlay
+                    showNetflowExplainers={props.showNetflowExplainers}
+                    position="bottom"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    className={"fix-width tool-tip-container-bottom-arrow"}
+                    isLeftText
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="infoIcon"
+                      style={{ cursor: "pointer", height: "1.6rem" }}
+                    />
+                  </CustomOverlay>
+                ) : props.hoverText ? (
                   <CustomOverlay
                     position="bottom"
                     isIcon={false}
@@ -299,7 +290,7 @@ export default function PageHeader(props) {
                   </div>
                 </div>
               )}
-              {props.ShareBtn && (
+              {/* {props.ShareBtn && (
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -320,7 +311,7 @@ export default function PageHeader(props) {
                     </div>
                   </div>
                 </CustomOverlay>
-              )}
+              )} */}
               {props.btnText && (
                 <Button
                   className={`${

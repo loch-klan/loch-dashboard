@@ -1,17 +1,9 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import {
-  BaseReactComponent,
-  CustomTextControl,
-  Form,
-  FormElement,
-  FormSubmitButton,
-  FormValidator,
-} from "../../utils/form";
 import { deleteToken } from "../../utils/ManageToken";
-import { sendWhopCode, verifyEmailApi } from "./Api";
+import { BaseReactComponent } from "../../utils/form";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api";
+import { sendWhopCode } from "./Api";
 // import { loginApi } from './Api';
 
 class WhopLoader extends BaseReactComponent {

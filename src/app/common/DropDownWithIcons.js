@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Dropdown, DropdownButton, Image } from "react-bootstrap";
-import { lightenDarkenColor } from "../../utils/ReusableFunctions";
+import React, { useEffect, useState } from "react";
+import { Dropdown, Image } from "react-bootstrap";
 import { TriangleArrowDownIcon } from "../../assets/images/icons";
 import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
 export default function DropDown(props) {

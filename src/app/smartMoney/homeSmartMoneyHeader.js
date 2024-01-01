@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Image } from "react-bootstrap";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
+import { toast } from "react-toastify";
 import {
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
@@ -8,9 +8,9 @@ import {
   ShareProfileIcon,
 } from "../../assets/images/icons";
 import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { toast } from "react-toastify";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { getAllCurrencyRatesApi } from "../common/Api";
 
 export default function HomeSmartMoneyHeader(props) {
   const [localLochUser, setLocalLochUser] = React.useState(
@@ -55,7 +55,7 @@ export default function HomeSmartMoneyHeader(props) {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     copyTextToClipboard(shareLink);
   };
   const copyTextToClipboard = async (text) => {

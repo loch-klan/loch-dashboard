@@ -1,6 +1,5 @@
 import React from "react";
-import { Table, Row, Col } from "react-bootstrap";
-import { GraphHeader } from "./GraphHeader";
+import { Col, Row } from "react-bootstrap";
 export default function CommonTable(props) {
   const theader = props.data.theader.map((e, index) => {
     return (

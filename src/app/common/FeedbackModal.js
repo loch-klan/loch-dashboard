@@ -1,18 +1,15 @@
 import React from "react";
+import { Button, Col, Image, Modal, Row } from "react-bootstrap";
+import { connect } from "react-redux";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import starIconActive from "../../assets/images/icons/star-active.svg";
+import starIcon from "../../assets/images/icons/star.svg";
 import {
   BaseReactComponent,
   CustomTextControl,
   Form,
   FormElement,
 } from "./../../utils/form";
-import { connect } from "react-redux";
-import { Modal, Image, Button, Col, Row } from "react-bootstrap";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import { FeedbackType } from "../../utils/Constant";
-import downBlack from "../../assets/images/icons/thumbs-down-black.svg";
-import upBlack from "../../assets/images/icons/thumbs-up-black.svg";
-import starIcon from "../../assets/images/icons/star.svg";
-import starIconActive from "../../assets/images/icons/star-active.svg";
 import { sendFeedbackApi } from "./Api";
 import DropDown from "./DropDown";
 

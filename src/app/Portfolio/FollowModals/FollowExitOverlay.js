@@ -1,74 +1,66 @@
+import moment from "moment";
 import React from "react";
-import {
-  BaseReactComponent,
-  Form,
-  FormElement,
-  FormValidator,
-} from "../../../utils/form";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Button } from "react-bootstrap";
-import ExitOverlayIcon from "../../../assets/images/icons/ExitOverlayWalletIcon.svg";
-import CloseIcon from "../../../assets/images/icons/dummyX.svg";
-import BackIcon from "../../../assets/images/icons/backIcon.svg";
-import CustomTextControl from ".././../../utils/form/CustomTextControl";
-import InfoIcon from "../../../assets/images/icons/info-icon.svg";
-import {
-  getAllCoins,
-  detectCoin,
-  getAllParentChains,
-} from "../../onboarding//Api";
-import CopyLink from "../../../assets/images/icons/CopyLink.svg";
-import LockIcon from "../../../assets/images/icons/lock-icon.svg";
-import CheckIcon from "../../../assets/images/icons/check-upgrade.svg";
-import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
-import { exportDataApi, fixWalletApi } from "../../common/Api.js";
-import { BASE_URL_S3 } from "../../../utils/Constant";
 import { toast } from "react-toastify";
 import ApiModalFrame from "../../../assets/images/apiModalFrame.svg";
+import CopyLink from "../../../assets/images/icons/CopyLink.svg";
+import EmailNotFoundCross from "../../../assets/images/icons/EmailNotFoundCross.svg";
+import ExitOverlayIcon from "../../../assets/images/icons/ExitOverlayWalletIcon.svg";
+import BackIcon from "../../../assets/images/icons/backIcon.svg";
+import CheckIcon from "../../../assets/images/icons/check-upgrade.svg";
+import CloseIcon from "../../../assets/images/icons/dummyX.svg";
+import FileIcon from "../../../assets/images/icons/file-text.svg";
+import InfoIcon from "../../../assets/images/icons/info-icon.svg";
+import LockIcon from "../../../assets/images/icons/lock-icon.svg";
 import nextIcon from "../../../assets/images/icons/next.svg";
 import next2Icon from "../../../assets/images/icons/next2.svg";
+import PlusIcon from "../../../assets/images/icons/plus-icon-grey.svg";
 import prevIcon from "../../../assets/images/icons/prev.svg";
 import prev2Icon from "../../../assets/images/icons/prev2.svg";
 import DeleteIcon from "../../../assets/images/icons/trashIcon.svg";
-import { getCurrentUser } from "../../../utils/ManageToken";
-import PlusIcon from "../../../assets/images/icons/plus-icon-grey.svg";
-import FileIcon from "../../../assets/images/icons/file-text.svg";
-import EmailNotFoundCross from "../../../assets/images/icons/EmailNotFoundCross.svg";
 import {
-  CreateWhalePodSave,
   ExportDataDownlaod,
-  LeaveEmailAdded,
+  ExportDateSelected,
+  FollowSignUpPopupEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
   MenuLetMeLeave,
-  WhalePodAddressDelete,
-  WhalePodAddTextbox,
-  WhalePodDeleted,
-  WhalePodUploadFile,
   PodName,
-  ExportDateSelected,
+  WhalePodAddTextbox,
+  WhalePodAddressDelete,
+  WhalePodUploadFile,
   resetUser,
-  signInUser,
-  FollowSignUpPopupEmailAdded,
+  signInUser
 } from "../../../utils/AnalyticsFunctions.js";
-import { DatePickerControl } from "../../../utils/form";
-import moment from "moment";
+import { BASE_URL_S3 } from "../../../utils/Constant";
+import { getCurrentUser } from "../../../utils/ManageToken";
 import {
   CurrencyType,
   loadingAnimation,
 } from "../../../utils/ReusableFunctions";
 import CustomChip from "../../../utils/commonComponent/CustomChip";
-
+import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
 import {
-  createCohort,
-  deleteCohort,
-  getPodStatus,
-  notificationSend,
-} from "../../cohort/Api";
+  BaseReactComponent,
+  DatePickerControl,
+  Form,
+  FormElement,
+  FormValidator,
+} from "../../../utils/form";
+import { exportDataApi, fixWalletApi } from "../../common/Api.js";
+import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../../onboarding//Api";
+import CustomTextControl from ".././../../utils/form/CustomTextControl";
+
 import Papa from "papaparse";
-import { updateUser } from "../../profile/Api";
 import UploadIcon from "../../../assets/images/icons/upgrade-upload.svg";
+import { notificationSend } from "../../cohort/Api";
+import { updateUser } from "../../profile/Api";
 
 class FollowExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -216,16 +208,7 @@ class FollowExitOverlay extends BaseReactComponent {
     );
   };
 
-  getPodStatusFunction = () => {
-    const data = new URLSearchParams();
-    data.append("cohort_id", this.state.podId);
-    getPodStatus(data, this);
-    setTimeout(() => {
-      if (!this.state.isIndexed && !this.state.emailAdded) {
-        this.getPodStatusFunction();
-      }
-    }, 2000);
-  };
+  getPodStatusFunction = () => {};
 
   handleDone = () => {
     this.props.apiResponse(true);
@@ -510,134 +493,9 @@ class FollowExitOverlay extends BaseReactComponent {
     });
   };
 
-  handleCohortSave = () => {
-    // console.log("tet")
-    if (this.state.addWalletList) {
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-      }
-      this.timeout = setTimeout(() => {
-        let arr = [];
-        let addressList = [];
-        let displayAddress = [];
-        let walletList = [];
-        let isChainDetected = [];
-        let total_address = 0;
-        for (let i = 0; i < this.state.addWalletList.length; i++) {
-          let curr = this.state.addWalletList[i];
-          // console.log(curr)
-          if (!arr.includes(curr.address?.trim()) && curr.address) {
-            walletList.push(curr);
-            arr.push(curr.address?.trim());
-            arr.push(curr.displayAddress?.trim());
-            addressList.push(
-              curr.displayAddress !== ""
-                ? curr.displayAddress?.trim()
-                : curr.address?.trim()
-            );
+  handleCohortSave = () => {};
 
-            isChainDetected.push(curr?.coinFound);
-            total_address = total_address + 1;
-          }
-        }
-        let chain_detechted =
-          isChainDetected.includes(undefined) || isChainDetected.includes(false)
-            ? false
-            : true;
-        // console.log("address list", chain_detechted, isChainDetected);
-        let addWallet = walletList;
-        if (addressList.length !== 0) {
-          addWallet?.map((w, i) => {
-            w.id = `wallet${i + 1}`;
-          });
-          // window.sessionStorage.setItem("CohortWallet", addWallet);
-
-          // this.state.onHide();
-          const data = new URLSearchParams();
-          data.append("name", this.state.cohort_name);
-          data.append("chain_detected", chain_detechted);
-          data.append("wallet_addresses", JSON.stringify(addressList));
-
-          if (this.props.isEdit && this.props.cohortId) {
-            data.append("cohort_id", this.props.cohortId);
-            // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
-          }
-          this.setState({
-            total_unique_address: total_address,
-          });
-          if (this.state.isChangeFile) {
-            data.append("cohort_id", this.state.podId);
-            this.setState({
-              isChangeFile: false,
-            });
-          }
-
-          createCohort(data, this);
-          // hide if upload click
-          if (!this.state.showWarningMsg) {
-            this.state.onHide();
-            this.state.changeList && this.state.changeList(walletList);
-          }
-          // console.log("address", walletList);
-
-          const address = walletList?.map((e) =>
-            e.displayAddress ? e.displayAddress : e.address
-          );
-
-          const unrecog_address = walletList
-            .filter((e) => !e.coinFound)
-            .map((e) => e.address);
-          // console.log("Unreq address", unrecog_address);
-
-          const blockchainDetected = [];
-          walletList
-            .filter((e) => e.coinFound)
-            .map((obj) => {
-              let coinName = obj.coins
-                .filter((e) => e.chain_detected)
-                .map((name) => name.coinName);
-              let address = obj.address;
-              blockchainDetected.push({ address: address, names: coinName });
-            });
-
-          CreateWhalePodSave({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            pod_name: this.state.cohort_name,
-            addresses: address,
-            unrecognized_addresses: unrecog_address,
-            chains_detected_against_them: blockchainDetected,
-          });
-          if (this.props.updateTimer) {
-            this.props.updateTimer();
-          }
-        }
-      }, 100);
-    }
-  };
-
-  handleDeleteCohort = () => {
-    //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
-
-    // console.log("name", this.state.cohort_name);
-    // console.log("address", this.state.addWalletList?.map(e => e.displayAddress ? e.displayAddress : e.address))
-    WhalePodDeleted({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      pod_name: this.state.cohort_name,
-      addresses: this.state.addWalletList?.map((e) =>
-        e.displayAddress ? e.displayAddress : e.address
-      ),
-    });
-    if (this.props.updateTimer) {
-      this.props.updateTimer();
-    }
-    const data = new URLSearchParams();
-    data.append("cohort_id", this.props.cohortId);
-
-    deleteCohort(data, this);
-    this.state.onHide();
-  };
+  handleDeleteCohort = () => {};
   copyLink = () => {
     navigator.clipboard.writeText(this.state.sharelink);
     toast.success("Share link has been copied");

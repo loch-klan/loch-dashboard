@@ -1,41 +1,31 @@
 import { Route } from "react-router-dom";
+import Portfolio from "./app/Portfolio/Portfolio";
 import Login from "./app/common/Login";
 import { Home } from "./app/home";
 import { Profile } from "./app/profile";
-import Sandbox from "./utils/form/Sandbox";
 import PrivateRoute from "./utils/PrivateRoute";
-import Portfolio from "./app/Portfolio/Portfolio";
-import Intelligence from "./app/intelligence/Intelligence";
-import Wallet from "./app/wallet/Wallet";
-import Cost from "./app/cost/Cost";
-import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
+import Sandbox from "./utils/form/Sandbox";
+
 import VerifyEmail from "./app/common/VerifyEmail";
-import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
-import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty";
-import InsightsPage from "./app/intelligence/InsightsPage";
-import AssetValueGraph from "./app/intelligence/AssetValueGraph";
-import Cohort from "./app/cohort/Cohort";
-import CohortPage from "./app/cohort/cohort-individual";
-import CohortSharePage from "./app/cohort/cohortShare";
 import Defi from "./app/defi/Defi";
-import LPWhale from "./app/home/landing-page-whale";
-import LPIntelligence from "./app/home/landing-page-intelligence";
-import LPPeace from "./app/home/landing-page-peace";
+import AssetValueGraph from "./app/intelligence/AssetValueGraph";
+import InsightsPage from "./app/intelligence/InsightsPage";
+import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
+import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
+
 import WhopLoader from "./app/common/WhopAccount";
-import TopAccount from "./app/discover/topAccount";
-import twitterInfluencer from "./app/discover/twitterInfluencer";
-import WatchList from "./app/watchlist/watchlistPage";
 import appFeature from "./app/common/appFeature";
-import topHome from "./app/topAccount/top-home";
-import topIntelligence from "./app/topAccount/top-intelligence";
-import topTransactionHistory from "./app/topAccount/top-transaction-history";
-import topAssetValue from "./app/topAccount/top-asset-value";
-import topInsights from "./app/topAccount/top-insights";
-import topCosts from "./app/topAccount/top-costs";
-import topDefi from "./app/topAccount/top-defi";
-import topAccountShare from "./app/common/topAccountShare";
-import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
+import WatchList from "./app/watchlist/watchlistPage";
+
+import AssetsUnrealizedProfitAndLoss from "./app/AssetsUnrealizedProfitAndLoss/AssetsUnrealizedProfitAndLoss";
+import CounterPartyVolume from "./app/CounterPartyVolumePage/CounterPartyVolume";
+import GasFees from "./app/GasFeesPage/GasFees";
+import PriceGauge from "./app/PriceGauge/PriceGauge";
+import RealizedProfitAndLoss from "./app/RealizedProfitAndLoss/RealizedProfitAndLoss";
+import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
+import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
+
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 const routes = [
   {
@@ -44,12 +34,7 @@ const routes = [
     type: Route,
     component: Login,
   },
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   type: Route,
-  //   component: Home,
-  // },
+
   {
     path: "/welcome",
     name: "Home",
@@ -68,23 +53,42 @@ const routes = [
     type: PrivateRoute,
     component: Portfolio,
   },
+
   {
-    path: "/intelligence",
-    name: "Intelligence",
+    path: "/price-gauge",
+    name: "PriceGauge",
     type: PrivateRoute,
-    component: Intelligence,
+    component: PriceGauge,
+  },
+  {
+    path: "/realized-profit-and-loss",
+    name: "Realized Profit And Loss",
+    type: PrivateRoute,
+    component: RealizedProfitAndLoss,
+  },
+  {
+    path: "/gas-fees",
+    name: "Gas Fees",
+    type: PrivateRoute,
+    component: GasFees,
+  },
+  {
+    path: "/counterparty-volume",
+    name: "Counterparty Volume",
+    type: PrivateRoute,
+    component: CounterPartyVolume,
+  },
+  {
+    path: "/assets",
+    name: "Assets",
+    type: PrivateRoute,
+    component: AssetsUnrealizedProfitAndLoss,
   },
   {
     path: "/intelligence/transaction-history",
     name: "Transaction History",
     type: PrivateRoute,
     component: TransactionHistoryPage,
-  },
-  {
-    path: "/intelligence/volume-traded-by-counterparty",
-    name: "Volume Traded By Counterparty",
-    type: PrivateRoute,
-    component: VolumeTradedByCounterparty,
   },
   {
     path: "/intelligence/asset-value",
@@ -98,109 +102,33 @@ const routes = [
     type: PrivateRoute,
     component: InsightsPage,
   },
+
   {
-    path: "/intelligence/costs",
-    name: "Costs",
-    type: PrivateRoute,
-    component: Cost,
-  },
-  {
-    path: "/wallets",
-    name: "Wallet",
-    type: PrivateRoute,
-    component: Wallet,
-  },
-  {
-    path: "/whale-watch",
-    name: "Whale Watch",
-    type: PrivateRoute,
-    component: Cohort,
-  },
-  {
-    path: "/whale-watch/:cohortName",
-    name: "Whale Watching Page",
-    type: PrivateRoute,
-    component: CohortPage,
-  },
-  {
-    path: "/whale-watch/:userId/:podName",
-    name: "Whale Watching Share",
-    type: PrivateRoute,
-    component: CohortSharePage,
-  },
-  {
-    path: "/smart-money",
-    name: "Smart Money",
+    path: "/leaderboard",
+    name: "Leaderboard",
     type: PrivateRoute,
     component: SmartMoneyPage,
+  },
+  {
+    path: "/home-leaderboard",
+    name: "Home Leaderboard",
+    type: PrivateRoute,
+    component: HomeSmartMoneyPage,
   },
   {
     path: "/home-smart-money",
     name: "Home Smart Money",
     type: PrivateRoute,
-    component: HomeSmartMoneyPage,
-  },
-  {
-    path: "/top-accounts",
-    name: "Top accounts",
-    type: PrivateRoute,
-    component: TopAccount,
+    component: homeSmartMoneyPage,
   },
 
-  // {
-  //   path: "/top-accounts/home",
-  //   name: "Top Account Portfolio",
-  //   type: PrivateRoute,
-  //   component: topHome,
-  // },
-  // {
-  //   path: "/top-accounts/intelligence",
-  //   name: "Top Account Intelligence",
-  //   type: PrivateRoute,
-  //   component: topIntelligence,
-  // },
-  // {
-  //   path: "/top-accounts/intelligence/transaction-history",
-  //   name: "Top Account Transaction History",
-  //   type: PrivateRoute,
-  //   component: topTransactionHistory,
-  // },
-  // {
-  //   path: "/top-accounts/intelligence/asset-value",
-  //   name: "Top Account Asset Value",
-  //   type: PrivateRoute,
-  //   component: topAssetValue,
-  // },
-  // {
-  //   path: "/top-accounts/intelligence/insights",
-  //   name: "Insights",
-  //   type: PrivateRoute,
-  //   component: topInsights,
-  // },
-  // {
-  //   path: "/top-accounts/intelligence/costs",
-  //   name: "Top Account Costs",
-  //   type: PrivateRoute,
-  //   component: topCosts,
-  // },
-  // {
-  //   path: "/top-accounts/decentralized-finance",
-  //   name: "Decentralized Finance",
-  //   type: PrivateRoute,
-  //   component: topDefi,
-  // },
   {
     path: "/yield-opportunities",
     name: "Yield Opportunities",
     type: PrivateRoute,
     component: YieldOpportunitiesPage,
   },
-  {
-    path: "/twitter-influencers",
-    name: "Twitter Influencers",
-    type: PrivateRoute,
-    component: twitterInfluencer,
-  },
+
   {
     path: "/watchlist",
     name: "Watchlist",
@@ -221,7 +149,7 @@ const routes = [
   },
   {
     path: "/verify-email-smart-money",
-    name: "Verify Smart Money Email",
+    name: "Verify Leaderboard Email",
     type: Route,
     component: VerifySmartMoneyEmailLink,
   },
@@ -237,30 +165,7 @@ const routes = [
     type: Route,
     component: WhopLoader,
   },
-  {
-    path: "/top-account/:id",
-    name: "Top accounts share",
-    type: Route,
-    component: topAccountShare,
-  },
-  {
-    path: "/landing-page-whale",
-    name: "Landing Page 1",
-    type: Route,
-    component: LPWhale,
-  },
-  {
-    path: "/landing-page-peace-of-mind",
-    name: "Landing Page 2",
-    type: Route,
-    component: LPPeace,
-  },
-  {
-    path: "/landing-page-intelligence",
-    name: "Landing Page 3",
-    type: Route,
-    component: LPIntelligence,
-  },
+
   {
     path: "/sandbox",
     name: "Sandox",

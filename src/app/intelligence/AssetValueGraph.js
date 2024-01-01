@@ -86,6 +86,15 @@ class AssetValueGraph extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -299,6 +308,8 @@ class AssetValueGraph extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -331,7 +342,6 @@ class AssetValueGraph extends Component {
             <PageHeader
               title={"Historic performance"}
               subTitle={"Analyze your portfolio value over time"}
-              showpath={true}
               currentPage={"asset-value"}
               history={this.props.history}
               // btnText={"Add wallet"}
