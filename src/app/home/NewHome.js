@@ -7,16 +7,19 @@ import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
 import logo from "../../assets/images/logo-white.svg";
 import TransactionTable from "../intelligence/TransactionTable";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import {
   CurrencyType,
   TruncateText,
   amountFormat,
+  mobileCheck,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { BASE_URL_S3 } from "../../utils/Constant";
+import { API_LIMIT, BASE_URL_S3, SORT_BY_AMOUNT, START_INDEX } from "../../utils/Constant";
 import {
   ActiveSmartMoneySidebarIcon,
   ArrowDownLeftSmallIcon,
@@ -27,72 +30,282 @@ import CaretUpGreen from "./../../assets/images/icons/caret-top-green.svg";
 import CaretDownRed from "./../../assets/images/icons/carret-bottom-red.svg";
 import { TrendingFireIcon } from "../../assets/images/icons";
 import { Image } from "react-bootstrap";
-export default class NewHome extends BaseReactComponent {
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import AuthSmartMoneyModal from "../smartMoney/AuthSmartMoneyModal";
+import { connect } from "react-redux";
+
+import {
+  updateAddToWatchList,
+} from "../watchlist/redux/WatchListApi";
+import { getAllCurrencyRatesApi, updateWalletListFlag } from "../common/Api";
+import {getSmartMoney} from './../smartMoney/Api'
+class NewHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       showTrending: false,
+      signInModalAnimation: true,
+      signInModal: false,
+      showClickSignInText: false,
+      condition: [],
+      sort: [{ key: SORT_BY_AMOUNT, value: false }],
+      pageLimit:1,
+      accountList: [],
+      totalPage: 0,
+      tableLoading: false,
+      goToBottom: false,
     };
   }
 
+  showSignInModal = () => {
+    this.setState({
+      signInModal: true,
+    });
+  };
+  hideSignInSignUpModal = () => {
+    this.setState({
+      signInModalAnimation: true,
+      signInModal: false,
+    });
+  };
+  openSignUpModal = () => {
+    this.setState({
+      signInModalAnimation: false,
+      signInModal: false,
+    });
+  };
+
   toggleShowTrendingAddress = () => {
     this.setState({ showTrending: !this.state.showTrending });
+  };
+
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
+      "smartMoneyPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      // this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
+  };
+
+  openSignInOnclickModal = () => {
+    this.setState(
+      {
+        showClickSignInText: true,
+      },
+      () => {
+        this.showSignInModal();
+      }
+    );
+  };
+
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
+
+  handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    let tempWatchListata = new URLSearchParams();
+    if (addItem) {
+      this.updateTimer();
+      tempWatchListata.append("wallet_address", walletAddress);
+      tempWatchListata.append("analysed", false);
+      tempWatchListata.append("remarks", "");
+      tempWatchListata.append("name_tag", tagName);
+      this.props.updateAddToWatchList(tempWatchListata);
+      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+        "smartMoneyMobilePopupModal"
+      );
+      if (!tempIsModalPopuRemoved) {
+        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        this.setState({
+          mobilePopupModal: true,
+        });
+      }
+    } else {
+      // this.updateTimer();
+      tempWatchListata.append("address", walletAddress);
+      // this.props.removeFromWatchList(tempWatchListata);
+    }
+  };
+
+  createEmptyUser = () => {
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify([]));
+    // this.props.createAnonymousUserSmartMoneyApi(data);
+  };
+
+  callApi = (page = START_INDEX) => {
+    this.setState({ tableLoading: true });
+    setTimeout(() => {
+      let data = new URLSearchParams();
+      data.append("start", page * this.state.pageLimit);
+      data.append("conditions", JSON.stringify(this.state.condition));
+      data.append("limit", this.state.pageLimit);
+      data.append("sorts", JSON.stringify(this.state.sort));
+      this.props.getSmartMoney(data, this, this.state.pageLimit);
+    }, 300);
+  };
+
+  componentDidMount() {
+    getAllCurrencyRatesApi();
+    let token = window.sessionStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+
+    if (token && lochUser && lochUser.email) {
+      this.setState({
+        blurTable: false,
+      });
+    } else {
+      this.setState({
+        blurTable: true,
+      });
+      this.createEmptyUser();
+    }
+
+    if (API_LIMIT) {
+      if (mobileCheck()) {
+        this.setState({
+          pageLimit: 5,
+        });
+      } else {
+        this.setState({
+          pageLimit: API_LIMIT,
+        });
+      }
+    }
+    // window.sessionStorage.setItem("previewAddress", "");
+    this.props.history.replace({
+      search: `?p=${this.state.currentPage|| START_INDEX}`,
+    });
+    this.callApi(this.state.currentPage || START_INDEX);
+
+
+    // this.startPageView();
+    this.updateTimer(true);
+  }
+
+  changePageLimit = (dropdownResponse) => {
+    const tempHolder = dropdownResponse.split(" ");
+    if (tempHolder && tempHolder.length > 1) {
+      const params = new URLSearchParams(this.props.location.search);
+      params.set("p", 0);
+      if (this.props.history) {
+        this.props.history.push(
+          `${this.props.history.location.pathname}?${params}`
+        );
+      }
+      // SmartMoneyChangeLimit({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   wallet: tempHolder[1],
+      // });
+      this.setState({
+        pageLimit: tempHolder[1],
+      });
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.signInModal !== this.state.signInModal
+    ) {
+      if (!this.state.signInModal) {
+        this.setState({
+          showClickSignInText: false,
+        });
+      }
+    }
+    if (prevState.blurTable !== this.state.blurTable) {
+      this.callApi(this.state.currentPage || START_INDEX);
+    }
+    if (!this.props.commonState.smart_money) {
+      let token = window.sessionStorage.getItem("lochToken");
+      this.props.updateWalletListFlag("smart_money", true);
+      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (token && lochUser && lochUser.email) {
+        this.setState({
+          blurTable: false,
+        });
+      } else {
+        this.setState({
+          blurTable: true,
+        });
+      }
+    }
+    if (
+      prevState.tableLoading !== this.state.tableLoading &&
+      this.state.goToBottom &&
+      !this.state.tableLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
+    // chain detection
+    // if (prevState?.walletInput !== this.state.walletInput) {
+    // }
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
+      this.setState({
+        currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      });
+    }
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort ||
+      prevState.pageLimit !== this.state.pageLimit
+    ) {
+      this.callApi(page);
+      this.setState({
+        currentPage: page,
+      });
+      if (prevPage !== page) {
+        if (prevPage - 1 === page) {
+          // SmartMoneyPagePrev({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          //   page: page + 1,
+          //   isMobile: mobileCheck(),
+          // });
+          // this.updateTimer();
+        } else if (prevPage + 1 === page) {
+          // SmartMoneyPageNext({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          //   page: page + 1,
+          //   isMobile: mobileCheck(),
+          // });
+          // this.updateTimer();
+        } else {
+          // SmartMoneyPageSearch({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          //   page: page + 1,
+          //   isMobile: mobileCheck(),
+          // });
+          // this.updateTimer();
+        }
+      }
+    }
   }
 
   render() {
-    const tableData = [
-      {
-        address: "0xE806f01f1aB602C26Cc28e75164893359C04b38A",
-        following: false,
-        name_tag: "IMX pre-pump buyer",
-        net_flow: -24240567,
-        net_worth: 44342237.5,
-        profits: 20100939,
-        rank: 1,
-        returns: 82.9,
-      },
-      {
-        address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
-        following: false,
-        name_tag: "@smartestmoney_",
-        net_flow: 15124978.820000052,
-        net_worth: 37977620.58846074,
-        profits: 5733036.8,
-        rank: 2,
-        returns: 1.34,
-      },
-      {
-        address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-        following: false,
-        name_tag: "@Titanium_32",
-        net_flow: 25259696.169999957,
-        net_worth: 36555007.19177624,
-        profits: -35319087.7,
-        rank: 3,
-        returns: -2.44,
-      },
-      {
-        address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-        following: false,
-        name_tag: "",
-        net_flow: -1673050000,
-        net_worth: 32134545.409,
-        profits: 3207340,
-        rank: 4,
-        returns: 11.06,
-      },
-      {
-        address: "0x4EE79E19c9c398e364d135F01B25DcCC0473047c",
-        following: false,
-        name_tag: "@0xvladilena",
-        net_flow: 5854883.2700000405,
-        net_worth: 18728616.905514523,
-        profits: 4372480.7,
-        rank: 5,
-        returns: 0.81,
-      },
-    ];
+    const tableData = this.state.accountList;
     const trendingAddresses = [
       {
         address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
@@ -602,7 +815,7 @@ export default class NewHome extends BaseReactComponent {
           },
         ],
       },
-    ]
+    ];
     const columnList = [
       {
         labelName: (
@@ -623,7 +836,7 @@ export default class NewHome extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.08,
+        coumnWidth: 0.09,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -665,44 +878,44 @@ export default class NewHome extends BaseReactComponent {
             /> */}
           </div>
         ),
-        dataKey: "address",
+        dataKey: "account",
 
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "address") {
+          if (dataKey === "account") {
             return (
               <span
                 onClick={() => {
-                  // if (!this.state.blurTable) {
-                  //   let lochUser = getCurrentUser().id;
-                  //   let slink = rowData.account;
-                  //   let shareLink =
-                  //     BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                  //   if (lochUser) {
-                  //     const alreadyPassed =
-                  //       window.sessionStorage.getItem("PassedRefrenceId");
-                  //     if (alreadyPassed) {
-                  //       shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                  //     } else {
-                  //       shareLink = shareLink + "&refrenceId=" + lochUser;
-                  //     }
-                  //   }
-                  //   // SmartMoneyWalletClicked({
-                  //   //   session_id: getCurrentUser().id,
-                  //   //   email_address: getCurrentUser().email,
-                  //   //   wallet: slink,
-                  //   //   isMobile: false,
-                  //   // });
-                  //   // window.open(shareLink, "_blank", "noreferrer");
-                  // }
-                  // else {
-                  //   this.openSignInOnclickModal();
-                  // }
+                  if (!this.state.blurTable) {
+                    let lochUser = getCurrentUser().id;
+
+                    let slink = rowData.account;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    if (lochUser) {
+                      const alreadyPassed =
+                        window.sessionStorage.getItem("PassedRefrenceId");
+                      if (alreadyPassed) {
+                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                      } else {
+                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      }
+                    }
+                    // SmartMoneyWalletClicked({
+                    //   session_id: getCurrentUser().id,
+                    //   email_address: getCurrentUser().email,
+                    //   wallet: slink,
+                    //   isMobile: false,
+                    // });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  } else {
+                    this.openSignInOnclickModal();
+                  }
                 }}
                 className="top-account-address"
               >
-                {TruncateText(rowData.address)}
+                {TruncateText(rowData.account)}
               </span>
             );
           }
@@ -726,31 +939,31 @@ export default class NewHome extends BaseReactComponent {
             /> */}
           </div>
         ),
-        dataKey: "name_tag",
+        dataKey: "tagName",
 
         coumnWidth: 0.222,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "name_tag") {
-            return rowData.name_tag ? (
+          if (dataKey === "tagName") {
+            return rowData.tagName ? (
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.name_tag}
+                text={rowData.tagName}
               >
                 <span
-                // onMouseEnter={() => {
-                //   SmartMoneyNameTagHover({
-                //     session_id: getCurrentUser().id,
-                //     email_address: getCurrentUser().email,
-                //     hover: rowData.tagName,
-                //   });
-                //   this.updateTimer();
-                // }}
+                  // onMouseEnter={() => {
+                  //   SmartMoneyNameTagHover({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //     hover: rowData.tagName,
+                  //   });
+                  //   this.updateTimer();
+                  // }}
                 >
-                  {rowData.name_tag}
+                  {rowData.tagName}
                 </span>
               </CustomOverlay>
             ) : (
@@ -777,13 +990,13 @@ export default class NewHome extends BaseReactComponent {
             /> */}
           </div>
         ),
-        dataKey: "net_worth",
+        dataKey: "networth",
 
         coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "net_worth") {
-            let tempNetWorth = rowData.net_worth ? rowData.net_worth : 0;
+          if (dataKey === "networth") {
+            let tempNetWorth = rowData.networth ? rowData.networth : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -811,7 +1024,7 @@ export default class NewHome extends BaseReactComponent {
                   // }}
                   className="cost-common-container"
                 >
-                  <span className="new-hompeage__body__badge new-hompeage__body__badge--gray">
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {CurrencyType(false) +
                       numToCurrency(tempNetWorth * tempCurrencyRate)}
                   </span>
@@ -825,17 +1038,17 @@ export default class NewHome extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net Flows
+              Realized PnL (1yr)
             </span>
           </div>
         ),
-        dataKey: "net_flow",
+        dataKey: "netflows",
 
         coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "net_flow") {
-            let tempNetflows = rowData.net_flow ? rowData.net_flow : 0;
+          if (dataKey === "netflows") {
+            let tempNetflows = rowData.netflows ? rowData.netflows : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -876,107 +1089,21 @@ export default class NewHome extends BaseReactComponent {
                     //   this.updateTimer();
                     // }}
                   >
-                    <span
-                      className={`new-hompeage__body__badge ${
-                        tempNetflows == 0
-                          ? "new-hompeage__body__badge--gray"
-                          : tempNetflows > 0
-                          ? "new-hompeage__body__badge--success"
-                          : "new-hompeage__body__badge--danger"
-                      }`}
-                    >
-                      {tempNetflows !== 0 ? (
-                        <img
-                          style={{
-                            width:'7px'
-                          }}
-                          src={tempNetflows < 0 ? CaretDownRed : CaretUpGreen}
-                          className="mr-2"
-                        />
-                      ) : null}
-                      {CurrencyType(false) +
-                        numToCurrency(tempNetflows * tempCurrencyRate)}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Profit
-            </span>
-          </div>
-        ),
-        dataKey: "profits",
-
-        coumnWidth: 0.172,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "profits") {
-            let tempNetflows = rowData.profits ? rowData.profits : 0;
-            let tempCurrencyRate = this.state.currency?.rate
-              ? this.state.currency.rate
-              : 0;
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  tempNetflows * tempCurrencyRate
-                    ? CurrencyType(false) +
-                      amountFormat(
-                        Math.abs(tempNetflows * tempCurrencyRate),
-                        "en-US",
-                        "USD"
-                      )
-                    : CurrencyType(false) + "0.00"
-                }
-              >
-                <div className="gainLossContainer">
-                  <div
-                    className={`gainLoss `}
-                    // onMouseEnter={() => {
-                    //   SmartMoneyRealizedPNLHover({
-                    //     session_id: getCurrentUser().id,
-                    //     email_address: getCurrentUser().email,
-                    //     hover:
-                    //       tempNetflows * tempCurrencyRate
-                    //         ? CurrencyType(false) +
-                    //           amountFormat(
-                    //             Math.abs(tempNetflows * tempCurrencyRate),
-                    //             "en-US",
-                    //             "USD"
-                    //           )
-                    //         : CurrencyType(false) + "0.00",
-                    //   });
-                    //   this.updateTimer();
-                    // }}
-                  >
-                    <span
-                      className={`new-hompeage__body__badge ${
-                        tempNetflows == 0
-                          ? "new-hompeage__body__badge--gray"
-                          : tempNetflows > 0
-                          ? "new-hompeage__body__badge--success"
-                          : "new-hompeage__body__badge--danger"
-                      }`}
-                    >
-                      {tempNetflows !== 0 ? (
-                        <img
-                          style={{
-                            width:'7px'
-                          }}
-                          src={tempNetflows < 0 ? CaretDownRed : CaretUpGreen}
-                          className="mr-2"
-                        />
-                      ) : null}
+                    {tempNetflows !== 0 ? (
+                      <Image
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempNetflows < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                        className="mr-2"
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
                         numToCurrency(tempNetflows * tempCurrencyRate)}
                     </span>
@@ -995,7 +1122,7 @@ export default class NewHome extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Returns
+              Unrealized PnL
             </span>
             {/* <Image
               src={sortByIcon}
@@ -1005,13 +1132,13 @@ export default class NewHome extends BaseReactComponent {
             /> */}
           </div>
         ),
-        dataKey: "returns",
+        dataKey: "profits",
 
         coumnWidth: 0.172,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "returns") {
-            let tempProfits = rowData.returns ? rowData.returns : 0;
+          if (dataKey === "profits") {
+            let tempProfits = rowData.profits ? rowData.profits : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -1052,26 +1179,21 @@ export default class NewHome extends BaseReactComponent {
                     //   this.updateTimer();
                     // }}
                   >
-                    <span
-                      className={`new-hompeage__body__badge ${
-                        tempProfits == 0
-                          ? "new-hompeage__body__badge--gray"
-                          : tempProfits > 0
-                          ? "new-hompeage__body__badge--success"
-                          : "new-hompeage__body__badge--danger"
-                      }`}
-                    >
-                      <span
-                      style={{
-                        color: tempProfits == 0
-                        ? ""
-                        : tempProfits > 0
-                        ? "#5ADDA6"
-                        : "#FF060A"
-                      }}
-                      >
-                        {tempProfits == 0 ?null:tempProfits < 0 ? '-' : '+'}
-                      </span>
+                    {tempProfits !== 0 ? (
+                      <Image
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          tempProfits < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                        className="mr-2"
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {CurrencyType(false) +
                         numToCurrency(tempProfits * tempCurrencyRate)}
                     </span>
@@ -1082,51 +1204,51 @@ export default class NewHome extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className=" history-table-header-col no-hover"
-      //       id="netflows"
-      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Follow
-      //       </span>
-      //       {/* <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       /> */}
-      //     </div>
-      //   ),
-      //   dataKey: "following",
+      {
+        labelName: (
+          <div
+            className=" history-table-header-col no-hover"
+            id="netflows"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Follow
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "following",
 
-      //   coumnWidth: 0.125,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "following") {
-      //       const handleOnClick = (addItem) => {
-      //         if (!this.state.blurTable) {
-      //           this.handleFollowUnfollow(
-      //             rowData.account,
-      //             addItem,
-      //             rowData.tagName
-      //           );
-      //         } else {
-      //           this.openSignInOnclickModal();
-      //         }
-      //       };
-      //       return (
-      //         <CheckboxCustomTable
-      //           handleOnClick={handleOnClick}
-      //           isChecked={rowData.following}
-      //           dontSelectIt={this.state.blurTable}
-      //         />
-      //       );
-      //     }
-      //   },
-      // },
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "following") {
+            const handleOnClick = (addItem) => {
+              if (!this.state.blurTable) {
+                this.handleFollowUnfollow(
+                  rowData.account,
+                  addItem,
+                  rowData.tagName
+                );
+              } else {
+                this.openSignInOnclickModal();
+              }
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={rowData.following}
+                dontSelectIt={this.state.blurTable}
+              />
+            );
+          }
+        },
+      },
       // {
       //   labelName: (
       //     <div
@@ -1215,6 +1337,7 @@ export default class NewHome extends BaseReactComponent {
       //   },
       // },
     ];
+
     return (
       <div className="new-homepage">
         <div className="new-homepage__header">
@@ -1230,11 +1353,18 @@ export default class NewHome extends BaseReactComponent {
                   Connect Exchange
                 </button>
               </div>
-              <button className="new-homepage-btn">
+              <button
+                className="new-homepage-btn new-homepage-btn--white"
+                style={{ padding: "8px 12px" }}
+              >
                 <div
                   style={{
-                    padding: "3px",
                     borderRadius: "6px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "20px",
+                    height: "20px",
                     border: "1px solid #E5E5E6",
                   }}
                 >
@@ -1258,45 +1388,65 @@ export default class NewHome extends BaseReactComponent {
                   Don't worry. All your information remains private and
                   anonymous.
                 </p>
-                <img src={questionRoundedIcons} alt="" />
+                <CustomOverlay
+                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                  position="top"
+                  isIcon={true}
+                  IconImage={LockIcon}
+                  isInfo={true}
+                  className={"fix-width"}
+                >
+                  <img
+                    src={questionRoundedIcons}
+                    alt=""
+                    style={{ cursor: "pointer" }}
+                  />
+                </CustomOverlay>
               </div>
             </div>
           </div>
         </div>
         <div className="new-homepage__body">
           <div className="new-homepage__body-container">
-            <div className="new-homepage__body-search" style={{fontSize:'20px', display:'flex', justifyContent:'center', alignItems:'center', cursor:'pointer'}} onClick={this.toggleShowTrendingAddress}>
+            <div
+              className="new-homepage__body-search"
+              style={{
+                fontSize: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onClick={this.toggleShowTrendingAddress}
+            >
               Click me
             </div>
-            {
-              this.state.showTrending
-              ?
+            {this.state.showTrending ? (
               <div className="new-homepage__body-trending-address">
-              <div
-                className="d-flex"
-                style={{ alignItems: "center", gap: "8px" }}
-              >
-                <img src={TrendingFireIcon} alt="" />
                 <div
-                  style={{
-                    color: "19191A",
-                    fontSize: "16px",
-                  }}
+                  className="d-flex"
+                  style={{ alignItems: "center", gap: "8px" }}
                 >
-                  Trending addresses
+                  <img src={TrendingFireIcon} alt="" />
+                  <div
+                    style={{
+                      color: "19191A",
+                      fontSize: "16px",
+                    }}
+                  >
+                    Trending addresses
+                  </div>
+                  <div
+                    style={{
+                      color: "#B0B1B3",
+                      fontSize: "13px",
+                    }}
+                  >
+                    Most-visited addresses in the last 24 hours
+                  </div>
                 </div>
-                <div
-                  style={{
-                    color: "#B0B1B3",
-                    fontSize: "13px",
-                  }}
-                >
-                  Most-visited addresses in the last 24 hours
-                </div>
-              </div>
-              <div className="new-homepage__body-trending-address__address-wrapper">
-                {
-                  trendingAddresses.map((item, index) => (
+                <div className="new-homepage__body-trending-address__address-wrapper">
+                  {trendingAddresses.map((item, index) => (
                     <div className="trendingAddressesBlockItemContainer">
                       <div
                         onClick={() => {
@@ -1316,41 +1466,71 @@ export default class NewHome extends BaseReactComponent {
                           </div>
                           <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
                             $
-                            {numToCurrency(item.worth.toFixed(2)).toLocaleString(
-                              "en-US"
-                            )}
+                            {numToCurrency(
+                              item.worth.toFixed(2)
+                            ).toLocaleString("en-US")}
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))
-                }
+                  ))}
+                </div>
               </div>
-            </div>
-            :
-            null
-            }
-            
+            ) : null}
+
             <div className="new-homepage__body-content">
               <div className="new-homepage__body-content-table-header">
                 <img src={ActiveSmartMoneySidebarIcon} alt="" />
                 Loch’s Leaderboard
               </div>
-              <div className="smartMoneyTable">
+              <div className="smartMoneyTable" style={{
+                marginBottom:this.state.totalPage>1?"5rem":"0px"
+              }}>
                 <TransactionTable
+                  openSignInOnclickModal={this.openSignInOnclickModal}
+                  smartMoneyBlur={this.state.blurTable}
+                  // blurButtonClick={this.showAddSmartMoneyAddresses}
                   isSmartMoney
                   noSubtitleBottomPadding
                   tableData={tableData}
                   columnList={columnList}
                   message={"No accounts found"}
-                  totalPage={0}
+                  totalPage={this.state.totalPage}
                   history={this.props.history}
                   location={this.props.location}
-                  page={1}
+                  page={this.state.currentPage}
+                  tableLoading={this.state.tableLoading}
+                  onPageChange={this.onPageChange}
+                  pageLimit={this.state.pageLimit}
+                  changePageLimit={this.changePageLimit}
                   addWatermark
-                  // className={this.state.blurTable ? "noScroll" : ""}
-                  // onBlurSignInClick={this.showSignInModal}
+                  className={this.state.blurTable ? "noScroll" : ""}
+                  onBlurSignInClick={this.showSignInModal}
                 />
+
+                {this.state.signInModal ? (
+                  <AuthSmartMoneyModal
+                    hideOnblur
+                    showHiddenError
+                    modalAnimation={this.state.signInModalAnimation}
+                    show={this.state.signInModal}
+                    onHide={this.hideSignInSignUpModal}
+                    history={this.props.history}
+                    modalType={"create_account"}
+                    iconImage={SignInIcon}
+                    hideSkip={true}
+                    title="Sign in"
+                    description={
+                      this.state.showClickSignInText
+                        ? "Sign in to access the smartest money on-chain"
+                        : "Get right back into your account"
+                    }
+                    stopUpdate={true}
+                    tracking="Sign in button"
+                    goToSignUp={this.openSignUpModal}
+                    showClickSignInText
+                  />
+                ) : null}
                 {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
@@ -1369,3 +1549,17 @@ export default class NewHome extends BaseReactComponent {
     );
   }
 }
+
+
+
+const mapStateToProps = (state) => ({
+  commonState: state.CommonState,
+})
+
+const mapDispatchToProps = {
+  updateAddToWatchList,
+  getSmartMoney,
+  updateWalletListFlag
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewHome);
