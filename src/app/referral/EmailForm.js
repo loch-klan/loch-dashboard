@@ -4,6 +4,7 @@ import { BaseReactComponent } from "../../utils/form";
 import Button from "./Button";
 import Input from "./Input";
 import logo from "../../image/logo_white.svg";
+import CaretLeft from "./../../assets/images/icons/caret-left-white.svg"
 
 export default class EmailForm extends BaseReactComponent {
   constructor(props) {
@@ -15,7 +16,27 @@ export default class EmailForm extends BaseReactComponent {
 
   render() {
     return (
-        <div className="referral-main-container__mid-box referral-main-container__mid-box--padding-top">
+        <div className="referral-main-container__mid-box referral-main-container__mid-box--padding-top" style={{position:'relative'}}>
+          <Button
+        className={'referral-main-container__mid-box__action-holder__cta'}
+        style={{
+          position:"absolute",
+          left:"50px",
+          top:"60px",
+          height:"40px",
+          width:"40px",
+          display:"flex",
+          justifyContent:"center",
+          alignItems:"center",
+          padding:"0", 
+        }}
+        onClick={()=>this.props.ChangeNextStep(1)}
+        >
+          <img src={CaretLeft} style={{
+            width:"20px",
+            height:"20px",
+          }} alt="" />
+        </Button>
         <img src={logo} alt="" />
         <div className="referral-main-container__mid-box__title-holder">
           <h6 className="referral-main-container__mid-box__title">

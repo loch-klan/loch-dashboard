@@ -124,6 +124,9 @@
                 color: $grey-B0B;
                 .referral-main-container__mid-box__last-cta--pointer{
                     cursor: pointer;
+                    &:hover{
+                        color: white;
+                    }
                 }
             }
 
