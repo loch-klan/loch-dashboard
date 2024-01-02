@@ -203,14 +203,7 @@ export const searchTransactionApi = (data, ctx, page = 0) => {
       .then((res) => {
         // console.log(page)
         if (!res.data.error) {
-          if (ctx.state.currentPage === "Home") {
-            dispatch({
-              type: ALL_TRANSACTION_HISTORY_HOME,
-              payload: res.data.data,
-            });
-          } else {
-            dispatch(getAllTransactionHistory(res.data.data, page, ctx));
-          }
+          dispatch(getAllTransactionHistory(res.data.data, page, ctx));
 
           if (ctx) {
             ctx.setState({

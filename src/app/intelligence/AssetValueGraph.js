@@ -3,37 +3,37 @@ import { connect } from "react-redux";
 
 import PageHeader from "../common/PageHeader";
 
-import LineChartSlider from "../Portfolio/LineCharSlider";
-import {
-  GroupByOptions,
-  GROUP_BY_DATE,
-  GROUP_BY_MONTH,
-  GROUP_BY_YEAR,
-  BASE_URL_S3,
-} from "../../utils/Constant";
-import { getAssetGraphDataApi, getExternalEventsApi } from "../Portfolio/Api";
-import { getAllCoins } from "../onboarding/Api";
 import {
   AssetValuePage,
   AssetValueShare,
   TimeSpentAssetValue,
 } from "../../utils/AnalyticsFunctions";
+import {
+  BASE_URL_S3,
+  GROUP_BY_DATE,
+  GROUP_BY_MONTH,
+  GROUP_BY_YEAR,
+  GroupByOptions,
+} from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { getAssetGraphDataApi, getExternalEventsApi } from "../Portfolio/Api";
+import LineChartSlider from "../Portfolio/LineCharSlider";
+import { getAllCoins } from "../onboarding/Api";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
 import { getAllWalletListApi } from "../wallet/Api";
 
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import { toast } from "react-toastify";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 import {
   ASSET_VALUE_GRAPH_DAY,
   ASSET_VALUE_GRAPH_MONTH,
   ASSET_VALUE_GRAPH_YEAR,
 } from "../Portfolio/ActionTypes";
-import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 
 class AssetValueGraph extends Component {
   constructor(props) {
@@ -100,13 +100,19 @@ class AssetValueGraph extends Component {
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
       });
     }
-    this.callDateGraph();
-    this.setState({
-      tab: "day",
-    });
+    if (
+      !(
+        this.props.portfolioState.assetValueMonth &&
+        this.props.portfolioState.assetValueMonth
+      ) ||
+      !this.props.commonState.asset_value
+    ) {
+      this.callDateGraph();
+    }
+    // this.setState({
+    //   tab: "day",
+    // });
 
-    // console.log("page Enter", this.state.startTime / 1000);
-    // console.log('this.state',this.state);
     //    this.props.getCoinRate();
     this.props.getAllCoins();
     // this.getGraphData();
@@ -140,19 +146,14 @@ class AssetValueGraph extends Component {
     // add wallet
 
     if (prevState.apiResponse !== this.state.apiResponse) {
-      // console.log("update");
-
       this.setState({
         apiResponse: false,
       });
     }
 
     if (!this.props.commonState.asset_value) {
-      //  console.log("up")
       this.props.updateWalletListFlag("asset_value", true);
-      this.props.portfolioState.assetValueMonth = null;
-      this.props.portfolioState.assetValueYear = null;
-      this.props.portfolioState.assetValueDay = null;
+
       this.props.getAllCoins();
       if (!this.props.portfolioState.assetValueDay) {
         this.getGraphData();
@@ -221,21 +222,17 @@ class AssetValueGraph extends Component {
       // for page
       // graphLoading: true,
     });
-
-    // console.log("updated wallet", value);
   };
 
   CheckApiResponse = (value) => {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value)
+
     this.props.setPageFlagDefault();
   };
 
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
-    // console.log("data a", this.props);
-
     let ActionType = ASSET_VALUE_GRAPH_DAY;
 
     if (groupByValue === GROUP_BY_MONTH) {
@@ -255,14 +252,13 @@ class AssetValueGraph extends Component {
       });
     }
 
-    //  console.log("api");
     this.setState({ graphLoading: true });
     let addressList = [];
-    // console.log("wallet addres", this.state.userWalletList);
+
     this.state.userWalletList?.map((wallet) =>
       addressList.push(wallet.address)
     );
-    // console.log("addressList", this.state.userWalletList);
+
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);
@@ -292,8 +288,6 @@ class AssetValueGraph extends Component {
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
-
-    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -320,7 +314,10 @@ class AssetValueGraph extends Component {
             </div>
           </div>
         </div>
-        <div className="volume-traded-section m-t-80">
+        <div
+          style={{ paddingBottom: "4rem" }}
+          className="volume-traded-section m-t-80"
+        >
           <div className="page volume-traded-page">
             {this.state.addModal && (
               <FixAddModal
@@ -354,15 +351,8 @@ class AssetValueGraph extends Component {
             <div className="graph-container" style={{ marginBottom: "5rem" }}>
               <LineChartSlider
                 assetValueData={
-                  this.state.tab === "day"
-                    ? this.props.portfolioState.assetValueDay &&
-                      this.props.portfolioState.assetValueDay
-                    : this.state.tab === "month"
-                    ? this.props.portfolioState.assetValueMonth &&
-                      this.props.portfolioState.assetValueMonth
-                    : this.state.tab === "year"
-                    ? this.props.portfolioState.assetValueYear &&
-                      this.props.portfolioState.assetValueYear
+                  this.props.portfolioState?.assetValueDay
+                    ? this.props.portfolioState.assetValueDay
                     : []
                 }
                 externalEvents={

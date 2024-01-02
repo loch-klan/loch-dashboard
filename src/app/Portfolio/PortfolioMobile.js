@@ -93,7 +93,7 @@ import {
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
-  getFilters
+  getFilters,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
@@ -127,7 +127,7 @@ class PortfolioMobile extends BaseReactComponent {
     this.state = {
       startTime: "",
       showPopupModal: true,
-      tableLoading:false,
+      tableLoading: false,
       showSearchIcon: false,
       showShareIcon: false,
       combinedCostBasis: 0,
@@ -362,7 +362,6 @@ class PortfolioMobile extends BaseReactComponent {
     }, 900000);
   };
   componentDidUpdate(prevProps, prevState) {
-
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -610,21 +609,18 @@ class PortfolioMobile extends BaseReactComponent {
     );
     const arr = [];
     for (var i of this.state.condition) {
-      if(i.key ===SEARCH_BY_NOT_DUST){
+      if (i.key === SEARCH_BY_NOT_DUST) {
         const obj = {
           key: SEARCH_BY_NOT_DUST,
           value: !this.state.showHideDustValTrans,
-        }
-        arr.push(obj)
+        };
+        arr.push(obj);
+      } else {
+        arr.push(i);
       }
-      else{
-        arr.push(i)
-      }
-
     }
     this.setState({
       showHideDustValTrans: !this.state.showHideDustValTrans,
-
 
       condition: arr,
     });
@@ -2651,15 +2647,15 @@ class PortfolioMobile extends BaseReactComponent {
                 style={{ marginTop: "1rem" }}
               >
                 <Form onValidSubmit={() => {}}>
-                    <div
-                      style={{
-                        display: "flex",
-                        marginTop:'6px',
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div className="" style={{ width:'48%' }}>
-                        {/* <DropDown
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "6px",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div className="" style={{ width: "48%" }}>
+                      {/* <DropDown
                       class="cohort-dropdown"
                       list={[
                         // "All time",
@@ -2682,41 +2678,42 @@ class PortfolioMobile extends BaseReactComponent {
                       relative={true}
                       arrowClassName="singleArrowClassName"
                     /> */}
-                        <CustomMinMaxDropdown
-                          filtername="Size"
-                          handleClick={(min, max) =>
-                            this.handleAmount(min, max)
-                          }
-                          minAmount={this.state.minAmount}
-                          maxAmount={this.state.maxAmount}
-                          style={{marginLeft:'5px !important'}}
-                        />
-                      </div>
-                      <div className="" style={{ width:'48%' }}>
-                        <CustomDropdown
-                          
-                          filtername="Years"
-                          style={{ width: "100%", margin:'0px', paddingLeft:'5px '  }}
-                          options={this.props.intelligenceState.yearFilter}
-                          action={SEARCH_BY_TIMESTAMP_IN}
-                          handleClick={(key, value) =>
-                            this.addCondition(key, value)
-                          }
-                          searchIsUsed={this.timeSearchIsUsed}
-                          selectedTokens={this.state.selectedTimes}
-                          transactionHistorySavedData
-                          isMobile
-                        />
-                      </div>
+                      <CustomMinMaxDropdown
+                        filtername="Size"
+                        handleClick={(min, max) => this.handleAmount(min, max)}
+                        minAmount={this.state.minAmount}
+                        maxAmount={this.state.maxAmount}
+                        style={{ marginLeft: "5px !important" }}
+                      />
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop:'12px'
-                      }}
-                    >
-                    <div className="col-span-6" style={{ width:'48%' }}>
+                    <div className="" style={{ width: "48%" }}>
+                      <CustomDropdown
+                        filtername="Years"
+                        style={{
+                          width: "100%",
+                          margin: "0px",
+                          paddingLeft: "5px ",
+                        }}
+                        options={this.props.intelligenceState.yearFilter}
+                        action={SEARCH_BY_TIMESTAMP_IN}
+                        handleClick={(key, value) =>
+                          this.addCondition(key, value)
+                        }
+                        searchIsUsed={this.timeSearchIsUsed}
+                        selectedTokens={this.state.selectedTimes}
+                        transactionHistorySavedData
+                        isMobile
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "12px",
+                    }}
+                  >
+                    <div className="col-span-6" style={{ width: "48%" }}>
                       <CustomDropdown
                         filtername="Assets"
                         options={this.props.intelligenceState.assetFilter}
@@ -2729,7 +2726,7 @@ class PortfolioMobile extends BaseReactComponent {
                         transactionHistorySavedData
                       />
                     </div>
-                    <div className="col-span-6" style={{ width:'48%' }}>
+                    <div className="col-span-6" style={{ width: "48%" }}>
                       <CustomDropdown
                         filtername="Networks"
                         options={this.props.OnboardingState.coinsList}
@@ -2742,15 +2739,18 @@ class PortfolioMobile extends BaseReactComponent {
                         transactionHistorySavedData
                       />
                     </div>
-                    </div>
-                    {/* {fillter_tabs} */}
-                    <div className="col-span-12" style={{ width: "100%", marginTop:'12px' }}>
-                      <div
-                        className="transaction-table-mobile-search"
-                        style={{ display: "flex", width: "100%" }}
-                      >
-                        <Image src={searchIcon} className="search-icon" />
-                        {/* <FormElement
+                  </div>
+                  {/* {fillter_tabs} */}
+                  <div
+                    className="col-span-12"
+                    style={{ width: "100%", marginTop: "12px" }}
+                  >
+                    <div
+                      className="transaction-table-mobile-search"
+                      style={{ display: "flex", width: "100%" }}
+                    >
+                      <Image src={searchIcon} className="search-icon" />
+                      {/* <FormElement
                         valueLink={this.linkState(
                           this,
                           "search",
@@ -2768,64 +2768,70 @@ class PortfolioMobile extends BaseReactComponent {
                           suffix: "search-suffix",
                         }}
                       /> */}
-                        <input
-                          type="text"
-                          value={this.state.search}
-                          className="search-input"
-                          style={{
-                            flexGrow: "1",
-                          }}
-                          placeholder="Search"
-                          onChange={(e) => {
-                            this.setState({
-                              search: e.target.value,
-                            });
-                            this.onChangeMethod();
-                          }}
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        value={this.state.search}
+                        className="search-input"
+                        style={{
+                          flexGrow: "1",
+                        }}
+                        placeholder="Search"
+                        onChange={(e) => {
+                          this.setState({
+                            search: e.target.value,
+                          });
+                          this.onChangeMethod();
+                        }}
+                      />
                     </div>
+                  </div>
                 </Form>
               </div>
-              {
-                this.state.tableLoading
-                ?
-
-                <div className="section-table section-table-mobile-scrol" style={{height:'200px', background:'white', display:'flex', justifyContent:'center', alignItems:'center'}}>
+              {this.state.tableLoading ? (
+                <div
+                  className="section-table section-table-mobile-scrol"
+                  style={{
+                    height: "200px",
+                    background: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Loading />
                 </div>
-                :
+              ) : (
                 <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      // this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message={"No Transactions Found"}
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.props.tableLoading}
-                  isAnalytics="average cost basis"
-                  addWatermark
-                  xAxisScrollable
-                  // yAxisScrollable
-                />
-              </div>
-              }
-              
+                  {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    handleClick={() => {
+                      if (this.state.lochToken) {
+                        // this.props.history.push("/intelligence/costs");
+                        // AverageCostBasisEView({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }
+                    }}
+                    message={"No Transactions Found"}
+                    subTitle=""
+                    tableData={tableDataTransaction}
+                    columnList={columnListTransaction}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.props.tableLoading}
+                    isAnalytics="average cost basis"
+                    addWatermark
+                    xAxisScrollable
+                    // yAxisScrollable
+                  />
+                </div>
+              )}
+
               <div style={{ marginTop: "2rem" }}>
                 {totalPage > 1 && (
                   <SmartMoneyPagination
