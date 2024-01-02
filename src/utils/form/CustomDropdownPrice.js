@@ -555,7 +555,7 @@ class CustomDropdown extends Component {
         </div>
         <div
           className={`dropdown-content-price ${
-            this.state.showMenu ? "show" : "show"
+            this.state.showMenu ? "show" : ""
           }`}
           style={{
             minWidth: `${
