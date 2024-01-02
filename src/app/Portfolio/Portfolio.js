@@ -88,6 +88,7 @@ import {
   GasFeesEV,
   VolumeTradeByCP,
   PriceGaugeEV,
+  CostGainHover,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -129,6 +130,7 @@ import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import { addUserCredits } from "../profile/Api.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 import CoinChip from "../wallet/CoinChip.js";
+import { ArrowDownLeftSmallIcon, ArrowUpRightSmallIcon } from "../../assets/images/icons/index.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -2845,7 +2847,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.18,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -2895,7 +2897,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -2952,7 +2954,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2991,6 +2993,82 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gainamount"
+            onClick={() => this.handleSort(this.state.sortBy[6])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Unrealized gain
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "GainAmount",
+
+        coumnWidth: 0.22,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "GainAmount") {
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainAmount
+                      ? CurrencyType(false) +
+                        Math.abs(
+                          Number(noExponents(rowData.GainAmount.toFixed(2)))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainAmount < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
 
       {
         labelName: (
@@ -3010,7 +3088,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
-        coumnWidth: 0.3,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
@@ -3139,7 +3217,7 @@ class Portfolio extends BaseReactComponent {
             ) : null}
             <div
               className="portfolio-container page"
-              style={{ overflow: "visible" }}
+              style={{ overflow: "visible", padding:"0 5rem" }}
             >
               <div className="portfolio-section">
                 {/* welcome card */}
