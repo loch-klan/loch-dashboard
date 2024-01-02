@@ -46,7 +46,7 @@ function App() {
   // ) : (
   return (
     <div>
-      <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}>
+      {/* <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}> */}
         <BrowserRouter>
           <Switch>
             {routes.map((prop, key) => {
@@ -76,7 +76,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
-      </ArcxAnalyticsProvider>
+      {/* </ArcxAnalyticsProvider> */}
     </div>
   );
   // );
