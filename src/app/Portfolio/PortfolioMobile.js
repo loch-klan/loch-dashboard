@@ -127,6 +127,7 @@ class PortfolioMobile extends BaseReactComponent {
     this.state = {
       startTime: "",
       showPopupModal: true,
+      tableLoading:false,
       showSearchIcon: false,
       showShareIcon: false,
       combinedCostBasis: 0,
@@ -479,10 +480,10 @@ class PortfolioMobile extends BaseReactComponent {
         showPopupModal: false,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
+    // window.scrollTo(0, 0);
+    // setTimeout(() => {
+    //   window.scrollTo(0, 0);
+    // }, 500);
 
     this.callApi(this.state.currentPage || START_INDEX);
     this.props.getFilters(this);
@@ -604,13 +605,25 @@ class PortfolioMobile extends BaseReactComponent {
     const d = this.state.condition.find(
       (e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN
     );
+    const arr = [];
+    for (var i of this.state.condition) {
+      if(i.key ===SEARCH_BY_NOT_DUST){
+        const obj = {
+          key: SEARCH_BY_NOT_DUST,
+          value: !this.state.showHideDustValTrans,
+        }
+        arr.push(obj)
+      }
+      else{
+        arr.push(i)
+      }
+
+    }
     this.setState({
       showHideDustValTrans: !this.state.showHideDustValTrans,
 
-      condition: [
-        d,
-        { key: SEARCH_BY_NOT_DUST, value: !this.state.showHideDustValTrans },
-      ],
+
+      condition: arr,
     });
 
     TransactionHistoryHideDust({
@@ -2523,8 +2536,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+              {/* <div className="section-table section-table-mobile-scroll asset-mobile-table">
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
@@ -2578,7 +2590,7 @@ class PortfolioMobile extends BaseReactComponent {
                   bodyHeight={"1000px"}
                   yAxisScrollable
                 />
-              </div>
+              </div> */}
 
               <div
                 className="d-flex justify-content-between"
@@ -2674,12 +2686,14 @@ class PortfolioMobile extends BaseReactComponent {
                           }
                           minAmount={this.state.minAmount}
                           maxAmount={this.state.maxAmount}
+                          style={{marginLeft:'5px !important'}}
                         />
                       </div>
                       <div className="" style={{ width:'48%' }}>
                         <CustomDropdown
+                          
                           filtername="Years"
-                          style={{ width: "100%", margin:'0px' }}
+                          style={{ width: "100%", margin:'0px', paddingLeft:'5px '  }}
                           options={this.props.intelligenceState.yearFilter}
                           action={SEARCH_BY_TIMESTAMP_IN}
                           handleClick={(key, value) =>
@@ -2770,7 +2784,14 @@ class PortfolioMobile extends BaseReactComponent {
                     </div>
                 </Form>
               </div>
-              <div className="section-table section-table-mobile-scroll">
+              {
+                this.state.tableLoading
+                ?
+                <div className="section-table section-table-mobile-scrol" style={{height:'200px', background:'white'}}>
+                  <Loading />
+                </div>
+                :
+                <div className="section-table section-table-mobile-scroll">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -2792,13 +2813,15 @@ class PortfolioMobile extends BaseReactComponent {
                   columnList={columnListTransaction}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.props.tableLoading}
                   isAnalytics="average cost basis"
                   addWatermark
                   xAxisScrollable
                   // yAxisScrollable
                 />
               </div>
+              }
+              
               <div style={{ marginTop: "2rem" }}>
                 {totalPage > 1 && (
                   <SmartMoneyPagination
