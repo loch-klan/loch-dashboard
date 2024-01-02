@@ -71,8 +71,6 @@ class PortfolioHomeDefiBlock extends Component {
       defiLoader: true,
     });
     let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
-    //  console.log("wallet_address", UserWallet);
-
     if (UserWallet?.length !== 0) {
       const allAddresses = [];
       UserWallet?.forEach((e) => {
@@ -87,19 +85,19 @@ class PortfolioHomeDefiBlock extends Component {
         defiLoader: false,
       });
     }
-    if (!UserWallet) {
-      //  console.log("null")
-      this.setState(
-        {
-          loadGetYieldBalance: true,
-        },
-        () => {
-          setTimeout(() => {
-            this.getYieldBalance();
-          }, 5000);
-        }
-      );
-    }
+    // if (!UserWallet) {
+    //   //  console.log("null")
+    //   this.setState(
+    //     {
+    //       loadGetYieldBalance: true,
+    //     },
+    //     () => {
+    //       setTimeout(() => {
+    //         this.getYieldBalance();
+    //       }, 5000);
+    //     }
+    //   );
+    // }
     // console.log("data", this.props.chainPortfolio);
   };
   toggleYield = () => {
@@ -135,6 +133,7 @@ class PortfolioHomeDefiBlock extends Component {
     }
   };
   calTotalDefiPositions = () => {
+    this.props.updateWalletListFlag("defi", true);
     let tempTotalDefiPositions = 0;
     this.props.defiState.defiList.forEach((resData) => {
       if (resData.items && resData.items[0] && resData.items[0].walletItems) {
@@ -147,41 +146,54 @@ class PortfolioHomeDefiBlock extends Component {
     });
   };
   componentDidMount() {
+    if (
+      !(this.props.defiState && this.props.defiState?.defiList) ||
+      !this.props.commonState.defi
+    ) {
+      this.props.updateWalletListFlag("defi", true);
+      this.callHomeDefiAPISPass();
+    } else {
+      this.setState({
+        defiLoader: false,
+      });
+    }
     if (this.props.defiState.defiList) {
       this.calTotalDefiPositions();
     }
   }
+  callHomeDefiAPISPass = () => {
+    this.props.updateDefiData({
+      totalYield: 0,
+      totalDebt: 0,
+      cardList: [],
+      sortedList: [],
+      DebtValues: [],
+      YieldValues: [],
+      BalanceSheetValue: {},
+    });
+
+    this.setState(
+      {
+        isYeildToggle: false,
+        isDebtToggle: false,
+        upgradeModal: false,
+        triggerId: 6,
+        isChainToggle: false,
+      },
+      () => {
+        //  getAllProtocol(this);
+        this.getYieldBalance();
+      }
+    );
+  };
   componentDidUpdate(prevProps) {
+    if (prevProps.userWalletList !== this.props.userWalletList) {
+      this.callHomeDefiAPISPass();
+    }
     if (prevProps.defiState.defiList !== this.props.defiState.defiList) {
       this.calTotalDefiPositions();
     }
     if (!this.props.commonState.defi) {
-      this.props.updateDefiData({
-        totalYield: 0,
-        totalDebt: 0,
-        cardList: [],
-        sortedList: [],
-        DebtValues: [],
-        YieldValues: [],
-        BalanceSheetValue: {},
-      });
-
-      // set defi page to true
-      this.props.updateWalletListFlag("defi", true);
-      this.setState(
-        {
-          isYeildToggle: false,
-          isDebtToggle: false,
-          upgradeModal: false,
-          triggerId: 6,
-          isChainToggle: false,
-        },
-        () => {
-          //  getAllProtocol(this);
-          this.getYieldBalance();
-        }
-      );
-
       // if (this.state.userPlan?.defi_enabled) {
       //   this.getYieldBalance();
       // } else {
@@ -208,7 +220,7 @@ class PortfolioHomeDefiBlock extends Component {
     return "";
   };
   render() {
-    if (this.state.defiLoader) {
+    if (this.state.defiLoader || !this.props.defiState?.defiList) {
       return (
         <div
           style={{
@@ -712,6 +724,7 @@ class PortfolioHomeDefiBlock extends Component {
         {this.state.totalDefiPositions > 3 ? (
           <div className="inter-display-medium bottomExtraInfo">
             <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
+              Click here to see{" "}
               {numToCurrency(
                 this.state.totalDefiPositions - 3,
                 true
@@ -722,7 +735,7 @@ class PortfolioHomeDefiBlock extends Component {
         ) : (
           <div className="inter-display-medium bottomExtraInfo">
             <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
-              See more
+              Click here to see more
             </div>
           </div>
         )}

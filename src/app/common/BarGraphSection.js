@@ -618,7 +618,7 @@ class BarGraphSection extends Component {
                             }}
                             className="seeMoreBtn cp"
                           >
-                            <div>See more</div>
+                            <div>Click here to see more</div>
                             <Image
                               src={ChartSeeMoreArrowIcon}
                               className="seeMoreBtnIcon"

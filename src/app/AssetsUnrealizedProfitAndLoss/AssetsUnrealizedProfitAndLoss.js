@@ -177,8 +177,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (
       !this.props.commonState.assetsPage ||
       !(
-        this.props.intelligenceState?.graphValue &&
-        this.props.intelligenceState?.graphValue.length > 0
+        this.props.intelligenceState?.Average_cost_basis &&
+        this.props.intelligenceState?.Average_cost_basis.length > 0
       )
     ) {
       this.props.getAllCoins();

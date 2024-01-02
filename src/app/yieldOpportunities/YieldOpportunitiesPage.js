@@ -206,8 +206,24 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
-    this.callApi(this.state.currentPage || START_INDEX);
-
+    if (
+      !this.props.yieldOpportunitiesState.yield_pools ||
+      !this.props.commonState.yieldOpportunities
+    ) {
+      this.callApi(this.state.currentPage || START_INDEX);
+    } else {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
+          : [],
+        totalPage: this.props.yieldOpportunitiesState.total_count
+          ? Math.ceil(
+              this.props.yieldOpportunitiesState.total_count / API_LIMIT
+            )
+          : 0,
+        tableLoading: false,
+      });
+    }
     this.props.getFilters();
     this.props.getAllCoins();
 

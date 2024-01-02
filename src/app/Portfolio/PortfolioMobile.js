@@ -327,6 +327,12 @@ class PortfolioMobile extends BaseReactComponent {
     }, 900000);
   };
   componentDidUpdate(prevProps, prevState) {
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -354,6 +360,8 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
+
+      this.callApi(page)
     }
 
     if (
@@ -363,11 +371,7 @@ class PortfolioMobile extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
     }
 
-    const prevParams = new URLSearchParams(prevProps.location.search);
-    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
-
-    const params = new URLSearchParams(this.props.location.search);
-    const page = parseInt(params.get("p") || START_INDEX, 10);
+    
 
     if (
       prevPage !== page ||
@@ -2481,7 +2485,7 @@ class PortfolioMobile extends BaseReactComponent {
               <div
                 className="d-flex justify-content-between"
                 style={{
-                  marginTop: "3rem",
+                  marginTop: "4.8rem",
                   alignItems: "start",
                 }}
               >
