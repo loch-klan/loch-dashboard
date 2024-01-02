@@ -2536,7 +2536,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              {/* <div className="section-table section-table-mobile-scroll asset-mobile-table">
+              <div className="section-table section-table-mobile-scroll asset-mobile-table">
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
@@ -2590,7 +2590,7 @@ class PortfolioMobile extends BaseReactComponent {
                   bodyHeight={"1000px"}
                   yAxisScrollable
                 />
-              </div> */}
+              </div>
 
               <div
                 className="d-flex justify-content-between"
