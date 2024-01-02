@@ -516,10 +516,11 @@ class CustomDropdown extends Component {
                 : " " + this.props.placeholderName + " selected")
             : this.getSelected()?.length + " Selected"}
 
-          {!this.props.isLineChart &&
+          {
+          !this.props.isLineChart &&
             !this.props.isChain &&
             !this.props.LightTheme && (
-              <span>
+              <span style={{marginRight:this.props.IconwithoutPadding?'5px':''}}>
                 <svg
                   height="20"
                   width="20"

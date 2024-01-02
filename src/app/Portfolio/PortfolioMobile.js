@@ -2686,12 +2686,14 @@ class PortfolioMobile extends BaseReactComponent {
                           }
                           minAmount={this.state.minAmount}
                           maxAmount={this.state.maxAmount}
+                          style={{marginLeft:'5px !important'}}
                         />
                       </div>
                       <div className="" style={{ width:'48%' }}>
                         <CustomDropdown
+                          
                           filtername="Years"
-                          style={{ width: "100%", margin:'0px' }}
+                          style={{ width: "100%", margin:'0px', paddingLeft:'5px '  }}
                           options={this.props.intelligenceState.yearFilter}
                           action={SEARCH_BY_TIMESTAMP_IN}
                           handleClick={(key, value) =>
