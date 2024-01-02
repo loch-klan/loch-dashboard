@@ -425,6 +425,30 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           : "centre",
                       }}
                     >
+                      {
+                    this.props.showDropdown ? (
+                      <div
+                      style={{
+                        zIndex: 4,
+                      }}
+                    >
+                      <CustomDropdownPrice
+                        isHomepage={this.props.isHomepage}
+                        filtername="All chains selected"
+                        options={this.state.assetList}
+                        action={null}
+                        handleClick={this.handleAssetSelect}
+                        isChain={true}
+                        selectedTokens={[this.state.activeAssetTab]}
+                        selectedTokenName={this.state.activeAssetTabName}
+                        singleSelect
+                        searchIsUsed={this.chainSearchIsUsed}
+                      />
+                    </div>
+                    )
+                    :
+                    null
+                  }
                       {/* <div
                         style={{
                           display: "flex",
@@ -539,29 +563,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             />
                         </div>
                       </p>
-                      {
-                    this.props.showDropdown ? (
-                      <div
-                      style={{
-                        zIndex: 4,
-                      }}
-                    >
-                      <CustomDropdownPrice
-                        filtername="All chains selected"
-                        options={this.state.assetList}
-                        action={null}
-                        handleClick={this.handleAssetSelect}
-                        isChain={true}
-                        selectedTokens={[this.state.activeAssetTab]}
-                        selectedTokenName={this.state.activeAssetTabName}
-                        singleSelect
-                        searchIsUsed={this.chainSearchIsUsed}
-                      />
-                    </div>
-                    )
-                    :
-                    null
-                  }
+                      
 
                             </div>
                     ) : null}
@@ -574,6 +576,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       }}
                     >
                       <CustomDropdownPrice
+                      isHomePage={this.props.isHomepage}
                         filtername="All chains selected"
                         options={this.state.assetList}
                         action={null}

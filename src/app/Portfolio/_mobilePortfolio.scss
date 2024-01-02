@@ -7,6 +7,12 @@
   display: flex;
   flex-direction: column;
 
+  .homepage-table-charts{
+    .custom-dropdown .placeholderPriceDropdown.lineChartPlaceholder{
+      min-width: 10rem !important;
+    }
+  }
+
   .asset-mobile-table{
     .table-wrapper-mobile-y-scroll{
       max-height: 65rem !important;

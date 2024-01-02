@@ -493,7 +493,10 @@ class CustomDropdown extends Component {
             this.props.LightTheme
               ? "lineChartPlaceholder"
               : ""
-          }`}
+          } ${this.props.isHomePage? "homePageDropdownPleaceHolder": ""}`}
+          style={{
+            minWidth: this.props.isHomePage ? "10rem !important" : "",
+          }}
           onClick={this.dropdownClicked}
         >
           {this.props.singleSelect

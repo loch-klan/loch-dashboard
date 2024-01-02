@@ -3553,7 +3553,7 @@ class Portfolio extends BaseReactComponent {
                         marginBottom: 0,
                       }}
                     >
-                      <div className="section-table-toggle-container">
+                      <div className="section-table-toggle-container homepage-table-charts">
                         <div className="section-table-toggle">
                           <div
                             className={`inter-display-medium section-table-toggle-element mr-1 ${
@@ -3584,6 +3584,7 @@ class Portfolio extends BaseReactComponent {
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
                           openChartPage={this.goToPriceGaugePage}
+                          isHomepage
                           userWalletList={this.state.userWalletList}
                           lochToken={this.state.lochToken}
                           callChildPriceGaugeApi={
