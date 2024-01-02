@@ -164,7 +164,7 @@ class PortfolioHomeInsightsBlock extends Component {
                   className="bottomExtraInfoText"
                   onClick={this.goToInsightsPage}
                 >
-                  {`${numToCurrency(
+                  {`Click here to see ${numToCurrency(
                     this.props.updatedInsightList.length - 3,
                     true
                   ).toLocaleString("en-US")}+ insight${
@@ -178,7 +178,7 @@ class PortfolioHomeInsightsBlock extends Component {
                   className="bottomExtraInfoText"
                   onClick={this.goToInsightsPage}
                 >
-                  See more
+                  Click here to see more
                 </div>
               </div>
             )}
