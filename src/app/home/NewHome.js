@@ -1,14 +1,29 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { BaseReactComponent } from "../../utils/form";
-import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
+import React from "react";
+import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
+import {
+  ActiveSmartMoneySidebarIcon,
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  NewWelcomeAddAnotherPlusIcon,
+  NewWelcomeCopyIcon,
+  NewWelcomeTrashIcon,
+  TrendingFireIcon,
+  TrendingWalletIcon,
+} from "../../assets/images/icons";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
 import logo from "../../assets/images/logo-white.svg";
-import TransactionTable from "../intelligence/TransactionTable";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import {
+  API_LIMIT,
+  BASE_URL_S3,
+  SORT_BY_AMOUNT,
+  START_INDEX,
+} from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -18,43 +33,72 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { API_LIMIT, BASE_URL_S3, SORT_BY_AMOUNT, START_INDEX } from "../../utils/Constant";
-import {
-  ActiveSmartMoneySidebarIcon,
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-  TrendingWalletIcon,
-} from "../../assets/images/icons";
-import CaretUpGreen from "./../../assets/images/icons/caret-top-green.svg";
-import CaretDownRed from "./../../assets/images/icons/carret-bottom-red.svg";
-import { TrendingFireIcon } from "../../assets/images/icons";
-import { Image } from "react-bootstrap";
+import { BaseReactComponent } from "../../utils/form";
 import CheckboxCustomTable from "../common/customCheckboxTable";
+import TransactionTable from "../intelligence/TransactionTable";
 import AuthSmartMoneyModal from "../smartMoney/AuthSmartMoneyModal";
-import { connect } from "react-redux";
+import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import { CustomCoin } from "../../utils/commonComponent";
 import {
-  updateAddToWatchList,
-} from "../watchlist/redux/WatchListApi";
-import { getAllCurrencyRatesApi, updateWalletListFlag } from "../common/Api";
-import {getSmartMoney} from './../smartMoney/Api'
+  GetAllPlan,
+  detectNameTag,
+  getAllCurrencyRatesApi,
+  updateUserWalletApi,
+  updateWalletListFlag,
+} from "../common/Api";
+import { setHeaderReducer } from "../header/HeaderAction";
+import { addExchangeTransaction } from "../home/Api";
+import {
+  createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api";
+import { addUserCredits } from "../profile/Api.js";
+import { updateAddToWatchList } from "../watchlist/redux/WatchListApi";
+import {
+  createAnonymousUserSmartMoneyApi,
+  getSmartMoney,
+} from "./../smartMoney/Api";
+import {
+  AddTextbox,
+  DeleteWalletAddress,
+} from "../../utils/AnalyticsFunctions.js";
+
 class NewHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      addButtonVisible: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
-      showTrending: false,
+      isTrendingAddresses: false,
       signInModalAnimation: true,
       signInModal: false,
       showClickSignInText: false,
       condition: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
-      pageLimit:1,
+      pageLimit: 1,
       accountList: [],
       totalPage: 0,
       tableLoading: false,
       goToBottom: false,
+      initialInput: false,
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
     };
   }
 
@@ -75,11 +119,304 @@ class NewHome extends BaseReactComponent {
       signInModal: false,
     });
   };
+  handleOnChange = (e) => {
+    let { name, value } = e.target;
+    if (value === "") {
+      this.setState({
+        isTrendingAddresses: false,
+      });
+    }
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].address;
 
-  toggleShowTrendingAddress = () => {
-    this.setState({ showTrending: !this.state.showTrending });
+      walletCopy[foundIndex].address = value;
+      if (value === "" || prevValue !== value) {
+        walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
+      }
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+      walletInput: walletCopy,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // timeout;
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnWalletAddress(name, value);
+    }, 1000);
+  };
+  isDisabled = () => {
+    let isDisableFlagCount = 0;
+    // if (this.state.walletInput.length <= 0) {
+    //     isDisableFlag = true;
+    // }
+    console.log("this.state.walletInput ", this.state.walletInput);
+    this.state.walletInput?.forEach((e) => {
+      let isDisableFlag = false;
+      if (e.address) {
+        e.coins.forEach((a) => {
+          if (a.chain_detected === true) {
+            isDisableFlag = true;
+            return;
+          }
+        });
+      }
+      if (isDisableFlag) {
+        isDisableFlagCount++;
+      }
+    });
+    console.log("isDisableFlagCount ", isDisableFlagCount);
+    if (
+      this.state.walletInput.length > 0 &&
+      isDisableFlagCount === this.state.walletInput.length
+    ) {
+      return false;
+    }
+    return true;
+  };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item?.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTag = (data, nameTag) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        nameTag: nameTag,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
   };
 
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      const regex = /\.eth$/;
+      if (!regex.test(value)) {
+        this.props.detectNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          this,
+          false
+        );
+      } else {
+        this.handleSetNameTagLoadingFalse({
+          id: name,
+          address: value,
+        });
+        this.handleSetNameTag(
+          {
+            id: name,
+            address: value,
+          },
+          ""
+        );
+      }
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this
+        );
+      }
+    }
+  };
+  nicknameOnChain = (e) => {
+    let { name, value } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      // let prevValue = walletCopy[foundIndex].nickname;
+
+      walletCopy[foundIndex].nickname = value;
+
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
+  };
+  hideisTrendingAddressesAddress = () => {
+    this.setState({ isTrendingAddresses: false });
+  };
+  showisTrendingAddressesAddress = () => {
+    this.setState({ isTrendingAddresses: true });
+  };
+  showInitialInput = () => {
+    this.setState({
+      initialInput: true,
+    });
+  };
+  hideInitialInput = () => {
+    this.setState({
+      initialInput: false,
+    });
+  };
+  addInputField = () => {
+    if (
+      this.state.walletInput.length + 1 <=
+        this.state.userPlan?.wallet_address_limit ||
+      this.state.userPlan?.wallet_address_limit === -1
+    ) {
+      this.state.walletInput.push({
+        id: `wallet${this.state.walletInput.length + 1}`,
+        address: "",
+        coins: [],
+        nickname: "",
+        showAddress: true,
+        showNickname: true,
+        showNameTag: true,
+        nameTag: "",
+      });
+      this.setState({
+        walletInput: this.state.walletInput,
+      });
+      AddTextbox({
+        session_id: getCurrentUser().id,
+      });
+    } else {
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.props.upgradeModal();
+        }
+      );
+    }
+  };
+  deleteInputField = (index, wallet) => {
+    if (!this.isDisabled() || wallet.address === "") {
+      this.state.walletInput?.splice(index, 1);
+      this.state.walletInput?.map((w, i) => (w.id = `wallet${i + 1}`));
+      DeleteWalletAddress({
+        address: wallet.address,
+      });
+      this.setState(
+        {
+          walletInput: this.state.walletInput,
+        },
+        () => {
+          if (this.state.walletInput.length === 1) {
+            this.setState({
+              addButtonVisible: this.state.walletInput.some((wallet) =>
+                wallet.address ? true : false
+              ),
+            });
+          }
+          let chainNotDetected = false;
+
+          this.state.walletInput.forEach((indiWallet) => {
+            let anyCoinPresent = false;
+            if (
+              indiWallet.coins &&
+              indiWallet.coinFound &&
+              indiWallet.coins.length > 0
+            ) {
+              indiWallet.coins.forEach((indiCoin) => {
+                if (indiCoin?.chain_detected) {
+                  anyCoinPresent = true;
+                }
+              });
+            }
+            if (!anyCoinPresent) {
+              chainNotDetected = true;
+            }
+          });
+
+          if (chainNotDetected) {
+            this.setState({
+              disableGoBtn: true,
+            });
+          } else {
+            this.setState({
+              disableGoBtn: false,
+            });
+          }
+        }
+      );
+    }
+  };
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
       "smartMoneyPageExpiryTime"
@@ -136,7 +473,7 @@ class NewHome extends BaseReactComponent {
   createEmptyUser = () => {
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify([]));
-    // this.props.createAnonymousUserSmartMoneyApi(data);
+    this.props.createAnonymousUserSmartMoneyApi(data);
   };
 
   callApi = (page = START_INDEX) => {
@@ -152,7 +489,42 @@ class NewHome extends BaseReactComponent {
   };
 
   componentDidMount() {
+    // For input
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+    });
+    if (this.props.exchanges) {
+      let text = "";
+
+      Promise.all(
+        this.props.exchanges
+          ?.filter((e) => e.isActive)
+          .map(
+            (e) => (text = text == "" ? text + e?.name : text + ", " + e?.name)
+          )
+      ).then(() => {
+        this.setState({
+          connectText: text == "" ? "Connect exchanges" : text + " connected",
+        });
+      });
+    } else {
+      this.setState({
+        connectText: "Connect exchanges",
+      });
+    }
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+    this.setState({
+      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+    });
+
+    this.props.GetAllPlan();
+
+    // For smart money
     getAllCurrencyRatesApi();
+
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
 
@@ -180,10 +552,9 @@ class NewHome extends BaseReactComponent {
     }
     // window.sessionStorage.setItem("previewAddress", "");
     this.props.history.replace({
-      search: `?p=${this.state.currentPage|| START_INDEX}`,
+      search: `?p=${this.state.currentPage || START_INDEX}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-
 
     // this.startPageView();
     this.updateTimer(true);
@@ -211,9 +582,7 @@ class NewHome extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.signInModal !== this.state.signInModal
-    ) {
+    if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
         this.setState({
           showClickSignInText: false,
@@ -222,6 +591,37 @@ class NewHome extends BaseReactComponent {
     }
     if (prevState.blurTable !== this.state.blurTable) {
       this.callApi(this.state.currentPage || START_INDEX);
+    }
+    if (this.state.walletInput !== prevState.walletInput) {
+      let chainNotDetected = false;
+
+      this.state.walletInput.forEach((indiWallet) => {
+        let anyCoinPresent = false;
+        if (
+          indiWallet.coins &&
+          indiWallet.coinFound &&
+          indiWallet.coins.length > 0
+        ) {
+          indiWallet.coins.forEach((indiCoin) => {
+            if (indiCoin?.chain_detected) {
+              anyCoinPresent = true;
+            }
+          });
+        }
+        if (!anyCoinPresent) {
+          chainNotDetected = true;
+        }
+      });
+
+      if (chainNotDetected) {
+        this.setState({
+          disableGoBtn: true,
+        });
+      } else {
+        this.setState({
+          disableGoBtn: false,
+        });
+      }
     }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
@@ -305,6 +705,7 @@ class NewHome extends BaseReactComponent {
   }
 
   render() {
+    console.log("this.state.walletInput ", this.state.walletInput);
     const tableData = this.state.accountList;
     const trendingAddresses = [
       {
@@ -954,14 +1355,14 @@ class NewHome extends BaseReactComponent {
                 text={rowData.tagName}
               >
                 <span
-                  // onMouseEnter={() => {
-                  //   SmartMoneyNameTagHover({
-                  //     session_id: getCurrentUser().id,
-                  //     email_address: getCurrentUser().email,
-                  //     hover: rowData.tagName,
-                  //   });
-                  //   this.updateTimer();
-                  // }}
+                // onMouseEnter={() => {
+                //   SmartMoneyNameTagHover({
+                //     session_id: getCurrentUser().id,
+                //     email_address: getCurrentUser().email,
+                //     hover: rowData.tagName,
+                //   });
+                //   this.updateTimer();
+                // }}
                 >
                   {rowData.tagName}
                 </span>
@@ -1408,20 +1809,218 @@ class NewHome extends BaseReactComponent {
         </div>
         <div className="new-homepage__body">
           <div className="new-homepage__body-container">
-            <div
-              className="new-homepage__body-search"
-              style={{
-                fontSize: "20px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-              onClick={this.toggleShowTrendingAddress}
-            >
-              Click me
-            </div>
-            {this.state.showTrending ? (
+            {this.state.initialInput ? (
+              <>
+                {this.state.walletInput?.map((c, index) => {
+                  if (index !== this.state.walletInput.length - 1) {
+                    return null;
+                  }
+                  return (
+                    <div className="new-homepage__body-search_input_body_container">
+                      <div className="new-homepage__body-search_input_body">
+                        <div
+                          style={index === 9 ? { marginBottom: "0rem" } : {}}
+                          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
+                        >
+                          <div
+                            className={`awInputWrapper ${
+                              this.state.walletInput[index].address
+                                ? "isAwInputWrapperValid"
+                                : null
+                            }`}
+                          >
+                            <>
+                              {c.showAddress && (
+                                <div className="awTopInputWrapper">
+                                  <div className="awInputContainer">
+                                    <input
+                                      name={`wallet${index + 1}`}
+                                      value={c.address || ""}
+                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
+                                      placeholder=""
+                                      title={c.address || ""}
+                                      onChange={this.handleOnChange}
+                                      onKeyDown={this.handleTabPress}
+                                      autoFocus
+                                      onFocus={(e) => {
+                                        // this.FocusInInput(e);
+                                        this.showisTrendingAddressesAddress();
+                                        if (
+                                          this.props
+                                            .makeTrendingAddressesVisible
+                                        ) {
+                                          this.props.makeTrendingAddressesVisible();
+                                        }
+                                      }}
+                                    />
+                                  </div>
+
+                                  {this.state.walletInput?.map((e, i) => {
+                                    if (
+                                      this.state.walletInput[index].address &&
+                                      e.id === `wallet${index + 1}`
+                                    ) {
+                                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                      if (e.coinFound && e.coins.length > 0) {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={e.coins.filter(
+                                              (c) => c.chain_detected
+                                            )}
+                                            key={i}
+                                            isLoaded={true}
+                                          />
+                                        );
+                                      } else {
+                                        if (
+                                          e.coins.length ===
+                                          this.props.OnboardingState.coinsList
+                                            .length
+                                        ) {
+                                          return (
+                                            <CustomCoin
+                                              isStatic
+                                              coins={null}
+                                              key={i}
+                                              isLoaded={true}
+                                            />
+                                          );
+                                        } else {
+                                          return (
+                                            <CustomCoin
+                                              isStatic
+                                              coins={null}
+                                              key={i}
+                                              isLoaded={false}
+                                            />
+                                          );
+                                        }
+                                      }
+                                    } else {
+                                      return "";
+                                    }
+                                  })}
+                                </div>
+                              )}
+                              {c.coinFound && c.showNickname && (
+                                <div
+                                  className={`awBottomInputWrapper ${
+                                    c.showAddress ? "mt-2" : ""
+                                  }`}
+                                >
+                                  <div className="awInputContainer">
+                                    {c.nickname && c.nickname !== "" ? (
+                                      <div className="awLable">
+                                        Private Nametag
+                                      </div>
+                                    ) : null}
+                                    {/* <div className="awLable">Private Nametag</div> */}
+                                    <input
+                                      name={`wallet${index + 1}`}
+                                      value={c.nickname || ""}
+                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
+                                      placeholder="Enter Private Nametag"
+                                      title={c.nickname || ""}
+                                      onChange={(e) => {
+                                        this.nicknameOnChain(e);
+                                      }}
+                                      onBlur={(e) => {
+                                        // LandingPageNickname({
+                                        //   session_id: getCurrentUser().id,
+                                        //   email_address: getCurrentUser().email,
+                                        //   nickname: e.target?.value,
+                                        //   address: c.address,
+                                        // });
+                                      }}
+                                      onFocus={(e) => {
+                                        // this.FocusInInput(e);
+                                      }}
+                                    />
+                                  </div>
+                                  {!c.showAddress &&
+                                    this.state.walletInput?.map((e, i) => {
+                                      if (
+                                        this.state.walletInput[index].address &&
+                                        e.id === `wallet${index + 1}`
+                                      ) {
+                                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                        if (e.coinFound && e.coins.length > 0) {
+                                          return (
+                                            <CustomCoin
+                                              isStatic
+                                              coins={e.coins.filter(
+                                                (c) => c.chain_detected
+                                              )}
+                                              key={i}
+                                              isLoaded={true}
+                                            />
+                                          );
+                                        } else {
+                                          if (
+                                            e.coins.length ===
+                                            this.props.OnboardingState.coinsList
+                                              .length
+                                          ) {
+                                            return (
+                                              <CustomCoin
+                                                isStatic
+                                                coins={null}
+                                                key={i}
+                                                isLoaded={true}
+                                              />
+                                            );
+                                          } else {
+                                            return (
+                                              <CustomCoin
+                                                isStatic
+                                                coins={null}
+                                                key={i}
+                                                isLoaded={false}
+                                              />
+                                            );
+                                          }
+                                        }
+                                      } else {
+                                        return "";
+                                      }
+                                    })}
+                                  {/* {c.showNameTag && c.nameTag ? (
+                                <div className="awBlockContainer">
+                                  <div className="awLable">Name tag</div>
+                                  <div className="awNameTag">{c.nameTag}</div>
+                                </div>
+                              ) : null} */}
+                                </div>
+                              )}
+                            </>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className="new-homepage__body-search">
+                <div
+                  onClick={this.showInitialInput}
+                  className="new-homepage__body-search_preview"
+                >
+                  <Image
+                    src={NewWelcomeCopyIcon}
+                    className="new-homepage__body-search-copy-icon"
+                  />
+                  <div className="new-homepage__body-search-paste-text">
+                    Paste any wallet address or ENS to get started
+                  </div>
+                </div>
+              </div>
+            )}
+            {this.state.walletInput &&
+            !this.state.walletInput[0].address &&
+            this.state.walletInput.length === 1 &&
+            this.state.isTrendingAddresses ? (
               <div className="new-homepage__body-trending-address">
                 <div
                   className="d-flex"
@@ -1478,60 +2077,66 @@ class NewHome extends BaseReactComponent {
               </div>
             ) : null}
 
-            <div className="new-homepage__body-content">
-              <div className="new-homepage__body-content-table-header">
-                <img src={ActiveSmartMoneySidebarIcon} alt="" />
-                Loch’s Leaderboard
-              </div>
-              <div className="smartMoneyTable" style={{
-                marginBottom:this.state.totalPage>1?"5rem":"0px"
-              }}>
-                <TransactionTable
-                  openSignInOnclickModal={this.openSignInOnclickModal}
-                  smartMoneyBlur={this.state.blurTable}
-                  // blurButtonClick={this.showAddSmartMoneyAddresses}
-                  isSmartMoney
-                  noSubtitleBottomPadding
-                  tableData={tableData}
-                  columnList={columnList}
-                  message={"No accounts found"}
-                  totalPage={this.state.totalPage}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={this.state.currentPage}
-                  tableLoading={this.state.tableLoading}
-                  onPageChange={this.onPageChange}
-                  pageLimit={this.state.pageLimit}
-                  changePageLimit={this.changePageLimit}
-                  addWatermark
-                  className={this.state.blurTable ? "noScroll" : ""}
-                  onBlurSignInClick={this.showSignInModal}
-                />
-
-                {this.state.signInModal ? (
-                  <AuthSmartMoneyModal
-                    hideOnblur
-                    showHiddenError
-                    modalAnimation={this.state.signInModalAnimation}
-                    show={this.state.signInModal}
-                    onHide={this.hideSignInSignUpModal}
+            {this.state.walletInput &&
+            !this.state.walletInput[0].address &&
+            this.state.walletInput.length === 1 ? (
+              <div className="new-homepage__body-content">
+                <div className="new-homepage__body-content-table-header">
+                  <img src={ActiveSmartMoneySidebarIcon} alt="" />
+                  Loch’s Leaderboard
+                </div>
+                <div
+                  className="smartMoneyTable"
+                  style={{
+                    marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                  }}
+                >
+                  <TransactionTable
+                    openSignInOnclickModal={this.openSignInOnclickModal}
+                    smartMoneyBlur={this.state.blurTable}
+                    // blurButtonClick={this.showAddSmartMoneyAddresses}
+                    isSmartMoney
+                    noSubtitleBottomPadding
+                    tableData={tableData}
+                    columnList={columnList}
+                    message={"No accounts found"}
+                    totalPage={this.state.totalPage}
                     history={this.props.history}
-                    modalType={"create_account"}
-                    iconImage={SignInIcon}
-                    hideSkip={true}
-                    title="Sign in"
-                    description={
-                      this.state.showClickSignInText
-                        ? "Sign in to access the smartest money on-chain"
-                        : "Get right back into your account"
-                    }
-                    stopUpdate={true}
-                    tracking="Sign in button"
-                    goToSignUp={this.openSignUpModal}
-                    showClickSignInText
+                    location={this.props.location}
+                    page={this.state.currentPage}
+                    tableLoading={this.state.tableLoading}
+                    onPageChange={this.onPageChange}
+                    pageLimit={this.state.pageLimit}
+                    changePageLimit={this.changePageLimit}
+                    addWatermark
+                    className={this.state.blurTable ? "noScroll" : ""}
+                    onBlurSignInClick={this.showSignInModal}
                   />
-                ) : null}
-                {/* <div className="ShowDust">
+
+                  {this.state.signInModal ? (
+                    <AuthSmartMoneyModal
+                      hideOnblur
+                      showHiddenError
+                      modalAnimation={this.state.signInModalAnimation}
+                      show={this.state.signInModal}
+                      onHide={this.hideSignInSignUpModal}
+                      history={this.props.history}
+                      modalType={"create_account"}
+                      iconImage={SignInIcon}
+                      hideSkip={true}
+                      title="Sign in"
+                      description={
+                        this.state.showClickSignInText
+                          ? "Sign in to access the smartest money on-chain"
+                          : "Get right back into your account"
+                      }
+                      stopUpdate={true}
+                      tracking="Sign in button"
+                      goToSignUp={this.openSignUpModal}
+                      showClickSignInText
+                    />
+                  ) : null}
+                  {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
                     className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -1541,8 +2146,134 @@ class NewHome extends BaseReactComponent {
                       : "Hide dust (less than $1)"}
                   </p>
                 </div> */}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div
+                style={{
+                  marginTop:
+                    this.state.walletInput &&
+                    this.state.walletInput[this.state.walletInput.length - 1]
+                      .showNickname &&
+                    this.state.walletInput[this.state.walletInput.length - 1]
+                      .coinFound
+                      ? "-25px"
+                      : "-15px",
+                }}
+              >
+                {this.state.walletInput && this.state.walletInput.length > 1 ? (
+                  <div
+                    style={{
+                      marginBottom:
+                        this.state.walletInput &&
+                        this.state.walletInput[
+                          this.state.walletInput.length - 1
+                        ].showNickname &&
+                        this.state.walletInput[
+                          this.state.walletInput.length - 1
+                        ].coinFound
+                          ? "32px"
+                          : "25px",
+                    }}
+                    className="newWelcomeAddedAddresses"
+                  >
+                    {this.state.walletInput?.map((c, index) => {
+                      if (index === this.state.walletInput.length - 1) {
+                        return null;
+                      }
+                      return (
+                        <div
+                          style={{
+                            marginTop: index === 0 ? "0rem" : "",
+                          }}
+                          className="newWelcomeAddedAddressesBlocks"
+                        >
+                          <div className="newWelcomeAddedAddressesBlocksContent">
+                            {this.state.walletInput?.map((e, i) => {
+                              if (
+                                this.state.walletInput[index].address &&
+                                e.id === `wallet${index + 1}`
+                              ) {
+                                // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                if (e.coinFound && e.coins.length > 0) {
+                                  return (
+                                    <CustomCoin
+                                      isStatic
+                                      coins={e.coins.filter(
+                                        (c) => c.chain_detected
+                                      )}
+                                      key={i}
+                                      isLoaded={true}
+                                    />
+                                  );
+                                } else {
+                                  if (
+                                    e.coins.length ===
+                                    this.props.OnboardingState.coinsList.length
+                                  ) {
+                                    return (
+                                      <CustomCoin
+                                        isStatic
+                                        coins={null}
+                                        key={i}
+                                        isLoaded={true}
+                                      />
+                                    );
+                                  } else {
+                                    return (
+                                      <CustomCoin
+                                        isStatic
+                                        coins={null}
+                                        key={i}
+                                        isLoaded={false}
+                                      />
+                                    );
+                                  }
+                                }
+                              } else {
+                                return "";
+                              }
+                            })}
+                            <div className="inter-display-semi-bold newWelcomeAddedAddressesBlocksText ml-3 mr-3">
+                              Wallet {index + 1}
+                            </div>
+                            <div className="inter-display-medium newWelcomeAddedAddressesBlocksText">
+                              {c.address}
+                            </div>
+                          </div>
+                          <Image
+                            onClick={() => this.deleteInputField(index, c)}
+                            className="newWelcomeAddedAddressesBlocksDelIcon"
+                            src={NewWelcomeTrashIcon}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null}
+                <div className="newHomeAddAnotherGoContainer inter-display-regular">
+                  {this.state.walletInput.length < 10 ? (
+                    <button
+                      onClick={this.addInputField}
+                      className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"
+                      disabled={this.isDisabled()}
+                    >
+                      <Image
+                        className="newHomeAddAnotherGoBtnsPlusIcon"
+                        src={NewWelcomeAddAnotherPlusIcon}
+                      />
+                      Add another
+                    </button>
+                  ) : null}
+                  <button
+                    disabled={this.isDisabled()}
+                    className="newHomeAddAnotherGoBtns newHomeGoBtn"
+                  >
+                    Go
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -1550,16 +2281,26 @@ class NewHome extends BaseReactComponent {
   }
 }
 
-
-
 const mapStateToProps = (state) => ({
   commonState: state.CommonState,
-})
+  OnboardingState: state.OnboardingState,
+});
 
 const mapDispatchToProps = {
-  updateAddToWatchList,
   getSmartMoney,
-  updateWalletListFlag
-}
+  updateAddToWatchList,
+  updateWalletListFlag,
+  getAllCoins,
+  detectCoin,
+  detectNameTag,
+  createAnonymousUserApi,
+  getAllParentChains,
+  setHeaderReducer,
+  updateUserWalletApi,
+  GetAllPlan,
+  addExchangeTransaction,
+  addUserCredits,
+  createAnonymousUserSmartMoneyApi,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewHome);

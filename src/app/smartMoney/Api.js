@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
 import { API_LIMIT } from "../../utils/Constant";
-import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
 import {
   SmartMoneyAddressAdded,
   SmartMoneyAddressAddedAttempted,
