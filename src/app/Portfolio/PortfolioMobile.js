@@ -362,6 +362,13 @@ class PortfolioMobile extends BaseReactComponent {
     }, 900000);
   };
   componentDidUpdate(prevProps, prevState) {
+
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -389,6 +396,8 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
+
+      this.callApi(page);
     }
 
     if (
@@ -398,12 +407,6 @@ class PortfolioMobile extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
       this.props.getFilters(this);
     }
-
-    const prevParams = new URLSearchParams(prevProps.location.search);
-    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
-
-    const params = new URLSearchParams(this.props.location.search);
-    const page = parseInt(params.get("p") || START_INDEX, 10);
 
     if (
       prevPage !== page ||
@@ -2801,14 +2804,14 @@ class PortfolioMobile extends BaseReactComponent {
                   title=""
                   handleClick={() => {
                     if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
+                      // this.props.history.push("/intelligence/costs");
                       // AverageCostBasisEView({
                       //   session_id: getCurrentUser().id,
                       //   email_address: getCurrentUser().email,
                       // });
                     }
                   }}
-                  message=" "
+                  message={"No Transactions Found"}
                   subTitle=""
                   tableData={tableDataTransaction}
                   columnList={columnListTransaction}
