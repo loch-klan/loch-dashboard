@@ -44,6 +44,7 @@ import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConfirmLeaveModal from "./ConformLeaveModal";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg"
 import {
   IntelligenceMenu,
   ProfileMenu,
@@ -2285,8 +2286,8 @@ function Sidebar(props) {
                           activeclassname="none"
                         >
                           <Image
-                            src={TwoPeopleIcon}
-                            style={{ filter: "opacity(0.6)" }}
+                            src={feedbackIcon}
+                            // style={{ filter: "opacity(0.6)" }}
                           />
                           Feedback
                         </NavLink>
@@ -2294,7 +2295,7 @@ function Sidebar(props) {
                       </li>
                       {/* <li>
                         <NavLink
-                          exact={true}
+                          exact={true}s
                           onClick={handleConnectModal}
                           className="nav-link none"
                           to="#"
