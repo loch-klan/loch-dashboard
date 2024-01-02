@@ -2787,7 +2787,8 @@ class PortfolioMobile extends BaseReactComponent {
               {
                 this.state.tableLoading
                 ?
-                <div className="section-table section-table-mobile-scrol" style={{height:'200px', background:'white'}}>
+
+                <div className="section-table section-table-mobile-scrol" style={{height:'200px', background:'white', display:'flex', justifyContent:'center', alignItems:'center'}}>
                   <Loading />
                 </div>
                 :
