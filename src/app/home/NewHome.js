@@ -85,6 +85,7 @@ import Login from "./NewAuth/Login.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import MobileHome from "./MobileHome.js";
+import Loading from "../common/Loading.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
@@ -1407,6 +1408,7 @@ class NewHome extends BaseReactComponent {
       this.setState({
         blurTable: false,
       });
+      this.createEmptyUser();
     } else {
       this.setState({
         blurTable: true,
@@ -2462,34 +2464,50 @@ class NewHome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
-                <div
-                  className="smartMoneyTable"
-                  style={{
-                    marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
-                  }}
-                >
-                  <TransactionTable
-                    openSignInOnclickModal={this.opneLoginModal}
-                    smartMoneyBlur={this.state.blurTable}
-                    // blurButtonClick={this.showAddSmartMoneyAddresses}
-                    isSmartMoney
-                    noSubtitleBottomPadding
-                    tableData={tableData}
-                    columnList={columnList}
-                    message={"No accounts found"}
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    pageLimit={this.state.pageLimit}
-                    changePageLimit={this.changePageLimit}
-                    addWatermark
-                    className={this.state.blurTable ? "noScroll" : ""}
-                    onBlurSignInClick={this.showSignInModal}
-                  />
-                </div>
+                {this.state.tableLoading ? (
+                  <div
+                    style={{
+                      background: "white",
+                      height: "100%",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: "100px 0",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                ) : (
+                  <div
+                    className="smartMoneyTable"
+                    style={{
+                      marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                    }}
+                  >
+                    <TransactionTable
+                      openSignInOnclickModal={this.opneLoginModal}
+                      smartMoneyBlur={this.state.blurTable}
+                      // blurButtonClick={this.showAddSmartMoneyAddresses}
+                      isSmartMoney
+                      noSubtitleBottomPadding
+                      tableData={tableData}
+                      columnList={columnList}
+                      message={"No accounts found"}
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      pageLimit={this.state.pageLimit}
+                      changePageLimit={this.changePageLimit}
+                      addWatermark
+                      className={this.state.blurTable ? "noScroll" : ""}
+                      onBlurSignInClick={this.showSignInModal}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div
