@@ -366,7 +366,7 @@ class NewHome extends BaseReactComponent {
     }
   };
   deleteInputField = (index, wallet) => {
-    if (!this.isDisabled() || wallet.address === "") {
+    if (wallet.address === "") {
       this.state.walletInput?.splice(index, 1);
       this.state.walletInput?.map((w, i) => (w.id = `wallet${i + 1}`));
       DeleteWalletAddress({
