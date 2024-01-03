@@ -828,7 +828,7 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isSubmenu.me && (
+                      {isSubmenu?.me && (
                         <>
                           <li>
                             <NavLink
@@ -1006,7 +1006,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content-closed">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1091,7 +1091,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||

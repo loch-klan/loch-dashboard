@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -11,8 +12,8 @@ import {
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
@@ -36,13 +37,14 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import TransactionTable from "../intelligence/TransactionTable";
-import AuthSmartMoneyModal from "../smartMoney/AuthSmartMoneyModal";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
 import {
   AddTextbox,
+  ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  LPConnectExchange,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -51,7 +53,11 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
+import ConnectModal from "../common/ConnectModal.js";
+import {
+  setHeaderReducer,
+  setMetamaskConnectedReducer,
+} from "../header/HeaderAction";
 import { addExchangeTransaction } from "../home/Api";
 import {
   createAnonymousUserApi,
@@ -75,6 +81,24 @@ class NewHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      currentMetamaskWallet: {},
+      onboardingWalletAddress: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+      onboardingExchanges: null,
+      onboardingConnectExchangeModal: false,
       trendingAddresses: [
         {
           address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
@@ -837,7 +861,11 @@ class NewHome extends BaseReactComponent {
             coinColor: parentCoinList[i].color,
             subChains: parentCoinList[i].sub_chains,
           },
-          this
+          this,
+          false,
+          0,
+          false,
+          true
         );
       }
     }
@@ -1060,25 +1088,7 @@ class NewHome extends BaseReactComponent {
         wallet.address ? true : false
       ),
     });
-    if (this.props.exchanges) {
-      let text = "";
 
-      Promise.all(
-        this.props.exchanges
-          ?.filter((e) => e.isActive)
-          .map(
-            (e) => (text = text == "" ? text + e?.name : text + ", " + e?.name)
-          )
-      ).then(() => {
-        this.setState({
-          connectText: text == "" ? "Connect exchanges" : text + " connected",
-        });
-      });
-    } else {
-      this.setState({
-        connectText: "Connect exchanges",
-      });
-    }
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.setState({
@@ -1164,7 +1174,219 @@ class NewHome extends BaseReactComponent {
       });
     }
   };
+  connectWalletEthers = async () => {
+    ConnectWalletButtonClickedWelcome({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
+
+        if (tempRes && tempRes.length > 0) {
+          window.sessionStorage.setItem("connectWalletCreditOnce", true);
+          this.addToList(tempRes);
+        }
+      } catch (error) {
+        console.log("ethers error ", error);
+      }
+    }
+  };
+  addToList = (addThese) => {
+    const curItem = addThese[0];
+
+    if (curItem) {
+      this.setState(
+        {
+          currentMetamaskWallet: {
+            address: curItem,
+            coinFound: true,
+            coins: [],
+            displayAddress: curItem,
+            nameTag: "",
+            nickname: "",
+            showAddress: true,
+            showNameTag: false,
+            showNickname: false,
+            wallet_metadata: null,
+          },
+        },
+        () => {
+          this.getCoinBasedOnLocalWallet("randomName", curItem);
+        }
+      );
+    }
+  };
+  getCoinBasedOnLocalWallet = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          true,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoinByLocalWallet = (data) => {
+    console.log("REached");
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = this.state.currentMetamaskWallet;
+    console.log("Here");
+    data.address === newAddress.address &&
+      newAddress.coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress.id) {
+    //   newAddress.address = data.address;
+    // }
+
+    newAddress.coinFound =
+      newAddress.coins &&
+      newAddress.coins.some((e) => e.chain_detected === true);
+    newAddress.apiAddress = data?.apiaddress;
+
+    this.setState(
+      {
+        currentMetamaskWallet: newAddress,
+      },
+      () => {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.callUpdateApi(this.state.currentMetamaskWallet);
+        }, 2000);
+      }
+    );
+  };
+  callUpdateApi = (passedItem) => {
+    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    if (walletAddress) {
+      walletAddress.forEach((curr) => {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      });
+    }
+    if (passedItem) {
+      if (passedItem.address) {
+        // TopBarMetamaskWalletConnected({
+        //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        //   address: passedItem.address,
+        // });
+
+        this.props.setMetamaskConnectedReducer(passedItem.address);
+        window.sessionStorage.setItem(
+          "setMetamaskConnectedSessionStorage",
+          passedItem.address
+        );
+      }
+      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
+    }
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+
+    this.props.createAnonymousUserApi(data, this, addWallet, null);
+    // this.props.updateUserWalletApi(data, this, yieldData);
+  };
+  onboardingShowConnectModal = (
+    address = this.state.onboardingWalletAddress
+  ) => {
+    this.setState(
+      {
+        onboardingConnectExchangeModal: true,
+      },
+      () => {
+        if (this.state.onboardingConnectExchangeModal) {
+          LPConnectExchange();
+        }
+      }
+    );
+  };
+  hideOnboardingShowPrevModal = () => {
+    this.setState({
+      onboardingConnectExchangeModal: false,
+    });
+  };
+  onboardingHandleUpdateConnect = (
+    exchanges = this.state.onboardingExchanges
+  ) => {
+    this.setState({
+      onboardingExchanges: exchanges,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
@@ -1261,7 +1483,6 @@ class NewHome extends BaseReactComponent {
   }
 
   render() {
-    console.log("this.state.walletInput ", this.state.walletInput);
     const tableData = this.state.accountList;
 
     const columnList = [
@@ -1691,6 +1912,22 @@ class NewHome extends BaseReactComponent {
 
     return (
       <div className="new-homepage">
+        {this.state.onboardingConnectExchangeModal ? (
+          <ConnectModal
+            show={this.state.onboardingConnectExchangeModal}
+            onHide={this.hideOnboardingShowPrevModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+            ishome={true}
+            tracking="landing page"
+            walletAddress={this.state.onboardingWalletAddress}
+            exchanges={this.state.onboardingExchanges}
+            onboardingHandleUpdateConnect={this.onboardingHandleUpdateConnect}
+            modalAnimation
+          />
+        ) : null}
         {this.state.authmodal == "login" ? (
           <Login
             toggleModal={this.toggleAuthModal}
@@ -1721,11 +1958,17 @@ class NewHome extends BaseReactComponent {
           <div className="new-homepage__header-container">
             <div className="d-flex justify-content-between">
               <div className="d-flex" style={{ gap: "12px" }}>
-                <button className="new-homepage-btn new-homepage-btn--blur">
+                <button
+                  onClick={this.connectWalletEthers}
+                  className="new-homepage-btn new-homepage-btn--blur"
+                >
                   <img src={walletIconsWhite} alt="" />
                   Connect Wallet
                 </button>
-                <button className="new-homepage-btn new-homepage-btn--blur">
+                <button
+                  onClick={this.onboardingShowConnectModal}
+                  className="new-homepage-btn new-homepage-btn--blur"
+                >
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
@@ -2038,6 +2281,7 @@ const mapDispatchToProps = {
   addUserCredits,
   createAnonymousUserSmartMoneyApi,
   verifyUser,
+  setMetamaskConnectedReducer,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewHome);

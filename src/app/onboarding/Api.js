@@ -62,7 +62,8 @@ export const detectCoin = (
   ctx = null,
   isCohort = false,
   index = 0,
-  justDetect = false
+  justDetect = false,
+  fromConnectWallet = false
 ) => {
   return function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -114,11 +115,22 @@ export const detectCoin = (
           }
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
-            ctx.handleSetCoin({
-              ...wallet,
-              chain_detected: res.data.data.chain_detected,
-              apiaddress: res.data.data.wallet_address,
-            });
+            if (fromConnectWallet) {
+              if (ctx.handleSetCoinByLocalWallet) {
+                console.log("Called one");
+                ctx.handleSetCoinByLocalWallet({
+                  ...wallet,
+                  chain_detected: res.data.data.chain_detected,
+                  apiaddress: res.data.data.wallet_address,
+                });
+              }
+            } else {
+              ctx.handleSetCoin({
+                ...wallet,
+                chain_detected: res.data.data.chain_detected,
+                apiaddress: res.data.data.wallet_address,
+              });
+            }
 
             if (
               ctx?.state.isTopAccountPage &&
@@ -169,7 +181,7 @@ export const detectNameTag = (
   };
 };
 
-export const signIn = (ctx, data, v2=false, resend=false) => {
+export const signIn = (ctx, data, v2 = false, resend = false) => {
   preLoginInstance
     .post("organisation/user/send-otp", data)
     .then((res) => {
@@ -191,14 +203,12 @@ export const signIn = (ctx, data, v2=false, resend=false) => {
       } else if (res.data.error === false) {
         //email Valid
         EmailAddressVerified({ email_address: ctx.state.email });
-        if(v2){
-          ctx.toggleAuthModal('verify')
-          if(resend){
-            toast.success("OTP sent successfully")
+        if (v2) {
+          ctx.toggleAuthModal("verify");
+          if (resend) {
+            toast.success("OTP sent successfully");
           }
-
-        }
-        else{
+        } else {
           ctx.setState({
             isVerificationRequired: true,
             text: "",
@@ -209,13 +219,13 @@ export const signIn = (ctx, data, v2=false, resend=false) => {
       }
     })
     .catch((err) => {
-      if(v2){
+      if (v2) {
         toast.error("Something Went Wrong");
       }
     });
 };
 
-export const verifyUser = (ctx, info, v2=false) => {
+export const verifyUser = (ctx, info, v2 = false) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/verify-otp", info)
