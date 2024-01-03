@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -11,8 +12,8 @@ import {
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
@@ -23,7 +24,12 @@ import {
   SORT_BY_AMOUNT,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  deleteToken,
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -36,24 +42,38 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import TransactionTable from "../intelligence/TransactionTable";
-import AuthSmartMoneyModal from "../smartMoney/AuthSmartMoneyModal";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
-import { CustomCoin } from "../../utils/commonComponent";
+import {
+  AddTextbox,
+  ClickTrendingAddress,
+  ConnectWalletButtonClickedWelcome,
+  DeleteWalletAddress,
+  EmailAddressAdded,
+  LPC_Go,
+  LPConnectExchange,
+} from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
   detectNameTag,
   getAllCurrencyRatesApi,
+  setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
+import ConnectModal from "../common/ConnectModal.js";
+import {
+  setHeaderReducer,
+  setMetamaskConnectedReducer,
+} from "../header/HeaderAction";
 import { addExchangeTransaction } from "../home/Api";
 import {
   createAnonymousUserApi,
   detectCoin,
   getAllCoins,
   getAllParentChains,
+  signIn,
+  verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
 import { updateAddToWatchList } from "../watchlist/redux/WatchListApi";
@@ -61,15 +81,544 @@ import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
-import {
-  AddTextbox,
-  DeleteWalletAddress,
-} from "../../utils/AnalyticsFunctions.js";
+import Login from "./NewAuth/Login.js";
+import Verify from "./NewAuth/Verify.js";
+import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import MobileHome from "./MobileHome.js";
+import Loading from "../common/Loading.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      currentMetamaskWallet: {},
+      onboardingWalletAddress: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+      onboardingExchanges: null,
+      onboardingConnectExchangeModal: false,
+      trendingAddresses: [
+        {
+          address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+          worth: 28891163.13,
+          trimmedAddress: "0x51C...a7F",
+          fullData: [
+            {
+              address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              coinFound: [
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+        {
+          address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+          worth: 38993631.363,
+          trimmedAddress: "0xeB2...a4c",
+          fullData: [
+            {
+              address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+              apiAddress: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+              coinFound: [
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+        {
+          address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+          worth: 111935898.211,
+          trimmedAddress: "0x36c...fc6",
+          fullData: [
+            {
+              address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+              apiAddress: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+              coinFound: [
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+        {
+          address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+          worth: 28891163.13,
+          trimmedAddress: "0x51C...a7F",
+          fullData: [
+            {
+              address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              coinFound: [
+                {
+                  chain_detected: true,
+                  coinCode: "ETH",
+                  coinName: "Ethereum",
+                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+                  coinColor: "#7B44DA",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "ARB",
+                  coinName: "Arbitrum",
+                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+                  coinColor: "#2C374B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "AVAX",
+                  coinName: "Avalanche",
+                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+                  coinColor: "#E84042",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "BSC",
+                  coinName: "BSC",
+                  coinSymbol: "https://media.loch.one/loch-binance.svg",
+                  coinColor: "#F0B90B",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "CELO",
+                  coinName: "Celo",
+                  coinSymbol: "https://media.loch.one/loch-celo.svg",
+                  coinColor: "#F4CE6F",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "FTM",
+                  coinName: "Fantom",
+                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
+                  coinColor: "#13B5EC",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "OP",
+                  coinName: "Optimism",
+                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
+                  coinColor: "#FF0420",
+                },
+                {
+                  chain_detected: true,
+                  coinCode: "POLYGON",
+                  coinName: "Polygon",
+                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
+                  coinColor: "#8247E5",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "SOL",
+                  coinName: "Solana",
+                  coinSymbol: "https://media.loch.one/loch-solana.svg",
+                  coinColor: "#5ADDA6",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "ADA",
+                  coinName: "Cardano",
+                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
+                  coinColor: "#0033AD",
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
+      ],
       addButtonVisible: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       isTrendingAddresses: false,
@@ -84,6 +633,11 @@ class NewHome extends BaseReactComponent {
       tableLoading: false,
       goToBottom: false,
       initialInput: false,
+      isGoButtonsDisabled: false,
+      isAddAnotherButtonsDisabled: false,
+      authmodal: "",
+      email: "",
+      otp: "",
       walletInput: [
         {
           id: `wallet1`,
@@ -101,6 +655,12 @@ class NewHome extends BaseReactComponent {
       ],
     };
   }
+
+  toggleAuthModal = (val = "") => {
+    this.setState({
+      authmodal: val,
+    });
+  };
 
   showSignInModal = () => {
     this.setState({
@@ -156,33 +716,52 @@ class NewHome extends BaseReactComponent {
     }, 1000);
   };
   isDisabled = () => {
-    let isDisableFlagCount = 0;
-    // if (this.state.walletInput.length <= 0) {
-    //     isDisableFlag = true;
-    // }
-    console.log("this.state.walletInput ", this.state.walletInput);
-    this.state.walletInput?.forEach((e) => {
-      let isDisableFlag = false;
-      if (e.address) {
-        e.coins.forEach((a) => {
-          if (a.chain_detected === true) {
-            isDisableFlag = true;
-            return;
-          }
-        });
-      }
-      if (isDisableFlag) {
-        isDisableFlagCount++;
+    let isDisableAddFlagCount = 0;
+    let isDisableGoFlagCount = 0;
+
+    this.state.walletInput?.forEach((e, eIndex) => {
+      if (eIndex === this.state.walletInput.length - 1 && e.address === "") {
+        isDisableGoFlagCount++;
+      } else {
+        let isDisableFlag = false;
+        if (e.address) {
+          e.coins.forEach((a) => {
+            if (a.chain_detected === true) {
+              isDisableFlag = true;
+              return;
+            }
+          });
+        }
+        if (isDisableFlag) {
+          isDisableAddFlagCount++;
+          isDisableGoFlagCount++;
+        }
       }
     });
-    console.log("isDisableFlagCount ", isDisableFlagCount);
     if (
       this.state.walletInput.length > 0 &&
-      isDisableFlagCount === this.state.walletInput.length
+      isDisableGoFlagCount === this.state.walletInput.length
     ) {
-      return false;
+      this.setState({
+        isGoButtonsDisabled: false,
+      });
+    } else {
+      this.setState({
+        isGoButtonsDisabled: true,
+      });
     }
-    return true;
+    if (
+      this.state.walletInput.length > 0 &&
+      isDisableAddFlagCount === this.state.walletInput.length
+    ) {
+      this.setState({
+        isAddAnotherButtonsDisabled: false,
+      });
+    } else {
+      this.setState({
+        isAddAnotherButtonsDisabled: true,
+      });
+    }
   };
   handleSetCoin = (data) => {
     let coinList = {
@@ -255,6 +834,211 @@ class NewHome extends BaseReactComponent {
       walletInput: newAddress,
     });
   };
+
+  addTrendingAddress = (passedIndex, isMobile) => {
+    const tempData = this.state.trendingAddresses[passedIndex].fullData;
+    ClickTrendingAddress({
+      session_id: getCurrentUser().id,
+      address: this.state.trendingAddresses[passedIndex].address,
+      isMobile: isMobile,
+    });
+
+    // New
+
+    let walletAddress = [];
+    let addWallet = tempData;
+    let addWalletTemp = tempData;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
+
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.sessionStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    this.props.createAnonymousUserApi(data, this, finalArr, null);
+  };
+  addAdressesGo = () => {
+    let walletAddress = [];
+    let addWallet = this.state.walletInput;
+    let addWalletTemp = this.state.walletInput;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
+
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.sessionStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    this.props.createAnonymousUserApi(data, this, finalArr, null);
+
+    const address = finalArr?.map((e) => e.address);
+
+    const unrecog_address = finalArr
+      .filter((e) => !e.coinFound)
+      .map((e) => e.address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    finalArr
+      .filter((e) => e.coinFound)
+      .map((obj) => {
+        let coinName = obj.coins
+          .filter((e) => e.chain_detected)
+          .map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    LPC_Go({
+      addresses: address,
+      ENS: address,
+      chains_detected_against_them: blockchainDetected,
+      unrecognized_addresses: unrecog_address,
+      unrecognized_ENS: unrecog_address,
+      nicknames: nicknames,
+    });
+  };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -292,7 +1076,11 @@ class NewHome extends BaseReactComponent {
             coinColor: parentCoinList[i].color,
             subChains: parentCoinList[i].sub_chains,
           },
-          this
+          this,
+          false,
+          0,
+          false,
+          false
         );
       }
     }
@@ -308,6 +1096,37 @@ class NewHome extends BaseReactComponent {
 
       // walletCopy[foundIndex].trucatedAddress = value
     }
+
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
+  };
+  FocusInInput = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    // if (foundIndex > -1) {
+    //   // let prevValue = walletCopy[foundIndex].nickname;
+
+    //   walletCopy[foundIndex].showAddress = true;
+    //   walletCopy[foundIndex].showNickname = true;
+
+    //   // walletCopy[foundIndex].trucatedAddress = value
+    // }
+    walletCopy?.map((address, i) => {
+      if (address.id === name) {
+        walletCopy[i].showAddress = true;
+        walletCopy[i].showNickname = true;
+      } else {
+        walletCopy[i].showAddress =
+          walletCopy[i].nickname === "" ? true : false;
+        walletCopy[i].showNickname =
+          walletCopy[i].nickname !== "" ? true : false;
+      }
+    });
 
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
@@ -426,17 +1245,6 @@ class NewHome extends BaseReactComponent {
     window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
 
-  openSignInOnclickModal = () => {
-    this.setState(
-      {
-        showClickSignInText: true,
-      },
-      () => {
-        this.showSignInModal();
-      }
-    );
-  };
-
   onPageChange = () => {
     this.setState({
       goToBottom: true,
@@ -485,33 +1293,104 @@ class NewHome extends BaseReactComponent {
       this.props.getSmartMoney(data, this, this.state.pageLimit);
     }, 300);
   };
-
+  opneLoginModal = () => {
+    this.toggleAuthModal("login");
+  };
   componentDidMount() {
+    if (mobileCheck(true)) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
+
+    this.props.setHeaderReducer([]);
+    this.setState({ startTime: new Date() * 1 });
+    let currencyRates = JSON.parse(
+      window.sessionStorage.getItem("currencyRates")
+    );
+    if (!currencyRates) {
+      getAllCurrencyRatesApi();
+    }
+    if (getToken()) {
+      let isStopRedirect =
+        window.sessionStorage.getItem("stop_redirect") &&
+        JSON.parse(window.sessionStorage.getItem("stop_redirect"));
+      if (isStopRedirect) {
+        this.props.setPageFlagDefault();
+
+        if (!mobileCheck()) {
+          deleteToken();
+        }
+      } else {
+        // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
+        let user = window.sessionStorage.getItem("lochUser")
+          ? JSON.parse(window.sessionStorage.getItem("lochUser"))
+          : false;
+        if (user) {
+          this.props.history.push("/home");
+        } else {
+          this.props.setPageFlagDefault();
+          if (!mobileCheck()) {
+            deleteToken();
+          }
+          //  window.sessionStorage.setItem("defi_access", true);
+          //  window.sessionStorage.setItem("isPopup", true);
+          //  // window.sessionStorage.setItem("whalepodview", true);
+          //  window.sessionStorage.setItem(
+          //    "whalepodview",
+          //    JSON.stringify({ access: true, id: "" })
+          //  );
+          // window.sessionStorage.setItem(
+          //   "isSubmenu",
+          //   JSON.stringify({
+          //     me: false,
+          //     discover: false,
+          //     intelligence: false,
+          //   })
+          // );
+          setLocalStoraage();
+          let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+          if (!isRefresh) {
+            window.sessionStorage.setItem("refresh", true);
+            window.location.reload(true);
+          }
+        }
+      }
+    } else {
+      this.props.setPageFlagDefault();
+      if (!mobileCheck()) {
+        deleteToken();
+      }
+      // window.sessionStorage.setItem("defi_access", true);
+      // window.sessionStorage.setItem("isPopup", true);
+      // // window.sessionStorage.setItem("whalepodview", true);
+      // window.sessionStorage.setItem(
+      //   "whalepodview",
+      //   JSON.stringify({ access: true, id: "" })
+      // );
+      // // window.sessionStorage.setItem("isSubmenu", false);
+      //  window.sessionStorage.setItem(
+      //    "isSubmenu",
+      //    JSON.stringify({
+      //      me: false,
+      //      discover: false,
+      //      intelligence: false,
+      //    })
+      //  );
+      setLocalStoraage();
+      let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+      if (!isRefresh) {
+        window.sessionStorage.setItem("refresh", true);
+        window.location.reload(true);
+      }
+    }
     // For input
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
         wallet.address ? true : false
       ),
     });
-    if (this.props.exchanges) {
-      let text = "";
 
-      Promise.all(
-        this.props.exchanges
-          ?.filter((e) => e.isActive)
-          .map(
-            (e) => (text = text == "" ? text + e?.name : text + ", " + e?.name)
-          )
-      ).then(() => {
-        this.setState({
-          connectText: text == "" ? "Connect exchanges" : text + " connected",
-        });
-      });
-    } else {
-      this.setState({
-        connectText: "Connect exchanges",
-      });
-    }
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.setState({
@@ -521,7 +1400,6 @@ class NewHome extends BaseReactComponent {
     this.props.GetAllPlan();
 
     // For smart money
-    getAllCurrencyRatesApi();
 
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -530,6 +1408,7 @@ class NewHome extends BaseReactComponent {
       this.setState({
         blurTable: false,
       });
+      this.createEmptyUser();
     } else {
       this.setState({
         blurTable: true,
@@ -558,6 +1437,35 @@ class NewHome extends BaseReactComponent {
     this.updateTimer(true);
   }
 
+  checkUser = () => {
+    let token = window.sessionStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (token && lochUser && lochUser.email) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  handleSubmitEmail = (val = false) => {
+    if (this.state.email) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.email);
+      EmailAddressAdded({ email_address: this.state.email, session_id: "" });
+      signIn(this, data, true, val);
+      // this.toggleAuthModal('verify');
+    }
+  };
+
+  handleSubmitOTP = () => {
+    if (this.state.otp) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.email);
+      data.append("otp_token", this.state.otp);
+      this.props.verifyUser(this, data, true);
+    }
+  };
+
   changePageLimit = (dropdownResponse) => {
     const tempHolder = dropdownResponse.split(" ");
     if (tempHolder && tempHolder.length > 1) {
@@ -578,7 +1486,218 @@ class NewHome extends BaseReactComponent {
       });
     }
   };
+  connectWalletEthers = async () => {
+    ConnectWalletButtonClickedWelcome({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
+      try {
+        const tempRes = await provider.send("eth_requestAccounts", []);
+
+        if (tempRes && tempRes.length > 0) {
+          window.sessionStorage.setItem("connectWalletCreditOnce", true);
+          this.addToList(tempRes);
+        }
+      } catch (error) {
+        console.log("ethers error ", error);
+      }
+    }
+  };
+  addToList = (addThese) => {
+    const curItem = addThese[0];
+
+    if (curItem) {
+      this.setState(
+        {
+          currentMetamaskWallet: {
+            address: curItem,
+            coinFound: true,
+            coins: [],
+            displayAddress: curItem,
+            nameTag: "",
+            nickname: "",
+            showAddress: true,
+            showNameTag: false,
+            showNickname: false,
+            wallet_metadata: null,
+          },
+        },
+        () => {
+          this.getCoinBasedOnLocalWallet("randomName", curItem);
+        }
+      );
+    }
+  };
+  getCoinBasedOnLocalWallet = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          true,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoinByLocalWallet = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = this.state.currentMetamaskWallet;
+    console.log("Here");
+    data.address === newAddress.address &&
+      newAddress.coins.push(...newCoinList);
+    // new code added
+    // if (data.id === newAddress.id) {
+    //   newAddress.address = data.address;
+    // }
+
+    newAddress.coinFound =
+      newAddress.coins &&
+      newAddress.coins.some((e) => e.chain_detected === true);
+    newAddress.apiAddress = data?.apiaddress;
+
+    this.setState(
+      {
+        currentMetamaskWallet: newAddress,
+      },
+      () => {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          this.callUpdateApi(this.state.currentMetamaskWallet);
+        }, 2000);
+      }
+    );
+  };
+  callUpdateApi = (passedItem) => {
+    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addressList = [];
+    let nicknameArr = {};
+    let walletList = [];
+    let arr = [];
+    if (walletAddress) {
+      walletAddress.forEach((curr) => {
+        let isIncluded = false;
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes.displayAddress?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes.address?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      });
+    }
+    if (passedItem) {
+      if (passedItem.address) {
+        // TopBarMetamaskWalletConnected({
+        //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        //   address: passedItem.address,
+        // });
+
+        this.props.setMetamaskConnectedReducer(passedItem.address);
+        window.sessionStorage.setItem(
+          "setMetamaskConnectedSessionStorage",
+          passedItem.address
+        );
+      }
+      if (!arr.includes(passedItem.address?.trim()) && passedItem.address) {
+        walletList.push(passedItem);
+        arr.push(passedItem.address?.trim());
+        nicknameArr[passedItem.address?.trim()] = passedItem.nickname;
+        arr.push(passedItem.displayAddress?.trim());
+        arr.push(passedItem.address?.trim());
+        addressList.push(passedItem.address?.trim());
+      }
+    }
+    let addWallet = walletList.map((w, i) => {
+      return {
+        ...w,
+        id: `wallet${i + 1}`,
+      };
+    });
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+
+    this.props.createAnonymousUserApi(data, this, addWallet, null);
+    // this.props.updateUserWalletApi(data, this, yieldData);
+  };
+  onboardingShowConnectModal = (
+    address = this.state.onboardingWalletAddress
+  ) => {
+    this.setState(
+      {
+        onboardingConnectExchangeModal: true,
+      },
+      () => {
+        if (this.state.onboardingConnectExchangeModal) {
+          LPConnectExchange();
+        }
+      }
+    );
+  };
+  hideOnboardingShowPrevModal = () => {
+    this.setState({
+      onboardingConnectExchangeModal: false,
+    });
+  };
+  onboardingHandleUpdateConnect = (
+    exchanges = this.state.onboardingExchanges
+  ) => {
+    this.setState({
+      onboardingExchanges: exchanges,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
@@ -591,35 +1710,7 @@ class NewHome extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
     }
     if (this.state.walletInput !== prevState.walletInput) {
-      let chainNotDetected = false;
-
-      this.state.walletInput.forEach((indiWallet) => {
-        let anyCoinPresent = false;
-        if (
-          indiWallet.coins &&
-          indiWallet.coinFound &&
-          indiWallet.coins.length > 0
-        ) {
-          indiWallet.coins.forEach((indiCoin) => {
-            if (indiCoin?.chain_detected) {
-              anyCoinPresent = true;
-            }
-          });
-        }
-        if (!anyCoinPresent) {
-          chainNotDetected = true;
-        }
-      });
-
-      if (chainNotDetected) {
-        this.setState({
-          disableGoBtn: true,
-        });
-      } else {
-        this.setState({
-          disableGoBtn: false,
-        });
-      }
+      this.isDisabled();
     }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
@@ -703,518 +1794,21 @@ class NewHome extends BaseReactComponent {
   }
 
   render() {
-    console.log("this.state.walletInput ", this.state.walletInput);
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileHome
+          exchanges={this.state.onboardingExchanges}
+          history={this.props.history}
+          location={this.props.location}
+          makeTrendingAddressesVisible={this.makeTrendingAddressesVisible}
+          addTrendingAddress={this.addTrendingAddress}
+          trendingAddresses={this.state.trendingAddresses}
+          isTrendingAddresses={this.state.isTrendingAddresses}
+        />
+      );
+    }
     const tableData = this.state.accountList;
-    const trendingAddresses = [
-      {
-        address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-        worth: 28891163.13,
-        trimmedAddress: "0x51C...a7F",
-        fullData: [
-          {
-            address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-            apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-            coinFound: [
-              {
-                chain_detected: true,
-                coinCode: "ETH",
-                coinName: "Ethereum",
-                coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                coinColor: "#7B44DA",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ARB",
-                coinName: "Arbitrum",
-                coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                coinColor: "#2C374B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "AVAX",
-                coinName: "Avalanche",
-                coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                coinColor: "#E84042",
-              },
-              {
-                chain_detected: true,
-                coinCode: "BSC",
-                coinName: "BSC",
-                coinSymbol: "https://media.loch.one/loch-binance.svg",
-                coinColor: "#F0B90B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "CELO",
-                coinName: "Celo",
-                coinSymbol: "https://media.loch.one/loch-celo.svg",
-                coinColor: "#F4CE6F",
-              },
-              {
-                chain_detected: true,
-                coinCode: "FTM",
-                coinName: "Fantom",
-                coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                coinColor: "#13B5EC",
-              },
-              {
-                chain_detected: true,
-                coinCode: "OP",
-                coinName: "Optimism",
-                coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                coinColor: "#FF0420",
-              },
-              {
-                chain_detected: true,
-                coinCode: "POLYGON",
-                coinName: "Polygon",
-                coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                coinColor: "#8247E5",
-              },
-              {
-                chain_detected: false,
-                coinCode: "LTC",
-                coinName: "Litecoin",
-                coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                coinColor: "#345D9D",
-              },
-              {
-                chain_detected: false,
-                coinCode: "SOL",
-                coinName: "Solana",
-                coinSymbol: "https://media.loch.one/loch-solana.svg",
-                coinColor: "#5ADDA6",
-              },
-              {
-                chain_detected: false,
-                coinCode: "BTC",
-                coinName: "Bitcoin",
-                coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                coinColor: "#F19938",
-              },
-              {
-                chain_detected: false,
-                coinCode: "XLM",
-                coinName: "Stellar",
-                coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                coinColor: "#19191A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ALGO",
-                coinName: "Algorand",
-                coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                coinColor: "#19191A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "TRX",
-                coinName: "Tron",
-                coinSymbol: "https://media.loch.one/loch-tron.svg",
-                coinColor: "#FF060A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ADA",
-                coinName: "Cardano",
-                coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                coinColor: "#0033AD",
-              },
-            ],
-            displayAddress: "",
-            id: "wallet1",
-            loadingNameTag: false,
-            nameTag: "",
-            nickname: "",
-            showAddress: true,
-            showNameTag: false,
-            showNickname: false,
-            wallet_metadata: {},
-          },
-        ],
-      },
-      {
-        address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
-        worth: 38993631.363,
-        trimmedAddress: "0xeB2...a4c",
-        fullData: [
-          {
-            address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
-            apiAddress: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
-            coinFound: [
-              {
-                chain_detected: true,
-                coinCode: "ETH",
-                coinName: "Ethereum",
-                coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                coinColor: "#7B44DA",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ARB",
-                coinName: "Arbitrum",
-                coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                coinColor: "#2C374B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "AVAX",
-                coinName: "Avalanche",
-                coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                coinColor: "#E84042",
-              },
-              {
-                chain_detected: true,
-                coinCode: "BSC",
-                coinName: "BSC",
-                coinSymbol: "https://media.loch.one/loch-binance.svg",
-                coinColor: "#F0B90B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "CELO",
-                coinName: "Celo",
-                coinSymbol: "https://media.loch.one/loch-celo.svg",
-                coinColor: "#F4CE6F",
-              },
-              {
-                chain_detected: true,
-                coinCode: "FTM",
-                coinName: "Fantom",
-                coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                coinColor: "#13B5EC",
-              },
-              {
-                chain_detected: true,
-                coinCode: "OP",
-                coinName: "Optimism",
-                coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                coinColor: "#FF0420",
-              },
-              {
-                chain_detected: true,
-                coinCode: "POLYGON",
-                coinName: "Polygon",
-                coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                coinColor: "#8247E5",
-              },
-              {
-                chain_detected: false,
-                coinCode: "BTC",
-                coinName: "Bitcoin",
-                coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                coinColor: "#F19938",
-              },
-              {
-                chain_detected: false,
-                coinCode: "SOL",
-                coinName: "Solana",
-                coinSymbol: "https://media.loch.one/loch-solana.svg",
-                coinColor: "#5ADDA6",
-              },
-              {
-                chain_detected: false,
-                coinCode: "LTC",
-                coinName: "Litecoin",
-                coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                coinColor: "#345D9D",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ALGO",
-                coinName: "Algorand",
-                coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                coinColor: "#19191A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ADA",
-                coinName: "Cardano",
-                coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                coinColor: "#0033AD",
-              },
-              {
-                chain_detected: false,
-                coinCode: "TRX",
-                coinName: "Tron",
-                coinSymbol: "https://media.loch.one/loch-tron.svg",
-                coinColor: "#FF060A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "XLM",
-                coinName: "Stellar",
-                coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                coinColor: "#19191A",
-              },
-            ],
-            displayAddress: "",
-            id: "wallet1",
-            loadingNameTag: false,
-            nameTag: "",
-            nickname: "",
-            showAddress: true,
-            showNameTag: false,
-            showNickname: false,
-            wallet_metadata: {},
-          },
-        ],
-      },
-      {
-        address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-        worth: 111935898.211,
-        trimmedAddress: "0x36c...fc6",
-        fullData: [
-          {
-            address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-            apiAddress: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-            coinFound: [
-              {
-                chain_detected: false,
-                coinCode: "SOL",
-                coinName: "Solana",
-                coinSymbol: "https://media.loch.one/loch-solana.svg",
-                coinColor: "#5ADDA6",
-              },
-              {
-                chain_detected: false,
-                coinCode: "LTC",
-                coinName: "Litecoin",
-                coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                coinColor: "#345D9D",
-              },
-              {
-                chain_detected: false,
-                coinCode: "BTC",
-                coinName: "Bitcoin",
-                coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                coinColor: "#F19938",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ALGO",
-                coinName: "Algorand",
-                coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                coinColor: "#19191A",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ETH",
-                coinName: "Ethereum",
-                coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                coinColor: "#7B44DA",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ARB",
-                coinName: "Arbitrum",
-                coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                coinColor: "#2C374B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "AVAX",
-                coinName: "Avalanche",
-                coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                coinColor: "#E84042",
-              },
-              {
-                chain_detected: true,
-                coinCode: "BSC",
-                coinName: "BSC",
-                coinSymbol: "https://media.loch.one/loch-binance.svg",
-                coinColor: "#F0B90B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "CELO",
-                coinName: "Celo",
-                coinSymbol: "https://media.loch.one/loch-celo.svg",
-                coinColor: "#F4CE6F",
-              },
-              {
-                chain_detected: true,
-                coinCode: "FTM",
-                coinName: "Fantom",
-                coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                coinColor: "#13B5EC",
-              },
-              {
-                chain_detected: true,
-                coinCode: "OP",
-                coinName: "Optimism",
-                coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                coinColor: "#FF0420",
-              },
-              {
-                chain_detected: true,
-                coinCode: "POLYGON",
-                coinName: "Polygon",
-                coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                coinColor: "#8247E5",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ADA",
-                coinName: "Cardano",
-                coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                coinColor: "#0033AD",
-              },
-              {
-                chain_detected: false,
-                coinCode: "TRX",
-                coinName: "Tron",
-                coinSymbol: "https://media.loch.one/loch-tron.svg",
-                coinColor: "#FF060A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "XLM",
-                coinName: "Stellar",
-                coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                coinColor: "#19191A",
-              },
-            ],
-            displayAddress: "",
-            id: "wallet1",
-            loadingNameTag: false,
-            nameTag: "",
-            nickname: "",
-            showAddress: true,
-            showNameTag: false,
-            showNickname: false,
-            wallet_metadata: {},
-          },
-        ],
-      },
-      {
-        address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-        worth: 111935898.211,
-        trimmedAddress: "0x36c...fc6",
-        fullData: [
-          {
-            address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-            apiAddress: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-            coinFound: [
-              {
-                chain_detected: false,
-                coinCode: "SOL",
-                coinName: "Solana",
-                coinSymbol: "https://media.loch.one/loch-solana.svg",
-                coinColor: "#5ADDA6",
-              },
-              {
-                chain_detected: false,
-                coinCode: "LTC",
-                coinName: "Litecoin",
-                coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                coinColor: "#345D9D",
-              },
-              {
-                chain_detected: false,
-                coinCode: "BTC",
-                coinName: "Bitcoin",
-                coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                coinColor: "#F19938",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ALGO",
-                coinName: "Algorand",
-                coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                coinColor: "#19191A",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ETH",
-                coinName: "Ethereum",
-                coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                coinColor: "#7B44DA",
-              },
-              {
-                chain_detected: true,
-                coinCode: "ARB",
-                coinName: "Arbitrum",
-                coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                coinColor: "#2C374B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "AVAX",
-                coinName: "Avalanche",
-                coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                coinColor: "#E84042",
-              },
-              {
-                chain_detected: true,
-                coinCode: "BSC",
-                coinName: "BSC",
-                coinSymbol: "https://media.loch.one/loch-binance.svg",
-                coinColor: "#F0B90B",
-              },
-              {
-                chain_detected: true,
-                coinCode: "CELO",
-                coinName: "Celo",
-                coinSymbol: "https://media.loch.one/loch-celo.svg",
-                coinColor: "#F4CE6F",
-              },
-              {
-                chain_detected: true,
-                coinCode: "FTM",
-                coinName: "Fantom",
-                coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                coinColor: "#13B5EC",
-              },
-              {
-                chain_detected: true,
-                coinCode: "OP",
-                coinName: "Optimism",
-                coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                coinColor: "#FF0420",
-              },
-              {
-                chain_detected: true,
-                coinCode: "POLYGON",
-                coinName: "Polygon",
-                coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                coinColor: "#8247E5",
-              },
-              {
-                chain_detected: false,
-                coinCode: "ADA",
-                coinName: "Cardano",
-                coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                coinColor: "#0033AD",
-              },
-              {
-                chain_detected: false,
-                coinCode: "TRX",
-                coinName: "Tron",
-                coinSymbol: "https://media.loch.one/loch-tron.svg",
-                coinColor: "#FF060A",
-              },
-              {
-                chain_detected: false,
-                coinCode: "XLM",
-                coinName: "Stellar",
-                coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                coinColor: "#19191A",
-              },
-            ],
-            displayAddress: "",
-            id: "wallet1",
-            loadingNameTag: false,
-            nameTag: "",
-            nickname: "",
-            showAddress: true,
-            showNameTag: false,
-            showNickname: false,
-            wallet_metadata: {},
-          },
-        ],
-      },
-    ];
+
     const columnList = [
       {
         labelName: (
@@ -1309,7 +1903,7 @@ class NewHome extends BaseReactComponent {
                     // });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {
-                    this.openSignInOnclickModal();
+                    this.opneLoginModal();
                   }
                 }}
                 className="top-account-address"
@@ -1605,20 +2199,10 @@ class NewHome extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className=" history-table-header-col no-hover"
-            id="netflows"
-            // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
+          <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Follow
             </span>
-            {/* <Image
-              src={sortByIcon}
-              className={
-                this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            /> */}
           </div>
         ),
         dataKey: "following",
@@ -1635,7 +2219,7 @@ class NewHome extends BaseReactComponent {
                   rowData.tagName
                 );
               } else {
-                this.openSignInOnclickModal();
+                this.opneLoginModal();
               }
             };
             return (
@@ -1648,129 +2232,95 @@ class NewHome extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className=" history-table-header-col no-hover"
-      //       id="netflows"
-      //       // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Unrealized
-      //       </span>
-      //       {/* <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       /> */}
-      //     </div>
-      //   ),
-      //   dataKey: "returns",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "returns") {
-      //       let tempReturns = rowData.returns ? rowData.returns : 0;
-      //       let tempCurrencyRate = this.state.currency?.rate
-      //         ? this.state.currency.rate
-      //         : 0;
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             tempReturns * tempCurrencyRate
-      //               ? amountFormat(
-      //                   Math.abs(tempReturns * tempCurrencyRate),
-      //                   "en-US",
-      //                   "USD"
-      //                 ) + "%"
-      //               : "0.00%"
-      //           }
-      //         >
-      //           <div className="gainLossContainer">
-      //             <div
-      //               className={`gainLoss `}
-      //               onMouseEnter={() => {
-      //                 SmartMoneyReturnHover({
-      //                   session_id: getCurrentUser().id,
-      //                   email_address: getCurrentUser().email,
-      //                   hover:
-      //                     tempReturns * tempCurrencyRate
-      //                       ? amountFormat(
-      //                           Math.abs(tempReturns * tempCurrencyRate),
-      //                           "en-US",
-      //                           "USD"
-      //                         ) + "%"
-      //                       : "0.00%",
-      //                 });
-      //                 this.updateTimer();
-      //               }}
-      //             >
-      //               {tempReturns !== 0 ? (
-      //                 <Image
-      //                   style={{
-      //                     height: "1.5rem",
-      //                     width: "1.5rem",
-      //                   }}
-      //                   src={
-      //                     tempReturns < 0
-      //                       ? ArrowDownLeftSmallIcon
-      //                       : ArrowUpRightSmallIcon
-      //                   }
-      //                   className="mr-2"
-      //                 />
-      //               ) : null}
-      //               <span className="inter-display-medium f-s-13 lh-16 grey-313">
-      //                 {numToCurrency(tempReturns * tempCurrencyRate) + "%"}
-      //               </span>
-      //             </div>
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
     ];
 
     return (
       <div className="new-homepage">
+        {this.state.onboardingConnectExchangeModal ? (
+          <ConnectModal
+            show={this.state.onboardingConnectExchangeModal}
+            onHide={this.hideOnboardingShowPrevModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+            ishome={true}
+            tracking="landing page"
+            walletAddress={this.state.onboardingWalletAddress}
+            exchanges={this.state.onboardingExchanges}
+            onboardingHandleUpdateConnect={this.onboardingHandleUpdateConnect}
+            modalAnimation
+          />
+        ) : null}
+        {this.state.authmodal == "login" ? (
+          <Login
+            toggleModal={this.toggleAuthModal}
+            email={this.state.email}
+            handleChangeEmail={(val) => {
+              this.setState({
+                email: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmail}
+            show={this.state.authmodal == "login"}
+          />
+        ) : this.state.authmodal == "verify" ? (
+          <Verify
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "verify"}
+            handleSubmitEmail={this.handleSubmitEmail}
+            otp={this.state.otp}
+            handleChangeOTP={(val) => {
+              this.setState({
+                otp: val,
+              });
+            }}
+            handleSubmitOTP={this.handleSubmitOTP}
+          />
+        ) : null}
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
             <div className="d-flex justify-content-between">
               <div className="d-flex" style={{ gap: "12px" }}>
-                <button className="new-homepage-btn new-homepage-btn--blur">
+                <button
+                  onClick={this.connectWalletEthers}
+                  className="new-homepage-btn new-homepage-btn--blur"
+                >
                   <img src={walletIconsWhite} alt="" />
                   Connect Wallet
                 </button>
-                <button className="new-homepage-btn new-homepage-btn--blur">
+                <button
+                  onClick={this.onboardingShowConnectModal}
+                  className="new-homepage-btn new-homepage-btn--blur"
+                >
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
               </div>
-              <button
-                className="new-homepage-btn new-homepage-btn--white"
-                style={{ padding: "8px 12px" }}
-              >
-                <div
-                  style={{
-                    borderRadius: "6px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "20px",
-                    height: "20px",
-                    border: "1px solid #E5E5E6",
+              {this.checkUser() ? null : (
+                <button
+                  className="new-homepage-btn new-homepage-btn--white"
+                  style={{ padding: "8px 12px" }}
+                  onClick={() => {
+                    this.toggleAuthModal("login");
                   }}
                 >
-                  <img src={personRounded} alt="" />
-                </div>
-                Sign in
-              </button>
+                  <div
+                    style={{
+                      borderRadius: "6px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "20px",
+                      height: "20px",
+                      border: "1px solid #E5E5E6",
+                    }}
+                  >
+                    <img src={personRounded} alt="" />
+                  </div>
+                  Sign in
+                </button>
+              )}
             </div>
             <div className="new-homepage__header-title-wrapper">
               <img src={logo} style={{ width: "140px" }} alt="" />
@@ -1814,187 +2364,18 @@ class NewHome extends BaseReactComponent {
                     return null;
                   }
                   return (
-                    <div className="new-homepage__body-search_input_body_container">
-                      <div className="new-homepage__body-search_input_body">
-                        <div
-                          style={index === 9 ? { marginBottom: "0rem" } : {}}
-                          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
-                        >
-                          <div
-                            className={`awInputWrapper ${
-                              this.state.walletInput[index].address
-                                ? "isAwInputWrapperValid"
-                                : null
-                            }`}
-                          >
-                            <>
-                              {c.showAddress && (
-                                <div className="awTopInputWrapper">
-                                  <div className="awInputContainer">
-                                    <input
-                                      name={`wallet${index + 1}`}
-                                      value={c.address || ""}
-                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                      placeholder=""
-                                      title={c.address || ""}
-                                      onChange={this.handleOnChange}
-                                      onKeyDown={this.handleTabPress}
-                                      autoFocus
-                                      onFocus={(e) => {
-                                        // this.FocusInInput(e);
-                                        this.showisTrendingAddressesAddress();
-                                        if (
-                                          this.props
-                                            .makeTrendingAddressesVisible
-                                        ) {
-                                          this.props.makeTrendingAddressesVisible();
-                                        }
-                                      }}
-                                    />
-                                  </div>
-
-                                  {this.state.walletInput?.map((e, i) => {
-                                    if (
-                                      this.state.walletInput[index].address &&
-                                      e.id === `wallet${index + 1}`
-                                    ) {
-                                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                      if (e.coinFound && e.coins.length > 0) {
-                                        return (
-                                          <CustomCoin
-                                            isStatic
-                                            coins={e.coins.filter(
-                                              (c) => c.chain_detected
-                                            )}
-                                            key={i}
-                                            isLoaded={true}
-                                          />
-                                        );
-                                      } else {
-                                        if (
-                                          e.coins.length ===
-                                          this.props.OnboardingState.coinsList
-                                            .length
-                                        ) {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={null}
-                                              key={i}
-                                              isLoaded={true}
-                                            />
-                                          );
-                                        } else {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={null}
-                                              key={i}
-                                              isLoaded={false}
-                                            />
-                                          );
-                                        }
-                                      }
-                                    } else {
-                                      return "";
-                                    }
-                                  })}
-                                </div>
-                              )}
-                              {c.coinFound && c.showNickname && (
-                                <div
-                                  className={`awBottomInputWrapper ${
-                                    c.showAddress ? "mt-2" : ""
-                                  }`}
-                                >
-                                  <div className="awInputContainer">
-                                    {c.nickname && c.nickname !== "" ? (
-                                      <div className="awLable">
-                                        Private Nametag
-                                      </div>
-                                    ) : null}
-                                    {/* <div className="awLable">Private Nametag</div> */}
-                                    <input
-                                      name={`wallet${index + 1}`}
-                                      value={c.nickname || ""}
-                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                      placeholder="Enter Private Nametag"
-                                      title={c.nickname || ""}
-                                      onChange={(e) => {
-                                        this.nicknameOnChain(e);
-                                      }}
-                                      onBlur={(e) => {
-                                        // LandingPageNickname({
-                                        //   session_id: getCurrentUser().id,
-                                        //   email_address: getCurrentUser().email,
-                                        //   nickname: e.target?.value,
-                                        //   address: c.address,
-                                        // });
-                                      }}
-                                      onFocus={(e) => {
-                                        // this.FocusInInput(e);
-                                      }}
-                                    />
-                                  </div>
-                                  {!c.showAddress &&
-                                    this.state.walletInput?.map((e, i) => {
-                                      if (
-                                        this.state.walletInput[index].address &&
-                                        e.id === `wallet${index + 1}`
-                                      ) {
-                                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                        if (e.coinFound && e.coins.length > 0) {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={e.coins.filter(
-                                                (c) => c.chain_detected
-                                              )}
-                                              key={i}
-                                              isLoaded={true}
-                                            />
-                                          );
-                                        } else {
-                                          if (
-                                            e.coins.length ===
-                                            this.props.OnboardingState.coinsList
-                                              .length
-                                          ) {
-                                            return (
-                                              <CustomCoin
-                                                isStatic
-                                                coins={null}
-                                                key={i}
-                                                isLoaded={true}
-                                              />
-                                            );
-                                          } else {
-                                            return (
-                                              <CustomCoin
-                                                isStatic
-                                                coins={null}
-                                                key={i}
-                                                isLoaded={false}
-                                              />
-                                            );
-                                          }
-                                        }
-                                      } else {
-                                        return "";
-                                      }
-                                    })}
-                                  {/* {c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null} */}
-                                </div>
-                              )}
-                            </>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="new-homepage__body-search_input_body_main_container">
+                      <NewHomeInputBlock
+                        c={c}
+                        index={index}
+                        walletInput={this.state.walletInput}
+                        nicknameOnChain={this.nicknameOnChain}
+                        handleOnChange={this.handleOnChange}
+                        showisTrendingAddressesAddress={
+                          this.showisTrendingAddressesAddress
+                        }
+                        FocusInInput={this.FocusInInput}
+                      />
                     </div>
                   );
                 })}
@@ -2043,11 +2424,11 @@ class NewHome extends BaseReactComponent {
                   </div>
                 </div>
                 <div className="new-homepage__body-trending-address__address-wrapper">
-                  {trendingAddresses.map((item, index) => (
+                  {this.state.trendingAddresses.map((item, index) => (
                     <div className="trendingAddressesBlockItemContainer">
                       <div
                         onClick={() => {
-                          // this.props.addTrendingAddress(index, false);
+                          this.addTrendingAddress(index, false);
                         }}
                         className="trendingAddressesBlockItem"
                       >
@@ -2083,68 +2464,50 @@ class NewHome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
-                <div
-                  className="smartMoneyTable"
-                  style={{
-                    marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
-                  }}
-                >
-                  <TransactionTable
-                    openSignInOnclickModal={this.openSignInOnclickModal}
-                    smartMoneyBlur={this.state.blurTable}
-                    // blurButtonClick={this.showAddSmartMoneyAddresses}
-                    isSmartMoney
-                    noSubtitleBottomPadding
-                    tableData={tableData}
-                    columnList={columnList}
-                    message={"No accounts found"}
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    pageLimit={this.state.pageLimit}
-                    changePageLimit={this.changePageLimit}
-                    addWatermark
-                    className={this.state.blurTable ? "noScroll" : ""}
-                    onBlurSignInClick={this.showSignInModal}
-                  />
-
-                  {this.state.signInModal ? (
-                    <AuthSmartMoneyModal
-                      hideOnblur
-                      showHiddenError
-                      modalAnimation={this.state.signInModalAnimation}
-                      show={this.state.signInModal}
-                      onHide={this.hideSignInSignUpModal}
-                      history={this.props.history}
-                      modalType={"create_account"}
-                      iconImage={SignInIcon}
-                      hideSkip={true}
-                      title="Sign in"
-                      description={
-                        this.state.showClickSignInText
-                          ? "Sign in to access the smartest money on-chain"
-                          : "Get right back into your account"
-                      }
-                      stopUpdate={true}
-                      tracking="Sign in button"
-                      goToSignUp={this.openSignUpModal}
-                      showClickSignInText
-                    />
-                  ) : null}
-                  {/* <div className="ShowDust">
-                  <p
-                    onClick={this.showDust}
-                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                {this.state.tableLoading ? (
+                  <div
+                    style={{
+                      background: "white",
+                      height: "100%",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: "100px 0",
+                    }}
                   >
-                    {this.state.showDust
-                      ? "Reveal dust (less than $1)"
-                      : "Hide dust (less than $1)"}
-                  </p>
-                </div> */}
-                </div>
+                    <Loading />
+                  </div>
+                ) : (
+                  <div
+                    className="smartMoneyTable"
+                    style={{
+                      marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                    }}
+                  >
+                    <TransactionTable
+                      openSignInOnclickModal={this.opneLoginModal}
+                      smartMoneyBlur={this.state.blurTable}
+                      // blurButtonClick={this.showAddSmartMoneyAddresses}
+                      isSmartMoney
+                      noSubtitleBottomPadding
+                      tableData={tableData}
+                      columnList={columnList}
+                      message={"No accounts found"}
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      pageLimit={this.state.pageLimit}
+                      changePageLimit={this.changePageLimit}
+                      addWatermark
+                      className={this.state.blurTable ? "noScroll" : ""}
+                      onBlurSignInClick={this.showSignInModal}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div
@@ -2182,67 +2545,27 @@ class NewHome extends BaseReactComponent {
                       return (
                         <div
                           style={{
-                            marginTop: index === 0 ? "0rem" : "",
+                            marginTop: index > 0 ? "1rem" : "",
                           }}
-                          className="newWelcomeAddedAddressesBlocks"
+                          className="newWelcomeAddedAddressesBlockContainer"
                         >
-                          <div className="newWelcomeAddedAddressesBlocksContent">
-                            {this.state.walletInput?.map((e, i) => {
-                              if (
-                                this.state.walletInput[index].address &&
-                                e.id === `wallet${index + 1}`
-                              ) {
-                                // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                if (e.coinFound && e.coins.length > 0) {
-                                  return (
-                                    <CustomCoin
-                                      isStatic
-                                      coins={e.coins.filter(
-                                        (c) => c.chain_detected
-                                      )}
-                                      key={i}
-                                      isLoaded={true}
-                                    />
-                                  );
-                                } else {
-                                  if (
-                                    e.coins.length ===
-                                    this.props.OnboardingState.coinsList.length
-                                  ) {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={true}
-                                      />
-                                    );
-                                  } else {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={false}
-                                      />
-                                    );
-                                  }
-                                }
-                              } else {
-                                return "";
-                              }
-                            })}
-                            <div className="inter-display-semi-bold newWelcomeAddedAddressesBlocksText ml-3 mr-3">
-                              Wallet {index + 1}
-                            </div>
-                            <div className="inter-display-medium newWelcomeAddedAddressesBlocksText">
-                              {c.address}
-                            </div>
+                          <div className="newWelcomeAddedAddressesBlockDelContainer">
+                            <Image
+                              className="newWelcomeAddedAddressesBlockDel"
+                              src={NewWelcomeTrashIcon}
+                              onClick={() => this.deleteInputField(index, c)}
+                            />
                           </div>
-                          <Image
-                            onClick={() => this.deleteInputField(index, c)}
-                            className="newWelcomeAddedAddressesBlocksDelIcon"
-                            src={NewWelcomeTrashIcon}
+                          <NewHomeInputBlock
+                            c={c}
+                            index={index}
+                            walletInput={this.state.walletInput}
+                            nicknameOnChain={this.nicknameOnChain}
+                            handleOnChange={this.handleOnChange}
+                            FocusInInput={this.FocusInInput}
+                            showisTrendingAddressesAddress={
+                              this.showisTrendingAddressesAddress
+                            }
                           />
                         </div>
                       );
@@ -2254,7 +2577,7 @@ class NewHome extends BaseReactComponent {
                     <button
                       onClick={this.addInputField}
                       className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"
-                      disabled={this.isDisabled()}
+                      disabled={this.state.isAddAnotherButtonsDisabled}
                     >
                       <Image
                         className="newHomeAddAnotherGoBtnsPlusIcon"
@@ -2264,7 +2587,8 @@ class NewHome extends BaseReactComponent {
                     </button>
                   ) : null}
                   <button
-                    disabled={this.isDisabled()}
+                    onClick={this.addAdressesGo}
+                    disabled={this.state.isGoButtonsDisabled}
                     className="newHomeAddAnotherGoBtns newHomeGoBtn"
                   >
                     Go
@@ -2299,6 +2623,9 @@ const mapDispatchToProps = {
   addExchangeTransaction,
   addUserCredits,
   createAnonymousUserSmartMoneyApi,
+  verifyUser,
+  setMetamaskConnectedReducer,
+  setPageFlagDefault,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewHome);
