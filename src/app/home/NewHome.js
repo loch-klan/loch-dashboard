@@ -7,7 +7,6 @@ import {
   ArrowUpRightSmallIcon,
   NewWelcomeAddAnotherPlusIcon,
   NewWelcomeCopyIcon,
-  NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons";
@@ -39,7 +38,10 @@ import TransactionTable from "../intelligence/TransactionTable";
 import AuthSmartMoneyModal from "../smartMoney/AuthSmartMoneyModal";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
-import { CustomCoin } from "../../utils/commonComponent";
+import {
+  AddTextbox,
+  DeleteWalletAddress,
+} from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
   detectNameTag,
@@ -61,10 +63,7 @@ import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
-import {
-  AddTextbox,
-  DeleteWalletAddress,
-} from "../../utils/AnalyticsFunctions.js";
+import NewHomeInputBlock from "./NewHomeInputBlock.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
@@ -84,6 +83,8 @@ class NewHome extends BaseReactComponent {
       tableLoading: false,
       goToBottom: false,
       initialInput: false,
+      isGoButtonsDisabled: false,
+      isAddAnotherButtonsDisabled: false,
       walletInput: [
         {
           id: `wallet1`,
@@ -156,33 +157,52 @@ class NewHome extends BaseReactComponent {
     }, 1000);
   };
   isDisabled = () => {
-    let isDisableFlagCount = 0;
-    // if (this.state.walletInput.length <= 0) {
-    //     isDisableFlag = true;
-    // }
-    console.log("this.state.walletInput ", this.state.walletInput);
-    this.state.walletInput?.forEach((e) => {
-      let isDisableFlag = false;
-      if (e.address) {
-        e.coins.forEach((a) => {
-          if (a.chain_detected === true) {
-            isDisableFlag = true;
-            return;
-          }
-        });
-      }
-      if (isDisableFlag) {
-        isDisableFlagCount++;
+    let isDisableAddFlagCount = 0;
+    let isDisableGoFlagCount = 0;
+
+    this.state.walletInput?.forEach((e, eIndex) => {
+      if (eIndex === this.state.walletInput.length - 1 && e.address === "") {
+        isDisableGoFlagCount++;
+      } else {
+        let isDisableFlag = false;
+        if (e.address) {
+          e.coins.forEach((a) => {
+            if (a.chain_detected === true) {
+              isDisableFlag = true;
+              return;
+            }
+          });
+        }
+        if (isDisableFlag) {
+          isDisableAddFlagCount++;
+          isDisableGoFlagCount++;
+        }
       }
     });
-    console.log("isDisableFlagCount ", isDisableFlagCount);
     if (
       this.state.walletInput.length > 0 &&
-      isDisableFlagCount === this.state.walletInput.length
+      isDisableGoFlagCount === this.state.walletInput.length
     ) {
-      return false;
+      this.setState({
+        isGoButtonsDisabled: false,
+      });
+    } else {
+      this.setState({
+        isGoButtonsDisabled: true,
+      });
     }
-    return true;
+    if (
+      this.state.walletInput.length > 0 &&
+      isDisableAddFlagCount === this.state.walletInput.length
+    ) {
+      this.setState({
+        isAddAnotherButtonsDisabled: false,
+      });
+    } else {
+      this.setState({
+        isAddAnotherButtonsDisabled: true,
+      });
+    }
   };
   handleSetCoin = (data) => {
     let coinList = {
@@ -591,35 +611,7 @@ class NewHome extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
     }
     if (this.state.walletInput !== prevState.walletInput) {
-      let chainNotDetected = false;
-
-      this.state.walletInput.forEach((indiWallet) => {
-        let anyCoinPresent = false;
-        if (
-          indiWallet.coins &&
-          indiWallet.coinFound &&
-          indiWallet.coins.length > 0
-        ) {
-          indiWallet.coins.forEach((indiCoin) => {
-            if (indiCoin?.chain_detected) {
-              anyCoinPresent = true;
-            }
-          });
-        }
-        if (!anyCoinPresent) {
-          chainNotDetected = true;
-        }
-      });
-
-      if (chainNotDetected) {
-        this.setState({
-          disableGoBtn: true,
-        });
-      } else {
-        this.setState({
-          disableGoBtn: false,
-        });
-      }
+      this.isDisabled();
     }
     if (!this.props.commonState.smart_money) {
       let token = window.sessionStorage.getItem("lochToken");
@@ -1814,187 +1806,17 @@ class NewHome extends BaseReactComponent {
                     return null;
                   }
                   return (
-                    <div className="new-homepage__body-search_input_body_container">
-                      <div className="new-homepage__body-search_input_body">
-                        <div
-                          style={index === 9 ? { marginBottom: "0rem" } : {}}
-                          className="addWalletWrapper inter-display-regular f-s-15 lh-20"
-                        >
-                          <div
-                            className={`awInputWrapper ${
-                              this.state.walletInput[index].address
-                                ? "isAwInputWrapperValid"
-                                : null
-                            }`}
-                          >
-                            <>
-                              {c.showAddress && (
-                                <div className="awTopInputWrapper">
-                                  <div className="awInputContainer">
-                                    <input
-                                      name={`wallet${index + 1}`}
-                                      value={c.address || ""}
-                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                      placeholder=""
-                                      title={c.address || ""}
-                                      onChange={this.handleOnChange}
-                                      onKeyDown={this.handleTabPress}
-                                      autoFocus
-                                      onFocus={(e) => {
-                                        // this.FocusInInput(e);
-                                        this.showisTrendingAddressesAddress();
-                                        if (
-                                          this.props
-                                            .makeTrendingAddressesVisible
-                                        ) {
-                                          this.props.makeTrendingAddressesVisible();
-                                        }
-                                      }}
-                                    />
-                                  </div>
-
-                                  {this.state.walletInput?.map((e, i) => {
-                                    if (
-                                      this.state.walletInput[index].address &&
-                                      e.id === `wallet${index + 1}`
-                                    ) {
-                                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                      if (e.coinFound && e.coins.length > 0) {
-                                        return (
-                                          <CustomCoin
-                                            isStatic
-                                            coins={e.coins.filter(
-                                              (c) => c.chain_detected
-                                            )}
-                                            key={i}
-                                            isLoaded={true}
-                                          />
-                                        );
-                                      } else {
-                                        if (
-                                          e.coins.length ===
-                                          this.props.OnboardingState.coinsList
-                                            .length
-                                        ) {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={null}
-                                              key={i}
-                                              isLoaded={true}
-                                            />
-                                          );
-                                        } else {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={null}
-                                              key={i}
-                                              isLoaded={false}
-                                            />
-                                          );
-                                        }
-                                      }
-                                    } else {
-                                      return "";
-                                    }
-                                  })}
-                                </div>
-                              )}
-                              {c.coinFound && c.showNickname && (
-                                <div
-                                  className={`awBottomInputWrapper ${
-                                    c.showAddress ? "mt-2" : ""
-                                  }`}
-                                >
-                                  <div className="awInputContainer">
-                                    {c.nickname && c.nickname !== "" ? (
-                                      <div className="awLable">
-                                        Private Nametag
-                                      </div>
-                                    ) : null}
-                                    {/* <div className="awLable">Private Nametag</div> */}
-                                    <input
-                                      name={`wallet${index + 1}`}
-                                      value={c.nickname || ""}
-                                      className={`inter-display-regular f-s-15 lh-20 awInput`}
-                                      placeholder="Enter Private Nametag"
-                                      title={c.nickname || ""}
-                                      onChange={(e) => {
-                                        this.nicknameOnChain(e);
-                                      }}
-                                      onBlur={(e) => {
-                                        // LandingPageNickname({
-                                        //   session_id: getCurrentUser().id,
-                                        //   email_address: getCurrentUser().email,
-                                        //   nickname: e.target?.value,
-                                        //   address: c.address,
-                                        // });
-                                      }}
-                                      onFocus={(e) => {
-                                        // this.FocusInInput(e);
-                                      }}
-                                    />
-                                  </div>
-                                  {!c.showAddress &&
-                                    this.state.walletInput?.map((e, i) => {
-                                      if (
-                                        this.state.walletInput[index].address &&
-                                        e.id === `wallet${index + 1}`
-                                      ) {
-                                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                        if (e.coinFound && e.coins.length > 0) {
-                                          return (
-                                            <CustomCoin
-                                              isStatic
-                                              coins={e.coins.filter(
-                                                (c) => c.chain_detected
-                                              )}
-                                              key={i}
-                                              isLoaded={true}
-                                            />
-                                          );
-                                        } else {
-                                          if (
-                                            e.coins.length ===
-                                            this.props.OnboardingState.coinsList
-                                              .length
-                                          ) {
-                                            return (
-                                              <CustomCoin
-                                                isStatic
-                                                coins={null}
-                                                key={i}
-                                                isLoaded={true}
-                                              />
-                                            );
-                                          } else {
-                                            return (
-                                              <CustomCoin
-                                                isStatic
-                                                coins={null}
-                                                key={i}
-                                                isLoaded={false}
-                                              />
-                                            );
-                                          }
-                                        }
-                                      } else {
-                                        return "";
-                                      }
-                                    })}
-                                  {/* {c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null} */}
-                                </div>
-                              )}
-                            </>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="new-homepage__body-search_input_body_main_container">
+                      <NewHomeInputBlock
+                        c={c}
+                        index={index}
+                        walletInput={this.state.walletInput}
+                        nicknameOnChain={this.nicknameOnChain}
+                        handleOnChange={this.handleOnChange}
+                        showisTrendingAddressesAddress={
+                          this.showisTrendingAddressesAddress
+                        }
+                      />
                     </div>
                   );
                 })}
@@ -2182,70 +2004,88 @@ class NewHome extends BaseReactComponent {
                       return (
                         <div
                           style={{
-                            marginTop: index === 0 ? "0rem" : "",
+                            marginTop: index > 0 ? "1rem" : "",
                           }}
-                          className="newWelcomeAddedAddressesBlocks"
                         >
-                          <div className="newWelcomeAddedAddressesBlocksContent">
-                            {this.state.walletInput?.map((e, i) => {
-                              if (
-                                this.state.walletInput[index].address &&
-                                e.id === `wallet${index + 1}`
-                              ) {
-                                // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                if (e.coinFound && e.coins.length > 0) {
-                                  return (
-                                    <CustomCoin
-                                      isStatic
-                                      coins={e.coins.filter(
-                                        (c) => c.chain_detected
-                                      )}
-                                      key={i}
-                                      isLoaded={true}
-                                    />
-                                  );
-                                } else {
-                                  if (
-                                    e.coins.length ===
-                                    this.props.OnboardingState.coinsList.length
-                                  ) {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={true}
-                                      />
-                                    );
-                                  } else {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={false}
-                                      />
-                                    );
-                                  }
-                                }
-                              } else {
-                                return "";
-                              }
-                            })}
-                            <div className="inter-display-semi-bold newWelcomeAddedAddressesBlocksText ml-3 mr-3">
-                              Wallet {index + 1}
-                            </div>
-                            <div className="inter-display-medium newWelcomeAddedAddressesBlocksText">
-                              {c.address}
-                            </div>
-                          </div>
-                          <Image
-                            onClick={() => this.deleteInputField(index, c)}
-                            className="newWelcomeAddedAddressesBlocksDelIcon"
-                            src={NewWelcomeTrashIcon}
+                          <NewHomeInputBlock
+                            c={c}
+                            index={index}
+                            walletInput={this.state.walletInput}
+                            nicknameOnChain={this.nicknameOnChain}
+                            handleOnChange={this.handleOnChange}
+                            showisTrendingAddressesAddress={
+                              this.showisTrendingAddressesAddress
+                            }
                           />
                         </div>
                       );
+                      // return (
+                      //   <div
+                      //     style={{
+                      //       marginTop: index === 0 ? "0rem" : "",
+                      //     }}
+                      //     className="newWelcomeAddedAddressesBlocks"
+                      //   >
+                      //     <div className="newWelcomeAddedAddressesBlocksContent">
+                      //       {this.state.walletInput?.map((e, i) => {
+                      //         if (
+                      //           this.state.walletInput[index].address &&
+                      //           e.id === `wallet${index + 1}`
+                      //         ) {
+                      //           // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                      //           if (e.coinFound && e.coins.length > 0) {
+                      //             return (
+                      //               <CustomCoin
+                      //                 isStatic
+                      //                 coins={e.coins.filter(
+                      //                   (c) => c.chain_detected
+                      //                 )}
+                      //                 key={i}
+                      //                 isLoaded={true}
+                      //               />
+                      //             );
+                      //           } else {
+                      //             if (
+                      //               e.coins.length ===
+                      //               this.props.OnboardingState.coinsList.length
+                      //             ) {
+                      //               return (
+                      //                 <CustomCoin
+                      //                   isStatic
+                      //                   coins={null}
+                      //                   key={i}
+                      //                   isLoaded={true}
+                      //                 />
+                      //               );
+                      //             } else {
+                      //               return (
+                      //                 <CustomCoin
+                      //                   isStatic
+                      //                   coins={null}
+                      //                   key={i}
+                      //                   isLoaded={false}
+                      //                 />
+                      //               );
+                      //             }
+                      //           }
+                      //         } else {
+                      //           return "";
+                      //         }
+                      //       })}
+                      //       <div className="inter-display-semi-bold newWelcomeAddedAddressesBlocksText ml-3 mr-3">
+                      //         Wallet {index + 1}
+                      //       </div>
+                      //       <div className="inter-display-medium newWelcomeAddedAddressesBlocksText">
+                      //         {c.address}
+                      //       </div>
+                      //     </div>
+                      //     <Image
+                      //       onClick={() => this.deleteInputField(index, c)}
+                      //       className="newWelcomeAddedAddressesBlocksDelIcon"
+                      //       src={NewWelcomeTrashIcon}
+                      //     />
+                      //   </div>
+                      // );
                     })}
                   </div>
                 ) : null}
@@ -2254,7 +2094,7 @@ class NewHome extends BaseReactComponent {
                     <button
                       onClick={this.addInputField}
                       className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"
-                      disabled={this.isDisabled()}
+                      disabled={this.state.isAddAnotherButtonsDisabled}
                     >
                       <Image
                         className="newHomeAddAnotherGoBtnsPlusIcon"
@@ -2264,7 +2104,7 @@ class NewHome extends BaseReactComponent {
                     </button>
                   ) : null}
                   <button
-                    disabled={this.isDisabled()}
+                    disabled={this.state.isGoButtonsDisabled}
                     className="newHomeAddAnotherGoBtns newHomeGoBtn"
                   >
                     Go
