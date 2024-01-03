@@ -50,8 +50,10 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
 import AuthModal from "./AuthModal";
+import ConfirmLeaveModal from "./ConformLeaveModal";
 import FeedbackModal from "./FeedbackModal";
 import SharePortfolio from "./SharePortfolio";
 import UpgradeModal from "./upgradeModal";
@@ -62,11 +64,10 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import ConfirmLeaveModal from "./ConformLeaveModal";
+import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
 import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
-import ConnectModal from "./ConnectModal.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -956,15 +957,15 @@ function Sidebar(props) {
                           activeclassname="none"
                         >
                           <Image
-                            src={TwoPeopleIcon}
-                            style={{ filter: "opacity(0.6)" }}
+                            src={feedbackIcon}
+                            // style={{ filter: "opacity(0.6)" }}
                           />
                           Feedback
                         </NavLink>
                       </li>
                       {/* <li>
                         <NavLink
-                          exact={true}
+                          exact={true}s
                           onClick={handleConnectModal}
                           className="nav-link none"
                           to="#"

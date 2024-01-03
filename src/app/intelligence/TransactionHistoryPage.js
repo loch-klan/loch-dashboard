@@ -251,6 +251,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     const transHistoryPageNumber = window.sessionStorage.getItem(
       "transHistoryPageNumber"
     );
@@ -355,35 +364,53 @@ class TransactionHistoryPage extends BaseReactComponent {
         }
       );
     } else {
-      this.props.history.replace({
-        search: `?p=${this.state.currentPage}`,
-      });
-      this.callApi(this.state.currentPage || START_INDEX);
-      this.props.getFilters(this);
-      this.props.getAllCoins();
-      // this.props.getCoinRate();
-      this.props.GetAllPlan();
-      this.props.getUser();
+      if (
+        !this.props.commonState.transactionHistory ||
+        !this.props.intelligenceState.table
+      ) {
+        this.props.updateWalletListFlag("transactionHistory", true);
+        this.props.history.replace({
+          search: `?p=${this.state.currentPage}`,
+        });
+        this.callApi(this.state.currentPage || START_INDEX);
+        this.props.getFilters(this);
+        this.props.getAllCoins();
+        // this.props.getCoinRate();
+        this.props.GetAllPlan();
+        this.props.getUser();
 
-      let obj = UpgradeTriggered();
+        let obj = UpgradeTriggered();
 
-      if (obj.trigger) {
-        this.setState(
-          {
-            triggerId: obj.id,
-            isStatic: true,
-          },
-          () => {
-            this.upgradeModal();
-          }
-        );
+        if (obj.trigger) {
+          this.setState(
+            {
+              triggerId: obj.id,
+              isStatic: true,
+            },
+            () => {
+              this.upgradeModal();
+            }
+          );
+        }
+        this.startPageView();
+        this.updateTimer(true);
+
+        return () => {
+          clearInterval(window.checkTransactionHistoryTimer);
+        };
+      } else {
+        this.props.getFilters(this);
+        this.props.getAllCoins();
+        // this.props.getCoinRate();
+        this.props.GetAllPlan();
+        this.props.getUser();
+        this.updateTimer(true);
+        this.setState({ tableLoading: false });
+        this.startPageView();
+        return () => {
+          clearInterval(window.checkTransactionHistoryTimer);
+        };
       }
-      this.startPageView();
-      this.updateTimer(true);
-
-      return () => {
-        clearInterval(window.checkTransactionHistoryTimer);
-      };
     }
   }
   updateTimer = (first) => {

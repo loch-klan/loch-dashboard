@@ -57,14 +57,21 @@ class Home extends BaseReactComponent {
       isTrendingAddresses: false,
       trendingAddresses: [
         {
-          address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-          worth: 28891163.13,
-          trimmedAddress: "0x51C...a7F",
+          address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+          worth: 17723868.951,
+          trimmedAddress: "0x26f...5b5",
           fullData: [
             {
-              address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-              apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+              apiAddress: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
               coinFound: [
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
                 {
                   chain_detected: true,
                   coinCode: "ETH",
@@ -123,6 +130,13 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
+                  coinCode: "ALGO",
+                  coinName: "Algorand",
+                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
+                  coinColor: "#19191A",
+                },
+                {
+                  chain_detected: false,
                   coinCode: "LTC",
                   coinName: "Litecoin",
                   coinSymbol: "https://media.loch.one/loch-litecoin.svg",
@@ -137,27 +151,6 @@ class Home extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
-                  coinCode: "BTC",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                  coinColor: "#F19938",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ALGO",
-                  coinName: "Algorand",
-                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
                   coinCode: "TRX",
                   coinName: "Tron",
                   coinSymbol: "https://media.loch.one/loch-tron.svg",
@@ -169,6 +162,13 @@ class Home extends BaseReactComponent {
                   coinName: "Cardano",
                   coinSymbol: "https://media.loch.one/loch-cardano.svg",
                   coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
                 },
               ],
               displayAddress: "",
@@ -1066,6 +1066,7 @@ class Home extends BaseReactComponent {
     });
   };
   render() {
+    console.log("onboardingWalletAddress ", this.state.onboardingWalletAddress);
     if (this.state.isMobileDevice) {
       return (
         <MobileHome

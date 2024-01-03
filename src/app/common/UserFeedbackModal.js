@@ -123,7 +123,7 @@ class UserFeedbackModal extends BaseReactComponent {
                           <Form onValidSubmit={this.handleNext} style={{alignItems:'center'}}>
                             {this.state.questions[this.state.currentQuestion]
                               .type == "radio" ? (
-                              <div className="d-flex" style={{ gap: "16px", marginRight:'52px' }}>
+                              <div className="d-flex" style={{ gap: "16px", marginRight:'52px', cursor:'pointer' }}>
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
                                   <div
                                     className="d-flex justify-content-center"
@@ -146,6 +146,10 @@ class UserFeedbackModal extends BaseReactComponent {
                                         ].value = item;
                                         this.setState({
                                           questions,
+                                        });
+                                        this.setState({
+                                          currentQuestion:
+                                            this.state.currentQuestion + 1,
                                         });
                                       }}
                                     />
