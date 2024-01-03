@@ -41,6 +41,7 @@ import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg"
 
 import {
   AddTextbox,
+  ClickTrendingAddress,
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
@@ -824,6 +825,100 @@ class NewHome extends BaseReactComponent {
       walletInput: newAddress,
     });
   };
+
+  addTrendingAddress = (passedIndex, isMobile) => {
+    const tempData = this.state.trendingAddresses[passedIndex].fullData;
+    ClickTrendingAddress({
+      session_id: getCurrentUser().id,
+      address: this.state.trendingAddresses[passedIndex].address,
+      isMobile: isMobile,
+    });
+
+    // New
+
+    let walletAddress = [];
+    let addWallet = tempData;
+    let addWalletTemp = tempData;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
+
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.sessionStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    this.props.createAnonymousUserApi(data, this, finalArr, null);
+  };
+
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -1134,6 +1229,16 @@ class NewHome extends BaseReactComponent {
     // this.startPageView();
     this.updateTimer(true);
   }
+
+  checkUser = () => {
+    let token = window.sessionStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (token && lochUser && lochUser.email) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
@@ -1973,28 +2078,30 @@ class NewHome extends BaseReactComponent {
                   Connect Exchange
                 </button>
               </div>
-              <button
-                className="new-homepage-btn new-homepage-btn--white"
-                style={{ padding: "8px 12px" }}
-                onClick={() => {
-                  this.toggleAuthModal("login");
-                }}
-              >
-                <div
-                  style={{
-                    borderRadius: "6px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "20px",
-                    height: "20px",
-                    border: "1px solid #E5E5E6",
+              {this.checkUser() ? null : (
+                <button
+                  className="new-homepage-btn new-homepage-btn--white"
+                  style={{ padding: "8px 12px" }}
+                  onClick={() => {
+                    this.toggleAuthModal("login");
                   }}
                 >
-                  <img src={personRounded} alt="" />
-                </div>
-                Sign in
-              </button>
+                  <div
+                    style={{
+                      borderRadius: "6px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "20px",
+                      height: "20px",
+                      border: "1px solid #E5E5E6",
+                    }}
+                  >
+                    <img src={personRounded} alt="" />
+                  </div>
+                  Sign in
+                </button>
+              )}
             </div>
             <div className="new-homepage__header-title-wrapper">
               <img src={logo} style={{ width: "140px" }} alt="" />
@@ -2102,7 +2209,7 @@ class NewHome extends BaseReactComponent {
                     <div className="trendingAddressesBlockItemContainer">
                       <div
                         onClick={() => {
-                          // this.props.addTrendingAddress(index, false);
+                          this.addTrendingAddress(index, false);
                         }}
                         className="trendingAddressesBlockItem"
                       >
