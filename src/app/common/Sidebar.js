@@ -1028,6 +1028,30 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Feedback"}
+                          >
+                            <div
+                              className={`nav-link nav-link-closed`}
+                              
+                              style={{ backround: "transparent" }}
+                              onClick={(e) => {
+                                handleUserFeedbackModal()
+                              }}
+                              // activeclassname="active"
+                            >
+                              <Image
+                                src={feedbackIcon}
+                                // className="followingImg"
+                              />
+                            </div>
+                          </CustomOverlay>
+                        </li>
                       </ul>
                     </nav>
                   </div>
