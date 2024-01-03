@@ -122,7 +122,14 @@ class Profile extends Component {
       upgradeModal: false,
 
       startTime: "",
+      followFlag: false,
     };
+  }
+
+  onFollowUpdate = () => {
+    this.setState({
+      followFlag: !this.state.followFlag,
+    });
   }
   startPageView = () => {
     this.setState({
@@ -231,6 +238,7 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+              updateOnFollow={this.onFollowUpdate}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 // history
@@ -272,7 +280,7 @@ class Profile extends Component {
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
-                  <ProfileLochCreditPoints isUpdate={this.state.isUpdate} />
+                  <ProfileLochCreditPoints followFlag={this.state.followFlag} isUpdate={this.state.isUpdate} history={this.props.history} />
                 </Col>
               </Row>
             </div>

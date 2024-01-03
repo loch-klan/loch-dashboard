@@ -163,10 +163,15 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         isRightArrowDisabled: false,
       });
     }
+    if(this.props.followFlag !== prevProps.followFlag){
+      this.callApi();
+    }
   }
   callApi() {
     this.setState({
       loading: true,
+      isLeftArrowDisabled: true,
+      isRightArrowDisabled: false,
     });
     this.props.getUserCredits(this);
   }
@@ -245,6 +250,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectExchangeModal();
     };
+    const goClickFollowAnAddress = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Follow an Address",
+      });
+      this.props.history.push("/home-leaderboard");
+    };
     const goClickFollowTwitter = () => {
       UserCreditGoClickedMP({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
@@ -254,7 +267,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       window.open("https://twitter.com/loch_chain", "_blank");
       const twitterFollow = new URLSearchParams();
       twitterFollow.append("credits", "x_follower");
-      this.props.addUserCredits(twitterFollow);
+      this.props.addUserCredits(twitterFollow, this)
+      this.callApi();
     };
     const goClickJoinTelegram = () => {
       UserCreditGoClickedMP({
@@ -265,7 +279,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       window.open("https://t.me/loch_chain", "_blank");
       const joinTelegram = new URLSearchParams();
       joinTelegram.append("credits", "joined_telegram");
-      this.props.addUserCredits(joinTelegram);
+      this.props.addUserCredits(joinTelegram, this);
+      this.callApi();
     };
     if (whichBlock === "address_added") {
       return (
@@ -341,7 +356,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          // onClick={goClickAddAddress}
+          onClick={goClickFollowAnAddress}
         />
       );
     } else if (whichBlock === "twitter_spaces") {

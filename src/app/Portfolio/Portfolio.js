@@ -26,6 +26,7 @@ import {
   getDetailsByLinkApi,
   getExchangeBalances,
   getExternalEventsApi,
+  getProtocolBalanceApi,
   getUserWallet,
   getYesterdaysBalanceApi,
   settingDefaultValues,
@@ -942,16 +943,13 @@ class Portfolio extends BaseReactComponent {
         this.props.getAvgCostBasis(this);
       }
       // Transaction table
+
       if (
         this.state.blockOneSelectedItem === 2 &&
-        (!this.props.intelligenceState.table ||
-          !this.props.commonState.transactionHistory)
+        (!(this.state.defiState && this.state.defiState?.defiList) ||
+          !this.props.commonState.defi)
       ) {
-        this.props.updateWalletListFlag("transactionHistory", true);
-        this.setState({
-          shouldCallTransactionTableApi: false,
-        });
-        this.getTableData();
+        this.props.updateWalletListFlag("defi", true);
       }
     }
 
@@ -1039,15 +1037,14 @@ class Portfolio extends BaseReactComponent {
     if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
       if (
         this.state.blockFourSelectedItem === 1 &&
-        (!(this.state.defiState && this.state.defiState?.defiList) ||
-          !this.props.commonState.defi)
+        (!this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory)
       ) {
-        this.props.updateWalletListFlag("defi", true);
+        this.props.updateWalletListFlag("transactionHistory", true);
         this.setState({
-          insightsBlockLoading: true,
-          shouldCallInsightsApi: false,
+          shouldCallTransactionTableApi: false,
         });
-        this.props.getAllInsightsApi(this);
+        this.getTableData();
       }
       if (
         this.state.blockFourSelectedItem === 2 &&
@@ -1220,9 +1217,25 @@ class Portfolio extends BaseReactComponent {
         this.props.getAvgCostBasis(this);
       }
 
-      // Transaction history api call
       if (
-        this.state.blockOneSelectedItem === 2 &&
+        this.state.blockOneSelectedItem === 1 &&
+        (!(this.state.defiState && this.state.defiState?.defiList) ||
+          !this.props.commonState.defi)
+      ) {
+        let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+        const allAddresses = [];
+        UserWallet?.forEach((e) => {
+          allAddresses.push(e.address);
+        });
+        let data = new URLSearchParams();
+        data.append("wallet_address", JSON.stringify(allAddresses));
+
+        this.props.getProtocolBalanceApi(this, data);
+        this.props.updateWalletListFlag("defi", true);
+      }
+
+      if (
+        this.state.blockFourSelectedItem === 1 &&
         (!(
           this.props.intelligenceState?.table &&
           this.props.intelligenceState?.table.length > 0
@@ -3281,19 +3294,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockOneItem(2);
                             }}
                           >
-                            Transactions
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockOneSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockOneItem(3);
-                            }}
-                          >
-                            Networks
+                            Defi
                           </div>
                         </div>
                       </div>
@@ -3341,47 +3342,10 @@ class Portfolio extends BaseReactComponent {
                           addWatermark
                         />
                       ) : this.state.blockOneSelectedItem === 2 ? (
-                        <TransactionTable
-                          moreData={
-                            totalCount && totalCount > 5
-                              ? `Click here to see ${numToCurrency(
-                                  totalCount - 5,
-                                  true
-                                ).toLocaleString("en-US")}+ transaction${
-                                  totalCount - 5 > 1 ? "s" : ""
-                                }`
-                              : "Click here to see more"
-                          }
-                          showDataAtBottom
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          // title="Transactions"
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              this.props.history.push(
-                                "/intelligence/transaction-history"
-                              );
-                              TransactionHistoryEView({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                          // subTitle="Sort, filter, and dissect all your transactions from one place"
-                          tableData={tableData.slice(0, 5)}
-                          columnList={columnList}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.state.tableLoading}
-                          addWatermark
-                        />
-                      ) : this.state.blockOneSelectedItem === 3 ? (
-                        <PortfolioHomeNetworksBlock
+                        <PortfolioHomeDefiBlock
+                          lochToken={this.state.lochToken}
                           history={this.props.history}
-                          updatedInsightList={this.state.updatedInsightList}
-                          insightsBlockLoading={this.state.insightsBlockLoading}
-                          chainLoader={this.state.chainLoader}
+                          userWalletList={this.state.userWalletList}
                         />
                       ) : null}
                     </div>
@@ -3620,7 +3584,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(2);
                             }}
                           >
-                            Historic performance
+                            Networks
                           </div>
                         </div>
                       </div>
@@ -3634,43 +3598,12 @@ class Portfolio extends BaseReactComponent {
                           }
                         />
                       ) : (
-                        <div className="profit-chart">
-                          <LineChartSlider
-                            openChartPage={this.goToHistoricPerformancePage}
-                            disableOnLoading
-                            noSubtitleBottomPadding
-                            assetValueData={
-                              this.props.portfolioState.assetValueDay &&
-                              this.props.portfolioState.assetValueDay
-                            }
-                            externalEvents={
-                              this.props.portfolioState.externalEvents &&
-                              this.props.portfolioState.externalEvents
-                            }
-                            coinLists={this.props.OnboardingState.coinsLists}
-                            isScrollVisible={false}
-                            handleGroupBy={(value) => this.handleGroupBy(value)}
-                            graphLoading={this.state.graphLoading}
-                            // graphLoading={true}
-                            isUpdate={this.state.isUpdate}
-                            handleClick={() => {
-                              if (this.state.lochToken) {
-                                AssetValueExpandview({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                                this.props.history.push(
-                                  "/intelligence/asset-value"
-                                );
-                              }
-                            }}
-                            hideTimeFilter={true}
-                            hideChainFilter={true}
-                            dataLoaded={this.state.assetValueDataLoaded}
-                            updateTimer={this.updateTimer}
-                            activeTab="day"
-                          />
-                        </div>
+                        <PortfolioHomeNetworksBlock
+                          history={this.props.history}
+                          updatedInsightList={this.state.updatedInsightList}
+                          insightsBlockLoading={this.state.insightsBlockLoading}
+                          chainLoader={this.state.chainLoader}
+                        />
                       )}
                     </div>
                   </Col>
@@ -3697,7 +3630,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockFourItem(1);
                             }}
                           >
-                            Defi
+                            Transactions
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3725,10 +3658,40 @@ class Portfolio extends BaseReactComponent {
                           </div>
                         </div>
                         {this.state.blockFourSelectedItem === 1 ? (
-                          <PortfolioHomeDefiBlock
-                            lochToken={this.state.lochToken}
-                            history={this.props.history}
-                            userWalletList={this.state.userWalletList}
+                          <TransactionTable
+                            moreData={
+                              totalCount && totalCount > 5
+                                ? `Click here to see ${numToCurrency(
+                                    totalCount - 5,
+                                    true
+                                  ).toLocaleString("en-US")}+ transaction${
+                                    totalCount - 5 > 1 ? "s" : ""
+                                  }`
+                                : "Click here to see more"
+                            }
+                            showDataAtBottom
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Transactions"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push(
+                                  "/intelligence/transaction-history"
+                                );
+                                TransactionHistoryEView({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Sort, filter, and dissect all your transactions from one place"
+                            tableData={tableData.slice(0, 5)}
+                            columnList={columnList}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={this.state.tableLoading}
+                            addWatermark
                           />
                         ) : this.state.blockFourSelectedItem === 2 ? (
                           <TransactionTable
@@ -3886,6 +3849,7 @@ const mapDispatchToProps = {
   getAllFeeApi,
   getYieldOpportunities,
   addUserCredits,
+  getProtocolBalanceApi,
 };
 Portfolio.propTypes = {};
 
