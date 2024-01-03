@@ -1400,7 +1400,7 @@ class AddWallet extends BaseReactComponent {
                   (this.state.addButtonVisible ? this.isDisabled() : true) ||
                   this.state.disableGoBtn
                 }
-                buttonText="Goasdasd"
+                buttonText="Go"
               />
             </div>
           </Form>
