@@ -3283,18 +3283,6 @@ class Portfolio extends BaseReactComponent {
                           >
                             Transactions
                           </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockOneSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockOneItem(3);
-                            }}
-                          >
-                            Networks
-                          </div>
                         </div>
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
@@ -3375,13 +3363,6 @@ class Portfolio extends BaseReactComponent {
                           isArrow={true}
                           isLoading={this.state.tableLoading}
                           addWatermark
-                        />
-                      ) : this.state.blockOneSelectedItem === 3 ? (
-                        <PortfolioHomeNetworksBlock
-                          history={this.props.history}
-                          updatedInsightList={this.state.updatedInsightList}
-                          insightsBlockLoading={this.state.insightsBlockLoading}
-                          chainLoader={this.state.chainLoader}
                         />
                       ) : null}
                     </div>
@@ -3620,7 +3601,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(2);
                             }}
                           >
-                            Historic performance
+                            Networks
                           </div>
                         </div>
                       </div>
@@ -3634,43 +3615,12 @@ class Portfolio extends BaseReactComponent {
                           }
                         />
                       ) : (
-                        <div className="profit-chart">
-                          <LineChartSlider
-                            openChartPage={this.goToHistoricPerformancePage}
-                            disableOnLoading
-                            noSubtitleBottomPadding
-                            assetValueData={
-                              this.props.portfolioState.assetValueDay &&
-                              this.props.portfolioState.assetValueDay
-                            }
-                            externalEvents={
-                              this.props.portfolioState.externalEvents &&
-                              this.props.portfolioState.externalEvents
-                            }
-                            coinLists={this.props.OnboardingState.coinsLists}
-                            isScrollVisible={false}
-                            handleGroupBy={(value) => this.handleGroupBy(value)}
-                            graphLoading={this.state.graphLoading}
-                            // graphLoading={true}
-                            isUpdate={this.state.isUpdate}
-                            handleClick={() => {
-                              if (this.state.lochToken) {
-                                AssetValueExpandview({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                                this.props.history.push(
-                                  "/intelligence/asset-value"
-                                );
-                              }
-                            }}
-                            hideTimeFilter={true}
-                            hideChainFilter={true}
-                            dataLoaded={this.state.assetValueDataLoaded}
-                            updateTimer={this.updateTimer}
-                            activeTab="day"
-                          />
-                        </div>
+                        <PortfolioHomeNetworksBlock
+                          history={this.props.history}
+                          updatedInsightList={this.state.updatedInsightList}
+                          insightsBlockLoading={this.state.insightsBlockLoading}
+                          chainLoader={this.state.chainLoader}
+                        />
                       )}
                     </div>
                   </Col>
