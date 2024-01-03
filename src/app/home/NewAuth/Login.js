@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import './_newAuth.scss'
 import logo from "./../../../image/Loch.svg"
@@ -12,6 +12,20 @@ const Login = ({
     handleSubmitEmail
 }) => {
     
+    const submitRef = React.useRef(null);
+
+    useEffect(() => {
+        const listener = (event) => {
+          if (event.code === "Enter" || event.code === "NumpadEnter") {
+            event.preventDefault();
+            submitRef.current.click();
+          }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+          document.removeEventListener("keydown", listener);
+        };
+      }, []);
     
   return (
     <Modal
@@ -50,6 +64,7 @@ const Login = ({
                             onClick={()=>{
                                 if(validateEmail(email)) handleSubmitEmail()
                             }}
+                        ref={submitRef}
                         className={`new-auth-content-button ${validateEmail(email)?'new-auth-content-button--hover':''}`}>
                             Sign in
                         </button>
