@@ -77,6 +77,7 @@ import {
 import Login from "./NewAuth/Login.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import Loading from "../common/Loading.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
@@ -1202,6 +1203,7 @@ class NewHome extends BaseReactComponent {
       this.setState({
         blurTable: false,
       });
+      this.createEmptyUser();
     } else {
       this.setState({
         blurTable: true,
@@ -2245,7 +2247,24 @@ class NewHome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
-                <div
+                {
+                  this.state.tableLoading
+                  ?
+                  <div 
+                  style={{
+                    background:'white',
+                    height:'100%',
+                    width:'100%',
+                    display:'flex',
+                    justifyContent:'center',
+                    alignItems:'center',
+                    padding:'100px 0'
+                  }}
+                  >
+                    <Loading />
+                  </div>
+                  :
+                  <div
                   className="smartMoneyTable"
                   style={{
                     marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
@@ -2273,6 +2292,8 @@ class NewHome extends BaseReactComponent {
                     onBlurSignInClick={this.showSignInModal}
                   />
                 </div>
+                }
+                
               </div>
             ) : (
               <div
