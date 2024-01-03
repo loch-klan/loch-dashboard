@@ -1628,7 +1628,12 @@
     border: 1px solid rgba(229, 229, 230, 0.2);
     color: white;
     &:hover {
-      border: 1px solid rgba(229, 229, 230, 0.8);
+      border: 1px solid $white-E5E;
+      background-color: white;
+      color: black;
+      img{
+        filter: brightness(0);
+      }
     }
   }
 }

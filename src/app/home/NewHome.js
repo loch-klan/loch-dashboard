@@ -54,6 +54,8 @@ import {
   detectCoin,
   getAllCoins,
   getAllParentChains,
+  signIn,
+  verifyUser
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
 import { updateAddToWatchList } from "../watchlist/redux/WatchListApi";
@@ -64,7 +66,10 @@ import {
 import {
   AddTextbox,
   DeleteWalletAddress,
+  EmailAddressAdded,
 } from "../../utils/AnalyticsFunctions.js";
+import Login from "./NewAuth/Login.js";
+import Verify from "./NewAuth/Verify.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
@@ -84,6 +89,9 @@ class NewHome extends BaseReactComponent {
       tableLoading: false,
       goToBottom: false,
       initialInput: false,
+      authmodal: '',
+      email: "",
+      otp:'',
       walletInput: [
         {
           id: `wallet1`,
@@ -100,6 +108,12 @@ class NewHome extends BaseReactComponent {
         },
       ],
     };
+  }
+
+  toggleAuthModal = (val='') => {
+    this.setState({
+      authmodal: val,
+    });
   }
 
   showSignInModal = () => {
@@ -556,6 +570,25 @@ class NewHome extends BaseReactComponent {
 
     // this.startPageView();
     this.updateTimer(true);
+  }
+
+  handleSubmitEmail = (val=false) => {
+    if(this.state.email){
+      const data = new URLSearchParams();
+      data.append("email", this.state.email);
+      EmailAddressAdded({ email_address: this.state.email, session_id: "" });
+      signIn(this, data, true, val);
+      // this.toggleAuthModal('verify');
+    }
+  }
+
+  handleSubmitOTP = () => {
+    if(this.state.otp){
+      const data = new URLSearchParams();
+      data.append("email", this.state.email);
+      data.append("otp_token", this.state.otp);
+      this.props.verifyUser(this, data, true);
+    }
   }
 
   changePageLimit = (dropdownResponse) => {
@@ -1739,6 +1772,36 @@ class NewHome extends BaseReactComponent {
 
     return (
       <div className="new-homepage">
+        {
+          this.state.authmodal == 'login' ?
+            <Login
+            toggleModal={this.toggleAuthModal}
+            email={this.state.email}
+            handleChangeEmail={(val)=>{
+              this.setState({
+                email: val
+              })
+            }}
+            handleSubmitEmail={this.handleSubmitEmail}
+            show={this.state.authmodal == 'login'}
+            />
+            :
+            this.state.authmodal == 'verify' ?
+            <Verify
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == 'verify'}
+            handleSubmitEmail={this.handleSubmitEmail}
+            otp={this.state.otp}
+            handleChangeOTP={(val)=>{
+              this.setState({
+                otp:val
+              })
+            }}
+            handleSubmitOTP={this.handleSubmitOTP}
+            />
+            :
+            null
+        }
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
             <div className="d-flex justify-content-between">
@@ -1755,6 +1818,9 @@ class NewHome extends BaseReactComponent {
               <button
                 className="new-homepage-btn new-homepage-btn--white"
                 style={{ padding: "8px 12px" }}
+                onClick={()=>{
+                  this.toggleAuthModal('login')
+                }}
               >
                 <div
                   style={{
@@ -2299,6 +2365,7 @@ const mapDispatchToProps = {
   addExchangeTransaction,
   addUserCredits,
   createAnonymousUserSmartMoneyApi,
+  verifyUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewHome);
