@@ -7,6 +7,7 @@ import {
   ArrowUpRightSmallIcon,
   NewWelcomeAddAnotherPlusIcon,
   NewWelcomeCopyIcon,
+  NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons";
@@ -328,6 +329,37 @@ class NewHome extends BaseReactComponent {
 
       // walletCopy[foundIndex].trucatedAddress = value
     }
+
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
+  };
+  FocusInInput = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    // if (foundIndex > -1) {
+    //   // let prevValue = walletCopy[foundIndex].nickname;
+
+    //   walletCopy[foundIndex].showAddress = true;
+    //   walletCopy[foundIndex].showNickname = true;
+
+    //   // walletCopy[foundIndex].trucatedAddress = value
+    // }
+    walletCopy?.map((address, i) => {
+      if (address.id === name) {
+        walletCopy[i].showAddress = true;
+        walletCopy[i].showNickname = true;
+      } else {
+        walletCopy[i].showAddress =
+          walletCopy[i].nickname === "" ? true : false;
+        walletCopy[i].showNickname =
+          walletCopy[i].nickname !== "" ? true : false;
+      }
+    });
 
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
@@ -1816,6 +1848,7 @@ class NewHome extends BaseReactComponent {
                         showisTrendingAddressesAddress={
                           this.showisTrendingAddressesAddress
                         }
+                        FocusInInput={this.FocusInInput}
                       />
                     </div>
                   );
@@ -2006,86 +2039,28 @@ class NewHome extends BaseReactComponent {
                           style={{
                             marginTop: index > 0 ? "1rem" : "",
                           }}
+                          className="newWelcomeAddedAddressesBlockContainer"
                         >
+                          <div className="newWelcomeAddedAddressesBlockDelContainer">
+                            <Image
+                              className="newWelcomeAddedAddressesBlockDel"
+                              src={NewWelcomeTrashIcon}
+                              onClick={() => this.deleteInputField(index, c)}
+                            />
+                          </div>
                           <NewHomeInputBlock
                             c={c}
                             index={index}
                             walletInput={this.state.walletInput}
                             nicknameOnChain={this.nicknameOnChain}
                             handleOnChange={this.handleOnChange}
+                            FocusInInput={this.FocusInInput}
                             showisTrendingAddressesAddress={
                               this.showisTrendingAddressesAddress
                             }
                           />
                         </div>
                       );
-                      // return (
-                      //   <div
-                      //     style={{
-                      //       marginTop: index === 0 ? "0rem" : "",
-                      //     }}
-                      //     className="newWelcomeAddedAddressesBlocks"
-                      //   >
-                      //     <div className="newWelcomeAddedAddressesBlocksContent">
-                      //       {this.state.walletInput?.map((e, i) => {
-                      //         if (
-                      //           this.state.walletInput[index].address &&
-                      //           e.id === `wallet${index + 1}`
-                      //         ) {
-                      //           // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                      //           if (e.coinFound && e.coins.length > 0) {
-                      //             return (
-                      //               <CustomCoin
-                      //                 isStatic
-                      //                 coins={e.coins.filter(
-                      //                   (c) => c.chain_detected
-                      //                 )}
-                      //                 key={i}
-                      //                 isLoaded={true}
-                      //               />
-                      //             );
-                      //           } else {
-                      //             if (
-                      //               e.coins.length ===
-                      //               this.props.OnboardingState.coinsList.length
-                      //             ) {
-                      //               return (
-                      //                 <CustomCoin
-                      //                   isStatic
-                      //                   coins={null}
-                      //                   key={i}
-                      //                   isLoaded={true}
-                      //                 />
-                      //               );
-                      //             } else {
-                      //               return (
-                      //                 <CustomCoin
-                      //                   isStatic
-                      //                   coins={null}
-                      //                   key={i}
-                      //                   isLoaded={false}
-                      //                 />
-                      //               );
-                      //             }
-                      //           }
-                      //         } else {
-                      //           return "";
-                      //         }
-                      //       })}
-                      //       <div className="inter-display-semi-bold newWelcomeAddedAddressesBlocksText ml-3 mr-3">
-                      //         Wallet {index + 1}
-                      //       </div>
-                      //       <div className="inter-display-medium newWelcomeAddedAddressesBlocksText">
-                      //         {c.address}
-                      //       </div>
-                      //     </div>
-                      //     <Image
-                      //       onClick={() => this.deleteInputField(index, c)}
-                      //       className="newWelcomeAddedAddressesBlocksDelIcon"
-                      //       src={NewWelcomeTrashIcon}
-                      //     />
-                      //   </div>
-                      // );
                     })}
                   </div>
                 ) : null}

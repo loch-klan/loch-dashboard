@@ -40,7 +40,10 @@ class NewHomeInputBlock extends BaseReactComponent {
                         }
                         autoFocus
                         onFocus={(e) => {
-                          // this.FocusInInput(e);
+                          if (this.props.FocusInInput) {
+                            this.props.FocusInInput(e);
+                          }
+
                           if (this.props.showisTrendingAddressesAddress) {
                             this.props.showisTrendingAddressesAddress();
                           }
@@ -124,7 +127,9 @@ class NewHomeInputBlock extends BaseReactComponent {
                           // });
                         }}
                         onFocus={(e) => {
-                          // this.FocusInInput(e);
+                          if (this.props.FocusInInput) {
+                            this.props.FocusInInput(e);
+                          }
                         }}
                       />
                     </div>
