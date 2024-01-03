@@ -366,56 +366,54 @@ class NewHome extends BaseReactComponent {
     }
   };
   deleteInputField = (index, wallet) => {
-    if (wallet.address === "") {
-      this.state.walletInput?.splice(index, 1);
-      this.state.walletInput?.map((w, i) => (w.id = `wallet${i + 1}`));
-      DeleteWalletAddress({
-        address: wallet.address,
-      });
-      this.setState(
-        {
-          walletInput: this.state.walletInput,
-        },
-        () => {
-          if (this.state.walletInput.length === 1) {
-            this.setState({
-              addButtonVisible: this.state.walletInput.some((wallet) =>
-                wallet.address ? true : false
-              ),
-            });
-          }
-          let chainNotDetected = false;
-
-          this.state.walletInput.forEach((indiWallet) => {
-            let anyCoinPresent = false;
-            if (
-              indiWallet.coins &&
-              indiWallet.coinFound &&
-              indiWallet.coins.length > 0
-            ) {
-              indiWallet.coins.forEach((indiCoin) => {
-                if (indiCoin?.chain_detected) {
-                  anyCoinPresent = true;
-                }
-              });
-            }
-            if (!anyCoinPresent) {
-              chainNotDetected = true;
-            }
+    this.state.walletInput?.splice(index, 1);
+    this.state.walletInput?.map((w, i) => (w.id = `wallet${i + 1}`));
+    DeleteWalletAddress({
+      address: wallet.address,
+    });
+    this.setState(
+      {
+        walletInput: this.state.walletInput,
+      },
+      () => {
+        if (this.state.walletInput.length === 1) {
+          this.setState({
+            addButtonVisible: this.state.walletInput.some((wallet) =>
+              wallet.address ? true : false
+            ),
           });
+        }
+        let chainNotDetected = false;
 
-          if (chainNotDetected) {
-            this.setState({
-              disableGoBtn: true,
-            });
-          } else {
-            this.setState({
-              disableGoBtn: false,
+        this.state.walletInput.forEach((indiWallet) => {
+          let anyCoinPresent = false;
+          if (
+            indiWallet.coins &&
+            indiWallet.coinFound &&
+            indiWallet.coins.length > 0
+          ) {
+            indiWallet.coins.forEach((indiCoin) => {
+              if (indiCoin?.chain_detected) {
+                anyCoinPresent = true;
+              }
             });
           }
+          if (!anyCoinPresent) {
+            chainNotDetected = true;
+          }
+        });
+
+        if (chainNotDetected) {
+          this.setState({
+            disableGoBtn: true,
+          });
+        } else {
+          this.setState({
+            disableGoBtn: false,
+          });
         }
-      );
-    }
+      }
+    );
   };
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
