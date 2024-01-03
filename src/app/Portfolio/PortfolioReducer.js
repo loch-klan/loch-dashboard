@@ -25,7 +25,7 @@ const INITIAL_STATE = {
   assetValueData: null,
   assetValueYear: null,
   assetValueMonth: null,
-  assetValueDay: null,
+
   assetValueDataLoaded: false,
   // external events data it set after asset value chart api response get
   externalEvents: [],
@@ -150,7 +150,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         externalEvents: [],
         assetValueYear: null,
         assetValueMonth: null,
-        assetValueDay: null,
+
         assetValueDataLoaded: false,
         centralizedExchanges: 0,
       };

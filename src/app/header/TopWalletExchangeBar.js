@@ -15,6 +15,8 @@ import {
 } from "../../assets/images/icons";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
+
+import TopBarDropDown from "./TopBarDropDown";
 import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
@@ -32,6 +34,7 @@ import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import { updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+
 import { addUserCredits } from "../profile/Api";
 import {
   addAddressToWatchList,
@@ -42,7 +45,7 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
-import TopBarDropDown from "./TopBarDropDown";
+
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
@@ -958,6 +961,7 @@ class TopWalletExchangeBar extends Component {
                 totalWallets={this.state.totalWallets}
                 firstWallet={this.state.firstWallet}
                 firstFullWallet={this.state.firstFullWallet}
+                fullWalletList={this.state.fullWalletList}
               />
             </div>
             {this.state.showFollowingAddress ? (
@@ -1019,6 +1023,7 @@ class TopWalletExchangeBar extends Component {
             className={`topbar-btn ml-2 ${
               this.state.walletList.length > 0 ? "maxWidth50" : ""
             }`}
+            id="topbar-connect-exchange-btn"
           >
             {this.state.exchangeList.length > 0 ? (
               <>

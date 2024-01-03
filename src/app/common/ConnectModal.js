@@ -865,7 +865,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: false,
+              isOAuth: true,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
@@ -1503,19 +1503,22 @@ class ConnectModal extends BaseReactComponent {
         }
       >
         <Modal.Header>
-          {(selection !== null || this.props.ishome) && (
-            <Image
-              className="back-icon cp"
-              src={backIcon}
-              onClick={() => {
-                if (this.props.ishome && !selection) {
-                  this.props.handleBackConnect(this.state.connectExchangesList);
-                } else {
-                  this.handleBack();
-                }
-              }}
-            />
-          )}
+          {(selection !== null || this.props.ishome) &&
+            this.props.handleBackConnect && (
+              <Image
+                className="back-icon cp"
+                src={backIcon}
+                onClick={() => {
+                  if (this.props.ishome && !selection) {
+                    this.props.handleBackConnect(
+                      this.state.connectExchangesList
+                    );
+                  } else {
+                    this.handleBack();
+                  }
+                }}
+              />
+            )}
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
