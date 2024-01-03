@@ -399,7 +399,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   <div
                     style={{
                       whiteSpace: "nowrap",
-                      overflow: "hidden",
+                      overflow: this.props.isHomepage?"visible":"hidden",
                       textOverflow: "ellipsis",
                       alignItems: this.props.hideTimeFilter &&this.props.showDropdown
                           ? "center"
@@ -417,7 +417,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       style={{
                         display: "flex",
                         whiteSpace: "nowrap",
-                        overflow: "hidden",
+                        overflow: this.props.isHomepage?"visible":"hidden",
                         textOverflow: "ellipsis",
                         alignItems: this.props.hideTimeFilter &&this.props.showDropdown
                           ? "center"
@@ -576,7 +576,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       }}
                     >
                       <CustomDropdownPrice
-                      isHomePage={this.props.isHomepage}
+                      isHomepage={this.props.isHomepage}
                         filtername="All chains selected"
                         options={this.state.assetList}
                         action={null}

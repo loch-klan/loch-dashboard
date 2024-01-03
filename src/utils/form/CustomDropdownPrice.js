@@ -80,7 +80,6 @@ class CustomDropdown extends Component {
       }
     }
 
-    console.log(this.state);
     this.dropDownRef = React.createRef();
     // this.handleClickOutside = this.handleClickOutside.bind(this);
   }
@@ -233,7 +232,6 @@ class CustomDropdown extends Component {
     let showMenu = this.state.showMenu;
     this.setState({ showMenu: !showMenu });
     e.stopPropagation();
-    console.log('hi', showMenu);
   };
 
   handleClickOutside = (e) => {
@@ -475,7 +473,6 @@ class CustomDropdown extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div
         className={`custom-dropdown cp ${
@@ -496,9 +493,9 @@ class CustomDropdown extends Component {
             this.props.LightTheme
               ? "lineChartPlaceholder"
               : ""
-          } ${this.props.isHomePage? "homePageDropdownPleaceHolder": ""}`}
+          }`}
           style={{
-            minWidth: this.props.isHomePage ? "10rem !important" : "",
+            minWidth: this.props.isHomepage ? "10rem" : "",
           }}
           onClick={this.dropdownClicked}
         >
