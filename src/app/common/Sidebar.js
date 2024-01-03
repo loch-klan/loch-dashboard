@@ -729,39 +729,6 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Smart Money"}
-                          >
-                            <NavLink
-                              className={`nav-link nav-link-closed`}
-                              to="/home-smart-money"
-                              onClick={(e) => {
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuWatchlist({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={
-                                  activeTab === "/home-smart-money"
-                                    ? ActiveSmartMoneySidebarIcon
-                                    : InactiveSmartMoneySidebarIcon
-                                }
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
                             text={"Profile"}
                           >
                             <NavLink
@@ -803,10 +770,9 @@ function Sidebar(props) {
                           >
                             <div
                               className={`nav-link nav-link-closed`}
-                              
                               style={{ backround: "transparent" }}
                               onClick={(e) => {
-                                handleUserFeedbackModal()
+                                handleUserFeedbackModal();
                               }}
                               // activeclassname="active"
                             >
