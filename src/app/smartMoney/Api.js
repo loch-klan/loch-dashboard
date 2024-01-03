@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
 import { API_LIMIT } from "../../utils/Constant";
-import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
 import {
   SmartMoneyAddressAdded,
   SmartMoneyAddressAddedAttempted,
@@ -416,7 +420,7 @@ export const verifyEmailLinkApi = (ctx, data) => {
 
         // ctx.setState({ error: false });
         ctx.props.history.push({
-          pathname: "/smart-money",
+          pathname: "/leaderboard",
         });
       } else {
         // ctx.setState({ error: true });

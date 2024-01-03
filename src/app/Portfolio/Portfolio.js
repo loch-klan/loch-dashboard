@@ -1,133 +1,134 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import WelcomeCard from "./WelcomeCard";
-import LineChartSlider from "./LineCharSlider";
-import prevIcon from "../../assets/images/icons/prev-arrow.svg";
-import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import LightBulb from "../../assets/images/icons/lightbulb.svg";
-import ArrowRight from "../../assets/images/icons/arrow-right.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import LineChartSlider from "./LineCharSlider";
+import WelcomeCard from "./WelcomeCard";
 
-import {
-  getCoinRate,
-  getDetailsByLinkApi,
-  getUserWallet,
-  getYesterdaysBalanceApi,
-  settingDefaultValues,
-  getExternalEventsApi,
-  getExchangeBalances,
-} from "./Api";
-import { Image, Row, Col } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from "../common/FixAddModal";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import TransactionTable from "../intelligence/TransactionTable";
-import BarGraphSection from "./../common/BarGraphSection";
-import { getAllWalletListApi } from "../wallet/Api";
+import FixAddModal from "../common/FixAddModal";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
+import TransactionTable from "../intelligence/TransactionTable";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
+import BarGraphSection from "./../common/BarGraphSection";
+import {
+  getCoinRate,
+  getDetailsByLinkApi,
+  getExchangeBalances,
+  getExternalEventsApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api";
 
+import moment from "moment";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import {
+  API_LIMIT,
+  BASE_URL_S3,
+  GROUP_BY_DATE,
+  SEARCH_BY_WALLET_ADDRESS_IN,
+  SORT_BY_APY,
+  SORT_BY_ASSET,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_METHOD,
+  SORT_BY_POOL,
+  SORT_BY_PROJECT,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_TO_WALLET,
+  SORT_BY_TVL,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_VALUE,
+  START_INDEX,
+} from "../../utils/Constant";
 import {
   getDetectedChainsApi,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
+
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  START_INDEX,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_METHOD,
-  GroupByOptions,
-  GROUP_BY_DATE,
-  InsightType,
-  DEFAULT_PRICE,
-  BASE_URL_S3,
-} from "../../utils/Constant";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import moment from "moment";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
-import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
-import {
-  ManageWallets,
-  AverageCostBasisEView,
-  TimeSpentHome,
-  TransactionHistoryAddress,
-  TransactionHistoryDate,
-  TransactionHistoryFrom,
-  TransactionHistoryTo,
-  TransactionHistoryAsset,
-  TransactionHistoryUSD,
-  ProfitLossEV,
-  HomePage,
-  HomeInsightsExpand,
   AddMoreAddres,
   AssetValueExpandview,
+  AverageCostBasisEView,
+  GasFeesEV,
   HomeCostSortByAsset,
+  HomePage,
+  HomeShare,
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
-  HomeCostAssetHover,
+  ManageWallets,
   NetflowSwitchHome,
-  resetUser,
-  CostCostBasisHover,
-  CostCurrentValueHover,
+  PriceGaugeEV,
+  ProfitLossEV,
+  TimeSpentHome,
+  TransactionHistoryAddress,
+  TransactionHistoryAsset,
+  TransactionHistoryDate,
+  TransactionHistoryEView,
+  TransactionHistoryFrom,
+  TransactionHistoryTo,
   TransactionHistoryWalletClicked,
+  VolumeTradeByCP,
+  YieldOpportunitiesSortAPY,
+  YieldOpportunitiesSortAsset,
+  YieldOpportunitiesSortPool,
+  YieldOpportunitiesSortProject,
+  YieldOpportunitiesSortTVL,
+  YieldOpportunitiesSortUSDvalue,
+  YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
-import { getAssetGraphDataApi } from "./Api";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import {
-  getAvgCostBasis,
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
-import Loading from "../common/Loading";
-import {
-  amountFormat,
   CurrencyType,
-  lightenDarkenColor,
-  loadingAnimation,
+  TruncateText,
+  UpgradeTriggered,
+  amountFormat,
   mobileCheck,
   noExponents,
   numToCurrency,
-  TruncateText,
-  UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import PieChart2 from "./PieChart2";
-import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
-import { GraphHeader } from "../common/GraphHeader";
+import Loading from "../common/Loading";
+import UpgradeModal from "../common/upgradeModal";
+import {
+  ResetAverageCostBasis,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+} from "../cost/Api";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
-import Slider from "react-slick";
+import { getAssetGraphDataApi } from "./Api";
 
+import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import Footer from "../common/footer";
-import { toast } from "react-toastify";
-import "./_mobilePortfolio.scss";
-import arrowUp from "../../assets/images/arrow-up.svg";
-import LinkIcon from "../../assets/images/link.svg";
 import PortfolioMobile from "./PortfolioMobile";
-import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-} from "../../assets/images/icons/index.js";
+import "./_mobilePortfolio.scss";
+
+import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
+import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
 import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
 import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
-import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
+import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
+
+import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import { addUserCredits } from "../profile/Api.js";
+import CoinChip from "../wallet/CoinChip.js";
+import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
+import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -151,6 +152,40 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      // Should call block one
+      shouldCallTransactionTableApi: true,
+      shouldCallAssetsAvgCostBasisApi: true,
+      // Should call block one
+
+      // Should call block two
+      shouldCallProfitAndLossApi: true,
+      shouldCallGraphFeesApi: true,
+      shouldCallCounterPartyVolumeApi: true,
+      // Should call block two
+
+      // Should call block three
+      shouldCallHistoricPerformanceApi: true,
+      shouldCallPriceGaugeApi: true,
+      // Should call block three
+
+      // Should call block four
+      shouldCallYieldOppApi: true,
+      shouldCallInsightsApi: true,
+      // Should call block four
+
+      callChildPriceGaugeApi: 0,
+      insightsBlockLoading: false,
+      homeGraphFeesData: undefined,
+      homeCounterpartyVolumeData: undefined,
+      gasFeesGraphLoading: false,
+      counterGraphLoading: false,
+      yieldOpportunitiesList: [],
+      yieldOpportunitiesTotalCount: 0,
+      yieldOpportunitiesTableLoading: false,
+      blockOneSelectedItem: 1,
+      blockTwoSelectedItem: 1,
+      blockThreeSelectedItem: 1,
+      blockFourSelectedItem: 1,
       isAddressFollowedCount: 0,
       followSignInModalAnimation: true,
       followSigninModal: false,
@@ -190,10 +225,43 @@ class Portfolio extends BaseReactComponent {
 
       // sort
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      yieldOppSort: [{ key: SORT_BY_TVL, value: false }],
 
       // transaction history table row limit
       limit: 6,
 
+      // yield opp sort
+      yieldOppTableSortOpt: [
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "amount",
+          up: false,
+        },
+        {
+          title: "usdValue",
+          up: false,
+        },
+
+        {
+          title: "project",
+          up: false,
+        },
+        {
+          title: "pool",
+          up: false,
+        },
+        {
+          title: "tvl",
+          up: true,
+        },
+        {
+          title: "apy",
+          up: false,
+        },
+      ],
       // transaction history sort
       tableSortOpt: [
         {
@@ -235,7 +303,7 @@ class Portfolio extends BaseReactComponent {
       externalEvents: [],
 
       // netflow loader
-      netFlowLoading: false,
+      netFlowLoading: true,
 
       // when go btn clicked run all api
       isUpdate: 0,
@@ -275,7 +343,7 @@ class Portfolio extends BaseReactComponent {
       lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
 
       // insight
-      updatedInsightList: "",
+      updatedInsightList: [],
       isLoadingInsight: false,
 
       // Asset value data loaded
@@ -294,16 +362,36 @@ class Portfolio extends BaseReactComponent {
         { title: "Current value", down: false },
         { title: "Gain loss", down: true },
       ],
-      AvgCostLoading: false,
+      AvgCostLoading: true,
 
       chainLoader: false,
       totalChainDetechted: 0,
 
       // netflow switch
-      isSwitch: false,
+      isSwitch: true,
       waitForMixpannelCall: false,
     };
   }
+  changeBlockOneItem = (itemNum) => {
+    this.setState({
+      blockOneSelectedItem: itemNum,
+    });
+  };
+  changeBlockTwoItem = (itemNum) => {
+    this.setState({
+      blockTwoSelectedItem: itemNum,
+    });
+  };
+  changeBlockThreeItem = (itemNum) => {
+    this.setState({
+      blockThreeSelectedItem: itemNum,
+    });
+  };
+  changeBlockFourItem = (itemNum) => {
+    this.setState({
+      blockFourSelectedItem: itemNum,
+    });
+  };
   onCloseModal = () => {
     this.setState({
       followSignInModalAnimation: true,
@@ -417,13 +505,9 @@ class Portfolio extends BaseReactComponent {
       }
     } else {
       this.setState({
-        isLoadingInsight: true,
-        netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
-        graphLoading: true,
-        tableLoading: true,
-        AvgCostLoading: true,
+
         chainLoader: true,
       });
     }
@@ -450,12 +534,10 @@ class Portfolio extends BaseReactComponent {
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
       isLoadingInsight: true,
-      netFlowLoading: true,
+
       isLoading: true,
       isLoadingNet: true,
-      graphLoading: true,
-      tableLoading: true,
-      AvgCostLoading: true,
+
       chainLoader: true,
     });
   };
@@ -469,6 +551,27 @@ class Portfolio extends BaseReactComponent {
   };
 
   // add wallet modal
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let shareLink = "";
+
+    if (userWallet?.length === 1) {
+      let slink = userWallet[0].displayAddress || userWallet[0].address;
+      shareLink = BASE_URL_S3 + "home/" + slink;
+    } else {
+      let slink = lochUser;
+      shareLink = BASE_URL_S3 + "wallet/" + slink;
+    }
+
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    HomeShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   handleAddModal = () => {
     this.setState({
       addModal: !this.state.addModal,
@@ -492,10 +595,107 @@ class Portfolio extends BaseReactComponent {
       this.afterAddressFollowed(passedAddress);
     }
   };
+  callPriceGaugeApi = () => {
+    this.setState({
+      callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
+    });
+  };
+  callNetworksApi = () => {
+    // Resetting the user wallet list, total and chain wallet
+    this.props.settingDefaultValues(this);
+
+    // Loops on coins to fetch details of each coin which exist in wallet
+    let isFound = false;
+    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : this.state.userWalletList;
+    tempUserWalletList?.forEach((wallet, i) => {
+      if (wallet.coinFound) {
+        isFound = true;
+        wallet.coins.forEach((coin) => {
+          if (coin.chain_detected) {
+            let userCoinWallet = {
+              address: wallet.address,
+              coinCode: coin.coinCode,
+            };
+            this.props.getUserWallet(userCoinWallet, this, false, i);
+          }
+        });
+      }
+
+      if (i === tempUserWalletList?.length - 1) {
+        // run this api if itws value 0
+        this.props.getYesterdaysBalanceApi(this);
+
+        this.setState({
+          // overview loader and net worth loader
+          // isLoading: false,
+          // isLoadingNet: false,
+        });
+      }
+    });
+
+    // connect exchange api
+    // this.props.getExchangeBalance("binance", this);
+    // this.props.getExchangeBalance("coinbase", this);
+    this.props.getExchangeBalances(this, false);
+
+    if (!isFound) {
+      this.setState({
+        // overview loader and net worth loader
+        // isLoading: false,
+        // isLoadingNet: false,
+      });
+    }
+  };
+  callYieldOppApi = () => {
+    let addressList = [];
+    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : this.state.userWalletList;
+    tempUserWalletList.map((wallet) => addressList.push(wallet.address));
+
+    let listOfAddresses = JSON.stringify(addressList);
+
+    this.setState({ yieldOpportunitiesTableLoading: true });
+    let data = new URLSearchParams();
+    data.append("start", 0);
+    data.append("conditions", JSON.stringify([]));
+    data.append("limit", API_LIMIT);
+    data.append("sorts", JSON.stringify(this.state.yieldOppSort));
+    data.append("wallet_addresses", listOfAddresses);
+    if (listOfAddresses) {
+      this.props.getYieldOpportunities(data, 0);
+    }
+  };
   componentDidMount() {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
-
+    if (
+      this.props.yieldOpportunitiesState &&
+      this.props.yieldOpportunitiesState.yield_pools &&
+      this.props.yieldOpportunitiesState.total_count &&
+      this.props.commonState.yieldOpportunities
+    ) {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
+          : [],
+        yieldOpportunitiesTotalCount:
+          this.props.yieldOpportunitiesState.total_count,
+        yieldOpportunitiesTableLoading: false,
+      });
+    }
     if (
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
@@ -523,6 +723,63 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         isMobileDevice: true,
       });
+    }
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue
+    ) {
+      this.trimGasFees();
+    }
+    if (this.props.yieldOpportunitiesState) {
+      this.trimCounterpartyVolume();
+    }
+    if (this.props.intelligenceState?.updatedInsightList) {
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+        insightsBlockLoading: false,
+      });
+    }
+    if (
+      this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      if (this.props.commonState.assetsPage) {
+        this.setState({
+          AvgCostLoading: false,
+        });
+      } else {
+        this.props.updateWalletListFlag("assetsPage", true);
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
+    }
+
+    if (
+      this.props.intelligenceState?.ProfitLossAsset &&
+      this.props.intelligenceState?.ProfitLossAsset?.series &&
+      this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
+    ) {
+      if (this.props.commonState.realizedGainsPage) {
+        this.setState({
+          netFlowLoading: false,
+        });
+      } else {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        // this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
     }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
@@ -612,8 +869,210 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
     this.props.ResetAverageCostBasis();
   }
+  trimGasFees = () => {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue &&
+      this.props.intelligenceState.graphfeeValue[0] &&
+      this.props.intelligenceState.graphfeeValue[0].labels
+    ) {
+      const tempHolder = [
+        {
+          labels:
+            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
+              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
+              : this.props.intelligenceState.graphfeeValue[0].labels,
+          datasets: this.props.intelligenceState.graphfeeValue[0].datasets
+            ? this.props.intelligenceState.graphfeeValue[0].datasets
+            : [],
+        },
+        { ...this.props.intelligenceState.graphfeeValue[1] },
 
+        { ...this.props.intelligenceState.graphfeeValue[2] },
+      ];
+      this.setState({
+        homeGraphFeesData: tempHolder,
+      });
+    }
+  };
+  trimCounterpartyVolume = () => {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue &&
+      this.props.intelligenceState.counterPartyValue[0] &&
+      this.props.intelligenceState.counterPartyValue[0].labels
+    ) {
+      const tempHolder = [
+        {
+          labels:
+            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
+              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
+                  0,
+                  3
+                )
+              : this.props.intelligenceState.counterPartyValue[0].labels,
+          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
+            ? this.props.intelligenceState.counterPartyValue[0].datasets
+            : [],
+        },
+        { ...this.props.intelligenceState.counterPartyValue[1] },
+
+        { ...this.props.intelligenceState.counterPartyValue[2] },
+      ];
+      this.setState({
+        homeCounterpartyVolumeData: tempHolder,
+      });
+    }
+  };
   componentDidUpdate(prevProps, prevState) {
+    // Block One
+    if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
+      // Asssets avg cost basis
+
+      if (
+        this.state.blockOneSelectedItem === 1 &&
+        (!this.props.intelligenceState?.Average_cost_basis ||
+          !this.props.commonState.assetsPage)
+      ) {
+        this.props.updateWalletListFlag("assetsPage", true);
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
+      // Transaction table
+      if (
+        this.state.blockOneSelectedItem === 2 &&
+        (!this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory)
+      ) {
+        this.props.updateWalletListFlag("transactionHistory", true);
+        this.setState({
+          shouldCallTransactionTableApi: false,
+        });
+        this.getTableData();
+      }
+    }
+
+    // Block Two
+    if (prevState.blockTwoSelectedItem !== this.state.blockTwoSelectedItem) {
+      // Realized gains api call
+      if (
+        this.state.blockTwoSelectedItem === 1 &&
+        (!(
+          this.props.intelligenceState?.ProfitLossAsset?.series &&
+          this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
+        ) ||
+          !this.props.commonState.realizedGainsPage)
+      ) {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        // this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
+      // Gas fees api call
+      else if (
+        this.state.blockTwoSelectedItem === 2 &&
+        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
+          !this.props.commonState.gasFeesPage)
+      ) {
+        this.setState({
+          gasFeesGraphLoading: true,
+          shouldCallGraphFeesApi: false,
+        });
+        this.props.updateWalletListFlag("gasFeesPage", true);
+        this.props.getAllFeeApi(this, false, false);
+      }
+      // Counterparty volume api call
+      else if (
+        this.state.blockTwoSelectedItem === 3 &&
+        (!(
+          this.state.homeCounterpartyVolumeData &&
+          this.state.homeCounterpartyVolumeData[0]
+        ) ||
+          !this.props.commonState.counterpartyVolumePage)
+      ) {
+        this.setState({
+          counterGraphLoading: true,
+          shouldCallCounterPartyVolumeApi: false,
+        });
+        this.props.updateWalletListFlag("counterpartyVolumePage", true);
+        this.props.getAllCounterFeeApi(this, false, false);
+      }
+    }
+    // Block Three
+    if (
+      prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
+    ) {
+      if (
+        this.state.blockThreeSelectedItem === 1 &&
+        this.state.shouldCallPriceGaugeApi
+      ) {
+        this.setState({
+          shouldCallPriceGaugeApi: false,
+        });
+        this.callPriceGaugeApi();
+      }
+
+      if (
+        this.state.blockThreeSelectedItem === 2 &&
+        (!this.props.portfolioState?.assetValueDay ||
+          !this.props.commonState.asset_value)
+      ) {
+        this.props.updateWalletListFlag("asset_value", true);
+        this.setState({
+          shouldCallHistoricPerformanceApi: false,
+        });
+        this.getGraphData();
+      } else {
+        this.setState({
+          graphLoading: false,
+        });
+      }
+    }
+    // Block Four
+    if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
+      if (
+        this.state.blockFourSelectedItem === 1 &&
+        (!(this.state.defiState && this.state.defiState?.defiList) ||
+          !this.props.commonState.defi)
+      ) {
+        this.props.updateWalletListFlag("defi", true);
+        this.setState({
+          insightsBlockLoading: true,
+          shouldCallInsightsApi: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
+      if (
+        this.state.blockFourSelectedItem === 2 &&
+        (!this.state.yieldOpportunitiesList ||
+          !this.props.commonState.yieldOpportunities)
+      ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
+        this.setState({
+          shouldCallYieldOppApi: false,
+        });
+        this.callYieldOppApi();
+      }
+      if (
+        this.state.blockFourSelectedItem === 3 &&
+        (!this.state.updatedInsightList || !this.props.commonState.insight)
+      ) {
+        this.props.updateWalletListFlag("insight", true);
+        this.setState({
+          insightsBlockLoading: true,
+          shouldCallInsightsApi: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
+    }
+
     if (
       prevProps.portfolioState?.assetValueDataLoaded !==
       this.props.portfolioState?.assetValueDataLoaded
@@ -621,6 +1080,52 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         dataLoaded: this.props.portfolioState.assetValueDataLoaded,
       });
+    }
+
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue &&
+      this.props.intelligenceState.graphfeeValue !==
+        prevProps.intelligenceState.graphfeeValue
+    ) {
+      this.trimGasFees();
+    }
+    if (prevState.yieldOppSort !== this.state.yieldOppSort) {
+      this.callYieldOppApi();
+    }
+    if (
+      prevProps.intelligenceState.updatedInsightList !==
+      this.props.intelligenceState.updatedInsightList
+    ) {
+      // insight_type: 30
+      const newTempHolder =
+        this.props.intelligenceState.updatedInsightList.filter(
+          (resRes) => resRes.insight_type !== 30
+        );
+      this.setState({
+        updatedInsightList: newTempHolder,
+        insightsBlockLoading: false,
+      });
+    }
+    if (
+      prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
+    ) {
+      this.setState({
+        yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
+          ? this.props.yieldOpportunitiesState.yield_pools
+          : [],
+        yieldOpportunitiesTotalCount:
+          this.props.yieldOpportunitiesState.total_count,
+        yieldOpportunitiesTableLoading: false,
+      });
+    }
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue &&
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
+    ) {
+      this.trimCounterpartyVolume();
     }
     // Wallet update response when press go
     // if (this.state.apiResponse) {
@@ -637,68 +1142,30 @@ class Portfolio extends BaseReactComponent {
     if (!this.props.commonState.home && this.state.lochToken) {
       this.props.updateWalletListFlag("home", true);
       this.setState({
-        isLoadingInsight: true,
-        netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
-        graphLoading: true,
-        tableLoading: true,
-        AvgCostLoading: true,
+
         chainLoader: true,
+        // Handeling changes
+        shouldCallProfitAndLossApi: true,
+        shouldCallGraphFeesApi: true,
+        shouldCallCounterPartyVolumeApi: true,
+        shouldCallAssetsAvgCostBasisApi: true,
+        shouldCallTransactionTableApi: true,
+        shouldCallYieldOppApi: true,
+        shouldCallInsightsApi: true,
+        shouldCallHistoricPerformanceApi: true,
+        shouldCallPriceGaugeApi: true,
       });
 
       // if wallet address change
+      const tempAddWall = window.sessionStorage.getItem("addWallet");
       if (
-        this.state &&
-        this.state.userWalletList &&
-        this.state.userWalletList?.length > 0
+        tempAddWall &&
+        JSON.parse(tempAddWall) &&
+        JSON.parse(tempAddWall)?.length > 0
       ) {
-        // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues(this);
-
-        // Loops on coins to fetch details of each coin which exist in wallet
-        let isFound = false;
-        const tempUserWalletList = window.sessionStorage.getItem("addWallet")
-          ? JSON.parse(window.sessionStorage.getItem("addWallet"))
-          : this.state.userWalletList;
-        tempUserWalletList?.forEach((wallet, i) => {
-          if (wallet.coinFound) {
-            isFound = true;
-            wallet.coins.forEach((coin) => {
-              if (coin.chain_detected) {
-                let userCoinWallet = {
-                  address: wallet.address,
-                  coinCode: coin.coinCode,
-                };
-                this.props.getUserWallet(userCoinWallet, this, false, i);
-              }
-            });
-          }
-
-          if (i === tempUserWalletList?.length - 1) {
-            // run this api if itws value 0
-            this.props.getYesterdaysBalanceApi(this);
-
-            this.setState({
-              // overview loader and net worth loader
-              // isLoading: false,
-              // isLoadingNet: false,
-            });
-          }
-        });
-
-        // connect exchange api
-        // this.props.getExchangeBalance("binance", this);
-        // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this, false);
-
-        if (!isFound) {
-          this.setState({
-            // overview loader and net worth loader
-            // isLoading: false,
-            // isLoadingNet: false,
-          });
-        }
+        this.callNetworksApi();
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
@@ -721,7 +1188,7 @@ class Portfolio extends BaseReactComponent {
       // this.getTableData();
 
       // asset value run when its value null
-      // if (!this.props.portfolioState.assetValueMonth) {
+      // if (!this.props.portfolioState.assetValueDay) {
       //    this.getGraphData();
       // } else {
       //   this.setState({
@@ -729,23 +1196,143 @@ class Portfolio extends BaseReactComponent {
       //   })
       // }
 
-      this.getGraphData();
-
       // - remove form home
       // getAllCounterFeeApi(this, false, false);
 
       // run when graphValue == null and  GraphData: [],
-      // add loader
-      this.props.getProfitAndLossApi(this, false, false, false);
 
-      // netflow breakdown
-      this.props.getAssetProfitLoss(this, false, false, false);
+      // BLOCK ONE
+      // Assets average cost basis api call
 
-      // run when updatedInsightList === ""
-      this.props.getAllInsightsApi(this);
+      if (
+        this.state.blockOneSelectedItem === 1 &&
+        (!(
+          this.props.intelligenceState?.Average_cost_basis &&
+          this.props.intelligenceState?.Average_cost_basis.length > 0
+        ) ||
+          !this.props.commonState.assetsPage)
+      ) {
+        this.props.updateWalletListFlag("assetsPage", true);
+        this.setState({
+          shouldCallAssetsAvgCostBasisApi: false,
+          AvgCostLoading: true,
+        });
+        this.props.getAvgCostBasis(this);
+      }
 
-      this.props.getAvgCostBasis(this);
-      this.getTableData();
+      // Transaction history api call
+      if (
+        this.state.blockOneSelectedItem === 2 &&
+        (!(
+          this.props.intelligenceState?.table &&
+          this.props.intelligenceState?.table.length > 0
+        ) ||
+          !this.props.commonState.transactionHistory)
+      ) {
+        this.props.updateWalletListFlag("transactionHistory", true);
+        this.setState({
+          shouldCallTransactionTableApi: false,
+        });
+        this.getTableData();
+      }
+
+      // BLOCK TWO
+      // Realized gains api call
+      if (
+        this.state.blockTwoSelectedItem === 1 &&
+        (!this.props.commonState.realizedGainsPage ||
+          !(
+            this.props.intelligenceState?.ProfitLossAsset?.series &&
+            this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
+          ))
+      ) {
+        this.props.updateWalletListFlag("realizedGainsPage", true);
+        this.setState({
+          netFlowLoading: true,
+          shouldCallProfitAndLossApi: false,
+        });
+        // this.props.getProfitAndLossApi(this, false, false, false);
+        // netflow breakdown
+        this.props.getAssetProfitLoss(this, false, false, false);
+      }
+
+      // Gas fees api call
+      if (
+        this.state.blockTwoSelectedItem === 2 &&
+        (!this.props.commonState.gasFeesPage ||
+          !(
+            this.props.intelligenceState.graphfeeValue &&
+            this.props.intelligenceState.graphfeeValue[0]
+          ))
+      ) {
+        this.setState({
+          gasFeesGraphLoading: true,
+          shouldCallGraphFeesApi: false,
+        });
+        this.props.updateWalletListFlag("gasFeesPage", true);
+        this.props.getAllFeeApi(this, false, false);
+      }
+
+      // Counterparty volume api call
+      if (
+        this.state.blockTwoSelectedItem === 3 &&
+        (!this.props.commonState.counterpartyVolumePage ||
+          !(
+            this.props.intelligenceState.counterPartyValue &&
+            this.props.intelligenceState.counterPartyValue[0]
+          ))
+      ) {
+        this.setState({
+          counterGraphLoading: true,
+          shouldCallCounterPartyVolumeApi: false,
+        });
+        this.props.updateWalletListFlag("counterpartyVolumePage", true);
+        this.props.getAllCounterFeeApi(this, false, false);
+      }
+
+      // BLOCK Three
+      if (this.state.blockThreeSelectedItem === 1) {
+        this.setState({
+          shouldCallPriceGaugeApi: false,
+        });
+        this.callPriceGaugeApi();
+      }
+      if (
+        this.state.blockThreeSelectedItem === 2 &&
+        (!this.props.portfolioState?.assetValueDay ||
+          !this.props.commonState.asset_value)
+      ) {
+        this.props.updateWalletListFlag("asset_value", true);
+        this.setState({
+          shouldCallHistoricPerformanceApi: false,
+        });
+        this.getGraphData();
+      }
+
+      // BLOCK FOUR
+
+      if (
+        this.state.blockFourSelectedItem === 2 &&
+        (!this.props.yieldOpportunitiesState.yield_pools ||
+          !this.props.commonState.yieldOpportunities)
+      ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
+        this.setState({
+          shouldCallYieldOppApi: false,
+        });
+        this.callYieldOppApi();
+      }
+      if (
+        this.state.blockFourSelectedItem === 3 &&
+        (!this.props.intelligenceState?.updatedInsightList ||
+          !this.props.commonState.insight)
+      ) {
+        this.props.updateWalletListFlag("insight", true);
+        this.setState({
+          insightsBlockLoading: false,
+        });
+        this.props.getAllInsightsApi(this);
+      }
 
       // for chain detect
       setTimeout(() => {
@@ -799,7 +1386,7 @@ class Portfolio extends BaseReactComponent {
 
   apiCall = () => {
     this.props.getAllCoins();
-    this.getGraphData();
+
     if (this.props.match.params.id) {
       // if share link call this app
       // if (this.state.portfolioLink) {
@@ -953,10 +1540,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   // filter asset value chart
-  handleGroupBy = (value) => {
-    let groupByValue = GroupByOptions.getGroupBy(value);
-    this.getGraphData(groupByValue);
-  };
+  handleGroupBy = (value) => {};
 
   // transaction history table data
   getTableData = () => {
@@ -971,7 +1555,7 @@ class Portfolio extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
-    data.append("limit", this.state.limit);
+    data.append("limit", 10);
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.searchTransactionApi(data, this);
   };
@@ -991,6 +1575,103 @@ class Portfolio extends BaseReactComponent {
     this.props.setPageFlagDefault();
   };
 
+  handleYieldOppTableSort = (val) => {
+    let sort = [...this.state.yieldOppTableSortOpt];
+    let obj = [];
+    sort?.forEach((el) => {
+      if (el.title === val) {
+        if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "usdValue") {
+          obj = [
+            {
+              key: SORT_BY_VALUE,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortUSDvalue({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "project") {
+          obj = [
+            {
+              key: SORT_BY_PROJECT,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortProject({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "pool") {
+          obj = [
+            {
+              key: SORT_BY_POOL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortPool({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "tvl") {
+          obj = [
+            {
+              key: SORT_BY_TVL,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortTVL({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        } else if (val === "apy") {
+          obj = [
+            {
+              key: SORT_BY_APY,
+              value: !el.up,
+            },
+          ];
+          YieldOpportunitiesSortAPY({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            homePage: true,
+          });
+          this.updateTimer();
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+    if (obj && obj.length > 0) {
+      obj = [{ key: obj[0].key, value: !obj[0].value }];
+    }
+    this.setState({
+      yieldOppSort: obj,
+      yieldOppTableSortOpt: sort,
+    });
+  };
   // sort transaction history api
   handleTableSort = (val) => {
     let sort = [...this.state.tableSortOpt];
@@ -1186,11 +1867,45 @@ class Portfolio extends BaseReactComponent {
         console.log("something went wrong");
       });
   };
+  goToRealizedGainsPage = () => {
+    this.props.history.push("/realized-profit-and-loss");
+    ProfitLossEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
+  goToGasFeesSpentPage = () => {
+    this.props.history.push("/gas-fees");
+    GasFeesEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
+  goToCounterPartyVolumePage = () => {
+    this.props.history.push("/counterparty-volume");
+    VolumeTradeByCP({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
+  goToHistoricPerformancePage = () => {
+    this.props.history.push("/intelligence/asset-value");
+    AssetValueExpandview({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
+  goToPriceGaugePage = () => {
+    this.props.history.push("/price-gauge");
+    PriceGaugeEV({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   render() {
-    const { table_home, assetPriceList_home, table_home_count } =
+    const { table, assetPriceList_home, totalCount } =
       this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-
     //   "asset price state",
     //  this.state?.assetPrice? Object.keys(this.state?.assetPrice)?.length:""
     // );
@@ -1202,8 +1917,8 @@ class Portfolio extends BaseReactComponent {
 
     // transaction history calculations
     let tableData =
-      table_home &&
-      table_home.map((row) => {
+      table &&
+      table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
 
@@ -1937,6 +2652,223 @@ class Portfolio extends BaseReactComponent {
       }
       tableData = temptableData;
     }
+
+    let yieldOpportunitiesListTemp = this.state.yieldOpportunitiesList;
+    if (yieldOpportunitiesListTemp.length < 6) {
+      const tempyieldOpportunitiesListTemp = [...yieldOpportunitiesListTemp];
+      for (let i = yieldOpportunitiesListTemp.length; i < 6; i++) {
+        tempyieldOpportunitiesListTemp.push("EMPTY");
+      }
+      yieldOpportunitiesListTemp = tempyieldOpportunitiesListTemp;
+    }
+
+    const YieldOppColumnData = [
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="asset"
+            onClick={() => this.handleYieldOppTableSort("asset")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[0].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "asset",
+        coumnWidth: 0.25,
+        isCell: true,
+        className: "",
+        headerClassName: "",
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "asset") {
+            if (rowData.asset && rowData.asset.code) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.asset.code ? rowData.asset.code : ""}
+                >
+                  <div className="dotDotText">
+                    {rowData.asset.code ? rowData.asset.code : ""}
+                  </div>
+                </CustomOverlay>
+              );
+            }
+            return null;
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="project"
+            onClick={() => this.handleYieldOppTableSort("project")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Project
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[3].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "project",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "project") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.project ? rowData.project : "-"}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="tvl"
+            onClick={() => this.handleYieldOppTableSort("tvl")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              TVL
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[5].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "tvl",
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "tvl") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.currency?.rate
+                    ? CurrencyType(false) +
+                      amountFormat(
+                        rowData.tvlUsd * this.state.currency?.rate,
+                        "en-US",
+                        "USD"
+                      )
+                    : CurrencyType(false) +
+                      amountFormat(rowData.tvlUsd, "en-US", "USD")
+                }
+              >
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {this.state.currency?.rate
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.tvlUsd * this.state.currency?.rate
+                          )
+                        : CurrencyType(false) + numToCurrency(rowData.tvlUsd)}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="apy"
+            onClick={() => this.handleYieldOppTableSort("apy")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              APY
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "apy",
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "apy") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.apy ? rowData.apy + "%" : "-"}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
+                    : "-"}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+    ];
     const CostBasisColumnData = [
       {
         labelName: (
@@ -1975,8 +2907,13 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData.AssetCode}
               >
-                <div className="dotDotText">
-                  {rowData.AssetCode ? rowData.AssetCode : ""}
+                <div>
+                  <CoinChip
+                    hideText={true}
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                  />
                 </div>
               </CustomOverlay>
             );
@@ -2097,164 +3034,29 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Amount"
-      //       onClick={() => this.handleSort(this.state.sortBy[3])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Amount
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "Amount",
-      //   // coumnWidth: 108,
-      //   coumnWidth: 0.16,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "Amount") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={Number(noExponents(rowData.Amount)).toLocaleString(
-      //             "en-US"
-      //           )}
-      //         >
-      //           <span>
-      //             {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Cost Basis"
-      //       onClick={() => this.handleSort(this.state.sortBy[4])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Cost basis
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CostBasis",
-      //   // coumnWidth: 100,
-      //   coumnWidth: 0.34,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CostBasis") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             rowData.CostBasis === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CostBasis.toFixed(2))
-      //               ).toLocaleString("en-US")
-      //           }
-      //         >
-      //           <span>
-      //             {rowData.CostBasis === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CostBasis.toFixed(2))
-      //               ).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Current Value"
-      //       onClick={() => this.handleSort(this.state.sortBy[5])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Current value
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CurrentValue",
-      //   // coumnWidth: 140,
-      //   coumnWidth: 0.37,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CurrentValue") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             CurrencyType(false) +
-      //             Number(
-      //               noExponents(rowData.CurrentValue.toFixed(2))
-      //             ).toLocaleString("en-US")
-      //           }
-      //         >
-      //           <span>
-      //             {CurrencyType(false) +
-      //               Number(
-      //                 noExponents(rowData.CurrentValue.toFixed(2))
-      //               ).toLocaleString("en-US")}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
+
       {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
+            id="PortfolioPer"
+            // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Return
+              Portfolio (%)
             </span>
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
+            /> */}
           </div>
         ),
-        dataKey: "GainLoss",
+        dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "GainLoss") {
+          if (dataKey === "PortfolioPercentage") {
             if (rowData === "EMPTY") {
               return null;
             }
@@ -2266,33 +3068,19 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainLoss
+                    rowData.weight
                       ? Math.abs(
-                          Number(noExponents(rowData.GainLoss.toFixed(2)))
+                          Number(noExponents(rowData.weight.toFixed(2)))
                         ).toLocaleString("en-US") + "%"
                       : "0.00%"
                   }
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.GainLoss
+                      {rowData.weight
                         ? Math.abs(
-                            Number(noExponents(rowData.GainLoss.toFixed(2)))
+                            Number(noExponents(rowData.weight.toFixed(2)))
                           ).toLocaleString("en-US") + "%"
                         : "0.00%"}
                     </span>
@@ -2341,6 +3129,7 @@ class Portfolio extends BaseReactComponent {
           history={this.props.history}
           tableDataCostBasis={tableDataCostBasis}
           AvgCostLoading={this.state.AvgCostLoading}
+          location={this.props.location}
         />
       );
     }
@@ -2398,9 +3187,13 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  afterAddressFollowed={this.afterAddressFollowed}
+                  isAddressFollowedCount={this.state.isAddressFollowedCount}
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
                   changeWalletList={this.handleChangeList}
                   apiResponse={(e) => this.CheckApiResponse(e)}
-                  showNetworth={true}
+                  // showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
                   // toggleAddWallet={this.state.toggleAddWallet}
@@ -2449,86 +3242,7 @@ class Portfolio extends BaseReactComponent {
                   minWidth: "85rem",
                   marginTop: "11rem",
                 }}
-              >
-                <PieChart2
-                  isAddressFollowedCount={this.state.isAddressFollowedCount}
-                  afterAddressFollowed={this.afterAddressFollowed}
-                  setLoader={this.setLoader}
-                  chainLoader={this.state.chainLoader}
-                  totalChainDetechted={this.state.totalChainDetechted}
-                  userWalletData={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.chainWallet &&
-                    Object.keys(this.props.portfolioState.chainWallet).length >
-                      0
-                      ? Object.values(this.props.portfolioState.chainWallet)
-                      : null
-                  }
-                  chainPortfolio={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.chainPortfolio &&
-                    Object.keys(this.props.portfolioState.chainPortfolio)
-                      .length > 0
-                      ? Object.values(this.props.portfolioState.chainPortfolio)
-                      : null
-                  }
-                  allCoinList={
-                    this.props.OnboardingState &&
-                    this.props.OnboardingState.coinsList &&
-                    Object.keys(this.props.OnboardingState.coinsList).length > 0
-                      ? Object.values(this.props.OnboardingState.coinsList)
-                      : null
-                  }
-                  assetTotal={getTotalAssetValue()}
-                  assetPrice={
-                    this.props.portfolioState.assetPrice &&
-                    Object.keys(this.props.portfolioState.assetPrice).length > 0
-                      ? Object.values(this.props.portfolioState.assetPrice)
-                      : null
-                  }
-                  isLoading={this.state.isLoading}
-                  isUpdate={this.state.isUpdate}
-                  walletTotal={this.props.portfolioState.walletTotal}
-                  // handleAddModal={this.handleAddModal}
-                  // handleManage={() => {
-                  //   this.props.history.push("/wallets");
-                  //   ManageWallets({
-                  //     session_id: getCurrentUser().id,
-                  //     email_address: getCurrentUser().email,
-                  //   });
-                  // }}
-                  undetectedWallet={(e) => this.undetectedWallet(e)}
-                  getProtocolTotal={this.getProtocolTotal}
-                  updateTimer={this.updateTimer}
-                  userWalletList={this.state.userWalletList}
-                />
-                {/* {this.state.userWalletList?.findIndex(
-                  (w) => w.coinFound !== true
-                ) > -1 && this.state.userWalletList[0]?.address !== "" ? (
-                  <div
-                    className="fix-div"
-                    id="fixbtn"
-                    style={this.state.showBtn ? { display: "none" } : {}}
-                  >
-                    <div className="m-r-8 decribe-div">
-                      <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
-                        Wallet undetected
-                      </div>
-                      <div className="inter-display-medium f-s-13 lh-16 grey-737">
-                        One or more wallets were not detected{" "}
-                      </div>
-                    </div>
-                    <Button
-                      className="secondary-btn"
-                      onClick={this.handleFixModal}
-                    >
-                      Fix
-                    </Button>
-                  </div>
-                ) : (
-                  ""
-                )} */}
-              </div>
+              ></div>
 
               <div className="m-b-22 graph-table-section">
                 <Row>
@@ -2536,98 +3250,331 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
-                      <TransactionTable
-                        noSubtitleBottomPadding
-                        disableOnLoading
-                        isMiniversion
-                        title="Unrealized profit and loss"
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            this.props.history.push("/intelligence/costs");
-                            AverageCostBasisEView({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockOneSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(1);
+                            }}
+                          >
+                            Assets
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockOneSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(2);
+                            }}
+                          >
+                            Transactions
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockOneSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockOneItem(3);
+                            }}
+                          >
+                            Networks
+                          </div>
+                        </div>
+                      </div>
+                      {this.state.blockOneSelectedItem === 1 ? (
+                        <TransactionTable
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          // title="Unrealized profit and loss"
+                          handleClick={() => {
+                            if (this.state.lochToken) {
+                              this.props.history.push("/assets");
+                              AverageCostBasisEView({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
+                          // subTitle="Understand your unrealized profit and loss per token"
+                          tableData={tableDataCostBasis.slice(0, 5)}
+                          moreData={
+                            this.props.intelligenceState?.Average_cost_basis &&
+                            this.props.intelligenceState.Average_cost_basis
+                              .length > 5
+                              ? `Click here to see ${numToCurrency(
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length - 5,
+                                  true
+                                ).toLocaleString("en-US")}+ asset${
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length -
+                                    5 >
+                                  1
+                                    ? "s"
+                                    : ""
+                                }`
+                              : "Click here to see more"
                           }
-                        }}
-                        subTitle="Understand your unrealized profit and loss per token"
-                        tableData={tableDataCostBasis.slice(0, 3)}
-                        moreData={
-                          this.props.intelligenceState?.Average_cost_basis &&
-                          this.props.intelligenceState.Average_cost_basis
-                            .length > 3
-                            ? `${numToCurrency(
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length - 3,
-                                true
-                              ).toLocaleString("en-US")}+ assets`
-                            : 0
-                        }
-                        showDataAtBottom={
-                          this.props.intelligenceState?.Average_cost_basis &&
-                          this.props.intelligenceState.Average_cost_basis
-                            .length > 3
-                        }
-                        columnList={CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.AvgCostLoading}
-                        isAnalytics="average cost basis"
-                        addWatermark
-                      />
+                          showDataAtBottom
+                          columnList={CostBasisColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.state.AvgCostLoading}
+                          isAnalytics="average cost basis"
+                          addWatermark
+                        />
+                      ) : this.state.blockOneSelectedItem === 2 ? (
+                        <TransactionTable
+                          moreData={
+                            totalCount && totalCount > 5
+                              ? `Click here to see ${numToCurrency(
+                                  totalCount - 5,
+                                  true
+                                ).toLocaleString("en-US")}+ transaction${
+                                  totalCount - 5 > 1 ? "s" : ""
+                                }`
+                              : "Click here to see more"
+                          }
+                          showDataAtBottom
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          // title="Transactions"
+                          handleClick={() => {
+                            if (this.state.lochToken) {
+                              this.props.history.push(
+                                "/intelligence/transaction-history"
+                              );
+                              TransactionHistoryEView({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
+                          // subTitle="Sort, filter, and dissect all your transactions from one place"
+                          tableData={tableData.slice(0, 5)}
+                          columnList={columnList}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.state.tableLoading}
+                          addWatermark
+                        />
+                      ) : this.state.blockOneSelectedItem === 3 ? (
+                        <PortfolioHomeNetworksBlock
+                          history={this.props.history}
+                          updatedInsightList={this.state.updatedInsightList}
+                          insightsBlockLoading={this.state.insightsBlockLoading}
+                          chainLoader={this.state.chainLoader}
+                        />
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
-                    <div className="profit-chart">
-                      <BarGraphSection
-                        disableOnLoading
-                        noSubtitleBottomPadding
-                        loaderHeight={15.5}
-                        headerTitle="Realized profit and loss"
-                        headerSubTitle="Understand your portfolio's net flows"
-                        isArrow={true}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/intelligence#netflow");
-                          }
-                        }}
-                        isScrollVisible={false}
-                        data={
-                          this.props.intelligenceState?.graphValue &&
-                          this.props.intelligenceState?.graphValue[0]
-                        }
-                        options={
-                          this.props.intelligenceState?.graphValue &&
-                          this.props.intelligenceState?.graphValue[1]
-                        }
-                        coinsList={this.props.OnboardingState.coinsList}
-                        marginBottom="m-b-32"
-                        showFooter={false}
-                        showBadges={false}
-                        // showPercentage={
-                        //   this.props.intelligenceState.graphValue &&
-                        //   this.props.intelligenceState.graphValue[2]
-                        // }
-                        showSwitch={true}
-                        isLoading={this.state.netFlowLoading}
-                        className={"portfolio-profit-and-loss"}
-                        isMinichart={true}
-                        ProfitLossAsset={
-                          this.props.intelligenceState.ProfitLossAsset
-                        }
-                        isSwitch={this.state.isSwitch}
-                        setSwitch={this.setSwitch}
-                        isSmallerToggle
-                      />
+                    <div
+                      className="m-r-16 section-table"
+                      style={{
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
+                        marginBottom: 0,
+                      }}
+                    >
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockTwoSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(1);
+                            }}
+                          >
+                            Realized Gains
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockTwoSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(2);
+                            }}
+                          >
+                            Gas fees
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockTwoSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockTwoItem(3);
+                            }}
+                          >
+                            Counterparties
+                          </div>
+                        </div>
+                      </div>
+                      <div className="profit-chart">
+                        {this.state.blockTwoSelectedItem === 1 ? (
+                          <BarGraphSection
+                            openChartPage={this.goToRealizedGainsPage}
+                            newHomeSetup
+                            disableOnLoading
+                            noSubtitleBottomPadding
+                            noSubtitleTopPadding
+                            loaderHeight={15.5}
+                            // headerTitle="Realized profit and loss"
+                            // headerSubTitle="Understand your portfolio's net flows"
+                            isArrow={true}
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                ProfitLossEV({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                this.props.history.push(
+                                  "/intelligence#netflow"
+                                );
+                              }
+                            }}
+                            isScrollVisible={false}
+                            data={
+                              this.props.intelligenceState?.graphValue &&
+                              this.props.intelligenceState?.graphValue[0]
+                            }
+                            options={
+                              this.props.intelligenceState?.graphValue &&
+                              this.props.intelligenceState?.graphValue[1]
+                            }
+                            coinsList={this.props.OnboardingState.coinsList}
+                            marginBottom="m-b-32"
+                            showFooter={false}
+                            showBadges={false}
+                            // showPercentage={
+                            //   this.props.intelligenceState.graphValue &&
+                            //   this.props.intelligenceState.graphValue[2]
+                            // }
+                            showSwitch={false}
+                            isLoading={this.state.netFlowLoading}
+                            className={"portfolio-profit-and-loss"}
+                            isMinichart={true}
+                            ProfitLossAsset={
+                              this.props.intelligenceState.ProfitLossAsset
+                            }
+                            isSwitch={this.state.isSwitch}
+                            setSwitch={this.setSwitch}
+                            isSmallerToggle
+                          />
+                        ) : this.state.blockTwoSelectedItem === 2 ? (
+                          <div
+                            style={{
+                              position: "relative",
+                            }}
+                          >
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <BarGraphSection
+                              openChartPage={this.goToGasFeesSpentPage}
+                              data={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[0]
+                              }
+                              options={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[1]
+                              }
+                              options2={
+                                this.state.homeGraphFeesData &&
+                                this.state.homeGraphFeesData[2]
+                              }
+                              isScrollVisible={false}
+                              isScroll={true}
+                              isLoading={this.state.gasFeesGraphLoading}
+                              oldBar
+                              noSubtitleBottomPadding
+                              newHomeSetup
+                              noSubtitleTopPadding
+                            />
+                          </div>
+                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                          <div
+                            style={{
+                              position: "relative",
+                            }}
+                          >
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                                left: "5rem",
+                                top: "5rem",
+                              }}
+                            >
+                              <div>Loch</div>
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                                left: "5rem",
+                              }}
+                            >
+                              <div>Loch</div>
+                            </div>
+                            <BarGraphSection
+                              openChartPage={this.goToCounterPartyVolumePage}
+                              data={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[0]
+                              }
+                              options={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[1]
+                              }
+                              options2={
+                                this.state.homeCounterpartyVolumeData &&
+                                this.state.homeCounterpartyVolumeData[2]
+                              }
+                              isScrollVisible={false}
+                              isScroll={false}
+                              isLoading={this.state.counterGraphLoading}
+                              oldBar
+                              noSubtitleBottomPadding
+                              newHomeSetup
+                              noSubtitleTopPadding
+                            />
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   </Col>
                 </Row>
@@ -2643,261 +3590,199 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "32rem",
-                        minHeight: "32rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
-                      <TransactionTable
-                        moreData={
-                          table_home_count && table_home_count > 3
-                            ? `${numToCurrency(
-                                table_home_count - 3,
-                                true
-                              ).toLocaleString("en-US")}+ transactions`
-                            : 0
-                        }
-                        showDataAtBottom={
-                          table_home_count && table_home_count > 3
-                        }
-                        noSubtitleBottomPadding
-                        disableOnLoading
-                        isMiniversion
-                        title="Transactions"
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            this.props.history.push(
-                              "/intelligence/transaction-history"
-                            );
-                          }
-                        }}
-                        subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData.slice(0, 3)}
-                        columnList={columnList}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.tableLoading}
-                        addWatermark
-                        addWatermarkMoveUp
-                      />
-                    </div>
-                    {/* <div className="m-r-16 profit-chart">
-                      <div
-                        className={`bar-graph-section m-b-32`}
-                        style={{ paddingBottom: "0rem", position: "relative" }}
-                      >
-                        <GraphHeader
-                          title={"Insights"}
-                          subtitle={"Valuable insights based on your assets"}
-                          isArrow={true}
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              HomeInsightsExpand({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                              this.props.history.push("/intelligence/insights");
-                            }
-                          }}
-                        />
-                        <div className="insights-wrapper">
-                          {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                    {/* {this.state.isLoadingInsight ? (
-                            <div
-                              style={{
-                                height: "30rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Loading />
-                            </div>
-                          ) : (
-                            <>
-                              <div className="insight-slider">
-                                {this.props.intelligenceState
-                                  .updatedInsightList &&
-                                  this.props.intelligenceState
-                                    .updatedInsightList.length > 0 && (
-                                    <Slider {...this.state.settings}>
-                                      {this.props.intelligenceState.updatedInsightList
-                                        ?.slice(0, 3)
-                                        .map((insight, key) => {
-                                          return (
-                                            <div key={`sliderKey-${key}`}>
-                                              <div className="steps">
-                                                <div className="top-section">
-                                                  <Image
-                                                    src={
-                                                      insight.insight_type ===
-                                                      InsightType.COST_REDUCTION
-                                                        ? reduceCost
-                                                        : insight.insight_type ===
-                                                          InsightType.RISK_REDUCTION
-                                                        ? reduceRisk
-                                                        : increaseYield
-                                                    }
-                                                    className="insight-icon"
-                                                  />
-                                                  <div className="insight-title">
-                                                    <h5 className="inter-display-medium f-s-16 lh-19">
-                                                      {InsightType.getSmallText(
-                                                        insight.insight_type
-                                                      )}
-                                                    </h5>
-                                                    {insight?.sub_type ? (
-                                                      <h6
-                                                        className="inter-display-bold f-s-10 lh-12"
-                                                        style={{
-                                                          color: "#ffffff",
-                                                          background: "#19191A",
-                                                          borderRadius:
-                                                            "0.8rem",
-                                                          padding:
-                                                            "0.4rem 0.8rem",
-                                                          width: "fit-content",
-                                                          textTransform:
-                                                            "uppercase",
-                                                          marginTop: "0.4rem",
-                                                        }}
-                                                      >
-                                                        {InsightType.getRiskType(
-                                                          insight.sub_type
-                                                        )}
-                                                      </h6>
-                                                    ) : (
-                                                      <h6 className="inter-display-semi-bold f-s-10 lh-12 m-t-04">
-                                                        INSIGHT
-                                                      </h6>
-                                                    )}
-                                                  </div>
-                                                </div>
-
-                                                <div className="content-section">
-                                                  <p
-                                                    className="inter-display-medium f-s-13 lh-16 grey-969"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.sub_title,
-                                                    }}
-                                                  ></p>
-                                                  <h4
-                                                    className="inter-display-medium f-s-16 lh-19 grey-313 m-t-12"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.title,
-                                                    }}
-                                                  ></h4>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                    </Slider>
-                                  )}
-
-                                <div className="bottom-msg">
-                                  <div className="row-insight op">
-                                    <Image src={LightBulb} />
-                                    <h5 className="inter-display-medium f-s-13 lh-15 m-l-12">
-                                      Add all your wallets and <br />
-                                      exchanges to gain more insights
-                                    </h5>
-                                  </div>
-                                  <div
-                                    className="row-insight-arrow cp"
-                                    onClick={this.simulateButtonClick}
-                                  >
-                                    <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
-                                      Add more
-                                    </h6>
-                                    <Image src={ArrowRight} />
-                                  </div>
-                                </div>
-                              </div>
-                            </>
-                          )}
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockThreeSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(1);
+                            }}
+                          >
+                            Price gauge
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockThreeSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(2);
+                            }}
+                          >
+                            Historic performance
+                          </div>
                         </div>
                       </div>
-                    </div> */}
+                      {this.state.blockThreeSelectedItem === 1 ? (
+                        <InflowOutflowPortfolioHome
+                          openChartPage={this.goToPriceGaugePage}
+                          userWalletList={this.state.userWalletList}
+                          lochToken={this.state.lochToken}
+                          callChildPriceGaugeApi={
+                            this.state.callChildPriceGaugeApi
+                          }
+                        />
+                      ) : (
+                        <div className="profit-chart">
+                          <LineChartSlider
+                            openChartPage={this.goToHistoricPerformancePage}
+                            disableOnLoading
+                            noSubtitleBottomPadding
+                            assetValueData={
+                              this.props.portfolioState.assetValueDay &&
+                              this.props.portfolioState.assetValueDay
+                            }
+                            externalEvents={
+                              this.props.portfolioState.externalEvents &&
+                              this.props.portfolioState.externalEvents
+                            }
+                            coinLists={this.props.OnboardingState.coinsLists}
+                            isScrollVisible={false}
+                            handleGroupBy={(value) => this.handleGroupBy(value)}
+                            graphLoading={this.state.graphLoading}
+                            // graphLoading={true}
+                            isUpdate={this.state.isUpdate}
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                AssetValueExpandview({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                this.props.history.push(
+                                  "/intelligence/asset-value"
+                                );
+                              }
+                            }}
+                            hideTimeFilter={true}
+                            hideChainFilter={true}
+                            dataLoaded={this.state.assetValueDataLoaded}
+                            updateTimer={this.updateTimer}
+                            activeTab="day"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </Col>
                   <Col md={6}>
                     <div
-                      className="section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
+                      className="m-r-16 section-table"
+                      style={{
+                        height: "43rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "43rem",
+                        marginBottom: 0,
+                      }}
                     >
-                      <LineChartSlider
-                        disableOnLoading
-                        noSubtitleBottomPadding
-                        assetValueData={
-                          this.props.portfolioState.assetValueDay &&
-                          this.props.portfolioState.assetValueDay
-                        }
-                        externalEvents={
-                          this.props.portfolioState.externalEvents &&
-                          this.props.portfolioState.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            AssetValueExpandview({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push(
-                              "/intelligence/asset-value"
-                            );
-                          }
-                        }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={this.state.assetValueDataLoaded}
-                        updateTimer={this.updateTimer}
-                        activeTab="day"
-                      />
+                      <div className="section-table-toggle-container">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockFourSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(1);
+                            }}
+                          >
+                            Defi
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockFourSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(2);
+                            }}
+                          >
+                            Yield opportunities
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockFourSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(3);
+                            }}
+                          >
+                            Insights
+                          </div>
+                        </div>
+                        {this.state.blockFourSelectedItem === 1 ? (
+                          <PortfolioHomeDefiBlock
+                            lochToken={this.state.lochToken}
+                            history={this.props.history}
+                            userWalletList={this.state.userWalletList}
+                          />
+                        ) : this.state.blockFourSelectedItem === 2 ? (
+                          <TransactionTable
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Unrealized profit and loss"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push("/yield-opportunities");
+                                YieldOppurtunitiesExpandediew({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Understand your unrealized profit and loss per token"
+                            tableData={yieldOpportunitiesListTemp.slice(0, 5)}
+                            moreData={
+                              this.state.yieldOpportunitiesTotalCount &&
+                              this.state.yieldOpportunitiesTotalCount > 5
+                                ? `Click here to see ${numToCurrency(
+                                    this.state.yieldOpportunitiesTotalCount - 5,
+                                    true
+                                  ).toLocaleString("en-US")}+ yield ${
+                                    this.state.yieldOpportunitiesTotalCount -
+                                      5 >
+                                    1
+                                      ? "opportunities"
+                                      : "opportunity"
+                                  }`
+                                : "Click here to see more"
+                            }
+                            showDataAtBottom
+                            columnList={YieldOppColumnData}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={
+                              this.state.yieldOpportunitiesTableLoading
+                            }
+                            addWatermark
+                          />
+                        ) : this.state.blockFourSelectedItem === 3 ? (
+                          <PortfolioHomeInsightsBlock
+                            history={this.props.history}
+                            updatedInsightList={this.state.updatedInsightList}
+                            insightsBlockLoading={
+                              this.state.insightsBlockLoading
+                            }
+                          />
+                        ) : null}
+                      </div>
                     </div>
                   </Col>
-                  {/* <Col md={6}>
-                    <div className="profit-chart">
-                      <BarGraphSection
-                        headerTitle="Net Flows"
-                        headerSubTitle="Understand your portfolio's net flows"
-                        isArrow={true}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/intelligence#netflow");
-                          }
-                        }}
-                        isScrollVisible={false}
-                        data={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[0]
-                        }
-                        options={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[1]
-                        }
-                        coinsList={this.props.OnboardingState.coinsList}
-                        marginBottom="m-b-32"
-                        showFooter={false}
-                        showBadges={false}
-                        showPercentage={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[2]
-                        }
-                        isLoading={this.state.netFlowLoading}
-                        className={"portfolio-profit-and-loss"}
-                      />
-                    </div>
-                  </Col> */}
                 </Row>
               </div>
 
@@ -2965,6 +3850,9 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   defiState: state.DefiState,
+  yieldOpportunitiesState: state.YieldOpportunitiesState,
+  walletState: state.walletState,
+  inflowsOutflowsList: state.inflowsOutflowsList,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -2994,6 +3882,9 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   addAddressToWatchList,
+  getAllCounterFeeApi,
+  getAllFeeApi,
+  getYieldOpportunities,
   addUserCredits,
 };
 Portfolio.propTypes = {};

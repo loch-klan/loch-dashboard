@@ -1,38 +1,35 @@
 import React from "react";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
-import {
-  getUserWallet,
-  getProtocolBalanceApi,
-  getExchangeBalances,
-  isFollowedByUser,
-} from "./Api";
 import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
+import {
+  getExchangeBalances,
+  getProtocolBalanceApi,
+  getUserWallet,
+  isFollowedByUser,
+} from "./Api";
 
-import {
-  addAddressToWatchList,
-  removeAddressFromWatchList,
-} from "../watchlist/redux/WatchListApi";
-import {
-  CurrencyType,
-  amountFormat,
-  lightenDarkenColor,
-  loadingAnimation,
-  noExponents,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
-import LinkIcon from "../../assets/images/link.svg";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import TransactionTable from "../intelligence/TransactionTable";
+import LinkIcon from "../../assets/images/link.svg";
 import {
   Mobile_Home_Open_Defi_Credit_Balance,
   Mobile_Home_Open_Defi_Debt_Balance,
   Mobile_Home_Open_Network_Balance,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  amountFormat,
+  lightenDarkenColor,
+  loadingAnimation,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import {
+  addAddressToWatchList,
+  removeAddressFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {

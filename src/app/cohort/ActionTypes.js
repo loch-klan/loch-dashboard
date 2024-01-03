@@ -1,2 +1,0 @@
-export const GET_ALL_COHORT = "GET_ALL_COHORT";
-export const UPDATE_COHORT = "UPDATE_COHORT";

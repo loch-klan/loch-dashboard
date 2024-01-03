@@ -3,28 +3,13 @@ import { connect } from "react-redux";
 import Loading from "../common/Loading";
 import { getAllCoins } from "../onboarding/Api.js";
 // add wallet
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import PageHeader from "../common/PageHeader";
-import FixAddModal from "../common/FixAddModal";
-import arrowUp from "../../assets/images/arrow-up.svg";
-import { getProtocolBalanceApi } from "../Portfolio/Api";
-import { updateDefiData } from "./Api";
-import {
-  amountFormat,
-  convertNtoNumber,
-  CurrencyType,
-  mobileCheck,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
-import { getAllWalletListApi } from "../wallet/Api";
 import { Col, Image, Row } from "react-bootstrap";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
+import { toast } from "react-toastify";
+import arrowUp from "../../assets/images/arrow-up.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
-import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
-import UpgradeModal from "../common/upgradeModal";
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import Coin2 from "../../assets/images/icons/temp-coin1.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   DefiCredit,
   DefiDebt,
@@ -34,9 +19,24 @@ import {
   PageviewDefi,
   TimeSpentDefi,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { toast } from "react-toastify";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  amountFormat,
+  convertNtoNumber,
+  CurrencyType,
+  mobileCheck,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
+import PageHeader from "../common/PageHeader";
+import UpgradeModal from "../common/upgradeModal";
+import { getProtocolBalanceApi } from "../Portfolio/Api";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import { getAllWalletListApi } from "../wallet/Api";
+import { updateDefiData } from "./Api";
 
 class Defi extends Component {
   constructor(props) {
@@ -143,6 +143,15 @@ class Defi extends Component {
     this.startPageView();
     this.updateTimer(true);
 
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     return () => {
       clearInterval(window.checkDefiTimer);
     };
@@ -479,6 +488,8 @@ class Defi extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -525,7 +536,6 @@ class Defi extends Component {
               subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // showpath={true}
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}

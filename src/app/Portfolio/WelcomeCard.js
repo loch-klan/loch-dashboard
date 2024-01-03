@@ -1,26 +1,21 @@
-import React, { useEffect } from "react";
-import { useRef } from "react";
-import { Button, Image } from "react-bootstrap";
+import React, { useRef } from "react";
+import { Image } from "react-bootstrap";
 import arrowUpRight from "../../assets/images/icons/green-arrow.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import arrowDownRight from "../../assets/images/icons/red-arrow.svg";
-import CustomLoader from "../common/CustomLoader";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { amountFormat } from "../../utils/ReusableFunctions";
-import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
-import ManageWalletWhite from "../../assets/images/icons/ManageWalletWhite.svg";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
-import AddWalletAddressWhite from "../../assets/images/icons/AddWalletAddressWhite.svg";
-import LinkIcon from "../../assets/images/icons/link.svg";
-import LinkIconBtn from "../../assets/images/link.svg";
+import CustomLoader from "../common/CustomLoader";
 // import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
-import ConnectModal from "../common/ConnectModal";
-import AuthModal from "../common/AuthModal";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import ChangeIcon from "../../assets/images/icons/change-icon.svg";
+import EyeIcon from "../../assets/images/icons/eye.svg";
 import {
   ConnectExPopup,
   HomeConnectExchange,
@@ -29,10 +24,9 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import AuthModal from "../common/AuthModal";
+import ConnectModal from "../common/ConnectModal";
 import ExitOverlay from "../common/ExitOverlay";
-import EyeIcon from "../../assets/images/icons/eye.svg";
-import ChangeIcon from "../../assets/images/icons/change-icon.svg";
 import { TopWalletExchangeBar } from "../header";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
@@ -262,13 +256,18 @@ export default function WelcomeCard(props) {
     //   )}
     // </div>
     <div className="welcome-card-section-topbar">
-      <div className="welcome-card-topbar">
+      <div
+        className={`welcome-card-topbar ${
+          props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
+        }`}
+      >
         <div
           className="row-div"
           style={{
             display: "flex",
             flex: 1,
-            marginRight: "1.7rem",
+            minWidth: "85rem",
+            // marginRight: "1.7rem",
             // width: "calc(60% - 3rem)",
             // position: "absolute",
             // left: "calc(50% - 13rem)",
@@ -324,6 +323,10 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              updateOnFollow={props.updateOnFollow}
+              afterAddressFollowed={props.afterAddressFollowed}
+              isAddressFollowedCount={props.isAddressFollowedCount}
+              handleShare={props.handleShare}
               changeWalletList={props.changeWalletList}
               apiResponse={props.apiResponse}
               history={history}
@@ -331,6 +334,7 @@ export default function WelcomeCard(props) {
               handleAddWalletClick={handleAddWalletClick}
               handleConnectModal={handleConnectModal}
               handleUpdate={props.handleUpdate}
+              hideShare={props.hideShare}
             />
           ) : // <div className="topBarContainer">
           //   <div
