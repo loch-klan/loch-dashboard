@@ -24,7 +24,12 @@ import {
   SORT_BY_AMOUNT,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  deleteToken,
+  getCurrentUser,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -45,12 +50,14 @@ import {
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  LPC_Go,
   LPConnectExchange,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
   detectNameTag,
   getAllCurrencyRatesApi,
+  setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
@@ -77,6 +84,7 @@ import {
 import Login from "./NewAuth/Login.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import MobileHome from "./MobileHome.js";
 
 class NewHome extends BaseReactComponent {
   constructor(props) {
@@ -918,7 +926,118 @@ class NewHome extends BaseReactComponent {
     // data.append("link", );
     this.props.createAnonymousUserApi(data, this, finalArr, null);
   };
+  addAdressesGo = () => {
+    let walletAddress = [];
+    let addWallet = this.state.walletInput;
+    let addWalletTemp = this.state.walletInput;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
 
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.sessionStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    this.props.createAnonymousUserApi(data, this, finalArr, null);
+
+    const address = finalArr?.map((e) => e.address);
+
+    const unrecog_address = finalArr
+      .filter((e) => !e.coinFound)
+      .map((e) => e.address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    finalArr
+      .filter((e) => e.coinFound)
+      .map((obj) => {
+        let coinName = obj.coins
+          .filter((e) => e.chain_detected)
+          .map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    LPC_Go({
+      addresses: address,
+      ENS: address,
+      chains_detected_against_them: blockchainDetected,
+      unrecognized_addresses: unrecog_address,
+      unrecognized_ENS: unrecog_address,
+      nicknames: nicknames,
+    });
+  };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -960,7 +1079,7 @@ class NewHome extends BaseReactComponent {
           false,
           0,
           false,
-          true
+          false
         );
       }
     }
@@ -1177,6 +1296,93 @@ class NewHome extends BaseReactComponent {
     this.toggleAuthModal("login");
   };
   componentDidMount() {
+    if (mobileCheck(true)) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
+
+    this.props.setHeaderReducer([]);
+    this.setState({ startTime: new Date() * 1 });
+    let currencyRates = JSON.parse(
+      window.sessionStorage.getItem("currencyRates")
+    );
+    if (!currencyRates) {
+      getAllCurrencyRatesApi();
+    }
+    if (getToken()) {
+      let isStopRedirect =
+        window.sessionStorage.getItem("stop_redirect") &&
+        JSON.parse(window.sessionStorage.getItem("stop_redirect"));
+      if (isStopRedirect) {
+        this.props.setPageFlagDefault();
+
+        if (!mobileCheck()) {
+          deleteToken();
+        }
+      } else {
+        // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
+        let user = window.sessionStorage.getItem("lochUser")
+          ? JSON.parse(window.sessionStorage.getItem("lochUser"))
+          : false;
+        if (user) {
+          this.props.history.push("/home");
+        } else {
+          this.props.setPageFlagDefault();
+          if (!mobileCheck()) {
+            deleteToken();
+          }
+          //  window.sessionStorage.setItem("defi_access", true);
+          //  window.sessionStorage.setItem("isPopup", true);
+          //  // window.sessionStorage.setItem("whalepodview", true);
+          //  window.sessionStorage.setItem(
+          //    "whalepodview",
+          //    JSON.stringify({ access: true, id: "" })
+          //  );
+          // window.sessionStorage.setItem(
+          //   "isSubmenu",
+          //   JSON.stringify({
+          //     me: false,
+          //     discover: false,
+          //     intelligence: false,
+          //   })
+          // );
+          setLocalStoraage();
+          let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+          if (!isRefresh) {
+            window.sessionStorage.setItem("refresh", true);
+            window.location.reload(true);
+          }
+        }
+      }
+    } else {
+      this.props.setPageFlagDefault();
+      if (!mobileCheck()) {
+        deleteToken();
+      }
+      // window.sessionStorage.setItem("defi_access", true);
+      // window.sessionStorage.setItem("isPopup", true);
+      // // window.sessionStorage.setItem("whalepodview", true);
+      // window.sessionStorage.setItem(
+      //   "whalepodview",
+      //   JSON.stringify({ access: true, id: "" })
+      // );
+      // // window.sessionStorage.setItem("isSubmenu", false);
+      //  window.sessionStorage.setItem(
+      //    "isSubmenu",
+      //    JSON.stringify({
+      //      me: false,
+      //      discover: false,
+      //      intelligence: false,
+      //    })
+      //  );
+      setLocalStoraage();
+      let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+      if (!isRefresh) {
+        window.sessionStorage.setItem("refresh", true);
+        window.location.reload(true);
+      }
+    }
     // For input
     this.setState({
       addButtonVisible: this.state.walletInput.some((wallet) =>
@@ -1193,7 +1399,6 @@ class NewHome extends BaseReactComponent {
     this.props.GetAllPlan();
 
     // For smart money
-    getAllCurrencyRatesApi();
 
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1348,7 +1553,6 @@ class NewHome extends BaseReactComponent {
     }
   };
   handleSetCoinByLocalWallet = (data) => {
-    console.log("REached");
     let coinList = {
       chain_detected: data.chain_detected,
       coinCode: data.coinCode,
@@ -1588,6 +1792,19 @@ class NewHome extends BaseReactComponent {
   }
 
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileHome
+          exchanges={this.state.onboardingExchanges}
+          history={this.props.history}
+          location={this.props.location}
+          makeTrendingAddressesVisible={this.makeTrendingAddressesVisible}
+          addTrendingAddress={this.addTrendingAddress}
+          trendingAddresses={this.state.trendingAddresses}
+          isTrendingAddresses={this.state.isTrendingAddresses}
+        />
+      );
+    }
     const tableData = this.state.accountList;
 
     const columnList = [
@@ -2352,6 +2569,7 @@ class NewHome extends BaseReactComponent {
                     </button>
                   ) : null}
                   <button
+                    onClick={this.addAdressesGo}
                     disabled={this.state.isGoButtonsDisabled}
                     className="newHomeAddAnotherGoBtns newHomeGoBtn"
                   >
@@ -2389,6 +2607,7 @@ const mapDispatchToProps = {
   createAnonymousUserSmartMoneyApi,
   verifyUser,
   setMetamaskConnectedReducer,
+  setPageFlagDefault,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewHome);

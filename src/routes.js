@@ -40,14 +40,14 @@ const routes = [
     path: "/welcome",
     name: "Home",
     type: Route,
-    component: Home,
-  },
-  {
-    path: "/new-welcome",
-    name: "Home",
-    type: Route,
     component: NewHome,
   },
+  // {
+  //   path: "/new-welcome",
+  //   name: "Home",
+  //   type: Route,
+  //   component: NewHome,
+  // },
   {
     path: "/Referral",
     name: "Referral",
