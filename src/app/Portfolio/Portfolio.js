@@ -38,6 +38,7 @@ import {
   BASE_URL_S3,
   GROUP_BY_DATE,
   SEARCH_BY_WALLET_ADDRESS_IN,
+  SORT_BY_AMOUNT,
   SORT_BY_APY,
   SORT_BY_ASSET,
   SORT_BY_FROM_WALLET,
@@ -284,6 +285,10 @@ class Portfolio extends BaseReactComponent {
         },
         {
           title: "asset",
+          up: false,
+        },
+        {
+          title: "amount",
           up: false,
         },
         {
@@ -1723,6 +1728,13 @@ class Portfolio extends BaseReactComponent {
           obj = [
             {
               key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "amount") {
+          obj = [
+            {
+              key: SORT_BY_AMOUNT,
               value: !el.up,
             },
           ];
