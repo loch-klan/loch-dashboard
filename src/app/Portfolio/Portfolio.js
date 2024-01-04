@@ -2012,9 +2012,9 @@ class Portfolio extends BaseReactComponent {
             let tempOpp = "-";
             if (this.state.isShowingAge && rowData.age) {
               tempVal = rowData.age;
-              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm");
             } else if (!this.state.isShowingAge && rowData.time) {
-              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm");
               tempOpp = rowData.age;
             }
             return (
@@ -2847,7 +2847,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.18,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -2879,63 +2879,63 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost basis
-            </span>
-            <Image
-              src={sortByIcon}
-              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "CostBasis",
-        // coumnWidth: 100,
-        coumnWidth: 0.2,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "CostBasis") {
-            if (rowData === "EMPTY") {
-              return null;
-            }
-            return (
-              <div className="cost-common-container">
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    !rowData.CostBasis || rowData.CostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
-                  }
-                >
-                  <div className="cost-common">
-                    <span>
-                      {!rowData.CostBasis || rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")}
-                    </span>
-                  </div>
-                </CustomOverlay>
-              </div>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="Cost Basis"
+      //       onClick={() => this.handleSort(this.state.sortBy[4])}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Cost basis
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "CostBasis",
+      //   // coumnWidth: 100,
+      //   coumnWidth: 0.2,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "CostBasis") {
+      //       if (rowData === "EMPTY") {
+      //         return null;
+      //       }
+      //       return (
+      //         <div className="cost-common-container">
+      //           <CustomOverlay
+      //             position="top"
+      //             isIcon={false}
+      //             isInfo={true}
+      //             isText={true}
+      //             text={
+      //               !rowData.CostBasis || rowData.CostBasis === 0
+      //                 ? "N/A"
+      //                 : CurrencyType(false) +
+      //                   Number(
+      //                     noExponents(rowData.CostBasis.toFixed(2))
+      //                   ).toLocaleString("en-US")
+      //             }
+      //           >
+      //             <div className="cost-common">
+      //               <span>
+      //                 {!rowData.CostBasis || rowData.CostBasis === 0
+      //                   ? "N/A"
+      //                   : CurrencyType(false) +
+      //                     numToCurrency(
+      //                       rowData.CostBasis.toFixed(2)
+      //                     ).toLocaleString("en-US")}
+      //               </span>
+      //             </div>
+      //           </CustomOverlay>
+      //         </div>
+      //       );
+      //     }
+      //   },
+      // },
       {
         labelName: (
           <div
@@ -2954,7 +2954,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3011,9 +3011,12 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.22,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "GainAmount") {
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
@@ -3088,7 +3091,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
@@ -3662,7 +3665,8 @@ class Portfolio extends BaseReactComponent {
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
                           openChartPage={this.goToPriceGaugePage}
-                          isHomepage
+                          // isHomepage
+                          showEth
                           userWalletList={this.state.userWalletList}
                           lochToken={this.state.lochToken}
                           callChildPriceGaugeApi={

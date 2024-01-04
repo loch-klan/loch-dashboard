@@ -223,6 +223,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
         <div className="graph-container">
           <InflowOutflowChartSliderContainer
           isHomepage={this.props.isHomepage}
+          showEth={this.props.showEth}
             inflowOutflowData={
               this.state.inflowsOutflowsList
                 ? this.state.inflowsOutflowsList
@@ -240,7 +241,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
             hideTimeFilter
             openChartPage={this.props.openChartPage}
-            showDropdown
+            // showDropdown
           />
         </div>
       </div>
