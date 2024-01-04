@@ -218,7 +218,7 @@ class Portfolio extends BaseReactComponent {
       isLoadingNet: false,
 
       // transaction history table
-      tableLoading: false,
+      tableLoading: true,
 
       // asset value laoder
       graphLoading: false,
@@ -764,6 +764,22 @@ class Portfolio extends BaseReactComponent {
           AvgCostLoading: true,
         });
         this.props.getAvgCostBasis(this);
+      }
+    }
+    if (
+      this.props.intelligenceState?.table &&
+      this.props.intelligenceState?.table.length > 0
+    ) {
+      if (this.props.commonState.transactionHistory) {
+        this.setState({
+          tableLoading: false,
+        });
+      } else {
+        this.props.updateWalletListFlag("transactionHistory", true);
+        this.setState({
+          tableLoading: true,
+        });
+        this.props.getTableData(this);
       }
     }
 
