@@ -97,6 +97,7 @@ import {
   TruncateText,
   UpgradeTriggered,
   amountFormat,
+  convertNtoNumber,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -2015,7 +2016,10 @@ class Portfolio extends BaseReactComponent {
             code: row.asset.code,
             symbol: row.asset.symbol,
           },
-
+          amount: {
+            value: parseFloat(row.asset.value),
+            id: row.asset.id,
+          },
           usdValueToday: {
             value: row.asset.value,
             id: row.asset.id,
@@ -2076,7 +2080,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "time",
-        coumnWidth: 0.4,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2131,7 +2135,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "from",
-        coumnWidth: 0.2,
+        coumnWidth: 0.1875,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2371,7 +2375,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.2,
+        coumnWidth: 0.1875,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2610,7 +2614,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.2,
+        coumnWidth: 0.1875,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2631,43 +2635,54 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="method"
-      //       onClick={() => {
-      //         this.handleTableSort("method");
-      //         TransactionHistoryMethod({
-      //           session_id: getCurrentUser().id,
-      //           email_address: getCurrentUser().email,
-      //         });
-      //       }}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Method
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "method",
-      //   coumnWidth: 0.22,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "method") {
-      //       return (
-      //         <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
-      //           {rowData.method}
-      //         </div>
-      //       );
-      //     }
-      //   },
-      // },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="amount"
+            onClick={() => this.handleTableSort("amount")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Amount
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "amount",
+
+        coumnWidth: 0.1875,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "amount") {
+            // return rowData.amount.value?.toFixed(2)
+            let tempAmountVal = 0;
+            if (rowData?.amount?.value) {
+              tempAmountVal = convertNtoNumber(rowData.amount.value);
+            }
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={tempAmountVal ? tempAmountVal : "0.00"}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {numToCurrency(tempAmountVal).toLocaleString("en-US")}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
     ];
 
     // Cost basis
@@ -2922,7 +2937,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -3029,7 +3044,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
-        coumnWidth: 0.25,
+        coumnWidth: 0.283,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3086,7 +3101,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.283,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3166,7 +3181,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "PortfolioPercentage",
         // coumnWidth: 128,
-        coumnWidth: 0.25,
+        coumnWidth: 0.283,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
@@ -3452,7 +3467,7 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div
-                      className="m-r-16 section-table"
+                      className="section-table"
                       style={{
                         height: "43rem",
                         display: "flex",
@@ -3711,7 +3726,7 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div
-                      className="m-r-16 section-table"
+                      className="section-table"
                       style={{
                         height: "43rem",
                         display: "flex",
