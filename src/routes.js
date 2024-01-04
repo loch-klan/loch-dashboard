@@ -27,6 +27,7 @@ import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import NewWelcome from "./app/home/NewWelcome";
 const routes = [
   {
     path: "/",
@@ -39,7 +40,7 @@ const routes = [
     path: "/welcome",
     name: "Home",
     type: Route,
-    component: Home,
+    component: NewWelcome,
   },
   {
     path: "/profile",
