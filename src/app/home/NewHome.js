@@ -492,13 +492,13 @@ class NewHome extends BaseReactComponent {
           ],
         },
         {
-          address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-          worth: 28891163.13,
-          trimmedAddress: "0x51C...a7F",
+          address: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
+          worth: 26630616.771,
+          trimmedAddress: "0x474...C66",
           fullData: [
             {
-              address: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
-              apiAddress: "0x51C72848c68a965f66FA7a88855F9f7784502a7F",
+              address: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
+              apiAddress: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
               coinFound: [
                 {
                   chain_detected: true,
@@ -558,31 +558,10 @@ class NewHome extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
-                  coinCode: "LTC",
-                  coinName: "Litecoin",
-                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                  coinColor: "#345D9D",
-                },
-                {
-                  chain_detected: false,
                   coinCode: "SOL",
                   coinName: "Solana",
                   coinSymbol: "https://media.loch.one/loch-solana.svg",
                   coinColor: "#5ADDA6",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "BTC",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                  coinColor: "#F19938",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
                 },
                 {
                   chain_detected: false,
@@ -593,10 +572,17 @@ class NewHome extends BaseReactComponent {
                 },
                 {
                   chain_detected: false,
-                  coinCode: "TRX",
-                  coinName: "Tron",
-                  coinSymbol: "https://media.loch.one/loch-tron.svg",
-                  coinColor: "#FF060A",
+                  coinCode: "LTC",
+                  coinName: "Litecoin",
+                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+                  coinColor: "#345D9D",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "XLM",
+                  coinName: "Stellar",
+                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
+                  coinColor: "#19191A",
                 },
                 {
                   chain_detected: false,
@@ -604,6 +590,20 @@ class NewHome extends BaseReactComponent {
                   coinName: "Cardano",
                   coinSymbol: "https://media.loch.one/loch-cardano.svg",
                   coinColor: "#0033AD",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "BTC",
+                  coinName: "Bitcoin",
+                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+                  coinColor: "#F19938",
+                },
+                {
+                  chain_detected: false,
+                  coinCode: "TRX",
+                  coinName: "Tron",
+                  coinSymbol: "https://media.loch.one/loch-tron.svg",
+                  coinColor: "#FF060A",
                 },
               ],
               displayAddress: "",
@@ -1152,11 +1152,7 @@ class NewHome extends BaseReactComponent {
     });
   };
   addInputField = () => {
-    if (
-      this.state.walletInput.length + 1 <=
-        this.state.userPlan?.wallet_address_limit ||
-      this.state.userPlan?.wallet_address_limit === -1
-    ) {
+    if (this.state.walletInput.length + 1 <= 10) {
       this.state.walletInput.push({
         id: `wallet${this.state.walletInput.length + 1}`,
         address: "",
@@ -1167,21 +1163,19 @@ class NewHome extends BaseReactComponent {
         showNameTag: true,
         nameTag: "",
       });
-      this.setState({
-        walletInput: this.state.walletInput,
-      });
+      this.setState(
+        {
+          walletInput: this.state.walletInput,
+        },
+        () => {
+          document
+            .getElementById(`newWelcomeWallet-${this.state.walletInput.length}`)
+            .focus();
+        }
+      );
       AddTextbox({
         session_id: getCurrentUser().id,
       });
-    } else {
-      this.setState(
-        {
-          triggerId: 1,
-        },
-        () => {
-          this.props.upgradeModal();
-        }
-      );
     }
   };
   deleteInputField = (index, wallet) => {
@@ -1276,12 +1270,6 @@ class NewHome extends BaseReactComponent {
     }
   };
 
-  createEmptyUser = () => {
-    const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify([]));
-    this.props.createAnonymousUserSmartMoneyApi(data);
-  };
-
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
     setTimeout(() => {
@@ -1293,8 +1281,12 @@ class NewHome extends BaseReactComponent {
       this.props.getSmartMoney(data, this, this.state.pageLimit);
     }, 300);
   };
-  opneLoginModal = () => {
+
+  opneLoginModalForSmartMoney = () => {
     this.toggleAuthModal("login");
+    this.setState({
+      smartMoneyLogin: true,
+    });
   };
   componentDidMount() {
     if (mobileCheck(true)) {
@@ -1302,7 +1294,16 @@ class NewHome extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
@@ -1327,7 +1328,11 @@ class NewHome extends BaseReactComponent {
           ? JSON.parse(window.sessionStorage.getItem("lochUser"))
           : false;
         if (user) {
-          this.props.history.push("/home");
+          if (!mobileCheck()) {
+            deleteToken();
+          } else {
+            this.props.history.push("/home");
+          }
         } else {
           this.props.setPageFlagDefault();
           if (!mobileCheck()) {
@@ -1408,12 +1413,10 @@ class NewHome extends BaseReactComponent {
       this.setState({
         blurTable: false,
       });
-      this.createEmptyUser();
     } else {
       this.setState({
         blurTable: true,
       });
-      this.createEmptyUser();
     }
 
     if (API_LIMIT) {
@@ -1462,7 +1465,7 @@ class NewHome extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("email", this.state.email);
       data.append("otp_token", this.state.otp);
-      this.props.verifyUser(this, data, true);
+      this.props.verifyUser(this, data, true, this.state.smartMoneyLogin);
     }
   };
 
@@ -1576,7 +1579,6 @@ class NewHome extends BaseReactComponent {
       );
 
     let newAddress = this.state.currentMetamaskWallet;
-    console.log("Here");
     data.address === newAddress.address &&
       newAddress.coins.push(...newCoinList);
     // new code added
@@ -1903,7 +1905,7 @@ class NewHome extends BaseReactComponent {
                     // });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {
-                    this.opneLoginModal();
+                    this.opneLoginModalForSmartMoney();
                   }
                 }}
                 className="top-account-address"
@@ -2219,7 +2221,7 @@ class NewHome extends BaseReactComponent {
                   rowData.tagName
                 );
               } else {
-                this.opneLoginModal();
+                this.opneLoginModalForSmartMoney();
               }
             };
             return (
@@ -2303,6 +2305,9 @@ class NewHome extends BaseReactComponent {
                   style={{ padding: "8px 12px" }}
                   onClick={() => {
                     this.toggleAuthModal("login");
+                    this.setState({
+                      smartMoneyLogin: false,
+                    });
                   }}
                 >
                   <div
@@ -2314,6 +2319,7 @@ class NewHome extends BaseReactComponent {
                       width: "20px",
                       height: "20px",
                       border: "1px solid #E5E5E6",
+                      boxShadow: "0px 2px 3px 1px rgba(24, 39, 75, 0.05)",
                     }}
                   >
                     <img src={personRounded} alt="" />
@@ -2486,7 +2492,7 @@ class NewHome extends BaseReactComponent {
                     }}
                   >
                     <TransactionTable
-                      openSignInOnclickModal={this.opneLoginModal}
+                      openSignInOnclickModal={this.opneLoginModalForSmartMoney}
                       smartMoneyBlur={this.state.blurTable}
                       // blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney

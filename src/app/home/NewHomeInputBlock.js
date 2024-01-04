@@ -28,6 +28,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                   <div className="awTopInputWrapper">
                     <div className="awInputContainer">
                       <input
+                        id={`newWelcomeWallet-${index + 1}`}
                         name={`wallet${index + 1}`}
                         value={c.address || ""}
                         className={`inter-display-regular f-s-15 lh-20 awInput`}

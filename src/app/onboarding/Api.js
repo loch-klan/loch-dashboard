@@ -225,7 +225,7 @@ export const signIn = (ctx, data, v2 = false, resend = false) => {
     });
 };
 
-export const verifyUser = (ctx, info, v2 = false) => {
+export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/verify-otp", info)
@@ -348,18 +348,28 @@ export const verifyUser = (ctx, info, v2 = false) => {
           }
 
           // Mixpanel function
-          signInUser({
-            email_address: res.data.data.user?.email,
-            userId: res.data.data.user?.link,
-            first_name: res.data.data.user?.first_name,
-            last_name: res.data.data.user?.last_name,
-            track: "Landing page sign in",
-          });
+          if (goToSmartMoney) {
+            signInUser({
+              email_address: res.data.data.user?.email,
+              userId: res.data.data.user?.link,
+              first_name: res.data.data.user?.first_name,
+              last_name: res.data.data.user?.last_name,
+              track: "Landing page sign in",
+            });
+          } else {
+            signInUser({
+              email_address: res.data.data.user?.email,
+              userId: res.data.data.user?.link,
+              first_name: res.data.data.user?.first_name,
+              last_name: res.data.data.user?.last_name,
+              track: "Landing page smart money sign in",
+            });
+          }
           // console.log("addWallet", addWallet);
           window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
           ctx.props.history.push({
-            pathname: "/home",
+            pathname: goToSmartMoney ? "/home-leaderboard" : "/home",
             state: { addWallet },
           });
           UserSignedinCorrectly({

@@ -1504,7 +1504,7 @@
         gap: 8px;
       }
       .newWelcomeAddedAddresses {
-        max-height: 25rem;
+        max-height: 30rem;
         overflow-y: scroll;
         width: calc(100% + 8rem);
         transform: translateX(-6rem);
@@ -1660,7 +1660,7 @@
       border: 1px solid $white-E5E;
       background-color: white;
       color: black;
-      img{
+      img {
         filter: brightness(0);
       }
     }
