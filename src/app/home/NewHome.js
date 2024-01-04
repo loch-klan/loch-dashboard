@@ -2555,11 +2555,13 @@ class NewHome extends BaseReactComponent {
                           }}
                           className="newWelcomeAddedAddressesBlockContainer"
                         >
-                          <div className="newWelcomeAddedAddressesBlockDelContainer">
+                          <div
+                            onClick={() => this.deleteInputField(index, c)}
+                            className="newWelcomeAddedAddressesBlockDelContainer"
+                          >
                             <Image
                               className="newWelcomeAddedAddressesBlockDel"
                               src={NewWelcomeTrashIcon}
-                              onClick={() => this.deleteInputField(index, c)}
                             />
                           </div>
                           <NewHomeInputBlock
