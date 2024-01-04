@@ -55,7 +55,7 @@ const Login = ({
                         <input 
                         className='new-auth-content-input' 
                         type="text" 
-                        placeholder='Email'
+                        placeholder='Your email address'
                         value={email}
                         onChange={(e)=>handleChangeEmail(e.target.value)}
                         />
