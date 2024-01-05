@@ -3474,6 +3474,7 @@ export const TransactionHistoryYearFilter = ({
   email_address,
   year_filter,
   isSearchUsed,
+  isMobile=false,
 }) => {
   const event_name = "Transaction History: years filter";
   const eventProperties = {
@@ -3481,6 +3482,7 @@ export const TransactionHistoryYearFilter = ({
     "email address": email_address,
     "year selected": year_filter,
     "search used": isSearchUsed,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3505,6 +3507,7 @@ export const TransactionHistoryAssetFilter = ({
   email_address,
   asset_filter,
   isSearchUsed,
+  isMobile=false,
 }) => {
   const event_name = "Transaction History: assets filter";
   const eventProperties = {
@@ -3512,6 +3515,7 @@ export const TransactionHistoryAssetFilter = ({
     "email address": email_address,
     "asset selected": asset_filter,
     "search used": isSearchUsed,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3523,6 +3527,7 @@ export const TransactionHistoryNetworkFilter = ({
   email_address,
   network_filter,
   isSearchUsed,
+  isMobile=false,
 }) => {
   const event_name = "Transaction History: networks filter";
   const eventProperties = {
@@ -3530,6 +3535,7 @@ export const TransactionHistoryNetworkFilter = ({
     "email address": email_address,
     "networks selected": network_filter,
     "search used": isSearchUsed,
+    "isMobile": isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
