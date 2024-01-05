@@ -47,7 +47,7 @@ const Login = ({
                 Get right back into your account
               </p>
             </div>
-            <div className="new-auth-content-input-holder">
+            <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
               <input
                 className="new-auth-content-input"
                 type="text"
