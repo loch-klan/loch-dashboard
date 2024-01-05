@@ -56,12 +56,14 @@ class CustomTable extends BaseReactComponent {
       isLoading,
       isStickyHead,
       isMiniversion,
+      wrapperStyle
     } = this.props;
     return (
       <div
         className={`table-wrapper ${
           this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
         } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
+        style={wrapperStyle}
       >
         {isLoading === true ? (
           <div

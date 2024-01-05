@@ -27,6 +27,7 @@ import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import Nft from "./app/nft/Nft";
 const routes = [
   {
     path: "/",
@@ -83,6 +84,12 @@ const routes = [
     name: "Assets",
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
+  },
+  {
+    path: "/nft",
+    name: "NFT",
+    type: PrivateRoute,
+    component: Nft,
   },
   {
     path: "/intelligence/transaction-history",
