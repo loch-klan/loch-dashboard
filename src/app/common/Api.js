@@ -94,6 +94,12 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
         if (!res.data.error) {
+          if (ctx.cancelAddingWallet) {
+            // ctx.cancelAddingWallet();
+            ctx.setState({
+              disableAddBtn: false,
+            });
+          }
           const allChains = ctx.props.OnboardingState.coinsList;
           let newAddWallet = [];
           const apiResponse = res.data.data;
@@ -196,10 +202,22 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
             .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
+          if (ctx.cancelAddingWallet) {
+            // ctx.cancelAddingWallet();
+            ctx.setState({
+              disableAddBtn: false,
+            });
+          }
         }
       })
       .catch((err) => {
         // console.log("fixwallet",err)
+        if (ctx.cancelAddingWallet) {
+          // ctx.cancelAddingWallet();
+          ctx.setState({
+            disableAddBtn: false,
+          });
+        }
       });
   };
 };

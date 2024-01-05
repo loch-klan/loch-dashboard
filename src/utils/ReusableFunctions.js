@@ -218,9 +218,14 @@ export const getPadding = (val, e, OnboardingState) => {
 
   return { paddingRight: paddRight };
 };
-export const loadingAnimation = () => {
+export const loadingAnimation = (noMargin = false) => {
   return (
-    <div className="spinner-chip-container">
+    <div
+      style={{
+        marginLeft: noMargin ? "0rem" : "",
+      }}
+      className="spinner-chip-container"
+    >
       <div className="spinner">
         <div className="bounce1"></div>
         <div className="bounce2"></div>

@@ -94,6 +94,7 @@ import {
 import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -2052,6 +2053,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}

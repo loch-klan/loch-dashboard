@@ -133,7 +133,9 @@ export const addUserCredits = (data, ctx) => {
     postLoginInstance
       .post("wallet/user-wallet/add-credits", data)
       .then((res) => {
-        if(ctx.callApi) ctx.callApi();
+        if (ctx.callApi) {
+          ctx.callApi();
+        }
       })
       .catch((err) => {
         console.log("add credits error ", err);
