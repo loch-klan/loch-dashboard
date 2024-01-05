@@ -46,6 +46,7 @@ import {
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class GasFeesPage extends Component {
   constructor(props) {
@@ -530,6 +531,10 @@ class GasFeesPage extends Component {
             ""
           )}
           <div className="cost-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}

@@ -66,6 +66,7 @@ import {
   removeAddressFromWatchList,
   updateAddToWatchList,
 } from "./redux/WatchListApi";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -796,6 +797,10 @@ class WatchListPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              hideShare
+            />
             {this.state.showAddWatchListAddress ? (
               <AddWatchListAddressModal
                 show={this.state.showAddWatchListAddress}
