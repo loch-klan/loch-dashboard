@@ -6,9 +6,8 @@ import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import {
   EyeIcon,
-  FollowTopBarIcon,
   PlusCircleIcon,
-  ShareTopBarIcon,
+  TopBarSearchIcon,
   WalletIcon,
   XCircleIcon,
   XCircleRedIcon,
@@ -22,11 +21,13 @@ import {
   DisconnectWalletButtonClicked,
   HomeFollow,
   HomeUnFollow,
+  QuickAddWalletAddress,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
+import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser } from "../Portfolio/Api";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
@@ -42,11 +43,25 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
-import TopBarDropDown from "./TopBarDropDown";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
       followSignInModalAnimation: true,
       followSigninModal: false,
       followSignupModal: false,
@@ -66,6 +81,7 @@ class TopWalletExchangeBar extends Component {
       isMobileWalletListExpanded: false,
       isFollowingAddress: false,
       showFollowingAddress: true,
+      disableAddBtn: false,
     };
   }
   showFollowOrNot = () => {
@@ -283,6 +299,99 @@ class TopWalletExchangeBar extends Component {
       this.applyTempWalletList();
     }
   }
+  handleOnLocalChange = (e) => {
+    let { name, value } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].address;
+
+      walletCopy[foundIndex].address = value;
+      if (value === "" || prevValue !== value) {
+        walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
+      }
+    }
+    this.setState({
+      walletInput: walletCopy,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // timeout;
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnLocalWalletAddress(name, value);
+    }, 1000);
+  };
+  getCoinBasedOnLocalWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          false,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoinByLocalWallet = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item?.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
   applyLocalStorageWalletList = () => {
     let tempWalletAdd = window.sessionStorage.getItem(
       "topBarLocalStorageWalletAddresses"
@@ -479,6 +588,188 @@ class TopWalletExchangeBar extends Component {
       page: pathName,
     });
     this.props.handleAddWalletClick();
+  };
+  handleAddWallet = () => {
+    this.setState({
+      disableAddBtn: true,
+    });
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (addWalletList && addWalletList?.length > 0) {
+      addWalletList = addWalletList?.map((e) => {
+        return {
+          ...e,
+          showAddress: e.nickname === "" ? true : false,
+          showNickname: e.nickname === "" ? false : true,
+          showNameTag: e.nameTag === "" ? false : true,
+          apiAddress: e.address,
+        };
+      });
+    }
+    let tempWalletInput = this.state.walletInput[0];
+    if (addWalletList && addWalletList.length > 0) {
+      tempWalletInput.id = "wallet" + (addWalletList.length + 1);
+    }
+    addWalletList = [...addWalletList, tempWalletInput];
+    let arr = [];
+    let addressList = [];
+    let nicknameArr = {};
+    let isChainDetected = [];
+    let total_address = 0;
+    let walletList = [];
+    for (let i = 0; i < addWalletList.length; i++) {
+      let curr = addWalletList[i];
+
+      let isIncluded = false;
+      const whatIndex = arr.findIndex(
+        (resRes) =>
+          resRes?.trim()?.toLowerCase() ===
+            curr?.address?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.displayAddress?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.apiAddress?.trim()?.toLowerCase()
+      );
+      if (whatIndex !== -1) {
+        isIncluded = true;
+      }
+      if (!isIncluded && curr.address) {
+        walletList.push(curr);
+        if (curr.address) {
+          arr.push(curr.address?.trim());
+        }
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        if (curr.displayAddress) {
+          arr.push(curr.displayAddress?.trim());
+        }
+        if (curr.apiAddress) {
+          arr.push(curr.apiAddress?.trim());
+        }
+        addressList.push(curr.address?.trim());
+        isChainDetected.push(curr?.coinFound);
+        total_address = total_address + 1;
+      }
+    }
+
+    let addWallet = walletList;
+
+    addWallet?.map((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    // data.append("wallet_addresses", JSON.stringify(arr));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+    // data.append("chain_detected", chain_detechted);
+
+    // if its upload then we pass user id
+    if (this.state.isChangeFile) {
+      data.append("user_id", getCurrentUser().id);
+      this.setState({
+        isChangeFile: false,
+      });
+    }
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+
+    if (creditIsAddress) {
+      // Single address
+      const addressCreditScore = new URLSearchParams();
+      addressCreditScore.append("credits", "address_added");
+      this.props.addUserCredits(addressCreditScore);
+
+      // Multiple address
+      const multipleAddressCreditScore = new URLSearchParams();
+      multipleAddressCreditScore.append("credits", "multiple_address_added");
+      this.props.addUserCredits(multipleAddressCreditScore);
+    }
+    if (creditIsEns) {
+      const ensCreditScore = new URLSearchParams();
+      ensCreditScore.append("credits", "ens_added");
+      this.props.addUserCredits(ensCreditScore);
+    }
+    this.props.updateUserWalletApi(data, this, yieldData);
+
+    // message for user
+    this.setState({
+      total_unique_address: total_address,
+    });
+
+    const address = addWalletList?.map((e) => e.address);
+
+    const addressDeleted = this.state.deletedAddress;
+    const unrecog_address = addWalletList
+      ?.filter((e) => !e.coinFound)
+      ?.map((e) => e.address);
+    const recog_address = addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((e) => e.address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((obj) => {
+        let coinName = obj.coins
+          ?.filter((e) => e.chain_detected)
+          ?.map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    QuickAddWalletAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      addresses_added: address,
+      ENS_added: address,
+      addresses_deleted: addressDeleted,
+      ENS_deleted: addressDeleted,
+      unrecognized_addresses: unrecog_address,
+      recognized_addresses: recog_address,
+      blockchains_detected: blockchainDetected,
+      nicknames: nicknames,
+    });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+  };
+  cancelAddingWallet = () => {
+    this.setState({
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+    });
   };
   passConnectExchangeClick = () => {
     const pathName = window.location.pathname;
@@ -946,64 +1237,107 @@ class TopWalletExchangeBar extends Component {
           />
         ) : null}
         {this.state.walletList.length > 0 ? (
-          <>
-            <div className="topWalletDropdownContainer maxWidth50">
-              <TopBarDropDown
-                class="topWalletDropdown"
-                list={this.state.walletList}
-                showChecked={true}
-                relative={true}
-                handleAddWalletClick={this.passAddWalletClick}
-                buttonRef={this.props.buttonRef}
-                totalWallets={this.state.totalWallets}
-                firstWallet={this.state.firstWallet}
-                firstFullWallet={this.state.firstFullWallet}
-              />
+          <div
+            style={{
+              maxWidth: this.state.walletInput[0].address ? "" : "40%",
+            }}
+            className="topBarContainerInputBlockContainer"
+          >
+            <div className="topBarContainerInputBlockContainerLeftOfInput">
+              {this.state.walletInput[0].address ? (
+                this.state.walletInput[0].coinFound &&
+                this.state.walletInput[0].coins.length > 0 ? (
+                  <CustomCoin
+                    noNameJustIcon
+                    isStatic
+                    coins={this.state.walletInput[0].coins.filter(
+                      (c) => c.chain_detected
+                    )}
+                    key="RandomKey"
+                    isLoaded={true}
+                  />
+                ) : this.state.walletInput[0].coins.length ===
+                  this.props.OnboardingState.coinsList.length ? (
+                  <Image
+                    src={TopBarSearchIcon}
+                    className="topBarContainerInputBlockIcon"
+                  />
+                ) : (
+                  <div>
+                    <CustomCoin
+                      noNameJustIcon
+                      isStatic
+                      coins={null}
+                      key="RandomThirdKey"
+                      isLoaded={false}
+                    />
+                  </div>
+                )
+              ) : (
+                <Image
+                  src={TopBarSearchIcon}
+                  className="topBarContainerInputBlockIcon"
+                />
+              )}
             </div>
-            {this.state.showFollowingAddress ? (
-              <div
-                ref={this.props.buttonRef}
-                className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
-                id="address-button"
-                onClick={this.addAddressToWatchListFun}
-              >
-                <Image className="topBarWalletAdd" src={FollowTopBarIcon} />
-                <span className="dotDotText">
-                  {this.state.isFollowingAddress ? "Following" : "Follow"}
-                </span>
-              </div>
-            ) : null}
-            {!this.props.hideShare ? (
-              <div
-                ref={this.props.buttonRef}
-                className="topbar-btn topbar-btn-white-with-border maxWidth50 ml-2"
-                id="address-button"
-                onClick={this.props.handleShare}
-              >
-                <Image className="topBarWalletAdd" src={ShareTopBarIcon} />
-                <span className="dotDotText">Share</span>
-              </div>
-            ) : null}
-          </>
+
+            <input
+              name={`wallet${1}`}
+              placeholder="Paste any wallet address or ENS here"
+              className="topBarContainerInputBlockInput"
+              value={this.state.walletInput[0].address || ""}
+              title={this.state.walletInput[0].address || ""}
+              onChange={(e) => this.handleOnLocalChange(e)}
+            />
+          </div>
+        ) : null}
+        {this.state.walletInput[0].address ? (
+          <div
+            className={`topBarContainerRightBlock ${
+              this.state.walletList.length > 0
+                ? "topBarContainerRightBlockMultiple"
+                : ""
+            }`}
+          >
+            <div
+              ref={this.props.buttonRef}
+              className="topbar-btn maxWidth50 ml-2"
+              id="address-button-two"
+              onClick={this.cancelAddingWallet}
+            >
+              <span className="dotDotText">Cancel</span>
+            </div>
+            <div
+              ref={this.props.buttonRef}
+              className={`topbar-btn maxWidth50 ml-2 topbar-btn-dark ${
+                !(
+                  this.state.walletInput[0].coinFound &&
+                  this.state.walletInput[0].coins.length > 0
+                ) || this.state.disableAddBtn
+                  ? "topbar-btn-dark-disabled"
+                  : ""
+              }`}
+              id="address-button-two"
+              onClick={
+                !(
+                  this.state.walletInput[0].coinFound &&
+                  this.state.walletInput[0].coins.length > 0
+                ) || this.state.disableAddBtn
+                  ? null
+                  : this.handleAddWallet
+              }
+            >
+              <span className="dotDotText">Add</span>
+            </div>
+          </div>
         ) : (
           <div
-            ref={this.props.buttonRef}
-            className="topbar-btn maxWidth50"
-            id="address-button-one"
-            onClick={this.passAddWalletClick}
+            className={`topBarContainerRightBlock ${
+              this.state.walletList.length > 0
+                ? "topBarContainerRightBlockMultiple"
+                : ""
+            }`}
           >
-            <Image className="topBarWalletAdd" src={PlusCircleIcon} />
-            <span className="dotDotText">Add address</span>
-          </div>
-        )}
-        <div
-          className={`topBarContainerRightBlock ${
-            this.state.walletList.length > 0
-              ? "topBarContainerRightBlockMultiple"
-              : ""
-          }`}
-        >
-          {this.state.walletList.length > 0 ? (
             <div
               ref={this.props.buttonRef}
               className="topbar-btn maxWidth50 ml-2"
@@ -1013,80 +1347,80 @@ class TopWalletExchangeBar extends Component {
               <Image className="topBarWalletAdd" src={PlusCircleIcon} />
               <span className="dotDotText">Add address</span>
             </div>
-          ) : null}
-          <div
-            onClick={this.passConnectExchangeClick}
-            className={`topbar-btn ml-2 ${
-              this.state.walletList.length > 0 ? "maxWidth50" : ""
-            }`}
-          >
-            {this.state.exchangeList.length > 0 ? (
-              <>
-                <span className="mr-2">
-                  {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
-                    <Image className="topBarExchangeIcons" src={imgUrl} />
-                  ))}
-                </span>
-                <span className="dotDotText">
-                  <span className="captilasideText">
-                    {this.state.firstExchange?.toLowerCase()}{" "}
+            <div
+              onClick={this.passConnectExchangeClick}
+              className={`topbar-btn ml-2 ${
+                this.state.walletList.length > 0 ? "maxWidth50" : ""
+              }`}
+            >
+              {this.state.exchangeList.length > 0 ? (
+                <>
+                  <span className="mr-2">
+                    {this.state.exchangeListImages.slice(0, 3).map((imgUrl) => (
+                      <Image className="topBarExchangeIcons" src={imgUrl} />
+                    ))}
                   </span>
-                  {this.state.exchangeList.length > 1 ? "and others " : ""}
-                  {"connected"}
+                  <span className="dotDotText">
+                    <span className="captilasideText">
+                      {this.state.firstExchange?.toLowerCase()}{" "}
+                    </span>
+                    {this.state.exchangeList.length > 1 ? "and others " : ""}
+                    {"connected"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Image className="topBarWalletAdd " src={LinkIconBtn} />
+                  <span className="dotDotText">Connect exchange</span>
+                </>
+              )}
+            </div>
+            {this.state.metamaskWalletConnected ? (
+              <div
+                style={{
+                  marginRight: "0rem",
+                  paddingRight: "0rem",
+                }}
+                className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
+              >
+                <Image className="topBarWalletAdd" src={WalletIcon} />
+                <span className="dotDotText">
+                  {TruncateText(this.state.metamaskWalletConnected)}
                 </span>
-              </>
+                <span
+                  onMouseOver={(e) =>
+                    (e.currentTarget.children[0].src = XCircleRedIcon)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.children[0].src = XCircleIcon)
+                  }
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  onClick={this.dissconnectFromMetaMask}
+                >
+                  <Image
+                    className="topBarWalletAdd"
+                    style={{
+                      margin: "0",
+                      marginLeft: "0.8rem",
+                    }}
+                    src={XCircleIcon}
+                  />
+                </span>
+              </div>
             ) : (
-              <>
-                <Image className="topBarWalletAdd " src={LinkIconBtn} />
-                <span className="dotDotText">Connect exchange</span>
-              </>
+              <div
+                onClick={this.connectWalletEthers}
+                className="topbar-btn ml-2 maxWidth50"
+                id="topbar-connect-wallet-btn"
+              >
+                <Image className="topBarWalletAdd " src={WalletIcon} />
+                <span className="dotDotText">Connect wallet</span>
+              </div>
             )}
           </div>
-          {this.state.metamaskWalletConnected ? (
-            <div
-              style={{
-                marginRight: "0rem",
-                paddingRight: "0rem",
-              }}
-              className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
-            >
-              <Image className="topBarWalletAdd" src={WalletIcon} />
-              <span className="dotDotText">
-                {TruncateText(this.state.metamaskWalletConnected)}
-              </span>
-              <span
-                onMouseOver={(e) =>
-                  (e.currentTarget.children[0].src = XCircleRedIcon)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.children[0].src = XCircleIcon)
-                }
-                style={{
-                  cursor: "pointer",
-                }}
-                onClick={this.dissconnectFromMetaMask}
-              >
-                <Image
-                  className="topBarWalletAdd"
-                  style={{
-                    margin: "0",
-                    marginLeft: "0.8rem",
-                  }}
-                  src={XCircleIcon}
-                />
-              </span>
-            </div>
-          ) : (
-            <div
-              onClick={this.connectWalletEthers}
-              className="topbar-btn ml-2 maxWidth50"
-              id="topbar-connect-wallet-btn"
-            >
-              <Image className="topBarWalletAdd " src={WalletIcon} />
-              <span className="dotDotText">Connect wallet</span>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     );
   }

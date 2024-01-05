@@ -149,15 +149,40 @@
           justify-content: start;
           .topBarContainer {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
-            padding-left: 0rem;
-            padding-right: 0rem;
-            // border: 1px $grey-50 solid;
-            // box-shadow: 0 0 10px 4px $grey-50;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            // background-color: red;
+            border: 1px $grey-50 solid;
+            box-shadow: 0 0 10px 4px $grey-50;
+            height: 100%;
+            .topBarContainerInputBlockContainer {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              .topBarContainerInputBlockContainerLeftOfInput {
+                min-width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .topBarContainerInputBlockIcon {
+                  height: 14px;
+                }
+              }
+
+              .topBarContainerInputBlockInput {
+                flex: 1;
+                border: none;
+                outline: none;
+                height: 100%;
+                font-size: 15px;
+              }
+            }
             .maxWidth50 {
               max-width: 50%;
             }
@@ -253,6 +278,25 @@
             .topBarExchangeIcons {
               filter: none;
             }
+          }
+        }
+        .topbar-btn-dark {
+          background: $black-191;
+          border: 1px solid $black-191;
+          color: $secondary;
+          &:hover {
+            background: rgba(229, 229, 230, 0.5);
+            border: 1px solid #f2f2f3;
+            color: $black-191;
+          }
+        }
+        .topbar-btn-dark-disabled {
+          opacity: 0.5;
+          cursor: default;
+          &:hover {
+            background: $black-191;
+            border: 1px solid $black-191;
+            color: $secondary;
           }
         }
         .topbar-btn-white-with-border {
@@ -928,6 +972,8 @@
       }
       .balance-sheet-card-portfolio-home {
         position: relative;
+        padding-left: 1rem;
+        padding-right: 1rem;
         .balance-dropdown {
           position: absolute;
           top: 5.3rem;

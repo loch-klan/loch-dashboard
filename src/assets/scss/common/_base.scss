@@ -1801,6 +1801,14 @@ form {
     position: relative;
   }
 }
+.chip-container-dual-justIcon {
+  border: none;
+  margin-left: 0rem;
+  img {
+    border-top-right-radius: 0.55rem;
+    border-bottom-right-radius: 0.55rem;
+  }
+}
 
 .modal-backdrop.show {
   opacity: 0 !important;

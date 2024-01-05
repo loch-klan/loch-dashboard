@@ -78,6 +78,7 @@ import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 
 import "./_smartMoney.scss";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -1212,6 +1213,10 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table homeSmartMoneyPage page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.showSignOutModal ? (
               <ConformSmartMoneyLeaveModal
                 show={this.state.showSignOutModal}
