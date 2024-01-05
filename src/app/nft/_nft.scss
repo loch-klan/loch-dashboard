@@ -1,0 +1,41 @@
+.nft-page{
+
+
+
+.rightSmartMoneyContainer {
+    flex: 1;
+    padding: 0rem;
+    margin-right: 1rem;
+    .rightSmartMoneyContainerHeadingParent {
+      display: flex;
+      align-items: center;
+      .rscHowItWorks {
+        color: #adadad;
+        font-size: 1.3rem;
+        margin-left: 1rem;
+        transition-duration: 300ms;
+        cursor: pointer;
+        &:hover {
+          color: #0d0d0d;
+        }
+      }
+      .rightSmartMoneyContainerHeading {
+        color: #0d0d0d;
+        font-size: 2rem;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .rightSmartMoneyContainerHeadingSmartMoney {
+        cursor: pointer;
+        transition-duration: 300ms;
+        &:hover {
+          filter: opacity(0.65);
+        }
+      }
+    }
+    .rightSmartMoneyContainerSubHeading {
+      color: #adadad;
+      font-size: 1.3rem;
+    }
+  }
+  }

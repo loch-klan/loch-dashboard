@@ -6,8 +6,9 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable";
-import NftDummy from "./../../assets/images/nft_dummy.png"
+import NftDummy from "./../../assets/images/nft_dummy.png";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import "./_nft.scss";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -15,21 +16,18 @@ class NFT extends BaseReactComponent {
     this.state = {
       tableData: [
         {
-          holding:'3',
-          collection:"Pudgy Penguins",
-          imgs:[
-            NftDummy,
-            NftDummy,
-          ],
-          total_spent:10,
-          max_price:12,
-          avg_price:10,
-          volume:100
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
         {
-          holding:'3',
-          collection:"Bored Apes",
-          imgs:[
+          holding: "3",
+          collection: "Bored Apes",
+          imgs: [
             NftDummy,
             NftDummy,
             NftDummy,
@@ -38,34 +36,28 @@ class NFT extends BaseReactComponent {
             NftDummy,
             NftDummy,
           ],
-          total_spent:10,
-          max_price:12,
-          avg_price:10,
-          volume:100
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
         {
-          holding:'3',
-          collection:"Pudgy Penguins",
-          imgs:[
-            NftDummy,
-          ],
-          total_spent:10,
-          max_price:12,
-          avg_price:10,
-          volume:100
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
         {
-          holding:'3',
-          collection:"Pudgy Penguins",
-          imgs:[
-            NftDummy,
-            NftDummy,
-            NftDummy,
-          ],
-          total_spent:10,
-          max_price:12,
-          avg_price:10,
-          volume:100
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
       ],
       tableSortOpt: [
@@ -76,7 +68,6 @@ class NFT extends BaseReactComponent {
       ],
       isMobile: false,
     };
-
   }
 
   componentDidMount() {
@@ -97,9 +88,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Holdings"
-              }
+              text={"Holdings"}
             >
               <span
                 onClick={() => {
@@ -131,14 +120,10 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.holding
-                }
+                text={rowData.holding}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {
-                    rowData.holding
-                  }
+                  {rowData.holding}
                 </div>
               </CustomOverlay>
             );
@@ -153,9 +138,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Collection"
-              }
+              text={"Collection"}
             >
               <span
                 onClick={() => {
@@ -187,19 +170,16 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.collection
-                }
+                text={rowData.collection}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
-                style={{
-                  textDecoration:'underline',
-                  lineHeight:'120%'
-                }}
+                <div
+                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                  style={{
+                    textDecoration: "underline",
+                    lineHeight: "120%",
+                  }}
                 >
-                  {
-                    rowData.collection
-                  }
+                  {rowData.collection}
                 </div>
               </CustomOverlay>
             );
@@ -214,9 +194,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Image"
-              }
+              text={"Image"}
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
                 Image
@@ -237,67 +215,69 @@ class NFT extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  <div style={{
-                    display:"flex",
-                    alignItems:"center",
-                    gap:'4px',
-                    justifyContent:'center'
-                  }}>
-                    {
-                      rowData.imgs.slice(0,10).map((item,index)=>{
-                        return(
-                          <img src={item} alt="" key={index} style={{width:"20px",height:"20px"}}/>
-                        )
-                      }
-                      )
-                    }
-                    {
-                      rowData.imgs.length>10?
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {rowData.imgs.slice(0, 10).map((item, index) => {
+                      return (
+                        <img
+                          src={item}
+                          alt=""
+                          key={index}
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      );
+                    })}
+                    {rowData.imgs.length > 10 ? (
                       <span
-                       style={{
-                        fontSize:'12px',
-                        lineHeight:'120%',
-                        color:'#96979A',
-                        fontWeight:'500'
-                       }}
+                        style={{
+                          fontSize: "12px",
+                          lineHeight: "120%",
+                          color: "#96979A",
+                          fontWeight: "500",
+                        }}
                       >
-                        {rowData.imgs.length-4}+
+                        {rowData.imgs.length - 4}+
                       </span>
-                      :
-                      null
-                    }
+                    ) : null}
                   </div>
                 }
               >
-                <div style={{
-                  display:"flex",
-                  alignItems:"center",
-                  gap:'4px',
-                  justifyContent:'center'
-                }}>
-                  {
-                    rowData.imgs.slice(0,4).map((item,index)=>{
-                      return(
-                        <img src={item} alt="" key={index} style={{width:"20px",height:"20px"}}/>
-                      )
-                    }
-                    )
-                  }
-                  {
-                    rowData.imgs.length>4?
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    justifyContent: "center",
+                  }}
+                >
+                  {rowData.imgs.slice(0, 4).map((item, index) => {
+                    return (
+                      <img
+                        src={item}
+                        alt=""
+                        key={index}
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    );
+                  })}
+                  {rowData.imgs.length > 4 ? (
                     <span
-                     style={{
-                      fontSize:'12px',
-                      lineHeight:'120%',
-                      color:'#96979A',
-                      fontWeight:'500'
-                     }}
+                      style={{
+                        fontSize: "12px",
+                        lineHeight: "120%",
+                        color: "#96979A",
+                        fontWeight: "500",
+                      }}
                     >
-                      {rowData.imgs.length-4}+
+                      {rowData.imgs.length - 4}+
                     </span>
-                    :
-                    null
-                  }
+                  ) : null}
                 </div>
               </CustomOverlay>
             );
@@ -312,9 +292,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Total Spent (ETH)"
-              }
+              text={"Total Spent (ETH)"}
             >
               <span
                 onClick={() => {
@@ -346,14 +324,10 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.total_spent
-                }
+                text={rowData.total_spent}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {
-                    rowData.total_spent
-                  }
+                  {rowData.total_spent}
                 </div>
               </CustomOverlay>
             );
@@ -368,9 +342,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Max Price (ETH)"
-              }
+              text={"Max Price (ETH)"}
             >
               <span
                 onClick={() => {
@@ -402,14 +374,10 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.max_price
-                }
+                text={rowData.max_price}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {
-                    rowData.max_price
-                  }
+                  {rowData.max_price}
                 </div>
               </CustomOverlay>
             );
@@ -424,9 +392,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Avg Price (ETH)"
-              }
+              text={"Avg Price (ETH)"}
             >
               <span
                 onClick={() => {
@@ -458,14 +424,10 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.avg_price
-                }
+                text={rowData.avg_price}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {
-                    rowData.avg_price
-                  }
+                  {rowData.avg_price}
                 </div>
               </CustomOverlay>
             );
@@ -480,9 +442,7 @@ class NFT extends BaseReactComponent {
               isIcon={false}
               isInfo={true}
               isText={true}
-              text={
-                "Volume (ETH)"
-              }
+              text={"Volume (ETH)"}
             >
               <span
                 onClick={() => {
@@ -514,23 +474,19 @@ class NFT extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={
-                  rowData.volume
-                }
+                text={rowData.volume}
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {
-                    rowData.volume
-                  }
+                  {rowData.volume}
                 </div>
               </CustomOverlay>
             );
           }
         },
       },
-    ]
+    ];
     return (
-      <div>
+      <div className="nft-page">
         <div className="portfolio-page-section">
           <div
             className="portfolio-container page"
@@ -547,25 +503,45 @@ class NFT extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
-          <div
+            <div className="rightSmartMoneyContainer" style={{marginBottom:'1.5rem'}}>
+              <div className={`rightSmartMoneyContainerHeadingParent`}>
+                <div
+                  className={`rightSmartMoneyContainerHeading inter-display-medium f-s-24 lh-30 m-b-8`}
+                >
+                  NFT Collection
+                </div>
+              </div>
+              <p
+                style={{
+                  // marginTop: "0.3rem",
+                  fontSize: "16px",
+                }}
+                className="rightSmartMoneyContainerSubHeading inter-display-medium f-s-16 lh-19"
+              >
+                Browse the NFTs held by this wallet
+              </p>
+            </div>
+            <div
               style={{ marginBottom: "2.8rem" }}
               className="cost-table-section"
             >
-              <div style={{ position: "relative"}}>
-              <TransactionTable
-              wrapperStyle={{minHeight:'500px'}}
-                 noSubtitleBottomPadding
-                 tableData={this.state.tableData}
-                 columnList={columnList}
-                 message={"No NFTs found"}
-                 totalPage={122}
-                 history={this.props.history}
-                 location={this.props.location}
-                 page={1}
-                 tableLoading={false}
-                 onPageChange={() => {}}
-                 addWatermark
-                 mi
+              <div style={{ position: "relative" }}>
+                <TransactionTable
+                  wrapperStyle={{ minHeight: "500px" }}
+                  noSubtitleBottomPadding
+                  tableData={this.state.tableData}
+                  columnList={columnList}
+                  message={"No NFTs found"}
+                  totalPage={122}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={1}
+                  tableLoading={false}
+                  pageLimit={10}
+                  onPageChange={() => {}}
+                  addWatermark
+                  paginationNew
+                  mi
                 />
               </div>
             </div>
