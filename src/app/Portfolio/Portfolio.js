@@ -785,7 +785,7 @@ class Portfolio extends BaseReactComponent {
         this.setState({
           tableLoading: true,
         });
-        this.props.getTableData(this);
+        this.getTableData();
       }
     }
 
