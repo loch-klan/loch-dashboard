@@ -490,6 +490,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               textOverflow: "ellipsis",
                             }}
                           >
+                            {
+                              this.props.showEth ? 'Ethereum ' : null
+                            }
                             {this.props.hideTimeFilter &&
                             this.state.activeAssetTabName
                               ? ``
