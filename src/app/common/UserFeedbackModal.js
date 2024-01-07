@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 
 import Draggable from "react-draggable";
 import "./../../assets/scss/common/_forms.scss";
@@ -65,10 +65,26 @@ class UserFeedbackModal extends BaseReactComponent {
       currentQuestion: 0,
     };
   }
-
+  nextButtonRef = createRef();
+  
   handleNext = () => {
     console.log("handleAccountCreate");
   };
+
+  listener = (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      event.preventDefault();
+      this.nextButtonRef.current.click();
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.listener);
+  }
+  
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.listener);
+  }
 
   render() {
     return (
@@ -228,6 +244,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                   className={`closebtn  ${
                                     this.state.email ? "active" : ""
                                   }`}
+                                  ref={this.nextButtonRef}
                                   onClick={() => {
                                     if (
                                       this.state.questions[
