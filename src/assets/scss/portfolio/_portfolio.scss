@@ -160,6 +160,73 @@
             border: 1px $grey-50 solid;
             box-shadow: 0 0 10px 4px $grey-50;
             height: 100%;
+            position: relative;
+            .topBarHistory {
+              border-radius: 10px;
+              border: 1px $grey-50 solid;
+              box-shadow: 0 0 10px 4px $grey-50;
+              background-color: $secondary;
+              width: 100%;
+              position: absolute;
+              transform: translateY(5.5rem) translateX(-0.9rem);
+              padding: 2rem;
+              .topBarHistoryTitleContainer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                .topBarHistoryTitleLeftContainer {
+                  display: flex;
+                  align-items: center;
+                  .topBarHistoryTitleIcon {
+                    height: 13px;
+                    margin-right: 0.5rem;
+                  }
+                  .topBarHistoryTitle {
+                    color: #b0b1b3;
+                    font-size: 13px;
+                    font-weight: 500;
+                  }
+                }
+                .topBarHistoryClearAll {
+                  color: #636467;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition-duration: 300ms;
+                  &:hover {
+                    color: $primary;
+                  }
+                }
+              }
+              .topBarHistoryItemContainer {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                .topBarHistoryItemBlock {
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                  padding: 1.2rem;
+                  border: 0.1rem solid #e5e5e6;
+                  border-radius: 1rem;
+                  transition-duration: 300ms;
+                  font-size: 14px;
+                  cursor: pointer;
+                  width: 13rem;
+                  &:hover {
+                    border-color: #19191a;
+                  }
+                  .topBarHistoryItemBlockIcon {
+                    height: 8px;
+                    cursor: pointer;
+                    &:hover {
+                      filter: invert(1);
+                    }
+                  }
+                }
+              }
+            }
             .topBarContainerInputBlockContainer {
               flex: 1;
               display: flex;

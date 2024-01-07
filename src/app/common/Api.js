@@ -88,12 +88,21 @@ export const fixWalletApi = (ctx, info) => {
     });
 };
 
-export const updateUserWalletApi = (data, ctx, yieldData) => {
+export const updateUserWalletApi = (
+  data,
+  ctx,
+  yieldData,
+  setToSearchHistory
+) => {
   return function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
+        console.log("Two ", res);
         if (!res.data.error) {
+          if (setToSearchHistory && ctx.addWalletToHistory) {
+            ctx.addWalletToHistory();
+          }
           if (ctx.cancelAddingWallet) {
             // ctx.cancelAddingWallet();
             ctx.setState({
@@ -211,7 +220,7 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
         }
       })
       .catch((err) => {
-        // console.log("fixwallet",err)
+        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
@@ -1544,20 +1553,34 @@ export const detectNameTag = (
         ) {
           if (res.data.data.result[0] && ctx) {
             const resNameTag = res.data.data.result[0];
-            ctx.handleSetNameTag({ ...wallet }, resNameTag);
+            if (ctx.handleSetNameTag) {
+              ctx.handleSetNameTag({ ...wallet }, resNameTag);
+            }
           } else {
-            ctx.handleSetNameTag({ ...wallet }, "");
-            ctx.handleSetNameTagLoadingFalse({ ...wallet });
+            if (ctx.handleSetNameTag) {
+              ctx.handleSetNameTag({ ...wallet }, "");
+            }
+            if (ctx.handleSetNameTagLoadingFalse) {
+              ctx.handleSetNameTagLoadingFalse({ ...wallet });
+            }
           }
         } else {
-          ctx.handleSetNameTag({ ...wallet }, "");
-          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+          if (ctx.handleSetNameTag) {
+            ctx.handleSetNameTag({ ...wallet }, "");
+          }
+          if (ctx.handleSetNameTagLoadingFalse) {
+            ctx.handleSetNameTagLoadingFalse({ ...wallet });
+          }
         }
       })
       .catch((err) => {
         // console.log("Catch", err);
-        ctx.handleSetNameTagLoadingFalse({ ...wallet });
-        ctx.handleSetNameTag({ ...wallet }, "");
+        if (ctx.handleSetNameTagLoadingFalse) {
+          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        }
+        if (ctx.handleSetNameTag) {
+          ctx.handleSetNameTag({ ...wallet }, "");
+        }
       });
   };
 };
