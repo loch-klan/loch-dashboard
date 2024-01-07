@@ -63,6 +63,7 @@ class Form extends BaseReactComponent {
           className="w-percent-100 flex-full"
           autoComplete="off"
           onSubmit={this.onSubmit}
+          style={this.props.style}
         >
           {this.props.children}
         </form>
