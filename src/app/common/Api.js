@@ -10,7 +10,6 @@ import {
   SigninModalTrack,
   signInUser,
   signUpProperties,
-
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
@@ -663,6 +662,23 @@ export const getDetectedChainsApi = (ctx) => {
               JSON.stringify(addWallet)
             );
           addLocalWalletList(JSON.stringify(addWallet));
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {
+        console.log("fixwallet", err);
+      });
+  };
+};
+
+export const sendUserFeedbackApi = (data) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/add-user-feedback", data)
+      .then((res) => {
+        if (!res.data.error) {
+          toast.success("Thank you for your feedback");
         } else {
           toast.error(res.data.message || "Something went wrong");
         }

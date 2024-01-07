@@ -44,7 +44,7 @@ import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConfirmLeaveModal from "./ConformLeaveModal";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
-import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg"
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
   IntelligenceMenu,
   ProfileMenu,
@@ -83,7 +83,11 @@ import {
   MenuIntPrice,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
+import {
+  getAllCurrencyApi,
+  getAllCurrencyRatesApi,
+  sendUserFeedbackApi,
+} from "./Api";
 import FeedbackModal from "./FeedbackModal";
 import UpgradeModal from "./upgradeModal";
 import ConnectModal from "./ConnectModal";
@@ -91,7 +95,7 @@ import AuthModal from "./AuthModal";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import DontLoseDataModal from "./DontLoseDataModal";
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import SidebarModal from "./SidebarModal";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import UserFeedbackModal from "./UserFeedbackModal.js";
@@ -121,7 +125,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
-  const [userFeedbackModal , setUserFeedbackModal] = useState(false);
+  const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -532,6 +536,22 @@ function Sidebar(props) {
   };
   const handleUserFeedbackModal = () => {
     setUserFeedbackModal(!userFeedbackModal);
+  };
+  const hideUserFeedbackModal = (passedAddress) => {
+    setUserFeedbackModal(false);
+    if (passedAddress && passedAddress.length > 0 && passedAddress[0].value) {
+      let tempAnsHolder = [];
+      passedAddress.forEach((res) => {
+        if (res.value) {
+          tempAnsHolder.push(res.value);
+        } else {
+          tempAnsHolder.push("");
+        }
+      });
+      const passFedbackData = new URLSearchParams();
+      passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      props.sendUserFeedbackApi(passFedbackData);
+    }
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1038,10 +1058,9 @@ function Sidebar(props) {
                           >
                             <div
                               className={`nav-link nav-link-closed`}
-                              
                               style={{ backround: "transparent" }}
                               onClick={(e) => {
-                                handleUserFeedbackModal()
+                                handleUserFeedbackModal();
                               }}
                               // activeclassname="active"
                             >
@@ -2315,7 +2334,6 @@ function Sidebar(props) {
                           />
                           Feedback
                         </NavLink>
-
                       </li>
                       {/* <li>
                         <NavLink
@@ -2842,19 +2860,19 @@ function Sidebar(props) {
         />
       ) : null}
 
-      {
-        userFeedbackModal ? (
-          <UserFeedbackModal
+      {userFeedbackModal ? (
+        <UserFeedbackModal
           trackPos={trackPos}
           dragPosition={dragPosition}
-          onHide={handleUserFeedbackModal}
+          onHide={hideUserFeedbackModal}
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
-          />) :null
-      }
+        />
+      ) : null}
     </>
   );
 }
-
-export default Sidebar;
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = { sendUserFeedbackApi };
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
