@@ -765,15 +765,15 @@ class NewWelcomeMobile extends BaseReactComponent {
   };
 
   callApi = (page = START_INDEX) => {
-    this.setState({ tableLoading: true });
-    setTimeout(() => {
-      let data = new URLSearchParams();
-      data.append("start", page * this.state.pageLimit);
-      data.append("conditions", JSON.stringify(this.state.condition));
-      data.append("limit", this.state.pageLimit);
-      data.append("sorts", JSON.stringify(this.state.sort));
-      this.props.getSmartMoney(data, this, this.state.pageLimit);
-    }, 300);
+    // this.setState({ tableLoading: true });
+    // setTimeout(() => {
+    //   let data = new URLSearchParams();
+    //   data.append("start", page * this.state.pageLimit);
+    //   data.append("conditions", JSON.stringify(this.state.condition));
+    //   data.append("limit", this.state.pageLimit);
+    //   data.append("sorts", JSON.stringify(this.state.sort));
+    //   this.props.getSmartMoney(data, this, this.state.pageLimit);
+    // }, 300);
   };
 
   opneLoginModalForSmartMoney = () => {
@@ -1223,9 +1223,9 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     }
     if (
-      prevState.tableLoading !== this.state.tableLoading &&
+      prevProps.tableLoading !== this.props.tableLoading &&
       this.state.goToBottom &&
-      !this.state.tableLoading
+      !this.props.tableLoading
     ) {
       this.setState(
         {
@@ -1514,7 +1514,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 <p className="new-homepage__body-content-table-header__subtitle-mobile">
                     The lazy analyst’s guide to alpha
                 </p>
-                {this.state.tableLoading ? (
+                {this.props.tableLoading ? (
                   <div
                     style={{
                       background: "white",

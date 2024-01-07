@@ -1800,6 +1800,7 @@ class NewWelcome extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <NewWelcomeMobile
+        tableLoading={this.state.tableLoading}
         openSignInOnclickModal={this.opneLoginModalForSmartMoney}
         accountList={this.state.accountList}
           exchanges={this.state.onboardingExchanges}
