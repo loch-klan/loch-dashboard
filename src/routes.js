@@ -90,12 +90,12 @@ const routes = [
     type: PrivateRoute,
     component: TransactionHistoryPage,
   },
-  {
-    path: "/intelligence/asset-value",
-    name: "Asset Value",
-    type: PrivateRoute,
-    component: AssetValueGraph,
-  },
+  // {
+  //   path: "/intelligence/asset-value",
+  //   name: "Asset Value",
+  //   type: PrivateRoute,
+  //   component: AssetValueGraph,
+  // },
   {
     path: "/intelligence/insights",
     name: "Insights",
