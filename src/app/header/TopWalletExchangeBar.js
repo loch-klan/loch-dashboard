@@ -239,6 +239,7 @@ class TopWalletExchangeBar extends Component {
         nameTag: nameTag,
         loadingNameTag: false,
         showNameTag: true,
+        id: "wallet1",
       };
     }
     this.setState({
@@ -711,8 +712,11 @@ class TopWalletExchangeBar extends Component {
 
     let addWallet = walletList;
 
-    addWallet?.map((w, i) => {
-      w.id = `wallet${i + 1}`;
+    addWallet?.forEach((w, i) => {
+      if (w.id) {
+      } else {
+        w.id = `wallet${i + 1}`;
+      }
     });
 
     if (addWallet) {
@@ -847,37 +851,38 @@ class TopWalletExchangeBar extends Component {
     );
   };
   addWalletToHistory = () => {
+    for (let i = 0; i < this.state.topBarHistoryItems.length; i++) {
+      if (
+        (this.state.topBarHistoryItems[i][0] !== "" &&
+          this.state.topBarHistoryItems[i][0] ===
+            this.state.walletInput[0].apiAddress) ||
+        (this.state.topBarHistoryItems[i][0] !== "" &&
+          this.state.topBarHistoryItems[i][0] ===
+            this.state.walletInput[0].address) ||
+        (this.state.topBarHistoryItems[i][1] !== "" &&
+          this.state.topBarHistoryItems[i][1] ===
+            this.state.walletInput[0].nameTag) ||
+        (this.state.topBarHistoryItems[i][1] !== "" &&
+          this.state.topBarHistoryItems[i][1] ===
+            this.state.walletInput[0].address)
+      ) {
+        this.cancelAddingWallet();
+        return;
+      }
+    }
+    let tempItem = ["", ""];
+    if (this.state.walletInput[0].apiAddress) {
+      tempItem[0] = this.state.walletInput[0].apiAddress;
+      if (this.state.walletInput[0].nameTag) {
+        tempItem[1] = this.state.walletInput[0].nameTag;
+      } else if (this.state.walletInput[0].address) {
+        tempItem[1] = this.state.walletInput[0].address;
+      }
+    }
     if (
       this.state.topBarHistoryItems &&
       this.state.topBarHistoryItems.length <= 5
     ) {
-      for (let i = 0; i < this.state.topBarHistoryItems.length; i++) {
-        if (
-          (this.state.topBarHistoryItems[i][0] !== "" &&
-            this.state.topBarHistoryItems[i][0] ===
-              this.state.walletInput[0].apiAddress) ||
-          (this.state.topBarHistoryItems[i][0] !== "" &&
-            this.state.topBarHistoryItems[i][0] ===
-              this.state.walletInput[0].address) ||
-          (this.state.topBarHistoryItems[i][1] !== "" &&
-            this.state.topBarHistoryItems[i][1] ===
-              this.state.walletInput[0].nameTag) ||
-          (this.state.topBarHistoryItems[i][1] !== "" &&
-            this.state.topBarHistoryItems[i][1] ===
-              this.state.walletInput[0].address)
-        ) {
-          return;
-        }
-      }
-      let tempItem = ["", ""];
-      if (this.state.walletInput[0].apiAddress) {
-        tempItem[0] = this.state.walletInput[0].apiAddress;
-        if (this.state.walletInput[0].nameTag) {
-          tempItem[1] = this.state.walletInput[0].nameTag;
-        } else if (this.state.walletInput[0].address) {
-          tempItem[1] = this.state.walletInput[0].address;
-        }
-      }
       const tempHolder = [...this.state.topBarHistoryItems, tempItem];
       this.setState(
         {
@@ -888,6 +893,26 @@ class TopWalletExchangeBar extends Component {
             "topBarHistoryLocalItems",
             JSON.stringify(tempHolder)
           );
+          this.cancelAddingWallet();
+        }
+      );
+    } else {
+      let tempHolderTwo = this.state.topBarHistoryItems.filter(
+        (resRes, resIndex) => resIndex !== 0
+      );
+      tempHolderTwo = [...tempHolderTwo, tempItem];
+      // tempItem/
+
+      this.setState(
+        {
+          topBarHistoryItems: tempHolderTwo,
+        },
+        () => {
+          window.localStorage.setItem(
+            "topBarHistoryLocalItems",
+            JSON.stringify(tempHolderTwo)
+          );
+          this.cancelAddingWallet();
         }
       );
     }
