@@ -2578,6 +2578,6 @@ textarea {
 .hoverDarker {
   transition-duration: 300ms;
   &:hover {
-    filter: brightness(0.2);
+    filter: brightness(0);
   }
 }
