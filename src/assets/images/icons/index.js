@@ -74,3 +74,4 @@ export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySideba
 export { default as TopBarSearchIcon } from "./topBarSearch.svg";
 export { default as SearchHistoryClockIcon } from "./searchHistoryClock.svg";
 export { default as SearchHistoryDeleteIcon } from "./searchHistoryDelete.svg";
+export { default as WalletDropdownTrashIcon } from "./walletDropdownTrash.svg";

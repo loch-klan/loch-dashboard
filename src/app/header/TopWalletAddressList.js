@@ -769,12 +769,93 @@ class TopWalletAddressList extends Component {
       followSignupModal: false,
     });
   };
+  deleteTheAddress = (passedAdd) => {
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (addWalletList && addWalletList?.length > 0) {
+      addWalletList = addWalletList?.map((e) => {
+        return {
+          ...e,
+          showAddress: e.nickname === "" ? true : false,
+          showNickname: e.nickname === "" ? false : true,
+          showNameTag: e.nameTag === "" ? false : true,
+          apiAddress: e.address,
+        };
+      });
+    }
+    if (addWalletList && addWalletList.length > 0) {
+      addWalletList = addWalletList.filter(
+        (resOne, resOneIndex) => resOne.apiAddress !== passedAdd[0]
+      );
+    }
+
+    let arr = [];
+    let addressList = [];
+    let nicknameArr = {};
+    let isChainDetected = [];
+    let total_address = 0;
+    let walletList = [];
+    for (let i = 0; i < addWalletList.length; i++) {
+      let curr = addWalletList[i];
+
+      let isIncluded = false;
+      const whatIndex = arr.findIndex(
+        (resRes) =>
+          resRes?.trim()?.toLowerCase() ===
+            curr?.address?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.displayAddress?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.apiAddress?.trim()?.toLowerCase()
+      );
+      if (whatIndex !== -1) {
+        isIncluded = true;
+      }
+      if (!isIncluded && curr.address) {
+        walletList.push(curr);
+        if (curr.address) {
+          arr.push(curr.address?.trim());
+        }
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        if (curr.displayAddress) {
+          arr.push(curr.displayAddress?.trim());
+        }
+        if (curr.apiAddress) {
+          arr.push(curr.apiAddress?.trim());
+        }
+        addressList.push(curr.address?.trim());
+        isChainDetected.push(curr?.coinFound);
+        total_address = total_address + 1;
+      }
+    }
+
+    let addWallet = walletList;
+
+    addWallet?.forEach((w, i) => {
+      if (w.id) {
+      } else {
+        w.id = `wallet${i + 1}`;
+      }
+    });
+
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+    this.props.updateUserWalletApi(data, this, yieldData, true);
+  };
   render() {
     return (
       <div className="topWalletAddressList">
         {this.state.walletList.length > 0 ? (
           <div className="topWalletAddressListDropdownContainer maxWidth50">
             <TopBarDropDown
+              deleteTheAddress={this.deleteTheAddress}
               class="topWalletAddressListDropdown"
               list={this.state.walletList}
               showChecked={true}
