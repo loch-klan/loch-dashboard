@@ -2,18 +2,19 @@ import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 // import Sidebar from '../common/Sidebar';
-import ProfileForm from "./ProfileForm";
-import PageHeader from "./../common/PageHeader";
 import { ProfilePage, TimeSpentProfile } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import PageHeader from "./../common/PageHeader";
+import ProfileForm from "./ProfileForm";
 
 // add wallet
-import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from "../common/FixAddModal";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import { Col, Row } from "react-bootstrap";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
+import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
 import NotificationLimitIcon from "../../assets/images/icons/upgrade-notification-limit.svg";
@@ -22,12 +23,12 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
-import { ManageLink } from "./Api";
-import UpgradeModal from "../common/upgradeModal";
-import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
-import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import UpgradeModal from "../common/upgradeModal";
+import Wallet from "../wallet/Wallet";
+import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class Profile extends Component {
   constructor(props) {
@@ -122,8 +123,15 @@ class Profile extends Component {
       upgradeModal: false,
 
       startTime: "",
+      followFlag: false,
     };
   }
+
+  onFollowUpdate = () => {
+    this.setState({
+      followFlag: !this.state.followFlag,
+    });
+  };
   startPageView = () => {
     this.setState({
       startTime: new Date() * 1,
@@ -231,17 +239,25 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                updateOnFollow={this.onFollowUpdate}
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 // history
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
+                hideShare
               />
             </div>
           </div>
         </div>
         <div className="profile-page-section m-t-80">
           <div className="profile-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              hideShare
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -269,7 +285,11 @@ class Profile extends Component {
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
-                  <ProfileLochCreditPoints isUpdate={this.state.isUpdate} />
+                  <ProfileLochCreditPoints
+                    followFlag={this.state.followFlag}
+                    isUpdate={this.state.isUpdate}
+                    history={this.props.history}
+                  />
                 </Col>
               </Row>
             </div>

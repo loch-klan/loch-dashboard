@@ -1,90 +1,13 @@
 import React, { useRef, useState } from "react";
-import { EyeIcon, RoundedGreyArrowDownIcon } from "../../assets/images/icons";
 import { Dropdown, Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CopyClipboardIcon } from "../../assets/images";
 import { toast } from "react-toastify";
+import { CopyClipboardIcon } from "../../assets/images";
+import { EyeIcon, RoundedGreyArrowDownIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import TopBarDropDownListComp from "./TopBarDropDownListComp";
 export default function TopBarDropDown(props) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const list = props.list.map((li, index) => {
-    const borderStyle = {
-      border: `1px solid ${li.color}`,
-      color: li.color,
-    };
-    const copyTheAddress = () => {
-      if (
-        props.fullWalletList &&
-        props.fullWalletList.length === props.list.length
-      ) {
-        if (props.fullWalletList[index] && props.fullWalletList[index][0]) {
-          copyContent(props.fullWalletList[index][0]);
-        }
-      }
-    };
-    return props.showChain ? (
-      <Dropdown.Item
-        eventKey={`${props.id} ${li} ${li.id}`}
-        key={index}
-        className="m-b-12 chain-dropdown"
-        style={borderStyle}
-      >
-        <Image src={li.symbol} /> {li.name}
-      </Dropdown.Item>
-    ) : (
-      <Dropdown.Item
-        eventKey={`${props.id} ${li} ${li.id}`}
-        key={index}
-        className={props.activetab === li ? "active" : ""}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          {li.name ? li.name : li}{" "}
-          <div className="copy-icon-top-bar pl-3">
-            <Image
-              src={CopyClipboardIcon}
-              onClick={copyTheAddress}
-              className="cp"
-              style={{ height: "1.2rem" }}
-            />
-          </div>
-        </div>
-        {props?.showChecked && (
-          <svg
-            style={
-              props.activetab !== li
-                ? { display: "none" }
-                : {
-                    position: "absolute",
-                    right: "5px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    width: "2rem",
-                    height: "2rem",
-                  }
-            }
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polyline
-              fill="none"
-              stroke="#cccccc"
-              strokeWidth="2"
-              points="6 13 10.2 16.6 18 7"
-            />
-          </svg>
-        )}
-      </Dropdown.Item>
-    );
-  });
   const topbarDropdownToggle = useRef();
 
   const toggleDropdown = (event) => {
@@ -117,6 +40,10 @@ export default function TopBarDropDown(props) {
         >
           <div
             ref={props.buttonRef}
+            style={{
+              paddingLeft: "0rem",
+              paddingRight: "1rem",
+            }}
             className="topbar-btn topbar-btn-transparent w-100"
             id="address-button"
           >
@@ -129,9 +56,9 @@ export default function TopBarDropDown(props) {
                 }`}
                 src={EyeIcon}
               />
-              {props.totalWallets && props.totalWallets > 1 ? (
+              {props.fullWalletList && props.fullWalletList.length > 1 ? (
                 <span className="topBarWalletTotalWallets">
-                  {props.totalWallets}
+                  {props.fullWalletList ? props.fullWalletList.length : 0}
                 </span>
               ) : null}
             </div>
@@ -141,17 +68,39 @@ export default function TopBarDropDown(props) {
               isInfo={true}
               isText={true}
               text={
-                props.firstFullWallet
-                  ? props.firstFullWallet
-                  : props.firstWallet
+                props.fullWalletList &&
+                props.fullWalletList.length > 0 &&
+                props.fullWalletList[0][0]
+                  ? props.fullWalletList[0][0]
+                  : ""
               }
-              className={"fix-width tool-tip-container-bottom-arrow"}
+              className={"fix-width tool-tip-container-bottom-arrow "}
             >
-              <div className="hideText">
-                <span>{props.firstWallet}</span>
+              <div className="hideText topBarWalletAddressNameTagAndAddress">
+                {props.fullWalletList && props.fullWalletList.length > 0 ? (
+                  <>
+                    <span className="topBarWalletAddressNameTag">
+                      {props.fullWalletList[0][2]
+                        ? props.fullWalletList[0][2] + " "
+                        : null}
+                    </span>
+                    {props.fullWalletList[0][0] ? (
+                      <span
+                        style={{
+                          fontWeight: "600",
+                        }}
+                        className="topBarWalletAddressAddress"
+                      >
+                        {/\.eth$/.test(props.fullWalletList[0][0])
+                          ? props.fullWalletList[0][0]
+                          : props.fullWalletList[0][0].slice(0, 4)}
+                      </span>
+                    ) : null}
+                  </>
+                ) : null}
               </div>
             </CustomOverlay>
-            {!(props.totalWallets && props.totalWallets > 1) ? (
+            {!(props.fullWalletList && props.fullWalletList.length > 1) ? (
               <div className="copy-icon-top-bar pl-2">
                 <Image
                   src={CopyClipboardIcon}
@@ -166,7 +115,7 @@ export default function TopBarDropDown(props) {
               </div>
             ) : null}
 
-            {props.totalWallets && props.totalWallets > 1 ? (
+            {props.fullWalletList && props.fullWalletList.length > 1 ? (
               <OutsideClickHandler onOutsideClick={closeDropdown}>
                 <div
                   onClick={toggleDropdown}
@@ -183,9 +132,15 @@ export default function TopBarDropDown(props) {
             ) : null}
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <div className="dropdown-menu-list-container">{list}</div>
-        </Dropdown.Menu>
+        {props.fullWalletList && props.fullWalletList.length > 0 ? (
+          <Dropdown.Menu>
+            <div className="dropdown-menu-list-container">
+              {props.fullWalletList.map((li, index) => (
+                <TopBarDropDownListComp li={li} index={index} {...props} />
+              ))}
+            </div>
+          </Dropdown.Menu>
+        ) : null}
       </Dropdown>
     </div>
   );

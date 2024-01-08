@@ -1,9 +1,8 @@
-import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
-import { getAllWalletList } from "./WalletAction";
-import { addYieldPools } from "../onboarding/Api";
-import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { postLoginInstance } from "../../utils";
 import { addLocalWalletList } from "../common/Api";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { getAllWalletList } from "./WalletAction";
 
 export const getAllWalletListApi = (data, ctx) => {
   return async function (dispatch, getState) {

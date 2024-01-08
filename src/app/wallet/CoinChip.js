@@ -50,13 +50,20 @@ export default function CoinChip(props) {
           className="chain-img"
         />
       )}
-      <div className="inter-display-medium f-s-13 lh-14 coin-percent">
-        {props.coin_percent
-          ? props.coin_percent
-          : props.coin_code
-          ? props.coin_code
-          : ""}{" "}
-      </div>
+      {
+        props.hideText
+        ?
+        null
+        :
+
+          <div className="inter-display-medium f-s-13 lh-14 coin-percent">
+          {props.coin_percent
+            ? props.coin_percent
+            : props.coin_code
+            ? props.coin_code
+            : ""}{" "}
+        </div>
+        }
     </div>
   );
 }

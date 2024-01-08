@@ -1,40 +1,36 @@
 import React from "react";
+import { Col, Container, Image, Modal, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Modal, Image, Row, Col, Container } from "react-bootstrap";
+import BinanceIcon from "../../assets/images/icons/Binance.svg";
+import BitBtnIcon from "../../assets/images/icons/bitbns.png";
+import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import {
-  Form,
-  FormElement,
   BaseReactComponent,
   CustomTextControl,
+  Form,
+  FormElement,
 } from "../../utils/form";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import BinanceIcon from "../../assets/images/icons/Binance.svg";
-import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
-import BitBtnIcon from "../../assets/images/icons/bitbns.png";
 
 import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
-import BybitIcon from "../../assets/images/icons/bybit.jpg";
 import GeminiIcon from "../../assets/images/icons/Gemini.jpg";
 import HuobiIcon from "../../assets/images/icons/Huobi.jpg";
-import OkxIcon from "../../assets/images/icons/okx.jpg";
+import BybitIcon from "../../assets/images/icons/bybit.jpg";
 import krakanIcon from "../../assets/images/icons/krakan.svg";
 import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
+import OkxIcon from "../../assets/images/icons/okx.jpg";
 
-import prevIcon from "../../assets/images/icons/prev-arrow.svg";
-import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/backIcon.svg";
 import Slider from "react-slick";
-import { addUpdateAccount, getUserAccount } from "../cost/Api";
-import { getExchangeBalance } from "../Portfolio/Api";
-import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
-import CustomButton from "../../utils/form/CustomButton";
+import backIcon from "../../assets/images/icons/backIcon.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
 import {
   HomeConnectExchangeSelected,
   Home_CE_ApiSyncAttmepted,
   Home_CE_OAuthAttempted,
-  LPConnectExchangeSelected,
   LPC_Go,
+  LPConnectExchangeSelected,
   LP_CE_ApiSyncAttmepted,
   LP_CE_OAuthAttempted,
   WalletConnectExchangeSelected,
@@ -42,14 +38,18 @@ import {
   Wallet_CE_OAuthAttempted,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import CustomButton from "../../utils/form/CustomButton";
+import { getExchangeBalance } from "../Portfolio/Api";
+import { addUpdateAccount, getUserAccount } from "../cost/Api";
+import { addExchangeTransaction } from "../home/Api";
 import {
-  getAllCoins,
-  detectCoin,
   createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
   getAllParentChains,
 } from "../onboarding/Api";
-import { addExchangeTransaction } from "../home/Api";
 import { addUserCredits } from "../profile/Api";
+import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -865,7 +865,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: false,
+              isOAuth: true,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
@@ -1503,19 +1503,22 @@ class ConnectModal extends BaseReactComponent {
         }
       >
         <Modal.Header>
-          {(selection !== null || this.props.ishome) && (
-            <Image
-              className="back-icon cp"
-              src={backIcon}
-              onClick={() => {
-                if (this.props.ishome && !selection) {
-                  this.props.handleBackConnect(this.state.connectExchangesList);
-                } else {
-                  this.handleBack();
-                }
-              }}
-            />
-          )}
+          {(selection !== null || this.props.ishome) &&
+            this.props.handleBackConnect && (
+              <Image
+                className="back-icon cp"
+                src={backIcon}
+                onClick={() => {
+                  if (this.props.ishome && !selection) {
+                    this.props.handleBackConnect(
+                      this.state.connectExchangesList
+                    );
+                  } else {
+                    this.handleBack();
+                  }
+                }}
+              />
+            )}
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
@@ -1790,30 +1793,32 @@ class ConnectModal extends BaseReactComponent {
                 {/* </Row> */}
                 {this.props.ishome && (
                   <>
-                    <div className="ob-connect-exchange">
-                      <div
-                        className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
-                        onClick={() => {
-                          this.props.handleBackConnect(
-                            this.state.connectExchangesList
-                          );
-                        }}
-                      >
-                        <Image
-                          src={WalletIconBtn}
-                          style={{
-                            width: "1.2rem",
-                            marginRight: "4px",
-                            marginBottom: "1px",
+                    {this.props.handleBackConnect ? (
+                      <div className="ob-connect-exchange">
+                        <div
+                          className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                          onClick={() => {
+                            this.props.handleBackConnect(
+                              this.state.connectExchangesList
+                            );
                           }}
-                        />
-                        {this.state.walletCount === 0
-                          ? "Add wallet addresses"
-                          : this.state.walletCount > 1
-                          ? this.state.walletCount + " addresses added"
-                          : this.state.walletCount + " address added"}
+                        >
+                          <Image
+                            src={WalletIconBtn}
+                            style={{
+                              width: "1.2rem",
+                              marginRight: "4px",
+                              marginBottom: "1px",
+                            }}
+                          />
+                          {this.state.walletCount === 0
+                            ? "Add wallet addresses"
+                            : this.state.walletCount > 1
+                            ? this.state.walletCount + " addresses added"
+                            : this.state.walletCount + " address added"}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                     <div style={{ textAlign: "center" }}>
                       <CustomButton
                         className="primary-btn go-btn"

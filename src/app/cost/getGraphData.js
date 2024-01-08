@@ -1,18 +1,16 @@
-import { useState } from "react";
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
   CounterpartyFeesSpecificBar,
   FeesSpecificBar,
   HomeCounterPartyHover,
 } from "../../utils/AnalyticsFunctions";
-import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
-  amountFormat,
   CurrencyType,
+  amountFormat,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
-import GraphLogo from "../../assets/images/graph-logo.svg";
 
 export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;
@@ -264,7 +262,21 @@ export const getGraphData = (apidata, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr ? arr?.map((e) => e.total_fees * currency?.rate) : [],
+        data: arr
+          ? arr?.map((e) => {
+              if (e.total_fees_amount && e.chain?.default_asset_code) {
+                return (
+                  e.total_fees_amount *
+                  assetPrices[e.chain.default_asset_code] *
+                  currency?.rate
+                );
+              } else if (e.total_fees) {
+                return e.total_fees * currency?.rate;
+              } else {
+                return 0;
+              }
+            })
+          : [],
         backgroundColor: arr
           ? arr?.map((e) =>
               e?.exchange == "coinbase"
@@ -461,7 +473,13 @@ export const getCounterGraphData = (arr, parentCtx) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function (value, index, ticks) {
-            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            if (this.getLabelForValue(value)) {
+              if (this.getLabelForValue(value).length >= 6) {
+                return this.getLabelForValue(value).slice(0, 4) || "Other";
+              }
+              return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            }
+            return null;
           },
         },
         grid: {

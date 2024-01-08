@@ -1,29 +1,28 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
+import PageHeader from "../common/PageHeader";
 
 import { connect } from "react-redux";
-import {
-  Method,
-  START_INDEX,
-  SEARCH_BY_TEXT,
-  BASE_URL_S3,
-  API_LIMIT,
-  SORT_BY_ADDRESS,
-  SORT_BY_ANALYSED,
-  SORT_BY_REMARKS,
-  SORT_BY_NAME_TAG,
-} from "../../utils/Constant";
-import {
-  FormElement,
-  Form,
-  CustomTextControl,
-  BaseReactComponent,
-} from "../../utils/form";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import "./_watchlist.scss";
+import {
+  API_LIMIT,
+  BASE_URL_S3,
+  Method,
+  SEARCH_BY_TEXT,
+  SORT_BY_ANALYSED,
+  SORT_BY_NAME_TAG,
+  SORT_BY_REMARKS,
+  START_INDEX,
+} from "../../utils/Constant";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "../../utils/form";
+import "./_watchlist.scss";
 
 import Loading from "../common/Loading";
 
@@ -41,9 +40,7 @@ import {
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import RemarkInput from "../discover/remarkInput";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
@@ -58,16 +55,18 @@ import {
   WatchlistSortByNameTag,
   WatchlistSortByRemarks,
 } from "../../utils/AnalyticsFunctions";
+import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import RemarkInput from "../discover/remarkInput";
 import AddWatchListAddressModal from "./addWatchListAddressModal";
 import {
   getWatchList,
-  updateAddToWatchList,
   getWatchListLoading,
   removeAddressFromWatchList,
+  updateAddToWatchList,
 } from "./redux/WatchListApi";
-import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -155,6 +154,15 @@ class WatchListPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
@@ -773,18 +781,26 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                hideButton={true}
+                hideButton={false}
+                updateOnFollow={this.callApi}
+                hideShare
               />
             </div>
           </div>
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              hideShare
+            />
             {this.state.showAddWatchListAddress ? (
               <AddWatchListAddressModal
                 show={this.state.showAddWatchListAddress}
@@ -824,7 +840,7 @@ class WatchListPage extends BaseReactComponent {
             <PageHeader
               title={"Following"}
               subTitle={"Addresses you follow"}
-              // showpath={true}
+              //
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
@@ -833,17 +849,17 @@ class WatchListPage extends BaseReactComponent {
               btnText="Add address"
               handleBtn={this.handleAddWatchlistAddress}
             />
-
-            <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {/* <div style={{ width: "60%" }}>
+            <div style={{ paddingBottom: "2rem" }}>
+              <div className="fillter_tabs_section">
+                <Form onValidSubmit={this.onValidSubmit}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {/* <div style={{ width: "60%" }}>
                     <CustomDropdown
                       filtername="Type"
                       options={[...[{ value: "Allasset", label: "All" }]]}
@@ -855,68 +871,68 @@ class WatchListPage extends BaseReactComponent {
                     />
                   </div> */}
 
-                  {/* {fillter_tabs} */}
-                  <div style={{ width: "100%" }}>
-                    <div className="searchBar top-account-search">
-                      <Image src={searchIcon} className="search-icon" />
-                      <div className="form-groupContainer">
-                        <FormElement
-                          valueLink={this.linkState(
-                            this,
-                            "search",
-                            this.onChangeMethod
-                          )}
-                          control={{
-                            type: CustomTextControl,
-                            settings: {
-                              placeholder: "Search",
-                            },
-                          }}
-                          classes={{
-                            inputField: "search-input watchListSearchInput",
-                            prefix: "search-prefix",
-                            suffix: "search-suffix",
-                          }}
-                        />
+                    {/* {fillter_tabs} */}
+                    <div style={{ width: "100%" }}>
+                      <div className="searchBar top-account-search">
+                        <Image src={searchIcon} className="search-icon" />
+                        <div className="form-groupContainer">
+                          <FormElement
+                            valueLink={this.linkState(
+                              this,
+                              "search",
+                              this.onChangeMethod
+                            )}
+                            control={{
+                              type: CustomTextControl,
+                              settings: {
+                                placeholder: "Search",
+                              },
+                            }}
+                            classes={{
+                              inputField: "search-input watchListSearchInput",
+                              prefix: "search-prefix",
+                              suffix: "search-suffix",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Form>
-            </div>
+                </Form>
+              </div>
 
-            <div className="transaction-history-table watchListTableContainer">
-              {this.state.tableLoading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "69rem",
-                  }}
-                >
-                  <Loading />
-                </div>
-              ) : (
-                <>
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    showHeaderOnEmpty
-                    tableData={this.state.tableData}
-                    columnList={columnList}
-                    message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    addWatermark
-                  />
-                </>
-              )}
+              <div className="transaction-history-table watchListTableContainer">
+                {this.state.tableLoading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "69rem",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <TransactionTable
+                      noSubtitleBottomPadding
+                      showHeaderOnEmpty
+                      tableData={this.state.tableData}
+                      columnList={columnList}
+                      message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      addWatermark
+                    />
+                  </>
+                )}
+              </div>
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
       </>

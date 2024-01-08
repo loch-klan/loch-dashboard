@@ -1,19 +1,16 @@
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
-import { InflowOutflowIcon } from "../../assets/images/icons";
-
-import PageHeader from "../common/PageHeader";
 import { TimeFilterInflowOutflowType } from "../../utils/Constant";
 import {
-  getInflowsAndOutflowsGraphDataApi,
   getInflowsAndOutflowsAssetsApi,
+  getInflowsAndOutflowsGraphDataApi,
   setInflowsAndOutflowsTimeTab,
   setInflowsAndOutflowsWalletList,
   setSelectedInflowOutflowsAssetBlank,
 } from "./Api";
-import "./intelligenceScss/_inflowOutflowChart.scss";
 import InflowOutflowChartSliderContainer from "./InflowOutflowChartSliderContainer";
+import "./intelligenceScss/_inflowOutflowChart.scss";
 class InflowOutflowChart extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -32,6 +29,9 @@ class InflowOutflowChart extends BaseReactComponent {
     const userWalletList = JSON.parse(
       window.sessionStorage.getItem("addWallet")
     );
+    setTimeout(() => {
+      this.makeApiCall();
+    }, 200);
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     const tempAdd = JSON.stringify(addressList);
     let data = new URLSearchParams();
@@ -187,12 +187,12 @@ class InflowOutflowChart extends BaseReactComponent {
   render() {
     return (
       <div className="inflowOutflowBlock">
-        <PageHeader
+        {/* <PageHeader
           showExplainers
           explainerText="This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
           title="Price gauge"
           showImg={InflowOutflowIcon}
-        />
+        /> */}
         <div className="graph-container">
           <InflowOutflowChartSliderContainer
             inflowOutflowData={
@@ -201,6 +201,7 @@ class InflowOutflowChart extends BaseReactComponent {
                 : []
             }
             isScrollVisible={false}
+            isHomepage={this.props.isHomepage}
             handleGroupBy={this.handleGroupBy}
             graphLoading={this.state.graphLoading}
             isPage={true}
