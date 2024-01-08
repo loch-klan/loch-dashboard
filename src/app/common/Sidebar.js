@@ -72,6 +72,8 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import ExitOverlay from "./ExitOverlay";
 import UserFeedbackModal from "./UserFeedbackModal.js";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
+import { toast } from "react-toastify";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -1398,15 +1400,11 @@ function Sidebar(props) {
     </>
   );
 }
-<<<<<<< HEAD
-const mapStateToProps = (state) => ({});
+
 const mapDispatchToProps = { sendUserFeedbackApi };
-=======
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
 });
-const mapDispatchToProps = {};
 
->>>>>>> eee15fcc51e93cf1f0e1d0498d5051ee3335b1a5
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
