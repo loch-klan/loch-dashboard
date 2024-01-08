@@ -36,6 +36,7 @@ export { default as MetamaskIcon } from "./metamask.svg";
 export { default as MobileSearchGreyIcon } from "./mobileSearchGrey.svg";
 export { default as NewWelcomeAddAnotherPlusIcon } from "./newWelcomeAddAnotherPlus.svg";
 export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
+export { default as NewWelcomeLoginCrossIcon } from "./newWelcomeLoginCross.svg";
 export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
 export { default as PieChartWatermarkIcon } from "./pieChartWatermark.svg";
 export { default as PlusCircleIcon } from "./plus-circle.svg";

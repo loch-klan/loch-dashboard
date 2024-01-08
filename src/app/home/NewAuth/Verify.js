@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import { CrossSmartMoneyIcon } from "../../../assets/images/icons";
+import { NewWelcomeLoginCrossIcon } from "../../../assets/images/icons";
 import logo from "./../../../image/Loch.svg";
 import "./_newAuth.scss";
 
@@ -46,7 +46,7 @@ const Verify = ({
           onClick={toggleModal}
         >
           <Image
-            src={CrossSmartMoneyIcon}
+            src={NewWelcomeLoginCrossIcon}
             style={{
               height: "2rem",
               width: "2rem",
