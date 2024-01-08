@@ -31,14 +31,8 @@ import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
-<<<<<<< HEAD
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
-import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
-import ConfirmLeaveModal from "./ConformLeaveModal";
-=======
 import ActiveHomeIcon from "../../image/HomeIcon.svg";
 import logo from "../../image/Loch.svg";
->>>>>>> eee15fcc51e93cf1f0e1d0498d5051ee3335b1a5
 import {
   ExportMenu,
   FeedbackMenu,
@@ -55,12 +49,15 @@ import {
   SignupMenu,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
   getAllCurrencyApi,
   getAllCurrencyRatesApi,
   sendUserFeedbackApi,
 } from "./Api";
 import AuthModal from "./AuthModal";
+import ConfirmLeaveModal from "./ConformLeaveModal";
 import ConnectModal from "./ConnectModal";
 import FeedbackModal from "./FeedbackModal";
 import SharePortfolio from "./SharePortfolio";
