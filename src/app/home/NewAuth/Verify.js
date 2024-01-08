@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
+import { NewWelcomeLoginCrossIcon } from "../../../assets/images/icons";
 import logo from "./../../../image/Loch.svg";
-import {
-  CrossSmartMoneyIcon,
-  NewWelcomeLoginCrossIcon,
-} from "../../../assets/images/icons";
+import "./_newAuth.scss";
 
 const Verify = ({
   show,

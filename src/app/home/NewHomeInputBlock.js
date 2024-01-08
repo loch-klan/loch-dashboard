@@ -10,7 +10,13 @@ class NewHomeInputBlock extends BaseReactComponent {
   render() {
     const { c, index } = this.props;
     return (
-      <div className={`new-homepage__body-search_input_body_container ${this.props.isMobile?"new-homepage__body-search_input_body_container-mobile":''}`}>
+      <div
+        className={`new-homepage__body-search_input_body_container ${
+          this.props.isMobile
+            ? "new-homepage__body-search_input_body_container-mobile"
+            : ""
+        }`}
+      >
         <div className="new-homepage__body-search_input_body">
           <div
             style={index === 9 ? { marginBottom: "0rem" } : {}}
@@ -32,7 +38,11 @@ class NewHomeInputBlock extends BaseReactComponent {
                         name={`wallet${index + 1}`}
                         value={c.address || ""}
                         className={`inter-display-regular f-s-15 lh-20 awInput`}
-                        placeholder={this.props.isMobile?"Paste any wallet address or ENS":"Paste any wallet address or ENS to get started"}
+                        placeholder={
+                          this.props.isMobile
+                            ? "Paste any wallet address or ENS"
+                            : "Paste any wallet address or ENS to get started"
+                        }
                         title={c.address || ""}
                         onChange={
                           this.props.handleOnChange
@@ -101,7 +111,9 @@ class NewHomeInputBlock extends BaseReactComponent {
                   <div
                     className={`awBottomInputWrapper ${
                       c.showAddress ? "mt-2" : ""
-                    } ${this.props.isMobile ? "awBottomInputWrapper-mobile" : ""}`}
+                    } ${
+                      this.props.isMobile ? "awBottomInputWrapper-mobile" : ""
+                    }`}
                   >
                     <div className="awInputContainer">
                       {c.nickname && c.nickname !== "" ? (

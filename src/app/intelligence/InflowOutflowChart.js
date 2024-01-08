@@ -201,6 +201,7 @@ class InflowOutflowChart extends BaseReactComponent {
                 : []
             }
             isScrollVisible={false}
+            isHomepage={this.props.isHomepage}
             handleGroupBy={this.handleGroupBy}
             graphLoading={this.state.graphLoading}
             isPage={true}

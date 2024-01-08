@@ -149,15 +149,107 @@
           justify-content: start;
           .topBarContainer {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
-            padding-left: 0rem;
-            padding-right: 0rem;
-            // border: 1px $grey-50 solid;
-            // box-shadow: 0 0 10px 4px $grey-50;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            // background-color: red;
+            border: 1px $grey-50 solid;
+            box-shadow: 0 0 10px 4px $grey-50;
+            height: 100%;
+            position: relative;
+            .topBarHistory {
+              border-radius: 10px;
+              border: 1px $grey-50 solid;
+              box-shadow: 0 0 10px 4px $grey-50;
+              background-color: $secondary;
+              width: 100%;
+              position: absolute;
+              transform: translateY(5.5rem) translateX(-0.9rem);
+              padding: 2rem;
+              .topBarHistoryTitleContainer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                .topBarHistoryTitleLeftContainer {
+                  display: flex;
+                  align-items: center;
+                  .topBarHistoryTitleIcon {
+                    height: 13px;
+                    margin-right: 0.5rem;
+                  }
+                  .topBarHistoryTitle {
+                    color: #b0b1b3;
+                    font-size: 13px;
+                    font-weight: 500;
+                  }
+                }
+                .topBarHistoryClearAll {
+                  color: #636467;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition-duration: 300ms;
+                  &:hover {
+                    color: $primary;
+                  }
+                }
+              }
+              .topBarHistoryItemContainer {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                .topBarHistoryItemBlock {
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                  padding: 1.2rem;
+                  border: 0.1rem solid #e5e5e6;
+                  border-radius: 1rem;
+                  transition-duration: 300ms;
+                  font-size: 14px;
+                  cursor: pointer;
+                  width: 13rem;
+                  &:hover {
+                    border-color: #19191a;
+                  }
+                  .topBarHistoryItemBlockIcon {
+                    height: 8px;
+                    cursor: pointer;
+                    &:hover {
+                      filter: invert(1);
+                    }
+                  }
+                }
+              }
+            }
+            .topBarContainerInputBlockContainer {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              .topBarContainerInputBlockContainerLeftOfInput {
+                min-width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .topBarContainerInputBlockIcon {
+                  height: 14px;
+                }
+              }
+
+              .topBarContainerInputBlockInput {
+                flex: 1;
+                border: none;
+                outline: none;
+                height: 100%;
+                font-size: 15px;
+              }
+            }
             .maxWidth50 {
               max-width: 50%;
             }
@@ -253,6 +345,25 @@
             .topBarExchangeIcons {
               filter: none;
             }
+          }
+        }
+        .topbar-btn-dark {
+          background: $black-191;
+          border: 1px solid $black-191;
+          color: $secondary;
+          &:hover {
+            background: rgba(229, 229, 230, 0.5);
+            border: 1px solid #f2f2f3;
+            color: $black-191;
+          }
+        }
+        .topbar-btn-dark-disabled {
+          opacity: 0.5;
+          cursor: default;
+          &:hover {
+            background: $black-191;
+            border: 1px solid $black-191;
+            color: $secondary;
           }
         }
         .topbar-btn-white-with-border {
@@ -928,6 +1039,8 @@
       }
       .balance-sheet-card-portfolio-home {
         position: relative;
+        padding-left: 1rem;
+        padding-right: 1rem;
         .balance-dropdown {
           position: absolute;
           top: 5.3rem;
