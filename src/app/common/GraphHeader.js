@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Form, Image } from "react-bootstrap";
-import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
-import {
-  TitleAssetValueHover,
-  TransactionHistoryHover,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
-import LinkIcon from "../../assets/images/icons/link.svg";
-import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
-import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   ExportIcon,
 } from "../../assets/images/icons";
+import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
+import {
+  TitleAssetValueHover,
+  TransactionHistoryHover,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 export const GraphHeader = (props) => {
   const handleClickPass = () => {
     if (props.disableOnLoading) {

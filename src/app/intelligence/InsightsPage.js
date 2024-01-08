@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import { Button, Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
+import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, sendAmount } from "./Api";
-import { BASE_URL_S3, InsightType } from "../../utils/Constant";
-import Loading from "../common/Loading";
-import { getAllWalletListApi } from "../wallet/Api";
 import {
   AllInsights,
   InsightPage,
@@ -20,24 +15,30 @@ import {
   RiskTypeSelected,
   TimeSpentInsights,
 } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import Loading from "../common/Loading";
+import PageHeader from "../common/PageHeader";
+import { getAllWalletListApi } from "../wallet/Api";
+import { getAllInsightsApi, sendAmount } from "./Api";
 
 // add wallet
+import { connect } from "react-redux";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import GradientImg from "../../assets/images/insight-upgrade.png";
-import { getAllCoins } from "../onboarding/Api.js";
-import { connect } from "react-redux";
-import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import FixAddModal from "../common/FixAddModal";
 import UpgradeModal from "../common/upgradeModal";
+import { getAllCoins } from "../onboarding/Api.js";
 
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { toast } from "react-toastify";
-import Footer from "../common/footer";
-import DropDown from "../common/DropDown";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import DropDown from "../common/DropDown";
+import Footer from "../common/footer";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -133,10 +134,7 @@ class InsightsPage extends Component {
       }
     }
   };
-  componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+  applyInsightsPropsToState = () => {
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -146,6 +144,39 @@ class InsightsPage extends Component {
         updatedInsightList: newTempHolder,
       });
     }
+  };
+  componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
+    if (
+      !this.props.commonState.insight ||
+      !this.props.intelligenceState.updatedInsightList
+    ) {
+      this.props.updateWalletListFlag("insight", true);
+      this.setState({
+        isLoading: true,
+      });
+      this.props.getAllInsightsApi(this);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
+    } else {
+      this.applyInsightsPropsToState();
+    }
+
     this.checkIsMetaMaskConnected();
     // this.props.getAllInsightsApi(this);
     this.props.GetAllPlan();
@@ -224,18 +255,24 @@ class InsightsPage extends Component {
       });
     }
 
-    if (!this.props.commonState.insight) {
+    if (
+      prevState.apiResponse !== this.state.apiResponse ||
+      !this.props.commonState.insight
+    ) {
       this.props.updateWalletListFlag("insight", true);
-      this.setState({
-        isLoading: true,
-      });
-      this.props.getAllInsightsApi(this);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+      this.setState({
+        isLoading: true,
+      });
+      this.props.getAllInsightsApi(this);
+      this.setState({
+        apiResponse: false,
+      });
     }
 
     // if (this.state.apiResponse) {
@@ -417,6 +454,8 @@ class InsightsPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
@@ -429,6 +468,10 @@ class InsightsPage extends Component {
         </div>
         <div className="insights-section m-t-80">
           <div className="insights-page page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -463,7 +506,6 @@ class InsightsPage extends Component {
             <PageHeader
               title={"Insights"}
               subTitle={"Valuable insights based on your assets"}
-              showpath={true}
               currentPage={"insights"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

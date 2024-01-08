@@ -1,20 +1,19 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COINS_LIST, WALLET_LIST, PARENT_COINS_LIST } from "./ActionTypes";
 import {
-  WalletAddressTextbox,
   EmailAddressVerified,
+  EmailNotFound,
   UserSignedinCorrectly,
   UserWrongCode,
-  EmailNotFound,
+  WalletAddressTextbox,
   WhaleWalletAddressTextbox,
-  setUserProperties,
   signInUser,
   signUpProperties,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
-import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { addLocalWalletList } from "../common/Api";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
+import { COINS_LIST, PARENT_COINS_LIST, WALLET_LIST } from "./ActionTypes";
 export const getAllCoins = (handleShareLinkUser = null) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -63,7 +62,8 @@ export const detectCoin = (
   ctx = null,
   isCohort = false,
   index = 0,
-  justDetect = false
+  justDetect = false,
+  fromConnectWallet = false
 ) => {
   return function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -115,11 +115,21 @@ export const detectCoin = (
           }
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
-            ctx.handleSetCoin({
-              ...wallet,
-              chain_detected: res.data.data.chain_detected,
-              apiaddress: res.data.data.wallet_address,
-            });
+            if (fromConnectWallet) {
+              if (ctx.handleSetCoinByLocalWallet) {
+                ctx.handleSetCoinByLocalWallet({
+                  ...wallet,
+                  chain_detected: res.data.data.chain_detected,
+                  apiaddress: res.data.data.wallet_address,
+                });
+              }
+            } else {
+              ctx.handleSetCoin({
+                ...wallet,
+                chain_detected: res.data.data.chain_detected,
+                apiaddress: res.data.data.wallet_address,
+              });
+            }
 
             if (
               ctx?.state.isTopAccountPage &&
@@ -170,7 +180,7 @@ export const detectNameTag = (
   };
 };
 
-export const signIn = (ctx, data) => {
+export const signIn = (ctx, data, v2 = false, resend = false) => {
   preLoginInstance
     .post("organisation/user/send-otp", data)
     .then((res) => {
@@ -188,23 +198,33 @@ export const signIn = (ctx, data) => {
         // toast.error(res.data.message || "Something went Wrong")
         ctx.setState({ emailError: true });
         EmailNotFound({ email_address: ctx.state.email });
+        toast.error(res.data.message || "Something Went Wrong");
       } else if (res.data.error === false) {
         //email Valid
         EmailAddressVerified({ email_address: ctx.state.email });
-        ctx.setState({
-          isVerificationRequired: true,
-          text: "",
-          emailError: false,
-        });
-        ctx.props.handleStateChange("verifyCode");
+        if (v2) {
+          ctx.toggleAuthModal("verify");
+          if (resend) {
+            toast.success("OTP sent successfully");
+          }
+        } else {
+          ctx.setState({
+            isVerificationRequired: true,
+            text: "",
+            emailError: false,
+          });
+          ctx.props.handleStateChange("verifyCode");
+        }
       }
     })
     .catch((err) => {
-      // console.log("error while signing",err)
+      if (v2) {
+        toast.error("Something Went Wrong");
+      }
     });
 };
 
-export const verifyUser = (ctx, info) => {
+export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/verify-otp", info)
@@ -327,18 +347,28 @@ export const verifyUser = (ctx, info) => {
           }
 
           // Mixpanel function
-          signInUser({
-            email_address: res.data.data.user?.email,
-            userId: res.data.data.user?.link,
-            first_name: res.data.data.user?.first_name,
-            last_name: res.data.data.user?.last_name,
-            track: "Landing page sign in",
-          });
+          if (goToSmartMoney) {
+            signInUser({
+              email_address: res.data.data.user?.email,
+              userId: res.data.data.user?.link,
+              first_name: res.data.data.user?.first_name,
+              last_name: res.data.data.user?.last_name,
+              track: "Landing page sign in",
+            });
+          } else {
+            signInUser({
+              email_address: res.data.data.user?.email,
+              userId: res.data.data.user?.link,
+              first_name: res.data.data.user?.first_name,
+              last_name: res.data.data.user?.last_name,
+              track: "Landing page smart money sign in",
+            });
+          }
           // console.log("addWallet", addWallet);
           window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
           ctx.props.history.push({
-            pathname: "/home",
+            pathname: goToSmartMoney ? "/home-leaderboard" : "/home",
             state: { addWallet },
           });
           UserSignedinCorrectly({
@@ -653,25 +683,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
       // );
 
       window.sessionStorage.setItem("stopClick", true);
-      // window.sessionStorage.setItem("defi_access", true);
-      // window.sessionStorage.setItem("isPopup", true);
-      // // window.sessionStorage.setItem("whalepodview", true);
-      // window.sessionStorage.setItem(
-      //   "whalepodview",
-      //   JSON.stringify({ access: true, id: "" })
-      // );
-      // window.sessionStorage.setItem("previewAddress", "");
 
-      //  window.sessionStorage.setItem(
-      //    "isSubmenu",
-      //    JSON.stringify({
-      //      me: true,
-      //      discover: false,
-      //      intelligence: false,
-      //      topAccount: false,
-      //      topAccountintelligence: false,
-      //    })
-      //  );
       setLocalStoraage();
 
       signUpProperties({

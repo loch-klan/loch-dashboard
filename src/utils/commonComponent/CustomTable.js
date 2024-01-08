@@ -56,12 +56,14 @@ class CustomTable extends BaseReactComponent {
       isLoading,
       isStickyHead,
       isMiniversion,
+      wrapperStyle
     } = this.props;
     return (
       <div
         className={`table-wrapper ${
           this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
         } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
+        style={wrapperStyle}
       >
         {isLoading === true ? (
           <div
@@ -141,7 +143,7 @@ class CustomTable extends BaseReactComponent {
                       }
                       height={
                         (this.props.showDataAtBottom && this.props.moreData
-                          ? 50
+                          ? 58
                           : 60) *
                           (tableData.length + 1) -
                         10
@@ -149,7 +151,7 @@ class CustomTable extends BaseReactComponent {
                       headerHeight={headerHeight ? headerHeight : 80}
                       rowHeight={
                         this.props.showDataAtBottom && this.props.moreData
-                          ? 50
+                          ? 58
                           : 60
                       }
                       rowCount={tableData.length}
@@ -312,7 +314,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 67.9px",
+                    flex: "0.05",
                   }}
                 ></div>
                 <div
@@ -320,7 +322,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 169.75px",
+                    flex: "0.1",
                   }}
                 >
                   <div className="inter-display-medium bottomCombinedItemBlock">
@@ -332,7 +334,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 169.75px",
+                    flex: "0.12",
                   }}
                 ></div>
                 <div
@@ -340,7 +342,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 169.75px",
+                    flex: "0.1",
                   }}
                 ></div>
                 <div
@@ -348,7 +350,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 169.75px",
+                    flex: "0.1",
                   }}
                 ></div>
                 <div
@@ -356,7 +358,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 176.54px",
+                    flex: "0.11",
                   }}
                 >
                   <div className="cost-common-container">
@@ -401,7 +403,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 176.54px",
+                    flex: "0.11",
                   }}
                 >
                   <div className="cost-common-container">
@@ -446,7 +448,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 176.54px",
+                    flex: "0.11",
                   }}
                 >
                   <div
@@ -510,7 +512,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0 1 176.54px",
+                    flex: "0.11",
                   }}
                 >
                   <div
@@ -533,7 +535,7 @@ class CustomTable extends BaseReactComponent {
                           ? Math.abs(this.props.combinedReturn).toLocaleString(
                               "en-US"
                             ) + "%"
-                          : "0%"
+                          : "0.00%"
                       }
                       colorCode="#000"
                     >
@@ -567,11 +569,44 @@ class CustomTable extends BaseReactComponent {
                     </CustomOverlay>
                   </div>
                 </div>
+                <div
+                  aria-colindex="9"
+                  role="gridcell"
+                  className="inter-display-medium bottomCombinedItemBlock"
+                  style={{
+                    flex: "0.11",
+                  }}
+                >
+                  <div
+                    onMouseEnter={() => {
+                      // CostGainLossHover({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
+                    }}
+                    className="gainLossContainer"
+                  >
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={"100%"}
+                      colorCode="#000"
+                    >
+                      <div className={`gainLoss`}>
+                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                          100%
+                        </span>
+                      </div>
+                    </CustomOverlay>
+                  </div>
+                </div>
               </div>
             ) : null}
           </>
         )}
-        {this.props.isSmartMoney ? (
+        {this.props.isSmartMoney || this.props.paginationNew ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}

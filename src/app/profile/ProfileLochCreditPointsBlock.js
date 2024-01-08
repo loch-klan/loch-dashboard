@@ -1,8 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
-import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import { UserCreditRightArrowIcon } from "../../assets/images/icons/index.js";
+import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 
 class ProfileLochCreditPointsBlock extends BaseReactComponent {
   constructor(props) {
