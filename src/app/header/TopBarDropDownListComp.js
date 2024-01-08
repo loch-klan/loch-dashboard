@@ -2,7 +2,8 @@ import React from "react";
 import { Dropdown, Image } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { CopyClipboardIcon } from "../../assets/images";
-export default function TopBarDropDownListComp(props) {
+import { WalletDropdownTrashIcon } from "../../assets/images/icons";
+function TopBarDropDownListComp(props) {
   const copyContent = (text) => {
     navigator.clipboard
       .writeText(text)
@@ -47,13 +48,27 @@ export default function TopBarDropDownListComp(props) {
             </span>
           ) : null}
         </div>
-        <div className="copy-icon-top-bar pl-3">
-          <Image
-            src={CopyClipboardIcon}
-            onClick={copyTheAddress}
-            className="cp"
-            style={{ height: "1.2rem" }}
-          />
+        <div className="copy-icon-top-bar-container">
+          <div className="copy-icon-top-bar pl-3">
+            <Image
+              src={CopyClipboardIcon}
+              onClick={copyTheAddress}
+              className="cp"
+              style={{ height: "12px" }}
+            />
+          </div>
+          <div className="copy-icon-top-bar pl-3">
+            <Image
+              src={WalletDropdownTrashIcon}
+              onClick={() => {
+                if (props.deleteTheAddress) {
+                  props.deleteTheAddress(li);
+                }
+              }}
+              className="cp"
+              style={{ height: "12px" }}
+            />
+          </div>
         </div>
       </div>
       {/* {props?.showChecked && (
@@ -86,3 +101,5 @@ export default function TopBarDropDownListComp(props) {
     </Dropdown.Item>
   );
 }
+
+export default TopBarDropDownListComp;

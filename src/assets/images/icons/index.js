@@ -1,7 +1,13 @@
-export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
+export {
+  default as ActiveSmartMoneySidebarIcon,
+  default as ActiveSmartMoneySidebarIcon,
+} from "./ActiveSmartMoneySidebar.svg";
 export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as ExportIcon } from "./ExportIcon.svg";
-export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
+export {
+  default as InactiveSmartMoneySidebarIcon,
+  default as InactiveSmartMoneySidebarIcon,
+} from "./InactiveSmartMoneySidebar.svg";
 export { default as ShareProfileIcon } from "./SharePortfolioIcon.svg";
 export { default as SharePortfolioIconWhite } from "./SharePortfolioIconWhite.svg";
 export { default as ArrowDownLeftSmallIcon } from "./arrowDownLeftSmall.svg";
@@ -44,8 +50,14 @@ export { default as ProfileVectorWhiteIcon } from "./profileVectorWhite.svg";
 export { default as QuestionmarkCircleSmartMoneyIcon } from "./questionmarkCircleSmartMoney.svg";
 export { default as RoundedArrowDownIcon } from "./roundedArrowDown.svg";
 export { default as RoundedGreyArrowDownIcon } from "./roundedGreyArrowDown.svg";
-export { default as SearchHistoryClockIcon } from "./searchHistoryClock.svg";
-export { default as SearchHistoryDeleteIcon } from "./searchHistoryDelete.svg";
+export {
+  default as SearchHistoryClockIcon,
+  default as SearchHistoryClockIcon,
+} from "./searchHistoryClock.svg";
+export {
+  default as SearchHistoryDeleteIcon,
+  default as SearchHistoryDeleteIcon,
+} from "./searchHistoryDelete.svg";
 export { default as ShareTopBarIcon } from "./shareTopBar.svg";
 export { default as SidebarLeftArrowIcon } from "./sidebarLeftArrow.svg";
 export { default as SmartMoneyFaqModalIcon } from "./smartMoneyFaqModal.svg";
@@ -53,7 +65,10 @@ export { default as SmartMoneyPaginationArrowLeftIcon } from "./smartMoneyPagina
 export { default as SmartMoneyPaginationArrowRightIcon } from "./smartMoneyPaginationArrowRight.svg";
 export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";
 export { default as ThickCheckMarkIcon } from "./thickCheckMark.svg";
-export { default as TopBarSearchIcon } from "./topBarSearch.svg";
+export {
+  default as TopBarSearchIcon,
+  default as TopBarSearchIcon,
+} from "./topBarSearch.svg";
 export { default as TrendingFireIcon } from "./trendingFire.svg";
 export { default as TrendingWalletIcon } from "./trendingWallet.svg";
 export { default as TriangleArrowDownIcon } from "./triangleArrowDown.svg";
@@ -71,6 +86,7 @@ export { default as UserCreditStarIcon } from "./userCreditStar.svg";
 export { default as UserCreditTelegramIcon } from "./userCreditTelegram.svg";
 export { default as UserCreditTwitterIcon } from "./userCreditTwitter.svg";
 export { default as UserCreditWalletIcon } from "./userCreditWallet.svg";
+export { default as WalletDropdownTrashIcon } from "./walletDropdownTrash.svg";
 export { default as WalletIcon } from "./wallet_icon.svg";
 export { default as WalletWhiteIcon } from "./wallet_icon_white.svg";
 export { default as WarningCircleIcon } from "./warningCircle.svg";

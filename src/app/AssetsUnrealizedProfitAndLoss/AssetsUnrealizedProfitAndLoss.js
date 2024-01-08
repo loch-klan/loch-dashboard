@@ -294,7 +294,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value);
     this.props.setPageFlagDefault();
   };
 
