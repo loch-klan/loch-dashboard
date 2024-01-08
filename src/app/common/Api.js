@@ -689,13 +689,16 @@ export const getDetectedChainsApi = (ctx) => {
   };
 };
 
-export const sendUserFeedbackApi = (data) => {
+export const sendUserFeedbackApi = (data, addFeedbackPoints) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/add-user-feedback", data)
       .then((res) => {
         if (!res.data.error) {
           toast.success("Thank you for your feedback");
+          if (addFeedbackPoints) {
+            addFeedbackPoints();
+          }
         } else {
           toast.error(res.data.message || "Something went wrong");
         }

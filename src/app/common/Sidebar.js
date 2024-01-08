@@ -50,6 +50,7 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
   getAllCurrencyApi,
@@ -64,6 +65,8 @@ import SharePortfolio from "./SharePortfolio";
 import SidebarModal from "./SidebarModal";
 import UpgradeModal from "./upgradeModal";
 
+import { toast } from "react-toastify";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
@@ -72,8 +75,6 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import ExitOverlay from "./ExitOverlay";
 import UserFeedbackModal from "./UserFeedbackModal.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -407,8 +408,13 @@ function Sidebar(props) {
       });
       const passFedbackData = new URLSearchParams();
       passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
-      props.sendUserFeedbackApi(passFedbackData);
+      props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
     }
+  };
+  const addFeedbackPoints = () => {
+    const exchangeCreditScore = new URLSearchParams();
+    exchangeCreditScore.append("credits", "feedbacks_added");
+    props.addUserCredits(exchangeCreditScore);
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1399,8 +1405,8 @@ function Sidebar(props) {
     </>
   );
 }
+const mapDispatchToProps = { sendUserFeedbackApi, addUserCredits };
 
-const mapDispatchToProps = { sendUserFeedbackApi };
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
