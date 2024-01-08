@@ -117,7 +117,7 @@ class UserFeedbackModal extends BaseReactComponent {
                           <div
                             className="closebtnContainer"
                             style={{
-                              marginRight: "12px",
+                              marginRight: "2rem",
                               transform: "rotate(180deg)",
                             }}
                           >
