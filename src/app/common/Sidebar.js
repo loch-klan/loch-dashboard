@@ -51,11 +51,17 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
+import {
+  getAllCurrencyApi,
+  getAllCurrencyRatesApi,
+  sendUserFeedbackApi,
+} from "./Api";
 import AuthModal from "./AuthModal";
 import ConfirmLeaveModal from "./ConformLeaveModal";
+import ConnectModal from "./ConnectModal";
 import FeedbackModal from "./FeedbackModal";
 import SharePortfolio from "./SharePortfolio";
+import SidebarModal from "./SidebarModal";
 import UpgradeModal from "./upgradeModal";
 
 import {
@@ -64,9 +70,7 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
-import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 
 function Sidebar(props) {
@@ -387,6 +391,33 @@ function Sidebar(props) {
   };
   const handleUserFeedbackModal = () => {
     setUserFeedbackModal(!userFeedbackModal);
+  };
+  const hideUserFeedbackModal = (passedAddress) => {
+    setUserFeedbackModal(false);
+    if (passedAddress && passedAddress.length > 0 && passedAddress[0].value) {
+      let tempAnsHolder = [];
+      passedAddress.forEach((res) => {
+        if (res.value) {
+          tempAnsHolder.push(res.value);
+        } else {
+          tempAnsHolder.push("");
+        }
+      });
+      const passFedbackData = new URLSearchParams();
+      passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      props.sendUserFeedbackApi(passFedbackData);
+    }
+  };
+  const handleShare = () => {
+    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : getCurrentUser().id;
+    const link = `${BASE_URL_S3}home/${slink}`;
+    navigator.clipboard.writeText(link);
+    toast.success("Share link has been copied");
   };
 
   React.useEffect(() => {
@@ -1358,7 +1389,7 @@ function Sidebar(props) {
         <UserFeedbackModal
           trackPos={trackPos}
           dragPosition={dragPosition}
-          onHide={handleUserFeedbackModal}
+          onHide={hideUserFeedbackModal}
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
@@ -1367,10 +1398,15 @@ function Sidebar(props) {
     </>
   );
 }
+<<<<<<< HEAD
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = { sendUserFeedbackApi };
+=======
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
 });
 const mapDispatchToProps = {};
 
+>>>>>>> eee15fcc51e93cf1f0e1d0498d5051ee3335b1a5
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

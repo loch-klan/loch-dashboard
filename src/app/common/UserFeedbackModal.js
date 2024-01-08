@@ -1,29 +1,14 @@
-import React from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { createRef } from "react";
 
-import {
-  SendOtp,
-  VerifyEmail,
-  fixWalletApi,
-  SigninWallet,
-  setPageFlagDefault,
-} from "./Api.js";
-import { GeneralPopupEmailAdded } from "../../utils/AnalyticsFunctions";
 import Draggable from "react-draggable";
 import "./../../assets/scss/common/_forms.scss";
 
+import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
-import Form from "../../utils/form/Form";
-import { Modal, Image, Button } from "react-bootstrap";
-import FormElement from "../../utils/form/FormElement";
-import { getCurrentUser } from "../../utils/ManageToken";
-import FormValidator from "../../utils/form/FormValidator";
-import { CheckGreenIcon } from "../../assets/images/icons";
-import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import RightIcons from "../../assets/images/icons/caveronRight.svg";
-import CustomTextControl from "../../utils/form/CustomTextControl";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding/Api";
+import Form from "../../utils/form/Form";
 import Radio from "./Forms/Radio.js";
 
 class UserFeedbackModal extends BaseReactComponent {
@@ -80,10 +65,26 @@ class UserFeedbackModal extends BaseReactComponent {
       currentQuestion: 0,
     };
   }
-
+  nextButtonRef = createRef();
+  
   handleNext = () => {
     console.log("handleAccountCreate");
   };
+
+  listener = (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      event.preventDefault();
+      this.nextButtonRef.current.click();
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.listener);
+  }
+  
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.listener);
+  }
 
   render() {
     return (
@@ -107,7 +108,17 @@ class UserFeedbackModal extends BaseReactComponent {
                     <div className="sidebarModalBodyContainer">
                       <div className="exit-overlay-body sidebarModalBody">
                         <div>
-                          <h6 className="inter-display-medium f-s-16" style={{color:'#262626', width:this.state.questions[this.state.currentQuestion].type=="radio"?"":"200px"}}>
+                          <h6
+                            className="inter-display-medium f-s-16"
+                            style={{
+                              color: "#262626",
+                              width:
+                                this.state.questions[this.state.currentQuestion]
+                                  .type == "radio"
+                                  ? ""
+                                  : "200px",
+                            }}
+                          >
                             {
                               this.state.questions[this.state.currentQuestion]
                                 .question
@@ -120,13 +131,23 @@ class UserFeedbackModal extends BaseReactComponent {
                           style={{ paddingRight: "0px" }}
                         >
                           {/* For Signin or Signup */}
-                          <Form onValidSubmit={this.handleNext} style={{alignItems:'center'}}>
+                          <Form
+                            onValidSubmit={this.handleNext}
+                            style={{ alignItems: "center" }}
+                          >
                             {this.state.questions[this.state.currentQuestion]
                               .type == "radio" ? (
-                              <div className="d-flex" style={{ gap: "16px", marginRight:'52px', cursor:'pointer' }}>
+                              <div
+                                className="d-flex"
+                                style={{
+                                  gap: "16px",
+                                  marginRight: "52px",
+                                  cursor: "pointer",
+                                }}
+                              >
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
                                   <div
-                                    className="d-flex justify-content-center"
+                                    className="hoverDarker d-flex justify-content-center"
                                     style={{
                                       flexDirection: "column",
                                       gap: "8px",
@@ -153,22 +174,27 @@ class UserFeedbackModal extends BaseReactComponent {
                                         });
                                       }}
                                     />
-                                    <div 
-                                    style={{
-                                        cursor: "pointer", 
-                                        color:this.state.questions[this.state.currentQuestion].value == item?'#19191A':'#96979A',
-                                        }}
-                                        onClick={()=>{
-                                            let questions = this.state.questions;
+                                    <div
+                                      style={{
+                                        cursor: "pointer",
+                                        color:
+                                          this.state.questions[
+                                            this.state.currentQuestion
+                                          ].value == item
+                                            ? "#19191A"
+                                            : "#96979A",
+                                      }}
+                                      onClick={() => {
+                                        let questions = this.state.questions;
                                         questions[
                                           this.state.currentQuestion
                                         ].value = item;
                                         this.setState({
                                           questions,
                                         });
-                                        }}
-                                        >
-                                        {item}
+                                      }}
+                                    >
+                                      {item}
                                     </div>
                                   </div>
                                 ))}
@@ -197,68 +223,89 @@ class UserFeedbackModal extends BaseReactComponent {
                               </div>
                             )}
 
-                           
-                              {
-                               (( this.state.questions[this.state.currentQuestion].type=="radio"&&this.state.questions[this.state.currentQuestion].value) || this.state.questions[this.state.currentQuestion].type!="radio")
-                                ?
-                                <div
-                                className="closebtnContainer"
-                                style={{ marginRight: this.state.questions[this.state.currentQuestion].type=="radio"?"0px":'12px' }}
-                              >
-                                <div
-                                className={`closebtn  ${
-                                  this.state.email ? "active" : ""
-                                }`}
-                                onClick={() => {
-                                    if(this.state.questions[this.state.currentQuestion].value){
-                                  if (
-                                    this.state.currentQuestion ==
-                                    this.state.questions.length - 1
-                                  )
-                                    this.state.onHide();
-                                  else
-                                    this.setState({
-                                      currentQuestion:
-                                        this.state.currentQuestion + 1,
-                                    });
-                                }}}
-                                type="submit"
-                                style={{
-                                  border: "none",
-                                  background: "#19191A",
-                                  opacity:this.state.questions[this.state.currentQuestion].value?"1":"0.5",
-                                  cursor:this.state.questions[this.state.currentQuestion].value?"pointer":"disabled",
-                                }}
-                              >
-                                <Image
-                                  className="closebtnIcon"
-                                  src={RightIcons}
-                                />
-                              </div>
-                              </div>
-                              :
-                               null
-                              }
-                              {
-                                (( this.state.questions[this.state.currentQuestion].type=="radio"&&!this.state.questions[this.state.currentQuestion].value) || this.state.questions[this.state.currentQuestion].type!="radio")
-                                ?
-                                <div className="closebtnContainer">
+                            {(this.state.questions[this.state.currentQuestion]
+                              .type == "radio" &&
+                              this.state.questions[this.state.currentQuestion]
+                                .value) ||
+                            this.state.questions[this.state.currentQuestion]
+                              .type != "radio" ? (
                               <div
-                                className="closebtn"
-                                onClick={() => {
-                                  this.state.onHide();
+                                className="closebtnContainer"
+                                style={{
+                                  marginRight:
+                                    this.state.questions[
+                                      this.state.currentQuestion
+                                    ].type == "radio"
+                                      ? "0px"
+                                      : "12px",
                                 }}
                               >
-                                <Image
-                                  className="closebtnIcon"
-                                  src={CloseIcon}
-                                />
+                                <div
+                                  className={`closebtn  ${
+                                    this.state.email ? "active" : ""
+                                  }`}
+                                  ref={this.nextButtonRef}
+                                  onClick={() => {
+                                    if (
+                                      this.state.questions[
+                                        this.state.currentQuestion
+                                      ].value
+                                    ) {
+                                      if (
+                                        this.state.currentQuestion ==
+                                        this.state.questions.length - 1
+                                      )
+                                        this.state.onHide(this.state.questions);
+                                      else
+                                        this.setState({
+                                          currentQuestion:
+                                            this.state.currentQuestion + 1,
+                                        });
+                                    }
+                                  }}
+                                  type="submit"
+                                  style={{
+                                    border: "none",
+                                    background: "#19191A",
+                                    opacity: this.state.questions[
+                                      this.state.currentQuestion
+                                    ].value
+                                      ? "1"
+                                      : "0.5",
+                                    cursor: this.state.questions[
+                                      this.state.currentQuestion
+                                    ].value
+                                      ? "pointer"
+                                      : "disabled",
+                                  }}
+                                >
+                                  <Image
+                                    className="closebtnIcon"
+                                    src={RightIcons}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            : null
-                              }
-
-                            
+                            ) : null}
+                            {(this.state.questions[this.state.currentQuestion]
+                              .type == "radio" &&
+                              !this.state.questions[this.state.currentQuestion]
+                                .value) ||
+                            this.state.questions[this.state.currentQuestion]
+                              .type != "radio" ? (
+                              <div className="closebtnContainer">
+                                <div
+                                  className="closebtn"
+                                  onClick={() => {
+                                    this.state.onHide(this.state.questions);
+                                  }}
+                                >
+                                  <Image
+                                    className="closebtnIcon"
+                                    src={CloseIcon}
+                                  />
+                                </div>
+                              </div>
+                            ) : null}
                           </Form>
                         </div>
                       </div>
