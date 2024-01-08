@@ -3,7 +3,10 @@ import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import { validateEmail } from "../../../utils/validators";
-import { CrossSmartMoneyIcon } from "../../../assets/images/icons";
+import {
+  CrossSmartMoneyIcon,
+  NewWelcomeLoginCrossIcon,
+} from "../../../assets/images/icons";
 
 const Login = ({
   show,
@@ -48,7 +51,7 @@ const Login = ({
             onClick={toggleModal}
           >
             <Image
-              src={CrossSmartMoneyIcon}
+              src={NewWelcomeLoginCrossIcon}
               style={{
                 height: "2rem",
                 width: "2rem",

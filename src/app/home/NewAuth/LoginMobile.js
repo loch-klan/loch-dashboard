@@ -3,7 +3,10 @@ import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import { validateEmail } from "../../../utils/validators";
-import { CrossSmartMoneyIcon } from "../../../assets/images/icons";
+import {
+  CrossSmartMoneyIcon,
+  NewWelcomeLoginCrossIcon,
+} from "../../../assets/images/icons";
 
 const LoginMobile = ({
   show,
@@ -44,21 +47,21 @@ const LoginMobile = ({
       backdropClassName="exitoverlaymodalNewWelcome"
     >
       <Modal.Body>
-        <div className="new-auth-mobile-wrap" >
+        <div className="new-auth-mobile-wrap">
           <div className="new-auth " style={{ paddingBottom: "80px" }}>
-            <div className="new-auth-content" style={{position:'relative'}}>
-        <div
-          className="new-homepage-auth-content-close"
-          onClick={toggleModal}
-        >
-          <Image
-              src={CrossSmartMoneyIcon}
-              style={{
-                height: "2rem",
-                width: "2rem",
-              }}
-            />
-        </div>
+            <div className="new-auth-content" style={{ position: "relative" }}>
+              <div
+                className="new-homepage-auth-content-close"
+                onClick={toggleModal}
+              >
+                <Image
+                  src={NewWelcomeLoginCrossIcon}
+                  style={{
+                    height: "2rem",
+                    width: "2rem",
+                  }}
+                />
+              </div>
               <img className="new-auth-content-logo" src={logo} alt="" />
               <div className="new-auth-content-title-holder">
                 <h4 className="new-auth-content-title">Sign in</h4>
