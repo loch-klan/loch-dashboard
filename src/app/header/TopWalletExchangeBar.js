@@ -1501,15 +1501,21 @@ class TopWalletExchangeBar extends Component {
                 {this.state.walletInput[0].address ? (
                   this.state.walletInput[0].coinFound &&
                   this.state.walletInput[0].coins.length > 0 ? (
-                    <CustomCoin
-                      noNameJustIcon
-                      isStatic
-                      coins={this.state.walletInput[0].coins.filter(
-                        (c) => c.chain_detected
-                      )}
-                      key="RandomKey"
-                      isLoaded={true}
-                    />
+                    <div
+                      style={{
+                        marginRight: "1rem",
+                      }}
+                    >
+                      <CustomCoin
+                        // noNameJustIcon
+                        isStatic
+                        coins={this.state.walletInput[0].coins.filter(
+                          (c) => c.chain_detected
+                        )}
+                        key="RandomKey"
+                        isLoaded={true}
+                      />
+                    </div>
                   ) : this.state.walletInput[0].coins.length ===
                     this.props.OnboardingState.coinsList.length ? (
                     <Image
@@ -1519,7 +1525,7 @@ class TopWalletExchangeBar extends Component {
                   ) : (
                     <div>
                       <CustomCoin
-                        noNameJustIcon
+                        // noNameJustIcon
                         isStatic
                         coins={null}
                         key="RandomThirdKey"
@@ -1534,7 +1540,6 @@ class TopWalletExchangeBar extends Component {
                   />
                 )}
               </div>
-
               <input
                 name={`wallet${1}`}
                 placeholder="Paste any wallet address or ENS here"
