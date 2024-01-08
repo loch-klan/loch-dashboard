@@ -9,9 +9,14 @@ import TransactionTable from "../intelligence/TransactionTable";
 import NftDummy from "./../../assets/images/nft_dummy.png";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import "./_nft.scss";
-import NftMobile from "./NftMobile";
+import NftMobileHeader from "./NftMobileHeader";
+import Loading from "../common/Loading";
+import { BlackManIcon, GreyManIcon, InfoCircleSmartMoneyIcon, PlusCircleSmartMoneyIcon, QuestionmarkCircleSmartMoneyIcon, ShareProfileIcon } from "../../assets/images/icons";
+import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
+import NftMobileBlock from "./NftMobileBlock";
 
-class NFT extends BaseReactComponent {
+class NFTMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,18 +72,12 @@ class NFT extends BaseReactComponent {
           up: false,
         },
       ],
-      isMobile: false,
-      isLoading: false,
+      localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      BlackManIconLoaded: false,
+      ShareProfileIconLoaded: false,
     };
   }
 
-  componentDidMount() {
-    if (mobileCheck()) {
-      this.setState({
-        isMobileDevice: true,
-      });
-    }
-  }
 
   render() {
     const columnList = [
@@ -487,76 +486,296 @@ class NFT extends BaseReactComponent {
         },
       },
     ];
-    if(this.state.isMobileDevice){
-      return(
-        <NftMobile
-        isLoading={this.state.isLoading}
-        tableData={this.state.tableData}
-        />
-      )
-    }
     return (
-      <div className="nft-page">
-        <div className="portfolio-page-section">
+      <div className="nft-page-mobile">
+        <NftMobileHeader/>
+        {this.props.isLoading ? (
           <div
-            className="portfolio-container page"
-            style={{ overflow: "visible" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+              paddingTop: "9rem",
+            }}
           >
-            <div className="portfolio-section">
-              <WelcomeCard
-                isSidebarClosed={this.props.isSidebarClosed}
-                // history
+            <Loading />
+          </div>
+        ) : (
+          <>
+            <div className="mobileSmartMoneyBtnsContainer">
+              {this.state.localLochUser &&
+              (this.state.localLochUser.email ||
+                this.state.localLochUser.first_name ||
+                this.state.localLochUser.last_name) ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "stretch",
+                    }}
+                  >
+                    <div
+                      onClick={this.showSignOutModal}
+                      style={{
+                        flex: 1,
+                      }}
+                      className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={BlackManIcon}
+                          onLoad={() => {
+                            this.setState({
+                              BlackManIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.BlackManIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInDataName">
+                        {this.state.localLochUser.first_name ||
+                        this.state.localLochUser.last_name
+                          ? `${this.state.localLochUser.first_name} ${
+                              this.state.localLochUser.last_name
+                                ? this.state.localLochUser.last_name.slice(
+                                    0,
+                                    1
+                                  ) + "."
+                                : ""
+                            }`
+                          : "Signed in"}
+                      </div>
+                    </div>
+                    {/* <div
+                      onClick={this.handleShare}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnShareContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={ShareProfileIcon}
+                          onLoad={() => {
+                            this.setState({
+                              ShareProfileIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.ShareProfileIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        Share
+                      </div>
+                    </div> */}
+                  </div>
+                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                    <div
+                      onClick={this.showFaqModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        FAQ
+                      </div>
+                    </div>
+                    <div
+                      onClick={this.showHowItWorksModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        margin: "0rem 1rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        How it works
+                      </div>
+                    </div>
+                    <div
+                      onClick={this.showAddAddressModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={PlusCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              PlusCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.PlusCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        Add address
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "stretch",
+                    }}
+                  >
+                    <div
+                      style={{
+                        flex: 1,
+                      }}
+                    //   onClick={this.showSignInModal}
+                      className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={GreyManIcon}
+                          onLoad={() => {
+                            this.setState({
+                              GreyManIconIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.GreyManIconIconLoaded ? 1 : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInDataName">
+                        Sign in
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                    <div
+                    //   onClick={this.showFaqModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginRight: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={QuestionmarkCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              QuestionmarkCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state
+                              .QuestionmarkCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        FAQ
+                      </div>
+                    </div>
+                    <div
+                      onClick={this.showHowItWorksModal}
+                      className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      style={{
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                        <Image
+                          className="mobileSmartMoneyBtnSignInIcon"
+                          src={InfoCircleSmartMoneyIcon}
+                          onLoad={() => {
+                            this.setState({
+                              InfoCircleSmartMoneyIconLoaded: true,
+                            });
+                          }}
+                          style={{
+                            opacity: this.state.InfoCircleSmartMoneyIconLoaded
+                              ? 1
+                              : 0,
+                          }}
+                        />
+                      </div>
+                      <div className="mobileSmartMoneyBtnSignInJustText">
+                        How it works
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            {this.props.tableData && this.props.tableData.length > 0 ? (
+              <div className="mobileSmartMoneyListContainer">
+                {this.props.tableData.map((mapData) => {
+                  return (
+                    <NftMobileBlock
+                      data={mapData}
+                    />
+                  );
+                })}
+              </div>
+            ) : null}
+            {/* {this.props.tableData && this.props.tableData.length > 0 ? (
+              <SmartMoneyPagination
                 history={this.props.history}
+                location={this.props.location}
+                page={this.props.currentPage + 1}
+                pageCount={this.props.totalPage}
+                pageLimit={this.props.pageLimit}
+                changePageLimit={this.props.changePageLimit}
+                onPageChange={this.props.onPageChange}
+                openSignInOnclickModal={this.openSignInOnclickModal}
+                smartMoneyBlur={this.props.blurTable}
+                isMobile
               />
-            </div>
-          </div>
-        </div>
-        <div className="history-table-section m-t-80">
-          <div className="history-table page">
-            <div className="rightSmartMoneyContainer" style={{marginBottom:'1.5rem'}}>
-              <div className={`rightSmartMoneyContainerHeadingParent`}>
-                <div
-                  className={`rightSmartMoneyContainerHeading inter-display-medium f-s-24 lh-30 m-b-8`}
-                >
-                  NFT Collection
-                </div>
-              </div>
-              <p
-                style={{
-                  // marginTop: "0.3rem",
-                  fontSize: "16px",
-                }}
-                className="rightSmartMoneyContainerSubHeading inter-display-medium f-s-16 lh-19"
-              >
-                Browse the NFTs held by this wallet
-              </p>
-            </div>
-            <div
-              style={{ marginBottom: "2.8rem" }}
-              className="cost-table-section"
-            >
-              <div style={{ position: "relative" }}>
-                <TransactionTable
-                  wrapperStyle={{ minHeight: "500px" }}
-                  noSubtitleBottomPadding
-                  tableData={this.state.tableData}
-                  columnList={columnList}
-                  message={"No NFTs found"}
-                  totalPage={122}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={1}
-                  tableLoading={false}
-                  pageLimit={10}
-                  onPageChange={() => {}}
-                  addWatermark
-                  paginationNew
-                  mi
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+            ) : null} */}
+          </>
+        )}
       </div>
     );
   }
@@ -566,6 +785,6 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
-NFT.propTypes = {};
+NFTMobile.propTypes = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(NFT);
+export default connect(mapStateToProps, mapDispatchToProps)(NFTMobile);
