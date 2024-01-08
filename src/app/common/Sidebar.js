@@ -2846,6 +2846,16 @@ function Sidebar(props) {
       )}
 
       {/* after 15 sec open this */}
+      {userFeedbackModal ? (
+        <UserFeedbackModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
+          onHide={hideUserFeedbackModal}
+          history={history}
+          popupType="general_popup"
+          tracking={history.location.pathname.substring(1)}
+        />
+      ) : null}
 
       {signinPopup ? (
         <SidebarModal
@@ -2857,17 +2867,6 @@ function Sidebar(props) {
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
           openSignupModalDirect={openSignupModalDirect}
-        />
-      ) : null}
-
-      {userFeedbackModal ? (
-        <UserFeedbackModal
-          trackPos={trackPos}
-          dragPosition={dragPosition}
-          onHide={hideUserFeedbackModal}
-          history={history}
-          popupType="general_popup"
-          tracking={history.location.pathname.substring(1)}
         />
       ) : null}
     </>
