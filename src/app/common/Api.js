@@ -98,7 +98,6 @@ export const updateUserWalletApi = (
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
-        console.log("Two ", res);
         if (!res.data.error) {
           if (setToSearchHistory && ctx.addWalletToHistory) {
             ctx.addWalletToHistory();
