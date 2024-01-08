@@ -1,3 +1,22 @@
+.new-homepage-auth-content-close{
+  position: absolute;
+  top: -120px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  z-index: 111;
+  border: 2px solid rgba(0,0,0,0.5);
+  border-radius: 10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.new-homepage-auth-content-close--desktop{
+  top: 40px;
+  right: 40px;
+}
 .new-auth {
   padding: 60px 0;
   border-radius: 16px;
@@ -5,6 +24,9 @@
   justify-content: center;
 
   background-color: transparent;
+
+
+
   .new-auth-content {
     display: flex;
     flex-direction: column;

@@ -1,6 +1,11 @@
 .exitoverlaymodalNewWelcome.show {
   opacity: 0.2 !important;
 }
+
+.modal-new-welcome-v-top{
+  align-items: start;
+  margin-top: 12rem;
+}
 .exit-overlay-modal-new-welcome {
   // backdrop-filter: blur(20px);
   // -webkit-backdrop-filter: blur(20px);
@@ -8,6 +13,7 @@
     opacity: 1;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border: none;
     background-color: rgba(255, 255, 255, 1);
     .modal-body {
       border-radius: 1rem;

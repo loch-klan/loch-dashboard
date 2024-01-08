@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import { validateEmail } from "../../../utils/validators";
+import { CrossSmartMoneyIcon } from "../../../assets/images/icons";
 
 const Login = ({
   show,
@@ -10,6 +11,7 @@ const Login = ({
   handleChangeEmail,
   email,
   handleSubmitEmail,
+  smartMoneyLogin
 }) => {
   const submitRef = React.useRef(null);
 
@@ -30,21 +32,33 @@ const Login = ({
     <Modal
       size="lg"
       className="exit-overlay-form newWelcomePageTranlucentModal"
-      dialogClassName={"exit-overlay-modal exit-overlay-modal-new-welcome"}
+      dialogClassName={"exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"}
       show={show}
       onHide={toggleModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
     >
-      <Modal.Body>
+      <Modal.Body style={{position:"relative"}}>
+          <div
+          className="new-homepage-auth-content-close new-homepage-auth-content-close--desktop"
+          onClick={toggleModal}
+        >
+          <Image
+              src={CrossSmartMoneyIcon}
+              style={{
+                height: "2rem",
+                width: "2rem",
+              }}
+            />
+        </div>
         <div className="new-auth" style={{ paddingBottom: "80px" }}>
           <div className="new-auth-content">
             <img className="new-auth-content-logo" src={logo} alt="" />
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">
-                Get right back into your account
+                {!smartMoneyLogin?"Get right back into your account":"Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">

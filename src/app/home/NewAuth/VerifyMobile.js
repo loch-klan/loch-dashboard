@@ -49,20 +49,7 @@ const VerifyMobile = ({
         <div className="new-auth verify-otp">
           <div className="new-auth-content" style={{position:'relative'}}>
           <div
-        style={{
-            position: "absolute",
-            top: "-120px",
-            right: "10px",
-            width: "40px",
-            height: "40px",
-            zIndex: "111",
-            border: "2px solid rgba(0,0,0,0.5)",
-            borderRadius: "10px",
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
-            cursor:'pointer'
-          }}
+        className="new-homepage-auth-content-close"
           onClick={toggleModal}
         >
           <Image

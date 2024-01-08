@@ -1348,16 +1348,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   }}
                 >
                   <div
-                    style={{
-                      borderRadius: "6px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "20px",
-                      height: "20px",
-                      border: "1px solid #E5E5E6",
-                      boxShadow: "0px 2px 3px 1px rgba(24, 39, 75, 0.05)",
-                    }}
+                    className="new-homepage-btn new-homepage-btn-singin-icon"
                   >
                     <img src={personRounded} alt="" />
                   </div>
@@ -1486,7 +1477,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                           />
                         </div>
                         <div className="trendingAddressesBlockItemDataContainer">
-                          <div className="inter-display-medium f-s-13">
+                          <div className="inter-display-medium f-s-16">
                             {item.trimmedAddress}
                           </div>
                           <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">

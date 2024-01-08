@@ -101,7 +101,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                   <div
                     className={`awBottomInputWrapper ${
                       c.showAddress ? "mt-2" : ""
-                    }`}
+                    } ${this.props.isMobile ? "awBottomInputWrapper-mobile" : ""}`}
                   >
                     <div className="awInputContainer">
                       {c.nickname && c.nickname !== "" ? (

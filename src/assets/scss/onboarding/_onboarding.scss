@@ -1339,6 +1339,14 @@
   display: flex;
   flex-direction: column;
 
+  .new-homepage-modal-holder{
+    .new-homepage-modal-holder{
+      align-items: start;
+      margin-top: 10rem;
+    }
+
+  }
+
   .new-homepage__header {
     padding: 25px 190px 78px 190px;
     min-width: 85rem;
@@ -1458,7 +1466,7 @@
         }
       }
 
-      .trendingAddressesBlockItemContainer{
+      .trendingAddressesBlockItemContainer-mobile{
         width: 100%;
       }
 
@@ -1643,6 +1651,11 @@
           .chip-wrapper{
             margin-top: 8px;
           }
+        }
+
+        .awBottomInputWrapper-mobile{
+          flex-direction: column-reverse;
+          gap: 8px;
         }
       }
       .new-homepage__body-search {
@@ -1881,6 +1894,17 @@
   }
 
   .new-homepage-btn--white {
+    .new-homepage-btn-singin-icon{
+      padding: 0px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #E5E5E6;
+      box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+    }
     &:hover {
       backdrop-filter: blur(10px);
       background: rgba(255, 255, 255, 0.15);
