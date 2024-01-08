@@ -638,7 +638,7 @@ class NewWelcome extends BaseReactComponent {
       isGoButtonsDisabled: false,
       isAddAnotherButtonsDisabled: false,
       authmodal: "",
-      leaderboardSignIn:false,
+      leaderboardSignIn: false,
       email: "",
       otp: "",
       walletInput: [
@@ -1289,7 +1289,7 @@ class NewWelcome extends BaseReactComponent {
     this.toggleAuthModal("login");
     this.setState({
       smartMoneyLogin: true,
-      leaderboardSignIn:true
+      leaderboardSignIn: true,
     });
   };
   componentDidMount() {
@@ -1803,9 +1803,9 @@ class NewWelcome extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <NewWelcomeMobile
-        tableLoading={this.state.tableLoading}
-        openSignInOnclickModal={this.opneLoginModalForSmartMoney}
-        accountList={this.state.accountList}
+          tableLoading={this.state.tableLoading}
+          openSignInOnclickModal={this.opneLoginModalForSmartMoney}
+          accountList={this.state.accountList}
           exchanges={this.state.onboardingExchanges}
           history={this.props.history}
           location={this.props.location}
@@ -2264,7 +2264,7 @@ class NewWelcome extends BaseReactComponent {
         ) : null}
         {this.state.authmodal == "login" ? (
           <Login
-          smartMoneyLogin={this.state.smartMoneyLogin}
+            smartMoneyLogin={this.state.smartMoneyLogin}
             toggleModal={this.toggleAuthModal}
             leaderboardSignIn={this.leaderboardSignIn}
             email={this.state.email}
@@ -2321,9 +2321,7 @@ class NewWelcome extends BaseReactComponent {
                     });
                   }}
                 >
-                  <div
-                  className="new-homepage-btn new-homepage-btn-singin-icon"
-                  >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
                   Sign in
@@ -2409,11 +2407,11 @@ class NewWelcome extends BaseReactComponent {
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
               <OutsideClickHandler
-              onOutsideClick={()=>{
-                this.setState({
-                  isTrendingAddresses:false
-                })
-              }}
+                onOutsideClick={() => {
+                  this.setState({
+                    isTrendingAddresses: false,
+                  });
+                }}
               >
                 <div className="new-homepage__body-trending-address">
                   <div
@@ -2426,6 +2424,7 @@ class NewWelcome extends BaseReactComponent {
                         color: "19191A",
                         fontSize: "16px",
                       }}
+                      className="inter-display-medium"
                     >
                       Trending addresses
                     </div>
@@ -2434,6 +2433,7 @@ class NewWelcome extends BaseReactComponent {
                         color: "#B0B1B3",
                         fontSize: "13px",
                       }}
+                      className="inter-display-medium"
                     >
                       Most-visited addresses in the last 24 hours
                     </div>

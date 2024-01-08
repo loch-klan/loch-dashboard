@@ -11,7 +11,7 @@ const Login = ({
   handleChangeEmail,
   email,
   handleSubmitEmail,
-  smartMoneyLogin
+  smartMoneyLogin,
 }) => {
   const submitRef = React.useRef(null);
 
@@ -32,25 +32,29 @@ const Login = ({
     <Modal
       size="lg"
       className="exit-overlay-form newWelcomePageTranlucentModal"
-      dialogClassName={"exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"}
+      dialogClassName={
+        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
+      }
       show={show}
       onHide={toggleModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
     >
-      <Modal.Body style={{position:"relative"}}>
+      <Modal.Body style={{ position: "relative" }}>
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
           <div
-          className="new-homepage-auth-content-close new-homepage-auth-content-close--desktop"
-          onClick={toggleModal}
-        >
-          <Image
+            className="new-homepage-auth-content-close "
+            onClick={toggleModal}
+          >
+            <Image
               src={CrossSmartMoneyIcon}
               style={{
                 height: "2rem",
                 width: "2rem",
               }}
             />
+          </div>
         </div>
         <div className="new-auth" style={{ paddingBottom: "80px" }}>
           <div className="new-auth-content">
@@ -58,7 +62,9 @@ const Login = ({
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">
-                {!smartMoneyLogin?"Get right back into your account":"Sign in to access Loch’s Leaderboard"}
+                {!smartMoneyLogin
+                  ? "Get right back into your account"
+                  : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
