@@ -1484,7 +1484,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                           <div className="inter-display-medium f-s-16">
                             {item.trimmedAddress}
                           </div>
-                          <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                          <div className="inter-display-medium f-s-13 lh-15 trendingAddressesBlockItemDataContainerAmount">
                             $
                             {numToCurrency(
                               item.worth.toFixed(2)
