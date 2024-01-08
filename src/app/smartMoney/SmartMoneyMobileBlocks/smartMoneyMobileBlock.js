@@ -24,7 +24,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnClick = (addItem) => {
-    if (!this.props.smartMoneyBlur) {
+    if (!this.props.smartMoneyBlur &&this.props.handleFollowUnfollow) {
       this.props.handleFollowUnfollow(
         this.props.mapData.account,
         addItem,

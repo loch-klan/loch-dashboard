@@ -28,6 +28,7 @@ import NewHome from "./app/home/NewHome";
 import Nft from "./app/nft/Nft";
 import Referral from "./app/referral/Referral";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import NewWelcome from "./app/home/NewWelcome";
 
 const routes = [
   {
@@ -41,19 +42,7 @@ const routes = [
     path: "/welcome",
     name: "Home",
     type: Route,
-    component: NewHome,
-  },
-  // {
-  //   path: "/new-welcome",
-  //   name: "Home",
-  //   type: Route,
-  //   component: NewHome,
-  // },
-  {
-    path: "/Referral",
-    name: "Referral",
-    type: Route,
-    component: Referral,
+    component: NewWelcome,
   },
   {
     path: "/profile",
