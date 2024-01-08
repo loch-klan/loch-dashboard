@@ -1562,9 +1562,13 @@ class TopWalletExchangeBar extends Component {
             >
               <div
                 ref={this.props.buttonRef}
-                className="topbar-btn maxWidth50 ml-2"
+                className={`topbar-btn maxWidth50 ml-2 ${
+                  this.state.disableAddBtn ? "topbar-btn-light-disabled" : ""
+                }`}
                 id="address-button-two"
-                onClick={this.cancelAddingWallet}
+                onClick={
+                  this.state.disableAddBtn ? null : this.cancelAddingWallet
+                }
               >
                 <span className="dotDotText">Cancel</span>
               </div>

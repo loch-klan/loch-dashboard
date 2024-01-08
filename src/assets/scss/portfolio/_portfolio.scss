@@ -366,6 +366,15 @@
             color: $secondary;
           }
         }
+        .topbar-btn-light-disabled {
+          opacity: 0.5;
+          cursor: default;
+          &:hover {
+            background: rgba(229, 229, 230, 0.5);
+            border: 1px solid #f2f2f3;
+            color: $black-191;
+          }
+        }
         .topbar-btn-white-with-border {
           background-color: transparent;
           border: 0.1rem solid #e5e5e6;
