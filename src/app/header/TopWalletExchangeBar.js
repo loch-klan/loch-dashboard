@@ -1514,6 +1514,7 @@ class TopWalletExchangeBar extends Component {
                         )}
                         key="RandomKey"
                         isLoaded={true}
+                        overlayOnBottom
                       />
                     </div>
                   ) : this.state.walletInput[0].coins.length ===

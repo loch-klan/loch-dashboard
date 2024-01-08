@@ -9,6 +9,7 @@ function CustomCoin({
   isCohort,
   isStatic,
   noNameJustIcon,
+  overlayOnBottom,
 }) {
   // console.log("coins", coins);
   if (isCohort) {
@@ -59,7 +60,13 @@ function CustomCoin({
               </div>
               {!noNameJustIcon ? (
                 <div className="chip-container">
-                  <CustomOverlay text={sortedCoins} position="top">
+                  <CustomOverlay
+                    text={sortedCoins}
+                    position={overlayOnBottom ? "bottom" : "top"}
+                    className={
+                      overlayOnBottom ? "tool-tip-container-bottom-arrow" : ""
+                    }
+                  >
                     <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
                       +{sortedCoins.length - 1}
                     </Badge>
