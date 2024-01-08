@@ -84,14 +84,18 @@ export default function TopBarDropDown(props) {
                         ? props.fullWalletList[0][2] + " "
                         : null}
                     </span>
-                    <span
-                      style={{
-                        fontWeight: "600",
-                      }}
-                      className="topBarWalletAddressAddress"
-                    >
-                      {props.fullWalletList[0][0]}
-                    </span>
+                    {props.fullWalletList[0][0] ? (
+                      <span
+                        style={{
+                          fontWeight: "600",
+                        }}
+                        className="topBarWalletAddressAddress"
+                      >
+                        {/\.eth$/.test(props.fullWalletList[0][0])
+                          ? props.fullWalletList[0][0]
+                          : props.fullWalletList[0][0].slice(0, 4)}
+                      </span>
+                    ) : null}
                   </>
                 ) : null}
               </div>
