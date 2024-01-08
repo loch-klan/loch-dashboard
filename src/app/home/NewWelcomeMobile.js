@@ -90,6 +90,7 @@ import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMon
 import LoginMobile from "./NewAuth/LoginMobile.js";
 import SmartMoneyMobileModalContainer from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileModalContainer.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
@@ -1438,6 +1439,9 @@ class NewWelcomeMobile extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
+              <OutsideClickHandler onOutsideClick={()=>{
+                this.setState({isTrendingAddresses:false})
+              }}>
               <div className="new-homepage__body-trending-address">
                 <div
                   className="d-flex"
@@ -1492,6 +1496,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   ))}
                 </div>
               </div>
+              </OutsideClickHandler>
             ) : null}
 
             {this.state.walletInput &&

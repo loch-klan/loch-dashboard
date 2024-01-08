@@ -87,6 +87,7 @@ import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import MobileHome from "./MobileHome.js";
 import Loading from "../common/Loading.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
@@ -2407,60 +2408,68 @@ class NewWelcome extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <div className="new-homepage__body-trending-address">
-                <div
-                  className="d-flex"
-                  style={{ alignItems: "center", gap: "8px" }}
-                >
-                  <img src={TrendingFireIcon} alt="" />
+              <OutsideClickHandler
+              onOutsideClick={()=>{
+                this.setState({
+                  isTrendingAddresses:false
+                })
+              }}
+              >
+                <div className="new-homepage__body-trending-address">
                   <div
-                    style={{
-                      color: "19191A",
-                      fontSize: "16px",
-                    }}
+                    className="d-flex"
+                    style={{ alignItems: "center", gap: "8px" }}
                   >
-                    Trending addresses
+                    <img src={TrendingFireIcon} alt="" />
+                    <div
+                      style={{
+                        color: "19191A",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Trending addresses
+                    </div>
+                    <div
+                      style={{
+                        color: "#B0B1B3",
+                        fontSize: "13px",
+                      }}
+                    >
+                      Most-visited addresses in the last 24 hours
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      color: "#B0B1B3",
-                      fontSize: "13px",
-                    }}
-                  >
-                    Most-visited addresses in the last 24 hours
-                  </div>
-                </div>
-                <div className="new-homepage__body-trending-address__address-wrapper">
-                  {this.state.trendingAddresses.map((item, index) => (
-                    <div className="trendingAddressesBlockItemContainer">
-                      <div
-                        onClick={() => {
-                          this.addTrendingAddress(index, false);
-                        }}
-                        className="trendingAddressesBlockItem"
-                      >
-                        <div className="trendingAddressesBlockItemWalletContainer">
-                          <Image
-                            className="trendingAddressesBlockItemWallet"
-                            src={TrendingWalletIcon}
-                          />
-                        </div>
-                        <div className="trendingAddressesBlockItemDataContainer">
-                          <div className="inter-display-medium f-s-16">
-                            {item.trimmedAddress}
+                  <div className="new-homepage__body-trending-address__address-wrapper">
+                    {this.state.trendingAddresses.map((item, index) => (
+                      <div className="trendingAddressesBlockItemContainer">
+                        <div
+                          onClick={() => {
+                            this.addTrendingAddress(index, false);
+                          }}
+                          className="trendingAddressesBlockItem"
+                        >
+                          <div className="trendingAddressesBlockItemWalletContainer">
+                            <Image
+                              className="trendingAddressesBlockItemWallet"
+                              src={TrendingWalletIcon}
+                            />
                           </div>
-                          <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
-                            $
-                            {numToCurrency(
-                              item.worth.toFixed(2)
-                            ).toLocaleString("en-US")}
+                          <div className="trendingAddressesBlockItemDataContainer">
+                            <div className="inter-display-medium f-s-16">
+                              {item.trimmedAddress}
+                            </div>
+                            <div className="inter-display-medium f-s-11 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                              $
+                              {numToCurrency(
+                                item.worth.toFixed(2)
+                              ).toLocaleString("en-US")}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </OutsideClickHandler>
             ) : null}
 
             {this.state.walletInput &&
