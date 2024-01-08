@@ -45,6 +45,7 @@ import FixAddModal from "../common/FixAddModal.js";
 import Footer from "../common/footer.js";
 import UpgradeModal from "../common/upgradeModal.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {
@@ -617,6 +618,10 @@ class RealizedProfitAndLoss extends Component {
         </div>
         <div className="intelligence-page-section">
           <div className="intelligence-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}

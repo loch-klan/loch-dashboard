@@ -44,6 +44,7 @@ import Footer from "../common/footer.js";
 import UpgradeModal from "../common/upgradeModal.js";
 import InflowOutflowChart from "../intelligence/InflowOutflowChart";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class PriceGauge extends Component {
   constructor(props) {
@@ -606,6 +607,10 @@ class PriceGauge extends Component {
         </div>
         <div className="intelligence-page-section">
           <div className="intelligence-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}

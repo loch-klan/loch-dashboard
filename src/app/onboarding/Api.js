@@ -117,7 +117,6 @@ export const detectCoin = (
             // console.log("walletr", res.data.data.wallet_address, wallet);
             if (fromConnectWallet) {
               if (ctx.handleSetCoinByLocalWallet) {
-                console.log("Called one");
                 ctx.handleSetCoinByLocalWallet({
                   ...wallet,
                   chain_detected: res.data.data.chain_detected,

@@ -1,6 +1,6 @@
 import moment from "moment";
 import React from "react";
-import { Col, Form, Image, Row } from "react-bootstrap";
+import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -9,10 +9,12 @@ import {
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import {
+  default as SearchIcon,
+  default as searchIcon,
+} from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
-import searchIcon from "../../assets/images/icons/search-icon.svg";
 import {
   CostHideDustMobile,
   MobileHomePageView,
@@ -47,7 +49,6 @@ import {
   SEARCH_BETWEEN_VALUE,
   SEARCH_BY_ASSETS_IN,
   SEARCH_BY_CHAIN_IN,
-  SEARCH_BY_METHOD_IN,
   SEARCH_BY_NOT_DUST,
   SEARCH_BY_TEXT,
   SEARCH_BY_TIMESTAMP_IN,
@@ -73,6 +74,8 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import {
   GetAllPlan,
   getAllCurrencyRatesApi,
@@ -91,9 +94,9 @@ import {
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
+  getFilters,
   getProfitAndLossApi,
   searchTransactionApi,
-  getFilters,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
@@ -112,10 +115,6 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
-import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
-import FormElement from "../../utils/form/FormElement.js";
-import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
-import CustomTextControl from "../../utils/form/CustomTextControl.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
