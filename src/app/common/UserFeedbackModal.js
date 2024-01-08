@@ -66,11 +66,17 @@ class UserFeedbackModal extends BaseReactComponent {
     };
   }
   nextButtonRef = createRef();
-  
+
   handleNext = () => {
     console.log("handleAccountCreate");
   };
-
+  goToPrevQuestion = () => {
+    if (this.state.currentQuestion > 0) {
+      this.setState({
+        currentQuestion: this.state.currentQuestion - 1,
+      });
+    }
+  };
   listener = (event) => {
     if (event.code === "Enter" || event.code === "NumpadEnter") {
       event.preventDefault();
@@ -81,7 +87,7 @@ class UserFeedbackModal extends BaseReactComponent {
   componentDidMount() {
     document.addEventListener("keydown", this.listener);
   }
-  
+
   componentWillUnmount() {
     document.removeEventListener("keydown", this.listener);
   }
@@ -107,6 +113,34 @@ class UserFeedbackModal extends BaseReactComponent {
                   <Modal.Body>
                     <div className="sidebarModalBodyContainer">
                       <div className="exit-overlay-body sidebarModalBody">
+                        {this.state.currentQuestion > 0 ? (
+                          <div
+                            className="closebtnContainer"
+                            style={{
+                              marginRight: "12px",
+                              transform: "rotate(180deg)",
+                            }}
+                          >
+                            <div
+                              className={`closebtn ${
+                                this.state.email ? "active" : ""
+                              }`}
+                              onClick={this.goToPrevQuestion}
+                              type="submit"
+                              style={{
+                                border: "none",
+                                background: "#19191A",
+                                opacity: "1",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <Image
+                                className="closebtnIcon"
+                                src={RightIcons}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                         <div>
                           <h6
                             className="inter-display-medium f-s-16"
@@ -209,7 +243,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                       this.state.currentQuestion
                                     ].value
                                   }
-                                  placeholder="Enter your answer"
+                                  placeholder="Your answer"
                                   onChange={(e) => {
                                     let questions = this.state.questions;
                                     questions[
