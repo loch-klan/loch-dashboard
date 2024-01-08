@@ -1,3 +1,28 @@
+.exitoverlaymodalNewWelcome.show {
+  opacity: 0.2 !important;
+}
+.exit-overlay-modal-new-welcome {
+  // backdrop-filter: blur(20px);
+  // -webkit-backdrop-filter: blur(20px);
+  .modal-content {
+    opacity: 1;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 1);
+    .modal-body {
+      border-radius: 1rem;
+    }
+  }
+}
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+  .exit-overlay-modal-new-welcome {
+    .modal-content {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
 .exitoverlaymodal.show {
   opacity: 0.5 !important;
 }
