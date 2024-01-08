@@ -16,6 +16,7 @@ import ActiveIntelligenceIcon from "../../assets/images/icons/ActiveIntelligence
 import IntelligenceIcon from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
 import ActiveProfileIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { addUserCredits } from "../profile/Api.js";
 import {
   CoinsIcon,
   SidebarLeftArrowIcon,
@@ -550,8 +551,13 @@ function Sidebar(props) {
       });
       const passFedbackData = new URLSearchParams();
       passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
-      props.sendUserFeedbackApi(passFedbackData);
+      props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
     }
+  };
+  const addFeedbackPoints = () => {
+    const exchangeCreditScore = new URLSearchParams();
+    exchangeCreditScore.append("credits", "feedbacks_added");
+    props.addUserCredits(exchangeCreditScore);
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -2873,5 +2879,5 @@ function Sidebar(props) {
   );
 }
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = { sendUserFeedbackApi };
+const mapDispatchToProps = { sendUserFeedbackApi, addUserCredits };
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
