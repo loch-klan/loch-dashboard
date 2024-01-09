@@ -614,14 +614,22 @@ function Sidebar(props) {
   };
   return (
     <>
-      <div className="sidebar-section">
+      <div
+        style={{
+          zIndex: "99",
+        }}
+        className="sidebar-section"
+      >
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
             <div
               // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
               className={`logo home-topbar`}
-              style={{ marginBottom: "0", width: "100%" }}
+              style={{
+                marginBottom: "0",
+                width: "100%",
+              }}
             >
               <div>
                 <Image src={logo} />
