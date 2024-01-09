@@ -3,6 +3,7 @@ import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import {
+  CloseIconBlack,
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
@@ -48,19 +49,19 @@ const VerifyMobile = ({
           <div className="new-auth new-auth-mobile verify-otp" style={{paddingBottom:'48px'}}>
             <div className="new-auth-content" style={{ position: "relative" }}>
             <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
-              <div
-                className="new-homepage-auth-content-close "
-                onClick={toggleModal}
-              >
-                <Image
-                  src={NewWelcomeLoginCrossIcon}
-                  style={{
-                    height: "2rem",
-                    width: "2rem",
-                  }}
-                />
-              </div>
-            </div>
+          <div
+            className="new-homepage-auth-content-close "
+            onClick={toggleModal}
+          >
+            <Image
+              src={CloseIconBlack}
+              style={{
+                height: "10px",
+                width: "10px",
+              }}
+            />
+          </div>
+        </div>
               <img className="new-auth-content-logo" src={logo} alt="" />
               <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
                 <h4 className="new-auth-content-title">Enter code</h4>

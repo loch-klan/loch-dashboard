@@ -4,6 +4,7 @@ import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import { validateEmail } from "../../../utils/validators";
 import {
+  CloseIconBlack,
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
@@ -51,10 +52,10 @@ const Login = ({
             onClick={toggleModal}
           >
             <Image
-              src={NewWelcomeLoginCrossIcon}
+              src={CloseIconBlack}
               style={{
-                height: "2rem",
-                width: "2rem",
+                height: "10px",
+                width: "10px",
               }}
             />
           </div>
@@ -70,7 +71,7 @@ const Login = ({
                   : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
-            <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
+            <div className="new-auth-content-input-holder ">
               <input
                 className="new-auth-content-input"
                 type="text"
