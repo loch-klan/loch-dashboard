@@ -79,7 +79,8 @@ export default function TopBarDropDown(props) {
               <div className="hideText topBarWalletAddressNameTagAndAddress">
                 {props.fullWalletList && props.fullWalletList.length > 0 ? (
                   <>
-                    {props.fullWalletList[0][0] ? (
+                    {props.fullWalletList[0][0] &&
+                    !/\.eth$/.test(props.fullWalletList[0][0]) ? (
                       <span
                         style={{
                           fontWeight: "600",
@@ -94,6 +95,8 @@ export default function TopBarDropDown(props) {
                     <span className="topBarWalletAddressNameTag">
                       {props.fullWalletList[0][2]
                         ? props.fullWalletList[0][2]
+                        : /\.eth$/.test(props.fullWalletList[0][1])
+                        ? props.fullWalletList[0][1]
                         : null}
                     </span>
                   </>
