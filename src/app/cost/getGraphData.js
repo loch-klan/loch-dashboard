@@ -135,7 +135,7 @@ export const getGraphData = (apidata, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display: labels.length > 3 ? false : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
@@ -430,7 +430,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display: labels.length > 3 ? false : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,

@@ -271,6 +271,7 @@ class BarGraphSection extends Component {
                 flexDirection: "column",
                 paddingTop: "0rem",
                 paddingBottom: "0rem",
+                paddingLeft: "2rem",
               }
             : {
                 display: "flex",
@@ -713,7 +714,7 @@ class BarGraphSection extends Component {
               )}
               {/* Graph Section */}
               <div className={className} style={{ display: "flex" }}>
-                {options2 != undefined && isScroll && data.labels.length > 8 ? (
+                {options2 != undefined && isScroll && data.labels.length > 3 ? (
                   <div style={{ width: `${digit}rem` }}>
                     <Bar options={options2} data={data} />
                   </div>
@@ -723,7 +724,7 @@ class BarGraphSection extends Component {
 
                 <div
                   className={
-                    options2 != undefined && isScroll && data.labels.length > 8
+                    options2 != undefined && isScroll && data.labels.length > 3
                       ? "ScrollArea"
                       : "ChartAreaWrapper"
                   }
@@ -731,7 +732,7 @@ class BarGraphSection extends Component {
                     width: `${
                       options2 != undefined &&
                       isScroll &&
-                      data.labels.length > 8
+                      data.labels.length > 3
                         ? "calc(100 % - " + digit + "rem)"
                         : "100%"
                     }`,
@@ -756,7 +757,7 @@ class BarGraphSection extends Component {
                         this.props.newHomeSetup ? "chartAreaOldBar" : ""
                       }`}
                       style={
-                        data.labels.length > 8 && isScroll
+                        data.labels.length > 3 && isScroll
                           ? ScrollStyle
                           : NormalStyle
                       }
