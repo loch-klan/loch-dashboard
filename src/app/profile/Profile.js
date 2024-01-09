@@ -10,7 +10,12 @@ import ProfileForm from "./ProfileForm";
 // add wallet
 import { Col, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
@@ -155,6 +160,13 @@ class Profile extends Component {
     return () => {
       clearInterval(window.checkProfileTimer);
     };
+  }
+  componentDidUpdate() {
+    if (!this.props.commonState.profilePage) {
+      this.props.updateWalletListFlag("profilePage", true);
+      this.props.GetAllPlan();
+      this.props.getUser();
+    }
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
@@ -569,12 +581,14 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => ({
   profileState: state.ProfileState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   setPageFlagDefault,
   GetAllPlan,
   getUser,
+  updateWalletListFlag,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func
