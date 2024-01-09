@@ -4,11 +4,11 @@ import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import LineChartSlider from "./LineCharSlider";
 import WelcomeCard from "./WelcomeCard";
 
 import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import FixAddModal from "../common/FixAddModal";
 import {
@@ -133,6 +133,7 @@ import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
+  InfoIconI,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import { addUserCredits } from "../profile/Api.js";
@@ -2974,7 +2975,7 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.AssetCode}
+                text={rowData.AssetCode+" ["+rowData?.chain?.name+"]"}
               >
                 <div>
                   <CoinChip
@@ -3381,7 +3382,29 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockOneItem(1);
                             }}
                           >
-                            Assets
+                            Assets 
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand your unrealized profit and loss per token"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3393,7 +3416,29 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockOneItem(2);
                             }}
                           >
-                            Defi
+                            DeFi
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Decipher all your DeFi positions from one place"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                         </div>
                       </div>
@@ -3473,6 +3518,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Realized Gains
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand your portfolio's net flows"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3485,6 +3552,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Gas fees
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand your gas costs"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3497,6 +3586,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Counterparties
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand where you’ve exchanged the most value"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                         </div>
                       </div>
@@ -3672,6 +3783,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Price gauge
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand when this token was bought and sold"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3684,12 +3817,35 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Networks
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand where you’ve exchanged the most value"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                         </div>
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
                           openChartPage={this.goToPriceGaugePage}
+                          hideExplainer
                           // isHomepage
                           showEth
                           userWalletList={this.state.userWalletList}
@@ -3732,6 +3888,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Transactions
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Sort, filter, and dissect all your transactions from one place"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3744,6 +3922,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Yield opportunities
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Yield bearing opportunties personalized for your portfolio"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -3756,6 +3956,28 @@ class Portfolio extends BaseReactComponent {
                             }}
                           >
                             Insights
+                            <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Valuable insights based on your assets"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "14px",
+                                  }}
+                                />
+                              </CustomOverlay>
                           </div>
                         </div>
                       </div>
