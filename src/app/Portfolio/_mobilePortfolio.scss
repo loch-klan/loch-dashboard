@@ -7,74 +7,15 @@
   display: flex;
   flex-direction: column;
 
-  .custom-dropdown{
-    margin-right: 0px !important;
-    padding-left: 5px;
-
-    .show{
-      margin-left: -5px;
-    }
-    .placeholderPriceDropdown{
-      justify-content: center;
-      gap: 4px;
-    }
-    .placeholder{
-      gap: 4px;
-      svg{
-        right: auto;
-        position: static;
-      }
-    }
-  }
-  
-  .padding-mb-2{
-    padding-left: 2px !important;
-  }
-  
-  .placeholderPriceDropdown{
-    min-width: 100% !important;
   .homepage-table-charts{
     .custom-dropdown .placeholderPriceDropdown.lineChartPlaceholder{
       min-width: 10rem !important;
     }
   }
-}
 
   .asset-mobile-table{
     .table-wrapper-mobile-y-scroll{
       max-height: 65rem !important;
-    }
-  }
-  .transaction-table-mobile-search{
-    display: flex;
-    align-items: center;
-    height: 40px;
-    padding: 10px;
-    gap: 10px;
-    border: 1px solid #D4D4D4;
-    background-color: white;
-    border-radius: 8px;
-    .search-icon{
-
-    }
-
-    .search-input{
-      width: 100%;
-      // box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
-      border: none;
-      outline: none;
-      font-size: 1.4rem;
-      font-weight: 500;
-      color: #19191A;
-      background-color: transparent;
-      &::placeholder{
-        color: #B0B1B3;
-      }
-      &:focus{
-        .transaction-table-mobile-search{
-          border: 1px solid black;
-        }
-      }
     }
   }
 
