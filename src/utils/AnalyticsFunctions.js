@@ -317,6 +317,20 @@ export const PrivacyMessage = ({ session_id }) => {
 };
 
 //4. Landing Page Conversion:email address added
+export const SearchBarAddressAdded = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Search Bar: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:email address added");
+};
 export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
   const eventProperties = {
@@ -855,6 +869,24 @@ export const TimeSpentHome = ({ session_id, email_address, time_spent }) => {
 };
 
 //30. Menu:intelligence menu
+export const FeedbackSidebar = ({ session_id, email_address }) => {
+  const event_name = "Menu: feedback clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const FeedbackSubmitted = ({ session_id, email_address }) => {
+  const event_name = "Feedback: submitted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const IntelligenceMenu = ({ session_id, email_address }) => {
   const event_name = "Menu:intelligence menu";
   const eventProperties = {

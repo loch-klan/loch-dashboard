@@ -10,7 +10,12 @@ import ProfileForm from "./ProfileForm";
 // add wallet
 import { Col, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
@@ -28,7 +33,6 @@ import UpgradeModal from "../common/upgradeModal";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
-import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class Profile extends Component {
   constructor(props) {
@@ -157,6 +161,13 @@ class Profile extends Component {
       clearInterval(window.checkProfileTimer);
     };
   }
+  componentDidUpdate() {
+    if (!this.props.commonState.profilePage) {
+      this.props.updateWalletListFlag("profilePage", true);
+      this.props.GetAllPlan();
+      this.props.getUser();
+    }
+  }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
       "profilePageExpiryTime"
@@ -254,10 +265,6 @@ class Profile extends Component {
         </div>
         <div className="profile-page-section m-t-80">
           <div className="profile-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              hideShare
-            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -574,12 +581,14 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => ({
   profileState: state.ProfileState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   setPageFlagDefault,
   GetAllPlan,
   getUser,
+  updateWalletListFlag,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func

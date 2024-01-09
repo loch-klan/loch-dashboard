@@ -27,16 +27,18 @@ import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import ActiveHomeIcon from "../../image/HomeIcon.svg";
 import logo from "../../image/Loch.svg";
 import {
   ExportMenu,
   FeedbackMenu,
+  FeedbackSidebar,
+  FeedbackSubmitted,
   GeneralPopup,
   HomeMenu,
   MenuApi,
@@ -51,19 +53,21 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
   getAllCurrencyApi,
   getAllCurrencyRatesApi,
   sendUserFeedbackApi,
+  updateWalletListFlag,
 } from "./Api";
 import AuthModal from "./AuthModal";
 import ConfirmLeaveModal from "./ConformLeaveModal";
-import ConnectModal from "./ConnectModal";
 import FeedbackModal from "./FeedbackModal";
 import SharePortfolio from "./SharePortfolio";
 import SidebarModal from "./SidebarModal";
+import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
 import { toast } from "react-toastify";
@@ -73,9 +77,8 @@ import {
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
-import UserFeedbackModal from "./UserFeedbackModal.js";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -394,6 +397,10 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleUserFeedbackModal = () => {
+    FeedbackSidebar({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     setUserFeedbackModal(!userFeedbackModal);
   };
   const hideUserFeedbackModal = (passedAddress) => {
@@ -409,13 +416,20 @@ function Sidebar(props) {
       });
       const passFedbackData = new URLSearchParams();
       passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      FeedbackSubmitted({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
       props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
     }
   };
   const addFeedbackPoints = () => {
     const exchangeCreditScore = new URLSearchParams();
     exchangeCreditScore.append("credits", "feedbacks_added");
-    props.addUserCredits(exchangeCreditScore);
+    props.addUserCredits(exchangeCreditScore, null, resetCreditPoints);
+  };
+  const resetCreditPoints = () => {
+    props.updateWalletListFlag("creditPointsBlock", false);
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -601,14 +615,22 @@ function Sidebar(props) {
   };
   return (
     <>
-      <div className="sidebar-section">
+      <div
+        style={{
+          zIndex: "99",
+        }}
+        className="sidebar-section"
+      >
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
             <div
               // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
               className={`logo home-topbar`}
-              style={{ marginBottom: "0", width: "100%" }}
+              style={{
+                marginBottom: "0",
+                width: "100%",
+              }}
             >
               <div>
                 <Image src={logo} />
@@ -787,11 +809,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                             </NavLink>
                           </CustomOverlay>
@@ -844,6 +862,7 @@ function Sidebar(props) {
                             <div
                               className={`nav-link nav-link-closed`}
                               style={{ backround: "transparent" }}
+                              id="sidebar-feedback-btn"
                               onClick={(e) => {
                                 handleUserFeedbackModal();
                               }}
@@ -998,11 +1017,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                               NFTs
                             </NavLink>
@@ -1045,6 +1060,7 @@ function Sidebar(props) {
                           className="nav-link none"
                           to="#"
                           activeclassname="none"
+                          id="sidebar-feedback-btn-full"
                         >
                           <Image
                             src={feedbackIcon}
@@ -1466,8 +1482,11 @@ function Sidebar(props) {
     </>
   );
 }
-const mapDispatchToProps = { sendUserFeedbackApi, addUserCredits };
-
+const mapDispatchToProps = {
+  sendUserFeedbackApi,
+  addUserCredits,
+  updateWalletListFlag,
+};
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,

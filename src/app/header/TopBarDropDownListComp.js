@@ -39,14 +39,19 @@ function TopBarDropDownListComp(props) {
         }}
       >
         <div className="dotDotText topBarWalletAddressNameTagAndAddress">
-          <span className="topBarWalletAddressNameTag">
-            {li[2] ? li[2] + " " : null}
-          </span>
-          {li[0] ? (
-            <span className="topBarWalletAddressAddress dotDotText">
+          {li[0] && !/\.eth$/.test(li[0]) ? (
+            <span
+              className="topBarWalletAddressAddress dotDotText mr-2"
+              style={{
+                marginRight: "15rem",
+              }}
+            >
               {li[0].slice(0, 4)}
             </span>
           ) : null}
+          <span className="topBarWalletAddressNameTag">
+            {li[2] ? li[2] : /\.eth$/.test(li[1]) ? li[1] : null}
+          </span>
         </div>
         <div className="copy-icon-top-bar-container">
           <div className="copy-icon-top-bar pl-3">

@@ -112,6 +112,8 @@ import {
   getAllFeeApi,
   getAvgCostBasis,
   updateAverageCostBasis,
+  updateCounterParty,
+  updateFeeGraph,
 } from "../cost/Api";
 import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
 import { getAssetGraphDataApi } from "./Api";
@@ -139,6 +141,7 @@ import CoinChip from "../wallet/CoinChip.js";
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -162,6 +165,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      counterGraphDigit: 3,
+      GraphDigit: 3,
       // Should call block one
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
@@ -330,9 +335,6 @@ class Portfolio extends BaseReactComponent {
 
       // get currency
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
-
-      // not used any where on this page
-      counterGraphDigit: 3,
 
       // Used in transaction history and piechart as props
       assetPrice: null,
@@ -740,12 +742,26 @@ class Portfolio extends BaseReactComponent {
     }
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.graphfeeValue
+      this.props.intelligenceState.GraphfeeData
     ) {
-      this.trimGasFees();
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this),
+          this
+        );
+      }
     }
-    if (this.props.yieldOpportunitiesState) {
-      this.trimCounterpartyVolume();
+
+    if (this.props.intelligenceState.counterPartyData) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this
+        ),
+        this
+      );
     }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
@@ -908,10 +924,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
-              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
-              : this.props.intelligenceState.graphfeeValue[0].labels,
+          labels: this.props.intelligenceState.graphfeeValue[0].labels,
           datasets: this.props.intelligenceState.graphfeeValue[0].datasets
             ? this.props.intelligenceState.graphfeeValue[0].datasets
             : [],
@@ -934,13 +947,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
+          labels: this.props.intelligenceState.counterPartyValue[0].labels,
           datasets: this.props.intelligenceState.counterPartyValue[0].datasets
             ? this.props.intelligenceState.counterPartyValue[0].datasets
             : [],
@@ -3281,47 +3288,6 @@ class Portfolio extends BaseReactComponent {
           <Loading />
         ) : (
           <div className="portfolio-page-section">
-            {this.state.followSigninModal ? (
-              <FollowAuthModal
-                followedAddress={this.state.followedAddress}
-                hideOnblur
-                showHiddenError
-                modalAnimation={this.state.followSignInModalAnimation}
-                show={this.state.followSigninModal}
-                onHide={this.onCloseModal}
-                history={this.props.history}
-                modalType={"create_account"}
-                iconImage={SignInIcon}
-                hideSkip={true}
-                title="You’re now following this wallet"
-                description="Sign in so you’ll be the first to see what they buy and sell"
-                stopUpdate={true}
-                tracking="Follow sign in popup"
-                goToSignUp={this.openSignUpModal}
-              />
-            ) : null}
-            {this.state.followSignupModal ? (
-              <FollowExitOverlay
-                followedAddress={this.state.followedAddress}
-                hideOnblur
-                showHiddenError
-                modalAnimation={false}
-                show={this.state.followSignupModal}
-                onHide={this.onCloseModal}
-                history={this.props.history}
-                modalType={"exitOverlay"}
-                handleRedirection={() => {
-                  // resetUser();
-                  // setTimeout(function () {
-                  //   if (this.props.history) {
-                  //     this.props.history.push("/welcome");
-                  //   }
-                  // }, 3000);
-                }}
-                signup={true}
-                goToSignIn={this.openSigninModal}
-              />
-            ) : null}
             <div
               className="portfolio-container page"
               style={{ overflow: "visible", padding: "0 5rem" }}
@@ -3389,6 +3355,7 @@ class Portfolio extends BaseReactComponent {
               <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
+                passedFollowSigninModal={this.state.followSigninModal}
               />
               <div className="m-b-22 graph-table-section">
                 <Row>
@@ -3723,8 +3690,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={true}
+                              digit={this.state.GraphDigit}
+                              isScroll
                               isLoading={this.state.gasFeesGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
@@ -3771,8 +3738,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={false}
+                              digit={this.state.counterGraphDigit}
+                              isScroll
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
@@ -4202,6 +4169,8 @@ const mapDispatchToProps = {
   getYieldOpportunities,
   addUserCredits,
   getProtocolBalanceApi,
+  updateFeeGraph,
+  updateCounterParty,
 };
 Portfolio.propTypes = {};
 

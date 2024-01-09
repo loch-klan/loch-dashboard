@@ -128,12 +128,14 @@ export const getUserCredits = (ctx) => {
       });
   };
 };
-export const addUserCredits = (data, ctx) => {
+export const addUserCredits = (data, ctx, resetCreditPoints) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-credits", data)
       .then((res) => {
-        if (ctx.callApi) {
+        if (resetCreditPoints) {
+          resetCreditPoints();
+        } else if (ctx && ctx.callApi) {
           ctx.callApi();
         }
       })
