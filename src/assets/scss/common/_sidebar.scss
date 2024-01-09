@@ -146,6 +146,12 @@
             border-radius: 5rem;
             cursor: pointer;
           }
+          .closebtnLight {
+            transition-duration: 300ms;
+            &:hover {
+              filter: invert(1) !important;
+            }
+          }
           &:hover {
             padding: 0rem;
           }
@@ -240,6 +246,12 @@
         background-color: $drop-button-hover;
         border-radius: 5rem;
         cursor: pointer;
+      }
+      .closebtnLight {
+        transition-duration: 300ms;
+        &:hover {
+          filter: invert(1) !important;
+        }
       }
       &:hover {
         padding: 0rem;

@@ -6,6 +6,7 @@ import "./../../assets/scss/common/_forms.scss";
 import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import RightIcons from "../../assets/images/icons/caveronRight.svg";
+import LeftIcons from "../../assets/images/icons/caveronRightLight.svg";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import Form from "../../utils/form/Form";
@@ -94,261 +95,273 @@ class UserFeedbackModal extends BaseReactComponent {
 
   render() {
     return (
-      <div className="sidebarCustonDontLoseDataModalContainerTwo">
-        <div className="sidebarCustonDontLoseDataModalContainer">
-          <Draggable
-            onDrag={(e, data) => this.props.trackPos(data)}
-            position={
-              this.props.dragPosition ? this.props.dragPosition : { x: 0, y: 0 }
-            }
-            bounds="parent"
-            handle="#draggableHandle"
-          >
-            <div
-              id="draggableHandle"
-              className="sidebarCustonDontLoseDataModal "
+      <div className="sidebar-modal-section">
+        <div className="sidebarCustonDontLoseDataModalContainerTwo">
+          <div className="sidebarCustonDontLoseDataModalContainer">
+            <Draggable
+              onDrag={(e, data) => this.props.trackPos(data)}
+              position={
+                this.props.dragPosition
+                  ? this.props.dragPosition
+                  : { x: 0, y: 0 }
+              }
+              bounds="parent"
+              handle="#draggableHandle"
             >
-              <div className="modal-dialog exit-overlay-modal sidebarModalCustom modal-lg">
-                <div className="modal-content">
-                  <Modal.Body>
-                    <div className="sidebarModalBodyContainer">
-                      <div className="exit-overlay-body sidebarModalBody">
-                        {this.state.currentQuestion > 0 ? (
-                          <div
-                            className="closebtnContainer"
-                            style={{
-                              marginRight: "2rem",
-                              transform: "rotate(180deg)",
-                            }}
-                          >
+              <div
+                id="draggableHandle"
+                className="sidebarCustonDontLoseDataModal "
+              >
+                <div className="modal-dialog exit-overlay-modal sidebarModalCustom modal-lg">
+                  <div className="modal-content">
+                    <Modal.Body>
+                      <div className="sidebarModalBodyContainer">
+                        <div className="exit-overlay-body sidebarModalBody">
+                          {this.state.currentQuestion > 0 ? (
                             <div
-                              className={`closebtn ${
-                                this.state.email ? "active" : ""
-                              }`}
-                              onClick={this.goToPrevQuestion}
-                              type="submit"
+                              className="closebtnContainer"
                               style={{
-                                border: "none",
-                                background: "#19191A",
-                                opacity: "1",
-                                cursor: "pointer",
+                                marginRight: "2rem",
+                                transform: "rotate(180deg)",
                               }}
                             >
-                              <Image
-                                className="closebtnIcon"
-                                src={RightIcons}
-                              />
-                            </div>
-                          </div>
-                        ) : null}
-                        <div>
-                          <h6
-                            className="inter-display-medium f-s-16"
-                            style={{
-                              color: "#262626",
-                              width:
-                                this.state.questions[this.state.currentQuestion]
-                                  .type == "radio"
-                                  ? ""
-                                  : "200px",
-                            }}
-                          >
-                            {
-                              this.state.questions[this.state.currentQuestion]
-                                .question
-                            }
-                          </h6>
-                        </div>
-                        {/* this.props.isSkip(); */}
-                        <div
-                          className="email-section auth-modal f-s-14"
-                          style={{ paddingRight: "0px" }}
-                        >
-                          {/* For Signin or Signup */}
-                          <Form
-                            onValidSubmit={this.handleNext}
-                            style={{ alignItems: "center" }}
-                          >
-                            {this.state.questions[this.state.currentQuestion]
-                              .type == "radio" ? (
                               <div
-                                className="d-flex"
+                                className={`closebtn closebtnLight ${
+                                  this.state.email ? "active" : ""
+                                }`}
+                                onClick={this.goToPrevQuestion}
+                                type="submit"
                                 style={{
-                                  gap: "16px",
-                                  marginRight: "52px",
+                                  border: "none",
+                                  backgroundColor: "white",
+                                  opacity: "1",
                                   cursor: "pointer",
                                 }}
                               >
-                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                                  <div
-                                    className="hoverDarker d-flex justify-content-center"
-                                    style={{
-                                      flexDirection: "column",
-                                      gap: "8px",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    <Radio
-                                      active={
-                                        this.state.questions[
-                                          this.state.currentQuestion
-                                        ].value == item
-                                      }
-                                      handleClick={() => {
-                                        let questions = this.state.questions;
-                                        questions[
-                                          this.state.currentQuestion
-                                        ].value = item;
-                                        this.setState({
-                                          questions,
-                                        });
-                                        this.setState({
-                                          currentQuestion:
-                                            this.state.currentQuestion + 1,
-                                        });
-                                      }}
-                                    />
-                                    <div
-                                      style={{
-                                        cursor: "pointer",
-                                        color:
-                                          this.state.questions[
-                                            this.state.currentQuestion
-                                          ].value == item
-                                            ? "#19191A"
-                                            : "#96979A",
-                                      }}
-                                      onClick={() => {
-                                        let questions = this.state.questions;
-                                        questions[
-                                          this.state.currentQuestion
-                                        ].value = item;
-                                        this.setState({
-                                          questions,
-                                        });
-                                      }}
-                                    >
-                                      {item}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              <div className="form-group">
-                                <input
-                                  className="form-control"
-                                  type="text"
-                                  value={
-                                    this.state.questions[
-                                      this.state.currentQuestion
-                                    ].value
-                                  }
-                                  placeholder="Your answer"
-                                  onChange={(e) => {
-                                    let questions = this.state.questions;
-                                    questions[
-                                      this.state.currentQuestion
-                                    ].value = e.target.value;
-                                    this.setState({
-                                      questions,
-                                    });
-                                  }}
+                                <Image
+                                  className="closebtnIcon"
+                                  src={LeftIcons}
                                 />
                               </div>
-                            )}
-
-                            {(this.state.questions[this.state.currentQuestion]
-                              .type == "radio" &&
-                              this.state.questions[this.state.currentQuestion]
-                                .value) ||
-                            this.state.questions[this.state.currentQuestion]
-                              .type != "radio" ? (
-                              <div
-                                className="closebtnContainer"
-                                style={{
-                                  marginRight:
-                                    this.state.questions[
-                                      this.state.currentQuestion
-                                    ].type == "radio"
-                                      ? "0px"
-                                      : "12px",
-                                }}
-                              >
+                            </div>
+                          ) : null}
+                          <div>
+                            <h6
+                              className="inter-display-medium f-s-16"
+                              style={{
+                                color: "#262626",
+                                width:
+                                  this.state.questions[
+                                    this.state.currentQuestion
+                                  ].type == "radio"
+                                    ? ""
+                                    : "200px",
+                              }}
+                            >
+                              {
+                                this.state.questions[this.state.currentQuestion]
+                                  .question
+                              }
+                            </h6>
+                          </div>
+                          {/* this.props.isSkip(); */}
+                          <div
+                            className="email-section auth-modal f-s-14"
+                            style={{ paddingRight: "0px" }}
+                          >
+                            {/* For Signin or Signup */}
+                            <Form
+                              onValidSubmit={this.handleNext}
+                              style={{ alignItems: "center" }}
+                            >
+                              {this.state.questions[this.state.currentQuestion]
+                                .type == "radio" ? (
                                 <div
-                                  className={`closebtn  ${
-                                    this.state.email ? "active" : ""
-                                  }`}
-                                  ref={this.nextButtonRef}
-                                  onClick={() => {
-                                    if (
+                                  className="d-flex"
+                                  style={{
+                                    gap: "16px",
+                                    marginRight: "52px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                                    (item) => (
+                                      <div
+                                        className="hoverDarker d-flex justify-content-center"
+                                        style={{
+                                          flexDirection: "column",
+                                          gap: "8px",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <Radio
+                                          active={
+                                            this.state.questions[
+                                              this.state.currentQuestion
+                                            ].value == item
+                                          }
+                                          handleClick={() => {
+                                            let questions =
+                                              this.state.questions;
+                                            questions[
+                                              this.state.currentQuestion
+                                            ].value = item;
+                                            this.setState({
+                                              questions,
+                                            });
+                                            this.setState({
+                                              currentQuestion:
+                                                this.state.currentQuestion + 1,
+                                            });
+                                          }}
+                                        />
+                                        <div
+                                          style={{
+                                            cursor: "pointer",
+                                            color:
+                                              this.state.questions[
+                                                this.state.currentQuestion
+                                              ].value == item
+                                                ? "#19191A"
+                                                : "#96979A",
+                                          }}
+                                          onClick={() => {
+                                            let questions =
+                                              this.state.questions;
+                                            questions[
+                                              this.state.currentQuestion
+                                            ].value = item;
+                                            this.setState({
+                                              questions,
+                                            });
+                                          }}
+                                        >
+                                          {item}
+                                        </div>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="form-group">
+                                  <input
+                                    className="form-control"
+                                    type="text"
+                                    value={
                                       this.state.questions[
                                         this.state.currentQuestion
                                       ].value
-                                    ) {
-                                      if (
-                                        this.state.currentQuestion ==
-                                        this.state.questions.length - 1
-                                      )
-                                        this.state.onHide(this.state.questions);
-                                      else
-                                        this.setState({
-                                          currentQuestion:
-                                            this.state.currentQuestion + 1,
-                                        });
                                     }
-                                  }}
-                                  type="submit"
-                                  style={{
-                                    border: "none",
-                                    background: "#19191A",
-                                    opacity: this.state.questions[
-                                      this.state.currentQuestion
-                                    ].value
-                                      ? "1"
-                                      : "0.5",
-                                    cursor: this.state.questions[
-                                      this.state.currentQuestion
-                                    ].value
-                                      ? "pointer"
-                                      : "disabled",
-                                  }}
-                                >
-                                  <Image
-                                    className="closebtnIcon"
-                                    src={RightIcons}
+                                    placeholder="Your answer"
+                                    onChange={(e) => {
+                                      let questions = this.state.questions;
+                                      questions[
+                                        this.state.currentQuestion
+                                      ].value = e.target.value;
+                                      this.setState({
+                                        questions,
+                                      });
+                                    }}
                                   />
                                 </div>
-                              </div>
-                            ) : null}
-                            {(this.state.questions[this.state.currentQuestion]
-                              .type == "radio" &&
-                              !this.state.questions[this.state.currentQuestion]
-                                .value) ||
-                            this.state.questions[this.state.currentQuestion]
-                              .type != "radio" ? (
-                              <div className="closebtnContainer">
+                              )}
+
+                              {(this.state.questions[this.state.currentQuestion]
+                                .type == "radio" &&
+                                this.state.questions[this.state.currentQuestion]
+                                  .value) ||
+                              this.state.questions[this.state.currentQuestion]
+                                .type != "radio" ? (
                                 <div
-                                  className="closebtn"
-                                  onClick={() => {
-                                    this.state.onHide(this.state.questions);
+                                  className="closebtnContainer"
+                                  style={{
+                                    marginRight:
+                                      this.state.questions[
+                                        this.state.currentQuestion
+                                      ].type == "radio"
+                                        ? "0px"
+                                        : "12px",
                                   }}
                                 >
-                                  <Image
-                                    className="closebtnIcon"
-                                    src={CloseIcon}
-                                  />
+                                  <div
+                                    className={`closebtn  ${
+                                      this.state.email ? "active" : ""
+                                    }`}
+                                    ref={this.nextButtonRef}
+                                    onClick={() => {
+                                      if (
+                                        this.state.questions[
+                                          this.state.currentQuestion
+                                        ].value
+                                      ) {
+                                        if (
+                                          this.state.currentQuestion ==
+                                          this.state.questions.length - 1
+                                        )
+                                          this.state.onHide(
+                                            this.state.questions
+                                          );
+                                        else
+                                          this.setState({
+                                            currentQuestion:
+                                              this.state.currentQuestion + 1,
+                                          });
+                                      }
+                                    }}
+                                    type="submit"
+                                    style={{
+                                      border: "none",
+                                      background: "#19191A",
+                                      opacity: this.state.questions[
+                                        this.state.currentQuestion
+                                      ].value
+                                        ? "1"
+                                        : "0.5",
+                                      cursor: this.state.questions[
+                                        this.state.currentQuestion
+                                      ].value
+                                        ? "pointer"
+                                        : "disabled",
+                                    }}
+                                  >
+                                    <Image
+                                      className="closebtnIcon"
+                                      src={RightIcons}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            ) : null}
-                          </Form>
+                              ) : null}
+                              {(this.state.questions[this.state.currentQuestion]
+                                .type == "radio" &&
+                                !this.state.questions[
+                                  this.state.currentQuestion
+                                ].value) ||
+                              this.state.questions[this.state.currentQuestion]
+                                .type != "radio" ? (
+                                <div className="closebtnContainer">
+                                  <div
+                                    className="closebtn"
+                                    onClick={() => {
+                                      this.state.onHide(this.state.questions);
+                                    }}
+                                  >
+                                    <Image
+                                      className="closebtnIcon"
+                                      src={CloseIcon}
+                                    />
+                                  </div>
+                                </div>
+                              ) : null}
+                            </Form>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Modal.Body>
+                    </Modal.Body>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Draggable>
+            </Draggable>
+          </div>
         </div>
       </div>
     );
