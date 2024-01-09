@@ -6,6 +6,18 @@
   align-items: start;
   margin-top: 12rem;
 }
+
+.welcome-modal-mobile{
+  overflow-y: hidden;
+display: flex !important;
+justify-content: center;
+height: auto;
+.welcome-modal-mobile-dialogue{
+  width: 350px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+}
 .exit-overlay-modal-new-welcome {
   // backdrop-filter: blur(20px);
   // -webkit-backdrop-filter: blur(20px);
