@@ -1,4 +1,3 @@
-import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 
@@ -456,6 +455,41 @@ export const AddWalletAddress = ({
     "ENS deleted": ENS_deleted.length == 0 ? ["None"] : ENS_deleted,
     "unrecognized addresses":
       unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
+    "recognized addresses": recognized_addresses,
+    "blockchains detected": blockchains_detected,
+    nicknames: nicknames,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Home:add wallet_address");
+};
+export const QuickAddWalletAddress = ({
+  session_id,
+  email_address,
+  addresses_added,
+  ENS_added,
+  addresses_deleted,
+  ENS_deleted,
+  unrecognized_addresses,
+  recognized_addresses,
+  blockchains_detected,
+  nicknames,
+}) => {
+  const event_name = "Search bar:add wallet_address";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses added": addresses_added,
+    "ENS added": ENS_added,
+    "addresses deleted":
+      addresses_deleted && addresses_deleted.length === 0
+        ? ["None"]
+        : addresses_deleted,
+    "ENS deleted":
+      ENS_deleted && ENS_deleted.length === 0 ? ["None"] : ENS_deleted,
+    "unrecognized addresses":
+      unrecognized_addresses && unrecognized_addresses.length === 0
+        ? ["None"]
+        : unrecognized_addresses,
     "recognized addresses": recognized_addresses,
     "blockchains detected": blockchains_detected,
     nicknames: nicknames,
@@ -3409,11 +3443,13 @@ export const TransactionHistorySearch = ({
   session_id,
   email_address,
   searched,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
     searched: searched,
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3439,6 +3475,7 @@ export const TransactionHistoryYearFilter = ({
   email_address,
   year_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: years filter";
   const eventProperties = {
@@ -3446,6 +3483,7 @@ export const TransactionHistoryYearFilter = ({
     "email address": email_address,
     "year selected": year_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3470,6 +3508,7 @@ export const TransactionHistoryAssetFilter = ({
   email_address,
   asset_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: assets filter";
   const eventProperties = {
@@ -3477,6 +3516,7 @@ export const TransactionHistoryAssetFilter = ({
     "email address": email_address,
     "asset selected": asset_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3488,6 +3528,7 @@ export const TransactionHistoryNetworkFilter = ({
   email_address,
   network_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: networks filter";
   const eventProperties = {
@@ -3495,6 +3536,7 @@ export const TransactionHistoryNetworkFilter = ({
     "email address": email_address,
     "networks selected": network_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");

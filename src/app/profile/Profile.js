@@ -28,6 +28,7 @@ import UpgradeModal from "../common/upgradeModal";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class Profile extends Component {
   constructor(props) {
@@ -130,7 +131,7 @@ class Profile extends Component {
     this.setState({
       followFlag: !this.state.followFlag,
     });
-  }
+  };
   startPageView = () => {
     this.setState({
       startTime: new Date() * 1,
@@ -238,7 +239,7 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
-              updateOnFollow={this.onFollowUpdate}
+                updateOnFollow={this.onFollowUpdate}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 // history
@@ -253,6 +254,10 @@ class Profile extends Component {
         </div>
         <div className="profile-page-section m-t-80">
           <div className="profile-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              hideShare
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -280,7 +285,11 @@ class Profile extends Component {
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
-                  <ProfileLochCreditPoints followFlag={this.state.followFlag} isUpdate={this.state.isUpdate} history={this.props.history} />
+                  <ProfileLochCreditPoints
+                    followFlag={this.state.followFlag}
+                    isUpdate={this.state.isUpdate}
+                    history={this.props.history}
+                  />
                 </Col>
               </Row>
             </div>

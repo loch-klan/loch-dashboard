@@ -4,7 +4,6 @@ import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import LineChartSlider from "./LineCharSlider";
 import WelcomeCard from "./WelcomeCard";
 
 import { Col, Image, Row } from "react-bootstrap";
@@ -139,6 +138,7 @@ import { addUserCredits } from "../profile/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -3386,6 +3386,10 @@ class Portfolio extends BaseReactComponent {
                 }}
               ></div>
 
+              <TopWalletAddressList
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                handleShare={this.handleShare}
+              />
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>
