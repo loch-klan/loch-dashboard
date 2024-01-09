@@ -71,3 +71,7 @@ export { default as TrendingWalletIcon } from "./trendingWallet.svg";
 export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";
 export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
 export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
+export { default as TopBarSearchIcon } from "./topBarSearch.svg";
+export { default as SearchHistoryClockIcon } from "./searchHistoryClock.svg";
+export { default as SearchHistoryDeleteIcon } from "./searchHistoryDelete.svg";
+export { default as WalletDropdownTrashIcon } from "./walletDropdownTrash.svg";

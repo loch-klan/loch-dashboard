@@ -137,6 +137,7 @@ import { addUserCredits } from "../profile/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
 import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -3279,47 +3280,6 @@ class Portfolio extends BaseReactComponent {
           <Loading />
         ) : (
           <div className="portfolio-page-section">
-            {this.state.followSigninModal ? (
-              <FollowAuthModal
-                followedAddress={this.state.followedAddress}
-                hideOnblur
-                showHiddenError
-                modalAnimation={this.state.followSignInModalAnimation}
-                show={this.state.followSigninModal}
-                onHide={this.onCloseModal}
-                history={this.props.history}
-                modalType={"create_account"}
-                iconImage={SignInIcon}
-                hideSkip={true}
-                title="You’re now following this wallet"
-                description="Sign in so you’ll be the first to see what they buy and sell"
-                stopUpdate={true}
-                tracking="Follow sign in popup"
-                goToSignUp={this.openSignUpModal}
-              />
-            ) : null}
-            {this.state.followSignupModal ? (
-              <FollowExitOverlay
-                followedAddress={this.state.followedAddress}
-                hideOnblur
-                showHiddenError
-                modalAnimation={false}
-                show={this.state.followSignupModal}
-                onHide={this.onCloseModal}
-                history={this.props.history}
-                modalType={"exitOverlay"}
-                handleRedirection={() => {
-                  // resetUser();
-                  // setTimeout(function () {
-                  //   if (this.props.history) {
-                  //     this.props.history.push("/welcome");
-                  //   }
-                  // }, 3000);
-                }}
-                signup={true}
-                goToSignIn={this.openSigninModal}
-              />
-            ) : null}
             <div
               className="portfolio-container page"
               style={{ overflow: "visible", padding: "0 5rem" }}
@@ -3384,6 +3344,11 @@ class Portfolio extends BaseReactComponent {
                 }}
               ></div>
 
+              <TopWalletAddressList
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                handleShare={this.handleShare}
+                passedFollowSigninModal={this.state.followSigninModal}
+              />
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>

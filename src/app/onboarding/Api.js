@@ -62,7 +62,8 @@ export const detectCoin = (
   ctx = null,
   isCohort = false,
   index = 0,
-  justDetect = false
+  justDetect = false,
+  fromConnectWallet = false
 ) => {
   return function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -114,11 +115,21 @@ export const detectCoin = (
           }
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
-            ctx.handleSetCoin({
-              ...wallet,
-              chain_detected: res.data.data.chain_detected,
-              apiaddress: res.data.data.wallet_address,
-            });
+            if (fromConnectWallet) {
+              if (ctx.handleSetCoinByLocalWallet) {
+                ctx.handleSetCoinByLocalWallet({
+                  ...wallet,
+                  chain_detected: res.data.data.chain_detected,
+                  apiaddress: res.data.data.wallet_address,
+                });
+              }
+            } else {
+              ctx.handleSetCoin({
+                ...wallet,
+                chain_detected: res.data.data.chain_detected,
+                apiaddress: res.data.data.wallet_address,
+              });
+            }
 
             if (
               ctx?.state.isTopAccountPage &&
