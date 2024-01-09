@@ -630,6 +630,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >
