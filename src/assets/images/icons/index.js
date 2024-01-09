@@ -26,6 +26,7 @@ export { default as EyeIcon } from "./eyeIcon.svg";
 export { default as EyeThinIcon } from "./eyeThinIcon.svg";
 export { default as FollowTopBarIcon } from "./followTopBar.svg";
 export { default as GreyManIcon } from "./greyMan.svg";
+export { default as InfoIconI } from "./icon-info-i.svg";
 export { default as InflowOutflowIcon } from "./inflowOutflow.svg";
 export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg";
 export { default as LinkVectorWhiteIcon } from "./linkVectorWhite.svg";
