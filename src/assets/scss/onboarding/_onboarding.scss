@@ -1668,6 +1668,18 @@
         align-items: center;
         justify-content: center;
         font-size: 16px;
+        cursor: pointer;
+
+        &:hover{
+          &:hover{
+            .new-homepage__body-search-paste-text{
+              filter: brightness(0.3);
+            }
+            .new-homepage__body-search-copy-icon {
+              filter: brightness(0.3);
+            }
+          }
+        }
 
         .new-homepage__body-search_preview {
           cursor: pointer;

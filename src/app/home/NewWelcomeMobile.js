@@ -1395,6 +1395,9 @@ class NewWelcomeMobile extends BaseReactComponent {
         </div>
         <div className="new-homepage__body new-homepage__body-mobile">
           <div className="new-homepage__body-container new-homepage__body-container-mobile">
+          <OutsideClickHandler onOutsideClick={()=>{
+                this.setState({isTrendingAddresses:false})
+              }}>
             {this.state.initialInput ? (
               <>
                 {this.state.walletInput?.map((c, index) => {
@@ -1439,9 +1442,6 @@ class NewWelcomeMobile extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <OutsideClickHandler onOutsideClick={()=>{
-                this.setState({isTrendingAddresses:false})
-              }}>
               <div className="new-homepage__body-trending-address">
                 <div
                   className="d-flex"
@@ -1496,8 +1496,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                   ))}
                 </div>
               </div>
-              </OutsideClickHandler>
             ) : null}
+            </OutsideClickHandler>
 
             {this.state.walletInput &&
             !this.state.walletInput[0].address &&

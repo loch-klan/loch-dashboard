@@ -32,22 +32,19 @@ const LoginMobile = ({
 
   return (
     <Modal
-      size="lg"
-      className="exit-overlay-form newWelcomePageTranlucentModal"
-      style={{
-        paddingTop: "100px",
-        backdropFilter: "blur(10px)",
-        overflow: "hidden",
-      }}
-      dialogClassName={"exit-overlay-modal exit-overlay-modal-new-welcome"}
-      show={show}
-      onHide={toggleModal}
-      centered
-      aria-labelledby="contained-modal-title-vcenter"
-      backdropClassName="exitoverlaymodalNewWelcome"
+    size="md"
+    className="exit-overlay-form newWelcomePageTranlucentModal"
+    dialogClassName={
+      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
+    }
+    show={show}
+    onHide={toggleModal}
+    centered
+    aria-labelledby="contained-modal-title-vcenter"
+    backdropClassName="exitoverlaymodalNewWelcome"
     >
       <Modal.Body>
-        <div className="new-auth-mobile-wrap">
+        {/* <div className="new-auth-mobile-wrap"> */}
           <div className="new-auth " style={{ paddingBottom: "80px" }}>
             <div className="new-auth-content" style={{ position: "relative" }}>
               <div
@@ -97,7 +94,7 @@ const LoginMobile = ({
                       </div> */}
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </Modal.Body>
     </Modal>
   );
