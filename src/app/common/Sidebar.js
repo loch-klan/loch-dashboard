@@ -82,12 +82,15 @@ import {
   SignupMenu,
   YieldOpportunitiesMenu,
   MenuIntPrice,
+  FeedbackSidebar,
+  FeedbackSubmitted,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from "./SharePortfolio";
 import {
   getAllCurrencyApi,
   getAllCurrencyRatesApi,
   sendUserFeedbackApi,
+  updateWalletListFlag,
 } from "./Api";
 import FeedbackModal from "./FeedbackModal";
 import UpgradeModal from "./upgradeModal";
@@ -536,6 +539,10 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleUserFeedbackModal = () => {
+    FeedbackSidebar({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     setUserFeedbackModal(!userFeedbackModal);
   };
   const hideUserFeedbackModal = (passedAddress) => {
@@ -551,13 +558,20 @@ function Sidebar(props) {
       });
       const passFedbackData = new URLSearchParams();
       passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      FeedbackSubmitted({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
       props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
     }
   };
   const addFeedbackPoints = () => {
     const exchangeCreditScore = new URLSearchParams();
     exchangeCreditScore.append("credits", "feedbacks_added");
-    props.addUserCredits(exchangeCreditScore);
+    props.addUserCredits(exchangeCreditScore, resetCreditPoints);
+  };
+  const resetCreditPoints = () => {
+    props.updateWalletListFlag("creditPointsBlock", false);
   };
   const handleShare = () => {
     const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1065,6 +1079,7 @@ function Sidebar(props) {
                             <div
                               className={`nav-link nav-link-closed`}
                               style={{ backround: "transparent" }}
+                              id="sidebar-feedback-btn"
                               onClick={(e) => {
                                 handleUserFeedbackModal();
                               }}
@@ -2333,6 +2348,7 @@ function Sidebar(props) {
                           className="nav-link none"
                           to="#"
                           activeclassname="none"
+                          id="sidebar-feedback-btn-full"
                         >
                           <Image
                             src={feedbackIcon}
@@ -2879,5 +2895,9 @@ function Sidebar(props) {
   );
 }
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = { sendUserFeedbackApi, addUserCredits };
+const mapDispatchToProps = {
+  sendUserFeedbackApi,
+  addUserCredits,
+  updateWalletListFlag,
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

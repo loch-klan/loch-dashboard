@@ -657,13 +657,13 @@ export const TransactionHistoryAddress = ({
 export const TransactionHistoryHashHover = ({
   session_id,
   email_address,
-  hash_hovered
+  hash_hovered,
 }) => {
   const event_name = "Transaction :transaction history Hash Hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "hash_hovered":hash_hovered
+    hash_hovered: hash_hovered,
   };
   sendAmplitudeData(event_name, eventProperties);
   // console.log("Transaction :transaction history hash hovered");
@@ -673,13 +673,13 @@ export const TransactionHistoryHashHover = ({
 export const TransactionHistoryHashCopied = ({
   session_id,
   email_address,
-  hash_copied
+  hash_copied,
 }) => {
   const event_name = "Transaction :transaction history Hash Copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "hash_copied":hash_copied
+    hash_copied: hash_copied,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -774,6 +774,24 @@ export const TimeSpentHome = ({ session_id, email_address, time_spent }) => {
 };
 
 //30. Menu:intelligence menu
+export const FeedbackSidebar = ({ session_id, email_address }) => {
+  const event_name = "Menu: feedback clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const FeedbackSubmitted = ({ session_id, email_address }) => {
+  const event_name = "Feedback: submitted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const IntelligenceMenu = ({ session_id, email_address }) => {
   const event_name = "Menu:intelligence menu";
   const eventProperties = {

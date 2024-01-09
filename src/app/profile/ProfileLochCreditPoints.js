@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import { Image } from "react-bootstrap";
 import {
+  FeedbackCreditIcon,
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
   UserCreditMailIcon,
@@ -22,6 +23,7 @@ import {
   UserCreditLeftScrollClickedMP,
   UserCreditRightScrollClickedMP,
 } from "../../utils/AnalyticsFunctions.js";
+import { updateWalletListFlag } from "../common/Api.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
@@ -41,10 +43,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "wallet_connected",
         "multiple_address_added",
         "exchange_connected",
+        "feedbacks_added",
       ],
     };
   }
-
+  newPosBase = () => {
+    return 9;
+    // return this.state.tasksList.length;
+  };
   scrollRight = () => {
     if (this.state.isRightArrowDisabled) {
       return;
@@ -66,7 +72,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       left: newPos,
       behavior: "smooth",
     });
-    if (newPos === (this.state.tasksList.length / 3 - 1) * myElementWidth) {
+    if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
       this.setState({
         isRightArrowDisabled: true,
         isLeftArrowDisabled: false,
@@ -129,10 +135,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isLeftArrowDisabled: true,
           isRightArrowDisabled: false,
         });
-      } else if (
-        newPos ===
-        (this.state.tasksList.length / 3 - 1) * myElementWidth
-      ) {
+      } else if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
         this.setState({
           isLeftArrowDisabled: false,
           isRightArrowDisabled: true,
@@ -150,7 +153,15 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.isUpdate !== prevProps.isUpdate) {
+    // if (this.props.isUpdate !== prevProps.isUpdate) {
+    //   this.callApi();
+    //   this.setState({
+    //     isLeftArrowDisabled: true,
+    //     isRightArrowDisabled: false,
+    //   });
+    // }
+    if (!this.props.commonState.creditPointsBlock) {
+      this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
       this.setState({
         isLeftArrowDisabled: true,
@@ -183,6 +194,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     const openConnectWalletModal = () => {
       if (document.getElementById("topbar-connect-wallet-btn")) {
         document.getElementById("topbar-connect-wallet-btn").click();
+      }
+    };
+    const openProvideFeedbackModal = () => {
+      if (document.getElementById("sidebar-feedback-btn-full")) {
+        document.getElementById("sidebar-feedback-btn-full").click();
+      } else if (document.getElementById("sidebar-feedback-btn")) {
+        document.getElementById("sidebar-feedback-btn").click();
       }
     };
     const openConnectExchangeModal = () => {
@@ -230,6 +248,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         task: "Connected wallet",
       });
       openConnectWalletModal();
+    };
+    const goClickOpenFeedback = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Provided feedback",
+      });
+      openProvideFeedbackModal();
     };
     const goClickConnectExchange = () => {
       UserCreditGoClickedMP({
@@ -303,6 +329,17 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectExchange}
+        />
+      );
+    } else if (whichBlock === "feedbacks_added") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="Provided feedback"
+          earnPoints={2}
+          imageIcon={FeedbackCreditIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickOpenFeedback}
         />
       );
     }
@@ -401,6 +438,19 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
           </div>
+          <div
+            style={{
+              justifyContent: "flex-start",
+              paddingLeft: "2rem",
+            }}
+            className="profileCreditPointsSection"
+          >
+            {this.state.tasksList
+              .slice(6, 7)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
           {/* <ProfileLochCreditPointsBlock
             title="Add a wallet address"
             earnPoints={1}
@@ -452,9 +502,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     );
   }
 }
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  commonState: state.CommonState,
+});
 const mapDispatchToProps = {
   getUserCredits,
+  updateWalletListFlag,
 };
 ProfileLochCreditPoints.propTypes = {};
 
