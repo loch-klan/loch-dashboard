@@ -3874,6 +3874,7 @@ class Portfolio extends BaseReactComponent {
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
                           openChartPage={this.goToPriceGaugePage}
+                          hideExplainer
                           // isHomepage
                           showEth
                           userWalletList={this.state.userWalletList}
