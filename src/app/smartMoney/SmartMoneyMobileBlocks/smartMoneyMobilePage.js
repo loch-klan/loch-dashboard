@@ -104,7 +104,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   async copyTextToClipboard(text) {

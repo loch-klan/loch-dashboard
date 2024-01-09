@@ -1,11 +1,11 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { BaseReactComponent } from "../../utils/form";
 import { deleteToken } from "../../utils/ManageToken";
+import { BaseReactComponent } from "../../utils/form";
 
-import { getAllCoins, getAllParentChains } from "../onboarding/Api";
 import Loading from "../common/Loading";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api";
 import { verifyEmailLinkApi } from "./Api";
 // import { loginApi } from './Api';
 

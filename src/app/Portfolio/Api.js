@@ -1,26 +1,16 @@
+import moment from "moment";
+import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
+import { addLocalWalletList } from "../common/Api";
+import { GET_DEFI_DATA } from "../defi/ActionTypes";
+
 import {
   COIN_RATE_LIST,
-  USER_WALLET_LIST,
   DEFAULT_VALUES,
-  YESTERDAY_BALANCE,
-  ASSET_VALUE_GRAPH,
   EXTERNAL_EVENTS,
+  USER_WALLET_LIST,
+  YESTERDAY_BALANCE,
 } from "./ActionTypes";
-import { toast } from "react-toastify";
-import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
-import moment from "moment";
-import { getAllCounterFeeApi } from "../cost/Api";
-import { getAllInsightsApi, getProfitAndLossApi } from "../intelligence/Api";
-import { GetAllPlan, addLocalWalletList, getUser } from "../common/Api";
-import { GET_DEFI_DATA } from "../defi/ActionTypes";
-import {
-  TOP_DEFAULT_VALUES,
-  TOP_EXTERNAL_EVENTS,
-  TOP_GET_DEFI_DATA,
-  TOP_USER_WALLET_LIST,
-  TOP_YESTERDAY_BALANCE,
-} from "../topAccount/ActionTypes";
 
 export const isFollowedByUser = (data, ctx) => {
   return async function () {
@@ -30,6 +20,7 @@ export const isFollowedByUser = (data, ctx) => {
         if (!res.data?.error) {
           if (res.data?.data.following) {
             if (ctx.showAddressesAdded) {
+              console.log("Second check");
               ctx.showAddressesAdded();
             }
           } else {
@@ -108,9 +99,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         // }
 
         dispatch({
-          type: ctx?.state?.isTopAccountPage
-            ? TOP_USER_WALLET_LIST
-            : USER_WALLET_LIST,
+          type: USER_WALLET_LIST,
           payload: {
             address: wallet.address,
             userWalletList: userWalletList,
@@ -171,9 +160,7 @@ export const getExchangeBalance = (exchangeName, ctx) => {
         // );
         // isRefresh && ctx.getCurrentTime();
         dispatch({
-          type: ctx?.state?.isTopAccountPage
-            ? TOP_USER_WALLET_LIST
-            : USER_WALLET_LIST,
+          type: USER_WALLET_LIST,
           payload: {
             address: exchangeName,
             userWalletList: userWalletList,
@@ -223,9 +210,7 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
         userWalletList?.map((item, i) => {
           setTimeout(() => {
             dispatch({
-              type: ctx?.state?.isTopAccountPage
-                ? TOP_USER_WALLET_LIST
-                : USER_WALLET_LIST,
+              type: USER_WALLET_LIST,
               payload: {
                 address: item.protocol.name,
                 userWalletList: item,
@@ -256,7 +241,7 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
 export const settingDefaultValues = (ctx) => {
   return async function (dispatch, getState) {
     dispatch({
-      type: ctx?.state?.isTopAccountPage ? TOP_DEFAULT_VALUES : DEFAULT_VALUES,
+      type: DEFAULT_VALUES,
     });
   };
 };
@@ -467,9 +452,7 @@ export const getExternalEventsApi = (ctx) => {
         // console.log("res", res);
         if (!res.data.error) {
           dispatch({
-            type: ctx?.state?.isTopAccountPage
-              ? TOP_EXTERNAL_EVENTS
-              : EXTERNAL_EVENTS,
+            type: EXTERNAL_EVENTS,
             payload: {
               externalEvents: res.data.data.events,
             },
@@ -504,9 +487,7 @@ export const getYesterdaysBalanceApi = (ctx) => {
           let currency = JSON.parse(window.sessionStorage.getItem("currency"));
           let balance = res.data.data.balance * currency?.rate;
           dispatch({
-            type: ctx?.state?.isTopAccountPage
-              ? TOP_YESTERDAY_BALANCE
-              : YESTERDAY_BALANCE,
+            type: YESTERDAY_BALANCE,
             payload: { balance },
           });
 
@@ -855,9 +836,7 @@ export const getProtocolBalanceApi = (ctx, data) => {
             totalYield;
           setTimeout(() => {
             dispatch({
-              type: ctx?.state?.isTopAccountPage
-                ? TOP_GET_DEFI_DATA
-                : GET_DEFI_DATA,
+              type: GET_DEFI_DATA,
               payload: {
                 defiList: [...defiData, ...defiList],
                 YieldValues: YieldValues,

@@ -1125,7 +1125,7 @@ form {
       justify-content: center;
       padding: 0rem 1rem;
       cursor: pointer;
-      transition-duration: 300ms;
+      // transition-duration: 300ms;
       &:hover {
         color: #000000;
       }
@@ -1801,6 +1801,14 @@ form {
     position: relative;
   }
 }
+.chip-container-dual-justIcon {
+  border: none;
+  margin-left: 0rem;
+  img {
+    border-top-right-radius: 0.55rem;
+    border-bottom-right-radius: 0.55rem;
+  }
+}
 
 .modal-backdrop.show {
   opacity: 0 !important;
@@ -2178,9 +2186,15 @@ textarea {
     filter: brightness(0.5);
   }
 }
-.copy-icon-top-bar {
-  &:hover {
-    filter: brightness(0.2);
+.copy-icon-top-bar-container {
+  display: flex;
+  align-items: center;
+
+  .copy-icon-top-bar {
+    cursor: pointer;
+    &:hover {
+      filter: brightness(0.2);
+    }
   }
 }
 
@@ -2251,6 +2265,17 @@ textarea {
   border-color: $primary;
   cursor: pointer;
 }
+.noCp {
+  .custom-control {
+    .custom-control-input {
+      cursor: default !important;
+    }
+    .custom-control-label {
+      cursor: default !important;
+    }
+  }
+}
+
 .smaller-toggle {
   .custom-control-input {
     &:focus:not(:checked) ~ .custom-control-label::before {
@@ -2271,6 +2296,29 @@ textarea {
     }
     &::before {
       border-color: $grey-ADA;
+    }
+  }
+}
+.portFolioHomeToggle {
+  .custom-switch {
+    transform: scale(1.45) !important;
+  }
+  &:hover {
+    color: $primary !important;
+    .custom-control {
+      color: $primary !important;
+      .custom-control-label {
+        color: $primary !important;
+        &::before {
+          border-color: $primary !important;
+        }
+        &::after {
+          background-color: $primary !important;
+        }
+      }
+    }
+    .pageHeaderShareImg {
+      filter: brightness(0);
     }
   }
 }

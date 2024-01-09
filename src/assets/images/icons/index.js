@@ -52,6 +52,9 @@ export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg"
 export { default as SmartMoneyFaqModalIcon } from "./smartMoneyFaqModal.svg";
 export { default as BackArrowSmartMoneyIcon } from "./backArrowSmartMoney.svg";
 export { default as CrossSmartMoneyIcon } from "./crossSmartMoney.svg";
+export { default as ShareTopBarIcon } from "./shareTopBar.svg";
+export { default as FollowTopBarIcon } from "./followTopBar.svg";
+export { default as ChartSeeMoreArrowIcon } from "./chartSeeMoreArrow.svg";
 export { default as ShareProfileIcon } from "./SharePortfolioIcon.svg";
 export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";
 export { default as UserCreditStarIcon } from "./userCreditStar.svg";
@@ -67,3 +70,9 @@ export { default as UserCreditScrollRightArrowIcon } from "./userCreditScrollRig
 export { default as TrendingFireIcon } from "./trendingFire.svg";
 export { default as TrendingWalletIcon } from "./trendingWallet.svg";
 export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";
+export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
+export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
+export { default as TopBarSearchIcon } from "./topBarSearch.svg";
+export { default as SearchHistoryClockIcon } from "./searchHistoryClock.svg";
+export { default as SearchHistoryDeleteIcon } from "./searchHistoryDelete.svg";
+export { default as WalletDropdownTrashIcon } from "./walletDropdownTrash.svg";

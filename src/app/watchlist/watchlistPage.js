@@ -1,29 +1,28 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
+import PageHeader from "../common/PageHeader";
 
 import { connect } from "react-redux";
-import {
-  Method,
-  START_INDEX,
-  SEARCH_BY_TEXT,
-  BASE_URL_S3,
-  API_LIMIT,
-  SORT_BY_ADDRESS,
-  SORT_BY_ANALYSED,
-  SORT_BY_REMARKS,
-  SORT_BY_NAME_TAG,
-} from "../../utils/Constant";
-import {
-  FormElement,
-  Form,
-  CustomTextControl,
-  BaseReactComponent,
-} from "../../utils/form";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import "./_watchlist.scss";
+import {
+  API_LIMIT,
+  BASE_URL_S3,
+  Method,
+  SEARCH_BY_TEXT,
+  SORT_BY_ANALYSED,
+  SORT_BY_NAME_TAG,
+  SORT_BY_REMARKS,
+  START_INDEX,
+} from "../../utils/Constant";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "../../utils/form";
+import "./_watchlist.scss";
 
 import Loading from "../common/Loading";
 
@@ -41,9 +40,7 @@ import {
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import RemarkInput from "../discover/remarkInput";
-import WelcomeCard from "../Portfolio/WelcomeCard";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
@@ -58,16 +55,17 @@ import {
   WatchlistSortByNameTag,
   WatchlistSortByRemarks,
 } from "../../utils/AnalyticsFunctions";
+import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import RemarkInput from "../discover/remarkInput";
 import AddWatchListAddressModal from "./addWatchListAddressModal";
 import {
   getWatchList,
-  updateAddToWatchList,
   getWatchListLoading,
   removeAddressFromWatchList,
+  updateAddToWatchList,
 } from "./redux/WatchListApi";
-import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -155,6 +153,15 @@ class WatchListPage extends BaseReactComponent {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 200);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
@@ -773,12 +780,16 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                hideButton={true}
+                hideButton={false}
+                updateOnFollow={this.callApi}
+                hideShare
               />
             </div>
           </div>
@@ -824,7 +835,7 @@ class WatchListPage extends BaseReactComponent {
             <PageHeader
               title={"Following"}
               subTitle={"Addresses you follow"}
-              // showpath={true}
+              //
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
@@ -911,7 +922,6 @@ class WatchListPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
-                    addWatermark
                   />
                 </>
               )}

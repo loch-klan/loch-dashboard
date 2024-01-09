@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { Dropdown, DropdownButton, Image } from "react-bootstrap";
-import logo from "../../image/Loch.svg";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 import {
   BlackManIcon,
   GreyManIcon,
@@ -10,12 +8,13 @@ import {
   QuestionmarkCircleSmartMoneyIcon,
   ShareProfileIcon,
 } from "../../assets/images/icons";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import logo from "../../image/Loch.svg";
+import { getAllCurrencyApi, getAllCurrencyRatesApi } from "../common/Api";
 
 import { toast } from "react-toastify";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { BASE_URL_S3 } from "../../utils/Constant";
 import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(
@@ -90,7 +89,7 @@ export default function SmartMoneyHeader(props) {
   };
   const goBackToSmartMoney = () => {
     if (props.history && props.isFaq) {
-      props.history.replace("/smart-money");
+      props.history.replace("/leaderboard");
     }
   };
   const handleShare = () => {
@@ -99,7 +98,7 @@ export default function SmartMoneyHeader(props) {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "smart-money";
+    let shareLink = BASE_URL_S3 + "leaderboard";
     copyTextToClipboard(shareLink);
   };
   const copyTextToClipboard = async (text) => {
@@ -165,7 +164,7 @@ export default function SmartMoneyHeader(props) {
                 props.isFaq ? "rightSmartMoneyContainerHeadingSmartMoney" : ""
               }`}
             >
-              Loch’s Smart Money Leaderboard
+              Loch’s Leaderboard
             </div>
           </div>
           <p
