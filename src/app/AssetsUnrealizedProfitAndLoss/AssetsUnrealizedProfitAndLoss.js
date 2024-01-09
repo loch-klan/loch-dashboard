@@ -583,7 +583,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={rowData.AssetCode}
+                  text={rowData.AssetCode+" ["+rowData?.chain?.name+"]"}
                 >
                   <div>
                     <CoinChip
