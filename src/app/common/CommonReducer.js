@@ -8,6 +8,7 @@ import {
 } from "./ActionTypes";
 
 const INITIAL_STATE = {
+  creditPointsBlock: false,
   isSidebarOpen: false,
   isPopup: true,
   home: false,
@@ -50,6 +51,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
     case SET_DEFAULT_VALUE:
       return {
         ...state,
+        creditPointsBlock: false,
         home: false,
         intelligence: false,
         asset_value: false,

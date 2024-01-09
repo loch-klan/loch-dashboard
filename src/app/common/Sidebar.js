@@ -36,6 +36,8 @@ import logo from "../../image/Loch.svg";
 import {
   ExportMenu,
   FeedbackMenu,
+  FeedbackSidebar,
+  FeedbackSubmitted,
   GeneralPopup,
   HomeMenu,
   MenuApi,
@@ -50,21 +52,32 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import { addUserCredits } from "../profile/Api.js";
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
+import {
+  getAllCurrencyApi,
+  getAllCurrencyRatesApi,
+  sendUserFeedbackApi,
+  updateWalletListFlag,
+} from "./Api";
+import AuthModal from "./AuthModal";
+import ConfirmLeaveModal from "./ConformLeaveModal";
+import FeedbackModal from "./FeedbackModal";
+import SharePortfolio from "./SharePortfolio";
+import SidebarModal from "./SidebarModal";
+import UserFeedbackModal from "./UserFeedbackModal.js";
+import UpgradeModal from "./upgradeModal";
+
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
-import AuthModal from "./AuthModal";
-import ConfirmLeaveModal from "./ConformLeaveModal";
-import ConnectModal from "./ConnectModal";
 import ExitOverlay from "./ExitOverlay";
-import FeedbackModal from "./FeedbackModal";
-import SharePortfolio from "./SharePortfolio";
-import SidebarModal from "./SidebarModal";
-import UpgradeModal from "./upgradeModal";
+import ConnectModal from "./ConnectModal.js";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
+import { toast } from "react-toastify";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -90,6 +103,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -380,6 +394,52 @@ function Sidebar(props) {
   };
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
+  };
+  const handleUserFeedbackModal = () => {
+    FeedbackSidebar({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    setUserFeedbackModal(!userFeedbackModal);
+  };
+  const hideUserFeedbackModal = (passedAddress) => {
+    setUserFeedbackModal(false);
+    if (passedAddress && passedAddress.length > 0 && passedAddress[0].value) {
+      let tempAnsHolder = [];
+      passedAddress.forEach((res) => {
+        if (res.value) {
+          tempAnsHolder.push(res.value);
+        } else {
+          tempAnsHolder.push("");
+        }
+      });
+      const passFedbackData = new URLSearchParams();
+      passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      FeedbackSubmitted({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
+    }
+  };
+  const addFeedbackPoints = () => {
+    const exchangeCreditScore = new URLSearchParams();
+    exchangeCreditScore.append("credits", "feedbacks_added");
+    props.addUserCredits(exchangeCreditScore, null, resetCreditPoints);
+  };
+  const resetCreditPoints = () => {
+    props.updateWalletListFlag("creditPointsBlock", false);
+  };
+  const handleShare = () => {
+    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : getCurrentUser().id;
+    const link = `${BASE_URL_S3}home/${slink}`;
+    navigator.clipboard.writeText(link);
+    toast.success("Share link has been copied");
   };
 
   React.useEffect(() => {
@@ -753,6 +813,30 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Feedback"}
+                          >
+                            <div
+                              className={`nav-link nav-link-closed`}
+                              style={{ backround: "transparent" }}
+                              id="sidebar-feedback-btn"
+                              onClick={(e) => {
+                                handleUserFeedbackModal();
+                              }}
+                              // activeclassname="active"
+                            >
+                              <Image
+                                src={feedbackIcon}
+                                // className="followingImg"
+                              />
+                            </div>
+                          </CustomOverlay>
+                        </li>
                       </ul>
                     </nav>
                   </div>
@@ -906,6 +990,39 @@ function Sidebar(props) {
                           </li>
                         </>
                       )}
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={() => {
+                            handleUserFeedbackModal();
+                          }}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                          id="sidebar-feedback-btn-full"
+                        >
+                          <Image
+                            src={feedbackIcon}
+                            // style={{ filter: "opacity(0.6)" }}
+                          />
+                          Feedback
+                        </NavLink>
+                      </li>
+                      {/* <li>
+                        <NavLink
+                          exact={true}s
+                          onClick={handleConnectModal}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image
+                            src={LinkIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
+                          Connect Exchanges
+                        </NavLink>
+                      </li> */}
                     </ul>
                   </nav>
                 </div>
@@ -1278,6 +1395,16 @@ function Sidebar(props) {
       )}
 
       {/* after 15 sec open this */}
+      {userFeedbackModal ? (
+        <UserFeedbackModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
+          onHide={hideUserFeedbackModal}
+          history={history}
+          popupType="general_popup"
+          tracking={history.location.pathname.substring(1)}
+        />
+      ) : null}
 
       {signinPopup ? (
         <SidebarModal
@@ -1294,10 +1421,14 @@ function Sidebar(props) {
     </>
   );
 }
+const mapDispatchToProps = {
+  sendUserFeedbackApi,
+  addUserCredits,
+  updateWalletListFlag,
+};
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
 });
-const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
