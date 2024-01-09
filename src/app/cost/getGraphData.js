@@ -60,18 +60,7 @@ export const getGraphData = (apidata, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              amountFormat(
-                (
-                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
-                    assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]] ||
-                  ctx.raw
-                )?.toFixed(2) * currency.rate,
-                "en-US",
-                "USD"
-              );
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -360,10 +349,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +

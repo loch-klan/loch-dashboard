@@ -3703,6 +3703,7 @@ class Portfolio extends BaseReactComponent {
                           <div
                             style={{
                               position: "relative",
+                              cursor: "pointer",
                             }}
                           >
                             <div
