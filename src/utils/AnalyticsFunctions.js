@@ -318,6 +318,20 @@ export const PrivacyMessage = ({ session_id }) => {
 };
 
 //4. Landing Page Conversion:email address added
+export const SearchBarAddressAdded = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Search Bar: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:email address added");
+};
 export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
   const eventProperties = {

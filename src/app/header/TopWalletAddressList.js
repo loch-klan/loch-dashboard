@@ -31,6 +31,10 @@ import {
 import TopBarDropDown from "./TopBarDropDown";
 import "./_topWalletAddressList.scss";
 
+import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
+import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+
 class TopWalletAddressList extends Component {
   constructor(props) {
     super(props);
@@ -187,17 +191,7 @@ class TopWalletAddressList extends Component {
     }
   };
   componentDidMount() {
-    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
-
-    if (whatIsIt === "true") {
-      this.setState({
-        isFollowingAddress: true,
-      });
-    } else {
-      this.setState({
-        isFollowingAddress: false,
-      });
-    }
+    this.checkIsFollowed();
     const userWalletData =
       this.props.portfolioState &&
       this.props.portfolioState.chainWallet &&
@@ -229,21 +223,34 @@ class TopWalletAddressList extends Component {
       this.applyTempWalletList();
     }
   }
+  checkIsFollowed = () => {
+    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+
+    if (whatIsIt === "true") {
+      this.setState({
+        isFollowingAddress: true,
+      });
+    } else {
+      this.setState({
+        isFollowingAddress: false,
+      });
+    }
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.passedFollowSigninModal !== this.props.passedFollowSigninModal
+    ) {
+      if (this.props.passedFollowSigninModal) {
+        this.setState({
+          followSigninModal: true,
+          isFollowingAddress: true,
+        });
+      }
+    }
     if (
       prevState.isAddressFollowedCount !== this.state.isAddressFollowedCount
     ) {
-      const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
-
-      if (whatIsIt === "true") {
-        this.setState({
-          isFollowingAddress: true,
-        });
-      } else {
-        this.setState({
-          isFollowingAddress: false,
-        });
-      }
+      this.checkIsFollowed();
     }
     if (prevProps?.HeaderState !== this.props.HeaderState) {
       this.showFollowOrNot();
@@ -852,6 +859,47 @@ class TopWalletAddressList extends Component {
   render() {
     return (
       <div className="topWalletAddressList">
+        {this.state.followSigninModal ? (
+          <FollowAuthModal
+            followedAddress={this.state.followedAddress}
+            hideOnblur
+            showHiddenError
+            modalAnimation={this.state.followSignInModalAnimation}
+            show={this.state.followSigninModal}
+            onHide={this.onCloseModal}
+            history={this.props.history}
+            modalType={"create_account"}
+            iconImage={SignInIcon}
+            hideSkip={true}
+            title="You’re now following this wallet"
+            description="Sign in so you’ll be the first to see what they buy and sell"
+            stopUpdate={true}
+            tracking="Follow sign in popup"
+            goToSignUp={this.openSignUpModal}
+          />
+        ) : null}
+        {this.state.followSignupModal ? (
+          <FollowExitOverlay
+            followedAddress={this.state.followedAddress}
+            hideOnblur
+            showHiddenError
+            modalAnimation={false}
+            show={this.state.followSignupModal}
+            onHide={this.onCloseModal}
+            history={this.props.history}
+            modalType={"exitOverlay"}
+            handleRedirection={() => {
+              // resetUser();
+              // setTimeout(function () {
+              //   if (this.props.history) {
+              //     this.props.history.push("/welcome");
+              //   }
+              // }, 3000);
+            }}
+            signup={true}
+            goToSignIn={this.openSigninModal}
+          />
+        ) : null}
         {this.state.walletList.length > 0 ? (
           <div className="topWalletAddressListDropdownContainer maxWidth50">
             <TopBarDropDown
