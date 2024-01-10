@@ -2975,8 +2975,9 @@ class Portfolio extends BaseReactComponent {
                       coin_img_src={rowData.Asset}
                       coin_code={rowData.AssetCode}
                       chain={rowData?.chain}
-                      showNetwork={true}
-                      hideChainImage={true}
+                      // showNetwork={true}
+                      hideText={true}
+                      hideChainImage={false}
                     />
                 </div>
               </CustomOverlay>
