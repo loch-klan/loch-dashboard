@@ -94,6 +94,7 @@ import {
 import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -132,6 +133,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -201,6 +203,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -469,6 +472,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -1864,27 +1876,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <>
-                {rowData.method &&
-                (rowData.method.toLowerCase() === "send" ||
-                  rowData.method.toLowerCase() === "receive") ? (
+                {actualMethod &&
+                (actualMethod === "send" || actualMethod === "receive") ? (
                   <div className="gainLossContainer">
                     <div
                       className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
+                        actualMethod === "send" ? "loss" : "gain"
                       }`}
                     >
                       <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
+                        {actualMethod}
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </>
@@ -2023,6 +2053,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}

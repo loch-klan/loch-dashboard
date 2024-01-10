@@ -41,7 +41,13 @@ class PortfolioHomeInsightsBlock extends Component {
       );
     }
     return (
-      <div className="insights-wrapper-container">
+      <div
+        style={{
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+        }}
+        className="insights-wrapper-container"
+      >
         {this.props.updatedInsightList &&
         this.props.updatedInsightList.length > 0 ? (
           <>

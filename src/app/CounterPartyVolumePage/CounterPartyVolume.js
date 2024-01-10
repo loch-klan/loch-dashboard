@@ -46,6 +46,7 @@ import {
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
@@ -236,6 +237,16 @@ class CounterPartyVolume extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
+      if (this.props.intelligenceState.counterPartyData) {
+        this.props.updateCounterParty(
+          this.props.intelligenceState.counterPartyData,
+          getCounterGraphData(
+            this.props.intelligenceState.counterPartyData,
+            this
+          ),
+          this
+        );
+      }
       this.setState({
         counterGraphLoading: false,
       });
@@ -582,6 +593,10 @@ class CounterPartyVolume extends Component {
             ""
           )}
           <div className="cost-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -630,6 +645,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >

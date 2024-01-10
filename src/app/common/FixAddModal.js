@@ -580,7 +580,7 @@ class FixAddModal extends BaseReactComponent {
       }
     });
 
-    // console.log('fixWallet',fixWallet);
+    console.log("fixWallet", fixWallet);
     this.setState({
       fixWalletAddress: fixWallet,
     });
