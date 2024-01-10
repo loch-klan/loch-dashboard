@@ -651,7 +651,7 @@ class CounterPartyVolume extends Component {
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
                 showFooter={true}
-                showBadges={true}
+                // showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
                 isLoading={this.state.counterGraphLoading}
