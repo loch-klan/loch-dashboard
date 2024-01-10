@@ -2363,6 +2363,13 @@ class NewWelcome extends BaseReactComponent {
         </div>
         <div className="new-homepage__body">
           <div className="new-homepage__body-container">
+          <OutsideClickHandler
+                onOutsideClick={() => {
+                  this.setState({
+                    isTrendingAddresses: false,
+                  });
+                }}
+              >
             {this.state.initialInput ? (
               <>
                 {this.state.walletInput?.map((c, index) => {
@@ -2387,9 +2394,8 @@ class NewWelcome extends BaseReactComponent {
                 })}
               </>
             ) : (
-              <div className="new-homepage__body-search">
+              <div className="new-homepage__body-search" onClick={this.showInitialInput}>
                 <div
-                  onClick={this.showInitialInput}
                   className="new-homepage__body-search_preview"
                 >
                   <Image
@@ -2406,13 +2412,6 @@ class NewWelcome extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <OutsideClickHandler
-                onOutsideClick={() => {
-                  this.setState({
-                    isTrendingAddresses: false,
-                  });
-                }}
-              >
                 <div className="new-homepage__body-trending-address">
                   <div
                     className="d-flex"
@@ -2469,8 +2468,8 @@ class NewWelcome extends BaseReactComponent {
                     ))}
                   </div>
                 </div>
-              </OutsideClickHandler>
             ) : null}
+            </OutsideClickHandler>
 
             {this.state.walletInput &&
             !this.state.walletInput[0].address &&

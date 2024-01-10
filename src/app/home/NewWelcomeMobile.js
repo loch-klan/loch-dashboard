@@ -1395,6 +1395,9 @@ class NewWelcomeMobile extends BaseReactComponent {
         </div>
         <div className="new-homepage__body new-homepage__body-mobile">
           <div className="new-homepage__body-container new-homepage__body-container-mobile">
+          <OutsideClickHandler onOutsideClick={()=>{
+                this.setState({isTrendingAddresses:false})
+              }}>
             {this.state.initialInput ? (
               <>
                 {this.state.walletInput?.map((c, index) => {
@@ -1404,6 +1407,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   return (
                     <div className="new-homepage__body-search_input_body_main_container">
                       <NewHomeInputBlock
+                      hideMore
                       isMobile
                         c={c}
                         index={index}
@@ -1439,9 +1443,6 @@ class NewWelcomeMobile extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <OutsideClickHandler onOutsideClick={()=>{
-                this.setState({isTrendingAddresses:false})
-              }}>
               <div className="new-homepage__body-trending-address">
                 <div
                   className="d-flex"
@@ -1496,8 +1497,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                   ))}
                 </div>
               </div>
-              </OutsideClickHandler>
             ) : null}
+            </OutsideClickHandler>
 
             {this.state.walletInput &&
             !this.state.walletInput[0].address &&
@@ -1543,11 +1544,6 @@ class NewWelcomeMobile extends BaseReactComponent {
                             let netFlows = tempNetflows * tempCurrencyRate;
                             let profits = tempProfits * tempCurrencyRate;
                             let returns = tempReturns * tempCurrencyRate;
-
-                            console.log('networth',netWorth,tempNetWorth, mapData.networth);
-                            console.log('netflows',netFlows,tempNetflows, mapData.netflows);
-                            console.log('profits',profits,tempProfits, mapData.profits);
-                            console.log('returns',returns,tempReturns, mapData.returns);
                             return (
                               <SmartMoneyMobileBlock
                                 netWorth={netWorth}
@@ -1558,6 +1554,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                                 // handleFollowUnfollow={this.props.handleFollowUnfollow}
                                 openSignInOnclickModal={this.opneLoginModalForSmartMoney}
                                 smartMoneyBlur={this.props.blurTable}
+                                welcomePage
                               />
                             );
                           })}
@@ -1605,7 +1602,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                           }}
                           className="newWelcomeAddedAddressesBlockContainer"
                         >
-                          <div
+                          {/* <div
                             onClick={() => this.deleteInputField(index, c)}
                             className="newWelcomeAddedAddressesBlockDelContainer"
                           >
@@ -1613,9 +1610,11 @@ class NewWelcomeMobile extends BaseReactComponent {
                               className="newWelcomeAddedAddressesBlockDel"
                               src={NewWelcomeTrashIcon}
                             />
-                          </div>
+                          </div> */}
                           <NewHomeInputBlock
+                          hideMore
                             isMobile
+                            isList
                             c={c}
                             index={index}
                             walletInput={this.state.walletInput}

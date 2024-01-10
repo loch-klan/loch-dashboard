@@ -3,6 +3,7 @@ import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import {
+  CloseIconBlack,
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
@@ -32,44 +33,43 @@ const VerifyMobile = ({
 
   return (
     <Modal
-      style={{
-        paddingTop: "100px",
-        backdropFilter: "blur(10px)",
-        overflow: "hidden",
-      }}
-      size="lg"
-      className="exit-overlay-form"
-      dialogClassName={"exit-overlay-modal exit-overlay-modal-new-welcome"}
-      show={show}
-      onHide={toggleModal}
-      centered
-      aria-labelledby="contained-modal-title-vcenter"
-      backdropClassName="exitoverlaymodalNewWelcome"
+    size="md"
+    className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
+    dialogClassName={
+      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top welcome-modal-mobile-dialogue"
+    }
+    show={show}
+    onHide={toggleModal}
+    centered
+    aria-labelledby="contained-modal-title-vcenter"
+    backdropClassName="exitoverlaymodalNewWelcome"
     >
       <Modal.Body>
-        <div className="new-auth-mobile-wrap">
-          <div className="new-auth verify-otp">
+        {/* <div className="new-auth-mobile-wrap"> */}
+          <div className="new-auth new-auth-mobile verify-otp" style={{paddingBottom:'48px'}}>
             <div className="new-auth-content" style={{ position: "relative" }}>
-              <div
-                className="new-homepage-auth-content-close"
-                onClick={toggleModal}
-              >
-                <Image
-                  src={NewWelcomeLoginCrossIcon}
-                  style={{
-                    height: "2rem",
-                    width: "2rem",
-                  }}
-                />
-              </div>
+            <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
+          <div
+            className="new-homepage-auth-content-close "
+            onClick={toggleModal}
+          >
+            <Image
+              src={CloseIconBlack}
+              style={{
+                height: "10px",
+                width: "10px",
+              }}
+            />
+          </div>
+        </div>
               <img className="new-auth-content-logo" src={logo} alt="" />
-              <div className="new-auth-content-title-holder">
+              <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
                 <h4 className="new-auth-content-title">Enter code</h4>
                 <p className="new-auth-content-subtitle">
                   The verification code is sent to your email
                 </p>
               </div>
-              <div className="new-auth-content-input-holder new-auth-content-input-holder--otp">
+              <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile new-auth-content-input-holder--otp">
                 <input
                   className="new-auth-content-input"
                   type="text"
@@ -104,7 +104,7 @@ const VerifyMobile = ({
               </div>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </Modal.Body>
     </Modal>
   );

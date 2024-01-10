@@ -29,6 +29,236 @@ class NewHomeInputBlock extends BaseReactComponent {
                   : null
               } ${this.props.isMobile ? "awInputWrapper-mobile" : ""}`}
             >
+              {
+                this.props.isMobile
+                ?
+                <>
+                {c.showAddress && (
+                  <div className="awTopInputWrapper">
+                    <div className="awInputContainer">
+                      <input
+                        id={`newWelcomeWallet-${index + 1}`}
+                        name={`wallet${index + 1}`}
+                        value={c.address || ""}
+                        className={`inter-display-regular f-s-15 lh-20 awInput`}
+                        placeholder={this.props.isMobile?"Paste any wallet address or ENS":"Paste any wallet address or ENS to get started"}
+                        title={c.address || ""}
+                        onChange={
+                          this.props.handleOnChange
+                            ? this.props.handleOnChange
+                            : null
+                        }
+                        autoFocus
+                        onFocus={(e) => {
+                          if (this.props.FocusInInput) {
+                            this.props.FocusInInput(e);
+                          }
+
+                          if (this.props.showisTrendingAddressesAddress) {
+                            this.props.showisTrendingAddressesAddress();
+                          }
+                        }}
+                      />
+                    </div>
+                    {
+                  (c.showAddress || c.showNickname) && (<>
+                    {this.props.walletInput?.map((e, i) => {
+                      if (
+                        this.props.walletInput[index].address &&
+                        e.id === `wallet${index + 1}`
+                      ) {
+                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                        if (e.coinFound && e.coins.length > 0) {
+                          return (
+                            <CustomCoin
+                              isStatic
+                              coins={e.coins.filter((c) => c.chain_detected)}
+                              key={i}
+                              isLoaded={true}
+                              hideMore={this.props.hideMore}
+                            />
+                          );
+                        } else {
+                          if (
+                            e.coins.length ===
+                            this.props.OnboardingState.coinsList.length
+                          ) {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={true}
+                                hideMore={this.props.hideMore}
+                              />
+                            );
+                          } else {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={false}
+                                hideMore={this.props.hideMore}
+                              />
+                            );
+                          }
+                        }
+                      } else {
+                        return "";
+                      }
+                    })}
+                  </>
+                  )}
+                  </div>
+                  )}
+                
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                {c.coinFound && c.showNickname && (
+                  <div
+                    className={`awBottomInputWrapper ${
+                      c.showAddress ? "mt-2" : ""
+                    } ${this.props.isMobile ? "awBottomInputWrapper-mobile" : ""}`}
+                  >
+                    <div className="awInputContainer">
+                      {c.nickname && c.nickname !== "" ? (
+                        <div className="awLable">Private Nametag</div>
+                      ) : null}
+                      {/* <div className="awLable">Private Nametag</div> */}
+                      <input
+                        name={`wallet${index + 1}`}
+                        value={c.nickname || ""}
+                        className={`inter-display-regular f-s-15 lh-20 awInput`}
+                        placeholder={this.props.isList?"Enter nametag":"Enter Private Nametag"}
+                        title={c.nickname || ""}
+                        onChange={
+                          this.props.nicknameOnChain
+                            ? this.props.nicknameOnChain
+                            : null
+                        }
+                        onBlur={(e) => {
+                          // LandingPageNickname({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          //   nickname: e.target?.value,
+                          //   address: c.address,
+                          // });
+                        }}
+                        onFocus={(e) => {
+                          if (this.props.FocusInInput) {
+                            this.props.FocusInInput(e);
+                          }
+                        }}
+                      />
+                    </div>
+                    {/* {!c.showAddress &&
+                      this.props.walletInput?.map((e, i) => {
+                        if (
+                          this.props.walletInput[index].address &&
+                          e.id === `wallet${index + 1}`
+                        ) {
+                          // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                          if (e.coinFound && e.coins.length > 0) {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={e.coins.filter((c) => c.chain_detected)}
+                                key={i}
+                                isLoaded={true}
+                                hideMore={this.props.hideMore}
+                              />
+                            );
+                          } else {
+                            if (
+                              e.coins.length ===
+                              this.props.OnboardingState.coinsList.length
+                            ) {
+                              return (
+                                <CustomCoin
+                                  isStatic
+                                  coins={null}
+                                  key={i}
+                                  isLoaded={true}
+                                  hideMore={this.props.hideMore}
+                                />
+                              );
+                            } else {
+                              return (
+                                <CustomCoin
+                                  isStatic
+                                  coins={null}
+                                  key={i}
+                                  isLoaded={false}
+                                  hideMore={this.props.hideMore}
+                                />
+                              );
+                            }
+                          }
+                        } else {
+                          return "";
+                        }
+                      })} */}
+                    {/* {c.showNameTag && c.nameTag ? (
+              <div className="awBlockContainer">
+                <div className="awLable">Name tag</div>
+                <div className="awNameTag">{c.nameTag}</div>
+              </div>
+            ) : null} */}
+                  </div>
+                )}
+                {
+                  (!c.showAddress && c.nickname) && (<>
+                    {this.props.walletInput?.map((e, i) => {
+                      if (
+                        this.props.walletInput[index].address &&
+                        e.id === `wallet${index + 1}`
+                      ) {
+                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                        if (e.coinFound && e.coins.length > 0) {
+                          return (
+                            <CustomCoin
+                              isStatic
+                              coins={e.coins.filter((c) => c.chain_detected)}
+                              key={i}
+                              isLoaded={true}
+                              hideMore={this.props.hideMore}
+                            />
+                          );
+                        } else {
+                          if (
+                            e.coins.length ===
+                            this.props.OnboardingState.coinsList.length
+                          ) {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={true}
+                                hideMore={this.props.hideMore}
+                              />
+                            );
+                          } else {
+                            return (
+                              <CustomCoin
+                                isStatic
+                                coins={null}
+                                key={i}
+                                isLoaded={false}
+                                hideMore={this.props.hideMore}
+                              />
+                            );
+                          }
+                        }
+                      } else {
+                        return "";
+                      }
+                    })}
+                  </>
+                  )}
+                </div>
+              </>
+              :
               <>
                 {c.showAddress && (
                   <div className="awTopInputWrapper">
@@ -75,6 +305,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                               coins={e.coins.filter((c) => c.chain_detected)}
                               key={i}
                               isLoaded={true}
+                              hideMore={this.props.hideMore}
                             />
                           );
                         } else {
@@ -97,6 +328,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                                 coins={null}
                                 key={i}
                                 isLoaded={false}
+                                hideMore={this.props.hideMore}
                               />
                             );
                           }
@@ -173,6 +405,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                                   coins={null}
                                   key={i}
                                   isLoaded={true}
+                                  hideMore={this.props.hideMore}
                                 />
                               );
                             } else {
@@ -182,6 +415,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                                   coins={null}
                                   key={i}
                                   isLoaded={false}
+                                  hideMore={this.props.hideMore}
                                 />
                               );
                             }
@@ -199,6 +433,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                   </div>
                 )}
               </>
+              }
             </div>
           </div>
         </div>

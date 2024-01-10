@@ -639,10 +639,12 @@
                 overflow: hidden;
               }
             }
+            
             .isAwInputWrapperValid {
               border-color: #19191a;
             }
           }
+          
         }
       }
     }
@@ -1509,7 +1511,7 @@
       }
 
       .new-homepage__body-search_input_body_main_container {
-        transform: translateY(-50%);
+        transform: translateY(-31px);
         .new-homepage__body-search_input_body_container {
           box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
         }
@@ -1524,6 +1526,10 @@
         align-items: center;
         justify-content: center;
         font-size: 16px;
+        border: 1px solid transparent;
+        &:hover{
+          border: 1px solid #c2c2c2;
+        }
         .new-homepage__body-search_input_body {
           width: 100%;
           .addWalletWrapper {
@@ -1578,6 +1584,11 @@
                   &::placeholder {
                     color: #b0b1b3;
                   }
+                  &:hover{
+                    .new-homepage__body-search_input_body_container{
+                      border: 1px solid red;
+                    }
+                  }
                 }
               }
               .awInputBinIcon {
@@ -1622,6 +1633,7 @@
                 overflow: hidden;
               }
             }
+            
             .wInputWrapper-mobile {
               flex-direction: column-reverse;
             }
@@ -1631,15 +1643,22 @@
           }
         }
       }
+      // .newWelcomeAddedAddresses-mobile{
+      //   .awInputWrapper-mobile{
+      //     display: flex;
+      //     flex-direction: column;
+      //     gap: 6px;
+      //   }
+      // }
       .new-homepage__body-search_input_body_container-mobile {
         .chip-container-dual {
           margin-left: 0px;
         }
         .awTopInputWrapper {
-          flex-direction: column-reverse;
-          align-items: start !important;
+          // flex-direction: column-reverse;
+          // align-items: start !important;
           .chip-wrapper {
-            margin-bottom: 8px;
+            // margin-bottom: 8px;
           }
         }
 
@@ -1668,6 +1687,18 @@
         align-items: center;
         justify-content: center;
         font-size: 16px;
+        cursor: pointer;
+
+        &:hover{
+          &:hover{
+            .new-homepage__body-search-paste-text{
+              filter: brightness(0.3);
+            }
+            .new-homepage__body-search-copy-icon {
+              filter: brightness(0.3);
+            }
+          }
+        }
 
         .new-homepage__body-search_preview {
           cursor: pointer;

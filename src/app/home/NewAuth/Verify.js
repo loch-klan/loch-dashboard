@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import { NewWelcomeLoginCrossIcon } from "../../../assets/images/icons";
 import logo from "./../../../image/Loch.svg";
+import {
+  CloseIconBlack,
+  CrossSmartMoneyIcon,
+  NewWelcomeLoginCrossIcon,
+} from "../../../assets/images/icons";
 import "./_newAuth.scss";
 
 const Verify = ({
@@ -41,17 +45,19 @@ const Verify = ({
       backdropClassName="exitoverlaymodalNewWelcome"
     >
       <Modal.Body style={{ position: "relative" }}>
-        <div
-          className="new-homepage-auth-content-close new-homepage-auth-content-close--desktop"
-          onClick={toggleModal}
-        >
-          <Image
-            src={NewWelcomeLoginCrossIcon}
-            style={{
-              height: "2rem",
-              width: "2rem",
-            }}
-          />
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
+          <div
+            className="new-homepage-auth-content-close "
+            onClick={toggleModal}
+          >
+            <Image
+              src={CloseIconBlack}
+              style={{
+                height: "10px",
+                width: "10px",
+              }}
+            />
+          </div>
         </div>
         <div className="new-auth verify-otp">
           <div className="new-auth-content">

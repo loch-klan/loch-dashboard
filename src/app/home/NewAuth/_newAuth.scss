@@ -9,7 +9,8 @@
   justify-content: center;
   align-items: center;
   .new-homepage-auth-content-close {
-    border: 2px solid rgba(0, 0, 0, 0.5);
+    // border: 2px solid rgba(0, 0, 0, 0.5);
+    background-color: #E5E5E6;
     border-radius: 10rem;
     display: flex;
     justify-content: center;
@@ -28,6 +29,11 @@
   top: 40px;
   right: 40px;
 }
+
+.new-homepage-auth-content-close--mobile{
+  top: -40px;
+  right:-13px;
+}
 .new-auth {
   padding: 60px 0;
   border-radius: 16px;
@@ -41,6 +47,12 @@
     flex-direction: column;
     gap: 32px;
     align-items: center;
+
+    .new-homepage-auth-content-close{
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
 
     .new-auth-content-logo {
       width: 38px;
@@ -81,6 +93,9 @@
         color: #4a4b4d;
         padding: 18px 12px;
         font-size: 16px;
+        &::placeholder{
+          color: #4A4B4D;
+        }
 
         &:hover {
           border: 1px solid var(--Blue-100, rgba(0, 0, 0, 0.5));
@@ -101,8 +116,7 @@
         justify-content: center;
         align-items: center;
         background-color: #141414;
-        box-shadow: 0px 18px 88px -4px rgba(24, 39, 75, 0.14),
-          0px 8px 28px -6px rgba(24, 39, 75, 0.12);
+        box-shadow: 0px 18px 88px -4px rgba(24, 39, 75, 0.14), 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
         border-radius: 8px;
         font-size: 16px;
         font-weight: 600;
@@ -122,9 +136,7 @@
       }
     }
 
-    .new-auth-content-input-holder-mobile {
-      flex-direction: column;
-    }
+    
 
     .new-auth-content-input-holder--otp {
       display: flex;
@@ -156,7 +168,45 @@
         }
       }
     }
+
+    .new-auth-content-bottom-cta-holder-mobile{
+      .new-auth-content-bottom-cta {
+        font-size: 13px;
+      }
+    }
+
+    .new-auth-content-input-holder-mobile {
+      flex-direction: column;
+      width: 280px;
+      gap: 12px;
+      .new-auth-content-input{
+        width: 100%;
+        font-size: 13px;
+        height: 48px;
+      }
+      .new-auth-content-button{
+        height: 48px;
+        width: 100%;
+        font-size: 13px;
+      }
+    
+    }
+
+    .new-auth-content-title-holder-mobile{
+      .new-auth-content-title{
+        font-size: 20px;
+        font-weight: 500;
+      }
+      .new-auth-content-subtitle{
+        font-size: 13px;
+        font-weight: 400;
+      }
+    }
   }
+}
+
+.new-auth-mobile{
+  padding: 60px 0 80px 0;
 }
 
 .new-auth-mobile-wrap {

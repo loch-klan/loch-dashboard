@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import { NewWelcomeLoginCrossIcon } from "../../../assets/images/icons";
+import { CloseIconBlack } from "../../../assets/images/icons";
 import { validateEmail } from "../../../utils/validators";
 import logo from "./../../../image/Loch.svg";
 import "./_newAuth.scss";
@@ -48,10 +48,10 @@ const Login = ({
             onClick={toggleModal}
           >
             <Image
-              src={NewWelcomeLoginCrossIcon}
+              src={CloseIconBlack}
               style={{
-                height: "2rem",
-                width: "2rem",
+                height: "10px",
+                width: "10px",
               }}
             />
           </div>
@@ -67,7 +67,7 @@ const Login = ({
                   : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
-            <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
+            <div className="new-auth-content-input-holder ">
               <input
                 className="new-auth-content-input"
                 type="text"

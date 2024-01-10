@@ -16,6 +16,7 @@ export { default as BlackManIcon } from "./blackMan.svg";
 export { default as ChartSeeMoreArrowIcon } from "./chartSeeMoreArrow.svg";
 export { default as CheckIcon } from "./check.svg";
 export { default as CheckGreenIcon } from "./checkGreen.svg";
+export { default as CloseIconBlack } from "./close-icon-black.svg";
 export { default as CoinsIcon } from "./coins.svg";
 export { default as CompassWhiteIcon } from "./compassWhite.svg";
 export { default as ContributeTrophyIcon } from "./contributeTrophy.svg";
