@@ -12,7 +12,8 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (apidata, parentCtx) => {
+export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
+  console.log("isFromHome is ", isFromHome);
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
@@ -124,7 +125,13 @@ export const getGraphData = (apidata, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 3 ? false : true,
+          display: isFromHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
@@ -306,7 +313,7 @@ export const getGraphData = (apidata, parentCtx) => {
   return [data, options, options2];
 };
 
-export const getCounterGraphData = (arr, parentCtx) => {
+export const getCounterGraphData = (arr, parentCtx, isFromHome) => {
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -416,7 +423,13 @@ export const getCounterGraphData = (arr, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 3 ? false : true,
+          display: isFromHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
