@@ -590,6 +590,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       coin_img_src={rowData.Asset}
                       coin_code={rowData.AssetCode}
                       chain={rowData?.chain}
+                      hideText={true}
                     />
                   </div>
                 </CustomOverlay>
