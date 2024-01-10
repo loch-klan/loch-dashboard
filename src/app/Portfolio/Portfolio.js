@@ -3399,48 +3399,56 @@ class Portfolio extends BaseReactComponent {
                         </div>
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
-                        <TransactionTable
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          // title="Unrealized profit and loss"
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              this.props.history.push("/assets");
-                              AverageCostBasisEView({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
+                        <div
+                          style={{
+                            paddingLeft: "1rem",
+                            paddingRight: "1rem",
                           }}
-                          // subTitle="Understand your unrealized profit and loss per token"
-                          tableData={tableDataCostBasis.slice(0, 5)}
-                          moreData={
-                            this.props.intelligenceState?.Average_cost_basis &&
-                            this.props.intelligenceState.Average_cost_basis
-                              .length > 5
-                              ? `Click here to see ${numToCurrency(
-                                  this.props.intelligenceState
-                                    .Average_cost_basis.length - 5,
-                                  true
-                                ).toLocaleString("en-US")}+ asset${
-                                  this.props.intelligenceState
-                                    .Average_cost_basis.length -
-                                    5 >
-                                  1
-                                    ? "s"
-                                    : ""
-                                }`
-                              : "Click here to see more"
-                          }
-                          showDataAtBottom
-                          columnList={CostBasisColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.state.AvgCostLoading}
-                          isAnalytics="average cost basis"
-                          addWatermark
-                        />
+                        >
+                          <TransactionTable
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Unrealized profit and loss"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push("/assets");
+                                AverageCostBasisEView({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Understand your unrealized profit and loss per token"
+                            tableData={tableDataCostBasis.slice(0, 5)}
+                            moreData={
+                              this.props.intelligenceState
+                                ?.Average_cost_basis &&
+                              this.props.intelligenceState.Average_cost_basis
+                                .length > 5
+                                ? `Click here to see ${numToCurrency(
+                                    this.props.intelligenceState
+                                      .Average_cost_basis.length - 5,
+                                    true
+                                  ).toLocaleString("en-US")}+ asset${
+                                    this.props.intelligenceState
+                                      .Average_cost_basis.length -
+                                      5 >
+                                    1
+                                      ? "s"
+                                      : ""
+                                  }`
+                                : "Click here to see more"
+                            }
+                            showDataAtBottom
+                            columnList={CostBasisColumnData}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={this.state.AvgCostLoading}
+                            isAnalytics="average cost basis"
+                            addWatermark
+                          />
+                        </div>
                       ) : this.state.blockOneSelectedItem === 2 ? (
                         <PortfolioHomeDefiBlock
                           lochToken={this.state.lochToken}
@@ -3764,7 +3772,13 @@ class Portfolio extends BaseReactComponent {
                       </div>
 
                       {this.state.blockFourSelectedItem === 1 ? (
-                        <div className="newHomeTableContainer">
+                        <div
+                          style={{
+                            paddingLeft: "1rem",
+                            paddingRight: "1rem",
+                          }}
+                          className="newHomeTableContainer"
+                        >
                           <TransactionTable
                             moreData={
                               totalCount && totalCount > 5
@@ -3802,7 +3816,13 @@ class Portfolio extends BaseReactComponent {
                           />
                         </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
-                        <div className="newHomeTableContainer">
+                        <div
+                          style={{
+                            paddingLeft: "1rem",
+                            paddingRight: "1rem",
+                          }}
+                          className="newHomeTableContainer"
+                        >
                           <TransactionTable
                             noSubtitleBottomPadding
                             disableOnLoading
