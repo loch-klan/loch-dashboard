@@ -31,7 +31,7 @@ export default function CoinChip(props) {
               }
         }
       />
-      {props?.chain && (
+      {!props?.chain || props?.hideChainImage ? null : (
         <Image
           src={props?.chain?.symbol}
           style={{
@@ -55,7 +55,12 @@ export default function CoinChip(props) {
         ?
         null
         :
-
+        props?.showNetwork
+        ?
+        <div className="inter-display-medium f-s-13 lh-14 coin-percent">
+          {props?.chain?.code}
+        </div>
+        :
           <div className="inter-display-medium f-s-13 lh-14 coin-percent">
           {props.coin_percent
             ? props.coin_percent
