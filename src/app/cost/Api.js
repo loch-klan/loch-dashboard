@@ -15,7 +15,7 @@ import {
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
 
-export const getAllFeeApi = (ctx, startDate, endDate) => {
+export const getAllFeeApi = (ctx, startDate, endDate, isFromHome = false) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -31,7 +31,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
             type: GAS_FEES,
             payload: {
               GraphfeeData: res.data.data,
-              graphfeeValue: getGraphData(res.data.data, ctx),
+              graphfeeValue: getGraphData(res.data.data, ctx, isFromHome),
             },
           });
           ctx.setState({
@@ -46,7 +46,12 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       });
   };
 };
-export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
+export const getAllCounterFeeApi = (
+  ctx,
+  startDate,
+  endDate,
+  isFromHome = false
+) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -65,7 +70,8 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
               counterPartyData: res.data.data.counter_party_volume_traded,
               counterPartyValue: getCounterGraphData(
                 res.data.data.counter_party_volume_traded,
-                ctx
+                ctx,
+                isFromHome
               ),
             },
           });

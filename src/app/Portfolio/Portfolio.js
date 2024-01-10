@@ -746,7 +746,7 @@ class Portfolio extends BaseReactComponent {
       if (this.props.intelligenceState.GraphfeeData) {
         this.props.updateFeeGraph(
           this.props.intelligenceState.GraphfeeData,
-          getGraphData(this.props.intelligenceState.GraphfeeData, this),
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
           this
         );
       }
@@ -757,7 +757,8 @@ class Portfolio extends BaseReactComponent {
         this.props.intelligenceState.counterPartyData,
         getCounterGraphData(
           this.props.intelligenceState.counterPartyData,
-          this
+          this,
+          true
         ),
         this
       );
@@ -1019,7 +1020,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
       // Counterparty volume api call
       else if (
@@ -1318,7 +1319,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
 
       // Counterparty volume api call
@@ -3566,6 +3567,7 @@ class Portfolio extends BaseReactComponent {
                               Loch
                             </div>
                             <BarGraphSection
+                              isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
                               data={
                                 this.state.homeGraphFeesData &&
@@ -3614,6 +3616,7 @@ class Portfolio extends BaseReactComponent {
                               <div>Loch</div>
                             </div>
                             <BarGraphSection
+                              isFromHome
                               openChartPage={this.goToCounterPartyVolumePage}
                               data={
                                 this.state.homeCounterpartyVolumeData &&
@@ -3761,79 +3764,86 @@ class Portfolio extends BaseReactComponent {
                       </div>
 
                       {this.state.blockFourSelectedItem === 1 ? (
-                        <TransactionTable
-                          moreData={
-                            totalCount && totalCount > 5
-                              ? `Click here to see ${numToCurrency(
-                                  totalCount - 5,
-                                  true
-                                ).toLocaleString("en-US")}+ transaction${
-                                  totalCount - 5 > 1 ? "s" : ""
-                                }`
-                              : "Click here to see more"
-                          }
-                          showDataAtBottom
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          // title="Transactions"
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              this.props.history.push(
-                                "/intelligence/transaction-history"
-                              );
-                              TransactionHistoryEView({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
+                        <div className="newHomeTableContainer">
+                          <TransactionTable
+                            moreData={
+                              totalCount && totalCount > 5
+                                ? `Click here to see ${numToCurrency(
+                                    totalCount - 5,
+                                    true
+                                  ).toLocaleString("en-US")}+ transaction${
+                                    totalCount - 5 > 1 ? "s" : ""
+                                  }`
+                                : "Click here to see more"
                             }
-                          }}
-                          // subTitle="Sort, filter, and dissect all your transactions from one place"
-                          tableData={tableData.slice(0, 5)}
-                          columnList={columnList}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.state.tableLoading}
-                          addWatermark
-                        />
+                            showDataAtBottom
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Transactions"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push(
+                                  "/intelligence/transaction-history"
+                                );
+                                TransactionHistoryEView({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Sort, filter, and dissect all your transactions from one place"
+                            tableData={tableData}
+                            columnList={columnList}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={this.state.tableLoading}
+                            addWatermark
+                          />
+                        </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
-                        <TransactionTable
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          // title="Unrealized profit and loss"
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              this.props.history.push("/yield-opportunities");
-                              YieldOppurtunitiesExpandediew({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
+                        <div className="newHomeTableContainer">
+                          <TransactionTable
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            // title="Unrealized profit and loss"
+                            handleClick={() => {
+                              if (this.state.lochToken) {
+                                this.props.history.push("/yield-opportunities");
+                                YieldOppurtunitiesExpandediew({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            // subTitle="Understand your unrealized profit and loss per token"
+                            tableData={yieldOpportunitiesListTemp}
+                            moreData={
+                              this.state.yieldOpportunitiesTotalCount &&
+                              this.state.yieldOpportunitiesTotalCount > 5
+                                ? `Click here to see ${numToCurrency(
+                                    this.state.yieldOpportunitiesTotalCount - 5,
+                                    true
+                                  ).toLocaleString("en-US")}+ yield ${
+                                    this.state.yieldOpportunitiesTotalCount -
+                                      5 >
+                                    1
+                                      ? "opportunities"
+                                      : "opportunity"
+                                  }`
+                                : "Click here to see more"
                             }
-                          }}
-                          // subTitle="Understand your unrealized profit and loss per token"
-                          tableData={yieldOpportunitiesListTemp.slice(0, 5)}
-                          moreData={
-                            this.state.yieldOpportunitiesTotalCount &&
-                            this.state.yieldOpportunitiesTotalCount > 5
-                              ? `Click here to see ${numToCurrency(
-                                  this.state.yieldOpportunitiesTotalCount - 5,
-                                  true
-                                ).toLocaleString("en-US")}+ yield ${
-                                  this.state.yieldOpportunitiesTotalCount - 5 >
-                                  1
-                                    ? "opportunities"
-                                    : "opportunity"
-                                }`
-                              : "Click here to see more"
-                          }
-                          showDataAtBottom
-                          columnList={YieldOppColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.state.yieldOpportunitiesTableLoading}
-                          addWatermark
-                        />
+                            showDataAtBottom
+                            columnList={YieldOppColumnData}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={
+                              this.state.yieldOpportunitiesTableLoading
+                            }
+                            addWatermark
+                          />
+                        </div>
                       ) : this.state.blockFourSelectedItem === 3 ? (
                         <PortfolioHomeInsightsBlock
                           history={this.props.history}
