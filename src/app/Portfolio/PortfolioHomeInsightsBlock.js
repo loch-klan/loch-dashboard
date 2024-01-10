@@ -160,31 +160,15 @@ class PortfolioHomeInsightsBlock extends Component {
                 );
               })}
             </div>
-            {this.props.updatedInsightList &&
-            this.props.updatedInsightList.length > 3 ? (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.goToInsightsPage}
-                >
-                  {`Click here to see ${numToCurrency(
-                    this.props.updatedInsightList.length - 3,
-                    true
-                  ).toLocaleString("en-US")}+ insight${
-                    this.props.updatedInsightList.length - 3 > 1 ? "s" : ""
-                  }`}
-                </div>
+
+            <div className="inter-display-medium bottomExtraInfo">
+              <div
+                className="bottomExtraInfoText"
+                onClick={this.goToInsightsPage}
+              >
+                Click here to see more
               </div>
-            ) : (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.goToInsightsPage}
-                >
-                  Click here to see more
-                </div>
-              </div>
-            )}
+            </div>
           </>
         ) : (
           <div
