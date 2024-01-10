@@ -358,10 +358,21 @@ class TopWalletAddressList extends Component {
         tempWalletList.sort((a, b) => a - b).reverse();
         tempFullWalletList
           .sort((a, b) => {
-            if (a[2] || b[2]) {
-              return a[2] - b[2];
+            // {props.fullWalletList[0][2]
+            //   ? props.fullWalletList[0][2]
+            //   : /\.eth$/.test(props.fullWalletList[0][1])
+            //   ? props.fullWalletList[0][1]
+            //   : null}
+            let toRenderA = a[2] ? a[2] : /\.eth$/.test(a[1]) ? a[1] : "";
+            let toRenderB = b[2] ? b[2] : /\.eth$/.test(b[1]) ? b[1] : "";
+
+            let len1 = toRenderA ? toRenderA.length : 0;
+            let len2 = toRenderB ? toRenderB.length : 0;
+            if (len2 >= len1) {
+              return -1;
+            } else {
+              return 1;
             }
-            return a[1] - b[1];
           })
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
@@ -445,10 +456,20 @@ class TopWalletAddressList extends Component {
         tempWalletList.sort((a, b) => a - b).reverse();
         tempFullWalletList
           .sort((a, b) => {
-            if (a[2] || b[2]) {
-              return a[2] - b[2];
+            // if (a[2] || b[2]) {
+            //   return a[2] - b[2];
+            // }
+            // return a[1] - b[1];
+            let toRenderA = a[2] ? a[2] : /\.eth$/.test(a[1]) ? a[1] : "";
+            let toRenderB = b[2] ? b[2] : /\.eth$/.test(b[1]) ? b[1] : "";
+
+            let len1 = toRenderA ? toRenderA.length : 0;
+            let len2 = toRenderB ? toRenderB.length : 0;
+            if (len2 >= len1) {
+              return -1;
+            } else {
+              return 1;
             }
-            return a[1] - b[1];
           })
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);

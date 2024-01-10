@@ -248,6 +248,24 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
+                &:-webkit-autofill:focus {
+                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  transition: background-color 5000s ease-in-out 0s;
+                }
+                &::placeholder {
+                  transition-duration: 300ms;
+                }
+                &:hover {
+                  &::placeholder {
+                    color: black;
+                    opacity: 1; /* Firefox */
+                  }
+
+                  &::-ms-input-placeholder {
+                    /* Edge 12 -18 */
+                    color: black;
+                  }
+                }
               }
             }
             .maxWidth50 {
