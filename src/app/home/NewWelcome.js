@@ -1893,13 +1893,6 @@ class NewWelcome extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.account}
-              >
                 <span
                   onClick={() => {
                     if (!this.state.blurTable) {
@@ -1932,7 +1925,6 @@ class NewWelcome extends BaseReactComponent {
                 >
                   {TruncateText(rowData.account)}
                 </span>
-              </CustomOverlay>
             );
           }
         },
