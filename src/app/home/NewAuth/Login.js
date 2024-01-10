@@ -44,6 +44,9 @@ const Login = ({
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
+      contentClassName="new-welcome-modal-content"
+      animation={false}
+      
     >
       <Modal.Body style={{ position: "relative" }}>
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">

@@ -33,16 +33,18 @@ const Verify = ({
 
   return (
     <Modal
-      size="lg"
-      className="exit-overlay-form"
-      dialogClassName={
-        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
-      }
-      show={show}
-      onHide={toggleModal}
-      centered
-      aria-labelledby="contained-modal-title-vcenter"
-      backdropClassName="exitoverlaymodalNewWelcome"
+    size="lg"
+    className="exit-overlay-form newWelcomePageTranlucentModal"
+    dialogClassName={
+      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
+    }
+    show={show}
+    onHide={toggleModal}
+    centered
+    aria-labelledby="contained-modal-title-vcenter"
+    backdropClassName="exitoverlaymodalNewWelcome"
+    contentClassName="new-welcome-modal-content"
+    animation={false}
     >
       <Modal.Body style={{ position: "relative" }}>
       <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">

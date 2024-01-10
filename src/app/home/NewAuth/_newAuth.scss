@@ -21,6 +21,7 @@
     transition-duration: 300ms;
     &:hover {
       scale: 1.08;
+      // box-shadow: 0px 18px 88px -4px rgba(24, 39, 75, 0.14), 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
     }
   }
 }
@@ -67,11 +68,11 @@
         font-size: 28px;
         font-weight: 500;
         line-height: 120%;
-        color: black;
+        color: #19191A;
       }
 
       .new-auth-content-subtitle {
-        color: rgba(0, 0, 0, 0.5);
+        color: #7C7D81;
         font-size: 16px;
         font-weight: 400;
         line-height: 120%;
@@ -87,12 +88,13 @@
       .new-auth-content-input {
         width: 320px;
         height: 55px;
-        border: 1px solid var(--Grey-100, #e5e5e6);
+        border: 1px solid #e5e5e6;
         border-radius: 8px;
         background-color: white;
         color: #4a4b4d;
         padding: 18px 12px;
         font-size: 16px;
+        font-weight: 400;
         &::placeholder{
           color: #4A4B4D;
         }
@@ -130,6 +132,7 @@
           border: 1px solid white;
           background-color: white;
           color: #141414;
+          // border: 1px solid #141414;
           box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
             0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
         }
