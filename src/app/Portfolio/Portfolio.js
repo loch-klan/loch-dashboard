@@ -3781,12 +3781,12 @@ class Portfolio extends BaseReactComponent {
                         >
                           <TransactionTable
                             moreData={
-                              totalCount && totalCount > 5
+                              totalCount && totalCount > 10
                                 ? `Click here to see ${numToCurrency(
-                                    totalCount - 5,
+                                    totalCount - 10,
                                     true
                                   ).toLocaleString("en-US")}+ transaction${
-                                    totalCount - 5 > 1 ? "s" : ""
+                                    totalCount - 10 > 1 ? "s" : ""
                                   }`
                                 : "Click here to see more"
                             }
@@ -3841,13 +3841,14 @@ class Portfolio extends BaseReactComponent {
                             tableData={yieldOpportunitiesListTemp}
                             moreData={
                               this.state.yieldOpportunitiesTotalCount &&
-                              this.state.yieldOpportunitiesTotalCount > 5
+                              this.state.yieldOpportunitiesTotalCount > 10
                                 ? `Click here to see ${numToCurrency(
-                                    this.state.yieldOpportunitiesTotalCount - 5,
+                                    this.state.yieldOpportunitiesTotalCount -
+                                      10,
                                     true
                                   ).toLocaleString("en-US")}+ yield ${
                                     this.state.yieldOpportunitiesTotalCount -
-                                      5 >
+                                      10 >
                                     1
                                       ? "opportunities"
                                       : "opportunity"
