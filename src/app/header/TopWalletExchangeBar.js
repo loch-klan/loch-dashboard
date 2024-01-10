@@ -1611,7 +1611,7 @@ class TopWalletExchangeBar extends Component {
                   : ""
               }`}
             >
-              <div
+              {/* <div
                 ref={this.props.buttonRef}
                 className="topbar-btn maxWidth50 ml-2"
                 id="address-button-two"
@@ -1619,7 +1619,7 @@ class TopWalletExchangeBar extends Component {
               >
                 <Image className="topBarWalletAdd" src={PlusCircleIcon} />
                 <span className="dotDotText">Add address</span>
-              </div>
+              </div> */}
               <div
                 onClick={this.passConnectExchangeClick}
                 className={`topbar-btn ml-2 ${

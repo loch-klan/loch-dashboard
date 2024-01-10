@@ -248,6 +248,10 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
+                &:-webkit-autofill:focus {
+                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  transition: background-color 5000s ease-in-out 0s;
+                }
               }
             }
             .maxWidth50 {
