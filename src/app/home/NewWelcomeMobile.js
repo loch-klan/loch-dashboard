@@ -1451,7 +1451,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   <img src={TrendingFireIcon} alt="" />
                   <div
                     style={{
-                      color: "19191A",
+                      color: "#19191A",
                       fontSize: "16px",
                     }}
                   >

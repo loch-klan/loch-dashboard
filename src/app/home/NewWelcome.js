@@ -1855,7 +1855,12 @@ class NewWelcome extends BaseReactComponent {
                 isText={true}
                 text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
-                <span className="inter-display-medium f-s-13">
+                <span className="inter-display-medium f-s-13"
+                style={{
+                  fontWeight:'700',
+                  color:'#313233'
+                }}
+                >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -1888,38 +1893,38 @@ class NewWelcome extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              <span
-                onClick={() => {
-                  if (!this.state.blurTable) {
-                    let lochUser = getCurrentUser().id;
+                <span
+                  onClick={() => {
+                    if (!this.state.blurTable) {
+                      let lochUser = getCurrentUser().id;
 
-                    let slink = rowData.account;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                    if (lochUser) {
-                      const alreadyPassed =
-                        window.sessionStorage.getItem("PassedRefrenceId");
-                      if (alreadyPassed) {
-                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                      } else {
-                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      let slink = rowData.account;
+                      let shareLink =
+                        BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                      if (lochUser) {
+                        const alreadyPassed =
+                          window.sessionStorage.getItem("PassedRefrenceId");
+                        if (alreadyPassed) {
+                          shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                        } else {
+                          shareLink = shareLink + "&refrenceId=" + lochUser;
+                        }
                       }
+                      // SmartMoneyWalletClicked({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   wallet: slink,
+                      //   isMobile: false,
+                      // });
+                      window.open(shareLink, "_blank", "noreferrer");
+                    } else {
+                      this.opneLoginModalForSmartMoney();
                     }
-                    // SmartMoneyWalletClicked({
-                    //   session_id: getCurrentUser().id,
-                    //   email_address: getCurrentUser().email,
-                    //   wallet: slink,
-                    //   isMobile: false,
-                    // });
-                    window.open(shareLink, "_blank", "noreferrer");
-                  } else {
-                    this.opneLoginModalForSmartMoney();
-                  }
-                }}
-                className="top-account-address"
-              >
-                {TruncateText(rowData.account)}
-              </span>
+                  }}
+                  className="top-account-address"
+                >
+                  {TruncateText(rowData.account)}
+                </span>
             );
           }
         },
@@ -2336,7 +2341,8 @@ class NewWelcome extends BaseReactComponent {
                   alignItems: "center",
                   opacity: "0.5",
                   fontSize: "13px",
-                  gap: "6px",
+                  gap: "5px",
+                  fontWeight: "500",
                 }}
               >
                 <p>
@@ -2420,8 +2426,9 @@ class NewWelcome extends BaseReactComponent {
                     <img src={TrendingFireIcon} alt="" />
                     <div
                       style={{
-                        color: "19191A",
+                        color: "#19191A",
                         fontSize: "16px",
+                        
                       }}
                       className="inter-display-medium"
                     >

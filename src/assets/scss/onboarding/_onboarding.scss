@@ -1349,7 +1349,7 @@
   }
 
   .new-homepage__header {
-    padding: 25px 190px 78px 190px;
+    padding: 28px 190px 75px 190px;
     min-width: 85rem;
     height: 350px;
     width: 100%;
@@ -1423,11 +1423,13 @@
       .trendingAddressesBlockItemContainer {
         width: 22%;
         overflow: hidden;
+        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+        border-radius: 1rem;
 
         .trendingAddressesBlockItem {
           display: flex;
           align-items: center;
-          padding: 1rem;
+          padding: 12px;
           gap: 12px;
           border: 0.1rem solid #e5e5e6;
           border-radius: 1rem;
@@ -1439,29 +1441,33 @@
           .trendingAddressesBlockItemWalletContainer {
             margin-right: 0.5rem;
             background-color: #e5e5e680;
-            min-height: 3.6rem;
-            min-width: 3.6rem;
-            max-height: 3.6rem;
-            max-width: 3.6rem;
+            min-height: 40px;
+            min-width: 40px;
+            max-height: 40px;
+            max-width: 40px;
             border-radius: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
 
             .trendingAddressesBlockItemWallet {
-              min-height: 1.5rem;
-              min-width: 1.5rem;
-              max-height: 1.5rem;
-              max-width: 1.5rem;
+              min-height: 20px;
+              min-width: 20px;
+              max-height: 20px;
+              max-width: 20px;
             }
           }
           .trendingAddressesBlockItemDataContainer {
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 3px;
             align-items: flex-start;
+            .inter-display-medium{
+              color: #19191A;
+            }
             .trendingAddressesBlockItemDataContainerAmount {
-              margin-top: 0.2rem;
+              // margin-top: 0.2rem;
               color: #96979a;
             }
           }
@@ -1514,6 +1520,7 @@
         transform: translateY(-31px);
         .new-homepage__body-search_input_body_container {
           box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
+          margin-bottom: 10px;
         }
       }
       .new-homepage__body-search_input_body_container {
@@ -1755,6 +1762,7 @@
         font-weight: 500;
         line-height: 120%;
         gap: 8px;
+        color: #19191A;
       }
 
       .new-homepage__body-content-table-header-mobile {
