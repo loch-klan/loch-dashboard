@@ -2,7 +2,15 @@ import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
-function CustomCoin({ coins, isLoaded, id, isCohort, isStatic }) {
+function CustomCoin({
+  coins,
+  isLoaded,
+  id,
+  isCohort,
+  isStatic,
+  noNameJustIcon,
+  overlayOnBottom,
+}) {
   // console.log("coins", coins);
   if (isCohort) {
     coins = coins?.map((e) => {
@@ -29,7 +37,11 @@ function CustomCoin({ coins, isLoaded, id, isCohort, isStatic }) {
               id={id}
               style={isStatic ? { position: "static" } : {}}
             >
-              <div className="chip-container-dual">
+              <div
+                className={`chip-container-dual ${
+                  noNameJustIcon ? "chip-container-dual-justIcon" : ""
+                }`}
+              >
                 <Image
                   src={sortedCoins[0]?.coinSymbol}
                   style={{
@@ -40,17 +52,27 @@ function CustomCoin({ coins, isLoaded, id, isCohort, isStatic }) {
                     backgroundColor: sortedCoins[0]?.coinColor,
                   }}
                 />
-                <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
-                  {sortedCoins[0]?.coinName}
-                </Badge>
-              </div>
-              <div className="chip-container">
-                <CustomOverlay text={sortedCoins} position="top">
+                {!noNameJustIcon ? (
                   <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
-                    +{sortedCoins.length - 1}
+                    {sortedCoins[0]?.coinName}
                   </Badge>
-                </CustomOverlay>
+                ) : null}
               </div>
+              {!noNameJustIcon ? (
+                <div className="chip-container">
+                  <CustomOverlay
+                    text={sortedCoins}
+                    position={overlayOnBottom ? "bottom" : "top"}
+                    className={
+                      overlayOnBottom ? "tool-tip-container-bottom-arrow" : ""
+                    }
+                  >
+                    <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
+                      +{sortedCoins.length - 1}
+                    </Badge>
+                  </CustomOverlay>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div
@@ -96,7 +118,7 @@ function CustomCoin({ coins, isLoaded, id, isCohort, isStatic }) {
                                 <div className="bounce3"></div>
                             </div>
                         </div> */}
-          {loadingAnimation()}
+          {loadingAnimation(true)}
         </div>
       )}
     </>

@@ -46,7 +46,6 @@ ChartJS.register(
 
 class BarGraphSection extends Component {
   constructor(props) {
-    console.log("props.data is ", props.data);
     super(props);
     this.state = {
       headerTitle: props.headerTitle,

@@ -15,6 +15,7 @@
     "common/_login.scss",
     "portfolio/_portfolio.scss",
     "common/_fix-add-modal.scss",
+    "common/_forms.scss",
     "intelligence/_intelligence.scss",
     "intelligence/_transactionHistory.scss",
     "common/_commonTable.scss",
