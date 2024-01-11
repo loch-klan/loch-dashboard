@@ -645,6 +645,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >
@@ -665,7 +666,7 @@ class CounterPartyVolume extends Component {
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
                 showFooter={true}
-                showBadges={true}
+                // showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
                 isLoading={this.state.counterGraphLoading}

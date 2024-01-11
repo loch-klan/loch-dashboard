@@ -290,6 +290,7 @@ class Wallet extends Component {
               activeBadge={this.state.activeBadge}
               chainList={this.props.OnboardingState.coinsList}
               handleFunction={this.handleFunction}
+              hideDropdown
             />
           </div>
           <div className="m-b-16 sortby-section">
@@ -350,6 +351,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isLastEle={index === walletList.length - 1}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

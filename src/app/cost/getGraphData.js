@@ -61,18 +61,7 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              amountFormat(
-                (
-                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
-                    assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]] ||
-                  ctx.raw
-                )?.toFixed(2) * currency.rate,
-                "en-US",
-                "USD"
-              );
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -367,10 +356,7 @@ export const getCounterGraphData = (arr, parentCtx, isFromHome) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -486,7 +472,13 @@ export const getCounterGraphData = (arr, parentCtx, isFromHome) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function (value, index, ticks) {
-            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            if (this.getLabelForValue(value)) {
+              if (this.getLabelForValue(value).length >= 6) {
+                return this.getLabelForValue(value).slice(0, 4) || "Other";
+              }
+              return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            }
+            return null;
           },
         },
         grid: {

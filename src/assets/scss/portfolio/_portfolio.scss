@@ -174,7 +174,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 1rem;
+
                 .topBarHistoryTitleLeftContainer {
                   display: flex;
                   align-items: center;
@@ -202,26 +202,40 @@
               .topBarHistoryItemContainer {
                 display: flex;
                 align-items: center;
-                justify-content: space-around;
+                justify-content: flex-start;
+                overflow: hidden;
+                flex-flow: row wrap;
+                max-height: 5.2rem;
                 .topBarHistoryItemBlock {
+                  margin-top: 1rem;
                   display: flex;
                   align-items: flex-start;
                   justify-content: space-between;
-                  padding: 1.2rem;
+                  padding: 0rem 1.2rem;
+                  height: 4rem;
                   border: 0.1rem solid #e5e5e6;
+                  margin-right: 0.5rem;
                   border-radius: 1rem;
-                  transition-duration: 300ms;
                   font-size: 14px;
                   cursor: pointer;
-                  width: 13rem;
+                  min-width: 13rem;
+                  max-width: 13rem;
+                  break-inside: avoid;
                   &:hover {
                     border-color: #19191a;
+                  }
+                  .topBarHistoryItemBlockText {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
                   }
                   .topBarHistoryItemBlockIcon {
                     height: 8px;
                     cursor: pointer;
+                    margin-top: 0.8rem;
                     &:hover {
-                      filter: invert(1);
+                      filter: brightness(0);
                     }
                   }
                 }
@@ -248,6 +262,26 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
+                &:-webkit-autofill:focus {
+                  box-shadow: 0 0 0 30px white inset !important;
+                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  transition: background-color 5000s ease-in-out 0s;
+                }
+                box-shadow: 0 0 0 30px white inset !important;
+                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                transition: background-color 5000s ease-in-out 0s;
+
+                &:hover {
+                  &::placeholder {
+                    color: black;
+                    opacity: 1; /* Firefox */
+                  }
+
+                  &::-ms-input-placeholder {
+                    /* Edge 12 -18 */
+                    color: black;
+                  }
+                }
               }
             }
             .maxWidth50 {
@@ -1238,6 +1272,10 @@
             text-align: center;
             color: #636467;
             border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             cursor: pointer;
             transition-duration: 300ms;
             &:hover {
@@ -2136,4 +2174,16 @@
   &:hover {
     filter: brightness(0.5);
   }
+}
+
+.info-icon-i{
+  height: 12px;
+  width: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #CACBCC;
+  color: white;
+  font-size: 8px;
 }

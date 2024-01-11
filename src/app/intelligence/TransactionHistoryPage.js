@@ -133,6 +133,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -202,6 +203,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -470,6 +472,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -582,7 +593,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleFunction = (badge) => {
     if (badge && badge.length > 0) {
       const tempArr = [];
-      if (badge[0].name !== "All") {
+      if (badge[0]?.name !== "All") {
         badge.forEach((resData) => tempArr.push(resData.id));
       }
       this.addCondition(
@@ -998,7 +1009,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           // method: row.transaction_type
           method: row.method,
           hash: row.transaction_id,
-          network: row.chain.name,
+          network: row?.chain?.name,
         };
       });
 
@@ -1865,6 +1876,27 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
               <div className="gainLossContainer">
                 {rowData.method &&
@@ -1881,7 +1913,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </div>
                 ) : (
                   <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                    {actualMethod}
                   </div>
                 )}
               </div>
