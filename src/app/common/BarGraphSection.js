@@ -354,7 +354,7 @@ class BarGraphSection extends Component {
                   {showFooter && (
                     <div
                       style={{
-                        width: "75%",
+                        width: this.props.showBadges ? "75%" : "100%",
                       }}
                     >
                       <BarGraphFooter
