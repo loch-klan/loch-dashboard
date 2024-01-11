@@ -290,6 +290,7 @@ class Wallet extends Component {
               activeBadge={this.state.activeBadge}
               chainList={this.props.OnboardingState.coinsList}
               handleFunction={this.handleFunction}
+              hideDropdown
             />
           </div>
           <div className="m-b-16 sortby-section">
