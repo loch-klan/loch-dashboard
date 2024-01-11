@@ -582,7 +582,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleFunction = (badge) => {
     if (badge && badge.length > 0) {
       const tempArr = [];
-      if (badge[0].name !== "All") {
+      if (badge[0]?.name !== "All") {
         badge.forEach((resData) => tempArr.push(resData.id));
       }
       this.addCondition(
@@ -998,7 +998,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           // method: row.transaction_type
           method: row.method,
           hash: row.transaction_id,
-          network: row.chain.name,
+          network: row?.chain?.name,
         };
       });
 
