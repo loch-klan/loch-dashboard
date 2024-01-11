@@ -2064,11 +2064,11 @@ class Portfolio extends BaseReactComponent {
             address: row.from_wallet.address,
             metaData: walletFromData,
             wallet_metaData: {
-              symbol: row.from_wallet.wallet_metadata
-                ? row.from_wallet.wallet_metadata.symbol
+              symbol: row.from_wallet?.wallet_metadata
+                ? row.from_wallet?.wallet_metadata?.symbol
                 : null,
-              text: row.from_wallet.wallet_metadata
-                ? row.from_wallet.wallet_metadata.name
+              text: row.from_wallet?.wallet_metadata
+                ? row.from_wallet?.wallet_metadata?.name
                 : null,
             },
           },
@@ -2077,39 +2077,39 @@ class Portfolio extends BaseReactComponent {
             // wallet_metaData: row.to_wallet.wallet_metaData,
             metaData: walletToData,
             wallet_metaData: {
-              symbol: row.to_wallet.wallet_metadata
-                ? row.to_wallet.wallet_metadata.symbol
+              symbol: row.to_wallet?.wallet_metadata
+                ? row.to_wallet?.wallet_metadata?.symbol
                 : null,
-              text: row.to_wallet.wallet_metadata
-                ? row.to_wallet.wallet_metadata.name
+              text: row.to_wallet?.wallet_metadata
+                ? row.to_wallet?.wallet_metadata?.name
                 : null,
             },
           },
           asset: {
-            code: row.asset.code,
-            symbol: row.asset.symbol,
+            code: row.asset?.code,
+            symbol: row.asset?.symbol,
           },
           amount: {
-            value: parseFloat(row.asset.value),
-            id: row.asset.id,
+            value: parseFloat(row.asset?.value),
+            id: row.asset?.id,
           },
           usdValueThen: {
-            value: row.asset.value,
-            id: row.asset.id,
+            value: row.asset?.value,
+            id: row.asset?.id,
             assetPrice: row.asset_price,
           },
           usdValueToday: {
-            value: row.asset.value,
-            id: row.asset.id,
+            value: row.asset?.value,
+            id: row.asset?.id,
           },
           usdTransactionFee: {
             value: row.transaction_fee,
-            id: row.asset.id,
+            id: row.asset?.id,
           },
           // method: row.transaction_type
           method: row.method,
           hash: row.transaction_id,
-          network: row.chain.name,
+          network: row.chain?.name,
         };
       });
 
@@ -2280,10 +2280,10 @@ class Portfolio extends BaseReactComponent {
                       style={{ width: "1rem" }}
                     />
                   </span>
-                ) : rowData.from.wallet_metaData.symbol ||
-                  rowData.from.wallet_metaData.text ||
-                  rowData.from.metaData?.nickname ? (
-                  rowData.from.wallet_metaData.symbol ? (
+                ) : rowData.from?.wallet_metaData?.symbol ||
+                  rowData.from?.wallet_metaData?.text ||
+                  rowData.from?.metaData?.nickname ? (
+                  rowData.from?.wallet_metaData?.symbol ? (
                     <span
                       onMouseEnter={() => {
                         TransactionHistoryAddress({
@@ -2561,10 +2561,10 @@ class Portfolio extends BaseReactComponent {
                       style={{ width: "1rem" }}
                     />
                   </span>
-                ) : rowData.to.wallet_metaData.symbol ||
+                ) : rowData.to?.wallet_metaData?.symbol ||
                   rowData.to.wallet_metaData.text ||
-                  rowData.to.metaData?.nickname ? (
-                  rowData.to.wallet_metaData.symbol ? (
+                  rowData.to?.metaData?.nickname ? (
+                  rowData.to?.wallet_metaData?.symbol ? (
                     <span
                       onMouseEnter={() => {
                         TransactionHistoryAddress({
@@ -2770,13 +2770,15 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.asset.code}
+                text={rowData?.asset?.code}
               >
                 {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
                                 // coin_code={rowData.asset.code}
                             /> */}
-                <Image src={rowData.asset.symbol} className="asset-symbol" />
+                {rowData?.asset?.symbol ? (
+                  <Image src={rowData.asset.symbol} className="asset-symbol" />
+                ) : null}
               </CustomOverlay>
             );
           }
@@ -3120,8 +3122,8 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "asset") {
             return (
               <CoinChip
-                coin_img_src={rowData.asset.symbol}
-                coin_code={rowData.asset.code}
+                coin_img_src={rowData?.asset?.symbol}
+                coin_code={rowData?.asset?.code}
                 chain={rowData?.network}
               />
             );
@@ -3702,7 +3704,7 @@ class Portfolio extends BaseReactComponent {
           <div className="portfolio-page-section">
             <div
               className="portfolio-container page"
-              style={{ overflow: "visible", padding: "0 5rem" }}
+              style={{ overflow: "visible" }}
             >
               <div className="portfolio-section">
                 {/* welcome card */}
@@ -4199,21 +4201,23 @@ class Portfolio extends BaseReactComponent {
                               addWatermark
                             />
                           </div>
-                          <div className="inter-display-medium bottomExtraInfo">
-                            <div
-                              onClick={this.goToTransactionHistoryPage}
-                              className="bottomExtraInfoText"
-                            >
-                              {totalCount && totalCount > 10
-                                ? `Click here to see ${numToCurrency(
-                                    totalCount - 10,
-                                    true
-                                  ).toLocaleString("en-US")}+ transaction${
-                                    totalCount - 10 > 1 ? "s" : ""
-                                  }`
-                                : "Click here to see more"}
+                          {!this.state.tableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToTransactionHistoryPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {totalCount && totalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      totalCount - 10,
+                                      true
+                                    ).toLocaleString("en-US")}+ transaction${
+                                      totalCount - 10 > 1 ? "s" : ""
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
                             </div>
-                          </div>
+                          ) : null}
                         </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
@@ -4234,27 +4238,29 @@ class Portfolio extends BaseReactComponent {
                               addWatermark
                             />
                           </div>
-                          <div className="inter-display-medium bottomExtraInfo">
-                            <div
-                              onClick={this.goToYieldOppPage}
-                              className="bottomExtraInfoText"
-                            >
-                              {this.state.yieldOpportunitiesTotalCount &&
-                              this.state.yieldOpportunitiesTotalCount > 10
-                                ? `Click here to see ${numToCurrency(
-                                    this.state.yieldOpportunitiesTotalCount -
-                                      10,
-                                    true
-                                  ).toLocaleString("en-US")}+ yield ${
-                                    this.state.yieldOpportunitiesTotalCount -
-                                      10 >
-                                    1
-                                      ? "opportunities"
-                                      : "opportunity"
-                                  }`
-                                : "Click here to see more"}
+                          {!this.state.yieldOpportunitiesTableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToYieldOppPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {this.state.yieldOpportunitiesTotalCount &&
+                                this.state.yieldOpportunitiesTotalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10,
+                                      true
+                                    ).toLocaleString("en-US")}+ yield ${
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10 >
+                                      1
+                                        ? "opportunities"
+                                        : "opportunity"
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
                             </div>
-                          </div>
+                          ) : null}
                         </div>
                       ) : this.state.blockFourSelectedItem === 3 ? (
                         <PortfolioHomeInsightsBlock
