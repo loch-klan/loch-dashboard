@@ -1260,6 +1260,10 @@
             text-align: center;
             color: #636467;
             border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             cursor: pointer;
             transition-duration: 300ms;
             &:hover {
@@ -2117,4 +2121,16 @@
   &:hover {
     filter: brightness(0.5);
   }
+}
+
+.info-icon-i{
+  height: 12px;
+  width: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #CACBCC;
+  color: white;
+  font-size: 8px;
 }

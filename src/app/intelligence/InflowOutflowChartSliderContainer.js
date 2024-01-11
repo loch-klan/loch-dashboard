@@ -510,7 +510,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               ? numToCurrency(this.state.currentPriceValue)
                               : "0.00"}
                           </div>
-                          {this.props.hideTimeFilter ? (
+                          {!this.props.hideTimeFilter || this.props.hideExplainer ? null: (
                             <div
                               style={{
                                 display: "flex",
@@ -536,7 +536,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                                 />
                               </CustomOverlay>
                             </div>
-                          ) : null}
+                          ) }
                         </div>
 
                         <div
