@@ -38,6 +38,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import DropDown from "../common/DropDown";
 import Footer from "../common/footer";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -266,6 +267,10 @@ class InsightsPage extends Component {
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
       this.setState({
+        isLoading: true,
+      });
+      this.props.getAllInsightsApi(this);
+      this.setState({
         apiResponse: false,
       });
     }
@@ -463,6 +468,10 @@ class InsightsPage extends Component {
         </div>
         <div className="insights-section m-t-80">
           <div className="insights-page page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
