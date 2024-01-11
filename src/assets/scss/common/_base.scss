@@ -2197,6 +2197,13 @@ textarea {
     }
   }
 }
+.copy-icon-top-bar-new {
+  transition-duration: 300ms;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(0.2);
+  }
+}
 
 // .coin-badges{
 //   .white-scroll::-webkit-scrollbar-thumb, .white-scroll::-webkit-scrollbar-track{

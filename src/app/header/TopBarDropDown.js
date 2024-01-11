@@ -105,7 +105,7 @@ export default function TopBarDropDown(props) {
               </div>
             </CustomOverlay>
             {!(props.fullWalletList && props.fullWalletList.length > 1) ? (
-              <div className="copy-icon-top-bar pl-2">
+              <div className="copy-icon-top-bar-new pl-2">
                 <Image
                   src={CopyClipboardIcon}
                   onClick={() =>
@@ -113,7 +113,6 @@ export default function TopBarDropDown(props) {
                       props.firstFullWallet ? props.firstFullWallet : ""
                     )
                   }
-                  className="cp"
                   style={{ height: "1.2rem" }}
                 />
               </div>
