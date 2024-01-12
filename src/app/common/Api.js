@@ -219,7 +219,6 @@ export const updateUserWalletApi = (
         }
       })
       .catch((err) => {
-        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({

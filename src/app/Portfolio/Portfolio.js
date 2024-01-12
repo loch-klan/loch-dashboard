@@ -4112,6 +4112,7 @@ class Portfolio extends BaseReactComponent {
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}
+                showUpdatesJustNowBtn
               />
               <div className="m-b-22 graph-table-section">
                 <Row>
