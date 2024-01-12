@@ -235,10 +235,14 @@ class Wallet extends Component {
   };
 
   handleUpdateWallet = () => {
-    // console.log("YES API")
     this.setState({ isLoading: true });
     this.makeApiCall();
-    this.props.setPageFlagDefault();
+  };
+  handleStartLoading = () => {
+    this.setState({ isLoading: true });
+  };
+  handleStopLoading = () => {
+    this.setState({ isLoading: true });
   };
 
   render() {
@@ -328,13 +332,15 @@ class Wallet extends Component {
                 </h3>
               </div>
               <div className="right">
-                <h3 className="space-grotesk-medium f-s-24 lh-29">
-                  {CurrencyType(false)}
-                  {numToCurrency(totalWalletAmt)}{" "}
-                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
-                    {CurrencyType(true)}
-                  </span>
-                </h3>
+                {!isLoading ? (
+                  <h3 className="space-grotesk-medium f-s-24 lh-29">
+                    {CurrencyType(false)}
+                    {numToCurrency(totalWalletAmt)}{" "}
+                    <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                ) : null}
               </div>
             </div>
           )}
@@ -364,6 +370,8 @@ class Wallet extends Component {
                     history={this.props.history}
                     nickname={wallet.nickname}
                     protocol={wallet.protocol}
+                    handleStartLoading={this.handleStartLoading}
+                    handleStopLoading={this.handleStopLoading}
                     // isLoading={this.state.isLoading}
                   />
                 );
