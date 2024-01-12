@@ -64,7 +64,20 @@ import {
   AddMoreAddres,
   AssetValueExpandview,
   AverageCostBasisEView,
+  CAverageCostBasisSort,
+  CostAmountHover,
+  CostAssetHover,
+  CostAverageCostPriceHover,
+  CostCostBasisHover,
+  CostCurrentPriceHover,
+  CostCurrentValueHover,
   CostGainHover,
+  CostGainLossHover,
+  CostSortByAmount,
+  CostSortByAsset,
+  CostSortByCostPrice,
+  CostSortByCurrentPrice,
+  CostSortByPortfolio,
   GasFeesEV,
   HomeCostSortByAsset,
   HomePage,
@@ -76,6 +89,9 @@ import {
   NetflowSwitchHome,
   PriceGaugeEV,
   ProfitLossEV,
+  SortByCurrentValue,
+  SortByGainAmount,
+  SortByGainLoss,
   TimeSpentHome,
   TransactionHistoryAddress,
   TransactionHistoryAddressCopied,
@@ -392,7 +408,9 @@ class Portfolio extends BaseReactComponent {
         { title: "Amount", down: true },
         { title: "Cost basis", down: true },
         { title: "Current value", down: false },
-        { title: "Gain loss", down: true },
+        { title: "Gain amount", down: true },
+        { title: "Gain percentage", down: true },
+        { title: "Portfolio perc", down: true },
       ],
       AvgCostLoading: true,
 
@@ -1879,54 +1897,95 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
-      HomeCostSortByAsset({
+      CostSortByAsset({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
+      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
+      CostSortByCostPrice({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
         sortBy: sort,
       });
+      CostSortByCurrentPrice({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     } else if (e.title === "Amount") {
       this.sortArray("Amount", isDown);
       this.setState({
         sortBy: sort,
       });
+      CostSortByAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({
         sortBy: sort,
       });
-      HomeSortByCostBasis({
+      CAverageCostBasisSort({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
-      HomeSortByCurrentValue({
+      SortByCurrentValue({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
-    } else if (e.title === "Gain loss") {
+      this.updateTimer();
+    } else if (e.title === "Gain amount") {
+      this.sortArray("GainAmount", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      SortByGainAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
+    } else if (e.title === "Gain percentage") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
-      HomeSortByGainLoss({
+      SortByGainLoss({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
+    } else if (e.title === "Portfolio perc") {
+      this.sortArray("weight", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      CostSortByPortfolio({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
     }
   };
+
   setSwitch = () => {
     this.setState({
       isSwitch: !this.state.isSwitch,
@@ -2005,6 +2064,15 @@ class Portfolio extends BaseReactComponent {
     if (this.state.lochToken) {
       this.props.history.push("/yield-opportunities");
       YieldOppurtunitiesExpandediew({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  goToAssetsPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/assets");
+      AverageCostBasisEView({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
@@ -3356,6 +3424,29 @@ class Portfolio extends BaseReactComponent {
     ];
     const CostBasisColumnData = [
       {
+        labelName: "",
+        dataKey: "Numbering",
+        coumnWidth: 0.05,
+        isCell: true,
+        cell: (rowData, dataKey, index) => {
+          if (dataKey === "Numbering" && index > -1) {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
+              >
+                <span className="inter-display-medium f-s-13">
+                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -3372,98 +3463,270 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "Asset",
-        // coumnWidth: 118,
-        coumnWidth: 0.2,
+
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
-            if (rowData === "EMPTY") {
-              return null;
-            }
             return (
-              // <CoinChip
-              //   coin_img_src={rowData.Asset}
-              //   coin_code={rowData.AssetCode}
-              // />
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.AssetCode+" ["+rowData?.chain?.name+"]"}
+              <div
+                onMouseEnter={() => {
+                  CostAssetHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    asset_hover: rowData.AssetCode,
+                  });
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <div>
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.AssetCode + " [" + rowData?.chain?.name + "]"}
+                >
+                  <div>
                     <CoinChip
                       coin_img_src={rowData.Asset}
                       coin_code={rowData.AssetCode}
                       chain={rowData?.chain}
-                      // showNetwork={true}
                       hideText={true}
-                      hideChainImage={false}
                     />
-                </div>
-              </CustomOverlay>
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Cost Basis"
-      //       onClick={() => this.handleSort(this.state.sortBy[4])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Cost basis
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CostBasis",
-      //   // coumnWidth: 100,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CostBasis") {
-      //       if (rowData === "EMPTY") {
-      //         return null;
-      //       }
-      //       return (
-      //         <div className="cost-common-container">
-      //           <CustomOverlay
-      //             position="top"
-      //             isIcon={false}
-      //             isInfo={true}
-      //             isText={true}
-      //             text={
-      //               !rowData.CostBasis || rowData.CostBasis === 0
-      //                 ? "N/A"
-      //                 : CurrencyType(false) +
-      //                   Number(
-      //                     noExponents(rowData.CostBasis.toFixed(2))
-      //                   ).toLocaleString("en-US")
-      //             }
-      //           >
-      //             <div className="cost-common">
-      //               <span>
-      //                 {!rowData.CostBasis || rowData.CostBasis === 0
-      //                   ? "N/A"
-      //                   : CurrencyType(false) +
-      //                     numToCurrency(
-      //                       rowData.CostBasis.toFixed(2)
-      //                     ).toLocaleString("en-US")}
-      //               </span>
-      //             </div>
-      //           </CustomOverlay>
-      //         </div>
-      //       );
-      //     }
-      //   },
-      // },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Average Cost Price"
+            onClick={() => this.handleSort(this.state.sortBy[1])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Avg cost price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "AverageCostPrice",
+
+        coumnWidth: 0.12,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "AverageCostPrice") {
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostAverageCostPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.AverageCostPrice.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {rowData.AverageCostPrice === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        numToCurrency(
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Price"
+            onClick={() => this.handleSort(this.state.sortBy[2])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "CurrentPrice",
+
+        coumnWidth: 0.1,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CurrentPrice") {
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostCurrentPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentPrice.toFixed(2))
+                    ).toLocaleString("en-US")
+                  }
+                >
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    {CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Amount"
+            onClick={() => this.handleSort(this.state.sortBy[3])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Amount
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "Amount",
+
+        coumnWidth: 0.1,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "Amount") {
+            return (
+              <span
+                onMouseEnter={() => {
+                  CostAmountHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(noExponents(rowData.Amount)).toLocaleString(
+                    "en-US"
+                  )}
+                >
+                  <span>
+                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                  </span>
+                </CustomOverlay>
+              </span>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Cost Basis"
+            onClick={() => this.handleSort(this.state.sortBy[4])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Cost basis
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "CostBasis",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CostBasis") {
+            return (
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CostBasis === 0
+                      ? "N/A"
+                      : CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CostBasis.toFixed(2))
+                        ).toLocaleString("en-US")
+                  }
+                >
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCostBasisHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {rowData.CostBasis === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
       {
         labelName: (
           <div
@@ -3481,13 +3744,10 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "CurrentValue",
-        // coumnWidth: 140,
-        coumnWidth: 0.283,
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
           if (dataKey === "CurrentValue") {
             return (
               <div className="cost-common-container">
@@ -3506,13 +3766,18 @@ class Portfolio extends BaseReactComponent {
                   }
                 >
                   <div className="cost-common">
-                    <span>
-                      {rowData.CurrentValue
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentValue.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
+                    <span
+                      onMouseEnter={() => {
+                        CostCurrentValueHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3539,12 +3804,9 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.283,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
           if (dataKey === "GainAmount") {
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
@@ -3600,54 +3862,131 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-
       {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="PortfolioPer"
-            // onClick={() => this.handleSort(this.state.sortBy[6])}
+            id="Gain loss"
+            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Portfolio (%)
+              Return
             </span>
-            {/* <Image
+            <Image
               src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            /> */}
+              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
+            />
           </div>
         ),
-        dataKey: "PortfolioPercentage",
-        // coumnWidth: 128,
-        coumnWidth: 0.283,
+        dataKey: "GainLoss",
+
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "PortfolioPercentage") {
-            if (rowData === "EMPTY") {
-              return null;
-            }
+          if (dataKey === "GainLoss") {
+            const tempDataHolder = Number(
+              noExponents(rowData.GainLoss.toFixed(2))
+            );
             return (
-              <div className="gainLossContainer">
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
                 <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.weight
-                      ? Math.abs(
-                          Number(noExponents(rowData.weight.toFixed(2)))
-                        ).toLocaleString("en-US") + "%"
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainLoss < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Portfolio perc"
+            onClick={() => this.handleSort(this.state.sortBy[8])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "PortfolioPercentage") {
+            const tempDataHolder = Number(
+              noExponents(rowData.weight.toFixed(2))
+            );
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                       : "0.00%"
                   }
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {rowData.weight
-                        ? Math.abs(
-                            Number(noExponents(rowData.weight.toFixed(2)))
-                          ).toLocaleString("en-US") + "%"
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                         : "0.00%"}
                     </span>
                   </div>
@@ -3799,29 +4138,29 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockOneItem(1);
                             }}
                           >
-                            Assets 
+                            Assets
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand your unrealized profit and loss per token"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand your unrealized profit and loss per token"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3835,80 +4174,73 @@ class Portfolio extends BaseReactComponent {
                           >
                             DeFi
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Decipher all your DeFi positions from one place"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Decipher all your DeFi positions from one place"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                         </div>
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
-                        <div
-                          style={{
-                            paddingLeft: "1rem",
-                            paddingRight: "1rem",
-                          }}
-                        >
-                          <TransactionTable
-                            noSubtitleBottomPadding
-                            disableOnLoading
-                            isMiniversion
-                            // title="Unrealized profit and loss"
-                            handleClick={() => {
-                              if (this.state.lochToken) {
-                                this.props.history.push("/assets");
-                                AverageCostBasisEView({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }
-                            }}
-                            // subTitle="Understand your unrealized profit and loss per token"
-                            tableData={tableDataCostBasis.slice(0, 5)}
-                            moreData={
-                              this.props.intelligenceState
-                                ?.Average_cost_basis &&
-                              this.props.intelligenceState.Average_cost_basis
-                                .length > 5
-                                ? `Click here to see ${numToCurrency(
-                                    this.props.intelligenceState
-                                      .Average_cost_basis.length - 5,
-                                    true
-                                  ).toLocaleString("en-US")}+ asset${
-                                    this.props.intelligenceState
-                                      .Average_cost_basis.length -
-                                      5 >
-                                    1
-                                      ? "s"
-                                      : ""
-                                  }`
-                                : "Click here to see more"
-                            }
-                            showDataAtBottom
-                            columnList={CostBasisColumnData}
-                            headerHeight={60}
-                            isArrow={true}
-                            isLoading={this.state.AvgCostLoading}
-                            isAnalytics="average cost basis"
-                            addWatermark
-                          />
+                        <div>
+                          <div className="newHomeTableContainer">
+                            <TransactionTable
+                              noSubtitleBottomPadding
+                              disableOnLoading
+                              isMiniversion
+                              xAxisScrollable
+                              tableData={tableDataCostBasis.slice(0, 10)}
+                              columnList={CostBasisColumnData}
+                              headerHeight={60}
+                              isArrow={true}
+                              isLoading={this.state.AvgCostLoading}
+                              isAnalytics="average cost basis"
+                              addWatermark
+                            />
+                          </div>
+                          {!this.state.AvgCostLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToAssetsPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {this.props.intelligenceState
+                                  ?.Average_cost_basis &&
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      this.props.intelligenceState
+                                        .Average_cost_basis.length - 10,
+                                      true
+                                    ).toLocaleString("en-US")}+ asset${
+                                      this.props.intelligenceState
+                                        .Average_cost_basis.length -
+                                        10 >
+                                      1
+                                        ? "s"
+                                        : ""
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
+                            </div>
+                          ) : null}
                         </div>
                       ) : this.state.blockOneSelectedItem === 2 ? (
                         <PortfolioHomeDefiBlock
@@ -3944,27 +4276,25 @@ class Portfolio extends BaseReactComponent {
                           >
                             Realized Gains
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand your portfolio's net flows"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={"Understand your portfolio's net flows"}
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -3978,27 +4308,25 @@ class Portfolio extends BaseReactComponent {
                           >
                             Gas fees
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand your gas costs"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={"Understand your gas costs"}
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -4012,27 +4340,27 @@ class Portfolio extends BaseReactComponent {
                           >
                             Counterparties
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand where you’ve exchanged the most value"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand where you’ve exchanged the most value"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                         </div>
                       </div>
@@ -4212,27 +4540,27 @@ class Portfolio extends BaseReactComponent {
                           >
                             Price gauge
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand when this token was bought and sold"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand when this token was bought and sold"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -4246,27 +4574,27 @@ class Portfolio extends BaseReactComponent {
                           >
                             Networks
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Understand where you’ve exchanged the most value"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand where you’ve exchanged the most value"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                         </div>
                       </div>
@@ -4317,27 +4645,27 @@ class Portfolio extends BaseReactComponent {
                           >
                             Transactions
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Sort, filter, and dissect all your transactions from one place"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Sort, filter, and dissect all your transactions from one place"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -4351,27 +4679,27 @@ class Portfolio extends BaseReactComponent {
                           >
                             Yield opportunities
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Yield bearing opportunties personalized for your portfolio"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Yield bearing opportunties personalized for your portfolio"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -4385,27 +4713,25 @@ class Portfolio extends BaseReactComponent {
                           >
                             Insights
                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "Valuable insights based on your assets"
-                                }
-                              >
-                                {/* <div className="info-icon-i">
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={"Valuable insights based on your assets"}
+                            >
+                              {/* <div className="info-icon-i">
                                   i
                                 </div> */}
-                                <Image
-                                  src={InfoIconI}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
                           </div>
                         </div>
                       </div>
