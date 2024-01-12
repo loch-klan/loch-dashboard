@@ -1529,6 +1529,7 @@ class TopWalletExchangeBar extends Component {
                 )}
               </div>
               <input
+                autocomplete="off"
                 name={`wallet${1}`}
                 placeholder="Paste any wallet address or ENS here"
                 className="topBarContainerInputBlockInput"
