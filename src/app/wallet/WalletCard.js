@@ -21,8 +21,11 @@ export default function WalletCard(props) {
   const [show, setShow] = React.useState(false);
   const [EditModal, setEditModal] = React.useState(false);
   // const [showModal, toggleCopied] = React.useState(false);
-  function handleClose() {
+  function handleClose(startLoading) {
     setShow(false);
+    if (startLoading && props.handleStartLoading) {
+      props.handleStartLoading();
+    }
   }
   function handleShow() {
     setShow(true);
@@ -262,7 +265,8 @@ export default function WalletCard(props) {
               walletMetaData={props.wallet_metadata}
               nickname={props.nickname}
               coinchips={props.wallet_coins}
-              makeApiCall={() => props.makeApiCall()}
+              apiResponse={() => props.makeApiCall()}
+              handleStopLoading={props.handleStopLoading}
             />
           ) : (
             ""
