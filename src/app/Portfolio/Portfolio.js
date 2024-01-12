@@ -3424,29 +3424,6 @@ class Portfolio extends BaseReactComponent {
     ];
     const CostBasisColumnData = [
       {
-        labelName: "",
-        dataKey: "Numbering",
-        coumnWidth: 0.05,
-        isCell: true,
-        cell: (rowData, dataKey, index) => {
-          if (dataKey === "Numbering" && index > -1) {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
-              >
-                <span className="inter-display-medium f-s-13">
-                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -3684,7 +3661,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
