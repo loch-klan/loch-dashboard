@@ -1080,175 +1080,177 @@
           }
         }
       }
-      .balance-sheet-card-portfolio-home {
-        position: relative;
+      .balance-sheet-card-portfolio-home-container {
         padding-left: 1rem;
         padding-right: 1rem;
-        .balance-dropdown {
-          position: absolute;
-          top: 5.3rem;
-          left: 0;
-          border-radius: 0px 0px 12px 12px;
-          border: 0.1rem solid #e5e5e680;
-          background-color: white;
-          border-top: none;
-          width: 100%;
-          z-index: 1;
-          .balance-dropdown-top-fake {
-            width: 100%;
-            height: 1.6rem;
-            display: flex;
-            .balance-dropdown-top-fake-left {
-              width: 50%;
-              height: 100%;
-            }
-            .balance-dropdown-top-fake-right {
-              width: 50%;
-              height: 100%;
-            }
-          }
-          .balance-list-content-parent {
-            .balance-list-content {
-              padding-top: 0;
-              max-height: 35rem;
-              overflow-y: scroll;
-              width: 100%;
-            }
-          }
-
-          .balance-sheet-list {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.15rem 0rem;
-            border-top: 1px solid rgba(229, 229, 230, 0.5);
-            padding-left: 2rem;
-            padding-right: 2rem;
-
-            .balance-amt {
-              background-color: rgba(229, 229, 230, 0.5);
-              border-radius: 4px;
-              padding: 6px;
-            }
-          }
-          .balance-sheet-list-no-border {
+        .balance-sheet-card-portfolio-home {
+          position: relative;
+          .balance-dropdown {
+            position: absolute;
+            top: 5.3rem;
+            left: 0;
+            border-radius: 0px 0px 12px 12px;
+            border: 0.1rem solid #e5e5e680;
+            background-color: white;
             border-top: none;
-          }
-        }
-        .balance-sheet-card {
-          border: 0.1rem solid #e5e5e680;
-          box-shadow: none;
-          border-radius: 12px;
-          margin-top: 1.6rem;
-          margin-bottom: 1.6rem;
-          user-select: none;
-          cursor: pointer;
-          transition-duration: 0ms;
-          padding: 0;
-          .balance-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            // margin-bottom: 1rem;
-            // border-radius: 12px;
+            width: 100%;
+            z-index: 1;
+            .balance-dropdown-top-fake {
+              width: 100%;
+              height: 1.6rem;
+              display: flex;
+              .balance-dropdown-top-fake-left {
+                width: 50%;
+                height: 100%;
+              }
+              .balance-dropdown-top-fake-right {
+                width: 50%;
+                height: 100%;
+              }
+            }
+            .balance-list-content-parent {
+              .balance-list-content {
+                padding-top: 0;
+                max-height: 35rem;
+                overflow-y: scroll;
+                width: 100%;
+              }
+            }
 
-            img {
-              height: 1.25rem;
-              width: 1.25rem;
-              margin-bottom: 5px;
-            }
-            // background-color: green;
-            .balance-sheet-card-credit {
-              margin: 0;
-              padding: 2rem 2rem 1.6rem;
-              padding-right: 0;
-              border-radius: 12px;
-              width: 50%;
+            .balance-sheet-list {
               display: flex;
               align-items: center;
-              justify-content: flex-start;
-              .defiMenu {
-                height: 10px;
-                margin: 0;
-              }
-              &:hover {
-                .defiMenu {
-                  filter: opacity(1);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #000000;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #000000;
-                }
+              justify-content: space-between;
+              padding: 1.15rem 0rem;
+              border-top: 1px solid rgba(229, 229, 230, 0.5);
+              padding-left: 2rem;
+              padding-right: 2rem;
+
+              .balance-amt {
+                background-color: rgba(229, 229, 230, 0.5);
+                border-radius: 4px;
+                padding: 6px;
               }
             }
-            .balance-sheet-card-credit-loading {
-              cursor: default;
-              &:hover {
-                .defiMenu {
-                  filter: opacity(0.5);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #636467;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #636467;
-                }
-              }
+            .balance-sheet-list-no-border {
+              border-top: none;
             }
-            .balance-sheet-card-debt {
-              .defiMenu {
-                height: 10px;
-                margin: 0;
-              }
-              margin: 0;
-              padding: 2rem 2rem 1.6rem;
-              padding-left: 0;
-              border-radius: 12px;
-              width: 50%;
+          }
+          .balance-sheet-card {
+            border: 0.1rem solid #e5e5e680;
+            box-shadow: none;
+            border-radius: 12px;
+            margin-top: 1.6rem;
+            margin-bottom: 1.6rem;
+            user-select: none;
+            cursor: pointer;
+            transition-duration: 0ms;
+            padding: 0;
+            .balance-card-header {
               display: flex;
               align-items: center;
-              justify-content: flex-end;
-              &:hover {
+              justify-content: space-between;
+              // margin-bottom: 1rem;
+              // border-radius: 12px;
+
+              img {
+                height: 1.25rem;
+                width: 1.25rem;
+                margin-bottom: 5px;
+              }
+              // background-color: green;
+              .balance-sheet-card-credit {
+                margin: 0;
+                padding: 2rem 2rem 1.6rem;
+                padding-right: 0;
+                border-radius: 12px;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
                 .defiMenu {
-                  filter: opacity(1);
+                  height: 10px;
+                  margin: 0;
                 }
-                .balance-sheet-card-credit-title {
-                  color: #000000;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #000000;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(1);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #000000;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #000000;
+                  }
                 }
               }
-            }
-            .balance-sheet-card-debt-loading {
-              cursor: default;
-              &:hover {
-                .defiMenu {
-                  filter: opacity(0.5);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #636467;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #636467;
+              .balance-sheet-card-credit-loading {
+                cursor: default;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(0.5);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #636467;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #636467;
+                  }
                 }
               }
-            }
-            .balance-sheet-card-credit-title {
-              margin-right: 0.8rem;
-              color: #636467;
-            }
-            .balance-sheet-card-credit-amount {
-              margin-right: 0.8rem;
-              color: #636467;
-            }
-            .balance-sheet-card-credit-title-selected {
-              color: #000000;
-            }
-            .balance-sheet-card-credit-amount-selected {
-              color: #000000;
+              .balance-sheet-card-debt {
+                .defiMenu {
+                  height: 10px;
+                  margin: 0;
+                }
+                margin: 0;
+                padding: 2rem 2rem 1.6rem;
+                padding-left: 0;
+                border-radius: 12px;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(1);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #000000;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #000000;
+                  }
+                }
+              }
+              .balance-sheet-card-debt-loading {
+                cursor: default;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(0.5);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #636467;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #636467;
+                  }
+                }
+              }
+              .balance-sheet-card-credit-title {
+                margin-right: 0.8rem;
+                color: #636467;
+              }
+              .balance-sheet-card-credit-amount {
+                margin-right: 0.8rem;
+                color: #636467;
+              }
+              .balance-sheet-card-credit-title-selected {
+                color: #000000;
+              }
+              .balance-sheet-card-credit-amount-selected {
+                color: #000000;
+              }
             }
           }
         }
@@ -2135,14 +2137,14 @@
   }
 }
 
-.info-icon-i{
+.info-icon-i {
   height: 12px;
   width: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background: #CACBCC;
+  background: #cacbcc;
   color: white;
   font-size: 8px;
 }
