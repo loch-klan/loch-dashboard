@@ -1043,7 +1043,10 @@ class Portfolio extends BaseReactComponent {
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
-      if (this.state.blockThreeSelectedItem === 1) {
+      if (
+        this.state.blockThreeSelectedItem === 1 &&
+        this.state.shouldCallPriceGaugeApi
+      ) {
         this.setState({
           shouldCallPriceGaugeApi: false,
         });
