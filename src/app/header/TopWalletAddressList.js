@@ -9,14 +9,19 @@ import {
   ConnectWalletButtonClicked,
   DisconnectWalletButtonClicked,
   HomeFollow,
+  HomeRefreshButton,
   HomeUnFollow,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TruncateText } from "../../utils/ReusableFunctions";
-import { isFollowedByUser } from "../Portfolio/Api";
-import { updateUserWalletApi } from "../common/Api";
+import {
+  getExchangeBalances,
+  getUserWallet,
+  isFollowedByUser,
+} from "../Portfolio/Api";
+import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
 import {
@@ -34,11 +39,14 @@ import "./_topWalletAddressList.scss";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 
 class TopWalletAddressList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      timeNumber: null,
+      timeUnit: "",
       followSignInModalAnimation: true,
       followSigninModal: false,
       followSignupModal: false,
@@ -191,6 +199,7 @@ class TopWalletAddressList extends Component {
     }
   };
   componentDidMount() {
+    this.getCurrentTime();
     this.checkIsFollowed();
     const userWalletData =
       this.props.portfolioState &&
@@ -880,6 +889,94 @@ class TopWalletAddressList extends Component {
 
     this.props.updateUserWalletApi(data, this, yieldData, true);
   };
+  getCurrentTime = () => {
+    let currentTime = new Date().getTime();
+
+    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
+    // calculate the time difference since the last click
+    let timeDiff = prevTime ? currentTime - prevTime : currentTime;
+    // console.log(
+    //   "time deff",
+    //   timeDiff,
+    //   "prev time",
+    //   prevTime,
+    //   "current time",
+    //   currentTime
+    // );
+    // format the time difference as a string
+    let timeDiffString;
+
+    // calculate the time difference in seconds, minutes, and hours
+    let diffInSeconds = timeDiff / 1000;
+    let diffInMinutes = diffInSeconds / 60;
+    let diffInHours = diffInMinutes / 60;
+
+    let unit = "";
+
+    // format the time difference as a string
+    if (diffInSeconds < 60) {
+      // timeDiffString = Math.floor(diffInSeconds);
+      timeDiffString = 0;
+
+      unit = " just now";
+    } else if (diffInMinutes < 60) {
+      timeDiffString = Math.floor(diffInMinutes);
+      unit = diffInMinutes < 2 ? "m ago" : "m ago";
+    } else {
+      timeDiffString = Math.floor(diffInHours);
+      unit = diffInHours < 2 ? "h ago" : "h ago";
+    }
+
+    // console.log("timediff str", timeDiffString);
+    this.setState(
+      {
+        timeNumber: prevTime ? timeDiffString : "3",
+        timeUnit: unit,
+      },
+      () => {
+        setTimeout(() => {
+          this.getCurrentTime();
+        }, 300000);
+      }
+    );
+  };
+
+  RefreshButton = () => {
+    HomeRefreshButton({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+    });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+
+    this.props.portfolioState.walletTotal = 0;
+    this.props.portfolioState.chainPortfolio = {};
+    this.props.portfolioState.assetPrice = {};
+    this.props.portfolioState.chainWallet = [];
+    this.props.portfolioState.yesterdayBalance = 0;
+
+    let userWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+
+    userWalletList?.forEach((wallet, i) => {
+      if (wallet.coinFound) {
+        wallet.coins?.forEach((coin) => {
+          if (coin.chain_detected) {
+            let userCoinWallet = {
+              address: wallet.address,
+              coinCode: coin.coinCode,
+            };
+
+            this.props.getUserWallet(userCoinWallet, this, true, i);
+          }
+        });
+      }
+    });
+
+    this.props.getExchangeBalances(this, true);
+
+    this.props.setPageFlagDefault();
+  };
   render() {
     return (
       <div className="topWalletAddressList">
@@ -943,10 +1040,39 @@ class TopWalletAddressList extends Component {
           <div />
         )}
         <div className="topWalletAddressListFollowShareContainer inter-display-medium">
+          {this.props.showUpdatesJustNowBtn ? (
+            <h2
+              className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+              onClick={this.RefreshButton}
+              style={{
+                whiteSpace: "nowrap",
+              }}
+            >
+              <Image src={refreshIcon} />
+              Updated{" "}
+              <span
+                style={{ marginLeft: "3px" }}
+                className="inter-display-bold f-s-13 lh-15 grey-B0B"
+              >
+                {this.state.timeNumber === null
+                  ? "3"
+                  : this.state.timeNumber === 0
+                  ? " just now"
+                  : this.state.timeNumber}
+              </span>
+              <span>
+                {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                  ? this.state.timeUnit
+                  : this.state.timeNumber === 0
+                  ? ""
+                  : "h ago"}
+              </span>
+            </h2>
+          ) : null}
           {this.state.showFollowingAddress ? (
             <div
               ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn"
+              className="ml-3 topWalletAddressListFollowShareBtn"
               id="address-button"
               onClick={this.addAddressToWatchListFun}
             >
@@ -1000,6 +1126,9 @@ const mapDispatchToProps = {
   removeAddressFromWatchList,
   addAddressToWatchList,
   addUserCredits,
+  getUserWallet,
+  getExchangeBalances,
+  setPageFlagDefault,
 };
 
 export default connect(
