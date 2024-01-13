@@ -223,6 +223,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
         <div className="graph-container">
           <InflowOutflowChartSliderContainer
           isHomepage={this.props.isHomepage}
+          hideExplainer={this.props.hideExplainer}
           showEth={this.props.showEth}
             inflowOutflowData={
               this.state.inflowsOutflowsList

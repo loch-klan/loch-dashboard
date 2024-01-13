@@ -657,15 +657,16 @@ body {
 
 .Toastify__toast-container {
   // width: 40rem;
-  min-width: 40rem;
+  // min-width: 40rem;
   width: max-content;
 }
 
 .Toastify__toast {
-  padding: 2.5rem;
+  padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
     flex-direction: row-reverse;
+    gap: 10px;
     margin: 0;
     padding: 0;
     @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
@@ -2195,6 +2196,13 @@ textarea {
     &:hover {
       filter: brightness(0.2);
     }
+  }
+}
+.copy-icon-top-bar-new {
+  transition-duration: 300ms;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(0.2);
   }
 }
 
