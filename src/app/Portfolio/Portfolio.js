@@ -39,6 +39,7 @@ import {
   BASE_URL_S3,
   DEFAULT_PRICE,
   GROUP_BY_DATE,
+  SEARCH_BY_NOT_DUST,
   SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
   SORT_BY_APY,
@@ -188,6 +189,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphDigit: 3,
       GraphDigit: 3,
       // Should call block one
+      showTransactionHistoryDust: true,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -1635,7 +1637,13 @@ class Portfolio extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
-    let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
+    let condition = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+      { key: SEARCH_BY_NOT_DUST, value: true },
+    ];
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
