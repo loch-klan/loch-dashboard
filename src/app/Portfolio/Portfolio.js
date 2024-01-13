@@ -814,6 +814,12 @@ class Portfolio extends BaseReactComponent {
         this.props.getAssetProfitLoss(this, false, false, false);
       }
     }
+    if (this.state.blockThreeSelectedItem === 1) {
+      this.setState({
+        shouldCallPriceGaugeApi: false,
+      });
+      this.callPriceGaugeApi();
+    }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
