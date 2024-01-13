@@ -44,11 +44,8 @@ const VerifyMobile = ({
     aria-labelledby="contained-modal-title-vcenter"
     backdropClassName="exitoverlaymodalNewWelcome"
     >
-      <Modal.Body>
-        {/* <div className="new-auth-mobile-wrap"> */}
-          <div className="new-auth new-auth-mobile verify-otp" style={{paddingBottom:'48px'}}>
-            <div className="new-auth-content" style={{ position: "relative" }}>
-            <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
+      <Modal.Body style={{position:'relative'}}>
+      <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
           <div
             className="new-homepage-auth-content-close "
             onClick={toggleModal}
@@ -62,7 +59,11 @@ const VerifyMobile = ({
             />
           </div>
         </div>
-              <img className="new-auth-content-logo" src={logo} alt="" />
+        {/* <div className="new-auth-mobile-wrap"> */}
+          <div className="new-auth new-auth-mobile verify-otp" style={{paddingBottom:'48px'}}>
+            <div className="new-auth-content">
+            
+              <img className="new-auth-content-logo new-auth-content-logo-mobile" src={logo} alt="" />
               <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
                 <h4 className="new-auth-content-title">Enter code</h4>
                 <p className="new-auth-content-subtitle">
@@ -92,12 +93,12 @@ const VerifyMobile = ({
                   Verify
                 </button>
               </div>
-              <div className="new-auth-content-bottom-cta-holder">
+              <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
                 <p
                   onClick={() => {
                     handleSubmitEmail(true);
                   }}
-                  className="new-auth-content-bottom-cta"
+                  className="new-auth-content-bottom-cta new-auth-content-bottom-cta--mobile"
                 >
                   Send code again
                 </p>

@@ -1313,9 +1313,7 @@ class NewWelcome extends BaseReactComponent {
     let currencyRates = JSON.parse(
       window.sessionStorage.getItem("currencyRates")
     );
-    if (!currencyRates) {
       getAllCurrencyRatesApi();
-    }
     if (getToken()) {
       let isStopRedirect =
         window.sessionStorage.getItem("stop_redirect") &&
@@ -2400,7 +2398,7 @@ class NewWelcome extends BaseReactComponent {
                 })}
               </>
             ) : (
-              <div className="new-homepage__body-search" onClick={this.showInitialInput}>
+              <div className="new-homepage__body-search " onClick={this.showInitialInput}>
                 <div
                   className="new-homepage__body-search_preview"
                 >
@@ -2418,7 +2416,7 @@ class NewWelcome extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-                <div className="new-homepage__body-trending-address">
+                <div className="new-homepage__body-trending-address" style={{top:'55px'}}>
                   <div
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}

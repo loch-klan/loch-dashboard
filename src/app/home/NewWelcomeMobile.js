@@ -784,6 +784,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    getAllCurrencyRatesApi();
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -804,9 +805,6 @@ class NewWelcomeMobile extends BaseReactComponent {
     let currencyRates = JSON.parse(
       window.sessionStorage.getItem("currencyRates")
     );
-    if (!currencyRates) {
-      getAllCurrencyRatesApi();
-    }
     if (getToken()) {
       let isStopRedirect =
         window.sessionStorage.getItem("stop_redirect") &&
@@ -1424,7 +1422,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 })}
               </>
             ) : (
-              <div className="new-homepage__body-search">
+              <div className="new-homepage__body-search new-homepage__body-search-mobile">
                 <div
                   onClick={this.showInitialInput}
                   className="new-homepage__body-search_preview"
@@ -1443,7 +1441,7 @@ class NewWelcomeMobile extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <div className="new-homepage__body-trending-address">
+              <div className="new-homepage__body-trending-address new-homepage__body-trending-address-mobile" style={{top:'58px'}}>
                 <div
                   className="d-flex"
                   style={{ alignItems: "start",flexDirection:'column', gap: "8px" }}
@@ -1453,6 +1451,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                     style={{
                       color: "#19191A",
                       fontSize: "16px",
+                      fontWeight:'500'
                     }}
                   >
                     Trending addresses
@@ -1461,6 +1460,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                     style={{
                       color: "#B0B1B3",
                       fontSize: "13px",
+                      fontWeight:'500'
                     }}
                   >
                     Most-visited addresses in the last 24 hours

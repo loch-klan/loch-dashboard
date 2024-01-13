@@ -27,13 +27,13 @@
 }
 
 .new-homepage-auth-content-close--desktop {
-  top: 40px;
-  right: 40px;
+  top: 28px;
+  right: 28px;
 }
 
 .new-homepage-auth-content-close--mobile{
-  top: -40px;
-  right:-13px;
+  top: 20px;
+  right:20px;
 }
 .new-auth {
   padding: 60px 0;
@@ -57,6 +57,10 @@
 
     .new-auth-content-logo {
       width: 38px;
+    }
+
+    .new-auth-content-logo-mobile{
+      margin-bottom: -12px;
     }
 
     .new-auth-content-title-holder {
@@ -84,6 +88,7 @@
       gap: 20px;
       align-items: center;
       justify-content: center;
+      // box-shadow: 0px 14px 64px -4px rgba(0, 0, 0, 0.12), 0px 8px 22px -6px rgba(0, 0, 0, 0.12);
 
       .new-auth-content-input {
         width: 320px;
@@ -118,7 +123,7 @@
         justify-content: center;
         align-items: center;
         background-color: #141414;
-        box-shadow: 0px 18px 88px -4px rgba(24, 39, 75, 0.14), 0px 8px 28px -6px rgba(24, 39, 75, 0.12);
+        box-shadow: 0px 18px 88px -4px rgba(0,0,0,0.25), 0px 8px 28px -6px rgba(0,0,0,0.25);
         border-radius: 8px;
         font-size: 16px;
         font-weight: 600;
@@ -170,6 +175,20 @@
           color: #141414;
         }
       }
+      .new-auth-content-bottom-cta--mobile{
+        font-size: 13px;
+        &:hover{
+          color: #7c7d81;
+        }
+        &:active{
+          color: #141414;
+        }
+      }
+
+    }
+
+    .new-auth-content-bottom-cta-holder-mobile{
+      padding: 0px;
     }
 
     .new-auth-content-bottom-cta-holder-mobile{
@@ -183,6 +202,7 @@
       width: 280px;
       gap: 12px;
       .new-auth-content-input{
+        box-shadow: 0px 18px 88px -4px rgba(0,0,0,0.25), 0px 8px 28px -6px rgba(0,0,0,0.25);
         width: 100%;
         font-size: 13px;
         height: 48px;
@@ -196,6 +216,7 @@
     }
 
     .new-auth-content-title-holder-mobile{
+      gap: 8px;
       .new-auth-content-title{
         font-size: 20px;
         font-weight: 500;
@@ -209,7 +230,7 @@
 }
 
 .new-auth-mobile{
-  padding: 60px 0 80px 0;
+  padding: 48px 0;
 }
 
 .new-auth-mobile-wrap {

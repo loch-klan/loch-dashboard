@@ -4,18 +4,21 @@
 
 .modal-new-welcome-v-top{
   align-items: start;
-  margin-top: 12rem;
+  padding-top: 12rem;
 }
 
 .welcome-modal-mobile{
   overflow-y: hidden;
 display: flex !important;
 justify-content: center;
-height: auto;
 .welcome-modal-mobile-dialogue{
-  width: 350px;
+  width: 100%;
   border-radius: 16px;
-  overflow: hidden;
+  .modal-content{
+    min-width: 350px !important;
+    width: 350px;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 200px 0px rgba(0, 0, 0, 0.4);
+  }
 }
 }
 .exit-overlay-modal-new-welcome {
@@ -33,12 +36,13 @@ height: auto;
   }
 }
 
+
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .exit-overlay-modal-new-welcome {
     .modal-content {
       background-color: rgba(255, 255, 255, 1);
-      backdrop-filter: blur(60px);
-      -webkit-backdrop-filter: blur(60px);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
       background-color: rgba(255, 255, 255, 0.8);
     }
   }

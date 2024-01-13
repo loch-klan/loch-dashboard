@@ -7,10 +7,19 @@ class NewHomeInputBlock extends BaseReactComponent {
     super(props);
     this.state = {};
   }
+
+
+  focusInputfield = () => {
+    console.log(this.props.index);
+    const inputField = document.getElementById(`newWelcomeWallet-${this?.props?.index + 1}`);
+    inputField.focus()
+    console.log(inputField);
+  }
+  
   render() {
     const { c, index } = this.props;
     return (
-      <div className={`new-homepage__body-search_input_body_container ${this.props.isMobile?"new-homepage__body-search_input_body_container-mobile":''}`}>
+      <div className={`new-homepage__body-search_input_body_container ${this.props.isMobile?"new-homepage__body-search_input_body_container-mobile":''}`} onClick={this.focusInputfield}>
         <div className="new-homepage__body-search_input_body">
           <div
             style={index === 9 ? { marginBottom: "0rem" } : {}}
