@@ -4096,10 +4096,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "43rem",
+                        height: "38rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "43rem",
+                        minHeight: "38rem",
                         marginBottom: 0,
                       }}
                     >
@@ -4232,10 +4232,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "43rem",
+                        height: "38rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "43rem",
+                        minHeight: "38rem",
                         marginBottom: 0,
                       }}
                     >
@@ -4499,7 +4499,8 @@ class Portfolio extends BaseReactComponent {
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "43rem",
+                        minHeight: "38rem",
+                        height: "38rem",
                         marginBottom: 0,
                       }}
                     >
@@ -4601,10 +4602,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "43rem",
+                        height: "38rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "43rem",
+                        minHeight: "38rem",
                         marginBottom: 0,
                       }}
                     >

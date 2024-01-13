@@ -1047,7 +1047,7 @@
         }
       }
       .portfolioHomeDefiCard {
-        min-height: 28rem;
+        min-height: 23.5rem;
 
         .defi-card-wrapper {
           padding: 0;
@@ -1313,7 +1313,7 @@
             .ReactVirtualized__Table__Grid {
               overflow-y: auto !important;
               overflow-x: hidden !important;
-              max-height: 29rem !important;
+              max-height: 24rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
@@ -1390,8 +1390,8 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 38rem;
-      min-height: 38rem;
+      height: 32rem;
+      min-height: 32rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
@@ -2176,14 +2176,14 @@
   }
 }
 
-.info-icon-i{
+.info-icon-i {
   height: 12px;
   width: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background: #CACBCC;
+  background: #cacbcc;
   color: white;
   font-size: 8px;
 }

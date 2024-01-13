@@ -547,7 +547,7 @@ class PortfolioHomeDefiBlock extends Component {
                             {groupComp?.walletItems &&
                             groupComp.walletItems.length > 0
                               ? groupComp.walletItems
-                                  .slice(0, 3)
+                                  .slice(0, 2)
                                   .map((rowData, indexTwo) => {
                                     return (
                                       <Row
