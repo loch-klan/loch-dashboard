@@ -224,7 +224,7 @@ class PortfolioHomeDefiBlock extends Component {
       return (
         <div
           style={{
-            height: "38rem",
+            height: "32rem",
           }}
         >
           <div
