@@ -811,9 +811,12 @@ class TopWalletAddressList extends Component {
       });
     }
     if (addWalletList && addWalletList.length > 0) {
-      addWalletList = addWalletList.filter(
-        (resOne, resOneIndex) => resOne.apiAddress !== passedAdd[0]
-      );
+      addWalletList = addWalletList.filter((resOne, resOneIndex) => {
+        if (resOne.apiAddress) {
+          return resOne.apiAddress.toLowerCase() !== passedAdd[0].toLowerCase();
+        }
+        return false;
+      });
     }
 
     let arr = [];
