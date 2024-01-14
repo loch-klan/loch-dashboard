@@ -1302,6 +1302,7 @@ class NewWelcomeMobile extends BaseReactComponent {
             // >
                 <LoginMobile
                 toggleModal={this.toggleAuthModal}
+                smartMoneyLogin={this.state.smartMoneyLogin}
                 isMobile
                 email={this.state.email}
                 handleChangeEmail={(val) => {
@@ -1441,7 +1442,7 @@ class NewWelcomeMobile extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-              <div className="new-homepage__body-trending-address new-homepage__body-trending-address-mobile" style={{top:'58px'}}>
+              <div className="new-homepage__body-trending-address new-homepage__body-trending-address-mobile" style={{top:'86px'}}>
                 <div
                   className="d-flex"
                   style={{ alignItems: "start",flexDirection:'column', gap: "8px" }}
@@ -1564,73 +1565,21 @@ class NewWelcomeMobile extends BaseReactComponent {
               </div>
             ) : (
               <div
+                // style={{
+                //   marginTop:
+                //     this.state.walletInput &&
+                //     this.state.walletInput[this.state.walletInput.length - 1]
+                //       .showNickname &&
+                //     this.state.walletInput[this.state.walletInput.length - 1]
+                //       .coinFound
+                //       ? "-25px"
+                //       : "-15px",
+                // }}
                 style={{
-                  marginTop:
-                    this.state.walletInput &&
-                    this.state.walletInput[this.state.walletInput.length - 1]
-                      .showNickname &&
-                    this.state.walletInput[this.state.walletInput.length - 1]
-                      .coinFound
-                      ? "-25px"
-                      : "-15px",
+                  marginTop:'20px'
                 }}
               >
-                {this.state.walletInput && this.state.walletInput.length > 1 ? (
-                  <div
-                    style={{
-                      marginBottom:
-                        this.state.walletInput &&
-                        this.state.walletInput[
-                          this.state.walletInput.length - 1
-                        ].showNickname &&
-                        this.state.walletInput[
-                          this.state.walletInput.length - 1
-                        ].coinFound
-                          ? "32px"
-                          : "25px",
-                    }}
-                    className="newWelcomeAddedAddresses newWelcomeAddedAddresses-mobile"
-                  >
-                    {this.state.walletInput?.map((c, index) => {
-                      if (index === this.state.walletInput.length - 1) {
-                        return null;
-                      }
-                      return (
-                        <div
-                          style={{
-                            marginTop: index > 0 ? "1rem" : "",
-                          }}
-                          className="newWelcomeAddedAddressesBlockContainer"
-                        >
-                          {/* <div
-                            onClick={() => this.deleteInputField(index, c)}
-                            className="newWelcomeAddedAddressesBlockDelContainer"
-                          >
-                            <Image
-                              className="newWelcomeAddedAddressesBlockDel"
-                              src={NewWelcomeTrashIcon}
-                            />
-                          </div> */}
-                          <NewHomeInputBlock
-                          hideMore
-                            isMobile
-                            isList
-                            c={c}
-                            index={index}
-                            walletInput={this.state.walletInput}
-                            nicknameOnChain={this.nicknameOnChain}
-                            handleOnChange={this.handleOnChange}
-                            FocusInInput={this.FocusInInput}
-                            showisTrendingAddressesAddress={
-                              this.showisTrendingAddressesAddress
-                            }
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : null}
-                <div className="newHomeAddAnotherGoContainer inter-display-regular">
+                 <div className="newHomeAddAnotherGoContainer newHomeAddAnotherGoContainer-mobile inter-display-regular">
                   {this.state.walletInput.length < 10 ? (
                     <button
                       onClick={this.addInputField}
@@ -1652,6 +1601,70 @@ class NewWelcomeMobile extends BaseReactComponent {
                     Go
                   </button>
                 </div>
+
+                {this.state.walletInput && this.state.walletInput.length > 1 ? (
+                  <div
+                    style={{
+                      marginBottom:
+                        this.state.walletInput &&
+                        this.state.walletInput[
+                          this.state.walletInput.length - 1
+                        ].showNickname &&
+                        this.state.walletInput[
+                          this.state.walletInput.length - 1
+                        ].coinFound
+                          ? "32px"
+                          : "25px",
+                          overflow:'visible'
+                    }}
+                    className="newWelcomeAddedAddresses newWelcomeAddedAddresses-mobile"
+                  
+                  >
+                    {this.state.walletInput?.map((c, index) => {
+                      if (index === this.state.walletInput.length - 1) {
+                        return null;
+                      }
+                      return (
+                        <div
+                          style={{
+                            marginTop: index > 0 ? "1rem" : "",
+                            position:'relative',
+                            overflow:'visible'
+                          }}
+                          className="newWelcomeAddedAddressesBlockContainer"
+                        >
+                          <div
+                            onClick={() => this.deleteInputField(index, c)}
+                            className="new-welcome-adrress-block-delete-btn-mobile"
+                          >
+                            <Image
+                              className="newWelcomeAddedAddressesBlockDel"
+                              style={{
+                                height:'15px',
+                                width:'15px'
+                              }}
+                              src={NewWelcomeTrashIcon}
+                            />
+                          </div>
+                          <NewHomeInputBlock
+                          hideMore
+                            isMobile
+                            isList
+                            c={c}
+                            index={index}
+                            walletInput={this.state.walletInput}
+                            nicknameOnChain={this.nicknameOnChain}
+                            handleOnChange={this.handleOnChange}
+                            FocusInInput={this.FocusInInput}
+                            showisTrendingAddressesAddress={
+                              this.showisTrendingAddressesAddress
+                            }
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null}
               </div>
             )}
           </div>

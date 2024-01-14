@@ -15,6 +15,7 @@ const LoginMobile = ({
   handleChangeEmail,
   email,
   handleSubmitEmail,
+  smartMoneyLogin
 }) => {
   const submitRef = React.useRef(null);
 
@@ -36,7 +37,7 @@ const LoginMobile = ({
       size="md"
       className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
       dialogClassName={
-        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top welcome-modal-mobile-dialogue"
+        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
       onHide={toggleModal}
@@ -71,7 +72,9 @@ const LoginMobile = ({
             <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">
-                Get right back into your account
+              {!smartMoneyLogin
+                  ? "Get right back into your account"
+                  : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">

@@ -2416,7 +2416,7 @@ class NewWelcome extends BaseReactComponent {
             !this.state.walletInput[0].address &&
             this.state.walletInput.length === 1 &&
             this.state.isTrendingAddresses ? (
-                <div className="new-homepage__body-trending-address" style={{top:'55px'}}>
+                <div className="new-homepage__body-trending-address" style={{top:'86px'}}>
                   <div
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
@@ -2531,15 +2531,18 @@ class NewWelcome extends BaseReactComponent {
               </div>
             ) : (
               <div
+                // style={{
+                //   marginTop:
+                //     this.state.walletInput &&
+                //     this.state.walletInput[this.state.walletInput.length - 1]
+                //       .showNickname &&
+                //     this.state.walletInput[this.state.walletInput.length - 1]
+                //       .coinFound
+                //       ? "-25px"
+                //       : "-15px",
+                // }}
                 style={{
-                  marginTop:
-                    this.state.walletInput &&
-                    this.state.walletInput[this.state.walletInput.length - 1]
-                      .showNickname &&
-                    this.state.walletInput[this.state.walletInput.length - 1]
-                      .coinFound
-                      ? "-25px"
-                      : "-15px",
+                  marginTop:'24px'
                 }}
               >
                 {this.state.walletInput && this.state.walletInput.length > 1 ? (
@@ -2565,7 +2568,7 @@ class NewWelcome extends BaseReactComponent {
                       return (
                         <div
                           style={{
-                            marginTop: index > 0 ? "1rem" : "",
+                            marginTop: index > 0 ? "12px" : "",
                           }}
                           className="newWelcomeAddedAddressesBlockContainer"
                         >

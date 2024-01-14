@@ -36,7 +36,7 @@ const VerifyMobile = ({
     size="md"
     className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
     dialogClassName={
-      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top welcome-modal-mobile-dialogue"
+      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
     }
     show={show}
     onHide={toggleModal}
