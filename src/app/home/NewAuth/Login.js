@@ -59,9 +59,9 @@ const Login = ({
             />
           </div>
         </div>
-        <div className="new-auth" style={{ paddingBottom: "80px" }}>
+        <div className="new-auth" style={{ paddingBottom: "106px" }}>
           <div className="new-auth-content">
-            <img className="new-auth-content-logo" src={logo} alt="" />
+            <img className="new-auth-content-logo " src={logo} alt="" />
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">

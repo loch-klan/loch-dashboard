@@ -15,6 +15,7 @@ const LoginMobile = ({
   handleChangeEmail,
   email,
   handleSubmitEmail,
+  smartMoneyLogin
 }) => {
   const submitRef = React.useRef(null);
 
@@ -36,21 +37,19 @@ const LoginMobile = ({
       size="md"
       className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
       dialogClassName={
-        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top welcome-modal-mobile-dialogue"
+        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
       onHide={toggleModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
+      contentClassName="new-welcome-modal-content"
+      animation={false}
     >
-      <Modal.Body>
+      <Modal.Body style={{position:'relative'}}>
         {/* <div className="new-auth-mobile-wrap"> */}
-        <div
-          className="new-auth new-auth-mobile"
-        >
-          <div className="new-auth-content" style={{ position: "relative" }}>
-          <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
           <div
             className="new-homepage-auth-content-close "
             onClick={toggleModal}
@@ -64,11 +63,18 @@ const LoginMobile = ({
             />
           </div>
         </div>
-            <img className="new-auth-content-logo" src={logo} alt="" />
+        <div
+          className="new-auth new-auth-mobile"
+        >
+          <div className="new-auth-content" >
+          
+            <img className="new-auth-content-logo new-auth-content-logo-mobile" src={logo} alt="" />
             <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">
-                Get right back into your account
+              {!smartMoneyLogin
+                  ? "Get right back into your account"
+                  : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">

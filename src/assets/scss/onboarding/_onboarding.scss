@@ -1419,6 +1419,7 @@
     .new-homepage__body-container {
       min-width: 85rem;
       position: relative;
+      transform: translateY(-31px);
 
       .trendingAddressesBlockItemContainer {
         width: 22%;
@@ -1513,14 +1514,21 @@
 
         .new-homepage__body-trending-address__address-wrapper-mobile {
           flex-direction: column;
+          margin-top: 16px;
+          gap: 12px;
         }
       }
 
+      .new-homepage__body-trending-address-mobile{
+        padding: 20px;
+      }
+
       .new-homepage__body-search_input_body_main_container {
-        transform: translateY(-31px);
+        // transform: translateY(-31px);
         .new-homepage__body-search_input_body_container {
-          box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-          margin-bottom: 10px;
+          box-shadow: 0px 14px 64px -4px rgba(24, 39, 75, 0.12), 0px 8px 22px -6px rgba(24, 39, 75, 0.12);
+          // margin-bottom: 10px;
+          cursor: text;
         }
       }
       .new-homepage__body-search_input_body_container {
@@ -1684,7 +1692,7 @@
         }
       }
       .new-homepage__body-search {
-        transform: translateY(-50%);
+        // transform: translateY(-50%);
         width: 100%;
         padding: 2rem 1.5rem;
         border-radius: 12px;
@@ -1730,8 +1738,17 @@
         }
       }
 
+      .new-homepage__body-search-mobile{
+        .new-homepage__body-search-paste-text{
+          filter: brightness(0.3);
+        }
+        .new-homepage__body-search-copy-icon {
+          filter: brightness(0.3);
+        }
+      }
+
       .new-homepage__body-content {
-        transform: translateY(-30px);
+        // transform: translateY(-30px);
         // height: 500px;
         margin-top: 24px;
         border-radius: 12px;
@@ -1749,6 +1766,7 @@
           font-size: 13px;
           font-weight: 500;
           line-height: 120%;
+          margin-top: 4px;
         }
       }
 
@@ -1850,13 +1868,27 @@
           height: 45px !important;
           width: 45px !important;
         }
+
+        .new-welcome-adrress-block-delete-btn-mobile{
+          position:absolute;
+          top:-10px;
+          left:-10px;
+          height:30px;
+          width:30px;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          border-radius:50%;
+          background-color: #fff;
+          box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
       }
 
       .newHomeAddAnotherGoContainer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 2rem;
+        margin-bottom: 20px;
         .newHomeAddAnotherGoBtns {
           border: none;
           font-weight: 600;
@@ -1869,7 +1901,7 @@
           border-radius: 8px;
           cursor: pointer;
           &:disabled {
-            opacity: 0.5;
+            opacity: 0.65;
             cursor: default;
           }
         }
@@ -1903,6 +1935,14 @@
               box-shadow: none;
             }
           }
+        }
+      }
+      .newHomeAddAnotherGoContainer-mobile{
+        flex-direction: column;
+        gap:24px;
+        .newHomeAddAnotherGoBtns{
+          width: 100%;
+          margin: 0px;
         }
       }
     }
