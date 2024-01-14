@@ -73,8 +73,8 @@
         // width: 100%;
         position: relative;
         //
-        padding-left: 14.5rem;
-        padding-right: 13.4rem;
+        padding-left: 6rem;
+        padding-right: 5rem;
         .topWalletDropdownContainer {
           border-radius: 15px;
 
@@ -537,7 +537,7 @@
       }
       .welcome-card-topbar-closed {
         padding-left: 6rem;
-        padding-right: 21.9rem;
+        padding-right: 13.5rem;
       }
     }
 
@@ -1047,7 +1047,7 @@
         }
       }
       .portfolioHomeDefiCard {
-        min-height: 28rem;
+        min-height: 23.15rem;
 
         .defi-card-wrapper {
           padding: 0;
@@ -1313,7 +1313,8 @@
             .ReactVirtualized__Table__Grid {
               overflow-y: auto !important;
               overflow-x: hidden !important;
-              max-height: 29rem !important;
+              max-height: 24rem !important;
+              min-height: 24rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
@@ -1390,8 +1391,8 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 38rem;
-      min-height: 38rem;
+      height: 32rem;
+      min-height: 32rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
@@ -1429,8 +1430,8 @@
       height: 100%;
     }
     .chartAreaOldBar {
-      height: 34rem;
-      min-height: 34rem;
+      height: 29rem;
+      min-height: 29rem;
     }
     .header {
       h4 {
@@ -2176,14 +2177,14 @@
   }
 }
 
-.info-icon-i{
+.info-icon-i {
   height: 12px;
   width: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background: #CACBCC;
+  background: #cacbcc;
   color: white;
   font-size: 8px;
 }
