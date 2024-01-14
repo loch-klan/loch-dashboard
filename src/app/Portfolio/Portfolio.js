@@ -2223,6 +2223,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "time") {
             let tempVal = "-";
             let tempOpp = "-";
@@ -2270,6 +2273,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "from") {
             let showThis = "";
             if (rowData.from?.metaData?.nickname) {
@@ -2553,6 +2559,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "to") {
             let showThis = "";
             if (rowData.to.metaData?.nickname) {
@@ -2832,6 +2841,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "asset") {
             return (
               <CustomOverlay
@@ -2876,6 +2888,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "amount") {
             // return rowData.amount.value?.toFixed(2)
             const tempAmountVal = convertNtoNumber(rowData.amount.value);
@@ -2919,6 +2934,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "usdValueThen") {
             let chain = Object.entries(
               this.props.intelligenceState?.assetPriceList
@@ -3007,6 +3025,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "method") {
             return (
               <div className="gainLossContainer">
@@ -3050,6 +3071,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "network") {
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -3092,6 +3116,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "hash") {
             // return rowData.hash.value?.toFixed(2)
             const tempHashVal = TruncateText(rowData.hash);
@@ -3141,25 +3168,25 @@ class Portfolio extends BaseReactComponent {
     let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
-      for (let i = tableDataCostBasis.length; i < 6; i++) {
-        tempTableDataCostBasis.push("EMPTY");
-      }
+      // for (let i = tableDataCostBasis.length; i < 6; i++) {
+      //   tempTableDataCostBasis.push("EMPTY");
+      // }
       tableDataCostBasis = tempTableDataCostBasis;
     }
     if (tableData.length < 6) {
       const temptableData = [...tableData];
-      for (let i = tableData.length; i < 6; i++) {
-        temptableData.push("EMPTY");
-      }
+      // for (let i = tableData.length; i < 6; i++) {
+      //   temptableData.push("EMPTY");
+      // }
       tableData = temptableData;
     }
 
     let yieldOpportunitiesListTemp = this.state.yieldOpportunitiesList;
     if (yieldOpportunitiesListTemp.length < 6) {
       const tempyieldOpportunitiesListTemp = [...yieldOpportunitiesListTemp];
-      for (let i = yieldOpportunitiesListTemp.length; i < 6; i++) {
-        tempyieldOpportunitiesListTemp.push("EMPTY");
-      }
+      // for (let i = yieldOpportunitiesListTemp.length; i < 6; i++) {
+      //   tempyieldOpportunitiesListTemp.push("EMPTY");
+      // }
       yieldOpportunitiesListTemp = tempyieldOpportunitiesListTemp;
     }
 
@@ -3188,6 +3215,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "asset") {
             return (
               <CoinChip
@@ -3223,6 +3253,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "usdValue") {
             return (
               <CustomOverlay
@@ -3278,6 +3311,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "project") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
@@ -3311,6 +3347,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "pool") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
@@ -3345,6 +3384,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "tvl") {
             return (
               <CustomOverlay
@@ -3401,6 +3443,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "apy") {
             return (
               <CustomOverlay
@@ -3444,6 +3489,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "Asset") {
             return (
               <div
@@ -3501,6 +3549,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "AverageCostPrice") {
             return (
               <div
@@ -3517,20 +3568,20 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.AverageCostPrice === 0
+                    rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
                       ? "N/A"
                       : CurrencyType(false) +
                         Number(
-                          noExponents(rowData.AverageCostPrice.toFixed(2))
+                          noExponents(rowData.AverageCostPrice?.toFixed(2))
                         ).toLocaleString("en-US")
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.AverageCostPrice === 0
+                    {rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
                       ? "N/A"
                       : CurrencyType(false) +
                         numToCurrency(
-                          rowData.AverageCostPrice.toFixed(2)
+                          rowData.AverageCostPrice?.toFixed(2)
                         ).toLocaleString("en-US")}
                   </span>
                 </CustomOverlay>
@@ -3560,6 +3611,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "CurrentPrice") {
             return (
               <div
@@ -3576,17 +3630,21 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentPrice.toFixed(2))
-                    ).toLocaleString("en-US")
+                    rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentPrice?.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CurrentPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                    {rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentPrice?.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3615,6 +3673,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "Amount") {
             return (
               <span
@@ -3664,6 +3725,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "CostBasis") {
             return (
               <div className="cost-common-container">
@@ -3673,11 +3737,11 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CostBasis === 0
+                    rowData.CostBasis === 0 || !rowData.CostBasis
                       ? "N/A"
                       : CurrencyType(false) +
                         Number(
-                          noExponents(rowData.CostBasis.toFixed(2))
+                          noExponents(rowData.CostBasis?.toFixed(2))
                         ).toLocaleString("en-US")
                   }
                 >
@@ -3690,11 +3754,11 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {rowData.CostBasis === 0
+                      {rowData.CostBasis === 0 || !rowData.CostBasis
                         ? "N/A"
                         : CurrencyType(false) +
                           numToCurrency(
-                            rowData.CostBasis.toFixed(2)
+                            rowData.CostBasis?.toFixed(2)
                           ).toLocaleString("en-US")}
                     </span>
                   </div>
@@ -3725,6 +3789,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "CurrentValue") {
             return (
               <div className="cost-common-container">
@@ -3737,7 +3804,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.CurrentValue
                       ? CurrencyType(false) +
                         Number(
-                          noExponents(rowData.CurrentValue.toFixed(2))
+                          noExponents(rowData.CurrentValue?.toFixed(2))
                         ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
@@ -3751,10 +3818,12 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentValue.toFixed(2)
-                        ).toLocaleString("en-US")}
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue?.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3784,6 +3853,9 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "GainAmount") {
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
@@ -3805,7 +3877,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.GainAmount
                       ? CurrencyType(false) +
                         Math.abs(
-                          Number(noExponents(rowData.GainAmount.toFixed(2)))
+                          Number(noExponents(rowData.GainAmount?.toFixed(2)))
                         ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
@@ -3860,9 +3932,12 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "GainLoss") {
             const tempDataHolder = Number(
-              noExponents(rowData.GainLoss.toFixed(2))
+              noExponents(rowData.GainLoss?.toFixed(2))
             );
             return (
               <div
@@ -3934,9 +4009,12 @@ class Portfolio extends BaseReactComponent {
         coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
           if (dataKey === "PortfolioPercentage") {
             const tempDataHolder = Number(
-              noExponents(rowData.weight.toFixed(2))
+              noExponents(rowData.weight?.toFixed(2))
             );
             return (
               <div

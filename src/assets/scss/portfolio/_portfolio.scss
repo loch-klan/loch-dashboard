@@ -1047,7 +1047,7 @@
         }
       }
       .portfolioHomeDefiCard {
-        min-height: 23.5rem;
+        min-height: 23.15rem;
 
         .defi-card-wrapper {
           padding: 0;
@@ -1314,6 +1314,7 @@
               overflow-y: auto !important;
               overflow-x: hidden !important;
               max-height: 24rem !important;
+              min-height: 24rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
@@ -1429,8 +1430,8 @@
       height: 100%;
     }
     .chartAreaOldBar {
-      height: 34rem;
-      min-height: 34rem;
+      height: 29rem;
+      min-height: 29rem;
     }
     .header {
       h4 {
