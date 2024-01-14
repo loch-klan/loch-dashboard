@@ -76,6 +76,7 @@ import { getFilters } from "../intelligence/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -975,6 +976,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}

@@ -44,19 +44,15 @@ function CustomCoin({ coins, isLoaded, id, isCohort, isStatic, hideMore }) {
                   {sortedCoins[0]?.coinName}
                 </Badge>
               </div>
-              {
-                hideMore
-                ?
-                null:
-              
-              <div className="chip-container">
-                <CustomOverlay text={sortedCoins} position="top">
-                  <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
-                    +{sortedCoins.length - 1}
-                  </Badge>
-                </CustomOverlay>
-              </div>
-}
+              {hideMore ? null : (
+                <div className="chip-container">
+                  <CustomOverlay text={sortedCoins} position="top">
+                    <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
+                      +{sortedCoins.length - 1}
+                    </Badge>
+                  </CustomOverlay>
+                </div>
+              )}
             </div>
           ) : (
             <div

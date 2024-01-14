@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import {
   CloseIconBlack,
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
+import "./_newAuth.scss";
 
 const Verify = ({
   show,
@@ -47,7 +47,7 @@ const Verify = ({
     animation={false}
     >
       <Modal.Body style={{ position: "relative" }}>
-      <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
           <div
             className="new-homepage-auth-content-close "
             onClick={toggleModal}

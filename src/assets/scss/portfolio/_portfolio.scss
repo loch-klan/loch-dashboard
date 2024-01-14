@@ -73,8 +73,8 @@
         // width: 100%;
         position: relative;
         //
-        padding-left: 14.5rem;
-        padding-right: 13.4rem;
+        padding-left: 6rem;
+        padding-right: 5rem;
         .topWalletDropdownContainer {
           border-radius: 15px;
 
@@ -149,15 +149,141 @@
           justify-content: start;
           .topBarContainer {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             width: 100%;
             border-radius: 10px;
             padding: 0.9rem;
-            padding-left: 0rem;
-            padding-right: 0rem;
-            // border: 1px $grey-50 solid;
-            // box-shadow: 0 0 10px 4px $grey-50;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            // background-color: red;
+            border: 1px $grey-50 solid;
+            box-shadow: 0 0 10px 4px $grey-50;
+            height: 100%;
+            position: relative;
+            .topBarHistory {
+              border-radius: 10px;
+              border: 1px $grey-50 solid;
+              box-shadow: 0 0 10px 4px $grey-50;
+              background-color: $secondary;
+              width: 100%;
+              position: absolute;
+              transform: translateY(5.5rem) translateX(-0.9rem);
+              padding: 2rem;
+              .topBarHistoryTitleContainer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .topBarHistoryTitleLeftContainer {
+                  display: flex;
+                  align-items: center;
+                  .topBarHistoryTitleIcon {
+                    height: 13px;
+                    margin-right: 0.5rem;
+                  }
+                  .topBarHistoryTitle {
+                    color: #b0b1b3;
+                    font-size: 13px;
+                    font-weight: 500;
+                  }
+                }
+                .topBarHistoryClearAll {
+                  color: #636467;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition-duration: 300ms;
+                  &:hover {
+                    color: $primary;
+                  }
+                }
+              }
+              .topBarHistoryItemContainer {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                overflow: hidden;
+                flex-flow: row wrap;
+                max-height: 5.2rem;
+                .topBarHistoryItemBlock {
+                  margin-top: 1rem;
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                  padding: 0rem 1.2rem;
+                  height: 4rem;
+                  border: 0.1rem solid #e5e5e6;
+                  margin-right: 0.5rem;
+                  border-radius: 1rem;
+                  font-size: 14px;
+                  cursor: pointer;
+                  min-width: 13rem;
+                  max-width: 13rem;
+                  break-inside: avoid;
+                  &:hover {
+                    border-color: #19191a;
+                  }
+                  .topBarHistoryItemBlockText {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                  }
+                  .topBarHistoryItemBlockIcon {
+                    height: 8px;
+                    cursor: pointer;
+                    margin-top: 0.8rem;
+                    &:hover {
+                      filter: brightness(0);
+                    }
+                  }
+                }
+              }
+            }
+            .topBarContainerInputBlockContainer {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              .topBarContainerInputBlockContainerLeftOfInput {
+                min-width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .topBarContainerInputBlockIcon {
+                  height: 14px;
+                }
+              }
+
+              .topBarContainerInputBlockInput {
+                flex: 1;
+                border: none;
+                outline: none;
+                height: 100%;
+                font-size: 15px;
+                &:-webkit-autofill:focus {
+                  box-shadow: 0 0 0 30px white inset !important;
+                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  transition: background-color 5000s ease-in-out 0s;
+                }
+                box-shadow: 0 0 0 30px white inset !important;
+                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                transition: background-color 5000s ease-in-out 0s;
+
+                &:hover {
+                  &::placeholder {
+                    color: black;
+                    opacity: 1; /* Firefox */
+                  }
+
+                  &::-ms-input-placeholder {
+                    /* Edge 12 -18 */
+                    color: black;
+                  }
+                }
+              }
+            }
             .maxWidth50 {
               max-width: 50%;
             }
@@ -253,6 +379,34 @@
             .topBarExchangeIcons {
               filter: none;
             }
+          }
+        }
+        .topbar-btn-dark {
+          background: $black-191;
+          border: 1px solid $black-191;
+          color: $secondary;
+          &:hover {
+            background: rgba(229, 229, 230, 0.5);
+            border: 1px solid #f2f2f3;
+            color: $black-191;
+          }
+        }
+        .topbar-btn-dark-disabled {
+          opacity: 0.5;
+          cursor: default;
+          &:hover {
+            background: $black-191;
+            border: 1px solid $black-191;
+            color: $secondary;
+          }
+        }
+        .topbar-btn-light-disabled {
+          opacity: 0.5;
+          cursor: default;
+          &:hover {
+            background: rgba(229, 229, 230, 0.5);
+            border: 1px solid #f2f2f3;
+            color: $black-191;
           }
         }
         .topbar-btn-white-with-border {
@@ -383,7 +537,7 @@
       }
       .welcome-card-topbar-closed {
         padding-left: 6rem;
-        padding-right: 21.9rem;
+        padding-right: 13.5rem;
       }
     }
 
@@ -893,7 +1047,7 @@
         }
       }
       .portfolioHomeDefiCard {
-        min-height: 28rem;
+        min-height: 23.15rem;
 
         .defi-card-wrapper {
           padding: 0;
@@ -928,6 +1082,8 @@
       }
       .balance-sheet-card-portfolio-home {
         position: relative;
+        padding-left: 1rem;
+        padding-right: 1rem;
         .balance-dropdown {
           position: absolute;
           top: 5.3rem;
@@ -1116,6 +1272,10 @@
             text-align: center;
             color: #636467;
             border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             cursor: pointer;
             transition-duration: 300ms;
             &:hover {
@@ -1128,6 +1288,48 @@
             cursor: default;
             &:hover {
               background-color: white;
+            }
+          }
+        }
+      }
+      .newHomeTableContainer {
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+          width: 0rem;
+          height: 0rem;
+        }
+
+        // &::-webkit-scrollbar-thumb {
+        //   border-radius: 0.8rem;
+        //   background-color: $scrollBar-thumb;
+        // }
+
+        // &::-webkit-scrollbar-track {
+        //   background-color: rgba(229, 229, 230, 0.5);
+        //   border-radius: 0.8rem;
+        // }
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              overflow-y: auto !important;
+              overflow-x: hidden !important;
+              max-height: 24rem !important;
+              min-height: 24rem !important;
+              &::-webkit-scrollbar {
+                width: 0.4rem;
+                height: 0rem;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 0.8rem;
+                background-color: $scrollBar-thumb;
+              }
+
+              &::-webkit-scrollbar-track {
+                background-color: rgba(229, 229, 230, 0.5);
+                // background-color: $grey-E5E;
+                border-radius: 0.8rem;
+              }
             }
           }
         }
@@ -1189,8 +1391,8 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 38rem;
-      min-height: 38rem;
+      height: 32rem;
+      min-height: 32rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
@@ -1228,8 +1430,8 @@
       height: 100%;
     }
     .chartAreaOldBar {
-      height: 34rem;
-      min-height: 34rem;
+      height: 29rem;
+      min-height: 29rem;
     }
     .header {
       h4 {
@@ -1973,4 +2175,16 @@
   &:hover {
     filter: brightness(0.5);
   }
+}
+
+.info-icon-i {
+  height: 12px;
+  width: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #cacbcc;
+  color: white;
+  font-size: 8px;
 }

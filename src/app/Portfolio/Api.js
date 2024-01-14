@@ -20,6 +20,7 @@ export const isFollowedByUser = (data, ctx) => {
         if (!res.data?.error) {
           if (res.data?.data.following) {
             if (ctx.showAddressesAdded) {
+              console.log("Second check");
               ctx.showAddressesAdded();
             }
           } else {
