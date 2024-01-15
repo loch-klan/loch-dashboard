@@ -953,25 +953,6 @@ class TopWalletAddressList extends Component {
     this.props.portfolioState.chainWallet = [];
     this.props.portfolioState.yesterdayBalance = 0;
 
-    let userWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
-
-    userWalletList?.forEach((wallet, i) => {
-      if (wallet.coinFound) {
-        wallet.coins?.forEach((coin) => {
-          if (coin.chain_detected) {
-            let userCoinWallet = {
-              address: wallet.address,
-              coinCode: coin.coinCode,
-            };
-
-            this.props.getUserWallet(userCoinWallet, this, true, i);
-          }
-        });
-      }
-    });
-
-    this.props.getExchangeBalances(this, true);
-
     this.props.setPageFlagDefault();
   };
   render() {
