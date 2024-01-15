@@ -3233,64 +3233,6 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="usdValue"
-            onClick={() => this.handleYieldOppTableSort("usdValue")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Value
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                this.state.yieldOppTableSortOpt[2].up
-                  ? "rotateDown"
-                  : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "usdValue",
-        coumnWidth: 0.16,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "usdValue") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.value * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.value * this.state.currency?.rate
-                        )}
-                    </span>
-                  </div>
-                </div>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
             id="project"
             onClick={() => this.handleYieldOppTableSort("project")}
           >
@@ -3318,42 +3260,6 @@ class Portfolio extends BaseReactComponent {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
                 {rowData.project ? rowData.project : "-"}
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="pool"
-            onClick={() => this.handleYieldOppTableSort("pool")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Pool
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                this.state.yieldOppTableSortOpt[4].up
-                  ? "rotateDown"
-                  : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "pool",
-        coumnWidth: 0.16,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "pool") {
-            return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                {rowData.pool ? rowData.pool : "-"}
               </div>
             );
           }
@@ -3466,6 +3372,101 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdValue"
+            onClick={() => this.handleYieldOppTableSort("usdValue")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[2].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdValue",
+        coumnWidth: 0.16,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "usdValue") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(
+                    rowData.value * this.state.currency?.rate,
+                    "en-US",
+                    "USD"
+                  )
+                }
+              >
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.value * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="pool"
+            onClick={() => this.handleYieldOppTableSort("pool")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Pool
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                this.state.yieldOppTableSortOpt[4].up
+                  ? "rotateDown"
+                  : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "pool",
+        coumnWidth: 0.16,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "pool") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                {rowData.pool ? rowData.pool : "-"}
+              </div>
+            );
+          }
+        },
+      },
     ];
     const CostBasisColumnData = [
       {
@@ -3521,6 +3522,212 @@ class Portfolio extends BaseReactComponent {
                       chain={rowData?.chain}
                       hideText={true}
                     />
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Value"
+            onClick={() => this.handleSort(this.state.sortBy[5])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "CurrentValue",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "CurrentValue") {
+            return (
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentValue?.toFixed(2))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                >
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCurrentValueHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    >
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue?.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gainamount"
+            onClick={() => this.handleSort(this.state.sortBy[6])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Unrealized gain
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "GainAmount",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "GainAmount") {
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.GainAmount
+                      ? CurrencyType(false) +
+                        Math.abs(
+                          Number(noExponents(rowData.GainAmount?.toFixed(2)))
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainAmount < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Portfolio perc"
+            onClick={() => this.handleSort(this.state.sortBy[8])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Portfolio (%)
+            </span>
+            <Image
+              src={sortByIcon}
+              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "PortfolioPercentage") {
+            const tempDataHolder = Number(
+              noExponents(rowData.weight?.toFixed(2))
+            );
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainLossHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className="gainLossContainer"
+              >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
                   </div>
                 </CustomOverlay>
               </div>
@@ -3768,149 +3975,7 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current value
-            </span>
-            <Image
-              src={sortByIcon}
-              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "CurrentValue",
 
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "CurrentValue") {
-            return (
-              <div className="cost-common-container">
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.CurrentValue
-                      ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue?.toFixed(2))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCurrentValueHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                    >
-                      {rowData.CurrentValue
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentValue?.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Gainamount"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Unrealized gain
-            </span>
-            <Image
-              src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "GainAmount",
-
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "GainAmount") {
-            const tempDataHolder = numToCurrency(rowData.GainAmount);
-            return (
-              <div
-                onMouseEnter={() => {
-                  CostGainHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                className="gainLossContainer"
-              >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.GainAmount
-                      ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount?.toFixed(2)))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
-                  }
-                  colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainAmount !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainAmount < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
-                        ? CurrencyType(false) +
-                          tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
-              </div>
-            );
-          }
-        },
-      },
       {
         labelName: (
           <div
@@ -3976,69 +4041,6 @@ class Portfolio extends BaseReactComponent {
                         }
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Portfolio perc"
-            onClick={() => this.handleSort(this.state.sortBy[8])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Portfolio (%)
-            </span>
-            <Image
-              src={sortByIcon}
-              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "PortfolioPercentage",
-
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "PortfolioPercentage") {
-            const tempDataHolder = Number(
-              noExponents(rowData.weight?.toFixed(2))
-            );
-            return (
-              <div
-                onMouseEnter={() => {
-                  CostGainLossHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                className="gainLossContainer"
-              >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
-                  }
-                  colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
@@ -4261,6 +4263,7 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
+                              xAxisScrollableColumnWidth={3.8}
                               tableData={tableDataCostBasis.slice(0, 10)}
                               columnList={CostBasisColumnData}
                               headerHeight={60}
@@ -4797,6 +4800,7 @@ class Portfolio extends BaseReactComponent {
                           <div className="newHomeTableContainer">
                             <TransactionTable
                               xAxisScrollable
+                              xAxisScrollableColumnWidth={4.8}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
@@ -4831,6 +4835,7 @@ class Portfolio extends BaseReactComponent {
                           <div className="newHomeTableContainer">
                             <TransactionTable
                               xAxisScrollable
+                              xAxisScrollableColumnWidth={4}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
