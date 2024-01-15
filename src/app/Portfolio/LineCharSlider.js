@@ -594,7 +594,7 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            current = moment(item.timestamp).format("MMMM YY");
+            current = moment(item.timestamp).format("MMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
@@ -1225,7 +1225,7 @@ backdrop-filter: blur(15px);">
 
     const minVersion = {
       padding: "2.4rem 3.2rem 0rem 3.2rem",
-      height: "38rem",
+      height: "32rem",
       width: "100%",
       paddingTop: "2.3rem",
     };
@@ -1233,7 +1233,7 @@ backdrop-filter: blur(15px);">
       style: { height: "100%" },
     };
     const minVersionSection = {
-      minHeight: "38rem",
+      minHeight: "32rem",
       marginBottom: 0,
       width: "100%",
       minWidth: "100%",
