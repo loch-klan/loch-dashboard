@@ -30,7 +30,6 @@ export default function TopBarDropDown(props) {
         console.log("something went wrong");
       });
   };
-  console.log("fullWalletList ", props.fullWalletList);
   return (
     <div style={props?.relative ? { position: "relative" } : {}}>
       <Dropdown show={showDropdown} className={props.class ? props.class : ""}>

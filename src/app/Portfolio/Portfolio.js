@@ -4005,9 +4005,18 @@ class Portfolio extends BaseReactComponent {
                           // title="Transactions"
                           handleClick={() => {
                             if (this.state.lochToken) {
-                              this.props.history.push(
-                                "/intelligence/transaction-history"
-                              );
+                              const isPage =
+                                this.props?.intelligenceState?.currentPage;
+                              if (isPage) {
+                                this.props.history.push(
+                                  "/intelligence/transaction-history?p=" +
+                                    isPage
+                                );
+                              } else {
+                                this.props.history.push(
+                                  "/intelligence/transaction-history"
+                                );
+                              }
                               TransactionHistoryEView({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
@@ -4030,7 +4039,16 @@ class Portfolio extends BaseReactComponent {
                           // title="Unrealized profit and loss"
                           handleClick={() => {
                             if (this.state.lochToken) {
-                              this.props.history.push("/yield-opportunities");
+                              const isPage =
+                                this.props?.yieldOpportunitiesState
+                                  ?.currentPage;
+                              if (isPage) {
+                                this.props.history.push(
+                                  "/yield-opportunities?p=" + isPage
+                                );
+                              } else {
+                                this.props.history.push("/yield-opportunities");
+                              }
                               YieldOppurtunitiesExpandediew({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
