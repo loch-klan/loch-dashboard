@@ -2231,9 +2231,9 @@ class Portfolio extends BaseReactComponent {
             let tempOpp = "-";
             if (this.state.isShowingAge && rowData.age) {
               tempVal = rowData.age;
-              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm");
             } else if (!this.state.isShowingAge && rowData.time) {
-              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm");
               tempOpp = rowData.age;
             }
             return (
