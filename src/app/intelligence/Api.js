@@ -328,7 +328,6 @@ export const getAllInsightsApi = (ctx) => {
       .post("wallet/user-wallet/get-wallet-insights", data)
       .then((res) => {
         if (!res.data.error) {
-          // console.log("insights", res.data.data.insights);
           dispatch({
             type: INSIGHT_DATA,
             payload: {
