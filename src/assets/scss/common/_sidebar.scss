@@ -112,7 +112,7 @@
         }
         .closebtnContainer {
           height: 4.5rem;
-          width: 4.5rem;
+          min-width: 4.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -145,6 +145,12 @@
             background-color: $drop-button-hover;
             border-radius: 5rem;
             cursor: pointer;
+          }
+          .closebtnLight {
+            transition-duration: 300ms;
+            &:hover {
+              filter: invert(1) !important;
+            }
           }
           &:hover {
             padding: 0rem;
@@ -240,6 +246,12 @@
         background-color: $drop-button-hover;
         border-radius: 5rem;
         cursor: pointer;
+      }
+      .closebtnLight {
+        transition-duration: 300ms;
+        &:hover {
+          filter: invert(1) !important;
+        }
       }
       &:hover {
         padding: 0rem;

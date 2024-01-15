@@ -76,6 +76,7 @@ import { getFilters } from "../intelligence/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -294,6 +295,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
+    this.props.updateWalletListFlag("yieldOpportunities", true);
     let listOfAddresses = "";
     if (
       this.props.walletState &&
@@ -975,6 +977,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1093,10 +1099,16 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
-                    page={this.state.currentPage}
+                    page={
+                      this.props?.yieldOpportunitiesState?.currentPage
+                        ? this.props?.yieldOpportunitiesState?.currentPage
+                        : 0
+                    }
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
                     addWatermark
+                    minimalPagination
+                    hidePaginationRecords
                   />
                   <Footer />
                 </>
