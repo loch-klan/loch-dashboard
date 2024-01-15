@@ -38,6 +38,7 @@ function TransactionTable(props) {
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}
         xAxisScrollable={props.xAxisScrollable}
+        xAxisScrollableColumnWidth={props.xAxisScrollableColumnWidth}
         yAxisScrollable={props.yAxisScrollable}
         onBlurSignInClick={props.onBlurSignInClick}
         moreData={props.moreData}
