@@ -1444,8 +1444,8 @@ class NewWelcome extends BaseReactComponent {
 
   checkUser = () => {
     let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (token && lochUser && lochUser.email) {
+    let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
+    if (token && lochUser && lochUser?.email) {
       return true;
     } else {
       return false;

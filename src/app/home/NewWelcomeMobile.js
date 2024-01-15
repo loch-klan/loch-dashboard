@@ -1396,8 +1396,8 @@ class NewWelcomeMobile extends BaseReactComponent {
           <div className="new-homepage__body-container new-homepage__body-container-mobile">
           <OutsideClickHandler onOutsideClick={()=>{
                 this.setState({isTrendingAddresses:false})
-                if(this.state?.walletInput && (this.state.walletInput?.length - 1) && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
-                  this.setState({initialInput:true})
+                if(this.state?.walletInput && this.state.walletInput?.length && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
+                  this.setState({initialInput:false})
                 }
               }}>
             {this.state.initialInput ? (
