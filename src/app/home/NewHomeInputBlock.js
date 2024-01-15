@@ -54,6 +54,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                             : null
                         }
                         autoFocus
+                        autoComplete="off"
                         onFocus={(e) => {
                           if (this.props.FocusInInput) {
                             this.props.FocusInInput(e);
@@ -133,6 +134,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                       <input
                         name={`wallet${index + 1}`}
                         value={c.nickname || ""}
+                        autoComplete="off"
                         className={`inter-display-regular f-s-15 lh-20 awInput`}
                         placeholder={this.props.isList?"Enter nametag":"Enter Private Nametag"}
                         title={c.nickname || ""}
@@ -275,6 +277,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                         className={`inter-display-regular f-s-15 lh-20 awInput`}
                         placeholder={this.props.isMobile?"Paste any wallet address or ENS":"Paste any wallet address or ENS to get started"}
                         title={c.address || ""}
+                        autoComplete="off"
                         onChange={
                           this.props.handleOnChange
                             ? this.props.handleOnChange
@@ -357,6 +360,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                         className={`inter-display-regular f-s-15 lh-20 awInput`}
                         placeholder="Enter Private Nametag"
                         title={c.nickname || ""}
+                        autoComplete="off"
                         onChange={
                           this.props.nicknameOnChain
                             ? this.props.nicknameOnChain
