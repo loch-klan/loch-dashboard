@@ -54,7 +54,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             {this.props.mapData.account ? (
               <div
                 onClick={() => {
-                  if (!this.props.smartMoneyBlur) {
+                  if (!this.props.smartMoneyBlur && !this.props.welcomePage) {
                     let lochUser = getCurrentUser().id;
 
                     let slink = this.props.mapData.account;

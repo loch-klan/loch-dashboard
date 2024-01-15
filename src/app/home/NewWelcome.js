@@ -1463,7 +1463,7 @@ class NewWelcome extends BaseReactComponent {
   };
 
   handleSubmitOTP = () => {
-    if (this.state.otp) {
+    if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
       data.append("email", this.state.email);
       data.append("otp_token", this.state.otp);
@@ -2262,7 +2262,7 @@ class NewWelcome extends BaseReactComponent {
             walletAddress={this.state.onboardingWalletAddress}
             exchanges={this.state.onboardingExchanges}
             onboardingHandleUpdateConnect={this.onboardingHandleUpdateConnect}
-            modalAnimation
+            modalAnimation={false}
           />
         ) : null}
         {this.state.authmodal == "login" ? (
@@ -2372,6 +2372,9 @@ class NewWelcome extends BaseReactComponent {
                   this.setState({
                     isTrendingAddresses: false,
                   });
+                  if(this.state?.walletInput && this.state.walletInput?.length && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
+                    this.setState({initialInput:false})
+                  }
                 }}
               >
             {this.state.initialInput ? (
