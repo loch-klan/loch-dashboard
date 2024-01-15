@@ -1970,6 +1970,7 @@
   }
 
   .new-homepage-btn--white {
+    background-color: white !important;
     .new-homepage-btn-singin-icon {
       padding: 0px;
       border-radius: 6px;
@@ -1984,7 +1985,7 @@
     }
     &:hover {
       backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.15) !important;
       color: white;
     }
   }

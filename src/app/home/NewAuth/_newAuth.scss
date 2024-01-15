@@ -154,7 +154,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #141414;
+        background-color: #141414 !important;
         box-shadow: 0px 18px 88px -4px rgba(0,0,0,0.25), 0px 8px 28px -6px rgba(0,0,0,0.25);
         border-radius: 8px;
         font-size: 16px;
@@ -167,7 +167,7 @@
       .new-auth-content-button--hover {
         &:hover {
           border: 1px solid white;
-          background-color: white;
+          background-color: white !important;
           color: #141414;
           // border: 1px solid #141414;
           box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
