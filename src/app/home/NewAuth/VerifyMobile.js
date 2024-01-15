@@ -7,6 +7,7 @@ import {
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
+import OTPInputs from "./OTPInputs";
 
 const VerifyMobile = ({
   show,
@@ -71,7 +72,7 @@ const VerifyMobile = ({
                 </p>
               </div>
               <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile new-auth-content-input-holder--otp">
-                <input
+                {/* <input
                   className="new-auth-content-input"
                   type="text"
                   placeholder="Enter OTP"
@@ -79,7 +80,8 @@ const VerifyMobile = ({
                   onChange={(e) => {
                     handleChangeOTP(e.target.value);
                   }}
-                />
+                /> */}
+                <OTPInputs numberOfDigits={6} handleChangeOTP={handleChangeOTP} isMobile/>
                 <button
                   style={{
                     opacity: otp ? 1 : 0.5,
