@@ -610,7 +610,9 @@ class CustomTable extends BaseReactComponent {
             ) : null}
           </>
         )}
-        {this.props.isSmartMoney || this.props.paginationNew ? (
+        {this.props.isSmartMoney ||
+        this.props.paginationNew ||
+        this.props.minimalPagination ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
@@ -624,6 +626,7 @@ class CustomTable extends BaseReactComponent {
               pageLimit={this.props.pageLimit}
               changePageLimit={this.props.changePageLimit}
               onPageChange={this.props.onPageChange}
+              hidePaginationRecords={this.props.hidePaginationRecords}
             />
           ) : null
         ) : (

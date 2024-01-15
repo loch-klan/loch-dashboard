@@ -1,4 +1,5 @@
 import { postLoginInstance } from "../../utils";
+import { API_LIMIT } from "../../utils/Constant";
 import { YIELD_OPPORTUNITIES } from "./ActionTypes";
 
 export const getYieldOpportunities = (data, page = 0) => {
@@ -8,9 +9,22 @@ export const getYieldOpportunities = (data, page = 0) => {
       .then((res) => {
         if (!res.data.error) {
           if (res.data?.data) {
+            let totalPage = 0;
+            let totalTempCount = 0;
+            if (res.data?.data.total_count) {
+              totalTempCount = res.data?.data.total_count;
+            }
+            if (totalTempCount) {
+              totalPage = Math.ceil(totalTempCount / API_LIMIT);
+            }
+            let sendData = {
+              ...res.data.data,
+              totalPage: totalPage,
+              currentPage: page,
+            };
             dispatch({
               type: YIELD_OPPORTUNITIES,
-              payload: res.data.data,
+              payload: sendData,
             });
           }
         } else {

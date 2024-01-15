@@ -295,6 +295,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
+    this.props.updateWalletListFlag("yieldOpportunities", true);
     let listOfAddresses = "";
     if (
       this.props.walletState &&
@@ -1098,10 +1099,16 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
-                    page={this.state.currentPage}
+                    page={
+                      this.props?.yieldOpportunitiesState?.currentPage
+                        ? this.props?.yieldOpportunitiesState?.currentPage
+                        : 0
+                    }
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
                     addWatermark
+                    minimalPagination
+                    hidePaginationRecords
                   />
                   <Footer />
                 </>
