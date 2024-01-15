@@ -56,12 +56,14 @@ class CustomTable extends BaseReactComponent {
       isLoading,
       isStickyHead,
       isMiniversion,
+      wrapperStyle,
     } = this.props;
     return (
       <div
         className={`table-wrapper ${
           this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
         } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
+        style={wrapperStyle}
       >
         {isLoading === true ? (
           <div
@@ -136,7 +138,11 @@ class CustomTable extends BaseReactComponent {
                     <Table
                       width={
                         this.props.xAxisScrollable
-                          ? width * (columnList.length / 3.5)
+                          ? width *
+                            (columnList.length /
+                              (this.props.xAxisScrollableColumnWidth
+                                ? this.props.xAxisScrollableColumnWidth
+                                : 3.5))
                           : width
                       }
                       height={
@@ -604,7 +610,9 @@ class CustomTable extends BaseReactComponent {
             ) : null}
           </>
         )}
-        {this.props.minimalPagination ? (
+        {this.props.isSmartMoney ||
+        this.props.paginationNew ||
+        this.props.minimalPagination ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
