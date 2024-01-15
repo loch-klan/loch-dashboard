@@ -84,7 +84,7 @@ const VerifyMobile = ({
                 <OTPInputs numberOfDigits={6} handleChangeOTP={handleChangeOTP} isMobile/>
                 <button
                   style={{
-                    opacity: otp ? 1 : 0.5,
+                    opacity: otp?.length>5 ? 1 : 0.5,
                   }}
                   onClick={handleSubmitOTP}
                   ref={submitRef}

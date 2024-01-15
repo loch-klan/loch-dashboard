@@ -954,7 +954,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   };
 
   handleSubmitOTP = () => {
-    if (this.state.otp) {
+    if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
       data.append("email", this.state.email);
       data.append("otp_token", this.state.otp);
