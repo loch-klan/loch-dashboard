@@ -1396,6 +1396,9 @@ class NewWelcomeMobile extends BaseReactComponent {
           <div className="new-homepage__body-container new-homepage__body-container-mobile">
           <OutsideClickHandler onOutsideClick={()=>{
                 this.setState({isTrendingAddresses:false})
+                if(this.state?.walletInput && (this.state.walletInput?.length - 1) && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
+                  this.setState({initialInput:true})
+                }
               }}>
             {this.state.initialInput ? (
               <>
@@ -1509,9 +1512,9 @@ class NewWelcomeMobile extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
-                <p className="new-homepage__body-content-table-header__subtitle-mobile">
+                {/* <p className="new-homepage__body-content-table-header__subtitle-mobile">
                     The lazy analyst’s guide to alpha
-                </p>
+                </p> */}
                 {this.props.tableLoading ? (
                   <div
                     style={{
