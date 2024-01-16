@@ -37,6 +37,7 @@ import { getProtocolBalanceApi } from "../Portfolio/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { getAllWalletListApi } from "../wallet/Api";
 import { updateDefiData } from "./Api";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class Defi extends Component {
   constructor(props) {
@@ -502,6 +503,10 @@ class Defi extends Component {
         </div>
         <div className="cohort-page-section m-t-80">
           <div className="cohort-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}

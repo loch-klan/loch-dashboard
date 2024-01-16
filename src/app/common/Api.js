@@ -88,12 +88,29 @@ export const fixWalletApi = (ctx, info) => {
     });
 };
 
-export const updateUserWalletApi = (data, ctx, yieldData) => {
+export const updateUserWalletApi = (
+  data,
+  ctx,
+  yieldData,
+  setToSearchHistory
+) => {
   return function (dispatch, getState) {
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
         if (!res.data.error) {
+          if (ctx.hideTheTopBarHistoryItems) {
+            ctx.hideTheTopBarHistoryItems();
+          }
+          if (setToSearchHistory && ctx.addWalletToHistory) {
+            ctx.addWalletToHistory();
+          }
+          if (ctx.cancelAddingWallet) {
+            // ctx.cancelAddingWallet();
+            ctx.setState({
+              disableAddBtn: false,
+            });
+          }
           const allChains = ctx.props.OnboardingState.coinsList;
           let newAddWallet = [];
           const apiResponse = res.data.data;
@@ -196,10 +213,25 @@ export const updateUserWalletApi = (data, ctx, yieldData) => {
             .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
+          if (ctx.hideTheTopBarHistoryItems) {
+            ctx.hideTheTopBarHistoryItems();
+          }
+          if (ctx.cancelAddingWallet) {
+            // ctx.cancelAddingWallet();
+            ctx.setState({
+              disableAddBtn: false,
+            });
+          }
         }
       })
       .catch((err) => {
-        // console.log("fixwallet",err)
+        console.log("Three ", err);
+        if (ctx.cancelAddingWallet) {
+          // ctx.cancelAddingWallet();
+          ctx.setState({
+            disableAddBtn: false,
+          });
+        }
       });
   };
 };
@@ -653,6 +685,26 @@ export const getDetectedChainsApi = (ctx) => {
               JSON.stringify(addWallet)
             );
           addLocalWalletList(JSON.stringify(addWallet));
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {
+        console.log("fixwallet", err);
+      });
+  };
+};
+
+export const sendUserFeedbackApi = (data, addFeedbackPoints) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/add-user-feedback", data)
+      .then((res) => {
+        if (!res.data.error) {
+          toast.success("Thank you for your feedback");
+          if (addFeedbackPoints) {
+            addFeedbackPoints();
+          }
         } else {
           toast.error(res.data.message || "Something went wrong");
         }
@@ -1526,24 +1578,34 @@ export const detectNameTag = (
         ) {
           if (res.data.data.result[0] && ctx) {
             const resNameTag = res.data.data.result[0];
-            ctx.handleSetNameTag({ ...wallet }, resNameTag);
+            if (ctx.handleSetNameTag) {
+              ctx.handleSetNameTag({ ...wallet }, resNameTag);
+            }
           } else {
-            if(ctx){
-            ctx.handleSetNameTag({ ...wallet }, "");
-            ctx.handleSetNameTagLoadingFalse({ ...wallet });
+            if (ctx.handleSetNameTag) {
+              ctx.handleSetNameTag({ ...wallet }, "");
+            }
+            if (ctx.handleSetNameTagLoadingFalse) {
+              ctx.handleSetNameTagLoadingFalse({ ...wallet });
             }
           }
         } else {
-          if(ctx){
-          ctx.handleSetNameTag({ ...wallet }, "");
-          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+          if (ctx.handleSetNameTag) {
+            ctx.handleSetNameTag({ ...wallet }, "");
+          }
+          if (ctx.handleSetNameTagLoadingFalse) {
+            ctx.handleSetNameTagLoadingFalse({ ...wallet });
           }
         }
       })
       .catch((err) => {
         // console.log("Catch", err);
-        ctx.handleSetNameTagLoadingFalse({ ...wallet });
-        ctx.handleSetNameTag({ ...wallet }, "");
+        if (ctx.handleSetNameTagLoadingFalse) {
+          ctx.handleSetNameTagLoadingFalse({ ...wallet });
+        }
+        if (ctx.handleSetNameTag) {
+          ctx.handleSetNameTag({ ...wallet }, "");
+        }
       });
   };
 };

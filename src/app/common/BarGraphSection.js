@@ -46,7 +46,6 @@ ChartJS.register(
 
 class BarGraphSection extends Component {
   constructor(props) {
-    console.log("props.data is ", props.data);
     super(props);
     this.state = {
       headerTitle: props.headerTitle,
@@ -322,7 +321,7 @@ class BarGraphSection extends Component {
                   {showFooter && (
                     <div
                       style={{
-                        width: "75%",
+                        width: this.props.showBadges ? "75%" : "100%",
                       }}
                     >
                       <BarGraphFooter

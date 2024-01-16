@@ -657,15 +657,16 @@ body {
 
 .Toastify__toast-container {
   // width: 40rem;
-  min-width: 40rem;
+  // min-width: 40rem;
   width: max-content;
 }
 
 .Toastify__toast {
-  padding: 2.5rem;
+  padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
     flex-direction: row-reverse;
+    gap: 10px;
     margin: 0;
     padding: 0;
     @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
@@ -1801,6 +1802,14 @@ form {
     position: relative;
   }
 }
+.chip-container-dual-justIcon {
+  border: none;
+  margin-left: 0rem;
+  img {
+    border-top-right-radius: 0.55rem;
+    border-bottom-right-radius: 0.55rem;
+  }
+}
 
 .modal-backdrop.show {
   opacity: 0 !important;
@@ -2178,7 +2187,19 @@ textarea {
     filter: brightness(0.5);
   }
 }
-.copy-icon-top-bar {
+.copy-icon-top-bar-container {
+  display: flex;
+  align-items: center;
+
+  .copy-icon-top-bar {
+    cursor: pointer;
+    &:hover {
+      filter: brightness(0.2);
+    }
+  }
+}
+.copy-icon-top-bar-new {
+  cursor: pointer;
   &:hover {
     filter: brightness(0.2);
   }
@@ -2619,4 +2640,10 @@ input{
   box-shadow: 0 0 0 30px white inset !important;
   -webkit-box-shadow: 0 0 0 30px white inset !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+.hoverDarker {
+  transition-duration: 300ms;
+  &:hover {
+    filter: brightness(0);
+  }
 }

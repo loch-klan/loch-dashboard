@@ -94,6 +94,7 @@ import {
 import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -581,7 +582,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleFunction = (badge) => {
     if (badge && badge.length > 0) {
       const tempArr = [];
-      if (badge[0].name !== "All") {
+      if (badge[0]?.name !== "All") {
         badge.forEach((resData) => tempArr.push(resData.id));
       }
       this.addCondition(
@@ -997,7 +998,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           // method: row.transaction_type
           method: row.method,
           hash: row.transaction_id,
-          network: row.chain.name,
+          network: row?.chain?.name,
         };
       });
 
@@ -2023,6 +2024,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}

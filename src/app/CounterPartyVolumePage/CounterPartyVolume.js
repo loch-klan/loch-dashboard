@@ -46,6 +46,7 @@ import {
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
@@ -582,6 +583,10 @@ class CounterPartyVolume extends Component {
             ""
           )}
           <div className="cost-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -650,7 +655,7 @@ class CounterPartyVolume extends Component {
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
                 showFooter={true}
-                showBadges={true}
+                // showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
                 isLoading={this.state.counterGraphLoading}
