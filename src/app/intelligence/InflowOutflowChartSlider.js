@@ -546,40 +546,40 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
                     ${
-                      receivedVal > 0
+                      (receivedVal-sendVal) > 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ${
-                            sendVal > 0 ? "mb-5" : ""
+                            sendVal > 0 ? "" : ""
                           }">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Inflow</div>
+                              <div>Net Inflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0" >
                             </div>
                             <div>
                               <span style="color:${"#16182B"}"> ${CurrencyType(
                             false
-                          )}${numToCurrency(receivedVal)} (${numToCurrency(
-                            receivedAmount
+                          )}${numToCurrency(receivedVal-sendVal)} (${numToCurrency(
+                            receivedAmount-sendAmount
                           )} ${assetCode}) </span>
                             </div>
                           </div>`
                         : ""
                     }
                     ${
-                      sendVal > 0
+                      (sendVal-receivedVal) > 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Outflow</div>
+                              <div>Net Outflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0">
                             </div>
                             <div>
                               <span style="color:${"#16182B"}"> ${CurrencyType(
                             false
-                          )}${numToCurrency(sendVal)} (${numToCurrency(
-                            sendAmount
+                          )}${numToCurrency(sendVal-receivedVal)} (${numToCurrency(
+                            sendAmount-receivedAmount
                           )} ${assetCode})</span>
                             </div>
                           </div>`
@@ -674,7 +674,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       },
     };
     const minGraphVersion = {
-      style: { height: "28rem" },
+      style: { height: "32rem" },
     };
     return (
       <div onMouseLeave={this.props.changeThePriceTodefault}>
