@@ -94,7 +94,7 @@ import {
   YieldOpportunitiesSortUSDvalue,
   YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -390,24 +390,36 @@ class Portfolio extends BaseReactComponent {
     };
   }
   changeBlockOneItem = (itemNum) => {
-    this.setState({
-      blockOneSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockOneSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockTwoItem = (itemNum) => {
-    this.setState({
-      blockTwoSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockTwoSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockThreeItem = (itemNum) => {
-    this.setState({
-      blockThreeSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockThreeSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockFourItem = (itemNum) => {
-    this.setState({
-      blockFourSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockFourSelectedItem: itemNum,
+      });
+    }
   };
   onCloseModal = () => {
     this.setState({

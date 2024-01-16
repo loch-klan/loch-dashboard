@@ -51,7 +51,11 @@ import {
   SignupMenu,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  resetPreviewAddress,
+} from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
@@ -690,7 +694,10 @@ function Sidebar(props) {
                               className="nav-link nav-link-closed"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -725,6 +732,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -889,7 +900,10 @@ function Sidebar(props) {
                               className="nav-link"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -917,6 +931,10 @@ function Sidebar(props) {
                               className={`nav-link`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
