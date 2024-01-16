@@ -320,6 +320,10 @@ function Sidebar(props) {
     }
   };
   const handleGoToProfile = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     props.history.push("/profile");
   };
   const handleApiModal = () => {
@@ -369,6 +373,10 @@ function Sidebar(props) {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
   const openSigninModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -400,6 +408,10 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleUserFeedbackModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     FeedbackSidebar({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -774,6 +786,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -807,6 +823,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/profile"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -844,9 +864,7 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               style={{ backround: "transparent" }}
                               id="sidebar-feedback-btn"
-                              onClick={(e) => {
-                                handleUserFeedbackModal();
-                              }}
+                              onClick={handleUserFeedbackModal}
                               // activeclassname="active"
                             >
                               <Image
@@ -964,6 +982,10 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -991,6 +1013,10 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -1019,9 +1045,7 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={() => {
-                            handleUserFeedbackModal();
-                          }}
+                          onClick={handleUserFeedbackModal}
                           className="nav-link none"
                           to="#"
                           activeclassname="none"
