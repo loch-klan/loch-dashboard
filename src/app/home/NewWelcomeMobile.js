@@ -76,7 +76,7 @@ import {
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { updateAddToWatchList } from "../watchlist/redux/WatchListApi";
+import { updateAddToWatchList, removeFromWatchList } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
@@ -762,7 +762,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     } else {
       // this.updateTimer();
       tempWatchListata.append("address", walletAddress);
-      // this.props.removeFromWatchList(tempWatchListata);
+      this.props.removeFromWatchList(tempWatchListata);
     }
   };
 
@@ -1558,7 +1558,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                                 profits={profits}
                                 returns={returns}
                                 mapData={mapData}
-                                // handleFollowUnfollow={this.props.handleFollowUnfollow}
+                                handleFollowUnfollow={this.handleFollowUnfollow}
                                 openSignInOnclickModal={this.opneLoginModalForSmartMoney}
                                 smartMoneyBlur={this.props.blurTable}
                                 welcomePage
@@ -1719,6 +1719,7 @@ const mapDispatchToProps = {
   verifyUser,
   setMetamaskConnectedReducer,
   setPageFlagDefault,
+  removeFromWatchList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);

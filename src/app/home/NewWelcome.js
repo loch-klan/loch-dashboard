@@ -76,7 +76,7 @@ import {
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { updateAddToWatchList } from "../watchlist/redux/WatchListApi";
+import { updateAddToWatchList, removeFromWatchList } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
@@ -1269,7 +1269,7 @@ class NewWelcome extends BaseReactComponent {
     } else {
       // this.updateTimer();
       tempWatchListata.append("address", walletAddress);
-      // this.props.removeFromWatchList(tempWatchListata);
+      this.props.removeFromWatchList(tempWatchListata);
     }
   };
 
@@ -2232,13 +2232,14 @@ class NewWelcome extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "following") {
             const handleOnClick = (addItem) => {
+              console.log('yo',addItem);
               if (!this.state.blurTable) {
                 this.handleFollowUnfollow(
                   rowData.account,
                   addItem,
                   rowData.tagName
-                );
-              } else {
+                  );
+                } else {
                 this.opneLoginModalForSmartMoney();
               }
             };
@@ -2661,6 +2662,7 @@ const mapDispatchToProps = {
   verifyUser,
   setMetamaskConnectedReducer,
   setPageFlagDefault,
+  removeFromWatchList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);
