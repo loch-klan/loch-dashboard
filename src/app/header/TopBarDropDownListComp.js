@@ -62,18 +62,20 @@ function TopBarDropDownListComp(props) {
               style={{ height: "12px" }}
             />
           </div>
-          <div className="copy-icon-top-bar pl-3">
-            <Image
-              src={WalletDropdownTrashIcon}
-              onClick={() => {
-                if (props.deleteTheAddress) {
-                  props.deleteTheAddress(li);
-                }
-              }}
-              className="cp"
-              style={{ height: "12px" }}
-            />
-          </div>
+          {!props.hideDeleteButton ? (
+            <div className="copy-icon-top-bar pl-3">
+              <Image
+                src={WalletDropdownTrashIcon}
+                onClick={() => {
+                  if (props.deleteTheAddress) {
+                    props.deleteTheAddress(li);
+                  }
+                }}
+                className="cp"
+                style={{ height: "12px" }}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
       {/* {props?.showChecked && (

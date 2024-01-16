@@ -48,6 +48,7 @@ class TopWalletAddressList extends Component {
       firstWallet: "",
       firstFullWallet: "",
       fullWalletList: "",
+      hideDeleteButton: false,
       walletList: [],
       exchangeList: [],
       exchangeListImages: [],
@@ -319,7 +320,11 @@ class TopWalletAddressList extends Component {
       const tempExchangeListImages = [];
       const tempWalletListToPush = [];
       if (walletList) {
+        let tempHideDel = true;
         walletList.map((data) => {
+          if (!data.apiAddress) {
+            tempHideDel = false;
+          }
           if (data?.chains.length === 0) {
             if (data.protocol) {
               if (data.protocol.code) {
@@ -399,6 +404,7 @@ class TopWalletAddressList extends Component {
           exchangeList: tempExchangeList,
           firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
           exchangeListImages: tempExchangeListImages,
+          hideDeleteButton: tempHideDel,
         });
         const passDataHeader = [...tempWalletListToPush];
         this.props.setHeaderReducer(passDataHeader);
@@ -412,7 +418,11 @@ class TopWalletAddressList extends Component {
       const tempFullWalletList = [];
       const regex = /\.eth$/;
       if (walletList) {
+        let tempHideDel = true;
         walletList.forEach((data) => {
+          if (!data.apiAddress) {
+            tempHideDel = false;
+          }
           let tempAddress = "";
 
           let tempFullAdd = data.address;
@@ -494,6 +504,7 @@ class TopWalletAddressList extends Component {
 
           totalWallets: tempWalletList.length,
           walletList: tempWalletList,
+          hideDeleteButton: tempHideDel,
         });
       }
     }
@@ -937,6 +948,7 @@ class TopWalletAddressList extends Component {
               firstWallet={this.state.firstWallet}
               firstFullWallet={this.state.firstFullWallet}
               fullWalletList={this.state.fullWalletList}
+              hideDeleteButton={this.state.hideDeleteButton}
             />
           </div>
         ) : (
