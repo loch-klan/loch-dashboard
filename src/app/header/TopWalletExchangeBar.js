@@ -1364,7 +1364,7 @@ class TopWalletExchangeBar extends Component {
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
           }`}
         >
-          {/* {this.state.topBarHistoryItems &&
+          {this.state.topBarHistoryItems &&
           this.state.topBarHistoryItems.length > 0 &&
           this.state.showTopBarHistoryItems ? (
             <div
@@ -1435,7 +1435,7 @@ class TopWalletExchangeBar extends Component {
                 </div>
               </div>
             </div>
-          ) : null} */}
+          ) : null}
           {this.state.followSigninModal ? (
             <FollowAuthModal
               followedAddress={this.state.followedAddress}
