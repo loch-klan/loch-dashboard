@@ -658,6 +658,7 @@ class TopWalletExchangeBar extends Component {
     this.props.handleAddWalletClick();
   };
   handleAddWallet = () => {
+    this.hideTheTopBarHistoryItems();
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
         session_id: getCurrentUser().id,
