@@ -15,6 +15,7 @@ import {
   BlackManIcon,
   GreyManIcon,
   InactiveSmartMoneySidebarIcon,
+  PersonRoundedSigninIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
@@ -1098,7 +1099,7 @@ function Sidebar(props) {
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1174,13 +1175,13 @@ function Sidebar(props) {
                             </div>
                             <span
                               onClick={handleLeaveChild}
-                              onMouseOver={(e) =>
-                                (e.currentTarget.children[0].src =
-                                  LeaveBlackIcon)
-                              }
-                              onMouseLeave={(e) =>
-                                (e.currentTarget.children[0].src = LeaveIcon)
-                              }
+                              // onMouseOver={(e) =>
+                              //   (e.currentTarget.children[0].src =
+                              //     LeaveBlackIcon)
+                              // }
+                              // onMouseLeave={(e) =>
+                              //   (e.currentTarget.children[0].src = LeaveIcon)
+                              // }
                               className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
                             >
                               <Image src={LeaveIcon} />
@@ -1195,10 +1196,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
                             id="sidebar-open-sign-in-btn"
                           >
-                            <div className="sideBarFooterSignInIconContainer">
+                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                               <Image
+                                style={{
+                                  height:'12px',
+                                  width:'12px'
+                                }}
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                             <div>Sign in / up</div>

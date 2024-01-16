@@ -830,14 +830,14 @@
             border-color: transparent;
           &:hover {
             box-shadow: none;
-            background-color: black;
+            background-color: #0d0d0d;
             color: $black-191;
             .sideBarFooterSignInIconContainer {
               // background-color: white;
             }
             .sideBarFooterSignInIcon {
               filter: invert(0);
-              filter: brightness(1.3);
+              filter: brightness(2.5);
             }
           }
 
@@ -848,7 +848,11 @@
         .sideBarFooterSignInIconContainerClosedSignedIn {
           background-color: #f2f2f2;
           &:hover {
-            background-color: white;
+            background-color: #0d0d0d;
+            .sideBarFooterSignInIcon{
+              filter: invert(0);
+              filter: brightness(15) !important;
+            }
           }
         }
       }
@@ -891,15 +895,15 @@
         border-color: transparent;
         &:hover {
           box-shadow: none;
-          background-color: black;
+          background-color: #0d0d0d;
           color: white;
           .sideBarFooterSignInIconContainer {
             background-color: white;
             border: 1.3px $white-E5E solid;
-            background-color: black;
+            background-color: #0d0d0d;
             img{
               filter: invert(0);
-              filter: brightness(1.2);
+              filter: brightness(2.5);
             }
           }
         }
@@ -943,6 +947,23 @@
       }
       .sideBarFooterSignedInContainer {
         justify-content: space-between;
+        &:hover {
+          .sideBarFooterSignInIcon{
+            filter: invert(0);
+            filter: brightness(10) !important;
+          }
+          .sideBarFooterSignedInLeaveContainer{
+
+            .navbar-button {
+              color: white;
+            }
+            img{
+              opacity: 1 !important;
+              filter: brightness(10);
+            }
+          }
+
+        }
         .sideBarFooterSignInData {
           display: flex;
           align-items: center;
@@ -962,11 +983,6 @@
           }
           img {
             width: 1.6rem;
-          }
-          &:hover {
-            .navbar-button {
-              color: $primary;
-            }
           }
         }
       }
