@@ -51,8 +51,8 @@ function TransactionTable(props) {
         combinedReturn={props.combinedReturn}
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
-        paginationNew={props.paginationNew}
-        isSmartMoney={props.isSmartMoney}
+        minimalPagination={props.minimalPagination}
+        hidePaginationRecords={props.hidePaginationRecords}
         showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"

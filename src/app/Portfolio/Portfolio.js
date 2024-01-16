@@ -2060,7 +2060,14 @@ class Portfolio extends BaseReactComponent {
   };
   goToTransactionHistoryPage = () => {
     if (this.state.lochToken) {
-      this.props.history.push("/intelligence/transaction-history");
+      const isPage = this.props?.intelligenceState?.currentPage;
+      if (isPage) {
+        this.props.history.push(
+          "/intelligence/transaction-history?p=" + isPage
+        );
+      } else {
+        this.props.history.push("/intelligence/transaction-history");
+      }
       TransactionHistoryEView({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -2069,7 +2076,12 @@ class Portfolio extends BaseReactComponent {
   };
   goToYieldOppPage = () => {
     if (this.state.lochToken) {
-      this.props.history.push("/yield-opportunities");
+      const isPage = this.props?.yieldOpportunitiesState?.currentPage;
+      if (isPage) {
+        this.props.history.push("/yield-opportunities?p=" + isPage);
+      } else {
+        this.props.history.push("/yield-opportunities");
+      }
       YieldOppurtunitiesExpandediew({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
