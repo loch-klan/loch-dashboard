@@ -1445,6 +1445,7 @@ class NewWelcome extends BaseReactComponent {
   checkUser = () => {
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
+    console.log(token, lochUser);
     if (token && lochUser && lochUser?.email) {
       return true;
     } else {
@@ -1812,6 +1813,12 @@ class NewWelcome extends BaseReactComponent {
           addTrendingAddress={this.addTrendingAddress}
           isTrendingAddresses={this.state.isTrendingAddresses}
           currency={this.state.currency}
+          currentPage={this.state.currentPage}
+          pageLimit={this.state.pageLimit}
+          totalPage={this.state.totalPage}
+          onPageChange={this.onPageChange}
+          changePageLimit={this.changePageLimit}
+          blurTable={this.state.blurTable}
         />
       );
     }

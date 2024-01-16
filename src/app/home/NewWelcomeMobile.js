@@ -91,6 +91,7 @@ import LoginMobile from "./NewAuth/LoginMobile.js";
 import SmartMoneyMobileModalContainer from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileModalContainer.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
 import OutsideClickHandler from "react-outside-click-handler";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
@@ -1532,6 +1533,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                     <Loading />
                   </div>
                 ) : (
+                  <>
+                    {
                     this.props.accountList && this.props.accountList.length > 0 ? (
                         <div className="mobileSmartMoneyListContainer">
                           {this.props.accountList.map((mapData) => {
@@ -1564,6 +1567,22 @@ class NewWelcomeMobile extends BaseReactComponent {
                           })}
                         </div>
                       ) : null
+                      }
+                      {this.props.accountList && this.props.accountList.length > 0 ? (
+              <SmartMoneyPagination
+                history={this.props.history}
+                location={this.props.location}
+                page={this.props.currentPage + 1}
+                pageCount={this.props.totalPage}
+                pageLimit={this.props.pageLimit}
+                changePageLimit={this.props.changePageLimit}
+                onPageChange={this.props.onPageChange}
+                openSignInOnclickModal={this.opneLoginModalForSmartMoney}
+                smartMoneyBlur={this.props.blurTable}
+                isMobile
+              />
+            ) : null}
+                      </>
                 )}
               </div>
             ) : (
