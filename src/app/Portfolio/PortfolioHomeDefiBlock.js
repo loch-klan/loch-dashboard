@@ -224,7 +224,7 @@ class PortfolioHomeDefiBlock extends Component {
       return (
         <div
           style={{
-            height: "38rem",
+            height: "32rem",
           }}
         >
           <div
@@ -554,7 +554,7 @@ class PortfolioHomeDefiBlock extends Component {
                               {groupComp?.walletItems &&
                               groupComp.walletItems.length > 0
                                 ? groupComp.walletItems
-                                    .slice(0, 3)
+                                    .slice(0, 2)
                                     .map((rowData, indexTwo) => {
                                       return (
                                         <Row
@@ -707,7 +707,7 @@ class PortfolioHomeDefiBlock extends Component {
               <div
                 style={{
                   textAlign: "center",
-                  height: "26.5rem",
+                  height: "23rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
