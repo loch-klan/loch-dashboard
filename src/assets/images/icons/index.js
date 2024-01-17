@@ -57,6 +57,7 @@ export { default as SmartMoneyPaginationArrowLeftIcon } from "./smartMoneyPagina
 export { default as SmartMoneyPaginationArrowRightIcon } from "./smartMoneyPaginationArrowRight.svg";
 export { default as SmartMoneyWhiteIcon } from "./smartMoneyWhite.svg";
 export { default as StreakFireIcon } from "./streakFire.svg";
+export { default as StreakFireLochPointsIcon } from "./streakFireLochPoints.svg";
 export { default as ThickCheckMarkIcon } from "./thickCheckMark.svg";
 export { default as TopBarSearchIcon } from "./topBarSearch.svg";
 export { default as TrendingFireIcon } from "./trendingFire.svg";
