@@ -31,6 +31,7 @@ import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import ActiveHomeIcon from "../../image/HomeIcon.svg";
 import logo from "../../image/Loch.svg";
 import {
@@ -51,7 +52,11 @@ import {
   SignupMenu,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  resetPreviewAddress,
+} from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
@@ -69,15 +74,15 @@ import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
+import { toast } from "react-toastify";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import ExitOverlay from "./ExitOverlay";
 import ConnectModal from "./ConnectModal.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
+import ExitOverlay from "./ExitOverlay";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -316,6 +321,10 @@ function Sidebar(props) {
     }
   };
   const handleGoToProfile = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     props.history.push("/profile");
   };
   const handleApiModal = () => {
@@ -365,6 +374,10 @@ function Sidebar(props) {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
   const openSigninModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -396,6 +409,10 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleUserFeedbackModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     FeedbackSidebar({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -690,7 +707,10 @@ function Sidebar(props) {
                               className="nav-link nav-link-closed"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -725,6 +745,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -750,7 +774,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -763,6 +786,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -784,6 +811,36 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"NFTs"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/nft"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -796,6 +853,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/profile"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -833,9 +894,7 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               style={{ backround: "transparent" }}
                               id="sidebar-feedback-btn"
-                              onClick={(e) => {
-                                handleUserFeedbackModal();
-                              }}
+                              onClick={handleUserFeedbackModal}
                               // activeclassname="active"
                             >
                               <Image
@@ -881,7 +940,7 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isSubmenu.me && (
+                      {isSubmenu?.me && (
                         <>
                           <li>
                             <NavLink
@@ -889,7 +948,10 @@ function Sidebar(props) {
                               className="nav-link"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -917,6 +979,10 @@ function Sidebar(props) {
                               className={`nav-link`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -946,6 +1012,10 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -967,6 +1037,33 @@ function Sidebar(props) {
                                 }
                               />
                               Leaderboard
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/nft"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
+                              />
+                              NFTs
                             </NavLink>
                           </li>
                           <li>
@@ -1001,9 +1098,7 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={() => {
-                            handleUserFeedbackModal();
-                          }}
+                          onClick={handleUserFeedbackModal}
                           className="nav-link none"
                           to="#"
                           activeclassname="none"
@@ -1060,7 +1155,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content-closed">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1145,7 +1240,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||

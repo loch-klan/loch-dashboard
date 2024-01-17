@@ -865,7 +865,7 @@ class ConnectModal extends BaseReactComponent {
               code: "BITBNS",
               icon: BitBtnIcon,
               isActive: false,
-              isOAuth: false,
+              isOAuth: true,
               apiKey: "",
               apiSecretKey: "",
               connectionName: "",
@@ -1503,19 +1503,22 @@ class ConnectModal extends BaseReactComponent {
         }
       >
         <Modal.Header>
-          {(selection !== null || this.props.ishome) && (
-            <Image
-              className="back-icon cp"
-              src={backIcon}
-              onClick={() => {
-                if (this.props.ishome && !selection) {
-                  this.props.handleBackConnect(this.state.connectExchangesList);
-                } else {
-                  this.handleBack();
-                }
-              }}
-            />
-          )}
+          {(selection !== null || this.props.ishome) &&
+            this.props.handleBackConnect && (
+              <Image
+                className="back-icon cp"
+                src={backIcon}
+                onClick={() => {
+                  if (this.props.ishome && !selection) {
+                    this.props.handleBackConnect(
+                      this.state.connectExchangesList
+                    );
+                  } else {
+                    this.handleBack();
+                  }
+                }}
+              />
+            )}
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
@@ -1790,30 +1793,32 @@ class ConnectModal extends BaseReactComponent {
                 {/* </Row> */}
                 {this.props.ishome && (
                   <>
-                    <div className="ob-connect-exchange">
-                      <div
-                        className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
-                        onClick={() => {
-                          this.props.handleBackConnect(
-                            this.state.connectExchangesList
-                          );
-                        }}
-                      >
-                        <Image
-                          src={WalletIconBtn}
-                          style={{
-                            width: "1.2rem",
-                            marginRight: "4px",
-                            marginBottom: "1px",
+                    {this.props.handleBackConnect ? (
+                      <div className="ob-connect-exchange">
+                        <div
+                          className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                          onClick={() => {
+                            this.props.handleBackConnect(
+                              this.state.connectExchangesList
+                            );
                           }}
-                        />
-                        {this.state.walletCount === 0
-                          ? "Add wallet addresses"
-                          : this.state.walletCount > 1
-                          ? this.state.walletCount + " addresses added"
-                          : this.state.walletCount + " address added"}
+                        >
+                          <Image
+                            src={WalletIconBtn}
+                            style={{
+                              width: "1.2rem",
+                              marginRight: "4px",
+                              marginBottom: "1px",
+                            }}
+                          />
+                          {this.state.walletCount === 0
+                            ? "Add wallet addresses"
+                            : this.state.walletCount > 1
+                            ? this.state.walletCount + " addresses added"
+                            : this.state.walletCount + " address added"}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                     <div style={{ textAlign: "center" }}>
                       <CustomButton
                         className="primary-btn go-btn"
