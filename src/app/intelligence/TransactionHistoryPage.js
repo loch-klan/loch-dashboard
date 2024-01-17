@@ -1705,7 +1705,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13">
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
                     {rowData.asset.code}
                   </div>
                 ) : (
