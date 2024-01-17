@@ -1556,19 +1556,12 @@ class TopWalletExchangeBar extends Component {
               <div
                 ref={this.props.buttonRef}
                 className={`topbar-btn maxWidth50 ml-2 ${
-                  this.state.disableAddBtn ? "topbar-btn-light-disabled" : ""
-                }`}
-                id="address-button-two"
-                onClick={
-                  this.state.disableAddBtn ? null : this.cancelAddingWallet
-                }
-              >
-                <span className="dotDotText">Cancel</span>
-              </div>
-              <div
-                ref={this.props.buttonRef}
-                className={`topbar-btn maxWidth50 ml-2 ${
-                  this.state.disableAddBtn ? "topbar-btn-light-disabled" : ""
+                  !(
+                    this.state.walletInput[0].coinFound &&
+                    this.state.walletInput[0].coins.length > 0
+                  ) || this.state.disableAddBtn
+                    ? "topbar-btn-light-disabled"
+                    : ""
                 }`}
                 id="address-button-two"
                 onClick={
