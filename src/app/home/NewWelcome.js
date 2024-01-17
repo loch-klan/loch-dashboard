@@ -47,6 +47,9 @@ import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg"
 import {
   AddTextbox,
   ClickTrendingAddress,
+  ClickedFollowLeaderboard,
+  ClickedPageChangeWelcomeLeaderboard,
+  ClickedPageLimitWelcomeLeaderboard,
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
@@ -76,7 +79,10 @@ import {
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { updateAddToWatchList, removeFromWatchList } from "../watchlist/redux/WatchListApi";
+import {
+  updateAddToWatchList,
+  removeFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
@@ -1242,7 +1248,11 @@ class NewWelcome extends BaseReactComponent {
     window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
 
-  onPageChange = () => {
+  onPageChange = (mobile = true) => {
+    ClickedPageChangeWelcomeLeaderboard({
+      session_id: getCurrentUser().id,
+      isMobile: mobile,
+    });
     this.setState({
       goToBottom: true,
     });
@@ -1250,6 +1260,11 @@ class NewWelcome extends BaseReactComponent {
 
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
     let tempWatchListata = new URLSearchParams();
+    ClickedFollowLeaderboard({
+      session_id: getCurrentUser().id,
+      address: walletAddress,
+      isMobile: false,
+    });
     if (addItem) {
       this.updateTimer();
       tempWatchListata.append("wallet_address", walletAddress);
@@ -1313,7 +1328,7 @@ class NewWelcome extends BaseReactComponent {
     let currencyRates = JSON.parse(
       window.sessionStorage.getItem("currencyRates")
     );
-      getAllCurrencyRatesApi();
+    getAllCurrencyRatesApi();
     if (getToken()) {
       let isStopRedirect =
         window.sessionStorage.getItem("stop_redirect") &&
@@ -1473,6 +1488,10 @@ class NewWelcome extends BaseReactComponent {
   };
 
   changePageLimit = (dropdownResponse) => {
+    ClickedPageLimitWelcomeLeaderboard({
+      session_id: getCurrentUser().id,
+      isMobile: false,
+    });
     const tempHolder = dropdownResponse.split(" ");
     if (tempHolder && tempHolder.length > 1) {
       const params = new URLSearchParams(this.props.location.search);
@@ -1860,11 +1879,12 @@ class NewWelcome extends BaseReactComponent {
                 isText={true}
                 text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
-                <span className="inter-display-medium f-s-13"
-                style={{
-                  fontWeight:'700',
-                  color:'#313233'
-                }}
+                <span
+                  className="inter-display-medium f-s-13"
+                  style={{
+                    fontWeight: "700",
+                    color: "#313233",
+                  }}
                 >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
                 </span>
@@ -1898,38 +1918,38 @@ class NewWelcome extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-                <span
-                  onClick={() => {
-                    if (!this.state.blurTable) {
-                      let lochUser = getCurrentUser().id;
+              <span
+                onClick={() => {
+                  if (!this.state.blurTable) {
+                    let lochUser = getCurrentUser().id;
 
-                      let slink = rowData.account;
-                      let shareLink =
-                        BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                      if (lochUser) {
-                        const alreadyPassed =
-                          window.sessionStorage.getItem("PassedRefrenceId");
-                        if (alreadyPassed) {
-                          shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                        } else {
-                          shareLink = shareLink + "&refrenceId=" + lochUser;
-                        }
+                    let slink = rowData.account;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                    if (lochUser) {
+                      const alreadyPassed =
+                        window.sessionStorage.getItem("PassedRefrenceId");
+                      if (alreadyPassed) {
+                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
+                      } else {
+                        shareLink = shareLink + "&refrenceId=" + lochUser;
                       }
-                      // SmartMoneyWalletClicked({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      //   wallet: slink,
-                      //   isMobile: false,
-                      // });
-                      window.open(shareLink, "_blank", "noreferrer");
-                    } else {
-                      this.opneLoginModalForSmartMoney();
                     }
-                  }}
-                  className="top-account-address"
-                >
-                  {TruncateText(rowData.account)}
-                </span>
+                    // SmartMoneyWalletClicked({
+                    //   session_id: getCurrentUser().id,
+                    //   email_address: getCurrentUser().email,
+                    //   wallet: slink,
+                    //   isMobile: false,
+                    // });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  } else {
+                    this.opneLoginModalForSmartMoney();
+                  }
+                }}
+                className="top-account-address"
+              >
+                {TruncateText(rowData.account)}
+              </span>
             );
           }
         },
@@ -2232,15 +2252,19 @@ class NewWelcome extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "following") {
             const handleOnClick = (addItem) => {
-              console.log('yo',addItem);
               if (!this.state.blurTable) {
                 this.handleFollowUnfollow(
                   rowData.account,
                   addItem,
                   rowData.tagName
-                  );
-                } else {
+                );
+              } else {
                 this.opneLoginModalForSmartMoney();
+                ClickedFollowLeaderboard({
+                  session_id: getCurrentUser().id,
+                  address: rowData.account,
+                  isMobile: false,
+                });
               }
             };
             return (
@@ -2375,59 +2399,68 @@ class NewWelcome extends BaseReactComponent {
         </div>
         <div className="new-homepage__body">
           <div className="new-homepage__body-container">
-          <OutsideClickHandler
-                onOutsideClick={() => {
-                  this.setState({
-                    isTrendingAddresses: false,
-                  });
-                  if(this.state?.walletInput && this.state.walletInput?.length && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
-                    this.setState({initialInput:false})
-                  }
-                }}
-              >
-            {this.state.initialInput ? (
-              <>
-                {this.state.walletInput?.map((c, index) => {
-                  if (index !== this.state.walletInput.length - 1) {
-                    return null;
-                  }
-                  return (
-                    <div className="new-homepage__body-search_input_body_main_container">
-                      <NewHomeInputBlock
-                        c={c}
-                        index={index}
-                        walletInput={this.state.walletInput}
-                        nicknameOnChain={this.nicknameOnChain}
-                        handleOnChange={this.handleOnChange}
-                        showisTrendingAddressesAddress={
-                          this.showisTrendingAddressesAddress
-                        }
-                        FocusInInput={this.FocusInInput}
-                      />
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              <div className="new-homepage__body-search " onClick={this.showInitialInput}>
+            <OutsideClickHandler
+              onOutsideClick={() => {
+                this.setState({
+                  isTrendingAddresses: false,
+                });
+                if (
+                  this.state?.walletInput &&
+                  this.state.walletInput?.length &&
+                  !this.state?.walletInput[this.state.walletInput?.length - 1]
+                    ?.address
+                ) {
+                  this.setState({ initialInput: false });
+                }
+              }}
+            >
+              {this.state.initialInput ? (
+                <>
+                  {this.state.walletInput?.map((c, index) => {
+                    if (index !== this.state.walletInput.length - 1) {
+                      return null;
+                    }
+                    return (
+                      <div className="new-homepage__body-search_input_body_main_container">
+                        <NewHomeInputBlock
+                          c={c}
+                          index={index}
+                          walletInput={this.state.walletInput}
+                          nicknameOnChain={this.nicknameOnChain}
+                          handleOnChange={this.handleOnChange}
+                          showisTrendingAddressesAddress={
+                            this.showisTrendingAddressesAddress
+                          }
+                          FocusInInput={this.FocusInInput}
+                        />
+                      </div>
+                    );
+                  })}
+                </>
+              ) : (
                 <div
-                  className="new-homepage__body-search_preview"
+                  className="new-homepage__body-search "
+                  onClick={this.showInitialInput}
                 >
-                  <Image
-                    src={NewWelcomeCopyIcon}
-                    className="new-homepage__body-search-copy-icon"
-                  />
-                  <div className="new-homepage__body-search-paste-text">
-                    Paste any wallet address or ENS to get started
+                  <div className="new-homepage__body-search_preview">
+                    <Image
+                      src={NewWelcomeCopyIcon}
+                      className="new-homepage__body-search-copy-icon"
+                    />
+                    <div className="new-homepage__body-search-paste-text">
+                      Paste any wallet address or ENS to get started
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {this.state.walletInput &&
-            !this.state.walletInput[0].address &&
-            this.state.walletInput.length === 1 &&
-            this.state.isTrendingAddresses ? (
-                <div className="new-homepage__body-trending-address" style={{top:'86px'}}>
+              )}
+              {this.state.walletInput &&
+              !this.state.walletInput[0].address &&
+              this.state.walletInput.length === 1 &&
+              this.state.isTrendingAddresses ? (
+                <div
+                  className="new-homepage__body-trending-address"
+                  style={{ top: "86px" }}
+                >
                   <div
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
@@ -2437,7 +2470,6 @@ class NewWelcome extends BaseReactComponent {
                       style={{
                         color: "#19191A",
                         fontSize: "16px",
-                        
                       }}
                       className="inter-display-medium"
                     >
@@ -2484,7 +2516,7 @@ class NewWelcome extends BaseReactComponent {
                     ))}
                   </div>
                 </div>
-            ) : null}
+              ) : null}
             </OutsideClickHandler>
 
             {this.state.walletInput &&
@@ -2530,9 +2562,13 @@ class NewWelcome extends BaseReactComponent {
                       location={this.props.location}
                       page={this.state.currentPage}
                       tableLoading={this.state.tableLoading}
-                      onPageChange={this.onPageChange}
+                      onPageChange={() => {
+                        this.onPageChange(false);
+                      }}
                       pageLimit={this.state.pageLimit}
-                      changePageLimit={this.changePageLimit}
+                      changePageLimit={() => {
+                        this.changePageLimit(false);
+                      }}
                       addWatermark
                       className={this.state.blurTable ? "noScroll" : ""}
                       onBlurSignInClick={this.showSignInModal}
@@ -2553,7 +2589,7 @@ class NewWelcome extends BaseReactComponent {
                 //       : "-15px",
                 // }}
                 style={{
-                  marginTop:'24px'
+                  marginTop: "24px",
                 }}
               >
                 {this.state.walletInput && this.state.walletInput.length > 1 ? (
@@ -2662,7 +2698,7 @@ const mapDispatchToProps = {
   verifyUser,
   setMetamaskConnectedReducer,
   setPageFlagDefault,
-  removeFromWatchList
+  removeFromWatchList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

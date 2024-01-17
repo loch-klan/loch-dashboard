@@ -47,6 +47,8 @@ import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg"
 import {
   AddTextbox,
   ClickTrendingAddress,
+  ClickedFollowLeaderboard,
+  ClickedPageLimitWelcomeLeaderboard,
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
@@ -76,7 +78,10 @@ import {
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
-import { updateAddToWatchList, removeFromWatchList } from "../watchlist/redux/WatchListApi";
+import {
+  updateAddToWatchList,
+  removeFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
@@ -742,6 +747,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   };
 
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    ClickedFollowLeaderboard({
+      session_id: getCurrentUser().id,
+      address: walletAddress,
+      isMobile: true,
+    });
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
       this.updateTimer();
@@ -964,6 +974,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   };
 
   changePageLimit = (dropdownResponse) => {
+    ClickedPageLimitWelcomeLeaderboard({
+      session_id: getCurrentUser().id,
+      isMobile: true,
+    });
+
     const tempHolder = dropdownResponse.split(" ");
     if (tempHolder && tempHolder.length > 1) {
       const params = new URLSearchParams(this.props.location.search);
@@ -1292,33 +1307,28 @@ class NewWelcomeMobile extends BaseReactComponent {
   render() {
     const tableData = this.state.accountList;
 
-
     return (
       <div className="new-homepage new-homepage-mobile">
-        {
-            this.state.authmodal=='login'
-            ?
-            // <SmartMoneyMobileModalContainer
-            // onHide={this.toggleAuthModal}
-            // >
-                <LoginMobile
-                toggleModal={this.toggleAuthModal}
-                smartMoneyLogin={this.state.smartMoneyLogin}
-                isMobile
-                email={this.state.email}
-                handleChangeEmail={(val) => {
-                    this.setState({
-                        email: val,
-                    });
-                }}
-                handleSubmitEmail={this.handleSubmitEmail}
-                show={this.state.authmodal == "login"}
-                />
-            // </SmartMoneyMobileModalContainer>
-            :
-            this.state.authmodal=='verify'
-            ?
-            <VerifyMobile
+        {this.state.authmodal == "login" ? (
+          // <SmartMoneyMobileModalContainer
+          // onHide={this.toggleAuthModal}
+          // >
+          <LoginMobile
+            toggleModal={this.toggleAuthModal}
+            smartMoneyLogin={this.state.smartMoneyLogin}
+            isMobile
+            email={this.state.email}
+            handleChangeEmail={(val) => {
+              this.setState({
+                email: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmail}
+            show={this.state.authmodal == "login"}
+          />
+        ) : // </SmartMoneyMobileModalContainer>
+        this.state.authmodal == "verify" ? (
+          <VerifyMobile
             isMobile
             toggleModal={this.toggleAuthModal}
             show={this.state.authmodal == "verify"}
@@ -1330,10 +1340,8 @@ class NewWelcomeMobile extends BaseReactComponent {
               });
             }}
             handleSubmitOTP={this.handleSubmitOTP}
-            />
-            :
-            null
-        }
+          />
+        ) : null}
         <div className="new-homepage__header new-homepage__header-mobile">
           <div className="new-homepage__header-container new-homepage__header-container-mobile">
             <div className="d-flex justify-content-end">
@@ -1348,9 +1356,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                     });
                   }}
                 >
-                  <div
-                    className="new-homepage-btn new-homepage-btn-singin-icon"
-                  >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
                   Sign in
@@ -1368,141 +1374,153 @@ class NewWelcomeMobile extends BaseReactComponent {
                   gap: "6px",
                 }}
               >
-                <p style={{textAlign:'center'}}>
+                <p style={{ textAlign: "center" }}>
                   Don't worry. &nbsp;
                   <CustomOverlay
-                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                  position="top"
-                  isIcon={true}
-                  IconImage={LockIcon}
-                  isInfo={true}
-                  className={"fix-width"}
-                >
-                  <img
-                    src={questionRoundedIcons}
-                    alt=""
-                    style={{ cursor: "pointer" }}
-                  />
-                </CustomOverlay>
-                <br />
-                   All your information remains private and
-                  anonymous.
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                    className={"fix-width"}
+                  >
+                    <img
+                      src={questionRoundedIcons}
+                      alt=""
+                      style={{ cursor: "pointer" }}
+                    />
+                  </CustomOverlay>
+                  <br />
+                  All your information remains private and anonymous.
                 </p>
-                
               </div>
             </div>
           </div>
         </div>
         <div className="new-homepage__body new-homepage__body-mobile">
           <div className="new-homepage__body-container new-homepage__body-container-mobile">
-          <OutsideClickHandler onOutsideClick={()=>{
-                this.setState({isTrendingAddresses:false})
-                if(this.state?.walletInput && this.state.walletInput?.length && !this.state?.walletInput[this.state.walletInput?.length - 1]?.address){
-                  this.setState({initialInput:false})
+            <OutsideClickHandler
+              onOutsideClick={() => {
+                this.setState({ isTrendingAddresses: false });
+                if (
+                  this.state?.walletInput &&
+                  this.state.walletInput?.length &&
+                  !this.state?.walletInput[this.state.walletInput?.length - 1]
+                    ?.address
+                ) {
+                  this.setState({ initialInput: false });
                 }
-              }}>
-            {this.state.initialInput ? (
-              <>
-                {this.state.walletInput?.map((c, index) => {
-                  if (index !== this.state.walletInput.length - 1) {
-                    return null;
-                  }
-                  return (
-                    <div className="new-homepage__body-search_input_body_main_container">
-                      <NewHomeInputBlock
-                      hideMore
-                      isMobile
-                        c={c}
-                        index={index}
-                        walletInput={this.state.walletInput}
-                        nicknameOnChain={this.nicknameOnChain}
-                        handleOnChange={this.handleOnChange}
-                        showisTrendingAddressesAddress={
-                          this.showisTrendingAddressesAddress
-                        }
-                        FocusInInput={this.FocusInInput}
-                      />
+              }}
+            >
+              {this.state.initialInput ? (
+                <>
+                  {this.state.walletInput?.map((c, index) => {
+                    if (index !== this.state.walletInput.length - 1) {
+                      return null;
+                    }
+                    return (
+                      <div className="new-homepage__body-search_input_body_main_container">
+                        <NewHomeInputBlock
+                          hideMore
+                          isMobile
+                          c={c}
+                          index={index}
+                          walletInput={this.state.walletInput}
+                          nicknameOnChain={this.nicknameOnChain}
+                          handleOnChange={this.handleOnChange}
+                          showisTrendingAddressesAddress={
+                            this.showisTrendingAddressesAddress
+                          }
+                          FocusInInput={this.FocusInInput}
+                        />
+                      </div>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className="new-homepage__body-search new-homepage__body-search-mobile">
+                  <div
+                    onClick={this.showInitialInput}
+                    className="new-homepage__body-search_preview"
+                  >
+                    <Image
+                      src={NewWelcomeCopyIcon}
+                      className="new-homepage__body-search-copy-icon"
+                    />
+                    <div className="new-homepage__body-search-paste-text">
+                      Paste any wallet address or ENS
                     </div>
-                  );
-                })}
-              </>
-            ) : (
-              <div className="new-homepage__body-search new-homepage__body-search-mobile">
-                <div
-                  onClick={this.showInitialInput}
-                  className="new-homepage__body-search_preview"
-                >
-                  <Image
-                    src={NewWelcomeCopyIcon}
-                    className="new-homepage__body-search-copy-icon"
-                  />
-                  <div className="new-homepage__body-search-paste-text">
-                  Paste any wallet address or ENS
                   </div>
                 </div>
-              </div>
-            )}
-            {this.state.walletInput &&
-            !this.state.walletInput[0].address &&
-            this.state.walletInput.length === 1 &&
-            this.state.isTrendingAddresses ? (
-              <div className="new-homepage__body-trending-address new-homepage__body-trending-address-mobile" style={{top:'86px'}}>
+              )}
+              {this.state.walletInput &&
+              !this.state.walletInput[0].address &&
+              this.state.walletInput.length === 1 &&
+              this.state.isTrendingAddresses ? (
                 <div
-                  className="d-flex"
-                  style={{ alignItems: "start",flexDirection:'column', gap: "8px" }}
+                  className="new-homepage__body-trending-address new-homepage__body-trending-address-mobile"
+                  style={{ top: "86px" }}
                 >
-                  <img src={TrendingFireIcon} alt="" />
                   <div
+                    className="d-flex"
                     style={{
-                      color: "#19191A",
-                      fontSize: "16px",
-                      fontWeight:'500'
+                      alignItems: "start",
+                      flexDirection: "column",
+                      gap: "8px",
                     }}
                   >
-                    Trending addresses
+                    <img src={TrendingFireIcon} alt="" />
+                    <div
+                      style={{
+                        color: "#19191A",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Trending addresses
+                    </div>
+                    <div
+                      style={{
+                        color: "#B0B1B3",
+                        fontSize: "13px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Most-visited addresses in the last 24 hours
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      color: "#B0B1B3",
-                      fontSize: "13px",
-                      fontWeight:'500'
-                    }}
-                  >
-                    Most-visited addresses in the last 24 hours
-                  </div>
-                </div>
-                <div className="new-homepage__body-trending-address__address-wrapper new-homepage__body-trending-address__address-wrapper-mobile">
-                  {this.props.trendingAddresses.map((item, index) => (
-                    <div className="trendingAddressesBlockItemContainer trendingAddressesBlockItemContainer-mobile">
-                      <div
-                        onClick={() => {
-                          this.addTrendingAddress(index, false);
-                        }}
-                        className="trendingAddressesBlockItem"
-                      >
-                        <div className="trendingAddressesBlockItemWalletContainer">
-                          <Image
-                            className="trendingAddressesBlockItemWallet"
-                            src={TrendingWalletIcon}
-                          />
-                        </div>
-                        <div className="trendingAddressesBlockItemDataContainer">
-                          <div className="inter-display-medium f-s-16">
-                            {item.trimmedAddress}
+                  <div className="new-homepage__body-trending-address__address-wrapper new-homepage__body-trending-address__address-wrapper-mobile">
+                    {this.props.trendingAddresses.map((item, index) => (
+                      <div className="trendingAddressesBlockItemContainer trendingAddressesBlockItemContainer-mobile">
+                        <div
+                          onClick={() => {
+                            this.addTrendingAddress(index, true);
+                          }}
+                          className="trendingAddressesBlockItem"
+                        >
+                          <div className="trendingAddressesBlockItemWalletContainer">
+                            <Image
+                              className="trendingAddressesBlockItemWallet"
+                              src={TrendingWalletIcon}
+                            />
                           </div>
-                          <div className="inter-display-medium f-s-13 lh-15 trendingAddressesBlockItemDataContainerAmount">
-                            $
-                            {numToCurrency(
-                              item.worth.toFixed(2)
-                            ).toLocaleString("en-US")}
+                          <div className="trendingAddressesBlockItemDataContainer">
+                            <div className="inter-display-medium f-s-16">
+                              {item.trimmedAddress}
+                            </div>
+                            <div className="inter-display-medium f-s-13 lh-15 trendingAddressesBlockItemDataContainerAmount">
+                              $
+                              {numToCurrency(
+                                item.worth.toFixed(2)
+                              ).toLocaleString("en-US")}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
             </OutsideClickHandler>
 
             {this.state.walletInput &&
@@ -1526,63 +1544,75 @@ class NewWelcomeMobile extends BaseReactComponent {
                       justifyContent: "center",
                       alignItems: "center",
                       padding: "100px 0",
-                      marginTop:'1rem',
-                      borderRadius:'10px'
+                      marginTop: "1rem",
+                      borderRadius: "10px",
                     }}
                   >
                     <Loading />
                   </div>
                 ) : (
                   <>
-                    {
-                    this.props.accountList && this.props.accountList.length > 0 ? (
-                        <div className="mobileSmartMoneyListContainer">
-                          {this.props.accountList.map((mapData) => {
-                            let tempCurrencyRate = this.props.currency?.rate
-                              ? this.props.currency.rate
-                              : 0;
-          
-                            let tempNetWorth = mapData.networth ? mapData.networth : 0;
-                            let tempNetflows = mapData.netflows ? mapData.netflows : 0;
-                            let tempProfits = mapData.profits ? mapData.profits : 0;
-                            let tempReturns = mapData.returns ? mapData.returns : 0;
-          
-                            let netWorth = tempNetWorth * tempCurrencyRate;
-                            let netFlows = tempNetflows * tempCurrencyRate;
-                            let profits = tempProfits * tempCurrencyRate;
-                            let returns = tempReturns * tempCurrencyRate;
-                            return (
-                              <SmartMoneyMobileBlock
-                                netWorth={netWorth}
-                                netFlows={netFlows}
-                                profits={profits}
-                                returns={returns}
-                                mapData={mapData}
-                                handleFollowUnfollow={this.handleFollowUnfollow}
-                                openSignInOnclickModal={this.opneLoginModalForSmartMoney}
-                                smartMoneyBlur={this.props.blurTable}
-                                welcomePage
-                              />
-                            );
-                          })}
-                        </div>
-                      ) : null
-                      }
-                      {this.props.accountList && this.props.accountList.length > 0 ? (
-              <SmartMoneyPagination
-                history={this.props.history}
-                location={this.props.location}
-                page={this.props.currentPage + 1}
-                pageCount={this.props.totalPage}
-                pageLimit={this.props.pageLimit}
-                changePageLimit={this.props.changePageLimit}
-                onPageChange={this.props.onPageChange}
-                openSignInOnclickModal={this.opneLoginModalForSmartMoney}
-                smartMoneyBlur={this.props.blurTable}
-                isMobile
-              />
-            ) : null}
-                      </>
+                    {this.props.accountList &&
+                    this.props.accountList.length > 0 ? (
+                      <div className="mobileSmartMoneyListContainer">
+                        {this.props.accountList.map((mapData) => {
+                          let tempCurrencyRate = this.props.currency?.rate
+                            ? this.props.currency.rate
+                            : 0;
+
+                          let tempNetWorth = mapData.networth
+                            ? mapData.networth
+                            : 0;
+                          let tempNetflows = mapData.netflows
+                            ? mapData.netflows
+                            : 0;
+                          let tempProfits = mapData.profits
+                            ? mapData.profits
+                            : 0;
+                          let tempReturns = mapData.returns
+                            ? mapData.returns
+                            : 0;
+
+                          let netWorth = tempNetWorth * tempCurrencyRate;
+                          let netFlows = tempNetflows * tempCurrencyRate;
+                          let profits = tempProfits * tempCurrencyRate;
+                          let returns = tempReturns * tempCurrencyRate;
+                          return (
+                            <SmartMoneyMobileBlock
+                              netWorth={netWorth}
+                              netFlows={netFlows}
+                              profits={profits}
+                              returns={returns}
+                              mapData={mapData}
+                              handleFollowUnfollow={this.handleFollowUnfollow}
+                              openSignInOnclickModal={
+                                this.opneLoginModalForSmartMoney
+                              }
+                              smartMoneyBlur={this.props.blurTable}
+                              welcomePage
+                            />
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                    {this.props.accountList &&
+                    this.props.accountList.length > 0 ? (
+                      <SmartMoneyPagination
+                        history={this.props.history}
+                        location={this.props.location}
+                        page={this.props.currentPage + 1}
+                        pageCount={this.props.totalPage}
+                        pageLimit={this.props.pageLimit}
+                        changePageLimit={this.props.changePageLimit}
+                        onPageChange={this.props.onPageChange}
+                        openSignInOnclickModal={
+                          this.opneLoginModalForSmartMoney
+                        }
+                        smartMoneyBlur={this.props.blurTable}
+                        isMobile
+                      />
+                    ) : null}
+                  </>
                 )}
               </div>
             ) : (
@@ -1598,10 +1628,10 @@ class NewWelcomeMobile extends BaseReactComponent {
                 //       : "-15px",
                 // }}
                 style={{
-                  marginTop:'20px'
+                  marginTop: "20px",
                 }}
               >
-                 <div className="newHomeAddAnotherGoContainer newHomeAddAnotherGoContainer-mobile inter-display-regular">
+                <div className="newHomeAddAnotherGoContainer newHomeAddAnotherGoContainer-mobile inter-display-regular">
                   {this.state.walletInput.length < 10 ? (
                     <button
                       onClick={this.addInputField}
@@ -1637,10 +1667,9 @@ class NewWelcomeMobile extends BaseReactComponent {
                         ].coinFound
                           ? "32px"
                           : "25px",
-                          overflow:'visible'
+                      overflow: "visible",
                     }}
                     className="newWelcomeAddedAddresses newWelcomeAddedAddresses-mobile"
-                  
                   >
                     {this.state.walletInput?.map((c, index) => {
                       if (index === this.state.walletInput.length - 1) {
@@ -1650,8 +1679,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                         <div
                           style={{
                             marginTop: index > 0 ? "1rem" : "",
-                            position:'relative',
-                            overflow:'visible'
+                            position: "relative",
+                            overflow: "visible",
                           }}
                           className="newWelcomeAddedAddressesBlockContainer"
                         >
@@ -1662,14 +1691,14 @@ class NewWelcomeMobile extends BaseReactComponent {
                             <Image
                               className="newWelcomeAddedAddressesBlockDel"
                               style={{
-                                height:'15px',
-                                width:'15px'
+                                height: "15px",
+                                width: "15px",
                               }}
                               src={NewWelcomeTrashIcon}
                             />
                           </div>
                           <NewHomeInputBlock
-                          hideMore
+                            hideMore
                             isMobile
                             isList
                             c={c}
@@ -1719,7 +1748,7 @@ const mapDispatchToProps = {
   verifyUser,
   setMetamaskConnectedReducer,
   setPageFlagDefault,
-  removeFromWatchList
+  removeFromWatchList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);
