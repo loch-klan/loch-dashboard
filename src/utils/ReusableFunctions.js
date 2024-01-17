@@ -2,13 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
-export const mobileCheck = () => {
-  // if (
-  //   BASE_URL_S3 ===
-  //   "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
-  // ) {
-  //   return false;
-  // }
+export const mobileCheck = (isSmartMoney) => {
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
@@ -224,9 +218,14 @@ export const getPadding = (val, e, OnboardingState) => {
 
   return { paddingRight: paddRight };
 };
-export const loadingAnimation = () => {
+export const loadingAnimation = (noMargin = false) => {
   return (
-    <div className="spinner-chip-container">
+    <div
+      style={{
+        marginLeft: noMargin ? "0rem" : "",
+      }}
+      className="spinner-chip-container"
+    >
       <div className="spinner">
         <div className="bounce1"></div>
         <div className="bounce2"></div>
