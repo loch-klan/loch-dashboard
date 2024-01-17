@@ -83,3 +83,4 @@ export { default as WarningCircleIcon } from "./warningCircle.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
 export { default as XCircleRedIcon } from "./xCircleRed.svg";
 export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";
+export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
