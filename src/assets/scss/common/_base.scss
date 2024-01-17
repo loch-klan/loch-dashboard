@@ -1816,7 +1816,7 @@ form {
 }
 
 .page {
-  padding: 0 13.4rem;
+  padding: 0 5rem;
   width: 100%;
 }
 // @media all and (max-width: 1300px) {
@@ -2199,7 +2199,6 @@ textarea {
   }
 }
 .copy-icon-top-bar-new {
-  transition-duration: 300ms;
   cursor: pointer;
   &:hover {
     filter: brightness(0.2);
@@ -2630,6 +2629,17 @@ textarea {
   transform: translateY(-50%);
   right: 3.5rem;
   pointer-events: none;
+}
+
+input {
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {
   transition-duration: 300ms;

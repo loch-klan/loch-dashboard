@@ -99,6 +99,9 @@ export const updateUserWalletApi = (
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
         if (!res.data.error) {
+          if (ctx.hideTheTopBarHistoryItems) {
+            ctx.hideTheTopBarHistoryItems();
+          }
           if (setToSearchHistory && ctx.addWalletToHistory) {
             ctx.addWalletToHistory();
           }
@@ -210,6 +213,9 @@ export const updateUserWalletApi = (
             .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
+          if (ctx.hideTheTopBarHistoryItems) {
+            ctx.hideTheTopBarHistoryItems();
+          }
           if (ctx.cancelAddingWallet) {
             // ctx.cancelAddingWallet();
             ctx.setState({
@@ -219,7 +225,6 @@ export const updateUserWalletApi = (
         }
       })
       .catch((err) => {
-        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
