@@ -519,11 +519,33 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               );
               let priceOfAsset = curItem.price;
               parent.changeThePricePass(priceOfAsset, dateTitle);
-              let receivedAmount = curItem.received ? curItem.received : 0;
-              let sendAmount = curItem.send ? curItem.send : 0;
+              let receivedAmount;
+              if (curItem?.received) {
+                receivedAmount = curItem?.received;
+              } else {
+                receivedAmount = 0;
+              }
 
-              let receivedVal = curItem.received_value;
-              let sendVal = curItem.send_value;
+              let sendAmount;
+              if (curItem?.send) {
+                sendAmount = curItem?.send;
+              } else {
+                sendAmount = 0;
+              }
+
+              let receivedVal;
+              if (curItem?.received_value) {
+                receivedVal = curItem?.received_value;
+              } else {
+                receivedVal = 0;
+              }
+
+              let sendVal;
+              if (curItem?.send_value) {
+                sendVal = curItem?.send_value;
+              } else {
+                sendVal = 0;
+              }
 
               const tempIndex = parent.state.assetList.findIndex(
                 (resData) => resData._id === parent.state.activeAssetTab
@@ -554,9 +576,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                           }">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Net Inflow R${
-                                receivedVal !== 0
-                              }R S${sendVal}S</div>
+                              <div>Net Inflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0" >
                             </div>
