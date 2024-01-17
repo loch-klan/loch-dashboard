@@ -246,6 +246,9 @@ class TopWalletAddressList extends Component {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.getCurrentTimeUpdater !== this.props.getCurrentTimeUpdater) {
+      this.getCurrentTime();
+    }
     if (
       prevProps.passedFollowSigninModal !== this.props.passedFollowSigninModal
     ) {
@@ -939,6 +942,7 @@ class TopWalletAddressList extends Component {
   };
 
   RefreshButton = () => {
+    window.sessionStorage.setItem("callTheUpdateAPI", true);
     HomeRefreshButton({
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,

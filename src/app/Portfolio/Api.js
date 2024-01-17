@@ -94,7 +94,9 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
 
-        isRefresh && ctx.getCurrentTime();
+        if (isRefresh && ctx.getCurrentTime) {
+          ctx.getCurrentTime();
+        }
 
         // }
 
@@ -205,7 +207,9 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
           "refreshApiTime",
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
-        isRefresh && ctx.getCurrentTime();
+        if (isRefresh && ctx.getCurrentTime) {
+          ctx.getCurrentTime();
+        }
 
         userWalletList?.map((item, i) => {
           setTimeout(() => {
