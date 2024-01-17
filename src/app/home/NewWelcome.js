@@ -55,6 +55,7 @@ import {
   EmailAddressAdded,
   LPC_Go,
   LPConnectExchange,
+  SignInOnClickWelcomeLeaderboard,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -1301,6 +1302,10 @@ class NewWelcome extends BaseReactComponent {
   };
 
   opneLoginModalForSmartMoney = () => {
+    SignInOnClickWelcomeLeaderboard({
+      session_id: getCurrentUser().id,
+      isMobile: false,
+    });
     this.toggleAuthModal("login");
     this.setState({
       smartMoneyLogin: true,

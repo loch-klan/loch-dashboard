@@ -1792,6 +1792,18 @@ export const ClickedPageLimitWelcomeLeaderboard = ({
   //console.log("Landing Page Conversion:add textbox");
 };
 
+// To check if the user try to access leaderboard without logging in
+export const SignInOnClickWelcomeLeaderboard = ({ session_id, isMobile }) => {
+  const event_name =
+    "Landing Page Conversion: Leaderboard featuer access attempt";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
 //94. Landing Page Conversion:Email not Found
 export const EmailNotFound = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email not found";
