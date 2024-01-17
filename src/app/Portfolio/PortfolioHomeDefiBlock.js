@@ -732,25 +732,35 @@ class PortfolioHomeDefiBlock extends Component {
               </div>
             )}
           </div>
-          {this.state.totalDefiPositions > 3 ? (
-            <div className="inter-display-medium bottomExtraInfo">
-              <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
-                Click here to see{" "}
-                {numToCurrency(
-                  this.state.totalDefiPositions - 3,
-                  true
-                ).toLocaleString("en-US")}
-                + DeFi position
-                {this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
-              </div>
-            </div>
-          ) : (
-            <div className="inter-display-medium bottomExtraInfo">
-              <div className="bottomExtraInfoText" onClick={this.goToDefiPage}>
-                Click here to see more
-              </div>
-            </div>
-          )}
+          {!(this.state.isYeildToggle || this.state.isDebtToggle) ? (
+            <>
+              {this.state.totalDefiPositions > 3 ? (
+                <div className="inter-display-medium bottomExtraInfo">
+                  <div
+                    className="bottomExtraInfoText"
+                    onClick={this.goToDefiPage}
+                  >
+                    Click here to see{" "}
+                    {numToCurrency(
+                      this.state.totalDefiPositions - 3,
+                      true
+                    ).toLocaleString("en-US")}
+                    + DeFi position
+                    {this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
+                  </div>
+                </div>
+              ) : (
+                <div className="inter-display-medium bottomExtraInfo">
+                  <div
+                    className="bottomExtraInfoText"
+                    onClick={this.goToDefiPage}
+                  >
+                    Click here to see more
+                  </div>
+                </div>
+              )}
+            </>
+          ) : null}
         </div>
       </div>
     );

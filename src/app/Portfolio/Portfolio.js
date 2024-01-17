@@ -3508,7 +3508,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3774,7 +3774,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3836,7 +3836,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3898,7 +3898,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3950,7 +3950,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.16,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -4284,7 +4284,7 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={3.8}
+                              xAxisScrollableColumnWidth={4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
