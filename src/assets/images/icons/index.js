@@ -1,3 +1,4 @@
+export { default as StreakFireIcon } from "./streakFire.svg";
 export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
 export { default as ExportIconWhite } from "./ExportBlackIcon.svg";
 export { default as ExportIcon } from "./ExportIcon.svg";
