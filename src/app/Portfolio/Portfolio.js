@@ -2878,7 +2878,9 @@ class Portfolio extends BaseReactComponent {
                             /> */}
                 {rowData?.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
-                ) : null}
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
