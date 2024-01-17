@@ -637,7 +637,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ">
                           <div style="display:flex; align-items:center; justify-content:center;" >
                             <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                            <div>Net Inflow</div>
+                            <div>Inflow</div>
                           </div>
                           <div style="width:2rem;height:0.1rem; opacity:0" >
                           </div>
