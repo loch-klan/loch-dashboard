@@ -24,7 +24,7 @@ class PortfolioHomeInsightsBlock extends Component {
       return (
         <div
           style={{
-            height: "38rem",
+            height: "32rem",
           }}
         >
           <div
@@ -57,14 +57,14 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: "34.5rem",
+                height: "30rem",
                 padding: "0rem 0.5rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"
             >
               {this.props.updatedInsightList
-                .slice(0, 3)
-                ?.map((insight, key) => {
+                .slice(0, 10)
+                .map((insight, key) => {
                   return (
                     <>
                       <div
@@ -163,31 +163,15 @@ class PortfolioHomeInsightsBlock extends Component {
                   );
                 })}
             </div>
-            {this.props.updatedInsightList &&
-            this.props.updatedInsightList.length > 3 ? (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.goToInsightsPage}
-                >
-                  {`Click here to see ${numToCurrency(
-                    this.props.updatedInsightList.length - 3,
-                    true
-                  ).toLocaleString("en-US")}+ insight${
-                    this.props.updatedInsightList.length - 3 > 1 ? "s" : ""
-                  }`}
-                </div>
+
+            <div className="inter-display-medium bottomExtraInfo">
+              <div
+                className="bottomExtraInfoText"
+                onClick={this.goToInsightsPage}
+              >
+                Click here to see more
               </div>
-            ) : (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.goToInsightsPage}
-                >
-                  Click here to see more
-                </div>
-              </div>
-            )}
+            </div>
           </>
         ) : (
           <div
@@ -212,7 +196,7 @@ class PortfolioHomeInsightsBlock extends Component {
             <div
               style={{
                 position: "absolute",
-                width: "100%",
+                width: "70%",
                 height: "16rem",
                 background:
                   "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",

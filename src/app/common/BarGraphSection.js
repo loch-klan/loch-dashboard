@@ -908,7 +908,7 @@ class BarGraphSection extends Component {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "38rem",
+                    height: "32rem",
                   }
                 : {
                     flex: 1,
