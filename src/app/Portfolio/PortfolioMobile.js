@@ -3,6 +3,7 @@ import React from "react";
 import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import NftDummy from "./../../assets/images/nft_dummy.png";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
@@ -99,6 +100,8 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import chevronRight from "./../../assets/images/icons/chevron-right.svg";
+import NftMobileBlock from "../nft/NftMobileBlock.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -163,6 +166,52 @@ class PortfolioMobile extends BaseReactComponent {
         {
           title: "hash",
           up: false,
+        },
+      ],
+      nftTableData: [
+        {
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "3",
+          collection: "Bored Apes",
+          imgs: [
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+          ],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "3",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
       ],
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -2479,6 +2528,49 @@ class PortfolioMobile extends BaseReactComponent {
                   bodyHeight={"1000px"}
                   yAxisScrollable
                 />
+              </div>
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "4.8rem",
+                  alignItems: "center",
+                }}
+              >
+                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* Unrealized profit and loss */}
+                  NFTs
+                </h2>
+                <div
+                  className="homepage-mobile-view-more"
+                  onClick={() => {
+                    this.props.history.push("/nft");
+                  }}
+                >
+                  View more
+                  <img src={chevronRight} alt="" />
+                </div>
+              </div>
+              <div style={{ marginTop: "16px" }}>
+                <div className="nft-page-mobile">
+                  <div
+                    className="mobileSmartMoneyListContainer"
+                    style={{ padding: "0px" }}
+                  >
+                    {this.state.nftTableData.map((mapData, index) => {
+                      return (
+                        <NftMobileBlock
+                          data={mapData}
+                          style={{
+                            marginBottom:
+                              index === this.state.nftTableData.length - 1
+                                ? "0px"
+                                : "1.5rem",
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
               <div
                 className="d-flex justify-content-between"
