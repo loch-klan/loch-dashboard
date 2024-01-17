@@ -1816,7 +1816,7 @@ form {
 }
 
 .page {
-  padding: 0 13.4rem;
+  padding: 0 5rem;
   width: 100%;
 }
 // @media all and (max-width: 1300px) {
@@ -2631,7 +2631,7 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
     box-shadow: 0 0 0 30px white inset !important;
     -webkit-box-shadow: 0 0 0 30px white inset !important;

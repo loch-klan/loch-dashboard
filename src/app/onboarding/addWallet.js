@@ -738,6 +738,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
+    window.sessionStorage.setItem("callTheUpdateAPI", true);
     this.setState({
       disableGoBtn: true,
     });
