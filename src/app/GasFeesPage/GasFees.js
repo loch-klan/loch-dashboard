@@ -206,6 +206,13 @@ class GasFeesPage extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this),
+          this
+        );
+      }
       this.setState({
         gasFeesGraphLoading: false,
       });

@@ -113,7 +113,7 @@ import {
   YieldOpportunitiesSortUSDvalue,
   YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -189,6 +189,8 @@ class Portfolio extends BaseReactComponent {
       counterGraphDigit: 3,
       GraphDigit: 3,
       // Should call block one
+      getCurrentTimeUpdater: false,
+      showTransactionHistoryDust: true,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -424,23 +426,40 @@ class Portfolio extends BaseReactComponent {
     };
   }
   changeBlockOneItem = (itemNum) => {
-    this.setState({
-      blockOneSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockOneSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockTwoItem = (itemNum) => {
-    this.setState({
-      blockTwoSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockTwoSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockThreeItem = (itemNum) => {
-    this.setState({
-      blockThreeSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockThreeSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockFourItem = (itemNum) => {
+    let tempToken = getToken();
+    if (tempToken !== "jsk") {
+      this.setState({
+        blockFourSelectedItem: itemNum,
+      });
+    }
+  };
+  getCurrentTime = () => {
     this.setState({
-      blockFourSelectedItem: itemNum,
+      getCurrentTimeUpdater: !this.state.getCurrentTimeUpdater,
     });
   };
   onCloseModal = () => {
@@ -651,7 +670,7 @@ class Portfolio extends BaseReactComponent {
       callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
     });
   };
-  callNetworksApi = () => {
+  callNetworksApi = (isUpdate) => {
     // Resetting the user wallet list, total and chain wallet
     this.props.settingDefaultValues(this);
 
@@ -669,7 +688,11 @@ class Portfolio extends BaseReactComponent {
               address: wallet.address,
               coinCode: coin.coinCode,
             };
-            this.props.getUserWallet(userCoinWallet, this, false, i);
+            if (isUpdate) {
+              this.props.getUserWallet(userCoinWallet, this, true, i);
+            } else {
+              this.props.getUserWallet(userCoinWallet, this, false, i);
+            }
           }
         });
       }
@@ -685,12 +708,17 @@ class Portfolio extends BaseReactComponent {
         });
       }
     });
-
     // connect exchange api
     // this.props.getExchangeBalance("binance", this);
     // this.props.getExchangeBalance("coinbase", this);
-    this.props.getExchangeBalances(this, false);
-
+    if (isUpdate) {
+      this.props.getExchangeBalances(this, true);
+    } else {
+      this.props.getExchangeBalances(this, false);
+    }
+    if (isUpdate) {
+      window.sessionStorage.removeItem("callTheUpdateAPI");
+    }
     if (!isFound) {
       this.setState({
         // overview loader and net worth loader
@@ -777,12 +805,27 @@ class Portfolio extends BaseReactComponent {
     }
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.graphfeeValue
+      this.props.intelligenceState.GraphfeeData
     ) {
-      this.trimGasFees();
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
     }
-    if (this.props.yieldOpportunitiesState) {
-      this.trimCounterpartyVolume();
+
+    if (this.props.intelligenceState.counterPartyData) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this,
+          true
+        ),
+        this
+      );
     }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
@@ -951,10 +994,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
-              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
-              : this.props.intelligenceState.graphfeeValue[0].labels,
+          labels: this.props.intelligenceState.graphfeeValue[0].labels,
           datasets: this.props.intelligenceState.graphfeeValue[0].datasets
             ? this.props.intelligenceState.graphfeeValue[0].datasets
             : [],
@@ -977,13 +1017,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
+          labels: this.props.intelligenceState.counterPartyValue[0].labels,
           datasets: this.props.intelligenceState.counterPartyValue[0].datasets
             ? this.props.intelligenceState.counterPartyValue[0].datasets
             : [],
@@ -1056,7 +1090,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
       // Counterparty volume api call
       else if (
@@ -1234,7 +1268,12 @@ class Portfolio extends BaseReactComponent {
         JSON.parse(tempAddWall) &&
         JSON.parse(tempAddWall)?.length > 0
       ) {
-        this.callNetworksApi();
+        let getItem = window.sessionStorage.getItem("callTheUpdateAPI");
+        if (getItem === "true") {
+          this.callNetworksApi(true);
+        } else {
+          this.callNetworksApi();
+        }
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
@@ -1355,7 +1394,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
 
       // Counterparty volume api call
@@ -2872,13 +2911,15 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData?.asset?.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
-                {rowData?.asset?.symbol ? (
+                {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
-                ) : null}
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
@@ -4188,6 +4229,8 @@ class Portfolio extends BaseReactComponent {
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}
+                showUpdatesJustNowBtn
+                getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
               />
               <div className="m-b-22 graph-table-section">
                 <Row>
@@ -4283,11 +4326,7 @@ class Portfolio extends BaseReactComponent {
                               isMiniversion
                               xAxisScrollable
                               xAxisScrollableColumnWidth={3.8}
-                              tableData={
-                                tableDataCostBasis
-                                  ? tableDataCostBasis.slice(0, 10)
-                                  : []
-                              }
+                              tableData={tableDataCostBasis.slice(0, 10)}
                               columnList={CostBasisColumnData}
                               headerHeight={60}
                               isArrow={true}
@@ -4525,8 +4564,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={true}
+                              digit={this.state.GraphDigit}
+                              isScroll
                               isLoading={this.state.gasFeesGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
@@ -4575,8 +4614,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={false}
+                              digit={this.state.counterGraphDigit}
+                              isScroll
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding

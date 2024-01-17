@@ -1,4 +1,5 @@
 const deleteToken = (notCurrencyRates) => {
+  window.sessionStorage.removeItem("setMetamaskConnectedSessionStorage");
   window.sessionStorage.removeItem("lochToken");
   window.sessionStorage.removeItem("addWallet");
   window.sessionStorage.removeItem("lochUser");
