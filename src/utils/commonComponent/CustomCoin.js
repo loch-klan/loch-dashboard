@@ -2,7 +2,16 @@ import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
-function CustomCoin({ coins, isLoaded, id, isCohort, isStatic, hideMore }) {
+function CustomCoin({
+  coins,
+  isLoaded,
+  id,
+  isCohort,
+  isStatic,
+  noNameJustIcon,
+  overlayOnBottom,
+  hideMore,
+}) {
   // console.log("coins", coins);
   if (isCohort) {
     coins = coins?.map((e) => {
@@ -40,11 +49,13 @@ function CustomCoin({ coins, isLoaded, id, isCohort, isStatic, hideMore }) {
                     backgroundColor: sortedCoins[0]?.coinColor,
                   }}
                 />
-                <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
-                  {sortedCoins[0]?.coinName}
-                </Badge>
+                {!noNameJustIcon ? (
+                  <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
+                    {sortedCoins[0]?.coinName}
+                  </Badge>
+                ) : null}
               </div>
-              {hideMore ? null : (
+              {noNameJustIcon || hideMore ? null : (
                 <div className="chip-container">
                   <CustomOverlay text={sortedCoins} position="top">
                     <Badge className="inter-display-medium f-s-13 lh-13 grey-313">

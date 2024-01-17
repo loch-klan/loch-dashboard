@@ -1751,6 +1751,58 @@ export const ClickTrendingAddress = ({ session_id, address }) => {
   //console.log("Landing Page Conversion:add textbox");
 };
 
+// To check if the user clicks follow button from welcome page
+export const ClickedFollowLeaderboard = ({ session_id, address, isMobile }) => {
+  const event_name = "Landing Page Conversion: Leaderboard follow clicked";
+  const eventProperties = {
+    "session id": session_id,
+    address: address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user clicks follow button from welcome page
+export const ClickedPageChangeWelcomeLeaderboard = ({
+  session_id,
+  isMobile,
+}) => {
+  const event_name = "Landing Page Conversion: Leaderboard page change";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user clicks follow button from welcome page
+export const ClickedPageLimitWelcomeLeaderboard = ({
+  session_id,
+  isMobile,
+}) => {
+  const event_name = "Landing Page Conversion: Leaderboard page limit change";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user try to access leaderboard without logging in
+export const SignInOnClickWelcomeLeaderboard = ({ session_id, isMobile }) => {
+  const event_name =
+    "Landing Page Conversion: Leaderboard featuer access attempt";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
 //94. Landing Page Conversion:Email not Found
 export const EmailNotFound = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email not found";
