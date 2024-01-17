@@ -196,7 +196,7 @@ class PortfolioHomeInsightsBlock extends Component {
             <div
               style={{
                 position: "absolute",
-                width: "100%",
+                width: "70%",
                 height: "16rem",
                 background:
                   "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",

@@ -2911,13 +2911,15 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData?.asset?.code}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
-                {rowData?.asset?.symbol ? (
+                {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
-                ) : null}
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }

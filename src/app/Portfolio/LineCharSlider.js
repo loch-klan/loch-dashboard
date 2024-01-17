@@ -35,7 +35,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   noExponents,
-  numToCurrency
+  numToCurrency,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";

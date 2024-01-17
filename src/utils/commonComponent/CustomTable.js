@@ -610,6 +610,7 @@ class CustomTable extends BaseReactComponent {
             ) : null}
           </>
         )}
+
         {this.props.isSmartMoney ||
         this.props.paginationNew ||
         this.props.minimalPagination ? (
