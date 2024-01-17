@@ -546,15 +546,17 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
                     ${
-                      (receivedVal !== 0 &&
-                        sendVal !== 0 &&
-                        receivedVal - sendVal) >= 0
+                      receivedVal !== 0 &&
+                      sendVal !== 0 &&
+                      receivedVal - sendVal >= 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ${
                             sendVal > 0 ? "" : ""
                           }">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Net Inflow</div>
+                              <div>Net Inflow R${
+                                receivedVal !== 0
+                              }R S${sendVal}S</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0" >
                             </div>
@@ -571,9 +573,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         : ""
                     }
                     ${
-                      (receivedVal !== 0 &&
-                        sendVal !== 0 &&
-                        sendVal - receivedVal) > 0
+                      receivedVal !== 0 &&
+                      sendVal !== 0 &&
+                      sendVal - receivedVal > 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
@@ -595,14 +597,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                     }
                     ${
                       !(
-                        (receivedVal !== 0 &&
-                          sendVal !== 0 &&
-                          sendVal - receivedVal) > 0
+                        receivedVal !== 0 &&
+                        sendVal !== 0 &&
+                        sendVal - receivedVal > 0
                       ) &&
                       !(
-                        (receivedVal !== 0 &&
-                          sendVal !== 0 &&
-                          receivedVal - sendVal) >= 0
+                        receivedVal !== 0 &&
+                        sendVal !== 0 &&
+                        receivedVal - sendVal >= 0
                       ) &&
                       sendVal > 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
@@ -624,14 +626,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                     }
                     ${
                       !(
-                        (receivedVal !== 0 &&
-                          sendVal !== 0 &&
-                          sendVal - receivedVal) > 0
+                        receivedVal !== 0 &&
+                        sendVal !== 0 &&
+                        sendVal - receivedVal > 0
                       ) &&
                       !(
-                        (receivedVal !== 0 &&
-                          sendVal !== 0 &&
-                          receivedVal - sendVal) >= 0
+                        receivedVal !== 0 &&
+                        sendVal !== 0 &&
+                        receivedVal - sendVal >= 0
                       ) &&
                       receivedVal > 0
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ">
@@ -643,12 +645,10 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                           </div>
                           <div>
                             <span style="color:${"#16182B"}"> ${CurrencyType(
-                          false
-                        )}${numToCurrency(
-                          receivedVal
-                        )} (${numToCurrency(
-                          receivedAmount
-                        )} ${assetCode}) </span>
+                            false
+                          )}${numToCurrency(receivedVal)} (${numToCurrency(
+                            receivedAmount
+                          )} ${assetCode}) </span>
                           </div>
                         </div>`
                         : ""
