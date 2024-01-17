@@ -633,22 +633,24 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                           sendVal !== 0 &&
                           receivedVal - sendVal) >= 0
                       ) &&
-                      sendVal > 0
-                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
-                            <div style="display:flex; align-items:center; justify-content:center;" >
-                              <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Outflow</div>
-                            </div>
-                            <div style="width:2rem;height:0.1rem; opacity:0">
-                            </div>
-                            <div>
-                              <span style="color:${"#16182B"}"> ${CurrencyType(
-                            false
-                          )}${numToCurrency(sendVal)} (${numToCurrency(
-                            sendAmount
-                          )} ${assetCode})</span>
-                            </div>
-                          </div>`
+                      receivedVal > 0
+                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ">
+                          <div style="display:flex; align-items:center; justify-content:center;" >
+                            <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
+                            <div>Net Inflow</div>
+                          </div>
+                          <div style="width:2rem;height:0.1rem; opacity:0" >
+                          </div>
+                          <div>
+                            <span style="color:${"#16182B"}"> ${CurrencyType(
+                          false
+                        )}${numToCurrency(
+                          receivedVal
+                        )} (${numToCurrency(
+                          receivedAmount
+                        )} ${assetCode}) </span>
+                          </div>
+                        </div>`
                         : ""
                     }
               </div>`;
