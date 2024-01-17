@@ -2870,14 +2870,14 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData?.asset?.code}
+                text={rowData?.asset?.code ? rowData.asset.code : ""}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
-                {rowData?.asset?.symbol ? (
+                {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13">
+                    {rowData.asset.code}
+                  </div>
                 ) : (
                   <div></div>
                 )}
