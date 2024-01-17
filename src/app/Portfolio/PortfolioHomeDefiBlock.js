@@ -732,7 +732,7 @@ class PortfolioHomeDefiBlock extends Component {
               </div>
             )}
           </div>
-          {!(this.state.isYeildToggle || this.state.isDebtToggle) ? (
+          {!this.state.isYeildToggle ? (
             <>
               {this.state.totalDefiPositions > 3 ? (
                 <div className="inter-display-medium bottomExtraInfo">
