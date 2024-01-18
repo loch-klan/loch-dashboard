@@ -1194,7 +1194,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
-                  bottomCombiedValues
+                  message="No assets found"
+                  bottomCombiedValues={tableData.length > 0 ? true : false}
                   combinedCostBasis={this.state.combinedCostBasis}
                   combinedCurrentValue={this.state.combinedCurrentValue}
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}

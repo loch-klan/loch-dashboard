@@ -4280,6 +4280,7 @@ class Portfolio extends BaseReactComponent {
                           <div className="newHomeTableContainer">
                             <TransactionTable
                               noSubtitleBottomPadding
+                              message="No assets found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
@@ -4858,6 +4859,7 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div className="newHomeTableContainer">
                             <TransactionTable
+                              message={"No yield opportunities found"}
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4}
                               noSubtitleBottomPadding
