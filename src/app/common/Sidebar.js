@@ -1076,11 +1076,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedSignedIn inter-display-medium f-s-13 lh-19 "
+                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={BlackManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1157,10 +1157,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
                           >
                             <div className="sideBarFooterSignInData">
-                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                                 <Image
+                                  style={{
+                                    height: "12px",
+                                    width: "12px",
+                                  }}
                                   className="sideBarFooterSignInIcon"
-                                  src={BlackManIcon}
+                                  src={PersonRoundedSigninIcon}
                                 />
                               </div>
                               <div className="dotDotText">
@@ -1199,8 +1203,8 @@ function Sidebar(props) {
                             <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                               <Image
                                 style={{
-                                  height:'12px',
-                                  width:'12px'
+                                  height: "12px",
+                                  width: "12px",
                                 }}
                                 className="sideBarFooterSignInIcon"
                                 src={PersonRoundedSigninIcon}
