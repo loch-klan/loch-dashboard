@@ -22,7 +22,9 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0%);
+  --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
+  --hoverBrightnessValue: brightness(0);
 
   // Secondary
   --secondaryTextColor: #adadad;
@@ -53,6 +55,9 @@
   --sidebarTextColor: #636467;
   --sidebarActivePageColor: #e5e5e680;
   --sidebarBottomOptions: #b0b1b3;
+
+    //Box shadow color
+  --boxShadowColorMd: rgba(0, 0, 0, 0.04)
 }
 [data-theme="dark"] {
   // UPDATED
@@ -78,7 +83,9 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
+  --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --hoverBrightnessValue: brightness(20);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
@@ -93,6 +100,7 @@
   --grey313: #313233;
   --backColor: #fff;
   --sameModeColor: #000;
+  --black191:white;
 
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.3);
@@ -109,4 +117,7 @@
   --sidebarTextColor: #636467;
   --sidebarActivePageColor: #2a2a2a;
   --sidebarBottomOptions: #96979a;
+
+  //Box shadow color
+  --boxShadowColorMd: rgba(255, 255, 255, 0.04)
 }
