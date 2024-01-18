@@ -3244,7 +3244,7 @@ class Portfolio extends BaseReactComponent {
               <CoinChip
                 coin_img_src={rowData?.asset?.symbol}
                 coin_code={rowData?.asset?.code}
-                chain={rowData?.network}
+                chain={rowData?.chain}
               />
             );
           }
