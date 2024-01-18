@@ -546,7 +546,7 @@ class InsightsPage extends Component {
                   marginBottom: "0.8rem",
                 }}
               >
-                <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                <h2 className="inter-display-medium f-s-25 l-h-30">
                   This week
                 </h2>
 
@@ -554,6 +554,7 @@ class InsightsPage extends Component {
                   style={{ display: "flex", alignItems: "center" }}
                   onClick={this.onClickDropdown}
                   onMouseEnter={this.onHoverDropdown}
+                  className="insights-dropdown-wrapper"
                 >
                   <DropDown
                     class="cohort-dropdown"

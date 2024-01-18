@@ -8,7 +8,6 @@ import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
-import "./assets/scss/common/_colorVariables.scss";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
