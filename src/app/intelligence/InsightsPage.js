@@ -40,6 +40,9 @@ import DropDown from "../common/DropDown";
 import Footer from "../common/footer";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
+// Dark theme scss
+import "./intelligenceScss/_darkInsightPage.scss";
+
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
@@ -444,7 +447,7 @@ class InsightsPage extends Component {
   };
   render() {
     return (
-      <>
+      <div className="insightsPageContainer">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -745,7 +748,7 @@ class InsightsPage extends Component {
             <Footer />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

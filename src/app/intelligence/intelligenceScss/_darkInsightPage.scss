@@ -1,0 +1,13 @@
+.insightsPageContainer {
+    .insights-section{
+        .insights-filter{
+            .filter{
+                background-color: var(--primaryFilter);
+            }
+            .filter .active{
+                background-color: var(--primaryFilterActive);
+            }
+        }
+    }
+  }
+  

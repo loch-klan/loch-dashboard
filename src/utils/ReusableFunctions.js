@@ -87,6 +87,15 @@ export const replaceHistory = (history, page = 1, searchValue = "") => {
   });
 };
 
+export const switchToDarkMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "dark");
+  localStorage.setItem("isDarkTheme", true);
+};
+export const switchToLightMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "light");
+  localStorage.setItem("isDarkTheme", false);
+};
+
 export const calculateTotalPageCount = (totalCount) => {
   return Math.ceil(totalCount / API_LIMIT);
 };
