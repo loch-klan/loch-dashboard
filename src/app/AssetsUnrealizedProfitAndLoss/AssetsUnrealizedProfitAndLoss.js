@@ -59,6 +59,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
+  convertNtoNumber,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -583,7 +584,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={rowData.AssetCode+" ["+rowData?.chain?.name+"]"}
+                  text={
+                    (rowData.AssetCode ? rowData.AssetCode : "") +
+                    " [" +
+                    rowData?.chain?.name +
+                    "]"
+                  }
                 >
                   <div>
                     <CoinChip
@@ -636,21 +642,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.AverageCostPrice === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.AverageCostPrice.toFixed(2))
-                        ).toLocaleString("en-US")
+                    rowData.AverageCostPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.AverageCostPrice)
+                      : "N/A"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.AverageCostPrice === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    {rowData.AverageCostPrice
+                      ? CurrencyType(false) +
                         numToCurrency(
                           rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")}
+                        ).toLocaleString("en-US")
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -695,17 +699,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentPrice.toFixed(2))
-                    ).toLocaleString("en-US")
+                    rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.CurrentPrice)
+                      : "N/A"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CurrentPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                    {rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -749,12 +755,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(noExponents(rowData.Amount)).toLocaleString(
-                    "en-US"
-                  )}
+                  text={
+                    rowData.Amount && rowData.Amount !== 0
+                      ? convertNtoNumber(rowData.Amount)
+                      : "N/A"
+                  }
                 >
                   <span>
-                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                    {rowData.Amount
+                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -792,12 +802,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CostBasis === 0
+                    !rowData.CostBasis || rowData.CostBasis === 0
                       ? "N/A"
                       : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
+                        convertNtoNumber(rowData.CostBasis)
                   }
                 >
                   <div className="cost-common">
@@ -809,7 +817,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         });
                       }}
                     >
-                      {rowData.CostBasis === 0
+                      {!rowData.CostBasis || rowData.CostBasis === 0
                         ? "N/A"
                         : CurrencyType(false) +
                           numToCurrency(
@@ -853,12 +861,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CurrentValue
+                    rowData.CurrentValue && rowData.CurrentValue !== 0
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue.toFixed(2))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
+                        convertNtoNumber(rowData.CurrentValue)
+                      : "N/A"
                   }
                 >
                   <div className="cost-common">
@@ -870,10 +876,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         });
                       }}
                     >
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentValue.toFixed(2)
-                        ).toLocaleString("en-US")}
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : "N/A"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -921,12 +929,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainAmount
+                    rowData.GainAmount && rowData.GainAmount !== 0
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount.toFixed(2)))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
+                        Math.abs(convertNtoNumber(rowData.GainAmount))
+                      : "N/A"
                   }
                   colorCode="#000"
                 >
@@ -946,10 +952,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : "N/A"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -1188,7 +1194,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
-                  bottomCombiedValues
+                  message="No assets found"
+                  bottomCombiedValues={tableData.length > 0 ? true : false}
                   combinedCostBasis={this.state.combinedCostBasis}
                   combinedCurrentValue={this.state.combinedCurrentValue}
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
