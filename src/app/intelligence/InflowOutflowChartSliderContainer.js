@@ -350,7 +350,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     : ""
                 }
                 style={{
-                  height: this.props.hideTimeFilter ? "35.2rem" : "50rem",
+                  height: this.props.hideTimeFilter ? "28.5rem" : "50rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -399,11 +399,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   <div
                     style={{
                       whiteSpace: "nowrap",
-                      overflow: this.props.isHomepage?"visible":"hidden",
+                      overflow: this.props.isHomepage ? "visible" : "hidden",
                       textOverflow: "ellipsis",
-                      alignItems: this.props.hideTimeFilter &&this.props.showDropdown
+                      alignItems:
+                        this.props.hideTimeFilter && this.props.showDropdown
                           ? "center"
-                          :this.props.hideTimeFilter?"flex-start"
+                          : this.props.hideTimeFilter
+                          ? "flex-start"
                           : "centre",
                       justifyContent: this.props.hideTimeFilter
                         ? "space-between"
@@ -412,43 +414,40 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     }}
                     className="inflowOutflowChartTopInfoLeft"
                   >
-                    
                     <div
                       style={{
                         display: "flex",
                         whiteSpace: "nowrap",
-                        overflow: this.props.isHomepage?"visible":"hidden",
+                        overflow: this.props.isHomepage ? "visible" : "hidden",
                         textOverflow: "ellipsis",
-                        alignItems: this.props.hideTimeFilter &&this.props.showDropdown
-                          ? "center"
-                          :this.props.hideTimeFilter?"flex-start"
-                          : "centre",
+                        alignItems:
+                          this.props.hideTimeFilter && this.props.showDropdown
+                            ? "center"
+                            : this.props.hideTimeFilter
+                            ? "flex-start"
+                            : "centre",
                       }}
                     >
-                      {
-                    this.props.showDropdown ? (
-                      <div
-                      style={{
-                        zIndex: 4,
-                      }}
-                    >
-                      <CustomDropdownPrice
-                        isHomepage={this.props.isHomepage}
-                        filtername="All chains selected"
-                        options={this.state.assetList}
-                        action={null}
-                        handleClick={this.handleAssetSelect}
-                        isChain={true}
-                        selectedTokens={[this.state.activeAssetTab]}
-                        selectedTokenName={this.state.activeAssetTabName}
-                        singleSelect
-                        searchIsUsed={this.chainSearchIsUsed}
-                      />
-                    </div>
-                    )
-                    :
-                    null
-                  }
+                      {this.props.showDropdown ? (
+                        <div
+                          style={{
+                            zIndex: 4,
+                          }}
+                        >
+                          <CustomDropdownPrice
+                            isHomepage={this.props.isHomepage}
+                            filtername="All chains selected"
+                            options={this.state.assetList}
+                            action={null}
+                            handleClick={this.handleAssetSelect}
+                            isChain={true}
+                            selectedTokens={[this.state.activeAssetTab]}
+                            selectedTokenName={this.state.activeAssetTabName}
+                            singleSelect
+                            searchIsUsed={this.chainSearchIsUsed}
+                          />
+                        </div>
+                      ) : null}
                       {/* <div
                         style={{
                           display: "flex",
@@ -490,9 +489,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               textOverflow: "ellipsis",
                             }}
                           >
-                            {
-                              this.props.showEth ? 'Ethereum ' : null
-                            }
+                            {this.props.showEth ? "Ethereum " : null}
                             {this.props.hideTimeFilter &&
                             this.state.activeAssetTabName
                               ? ``
@@ -510,7 +507,8 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               ? numToCurrency(this.state.currentPriceValue)
                               : "0.00"}
                           </div>
-                          {!this.props.hideTimeFilter || this.props.hideExplainer ? null: (
+                          {!this.props.hideTimeFilter ||
+                          this.props.hideExplainer ? null : (
                             <div
                               style={{
                                 display: "flex",
@@ -536,7 +534,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                                 />
                               </CustomOverlay>
                             </div>
-                          ) }
+                          )}
                         </div>
 
                         <div
@@ -552,23 +550,24 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       </div>
                     </div>
                     {this.props.openChartPage ? (
-                      <div className="d-flex" style={{alignItems:'center', gap:'8px'}}>
-                      <p
-                        onClick={this.props.openChartPage}
-                        class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+                      <div
+                        className="d-flex"
+                        style={{ alignItems: "center", gap: "8px" }}
+                      >
+                        <p
+                          onClick={this.props.openChartPage}
+                          class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
                         >
-                        <div className="seeMoreBtn cp f-s-10 grey-7C7">
-                          <div>Click here to see more</div>
+                          <div className="seeMoreBtn cp f-s-10 grey-7C7">
+                            <div>Click here to see more</div>
 
-                          <Image
-                            src={ChartSeeMoreArrowIcon}
-                            className="seeMoreBtnIcon"
+                            <Image
+                              src={ChartSeeMoreArrowIcon}
+                              className="seeMoreBtnIcon"
                             />
-                        </div>
-                      </p>
-                      
-
-                            </div>
+                          </div>
+                        </p>
+                      </div>
                     ) : null}
                   </div>
 
@@ -579,7 +578,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       }}
                     >
                       <CustomDropdownPrice
-                      isHomepage={this.props.isHomepage}
+                        isHomepage={this.props.isHomepage}
                         filtername="All chains selected"
                         options={this.state.assetList}
                         action={null}

@@ -1364,7 +1364,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                       openSignInOnclickModal={this.openSignInOnclickModal}
                       smartMoneyBlur={this.state.blurTable}
                       blurButtonClick={this.showAddSmartMoneyAddresses}
-                      isSmartMoney
+                      minimalPagination
                       noSubtitleBottomPadding
                       tableData={tableData}
                       columnList={columnList}
