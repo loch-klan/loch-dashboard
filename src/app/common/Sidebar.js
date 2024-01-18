@@ -1221,13 +1221,13 @@ function Sidebar(props) {
                             </div>
                             <span
                               onClick={handleLeaveChild}
-                              // onMouseOver={(e) =>
-                              //   (e.currentTarget.children[0].src =
-                              //     LeaveBlackIcon)
-                              // }
-                              // onMouseLeave={(e) =>
-                              //   (e.currentTarget.children[0].src = LeaveIcon)
-                              // }
+                              onMouseOver={(e) =>
+                                (e.currentTarget.children[0].src =
+                                  LeaveBlackIcon)
+                              }
+                              onMouseLeave={(e) =>
+                                (e.currentTarget.children[0].src = LeaveIcon)
+                              }
                               className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
                             >
                               <Image src={LeaveIcon} />

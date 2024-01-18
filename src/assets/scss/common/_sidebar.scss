@@ -954,13 +954,7 @@
           }
           .sideBarFooterSignedInLeaveContainer{
 
-            .navbar-button {
-              color: white;
-            }
-            img{
-              opacity: 1 !important;
-              filter: brightness(10);
-            }
+            
           }
 
         }
@@ -983,6 +977,15 @@
           }
           img {
             width: 1.6rem;
+          }
+          &:hover{
+            .navbar-button {
+              color: white;
+            }
+            img{
+              opacity: 1 !important;
+              filter: brightness(10);
+            }
           }
         }
       }
