@@ -4329,17 +4329,12 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-<<<<<<< HEAD
                               xAxisScrollableColumnWidth={4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
                                   : []
                               }
-=======
-                              xAxisScrollableColumnWidth={3.8}
-                              tableData={tableDataCostBasis.slice(0, 10)}
->>>>>>> 94974fcab8187082f253a82717a5b8eb4c897101
                               columnList={CostBasisColumnData}
                               headerHeight={60}
                               isArrow={true}
