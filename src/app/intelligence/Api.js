@@ -203,7 +203,12 @@ export const searchTransactionApi = (data, ctx, page = 0) => {
       .then((res) => {
         // console.log(page)
         if (!res.data.error) {
-          dispatch(getAllTransactionHistory(res.data.data, page, ctx));
+          if (page === 0) {
+            dispatch(getAllTransactionHistory(res.data.data, page, ctx));
+          }
+          if (ctx.getAllTransactionHistoryLocal) {
+            ctx.getAllTransactionHistoryLocal(res.data.data, page, ctx);
+          }
 
           if (ctx) {
             ctx.setState({

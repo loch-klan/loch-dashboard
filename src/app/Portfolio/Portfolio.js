@@ -188,6 +188,7 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
       showTransactionHistoryDust: true,
@@ -1682,6 +1683,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
@@ -2914,7 +2918,7 @@ class Portfolio extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13">
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
                     {rowData.asset.code}
                   </div>
                 ) : (
@@ -3283,7 +3287,7 @@ class Portfolio extends BaseReactComponent {
               <CoinChip
                 coin_img_src={rowData?.asset?.symbol}
                 coin_code={rowData?.asset?.code}
-                chain={rowData?.network}
+                chain={rowData?.chain}
               />
             );
           }
@@ -3547,7 +3551,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3573,7 +3577,12 @@ class Portfolio extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={rowData.AssetCode + " [" + rowData?.chain?.name + "]"}
+                  text={
+                    (rowData.AssetCode ? rowData.AssetCode : "") +
+                    " [" +
+                    rowData?.chain?.name +
+                    "]"
+                  }
                 >
                   <div>
                     <CoinChip
@@ -3622,12 +3631,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CurrentValue
+                    rowData.CurrentValue && rowData.CurrentValue !== 0
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue?.toFixed(2))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
+                        convertNtoNumber(rowData.CurrentValue)
+                      : "N/A"
                   }
                 >
                   <div className="cost-common">
@@ -3642,9 +3649,9 @@ class Portfolio extends BaseReactComponent {
                       {rowData.CurrentValue
                         ? CurrencyType(false) +
                           numToCurrency(
-                            rowData.CurrentValue?.toFixed(2)
+                            rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
+                        : "N/A"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3695,12 +3702,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainAmount
+                    rowData.GainAmount && rowData.GainAmount !== 0
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount?.toFixed(2)))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
+                        Math.abs(convertNtoNumber(rowData.GainAmount))
+                      : "N/A"
                   }
                   colorCode="#000"
                 >
@@ -3720,10 +3725,10 @@ class Portfolio extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : "N/A"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3813,7 +3818,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3835,21 +3840,19 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.AverageCostPrice?.toFixed(2))
-                        ).toLocaleString("en-US")
+                    rowData.AverageCostPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.AverageCostPrice)
+                      : "N/A"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    {rowData.AverageCostPrice
+                      ? CurrencyType(false) +
                         numToCurrency(
-                          rowData.AverageCostPrice?.toFixed(2)
-                        ).toLocaleString("en-US")}
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3875,7 +3878,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3899,19 +3902,17 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.CurrentPrice
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice?.toFixed(2))
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"
+                        convertNtoNumber(rowData.CurrentPrice)
+                      : "N/A"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {rowData.CurrentPrice
                       ? CurrencyType(false) +
                         numToCurrency(
-                          rowData.CurrentPrice?.toFixed(2)
+                          rowData.CurrentPrice.toFixed(2)
                         ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3937,7 +3938,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3958,12 +3959,16 @@ class Portfolio extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(noExponents(rowData.Amount)).toLocaleString(
-                    "en-US"
-                  )}
+                  text={
+                    rowData.Amount && rowData.Amount !== 0
+                      ? convertNtoNumber(rowData.Amount)
+                      : "N/A"
+                  }
                 >
                   <span>
-                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                    {rowData.Amount
+                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                      : "N/A"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -3989,7 +3994,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.16,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -4004,12 +4009,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CostBasis === 0 || !rowData.CostBasis
+                    !rowData.CostBasis || rowData.CostBasis === 0
                       ? "N/A"
                       : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis?.toFixed(2))
-                        ).toLocaleString("en-US")
+                        convertNtoNumber(rowData.CostBasis)
                   }
                 >
                   <div className="cost-common">
@@ -4021,7 +4024,7 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {rowData.CostBasis === 0 || !rowData.CostBasis
+                      {!rowData.CostBasis || rowData.CostBasis === 0
                         ? "N/A"
                         : CurrencyType(false) +
                           numToCurrency(
@@ -4322,11 +4325,21 @@ class Portfolio extends BaseReactComponent {
                           <div className="newHomeTableContainer">
                             <TransactionTable
                               noSubtitleBottomPadding
+                              message="No assets found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
+<<<<<<< HEAD
+                              xAxisScrollableColumnWidth={4}
+                              tableData={
+                                tableDataCostBasis
+                                  ? tableDataCostBasis.slice(0, 10)
+                                  : []
+                              }
+=======
                               xAxisScrollableColumnWidth={3.8}
                               tableData={tableDataCostBasis.slice(0, 10)}
+>>>>>>> 94974fcab8187082f253a82717a5b8eb4c897101
                               columnList={CostBasisColumnData}
                               headerHeight={60}
                               isArrow={true}
@@ -4896,6 +4909,7 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div className="newHomeTableContainer">
                             <TransactionTable
+                              message={"No yield opportunities found"}
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4}
                               noSubtitleBottomPadding
