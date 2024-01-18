@@ -189,6 +189,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphDigit: 3,
       GraphDigit: 3,
       // Should call block one
+      getCurrentTimeUpdater: false,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -455,6 +456,11 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  getCurrentTime = () => {
+    this.setState({
+      getCurrentTimeUpdater: !this.state.getCurrentTimeUpdater,
+    });
+  };
   onCloseModal = () => {
     this.setState({
       followSignInModalAnimation: true,
@@ -663,7 +669,7 @@ class Portfolio extends BaseReactComponent {
       callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
     });
   };
-  callNetworksApi = () => {
+  callNetworksApi = (isUpdate) => {
     // Resetting the user wallet list, total and chain wallet
     this.props.settingDefaultValues(this);
 
@@ -681,7 +687,11 @@ class Portfolio extends BaseReactComponent {
               address: wallet.address,
               coinCode: coin.coinCode,
             };
-            this.props.getUserWallet(userCoinWallet, this, false, i);
+            if (isUpdate) {
+              this.props.getUserWallet(userCoinWallet, this, true, i);
+            } else {
+              this.props.getUserWallet(userCoinWallet, this, false, i);
+            }
           }
         });
       }
@@ -697,12 +707,17 @@ class Portfolio extends BaseReactComponent {
         });
       }
     });
-
     // connect exchange api
     // this.props.getExchangeBalance("binance", this);
     // this.props.getExchangeBalance("coinbase", this);
-    this.props.getExchangeBalances(this, false);
-
+    if (isUpdate) {
+      this.props.getExchangeBalances(this, true);
+    } else {
+      this.props.getExchangeBalances(this, false);
+    }
+    if (isUpdate) {
+      window.sessionStorage.removeItem("callTheUpdateAPI");
+    }
     if (!isFound) {
       this.setState({
         // overview loader and net worth loader
@@ -1246,7 +1261,12 @@ class Portfolio extends BaseReactComponent {
         JSON.parse(tempAddWall) &&
         JSON.parse(tempAddWall)?.length > 0
       ) {
-        this.callNetworksApi();
+        let getItem = window.sessionStorage.getItem("callTheUpdateAPI");
+        if (getItem === "true") {
+          this.callNetworksApi(true);
+        } else {
+          this.callNetworksApi();
+        }
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
@@ -4201,6 +4221,8 @@ class Portfolio extends BaseReactComponent {
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}
+                showUpdatesJustNowBtn
+                getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
               />
               <div className="m-b-22 graph-table-section">
                 <Row>
