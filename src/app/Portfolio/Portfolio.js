@@ -2130,6 +2130,7 @@ class Portfolio extends BaseReactComponent {
     }
   };
   render() {
+    console.log("");
     const { table, assetPriceList_home, totalCount } =
       this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
