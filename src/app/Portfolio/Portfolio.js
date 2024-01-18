@@ -188,6 +188,7 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
       shouldCallTransactionTableApi: true,
@@ -1675,6 +1676,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
