@@ -13,7 +13,7 @@ import {
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import { isFollowedByUser } from "../Portfolio/Api";
 import { updateUserWalletApi } from "../common/Api";
@@ -135,7 +135,20 @@ class TopWalletAddressList extends Component {
       isMobileWalletListExpanded: !this.state.isMobileWalletListExpanded,
     });
   };
+  handleSharePassFun = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
+    if (this.props.handleShare) {
+      this.props.handleShare();
+    }
+  };
   addAddressToWatchListFun = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
@@ -976,7 +989,7 @@ class TopWalletAddressList extends Component {
               ref={this.props.buttonRef}
               className="topWalletAddressListFollowShareBtn ml-2"
               id="address-button"
-              onClick={this.props.handleShare}
+              onClick={this.handleSharePassFun}
             >
               <Image
                 className="topWalletAddressListFollowShareBtnIcon"
