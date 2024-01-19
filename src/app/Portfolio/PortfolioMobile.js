@@ -332,7 +332,7 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    
+
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -361,7 +361,7 @@ class PortfolioMobile extends BaseReactComponent {
         combinedReturn: tempcombinedReturn,
       });
 
-      this.callApi(page)
+      this.callApi(page);
     }
 
     if (
@@ -370,8 +370,6 @@ class PortfolioMobile extends BaseReactComponent {
     ) {
       this.callApi(this.state.currentPage || START_INDEX);
     }
-
-    
 
     if (
       prevPage !== page ||
@@ -607,7 +605,12 @@ class PortfolioMobile extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.history.push("/welcome?FromMobileHome=true");
+    let shareLink = BASE_URL_S3 + "welcome";
+    if (window.location) {
+      window.location.replace(shareLink);
+    } else {
+      window.open(shareLink, "_self");
+    }
   };
   render() {
     const { currency } = this.state;
