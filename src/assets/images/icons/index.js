@@ -79,8 +79,9 @@ export { default as XCircleRedIcon } from "./xCircleRed.svg";
 export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";
 // export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
 // export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
-export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
+export { default as CloseIconBlack } from "./close-icon-black.svg";
 export { default as NewWelcomeAddAnotherPlusIcon } from "./newWelcomeAddAnotherPlus.svg";
-export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
+export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
 export { default as NewWelcomeLoginCrossIcon } from "./newWelcomeLoginCross.svg";
-export { default as CloseIconBlack } from "./close-icon-black.svg"
+export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
+export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";

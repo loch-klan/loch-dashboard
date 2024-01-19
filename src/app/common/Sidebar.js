@@ -15,6 +15,7 @@ import {
   BlackManIcon,
   GreyManIcon,
   InactiveSmartMoneySidebarIcon,
+  PersonRoundedSigninIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
@@ -51,7 +52,11 @@ import {
   SignupMenu,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  resetPreviewAddress,
+} from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
@@ -316,6 +321,10 @@ function Sidebar(props) {
     }
   };
   const handleGoToProfile = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     props.history.push("/profile");
   };
   const handleApiModal = () => {
@@ -365,6 +374,10 @@ function Sidebar(props) {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
   const openSigninModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -396,6 +409,10 @@ function Sidebar(props) {
     setSigninPopup(!signinPopup);
   };
   const handleUserFeedbackModal = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     FeedbackSidebar({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -690,7 +707,10 @@ function Sidebar(props) {
                               className="nav-link nav-link-closed"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -725,6 +745,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -763,6 +787,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -796,6 +824,10 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/profile"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -833,9 +865,7 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               style={{ backround: "transparent" }}
                               id="sidebar-feedback-btn"
-                              onClick={(e) => {
-                                handleUserFeedbackModal();
-                              }}
+                              onClick={handleUserFeedbackModal}
                               // activeclassname="active"
                             >
                               <Image
@@ -889,7 +919,10 @@ function Sidebar(props) {
                               className="nav-link"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -917,6 +950,10 @@ function Sidebar(props) {
                               className={`nav-link`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -946,6 +983,10 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -973,6 +1014,10 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (tempToken === "jsk") {
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -1001,9 +1046,7 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={() => {
-                            handleUserFeedbackModal();
-                          }}
+                          onClick={handleUserFeedbackModal}
                           className="nav-link none"
                           to="#"
                           activeclassname="none"
@@ -1075,11 +1118,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedSignedIn inter-display-medium f-s-13 lh-19 "
+                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={BlackManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1098,7 +1141,7 @@ function Sidebar(props) {
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1156,10 +1199,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
                           >
                             <div className="sideBarFooterSignInData">
-                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                                 <Image
+                                  style={{
+                                    height: "12px",
+                                    width: "12px",
+                                  }}
                                   className="sideBarFooterSignInIcon"
-                                  src={BlackManIcon}
+                                  src={PersonRoundedSigninIcon}
                                 />
                               </div>
                               <div className="dotDotText">
@@ -1195,10 +1242,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
                             id="sidebar-open-sign-in-btn"
                           >
-                            <div className="sideBarFooterSignInIconContainer">
+                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                               <Image
+                                style={{
+                                  height: "12px",
+                                  width: "12px",
+                                }}
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                             <div>Sign in / up</div>

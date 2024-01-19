@@ -1106,9 +1106,9 @@ form {
 .custom-table {
 }
 .dotDotText {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 .table-wrapper {
   .bottomExtraInfo {
@@ -1816,7 +1816,7 @@ form {
 }
 
 .page {
-  padding: 0 13.4rem;
+  padding: 0 5rem;
   width: 100%;
 }
 // @media all and (max-width: 1300px) {

@@ -206,6 +206,31 @@
   .topWalletAddressListFollowShareContainer {
     display: flex;
     align-items: center;
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      user-select: none;
+      width: max-content;
+
+      img {
+        position: relative;
+        margin-right: 0.6rem;
+        width: 1.3rem;
+        height: 1.3rem;
+      }
+
+      &:hover {
+        color: $primary;
+
+        span {
+          color: $primary;
+        }
+
+        img {
+          filter: brightness(0);
+        }
+      }
+    }
     .topWalletAddressListFollowShareBtn {
       display: flex;
       align-items: center;
