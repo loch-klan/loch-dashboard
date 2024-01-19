@@ -962,7 +962,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email);
+      data.append("email", this.state.email.toLowerCase());
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
