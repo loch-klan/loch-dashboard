@@ -11,7 +11,14 @@ import { mobileCheck } from "../../utils/ReusableFunctions";
 import "./_nft.scss";
 import NftMobileHeader from "./NftMobileHeader";
 import Loading from "../common/Loading";
-import { BlackManIcon, GreyManIcon, InfoCircleSmartMoneyIcon, PlusCircleSmartMoneyIcon, QuestionmarkCircleSmartMoneyIcon, ShareProfileIcon } from "../../assets/images/icons";
+import {
+  BlackManIcon,
+  GreyManIcon,
+  InfoCircleSmartMoneyIcon,
+  PlusCircleSmartMoneyIcon,
+  QuestionmarkCircleSmartMoneyIcon,
+  ShareProfileIcon,
+} from "../../assets/images/icons";
 import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
 import NftMobileBlock from "./NftMobileBlock";
@@ -77,7 +84,6 @@ class NFTMobile extends BaseReactComponent {
       ShareProfileIconLoaded: false,
     };
   }
-
 
   render() {
     const columnList = [
@@ -488,7 +494,7 @@ class NFTMobile extends BaseReactComponent {
     ];
     return (
       <div className="nft-page-mobile">
-        <NftMobileHeader/>
+        <NftMobileHeader />
         {this.props.isLoading ? (
           <div
             style={{
@@ -576,7 +582,7 @@ class NFTMobile extends BaseReactComponent {
                       </div>
                     </div> */}
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                  {/* <div className="mobileSmartMoneyBtnSignInBottomBtns">
                     <div
                       onClick={this.showFaqModal}
                       className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -653,7 +659,7 @@ class NFTMobile extends BaseReactComponent {
                         Add address
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 <>
@@ -667,7 +673,7 @@ class NFTMobile extends BaseReactComponent {
                       style={{
                         flex: 1,
                       }}
-                    //   onClick={this.showSignInModal}
+                      //   onClick={this.showSignInModal}
                       className="mobileSmartMoneyBtnSignInContainer inter-display-medium f-s-14 lh-19 navbar-button"
                     >
                       <div className="mobileSmartMoneyBtnSignInIconContainer">
@@ -689,7 +695,7 @@ class NFTMobile extends BaseReactComponent {
                       </div>
                     </div>
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                  {/* <div className="mobileSmartMoneyBtnSignInBottomBtns">
                     <div
                     //   onClick={this.showFaqModal}
                       className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -745,18 +751,14 @@ class NFTMobile extends BaseReactComponent {
                         How it works
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
             {this.props.tableData && this.props.tableData.length > 0 ? (
               <div className="mobileSmartMoneyListContainer">
                 {this.props.tableData.map((mapData) => {
-                  return (
-                    <NftMobileBlock
-                      data={mapData}
-                    />
-                  );
+                  return <NftMobileBlock data={mapData} />;
                 })}
               </div>
             ) : null}
