@@ -1005,7 +1005,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="cp history-table-header-col " id="time">
             <CustomOverlay
               position="top"
               isIcon={false}
@@ -1021,7 +1021,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -1061,7 +1061,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempOpp ? tempOpp : "-"}
               >
-                <span>{tempVal}</span>
+                <span className="primaryText">{tempVal}</span>
               </CustomOverlay>
             );
           }
@@ -1074,7 +1074,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1377,7 +1377,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1677,7 +1677,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1705,7 +1705,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 dotDotText">
                     {rowData.asset.code}
                   </div>
                 ) : (
@@ -1723,7 +1723,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1750,7 +1750,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempAmountVal ? tempAmountVal : "0.00"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                   {numToCurrency(tempAmountVal).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
@@ -1765,7 +1765,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -1815,7 +1815,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                     {CurrencyType(false) +
                       numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
@@ -1832,7 +1832,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                     {tempValueThen
                       ? CurrencyType(false) +
                         numToCurrency(tempValueThen).toLocaleString("en-US")
@@ -1852,7 +1852,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -1882,13 +1882,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                           : "gain"
                       }`}
                     >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
+                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 interDisplayMediumTextDarkerText">
                         {rowData.method}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div interDisplayMediumTextDarkerText">
                     {rowData.method}
                   </div>
                 )}
@@ -1899,7 +1899,10 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
               src={sortByIcon}
@@ -1925,7 +1928,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={rowData.network}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div dotDotText">
                     {rowData.network}
                   </div>
                 </CustomOverlay>
@@ -1941,7 +1944,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -1978,7 +1981,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                  className="inter-display-medium f-s-13 lh-16 ellipsis-div"
                 >
                   {tempHashVal}
                   <Image

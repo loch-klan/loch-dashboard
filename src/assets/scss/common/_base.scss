@@ -2080,7 +2080,7 @@ form {
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-
+            color: var(--primaryTextColor);
             &:hover {
               font-weight: 600;
             }

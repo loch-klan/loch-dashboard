@@ -1020,7 +1020,7 @@
     }
     .section-table,
     .section-chart {
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);

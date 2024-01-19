@@ -362,11 +362,13 @@
             width: 9.3rem;
             height: 22rem;
             overflow-y: auto;
-            background: $secondary;
+            background: var(--cardBackgroud);
+            border-color: var(--cardBackgroud);
             left: -9px !important;
             .dropdown-item {
               display: flex;
               justify-content: space-between;
+              color: var(--primaryTextColor);
             }
           }
         }
