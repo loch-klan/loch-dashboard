@@ -2403,21 +2403,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body">
-          <form
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                if (!this.state.isGoButtonsDisabled && !this.state.authmodal)
-                  this.addAdressesGo();
-              }
-            }}
-            onSubmit={(e) => {
-              console.log("here");
-              e.preventDefault();
-              if (!this.state.isGoButtonsDisabled) this.addAdressesGo();
-            }}
-            className="new-homepage__body-container"
-          >
+          <form className="new-homepage__body-container">
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({
@@ -2451,6 +2437,19 @@ class NewWelcome extends BaseReactComponent {
                             this.showisTrendingAddressesAddress
                           }
                           FocusInInput={this.FocusInInput}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              event.preventDefault();
+                              if (!this.state.isGoButtonsDisabled) {
+                                this.addAdressesGo();
+                              }
+                            }
+                          }}
+                          // onSubmit={(e) => {
+                          //   console.log("here");
+                          //   e.preventDefault();
+                          //   if (!this.state.isGoButtonsDisabled) this.addAdressesGo();
+                          // }}
                         />
                       </div>
                     );
