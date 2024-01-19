@@ -66,6 +66,7 @@ import {
   CurrencyType,
   TruncateText,
   UpgradeTriggered,
+  compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -95,6 +96,7 @@ import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { isEqual } from "lodash";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -479,6 +481,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
+    let tempCondTest = [...tempCond];
     tempCond = [
       ...tempCond,
       {
@@ -487,13 +490,23 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
 
+    let isDefault = true;
+
+    let originalCondition = [{ key: SEARCH_BY_NOT_DUST, value: true }];
+    let originalSort = [{ key: SORT_BY_TIMESTAMP, value: false }];
+    if (!compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
+      isDefault = false;
+    }
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    this.props.searchTransactionApi(data, this, page, isDefault);
   };
   onPageChange = () => {
     this.setState({
