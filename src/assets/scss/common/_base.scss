@@ -2139,6 +2139,9 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .no-data{
+    filter: var(--invertColor);
+  }
 }
 
 // slick slider positioning in loading animation
@@ -2194,7 +2197,7 @@ textarea {
   .copy-icon-top-bar {
     cursor: pointer;
     &:hover {
-      filter: brightness(0.2);
+      filter: var(--hoverBrightnessValue);
     }
   }
 }

@@ -641,7 +641,9 @@ function Sidebar(props) {
         style={{
           zIndex: "99",
         }}
-        className="sidebar-section"
+        className={`sidebar-section ${
+          props.isSidebarClosed ? "sidebar-section-closed" : ""
+        }`}
       >
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>

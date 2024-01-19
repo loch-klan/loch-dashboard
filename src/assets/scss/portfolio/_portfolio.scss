@@ -69,6 +69,7 @@
         justify-content: space-between;
         height: 100%;
         width: calc(100% - 26rem);
+        background-color: var(--cardBackgroud);
 
         // width: 100%;
         position: relative;
@@ -157,14 +158,14 @@
             padding-left: 1rem;
             padding-right: 1rem;
             // background-color: red;
-            border: 1px $grey-50 solid;
-            box-shadow: 0 0 10px 4px $grey-50;
+            border: 1px var(--sidebarActivePageColor) solid;
+            box-shadow:var(--topBarShadow);
             height: 100%;
             position: relative;
             .topBarHistory {
               border-radius: 10px;
-              border: 1px $grey-50 solid;
-              box-shadow: 0 0 10px 4px $grey-50;
+              border: 1px var(--sidebarActivePageColor) solid;
+              box-shadow: 0 0 10px 4px var(--sidebarActivePageColor);
               background-color: $secondary;
               width: 100%;
               position: absolute;
@@ -263,23 +264,23 @@
                 height: 100%;
                 font-size: 15px;
                 &:-webkit-autofill:focus {
-                  box-shadow: 0 0 0 30px white inset !important;
-                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                  -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
                   transition: background-color 5000s ease-in-out 0s;
                 }
-                box-shadow: 0 0 0 30px white inset !important;
-                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
                 transition: background-color 5000s ease-in-out 0s;
 
                 &:hover {
                   &::placeholder {
-                    color: black;
+                    color: var(--invertMode);
                     opacity: 1; /* Firefox */
                   }
 
                   &::-ms-input-placeholder {
                     /* Edge 12 -18 */
-                    color: black;
+                    color: var(--invertMode);
                   }
                 }
               }
@@ -303,11 +304,11 @@
         }
 
         .topbar-btn {
-          background: rgba(229, 229, 230, 0.5);
-          border: 1px solid #f2f2f3;
+          background-color: var(--primaryFilter);
+          border: 0.1rem solid var(--primaryFilter);
           border-radius: 8px;
           padding: 1.2rem 2rem;
-          color: $black-191;
+          color: var(--primaryTextColor);
           font-weight: 600;
           font-size: 1.3rem;
           line-height: 1.5rem;
@@ -364,14 +365,15 @@
           }
           img {
             transition-duration: 300ms;
+            filter: var(--invertColor);
           }
           &:hover {
             background-color: $black-191;
-            border-color: $black-191;
-            color: $secondary;
+            background-color: var(--backColor);
+            color: var(--sameModeColor);
 
             img {
-              filter: invert(1);
+              filter: var(--invertColor2);
             }
             .noHoverEffect {
               filter: invert(0);
@@ -513,7 +515,7 @@
         .wallet-amount {
           font-size: 2.4rem;
           line-height: 3rem;
-          color: $black-1D2;
+          color: var(--sidebarWalletAmount);
         }
 
         .growth-div {
@@ -538,6 +540,7 @@
       .welcome-card-topbar-closed {
         padding-left: 6rem;
         padding-right: 13.5rem;
+        background-color: var(--cardBackgroud);
       }
     }
 

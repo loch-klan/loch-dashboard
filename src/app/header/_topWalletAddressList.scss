@@ -10,11 +10,11 @@
   .topWalletAddressListDropdownContainer {
     border-radius: 15px;
     .topbar-btn {
-      background: rgba(229, 229, 230, 0.5);
-      border: 1px solid #f2f2f3;
+      background-color: var(--primaryFilter);
+      border: 0.1rem solid var(--greyE5e);
       border-radius: 8px;
       padding: 1.2rem 2rem;
-      color: $black-191;
+      color: var(--primaryTextColor);
       font-weight: 600;
       font-size: 1.3rem;
       line-height: 1.5rem;
@@ -71,14 +71,15 @@
       }
       img {
         transition-duration: 300ms;
+        filter: var(--invertColor);
       }
       &:hover {
-        background-color: $black-191;
-        border-color: $black-191;
-        color: $secondary;
+        border-color: var(--greyE5e);
+        background-color: var(--backColor);
+    color: var(--sameModeColor);
 
         img {
-          filter: invert(1);
+          filter: var(--invertColor2);
         }
         .noHoverEffect {
           filter: invert(0);
@@ -101,7 +102,7 @@
           font-weight: 600;
         }
         .topBarWalletAddressAddress {
-          color: #96979a;
+          color: var(--currenyConvertorText);
           font-size: 13px;
           font-weight: 600;
         }
@@ -110,7 +111,7 @@
         transition-duration: 300ms;
         cursor: pointer;
         &:hover {
-          filter: brightness(0);
+          filter: var(--hoverBrightnessValue);
         }
       }
       &:hover {
@@ -134,7 +135,7 @@
       .dropdown-menu-list-container {
         .topBarWalletAddressNameTagAndAddress {
           .topBarWalletAddressNameTag {
-            color: #19191a;
+            color: var(--black191);
             font-size: 13px;
             font-weight: 600;
           }
@@ -154,6 +155,8 @@
         overflow: auto;
         box-shadow: 0 10px 15px 5px rgba(0, 0, 0, 0.07);
 
+        background-color: var(--cardBackgroud);
+        border-color: var(--secondaryLightColor);
         position: relative;
 
         .dropdown-menu-list-container {
@@ -176,6 +179,9 @@
             border-radius: 10px;
             text-overflow: ellipsis;
             overflow-x: hidden;
+            &:hover{
+              background-color: var(--primaryFilter);
+            }
           }
         }
       }

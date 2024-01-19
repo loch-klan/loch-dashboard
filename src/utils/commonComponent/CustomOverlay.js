@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Image, Tooltip } from "react-bootstrap";
 import { lightenDarkenColor } from "../ReusableFunctions";
+import "./commonCoponentsStyles/_customOverlay.scss";
 
 function CustomOverlay({
   text,

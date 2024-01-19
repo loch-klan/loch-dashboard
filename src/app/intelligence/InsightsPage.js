@@ -650,24 +650,14 @@ class InsightsPage extends Component {
                           marginTop: "5rem",
                         }}
                       >
-                        <div
-                          style={{
-                            position: "absolute",
-                            width: "16rem",
-                            height: "16rem",
-                            background:
-                              "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                            filter: "blur(50px)",
-                            borderRadius: "10rem",
-                            zIndex: 0,
-                          }}
-                        ></div>
+                        <div className="insight-blank-card"></div>
                         <Image
                           src={InsightImg}
                           style={{ position: "relative" }}
+                          className="invertFilter"
                         />
                         <h5
-                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center primaryText"
                           style={{
                             marginBottom: "1rem",
                             width: "90%",
