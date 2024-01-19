@@ -203,7 +203,6 @@ export const searchTransactionApi = (data, ctx, page = 0, isDefault = true) => {
       .then((res) => {
         // console.log(page)
         if (!res.data.error) {
-          console.log("isDefault is ", isDefault);
           if (page === 0 && isDefault) {
             dispatch(getAllTransactionHistory(res.data.data, page, ctx));
           }

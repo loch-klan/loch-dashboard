@@ -66,6 +66,7 @@ import {
   CurrencyType,
   TruncateText,
   UpgradeTriggered,
+  compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -462,21 +463,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
 
-  compareTwoArrayOfObjects = (
-    first_array_of_objects,
-    second_array_of_objects
-  ) => {
-    return (
-      first_array_of_objects.length === second_array_of_objects.length &&
-      first_array_of_objects.every((element_1) =>
-        second_array_of_objects.some((element_2) =>
-          Object.keys(element_1).every(
-            (key) => element_1[key] === element_2[key]
-          )
-        )
-      )
-    );
-  };
   callApi = (page = START_INDEX) => {
     let tempCond = [];
     this.state.condition.forEach((tempEle) => {
@@ -506,10 +492,10 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     let originalCondition = [{ key: SEARCH_BY_NOT_DUST, value: true }];
     let originalSort = [{ key: SORT_BY_TIMESTAMP, value: false }];
-    if (!this.compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
+    if (!compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
       isDefault = false;
     }
-    if (!this.compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
       isDefault = false;
     }
     this.setState({ tableLoading: true });
