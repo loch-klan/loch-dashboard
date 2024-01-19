@@ -172,6 +172,7 @@ function CustomOverlay({
       placement={position}
       delay={{ show: 250, hide: 100 }}
       overlay={renderTooltip}
+      className="overlay-tool-tip-container"
     >
       {children}
     </OverlayTrigger>

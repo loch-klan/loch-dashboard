@@ -82,6 +82,8 @@ import {
   CurrencyType,
   amountFormat,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
 import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
@@ -137,6 +139,14 @@ function Sidebar(props) {
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
     JSON.parse(window.sessionStorage.getItem("previewAddress"))
+  );
+
+  // Dark mode
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.querySelector("body").getAttribute("data-theme") &&
+      document.querySelector("body").getAttribute("data-theme") === "dark"
+      ? true
+      : false
   );
 
   React.useEffect(() => {
@@ -459,6 +469,19 @@ function Sidebar(props) {
     const link = `${BASE_URL_S3}home/${slink}`;
     navigator.clipboard.writeText(link);
     toast.success("Share link has been copied");
+  };
+
+  const handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      setIsDarkMode(false);
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      setIsDarkMode(true);
+    }
   };
 
   React.useEffect(() => {
@@ -1354,6 +1377,28 @@ function Sidebar(props) {
                       </div>
                       <div>Follow us</div>
                     </div>
+                    {isDarkMode ? (
+                      <span
+                        onClick={handleDarkMode}
+                        className="navbar-button-container"
+                      >
+                        {/* <Image src={LightModeIcon} /> */}
+                        <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                          Light Mode
+                        </Button>
+                      </span>
+                    ) : (
+                      <span
+                        onClick={handleDarkMode}
+                        className="navbar-button-container"
+                      >
+                        {/* <Image src={DarkModeIcon} /> */}
+                        <span />
+                        <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                          Dark Mode
+                        </Button>
+                      </span>
+                    )}
 
                     <div
                       className="m-b-12 footer-divOne"
