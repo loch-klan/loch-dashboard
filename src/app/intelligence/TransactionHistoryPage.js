@@ -95,6 +95,7 @@ import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { isEqual } from "lodash";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -461,6 +462,21 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
 
+  compareTwoArrayOfObjects = (
+    first_array_of_objects,
+    second_array_of_objects
+  ) => {
+    return (
+      first_array_of_objects.length === second_array_of_objects.length &&
+      first_array_of_objects.every((element_1) =>
+        second_array_of_objects.some((element_2) =>
+          Object.keys(element_1).every(
+            (key) => element_1[key] === element_2[key]
+          )
+        )
+      )
+    );
+  };
   callApi = (page = START_INDEX) => {
     let tempCond = [];
     this.state.condition.forEach((tempEle) => {
@@ -477,6 +493,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
+    let tempCondTest = [...tempCond];
     tempCond = [
       ...tempCond,
       {
@@ -487,25 +504,12 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     let isDefault = true;
 
-    let originalCondition = [
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-      { key: SEARCH_BY_NOT_DUST, value: true },
-    ];
-    let originalSort = [[{ key: SORT_BY_TIMESTAMP, value: false }]];
-    console.log("Step one");
-    if (originalCondition !== tempCond) {
-      console.log("Condition not same ");
-      console.log("Original condition ", originalCondition);
-      console.log("new condition ", tempCond);
+    let originalCondition = [{ key: SEARCH_BY_NOT_DUST, value: true }];
+    let originalSort = [{ key: SORT_BY_TIMESTAMP, value: false }];
+    if (!this.compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
       isDefault = false;
     }
-    if (this.state.sort !== originalSort) {
-      console.log("Sort not same ");
-      console.log("Original Sort ", originalSort);
-      console.log("new Sort ", this.state.sort);
+    if (!this.compareTwoArrayOfObjects(this.state.sort, originalSort)) {
       isDefault = false;
     }
     this.setState({ tableLoading: true });
