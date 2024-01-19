@@ -605,7 +605,12 @@ class PortfolioMobile extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.history.push("/welcome?FromMobileHome=true");
+    let shareLink = BASE_URL_S3 + "welcome";
+    if (window.location) {
+      window.location.replace(shareLink);
+    } else {
+      window.open(shareLink, "_self");
+    }
   };
   render() {
     const { currency } = this.state;
