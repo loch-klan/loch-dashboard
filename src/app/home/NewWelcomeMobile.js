@@ -1403,7 +1403,21 @@ class NewWelcomeMobile extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body new-homepage__body-mobile">
-          <div className="new-homepage__body-container new-homepage__body-container-mobile">
+          <form
+            className="new-homepage__body-container new-homepage__body-container-mobile"
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                if (!this.state.isGoButtonsDisabled && !this.state.authmodal)
+                  this.addAdressesGo();
+              }
+            }}
+            onSubmit={(e) => {
+              console.log("here");
+              e.preventDefault();
+              if (!this.state.isGoButtonsDisabled) this.addAdressesGo();
+            }}
+          >
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({ isTrendingAddresses: false });
@@ -1723,7 +1737,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 ) : null}
               </div>
             )}
-          </div>
+          </form>
         </div>
       </div>
     );

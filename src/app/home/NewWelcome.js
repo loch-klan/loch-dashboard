@@ -2403,7 +2403,21 @@ class NewWelcome extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body">
-          <div className="new-homepage__body-container">
+          <form
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                if (!this.state.isGoButtonsDisabled && !this.state.authmodal)
+                  this.addAdressesGo();
+              }
+            }}
+            onSubmit={(e) => {
+              console.log("here");
+              e.preventDefault();
+              if (!this.state.isGoButtonsDisabled) this.addAdressesGo();
+            }}
+            className="new-homepage__body-container"
+          >
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({
@@ -2652,7 +2666,9 @@ class NewWelcome extends BaseReactComponent {
                 <div className="newHomeAddAnotherGoContainer inter-display-regular">
                   {this.state.walletInput.length < 10 ? (
                     <button
-                      onClick={this.addInputField}
+                      onClick={() => {
+                        this.addInputField();
+                      }}
                       className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"
                       disabled={this.state.isAddAnotherButtonsDisabled}
                     >
@@ -2667,13 +2683,15 @@ class NewWelcome extends BaseReactComponent {
                     onClick={this.addAdressesGo}
                     disabled={this.state.isGoButtonsDisabled}
                     className="newHomeAddAnotherGoBtns newHomeGoBtn"
+                    id="goButton-welcome"
+                    type="submit"
                   >
                     Go
                   </button>
                 </div>
               </div>
             )}
-          </div>
+          </form>
         </div>
       </div>
     );
