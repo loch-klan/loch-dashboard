@@ -196,14 +196,15 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
       });
   };
 };
-export const searchTransactionApi = (data, ctx, page = 0) => {
+export const searchTransactionApi = (data, ctx, page = 0, isDefault = true) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {
         // console.log(page)
         if (!res.data.error) {
-          if (page === 0) {
+          console.log("isDefault is ", isDefault);
+          if (page === 0 && isDefault) {
             dispatch(getAllTransactionHistory(res.data.data, page, ctx));
           }
           if (ctx.getAllTransactionHistoryLocal) {

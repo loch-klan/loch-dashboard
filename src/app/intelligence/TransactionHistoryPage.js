@@ -485,13 +485,36 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
 
+    let isDefault = true;
+
+    let originalCondition = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+      { key: SEARCH_BY_NOT_DUST, value: true },
+    ];
+    let originalSort = [[{ key: SORT_BY_TIMESTAMP, value: false }]];
+    console.log("Step one");
+    if (originalCondition !== tempCond) {
+      console.log("Condition not same ");
+      console.log("Original condition ", originalCondition);
+      console.log("new condition ", tempCond);
+      isDefault = false;
+    }
+    if (this.state.sort !== originalSort) {
+      console.log("Sort not same ");
+      console.log("Original Sort ", originalSort);
+      console.log("new Sort ", this.state.sort);
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    this.props.searchTransactionApi(data, this, page, isDefault);
   };
   onPageChange = () => {
     this.setState({
