@@ -137,6 +137,9 @@ class CustomDropdown extends Component {
         options: tempHolder,
       });
     }
+    if (this.props.selectedTokens?.length > 0) {
+      this.runItAgain();
+    }
   }
 
   componentDidUpdate(prevProps) {
