@@ -19,6 +19,13 @@ export const mobileCheck = () => {
   return false;
 };
 // TruncateText
+export const isSameDateAs = function (dateOne, dateTwo) {
+  return (
+    dateOne.getFullYear() === dateTwo.getFullYear() &&
+    dateOne.getMonth() === dateTwo.getMonth() &&
+    dateOne.getDate() === dateTwo.getDate()
+  );
+};
 export const compareTwoArrayOfObjects = (
   first_array_of_objects,
   second_array_of_objects
