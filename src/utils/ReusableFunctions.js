@@ -2,13 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
-export const mobileCheck = () => {
-  // if (
-  //   BASE_URL_S3 ===
-  //   "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
-  // ) {
-  //   return false;
-  // }
+export const mobileCheck = (isSmartMoney) => {
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
@@ -19,6 +13,19 @@ export const mobileCheck = () => {
   return false;
 };
 // TruncateText
+export const compareTwoArrayOfObjects = (
+  first_array_of_objects,
+  second_array_of_objects
+) => {
+  return (
+    first_array_of_objects.length === second_array_of_objects.length &&
+    first_array_of_objects.every((element_1) =>
+      second_array_of_objects.some((element_2) =>
+        Object.keys(element_1).every((key) => element_1[key] === element_2[key])
+      )
+    )
+  );
+};
 export const convertNtoNumber = (n) => {
   if (n === undefined || n === null) {
     return "";
@@ -85,6 +92,15 @@ export const replaceHistory = (history, page = 1, searchValue = "") => {
   history.replace({
     search: `?p=${page}${searchValue && `&&search=${searchValue}`}`,
   });
+};
+
+export const switchToDarkMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "dark");
+  localStorage.setItem("isDarkTheme", true);
+};
+export const switchToLightMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "light");
+  localStorage.setItem("isDarkTheme", false);
 };
 
 export const calculateTotalPageCount = (totalCount) => {
