@@ -373,7 +373,8 @@ export const getAssetProfitLoss = (
   startDate,
   endDate,
   selectedChains = false,
-  selectedAsset = false
+  selectedAsset = false,
+  isDefault = true
 ) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -387,18 +388,23 @@ export const getAssetProfitLoss = (
     if (selectedAsset && selectedAsset.length > 0) {
       data.append("asset_ids", JSON.stringify(selectedAsset));
     }
-
     postLoginInstance
       .post("wallet/transaction/get-asset-profit-loss", data)
       .then((res) => {
         if (!res.data.error) {
-          // console.log("asset profit loss", res.data.data);
-          dispatch({
-            type: PORTFOLIO_ASSET,
-            payload: {
-              ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
-            },
-          });
+          if (isDefault) {
+            dispatch({
+              type: PORTFOLIO_ASSET,
+              payload: {
+                ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
+              },
+            });
+          }
+          if (ctx.setProfitLossAssetLocal) {
+            ctx.setProfitLossAssetLocal(
+              getProfitLossAsset(res.data.data?.profit_loss)
+            );
+          }
           if (ctx) {
             ctx.setState({
               //  GraphData: res.data.data.profit_loss,

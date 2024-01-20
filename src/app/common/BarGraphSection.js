@@ -564,6 +564,7 @@ class BarGraphSection extends Component {
                     >
                       <CustomDropdown
                         filtername="All chains selected"
+                        selectedTokens={this.props.selectedActiveBadge}
                         options={coinsList}
                         action={null}
                         handleClick={this.handleFunction}
