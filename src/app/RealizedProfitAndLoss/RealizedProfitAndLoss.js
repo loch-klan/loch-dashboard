@@ -683,6 +683,7 @@ class RealizedProfitAndLoss extends Component {
                     showToken={true}
                     activeTitle={this.state.title}
                     assetList={this.state.AssetList}
+                    selectedAssets={this.state.selectedAssets}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
                     }

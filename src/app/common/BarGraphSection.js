@@ -461,6 +461,7 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All assets"
                           options={this.props.assetList}
+                          selectedTokens={this.props.selectedAssets}
                           action={null}
                           handleClick={this.props.handleAssetSelected}
                           // isChain={true}
