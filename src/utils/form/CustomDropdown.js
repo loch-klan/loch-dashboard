@@ -115,6 +115,44 @@ class CustomDropdown extends Component {
           ],
         });
       } else {
+        this.setState({
+          options: [...tempOptions],
+        });
+      }
+    }
+  };
+  runItFirst = () => {
+    if (!this.props.isLineChart) {
+      const tempOptions = [];
+      let noneSelected = true;
+      this.props.options.forEach((e, i) => {
+        let tempIsSelected = false;
+        if (
+          this.props.selectedTokens.includes(e.name) ||
+          this.props.selectedTokens.includes(e.label) ||
+          this.props.selectedTokens.includes(e.value) ||
+          this.props.selectedTokens.includes(e.id)
+        ) {
+          tempIsSelected = true;
+          noneSelected = false;
+        }
+        tempOptions.push({
+          label:
+            this.props.isChain || this.props.isGreyChain ? e.name : e.label,
+          value: this.props.isChain || this.props.isGreyChain ? e.id : e.value,
+          // isSelected: i === 0 && !this.props.isChain ? true : false,
+          code: e.code ? e.code : "",
+          isSelected: tempIsSelected,
+        });
+      });
+      if (this.props.isGreyChain) {
+        this.setState({
+          options: [
+            { label: "All", value: "", isSelected: noneSelected },
+            ...tempOptions,
+          ],
+        });
+      } else {
         if (this.props.isChain) {
           let finalList = [
             {
@@ -156,7 +194,7 @@ class CustomDropdown extends Component {
       });
     }
     if (this.props.selectedTokens?.length > 0) {
-      this.runItAgain();
+      this.runItFirst();
     }
   }
 
