@@ -15,7 +15,7 @@ import {
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
 
-export const getAllFeeApi = (ctx, startDate, endDate) => {
+export const getAllFeeApi = (ctx, startDate, endDate, isDefault = true) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -27,13 +27,21 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       .post("wallet/transaction/get-gas-fee-overtime", data)
       .then((res) => {
         if (!res.data.error) {
-          dispatch({
-            type: GAS_FEES,
-            payload: {
-              GraphfeeData: res.data.data,
-              graphfeeValue: getGraphData(res.data.data, ctx),
-            },
-          });
+          if (isDefault) {
+            dispatch({
+              type: GAS_FEES,
+              payload: {
+                GraphfeeData: res.data.data,
+                graphfeeValue: getGraphData(res.data.data, ctx),
+              },
+            });
+          }
+          if (ctx.setLocalGasFees) {
+            ctx.setLocalGasFees(
+              res.data.data,
+              getGraphData(res.data.data, ctx)
+            );
+          }
           ctx.setState({
             barGraphLoading: false,
             //  GraphData: res.data.data,
@@ -111,15 +119,20 @@ export const updateCounterParty = (data, value, ctx) => {
 };
 
 // update counterpary value and data
-export const updateFeeGraph = (data, value, ctx) => {
+export const updateFeeGraph = (data, value, ctx, isDefault = true) => {
   return function (dispatch, getState) {
-    dispatch({
-      type: GAS_FEES,
-      payload: {
-        GraphfeeData: data,
-        graphfeeValue: value,
-      },
-    });
+    if (isDefault) {
+      dispatch({
+        type: GAS_FEES,
+        payload: {
+          GraphfeeData: data,
+          graphfeeValue: value,
+        },
+      });
+    }
+    if (ctx.setLocalGasFees) {
+      ctx.setLocalGasFees(data, value);
+    }
   };
 };
 
