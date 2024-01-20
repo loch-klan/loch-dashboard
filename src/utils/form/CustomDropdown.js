@@ -115,9 +115,27 @@ class CustomDropdown extends Component {
           ],
         });
       } else {
-        this.setState({
-          options: [...tempOptions],
-        });
+        if (this.props.isChain) {
+          let finalList = [
+            {
+              label: "All",
+              value: "",
+              isSelected:
+                this.props.selectedTokens?.length === 0 ||
+                this.props.selectedTokens?.length === this.props.options?.length
+                  ? true
+                  : false,
+            },
+            ...tempOptions,
+          ];
+          this.setState({
+            options: [...finalList],
+          });
+        } else {
+          this.setState({
+            options: [...tempOptions],
+          });
+        }
       }
     }
   };
