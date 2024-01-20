@@ -98,7 +98,7 @@ html {
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
 }
 
 h1,
@@ -159,7 +159,7 @@ body {
 }
 
 .inter-display-medium {
-  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
+  @include font(var(--primaryTextColor), "Inter-Medium", 1.2rem, 500, normal);
 }
 
 .inter-display-extra-bold {
@@ -2630,9 +2630,23 @@ textarea {
   right: 3.5rem;
   pointer-events: none;
 }
+
+input {
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 .hoverDarker {
   transition-duration: 300ms;
   &:hover {
     filter: brightness(0);
   }
+}
+.overlay-tool-tip-container{
+  color: black;
 }

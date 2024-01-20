@@ -60,7 +60,7 @@
 
       .dropdown-item {
         padding: 0.8rem;
-        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
       }
     }
 
@@ -73,22 +73,22 @@
     }
 
     .btn-primary.dropdown-toggle {
-      background-color: transparent !important;
-      border: 0.1rem solid transparent !important;
-      color: $black-191;
+      // background-color: transparent !important;
+      // border: 0.1rem solid transparent !important;
+      // color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
 
       &:hover {
-        border: 0.1rem solid $primary !important;
+        // border: 0.1rem solid $primary !important;
       }
     }
 
     .btn-primary.dropdown-toggle:focus {
       box-shadow: none;
       background-color: transparent !important;
-      border: 0.1rem solid $primary !important;
-      color: $black-191;
+      // border: 0.1rem solid $primary !important;
+      // color: $black-191;
     }
 
     .dropdown-toggle {

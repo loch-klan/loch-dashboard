@@ -3,13 +3,14 @@ import React from "react";
 import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import NftDummy from "./../../assets/images/nft_dummy.png";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -99,6 +100,8 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import chevronRight from "./../../assets/images/icons/chevron-right.svg";
+import NftMobileBlock from "../nft/NftMobileBlock.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -163,6 +166,43 @@ class PortfolioMobile extends BaseReactComponent {
         {
           title: "hash",
           up: false,
+        },
+      ],
+      nftTableData: [
+        {
+          holding: "2",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "7",
+          collection: "Bored Apes",
+          imgs: [
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+          ],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "4",
+          collection: "Yacht Club",
+          imgs: [NftDummy, NftDummy, NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
       ],
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -332,7 +372,7 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    
+
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -361,7 +401,7 @@ class PortfolioMobile extends BaseReactComponent {
         combinedReturn: tempcombinedReturn,
       });
 
-      this.callApi(page)
+      this.callApi(page);
     }
 
     if (
@@ -370,8 +410,6 @@ class PortfolioMobile extends BaseReactComponent {
     ) {
       this.callApi(this.state.currentPage || START_INDEX);
     }
-
-    
 
     if (
       prevPage !== page ||
@@ -607,7 +645,12 @@ class PortfolioMobile extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.history.push("/welcome?FromMobileHome=true");
+    let shareLink = BASE_URL_S3 + "welcome";
+    if (window.location) {
+      window.location.replace(shareLink);
+    } else {
+      window.open(shareLink, "_self");
+    }
   };
   render() {
     const { currency } = this.state;
@@ -1264,11 +1307,15 @@ class PortfolioMobile extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                  coin_img_src={rowData.asset.symbol}
-                                  // coin_code={rowData.asset.code}
-                              /> */}
-                <Image src={rowData.asset.symbol} className="asset-symbol" />
+                {rowData.asset?.symbol ? (
+                  <Image src={rowData.asset.symbol} className="asset-symbol" />
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
@@ -1612,6 +1659,7 @@ class PortfolioMobile extends BaseReactComponent {
                     coin_img_src={rowData.Asset}
                     coin_code={rowData.AssetCode}
                     chain={rowData?.chain}
+                    hideText={true}
                   />
                 </div>
               </CustomOverlay>
@@ -2482,6 +2530,7 @@ class PortfolioMobile extends BaseReactComponent {
                   yAxisScrollable
                 />
               </div>
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -2575,6 +2624,49 @@ class PortfolioMobile extends BaseReactComponent {
                     isMobile
                   />
                 )}
+              </div>
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "4.8rem",
+                  alignItems: "center",
+                }}
+              >
+                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* Unrealized profit and loss */}
+                  NFTs
+                </h2>
+                <div
+                  className="homepage-mobile-view-more"
+                  onClick={() => {
+                    this.props.history.push("/nft");
+                  }}
+                >
+                  View more
+                  <img src={chevronRight} alt="" />
+                </div>
+              </div>
+              <div style={{ marginTop: "16px" }}>
+                <div className="nft-page-mobile">
+                  <div
+                    className="mobileSmartMoneyListContainer"
+                    style={{ padding: "0px" }}
+                  >
+                    {this.state.nftTableData.map((mapData, index) => {
+                      return (
+                        <NftMobileBlock
+                          data={mapData}
+                          style={{
+                            marginBottom:
+                              index === this.state.nftTableData.length - 1
+                                ? "0px"
+                                : "1.5rem",
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               <div className="mobileFooterContainer">
