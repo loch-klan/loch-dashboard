@@ -312,7 +312,7 @@ class RealizedProfitAndLoss extends Component {
     }
     if (prevState.apiResponse != this.state.apiResponse) {
       this.props.getAllCoins();
-      this.timeFilter(0);
+      // this.timeFilter(0);
 
       this.assetList();
       this.setState({
