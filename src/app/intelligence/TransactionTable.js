@@ -35,6 +35,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}
         xAxisScrollable={props.xAxisScrollable}

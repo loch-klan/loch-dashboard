@@ -48,6 +48,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                     <div className="awTopInputWrapper">
                       <div className="awInputContainer">
                         <input
+                          onKeyDown={this.props.onKeyDown}
                           id={`newWelcomeWallet-${index + 1}`}
                           name={`wallet${index + 1}`}
                           value={c.address || ""}
@@ -299,6 +300,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                     <div className="awTopInputWrapper">
                       <div className="awInputContainer">
                         <input
+                          onKeyDown={this.props.onKeyDown}
                           id={`newWelcomeWallet-${index + 1}`}
                           name={`wallet${index + 1}`}
                           value={c.address || ""}

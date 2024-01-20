@@ -962,7 +962,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email);
+      data.append("email", this.state.email.toLowerCase());
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -1403,7 +1403,7 @@ class NewWelcomeMobile extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body new-homepage__body-mobile">
-          <div className="new-homepage__body-container new-homepage__body-container-mobile">
+          <form className="new-homepage__body-container new-homepage__body-container-mobile">
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({ isTrendingAddresses: false });
@@ -1437,6 +1437,14 @@ class NewWelcomeMobile extends BaseReactComponent {
                             this.showisTrendingAddressesAddress
                           }
                           FocusInInput={this.FocusInInput}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              event.preventDefault();
+                              if (!this.state.isGoButtonsDisabled) {
+                                this.addAdressesGo();
+                              }
+                            }
+                          }}
                         />
                       </div>
                     );
@@ -1723,7 +1731,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 ) : null}
               </div>
             )}
-          </div>
+          </form>
         </div>
       </div>
     );
