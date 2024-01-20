@@ -442,11 +442,11 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All chains"
                           options={coinsList}
+                          selectedTokens={this.props.selectedActiveBadge}
                           action={null}
                           handleClick={this.handleFunction}
                           isChain={true}
                           searchIsUsed={this.props.chainSearchIsUsed}
-                          // selectedTokens={this.state.activeBadge}
                         />
                       </div>
                       <div

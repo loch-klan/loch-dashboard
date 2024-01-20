@@ -674,6 +674,7 @@ class RealizedProfitAndLoss extends Component {
                     data={null}
                     options={null}
                     coinsList={this.props.OnboardingState.coinsList}
+                    selectedActiveBadge={this.state.selectedActiveBadge}
                     isSwitch={this.state.isSwitch}
                     setSwitch={this.setSwitch}
                     marginBottom="m-b-32"
