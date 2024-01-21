@@ -31,7 +31,7 @@
         }
       }
       .topBarWalletChainEyeAmountContainer {
-        background-color: #e5e5e6;
+        background-color: var(--headerSelectEyeBg);
         // background-color: red;
         margin-right: 0.6rem;
         padding: 0.45rem 0.9rem;
@@ -73,10 +73,11 @@
         transition-duration: 300ms;
         filter: var(--invertColor);
       }
+      
       &:hover {
         border-color: var(--greyE5e);
         background-color: var(--backColor);
-    color: var(--sameModeColor);
+        color: var(--sameModeColor);
 
         img {
           filter: var(--invertColor2);
@@ -86,6 +87,11 @@
         }
         .topBarExchangeIcons {
           filter: none;
+        }
+        .topBarWalletChainEyeAmountContainer{
+          img{
+            filter: var(--invertColor);
+          }
         }
       }
     }
@@ -117,9 +123,14 @@
       &:hover {
         border-color: transparent;
         background-color: transparent;
-        color: $black-191;
+        color: var(--primaryTextColor);
         img {
           filter: invert(0);
+        }
+        .topBarWalletChainEyeAmountContainer{
+          img{
+            filter: var(--invertColor);
+          }
         }
       }
     }

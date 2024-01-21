@@ -2640,5 +2640,6 @@ textarea {
   }
 }
 .overlay-tool-tip-container{
-  color: black;
+  background-color: var(--cardBackground);
+  color: var(--primaryTextColor);
 }
