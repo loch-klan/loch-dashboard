@@ -28,7 +28,7 @@ import {
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser } from "../Portfolio/Api";
@@ -657,7 +657,7 @@ class TopWalletExchangeBar extends Component {
     });
     this.props.handleAddWalletClick();
   };
-  handleAddWallet = () => {
+  handleAddWallet = (replaceAddresses) => {
     this.hideTheTopBarHistoryItems();
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
@@ -669,26 +669,29 @@ class TopWalletExchangeBar extends Component {
     this.setState({
       disableAddBtn: true,
     });
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
-    if (addWalletList && addWalletList?.length > 0) {
-      addWalletList = addWalletList?.map((e) => {
-        return {
-          ...e,
-          showAddress: e.nickname === "" ? true : false,
-          showNickname: e.nickname === "" ? false : true,
-          showNameTag: e.nameTag === "" ? false : true,
-          apiAddress: e.address,
-        };
-      });
-    }
-    let tempWalletInput = this.state.walletInput[0];
-    if (addWalletList && addWalletList.length > 0) {
-      for (let i = 0; i < addWalletList.length; i++) {
-        if (addWalletList[i].id === "wallet1") {
-          addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+    let addWalletList = [];
+    if (!replaceAddresses) {
+      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      if (addWalletList && addWalletList?.length > 0) {
+        addWalletList = addWalletList?.map((e) => {
+          return {
+            ...e,
+            showAddress: e.nickname === "" ? true : false,
+            showNickname: e.nickname === "" ? false : true,
+            showNameTag: e.nameTag === "" ? false : true,
+            apiAddress: e.address,
+          };
+        });
+      }
+      if (addWalletList && addWalletList.length > 0) {
+        for (let i = 0; i < addWalletList.length; i++) {
+          if (addWalletList[i].id === "wallet1") {
+            addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+          }
         }
       }
     }
+    let tempWalletInput = this.state.walletInput[0];
     addWalletList = [...addWalletList, tempWalletInput];
 
     let arr = [];
@@ -934,6 +937,10 @@ class TopWalletExchangeBar extends Component {
     });
   };
   passConnectExchangeClick = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     const pathName = window.location.pathname;
     AddConnectExchangeModalOpen({
       session_id: getCurrentUser().id,
@@ -1000,6 +1007,10 @@ class TopWalletExchangeBar extends Component {
     this.props.updateUserWalletApi(data, this, yieldData);
   };
   connectWalletEthers = async () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     ConnectWalletButtonClicked({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -1553,14 +1564,26 @@ class TopWalletExchangeBar extends Component {
               <div
                 ref={this.props.buttonRef}
                 className={`topbar-btn maxWidth50 ml-2 ${
-                  this.state.disableAddBtn ? "topbar-btn-light-disabled" : ""
+                  !(
+                    this.state.walletInput[0].coinFound &&
+                    this.state.walletInput[0].coins.length > 0
+                  ) || this.state.disableAddBtn
+                    ? "topbar-btn-light-disabled"
+                    : ""
                 }`}
                 id="address-button-two"
                 onClick={
-                  this.state.disableAddBtn ? null : this.cancelAddingWallet
+                  !(
+                    this.state.walletInput[0].coinFound &&
+                    this.state.walletInput[0].coins.length > 0
+                  ) || this.state.disableAddBtn
+                    ? null
+                    : () => {
+                        this.handleAddWallet(true);
+                      }
                 }
               >
-                <span className="dotDotText">Cancel</span>
+                <span className="dotDotText">Replace</span>
               </div>
               <div
                 ref={this.props.buttonRef}
@@ -1579,7 +1602,9 @@ class TopWalletExchangeBar extends Component {
                     this.state.walletInput[0].coins.length > 0
                   ) || this.state.disableAddBtn
                     ? null
-                    : this.handleAddWallet
+                    : () => {
+                        this.handleAddWallet(false);
+                      }
                 }
               >
                 <span className="dotDotText">Add</span>
