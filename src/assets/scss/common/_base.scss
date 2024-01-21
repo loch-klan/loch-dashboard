@@ -99,6 +99,7 @@ html {
 
 #root {
   background-color: var(--primaryBackgroud);
+  min-height: 100vh;
 }
 
 h1,
@@ -557,7 +558,7 @@ body {
 }
 
 .grey-313 {
-  color: $grey-313;
+  color: var(--grey313);
 }
 
 .black-1D2 {
@@ -1582,7 +1583,7 @@ form {
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
-    border: 0.1rem solid $grey-E5E;
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -1780,12 +1781,13 @@ form {
   // position: absolute;
   // top: 0.7rem;
   height: 2.6rem;
-  background: rgba(229, 229, 230, 0.5);
-  border: 0.1rem solid $grey-CAC;
+  background: var(--primaryFilter);
+  border: 0.1rem solid var(--secondaryLightColor);
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+  color: var(--primaryTextColor);
 
   .badge {
     // padding: 0.35rem 0.8rem 0.4rem;
@@ -1937,10 +1939,10 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightnessValue);
             }
           }
 
@@ -2187,7 +2189,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .copy-icon-top-bar-container {
@@ -2636,12 +2638,12 @@ textarea {
 
 input{
   &:-webkit-autofill:focus {
-    box-shadow: 0 0 0 30px white inset !important;
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
-  box-shadow: 0 0 0 30px white inset !important;
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {

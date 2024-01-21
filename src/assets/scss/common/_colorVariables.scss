@@ -22,10 +22,11 @@
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
-  --invertColor: invert(0%);
+  --invertColor: invert(0);
   --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
   --hoverBrightnessValue: brightness(0);
+  --hoverBrightnessValueInvert: brightness(20);
 
   // Secondary
   --secondaryTextColor: #adadad;
@@ -48,7 +49,8 @@
   //Table
   --tableNumberCover: rgba(229, 229, 230, 0.5);
   --tablePersonalTint: #e5e5e640;
-  --tableHeadingLightBorder: #e5e5e6;
+  --tableHeadingLightBorder: #19191a;
+  --topbarAdressAddColorHover: #fff;
 
   //Sidebar
   --currenyConvertorBorder: #e5e5e6;
@@ -60,6 +62,9 @@
 
   // Headers
   --headerSelectEyeBg:#e5e5e6;
+  --topbarAdressAddBorder: #e5e5e6;
+  --topbarAdressAddBg: #f2f2f2;
+  --topbarAdressAddColorHover: #0d0d0d;
 
   //buttons
   --mainButtonBg:#FFF;
@@ -100,6 +105,7 @@
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
   --hoverBrightnessValue: brightness(20);
+  --hoverBrightnessValueInvert: brightness(0);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
@@ -108,13 +114,16 @@
 
   // Headers
   --headerSelectEyeBg:#313233;
+  --topbarAdressAddBorder: #e5e5e6;
+  --topbarAdressAddBg: #fff;
+  --topbarAdressAddColorHover: #000;
 
   //TEMP
   --greyF2f: #f2f2f2;
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
-  --grey313: #313233;
+  --grey313: #fff;
   --backColor: #fff;
   --sameModeColor: #000;
 

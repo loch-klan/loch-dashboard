@@ -19,6 +19,8 @@ import {
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import {
   default as ActiveProfileIcon,
@@ -1295,28 +1297,30 @@ function Sidebar(props) {
                       </div>
                       <div>Follow us</div>
                     </div>
-                    {isDarkMode ? (
-                      <span
-                        onClick={handleDarkMode}
-                        className="navbar-button-container"
-                      >
-                        {/* <Image src={LightModeIcon} /> */}
-                        <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                          Light Mode
-                        </Button>
-                      </span>
-                    ) : (
-                      <span
-                        onClick={handleDarkMode}
-                        className="navbar-button-container"
-                      >
-                        {/* <Image src={DarkModeIcon} /> */}
-                        <span />
-                        <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-                          Dark Mode
-                        </Button>
-                      </span>
-                    )}
+                    <div className="sidebar-footer-button-holder">
+                      {isDarkMode ? (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={lightModeIcon} />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Light Mode
+                          </Button>
+                        </span>
+                      ) : (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={darkModeIcon} />
+                          <span />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Dark Mode
+                          </Button>
+                        </span>
+                      )}
+                    </div>
 
                     <div
                       className="m-b-12 footer-divOne"

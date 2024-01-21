@@ -900,19 +900,21 @@
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
-          background-color: #e5e5e680;
-        border-color: transparent;
+        background-color: var(--primaryFilter);
+        border: 0.1rem solid var(--primaryFilter);
+        img{
+          filter:var(--invertColor)
+        }
         &:hover {
           box-shadow: none;
-          background-color: #0d0d0d;
-          color: white;
+          background-color: var(--backColor);
+      color: var(--sameModeColor);
           .sideBarFooterSignInIconContainer {
-            background-color: white;
-            border: 1.3px $white-E5E solid;
-            background-color: #0d0d0d;
+            // background-color: white;
+            border: 1.3px var(--sameModeColor) solid;
+            background-color: var(--primaryTextColor);
             img{
-              filter: invert(0);
-              filter: brightness(2.5);
+              filter: var(--hoverBrightnessValueInvert);
             }
           }
         }
@@ -929,24 +931,28 @@
           align-items: center;
           justify-content: center;
           border-radius: 0.8rem;
-          background-color: white;
+          background-color: var(--primaryActiveFilter);
           .sideBarFooterSignInIcon {
             height: 1.3rem;
+            filter: none;
           }
         }
       }
       .sideBarFooterSignInContainerForTwitter {
         border: 1.3px $white-E5E solid;
-        color: $grey-313;
-        background-color: white;
+        color: var(--primaryTextColor);
+        background-color: var(--mainButtonBg);
         .sideBarFooterSignInIconForTwitter {
-          filter: invert(0) !important;
+          filter: var(--invertColor) !important;
         }
         &:hover {
-          background-color: $grey-F2F;
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          // border-color: transparent;
+          color: var(--primaryTextColor);
+          // color: $black-191;
           .sideBarFooterSignInIconContainerForTwitter {
             background-color: transparent;
+            border-color: transparent;
           }
         }
         .sideBarFooterSignInIconContainerForTwitter {
@@ -1030,6 +1036,29 @@
               img {
                 opacity: 1;
               }
+            }
+          }
+        }
+      }
+      .sidebar-footer-button-holder{
+        margin-bottom: 20px;
+        .navbar-button-container {
+          .navbar-button {
+            background: none;
+            border: none;
+            color: $grey-B0B;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          img {
+            width: 1.6rem;
+          }
+          &:hover {
+            .navbar-button {
+              color: var(--primaryTextColor);
+            }
+            img {
+              filter: var(--hoverBrightness);
             }
           }
         }

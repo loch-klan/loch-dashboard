@@ -43,6 +43,10 @@
 }
 .secondaryDarkText {
   color: var(--secondaryDarkTextColor);
+  &:hover{
+    color: var(--primaryTextColor);
+  
+  }
 }
 .invertFilter {
   filter: var(--invertColor);

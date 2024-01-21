@@ -263,6 +263,7 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
+                color: var(--primaryTextColor);
                 &:-webkit-autofill:focus {
                   box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
                   -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
@@ -385,12 +386,12 @@
         }
         .topbar-btn-dark {
           background: $black-191;
-          border: 1px solid $black-191;
+          border: 1px solid var(--topbarAdressAddBorder);
           color: $secondary;
           &:hover {
-            background: rgba(229, 229, 230, 0.5);
+            color: var(--topbarAdressAddColorHover);
+            background-color: var(--topbarAdressAddBg);
             border: 1px solid #f2f2f3;
-            color: $black-191;
           }
         }
         .topbar-btn-dark-disabled {
@@ -399,7 +400,7 @@
           &:hover {
             background: $black-191;
             border: 1px solid $black-191;
-            color: $secondary;
+            color: var(--sameModeColor);
           }
         }
         .topbar-btn-light-disabled {

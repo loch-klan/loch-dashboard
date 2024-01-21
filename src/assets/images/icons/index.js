@@ -85,3 +85,5 @@ export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
 export { default as NewWelcomeLoginCrossIcon } from "./newWelcomeLoginCross.svg";
 export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
 export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
+export { default as darkModeIcon } from "./DarkmodeIcon.svg";
+export { default as lightModeIcon } from "./lightMode.svg";
