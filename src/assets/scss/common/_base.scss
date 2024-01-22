@@ -2636,7 +2636,7 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
     box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
     -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;

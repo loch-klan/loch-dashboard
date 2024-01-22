@@ -188,8 +188,10 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
+      showTransactionHistoryDust: true,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -804,12 +806,27 @@ class Portfolio extends BaseReactComponent {
     }
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.graphfeeValue
+      this.props.intelligenceState.GraphfeeData
     ) {
-      this.trimGasFees();
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
     }
-    if (this.props.yieldOpportunitiesState) {
-      this.trimCounterpartyVolume();
+
+    if (this.props.intelligenceState.counterPartyData) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this,
+          true
+        ),
+        this
+      );
     }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
@@ -978,10 +995,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
-              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
-              : this.props.intelligenceState.graphfeeValue[0].labels,
+          labels: this.props.intelligenceState.graphfeeValue[0].labels,
           datasets: this.props.intelligenceState.graphfeeValue[0].datasets
             ? this.props.intelligenceState.graphfeeValue[0].datasets
             : [],
@@ -1004,13 +1018,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
+          labels: this.props.intelligenceState.counterPartyValue[0].labels,
           datasets: this.props.intelligenceState.counterPartyValue[0].datasets
             ? this.props.intelligenceState.counterPartyValue[0].datasets
             : [],
@@ -1083,7 +1091,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
       // Counterparty volume api call
       else if (
@@ -1387,7 +1395,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
 
       // Counterparty volume api call
@@ -1675,6 +1683,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
@@ -2902,7 +2913,7 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData?.asset?.code ? rowData.asset.code : ""}
+                text={rowData?.asset?.code}
               >
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
@@ -4561,8 +4572,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={true}
+                              digit={this.state.GraphDigit}
+                              isScroll
                               isLoading={this.state.gasFeesGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
@@ -4611,8 +4622,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={false}
+                              digit={this.state.counterGraphDigit}
+                              isScroll
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
