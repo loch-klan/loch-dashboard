@@ -361,7 +361,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
 
   sortArray = (key, order) => {
-    let array = this.state.Average_cost_basis_local; //all data
+    let array = [...this.state.Average_cost_basis_local]; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
