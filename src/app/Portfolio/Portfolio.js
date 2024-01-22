@@ -132,7 +132,6 @@ import {
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
-  updateAverageCostBasis,
   updateCounterParty,
   updateFeeGraph,
 } from "../cost/Api";
@@ -186,6 +185,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      Average_cost_basis_local: [],
       counterGraphDigit: 3,
       GraphDigit: 3,
       walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
@@ -747,6 +747,26 @@ class Portfolio extends BaseReactComponent {
       this.props.getYieldOpportunities(data, 0);
     }
   };
+  trimAverageCostBasisLocally = (sortedList) => {
+    let tempList = [];
+    if (sortedList) {
+      tempList = sortedList;
+    } else {
+      tempList = this.state.Average_cost_basis_local;
+    }
+
+    if (tempList.length > 0) {
+      let array = tempList?.filter((e) => e.CurrentValue >= 1);
+      this.updateAverageCostBasisLocally(array);
+    } else {
+      this.updateAverageCostBasisLocally(tempList);
+    }
+  };
+  updateAverageCostBasisLocally = (newArray) => {
+    this.setState({
+      Average_cost_basis_local: newArray,
+    });
+  };
   componentDidMount() {
     window.scrollTo(0, 0);
     setTimeout(() => {
@@ -826,6 +846,9 @@ class Portfolio extends BaseReactComponent {
       this.props.intelligenceState?.Average_cost_basis &&
       this.props.intelligenceState?.Average_cost_basis.length > 0
     ) {
+      this.trimAverageCostBasisLocally(
+        this.props.intelligenceState.Average_cost_basis
+      );
       if (this.props.commonState.assetsPage) {
         this.setState({
           AvgCostLoading: false,
@@ -1026,6 +1049,15 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState.Average_cost_basis !==
+        this.props.intelligenceState.Average_cost_basis &&
+      this.props.intelligenceState.Average_cost_basis
+    ) {
+      this.trimAverageCostBasisLocally(
+        this.props.intelligenceState.Average_cost_basis
+      );
+    }
     // Block One
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
       // Asssets avg cost basis
@@ -1895,7 +1927,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
+    let array = this.state.Average_cost_basis_local; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -1919,7 +1951,7 @@ class Portfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList, this);
+    // this.trimAverageCostBasisLocally(sortedList);
   };
   // sort
   handleSort = (e) => {
@@ -1945,7 +1977,6 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -3222,7 +3253,7 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.state.Average_cost_basis_local;
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
@@ -4342,17 +4373,15 @@ class Portfolio extends BaseReactComponent {
                                 onClick={this.goToAssetsPage}
                                 className="bottomExtraInfoText"
                               >
-                                {this.props.intelligenceState
-                                  ?.Average_cost_basis &&
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length > 10
+                                {this.state.Average_cost_basis_local &&
+                                this.state.Average_cost_basis_local.length > 10
                                   ? `Click here to see ${numToCurrency(
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length - 10,
+                                      this.state.Average_cost_basis_local
+                                        .length - 10,
                                       true
                                     ).toLocaleString("en-US")}+ asset${
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length -
+                                      this.state.Average_cost_basis_local
+                                        .length -
                                         10 >
                                       1
                                         ? "s"
@@ -5040,7 +5069,7 @@ const mapDispatchToProps = {
   getAvgCostBasis,
   // average cost
   ResetAverageCostBasis,
-  updateAverageCostBasis,
+
   getAssetProfitLoss,
   getDetectedChainsApi,
   GetAllPlan,
