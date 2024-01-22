@@ -218,7 +218,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (sortedList) {
       tempList = sortedList;
     } else {
-      tempList = this.state.Average_cost_basis_local;
+      tempList = [...this.state.Average_cost_basis_local];
     }
 
     if (tempList.length > 0 && this.state.showDust) {

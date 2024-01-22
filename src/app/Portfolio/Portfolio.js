@@ -752,7 +752,7 @@ class Portfolio extends BaseReactComponent {
     if (sortedList) {
       tempList = sortedList;
     } else {
-      tempList = this.state.Average_cost_basis_local;
+      tempList = [...this.state.Average_cost_basis_local];
     }
 
     if (tempList.length > 0) {
@@ -1927,7 +1927,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   sortArray = (key, order) => {
-    let array = this.state.Average_cost_basis_local; //all data
+    let array = [...this.state.Average_cost_basis_local]; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -1951,7 +1951,7 @@ class Portfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    // this.trimAverageCostBasisLocally(sortedList);
+    this.trimAverageCostBasisLocally(sortedList);
   };
   // sort
   handleSort = (e) => {
@@ -3253,7 +3253,7 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.state.Average_cost_basis_local;
+    let tableDataCostBasis = [...this.state.Average_cost_basis_local];
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
