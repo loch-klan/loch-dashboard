@@ -192,7 +192,18 @@ class GasFeesPage extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.GraphfeeData
+    ) {
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
+    }
     if (
       !this.props.commonState.gasFeesPage ||
       !(
