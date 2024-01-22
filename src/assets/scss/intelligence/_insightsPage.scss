@@ -57,17 +57,22 @@
       padding: 0.4rem;
       height: 16rem;
       overflow-y: scroll;
+      border-color: var(--cardBackgroud);
 
       .dropdown-item {
         padding: 0.8rem;
         @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
+
+        &:active{
+          color: var(--primaryTextColor) !important;
+        }
       }
     }
 
     .btn-primary:not(:disabled):not(.disabled):active {
       background-color: transparent !important;
       border: 0.1rem solid transparent !important;
-      color: $black-191;
+      color: var(--black191);
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
     }
@@ -139,6 +144,15 @@
   h2 {
     margin-bottom: 2rem;
   }
+  .insight-blank-card{
+    position: absolute;
+    width: 16rem;
+    height: 16rem;
+    background: radial-gradient(50% 50% at 50% 50%, var(--insightBlurColorOne) 0%, var(--insightBlurColorTwo) 100%);
+    filter: blur(50px);
+    border-radius: 10rem;
+    z-index: 0;
+  }
   .insights-card {
     background-color: $secondary;
     width: 100%;
@@ -173,15 +187,16 @@
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $grey-F2F;
+          background-color: var(--greyCardBackgroud);
+          color: var(--primaryTextColor);
         }
         .risk-chip {
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $black-191;
+          background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
           margin-left: 0.8rem;
-          color: #ffffff;
           text-transform: uppercase;
         }
       }

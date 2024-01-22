@@ -87,3 +87,5 @@ export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg"
 // export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
 // export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
 export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
+export { default as darkModeIcon } from "./DarkmodeIcon.svg";
+export { default as lightModeIcon } from "./lightMode.svg";

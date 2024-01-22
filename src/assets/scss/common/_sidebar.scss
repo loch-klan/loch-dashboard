@@ -276,6 +276,7 @@
   height: 100vh;
   top: 0;
 
+  background-color: var(--sidebarBackgroud);
   width: 27.2rem;
   .container {
     width: 27.2rem;
@@ -315,16 +316,17 @@
       // new
       margin: 2rem 0.8rem 2rem;
       img {
+        filter: var(--invertColor);
         width: 4rem;
         margin-right: 1rem;
       }
       .loch-text {
-        @include font($black-191, "Inter-Medium", 2.4rem, 500, 24px);
+        @include font(var(--primaryTextColor), "Inter-Medium", 2.4rem, 500, 24px);
         vertical-align: middle;
       }
 
       &.home-topbar {
-        background: #ffffff;
+        background: var(--cardBackgroud);
         box-shadow: -6px 4px 10px rgba(0, 0, 0, 0.04),
           -6px 1px 1px rgba(0, 0, 0, 0.04);
         padding: 2rem 3.2rem;
@@ -346,13 +348,13 @@
           border: 1px solid transparent;
           padding: 1.2rem;
           border-radius: 8px;
-          @include font($grey-969, "Inter-SemiBold", 1rem, 600, 12px);
+          @include font(var(--secondaryTextColor), "Inter-SemiBold", 1rem, 600, 12px);
           &:focus {
-            border: 1px solid $grey-E5E;
+            border: 1px solid var(--currenyConvertorText);
           }
 
           &:hover {
-            border: 1px solid $grey-E5E;
+            border: 1px solid var(--currenyConvertorBorder);
           }
         }
         .dropdown-menu {
@@ -360,11 +362,13 @@
             width: 9.3rem;
             height: 22rem;
             overflow-y: auto;
-            background: $secondary;
+            background: var(--cardBackgroud);
+            border-color: var(--cardBackgroud);
             left: -9px !important;
             .dropdown-item {
               display: flex;
               justify-content: space-between;
+              color: var(--primaryTextColor);
             }
           }
         }
@@ -471,7 +475,7 @@
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
-          background-color: white;
+          // background-color: white;
           overflow: scroll;
           width: 10.2rem;
           &::-webkit-scrollbar {
@@ -496,7 +500,6 @@
         }
       }
       .scroll-menu-wrapper {
-        background-color: white;
         display: flex;
         flex-direction: column;
         // justify-content: space-between;
@@ -517,7 +520,7 @@
             margin-bottom: 1.2rem;
             .wallet-amount {
               font-size: 3rem;
-              color: #1d2129;
+              color: var(--sidebarWalletAmount);
             }
           }
         }
@@ -558,7 +561,7 @@
             .nav-link {
               border-radius: 1.2rem;
               font-family: "Inter-Medium";
-              color: $grey-636;
+              color: var(--sidebarTextColor);
               font-size: 1.3rem;
               font-weight: 500;
               padding: 1rem;
@@ -577,7 +580,7 @@
                 margin-left: auto;
                 width: 1rem;
                 transform: rotate(180deg);
-                filter: opacity(0.5);
+                filter: opacity(0.5) var(--invertColor);
                 cursor: pointer;
                 user-select: none;
 
@@ -586,11 +589,13 @@
                 }
 
                 &:hover {
-                  filter: opacity(1);
+                  filter: opacity(1) var(--invertColor);
                 }
               }
 
               &:hover {
+                box-shadow: 0px 8px 28px -6px var(--primaryBoxShadowColor), 0px 18px 88px -4px var(--primaryBoxShadowColor);
+                border-radius: 1.2rem;
                 box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
                   0px 18px 88px -4px rgba(24, 39, 75, 0.14);
               }
@@ -616,11 +621,14 @@
               }
             }
             .active {
-              background-color: rgba(229, 229, 230, 0.5);
+              background-color: var(--sidebarActivePageColor);
               border-radius: 1.2rem;
-              color: $black-191;
+              color: var(--primaryTextColor);
               font-size: 1.3rem;
               font-weight: 500;
+              img{
+                filter: var(--invertColor) !important;
+              }
               &:hover {
                 cursor: default;
                 box-shadow: none;
@@ -629,13 +637,13 @@
             .none {
               background-color: transparent;
               font-family: "Inter-Medium";
-              color: $grey-636;
+              color: var(--sidebarTextColor);
               font-size: 1.3rem;
               font-weight: 500;
               &:hover {
                 cursor: pointer;
-                box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-                  0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                box-shadow: 0px 8px 28px -6px var(--primaryBoxShadowColor),
+                  0px 18px 88px -4px var(--primaryBoxShadowColor);
                 border-radius: 1.2rem;
               }
             }
@@ -775,9 +783,9 @@
       }
     }
     .sidebar-footer {
-      background-color: white;
+      // background-color: white;
       .sidebar-footer-closed-container {
-        background-color: white;
+        // background-color: white;
         width: 10.2rem;
         border-top: 0.1rem solid #e5e5e680;
       }
@@ -794,7 +802,7 @@
           cursor: pointer;
           transform: translateY(-50%);
           border: 0.1rem solid #e5e5e6;
-          background-color: white;
+          background-color: var(--sidebarBackgroud);
           height: 3rem;
           width: 3rem;
           display: flex;
@@ -804,11 +812,15 @@
 
           &:hover {
             background-color: #f6f6f7;
+            .sidebar-footer-toggle-image{
+              filter: invert(0);
+            }
           }
 
           .sidebar-footer-toggle-image {
             height: 1rem;
             width: 1rem;
+            filter: var(--invertColor);
           }
           .sidebar-footer-toggle-image-reversed {
             transform: rotate(180deg);
@@ -898,19 +910,21 @@
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
-          background-color: #e5e5e680;
-        border-color: transparent;
+        background-color: var(--primaryFilter);
+        border: 0.1rem solid var(--primaryFilter);
+        img{
+          filter:var(--invertColor)
+        }
         &:hover {
           box-shadow: none;
-          background-color: #0d0d0d;
-          color: white;
+          background-color: var(--backColor);
+      color: var(--sameModeColor);
           .sideBarFooterSignInIconContainer {
-            background-color: white;
-            border: 1.3px $white-E5E solid;
-            background-color: #0d0d0d;
+            // background-color: white;
+            border: 1.3px var(--sameModeColor) solid;
+            background-color: var(--primaryTextColor);
             img{
-              filter: invert(0);
-              filter: brightness(2.5);
+              filter: var(--hoverBrightnessValueInvert);
             }
           }
         }
@@ -927,24 +941,28 @@
           align-items: center;
           justify-content: center;
           border-radius: 0.8rem;
-          background-color: white;
+          background-color: var(--primaryActiveFilter);
           .sideBarFooterSignInIcon {
             height: 1.3rem;
+            filter: none;
           }
         }
       }
       .sideBarFooterSignInContainerForTwitter {
         border: 1.3px $white-E5E solid;
-        color: $grey-313;
-        background-color: white;
+        color: var(--primaryTextColor);
+        background-color: var(--mainButtonBg);
         .sideBarFooterSignInIconForTwitter {
-          filter: invert(0) !important;
+          filter: var(--invertColor) !important;
         }
         &:hover {
-          background-color: $grey-F2F;
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          // border-color: transparent;
+          color: var(--primaryTextColor);
+          // color: $black-191;
           .sideBarFooterSignInIconContainerForTwitter {
             background-color: transparent;
+            border-color: transparent;
           }
         }
         .sideBarFooterSignInIconContainerForTwitter {
@@ -1032,6 +1050,29 @@
           }
         }
       }
+      .sidebar-footer-button-holder{
+        margin-bottom: 20px;
+        .navbar-button-container {
+          .navbar-button {
+            background: none;
+            border: none;
+            color: $grey-B0B;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          img {
+            width: 1.6rem;
+          }
+          &:hover {
+            .navbar-button {
+              color: var(--primaryTextColor);
+            }
+            img {
+              filter: var(--hoverBrightness);
+            }
+          }
+        }
+      }
       // p {
       //     font-size: 1.6rem;
       //     font-weight: 500;
@@ -1066,5 +1107,16 @@
     .sidebar-footer-closed {
       background-color: transparent;
     }
+  }
+}
+
+.sidebar-section-closed{
+  background-color: transparent !important;
+
+  .scroll-menu-wrapper-closed{
+    background-color: var(--sidebarBackgroud);
+  }
+  .sidebar-footer-closed-container{
+    background-color: var(--sidebarBackgroud);
   }
 }

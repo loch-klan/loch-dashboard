@@ -18,13 +18,15 @@
   --primaryFilter: #f2f2f2;
   --primaryActiveFilter: #fff;
   --black191:#19191a;
+  --invertMode:black;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
-  --invertColor: invert(0%);
+  --invertColor: invert(0);
   --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
   --hoverBrightnessValue: brightness(0);
+  --hoverBrightnessValueInvert: brightness(20);
 
   // Secondary
   --secondaryTextColor: #adadad;
@@ -47,7 +49,8 @@
   //Table
   --tableNumberCover: rgba(229, 229, 230, 0.5);
   --tablePersonalTint: #e5e5e640;
-  --tableHeadingLightBorder: #e5e5e6;
+  --tableHeadingLightBorder: #19191a;
+  --topbarAdressAddColorHover: #fff;
 
   //Sidebar
   --currenyConvertorBorder: #e5e5e6;
@@ -55,9 +58,24 @@
   --sidebarTextColor: #636467;
   --sidebarActivePageColor: #e5e5e680;
   --sidebarBottomOptions: #b0b1b3;
+  --sidebarWalletAmount:#1d2129;
+
+  // Headers
+  --headerSelectEyeBg:#e5e5e6;
+  --topbarAdressAddBorder: #e5e5e6;
+  --topbarAdressAddBg: #f2f2f2;
+  --topbarAdressAddColorHover: #0d0d0d;
+
+  //buttons
+  --mainButtonBg:#FFF;
 
     //Box shadow color
-  --boxShadowColorMd: rgba(0, 0, 0, 0.04)
+  --boxShadowColorMd: rgba(0, 0, 0, 0.04);
+
+
+  --boxShadowMd:0px 2px 10px 10px rgba(0, 0, 0, 0.04),
+  0px 1px 1px 2px rgba(0, 0, 0, 0.04);
+  --topBarShadow: 0 0 10px 4px #e5e5e680;
 }
 [data-theme="dark"] {
   // UPDATED
@@ -79,6 +97,7 @@
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
   --black191:white;
+  --invertMode:white;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -86,21 +105,27 @@
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
   --hoverBrightnessValue: brightness(20);
+  --hoverBrightnessValueInvert: brightness(0);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
   --secondaryLightColor: #545558;
   --secondaryDarkTextColor: #cacbcc;
 
+  // Headers
+  --headerSelectEyeBg:#313233;
+  --topbarAdressAddBorder: #e5e5e6;
+  --topbarAdressAddBg: #fff;
+  --topbarAdressAddColorHover: #000;
+
   //TEMP
   --greyF2f: #f2f2f2;
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
-  --grey313: #313233;
+  --grey313: #fff;
   --backColor: #fff;
   --sameModeColor: #000;
-  --black191:white;
 
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.3);
@@ -117,7 +142,14 @@
   --sidebarTextColor: #636467;
   --sidebarActivePageColor: #2a2a2a;
   --sidebarBottomOptions: #96979a;
+  --sidebarWalletAmount:white;
+
+  //buttons
+  --mainButtonBg:transparent;
 
   //Box shadow color
-  --boxShadowColorMd: rgba(255, 255, 255, 0.04)
+  --boxShadowColorMd: rgba(255, 255, 255, 0.04);
+
+  --boxShadowMd:none;
+  --topBarShadow: none;
 }
