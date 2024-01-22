@@ -360,10 +360,9 @@ class CustomMinMaxDropdown extends Component {
             minWidth: `${
               this.props.isLineChart || this.props.isChain ? "100%" : "130px"
             }`,
-            backgroundColor: "white",
           }}
         >
-          <div className="dropdownMinMaxHeader inter-display-medium f-s-13 black-191">
+          <div className="dropdownMinMaxHeader inter-display-medium f-s-13 ">
             Token Transfer Amount ($)
           </div>
           <div className="dropdown-search-wrapper dropdown-search-wrapper-min-max">

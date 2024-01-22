@@ -165,8 +165,8 @@
             .topBarHistory {
               border-radius: 10px;
               border: 1px var(--sidebarActivePageColor) solid;
-              box-shadow: 0 0 10px 4px var(--sidebarActivePageColor);
-              background-color: $secondary;
+              box-shadow: var(--boxShadowMd);
+              background-color: var(--cardBackgroud);
               width: 100%;
               position: absolute;
               transform: translateY(5.5rem) translateX(-0.9rem);
@@ -194,9 +194,9 @@
                   font-size: 13px;
                   font-weight: 500;
                   cursor: pointer;
-                  transition-duration: 300ms;
+                  // transition-duration: 300ms;
                   &:hover {
-                    color: $primary;
+                    color: var(--primaryTextColor);
                   }
                 }
               }
@@ -214,7 +214,7 @@
                   justify-content: space-between;
                   padding: 0rem 1.2rem;
                   height: 4rem;
-                  border: 0.1rem solid #e5e5e6;
+                  border: 0.1rem solid #e5e5e697;
                   margin-right: 0.5rem;
                   border-radius: 1rem;
                   font-size: 14px;
@@ -223,7 +223,7 @@
                   max-width: 13rem;
                   break-inside: avoid;
                   &:hover {
-                    border-color: #19191a;
+                    border-color: var(--black191);
                   }
                   .topBarHistoryItemBlockText {
                     flex: 1;
@@ -236,7 +236,7 @@
                     cursor: pointer;
                     margin-top: 0.8rem;
                     &:hover {
-                      filter: brightness(0);
+                      filter: var(--hoverBrightnessValue);
                     }
                   }
                 }

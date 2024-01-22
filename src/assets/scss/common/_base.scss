@@ -1346,10 +1346,10 @@ form {
 }
 
 .secondary-btn {
-  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  @include font(var(--sameModeColor), "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
-  background-color: transparent;
-  border: 1px solid $black-191;
+  background-color: var(--backColor);
+  border: 1px solid var(--black191);
   padding: 1.6rem 4rem;
   cursor: pointer;
 
@@ -1872,6 +1872,12 @@ form {
     color: $grey-313;
     padding: 0.5rem 0.6rem;
   }
+}
+
+.tableWatermark {
+  background: url(../../images/graph-logo.svg) no-repeat center center;
+  background-size: 104px 39px;
+  background-position-y: 48%;
 }
 
 .transaction-table-section {
@@ -2408,10 +2414,10 @@ textarea {
           .custom-control-label {
             color: $primary;
             &::after {
-              background-color: $primary;
+              background-color: var(--primaryTextColor);
             }
             &::before {
-              border-color: $primary;
+              background-color: var(--primaryTextColor);
             }
           }
         }

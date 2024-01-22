@@ -278,6 +278,21 @@
 
   background-color: var(--sidebarBackgroud);
   width: 27.2rem;
+
+  .navbar-button-container-mode{
+    position: absolute;
+    top: 34px;
+    right: -10px;
+    img{
+      height: 20px;
+      width: 20px;
+    }
+    cursor: pointer;
+    &:hover{
+      filter: var(--hoverBrightnessValue);
+    
+    }
+  }
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;
@@ -965,7 +980,7 @@
         &:hover {
           .sideBarFooterSignInIcon{
             filter: invert(0);
-            filter: brightness(10) !important;
+            filter: var(--hoverBrightnessValueInvert) !important;
           }
           .sideBarFooterSignedInLeaveContainer{
 
@@ -995,11 +1010,11 @@
           }
           &:hover{
             .navbar-button {
-              color: white;
+              color: var(--sameModeColor);
             }
             img{
               opacity: 1 !important;
-              filter: brightness(10);
+              filter: var(--hoverBrightnessValueInvert);
             }
           }
         }

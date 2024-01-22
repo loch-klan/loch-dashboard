@@ -1820,7 +1820,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                       numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
-                <span style={{ padding: "2px" }}></span>(
+                <span style={{ padding: "2px" }}></span>
+                <span className="primaryText">(</span>
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -1839,7 +1840,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
-                )
+                <span className="primaryText">)</span>
               </div>
             );
           }

@@ -243,14 +243,14 @@
       }
 
       &:hover {
-        color: $primary;
+        color: var(--primaryTextColor);
 
         span {
-          color: $primary;
+          color: var(--primaryTextColor);
         }
 
         img {
-          filter: brightness(0);
+          filter: var(--hoverBrightnessValue);
         }
       }
     }
