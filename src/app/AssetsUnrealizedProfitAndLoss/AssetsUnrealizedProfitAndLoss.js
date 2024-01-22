@@ -501,7 +501,9 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         showDust: !this.state.showDust,
       },
       () => {
-        this.trimAverageCostBasisLocally();
+        this.trimAverageCostBasisLocally(
+          this.props.intelligenceState?.Average_cost_basis
+        );
         CostHideDust({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
