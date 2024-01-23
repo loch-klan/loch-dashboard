@@ -917,7 +917,7 @@
           0px 1px 1px rgba(0, 0, 0, 0.04);
         background-color: var(--primaryFilter);
         border: 0.1rem solid var(--primaryFilter);
-        img{
+        .sideBarFooterSignInIcon{
           filter:var(--invertColor)
         }
         &:hover {
@@ -928,7 +928,7 @@
             // background-color: white;
             border: 1.3px var(--sameModeColor) solid;
             background-color: var(--primaryTextColor);
-            img{
+            .sideBarFooterSignInIcon{
               filter: var(--hoverBrightnessValueInvert);
             }
           }
