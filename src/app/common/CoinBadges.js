@@ -22,7 +22,12 @@ export default function CoinBadges(props) {
     props.handleFunction(currentBadge);
   };
   return (
-    <div className="coin-badges">
+    <div
+      style={{
+        paddingRight: props.hideDropdown ? "0.5rem" : "",
+      }}
+      className="coin-badges"
+    >
       <div
         className={`badge-list ${
           props.isScrollVisible === false ? "white-scroll" : ""
@@ -44,13 +49,19 @@ export default function CoinBadges(props) {
           );
         })}
       </div>
-
-      <DropDown
-        id="dropdown-basic-badge-button"
-        title="Others"
-        list={dropdownList}
-        onSelect={handleFunction}
-      />
+      {/* 
+      box-shadow: -25px 0px 24px 20px #f2f2f2;
+        */}
+      {!props.hideDropdown ? (
+        <DropDown
+          id="dropdown-basic-badge-button"
+          title="Others"
+          list={dropdownList}
+          onSelect={handleFunction}
+        />
+      ) : (
+        <div className="coin-badges-dropdown-disabled"></div>
+      )}
     </div>
   );
 }

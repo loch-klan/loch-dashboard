@@ -3,13 +3,14 @@ import React from "react";
 import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import NftDummy from "./../../assets/images/nft_dummy.png";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -95,6 +96,8 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import chevronRight from "./../../assets/images/icons/chevron-right.svg";
+import NftMobileBlock from "../nft/NftMobileBlock.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -159,6 +162,43 @@ class PortfolioMobile extends BaseReactComponent {
         {
           title: "hash",
           up: false,
+        },
+      ],
+      nftTableData: [
+        {
+          holding: "2",
+          collection: "Pudgy Penguins",
+          imgs: [NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "7",
+          collection: "Bored Apes",
+          imgs: [
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+            NftDummy,
+          ],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
+        },
+        {
+          holding: "4",
+          collection: "Yacht Club",
+          imgs: [NftDummy, NftDummy, NftDummy, NftDummy],
+          total_spent: 10,
+          max_price: 12,
+          avg_price: 10,
+          volume: 100,
         },
       ],
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
@@ -601,7 +641,12 @@ class PortfolioMobile extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.history.push("/welcome?FromMobileHome=true");
+    let shareLink = BASE_URL_S3 + "welcome";
+    if (window.location) {
+      window.location.replace(shareLink);
+    } else {
+      window.open(shareLink, "_self");
+    }
   };
   render() {
     const { currency } = this.state;
@@ -1258,11 +1303,15 @@ class PortfolioMobile extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                  coin_img_src={rowData.asset.symbol}
-                                  // coin_code={rowData.asset.code}
-                              /> */}
-                <Image src={rowData.asset.symbol} className="asset-symbol" />
+                {rowData.asset?.symbol ? (
+                  <Image src={rowData.asset.symbol} className="asset-symbol" />
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
@@ -1366,8 +1415,11 @@ class PortfolioMobile extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueToday.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1384,7 +1436,10 @@ class PortfolioMobile extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueThen.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1606,6 +1661,7 @@ class PortfolioMobile extends BaseReactComponent {
                     coin_img_src={rowData.Asset}
                     coin_code={rowData.AssetCode}
                     chain={rowData?.chain}
+                    hideText={true}
                   />
                 </div>
               </CustomOverlay>
@@ -1641,21 +1697,19 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  !rowData.AverageCostPrice || rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
+                  rowData.AverageCostPrice
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.AverageCostPrice)
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {!rowData.AverageCostPrice || rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
+                  {rowData.AverageCostPrice
+                    ? CurrencyType(false) +
                       numToCurrency(
                         rowData.AverageCostPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
             );
@@ -1692,10 +1746,8 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CurrentPrice
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CurrentPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                    : "N/A"
+                      convertNtoNumber(rowData.CurrentPrice)
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -1704,7 +1756,7 @@ class PortfolioMobile extends BaseReactComponent {
                       numToCurrency(
                         rowData.CurrentPrice.toFixed(2)
                       ).toLocaleString("en-US")
-                    : "N/A"}
+                    : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
             );
@@ -1739,15 +1791,15 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  rowData.Amount
-                    ? Number(noExponents(rowData.Amount)).toLocaleString(
-                        "en-US"
-                      )
-                    : 0.0
+                  rowData.Amount && rowData.Amount !== 0
+                    ? convertNtoNumber(rowData.Amount)
+                    : "0"
                 }
               >
                 <span>
-                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                  {rowData.Amount
+                    ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                    : "0"}
                 </span>
               </CustomOverlay>
             );
@@ -1780,25 +1832,23 @@ class PortfolioMobile extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    !this.state.combinedCostBasis ||
-                    this.state.combinedCostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    this.state.combinedCostBasis
+                      ? CurrencyType(false) +
                         Number(
                           noExponents(this.state.combinedCostBasis.toFixed(2))
                         ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common-container">
                     <div className="cost-common">
                       <span>
-                        {!this.state.combinedCostBasis ||
-                        this.state.combinedCostBasis === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
+                        {this.state.combinedCostBasis
+                          ? CurrencyType(false) +
                             numToCurrency(
                               this.state.combinedCostBasis.toFixed(2)
-                            ).toLocaleString("en-US")}
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
                       </span>
                     </div>
                   </div>
@@ -1812,23 +1862,23 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  !rowData.CostBasis || rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
+                  rowData.CostBasis
+                    ? CurrencyType(false) +
                       Number(
                         noExponents(rowData.CostBasis.toFixed(2))
                       ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span>
-                      {!rowData.CostBasis || rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
                             rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")}
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>
@@ -1870,7 +1920,7 @@ class PortfolioMobile extends BaseReactComponent {
                             this.state.combinedCurrentValue.toFixed(2)
                           )
                         ).toLocaleString("en-US")
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common-container">
@@ -1881,7 +1931,7 @@ class PortfolioMobile extends BaseReactComponent {
                             numToCurrency(
                               this.state.combinedCurrentValue.toFixed(2)
                             ).toLocaleString("en-US")
-                          : "N/A"}
+                          : CurrencyType(false) + "0.00"}
                       </span>
                     </div>
                   </div>
@@ -1900,7 +1950,7 @@ class PortfolioMobile extends BaseReactComponent {
                       Number(
                         noExponents(rowData.CurrentValue.toFixed(2))
                       ).toLocaleString("en-US")
-                    : "N/A"
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="cost-common-container">
@@ -1911,7 +1961,7 @@ class PortfolioMobile extends BaseReactComponent {
                           numToCurrency(
                             rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>
@@ -2023,10 +2073,10 @@ class PortfolioMobile extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>
@@ -2476,6 +2526,7 @@ class PortfolioMobile extends BaseReactComponent {
                   yAxisScrollable
                 />
               </div>
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -2569,6 +2620,49 @@ class PortfolioMobile extends BaseReactComponent {
                     isMobile
                   />
                 )}
+              </div>
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "4.8rem",
+                  alignItems: "center",
+                }}
+              >
+                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* Unrealized profit and loss */}
+                  NFTs
+                </h2>
+                <div
+                  className="homepage-mobile-view-more"
+                  onClick={() => {
+                    this.props.history.push("/nft");
+                  }}
+                >
+                  View more
+                  <img src={chevronRight} alt="" />
+                </div>
+              </div>
+              <div style={{ marginTop: "16px" }}>
+                <div className="nft-page-mobile">
+                  <div
+                    className="mobileSmartMoneyListContainer"
+                    style={{ padding: "0px" }}
+                  >
+                    {this.state.nftTableData.map((mapData, index) => {
+                      return (
+                        <NftMobileBlock
+                          data={mapData}
+                          style={{
+                            marginBottom:
+                              index === this.state.nftTableData.length - 1
+                                ? "0px"
+                                : "1.5rem",
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               <div className="mobileFooterContainer">

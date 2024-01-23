@@ -372,14 +372,14 @@ class CustomTable extends BaseReactComponent {
                       isInfo={true}
                       isText={true}
                       text={
-                        this.props.combinedCostBasis === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
+                        this.props.combinedCostBasis
+                          ? CurrencyType(false) +
                             Number(
                               noExponents(
                                 this.props.combinedCostBasis.toFixed(2)
                               )
                             ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"
                       }
                     >
                       <div className="cost-common">
@@ -391,12 +391,12 @@ class CustomTable extends BaseReactComponent {
                             // });
                           }}
                         >
-                          {this.props.combinedCostBasis === 0
-                            ? "N/A"
-                            : CurrencyType(false) +
+                          {this.props.combinedCostBasis
+                            ? CurrencyType(false) +
                               numToCurrency(
                                 this.props.combinedCostBasis.toFixed(2)
-                              ).toLocaleString("en-US")}
+                              ).toLocaleString("en-US")
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
@@ -417,14 +417,14 @@ class CustomTable extends BaseReactComponent {
                       isInfo={true}
                       isText={true}
                       text={
-                        this.props.combinedCurrentValue === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
+                        this.props.combinedCurrentValue
+                          ? CurrencyType(false) +
                             Number(
                               noExponents(
                                 this.props.combinedCurrentValue.toFixed(2)
                               )
                             ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"
                       }
                     >
                       <div className="cost-common">
@@ -436,12 +436,12 @@ class CustomTable extends BaseReactComponent {
                             // });
                           }}
                         >
-                          {this.props.combinedCurrentValue === 0
-                            ? "N/A"
-                            : CurrencyType(false) +
+                          {this.props.combinedCurrentValue
+                            ? CurrencyType(false) +
                               numToCurrency(
                                 this.props.combinedCurrentValue.toFixed(2)
-                              ).toLocaleString("en-US")}
+                              ).toLocaleString("en-US")
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
@@ -505,7 +505,7 @@ class CustomTable extends BaseReactComponent {
                               numToCurrency(
                                 this.props.combinedUnrealizedGains
                               ).toLocaleString("en-US")
-                            : "0.00"}
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
