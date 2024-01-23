@@ -1872,6 +1872,16 @@ form {
   }
 }
 
+.tableWatermark {
+  background: url(../../images/graph-logo.svg) no-repeat center center;
+  background-size: 104px 39px;
+  background-position-y: 48%;
+}
+
+.watermarkOnTop{
+  background: transparent;
+}
+
 .transaction-table-section {
   .graph-header {
     padding: 3.2rem 3.2rem 0rem 3.2rem;
@@ -1911,6 +1921,7 @@ form {
   .ReactVirtualized__Table__row {
     border: none;
   }
+
 
   .ReactVirtualized__Table__headerRow {
     height: auto;

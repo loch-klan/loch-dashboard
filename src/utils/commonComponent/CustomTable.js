@@ -57,6 +57,7 @@ class CustomTable extends BaseReactComponent {
       isStickyHead,
       isMiniversion,
       wrapperStyle,
+      watermarkOnTop,
     } = this.props;
     return (
       <div
@@ -250,7 +251,7 @@ class CustomTable extends BaseReactComponent {
                           this.props.addWatermarkMoveUp
                             ? "tableWatermarkMoveUp"
                             : ""
-                        }`}
+                        } ${watermarkOnTop ? "watermarkOnTop" : ""}`}
                       >
                         {columnList &&
                           columnList.length > 0 &&

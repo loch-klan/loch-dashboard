@@ -4548,6 +4548,7 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
+                            className="tableWatermark"
                           >
                             <div
                               style={{
@@ -4868,7 +4869,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermark">
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
@@ -4880,7 +4881,8 @@ class Portfolio extends BaseReactComponent {
                               headerHeight={60}
                               isArrow={true}
                               isLoading={this.state.tableLoading}
-                              addWatermark
+                              watermarkOnTop
+                              // addWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (

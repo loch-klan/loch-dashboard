@@ -12,7 +12,7 @@ function TransactionTable(props) {
         display: "flex",
         flexDirection: "column",
       }}
-      className="transaction-table-section h-100"
+      className="transaction-table-section h-100 "
     >
       {props.title ? (
         <GraphHeader
@@ -78,6 +78,7 @@ function TransactionTable(props) {
         }
         isLoading={props.isLoading}
         addWatermark={props.addWatermark}
+        watermarkOnTop={props.watermarkOnTop}
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
         isMiniversion={props.isMiniversion}
