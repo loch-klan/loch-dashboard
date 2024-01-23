@@ -225,7 +225,6 @@ export const updateUserWalletApi = (
         }
       })
       .catch((err) => {
-        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
@@ -685,6 +684,26 @@ export const getDetectedChainsApi = (ctx) => {
               JSON.stringify(addWallet)
             );
           addLocalWalletList(JSON.stringify(addWallet));
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {
+        console.log("fixwallet", err);
+      });
+  };
+};
+
+export const sendUserFeedbackApi = (data, addFeedbackPoints) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/add-user-feedback", data)
+      .then((res) => {
+        if (!res.data.error) {
+          toast.success("Thank you for your feedback");
+          if (addFeedbackPoints) {
+            addFeedbackPoints();
+          }
         } else {
           toast.error(res.data.message || "Something went wrong");
         }

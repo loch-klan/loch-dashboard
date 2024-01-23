@@ -98,7 +98,8 @@ html {
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
+  min-height: 100vh;
 }
 
 h1,
@@ -159,7 +160,7 @@ body {
 }
 
 .inter-display-medium {
-  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
+  @include font(var(--primaryTextColor), "Inter-Medium", 1.2rem, 500, normal);
 }
 
 .inter-display-extra-bold {
@@ -557,7 +558,7 @@ body {
 }
 
 .grey-313 {
-  color: $grey-313;
+  color: var(--grey313);
 }
 
 .black-1D2 {
@@ -657,15 +658,16 @@ body {
 
 .Toastify__toast-container {
   // width: 40rem;
-  min-width: 40rem;
+  // min-width: 40rem;
   width: max-content;
 }
 
 .Toastify__toast {
-  padding: 2.5rem;
+  padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
     flex-direction: row-reverse;
+    gap: 10px;
     margin: 0;
     padding: 0;
     @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
@@ -1105,9 +1107,9 @@ form {
 .custom-table {
 }
 .dotDotText {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 .table-wrapper {
   .bottomExtraInfo {
@@ -1581,7 +1583,7 @@ form {
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
-    border: 0.1rem solid $grey-E5E;
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -1779,12 +1781,13 @@ form {
   // position: absolute;
   // top: 0.7rem;
   height: 2.6rem;
-  background: rgba(229, 229, 230, 0.5);
-  border: 0.1rem solid $grey-CAC;
+  background: var(--primaryFilter);
+  border: 0.1rem solid var(--secondaryLightColor);
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+  color: var(--primaryTextColor);
 
   .badge {
     // padding: 0.35rem 0.8rem 0.4rem;
@@ -1815,7 +1818,7 @@ form {
 }
 
 .page {
-  padding: 0 13.4rem;
+  padding: 0 5rem;
   width: 100%;
 }
 // @media all and (max-width: 1300px) {
@@ -1936,10 +1939,10 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightnessValue);
             }
           }
 
@@ -2079,7 +2082,7 @@ form {
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-
+            color: var(--primaryTextColor);
             &:hover {
               font-weight: 600;
             }
@@ -2138,6 +2141,9 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .no-data{
+    filter: var(--invertColor);
+  }
 }
 
 // slick slider positioning in loading animation
@@ -2183,7 +2189,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .copy-icon-top-bar-container {
@@ -2193,7 +2199,7 @@ textarea {
   .copy-icon-top-bar {
     cursor: pointer;
     &:hover {
-      filter: brightness(0.2);
+      filter: var(--hoverBrightnessValue);
     }
   }
 }
@@ -2628,4 +2634,25 @@ textarea {
   transform: translateY(-50%);
   right: 3.5rem;
   pointer-events: none;
+}
+
+input {
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.hoverDarker {
+  transition-duration: 300ms;
+  &:hover {
+    filter: brightness(0);
+  }
+}
+.overlay-tool-tip-container{
+  background-color: var(--cardBackground);
+  color: var(--primaryTextColor);
 }

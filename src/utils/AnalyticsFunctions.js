@@ -1,4 +1,3 @@
-import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 
@@ -870,6 +869,24 @@ export const TimeSpentHome = ({ session_id, email_address, time_spent }) => {
 };
 
 //30. Menu:intelligence menu
+export const FeedbackSidebar = ({ session_id, email_address }) => {
+  const event_name = "Menu: feedback clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const FeedbackSubmitted = ({ session_id, email_address }) => {
+  const event_name = "Feedback: submitted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const IntelligenceMenu = ({ session_id, email_address }) => {
   const event_name = "Menu:intelligence menu";
   const eventProperties = {
@@ -1729,6 +1746,58 @@ export const ClickTrendingAddress = ({ session_id, address }) => {
   const eventProperties = {
     "session id": session_id,
     address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user clicks follow button from welcome page
+export const ClickedFollowLeaderboard = ({ session_id, address, isMobile }) => {
+  const event_name = "Landing Page Conversion: Leaderboard follow clicked";
+  const eventProperties = {
+    "session id": session_id,
+    address: address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user clicks follow button from welcome page
+export const ClickedPageChangeWelcomeLeaderboard = ({
+  session_id,
+  isMobile,
+}) => {
+  const event_name = "Landing Page Conversion: Leaderboard page change";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user clicks follow button from welcome page
+export const ClickedPageLimitWelcomeLeaderboard = ({
+  session_id,
+  isMobile,
+}) => {
+  const event_name = "Landing Page Conversion: Leaderboard page limit change";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion:add textbox");
+};
+
+// To check if the user try to access leaderboard without logging in
+export const SignInOnClickWelcomeLeaderboard = ({ session_id, isMobile }) => {
+  const event_name =
+    "Landing Page Conversion: Leaderboard featuer access attempt";
+  const eventProperties = {
+    "session id": session_id,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
@@ -3458,11 +3527,13 @@ export const TransactionHistorySearch = ({
   session_id,
   email_address,
   searched,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
     searched: searched,
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3488,6 +3559,7 @@ export const TransactionHistoryYearFilter = ({
   email_address,
   year_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: years filter";
   const eventProperties = {
@@ -3495,6 +3567,7 @@ export const TransactionHistoryYearFilter = ({
     "email address": email_address,
     "year selected": year_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3519,6 +3592,7 @@ export const TransactionHistoryAssetFilter = ({
   email_address,
   asset_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: assets filter";
   const eventProperties = {
@@ -3526,6 +3600,7 @@ export const TransactionHistoryAssetFilter = ({
     "email address": email_address,
     "asset selected": asset_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3537,6 +3612,7 @@ export const TransactionHistoryNetworkFilter = ({
   email_address,
   network_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: networks filter";
   const eventProperties = {
@@ -3544,6 +3620,7 @@ export const TransactionHistoryNetworkFilter = ({
     "email address": email_address,
     "networks selected": network_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");

@@ -237,6 +237,16 @@ class CounterPartyVolume extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
+      if (this.props.intelligenceState.counterPartyData) {
+        this.props.updateCounterParty(
+          this.props.intelligenceState.counterPartyData,
+          getCounterGraphData(
+            this.props.intelligenceState.counterPartyData,
+            this
+          ),
+          this
+        );
+      }
       this.setState({
         counterGraphLoading: false,
       });
@@ -635,6 +645,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >
@@ -655,7 +666,7 @@ class CounterPartyVolume extends Component {
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
                 showFooter={true}
-                showBadges={true}
+                // showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
                 isLoading={this.state.counterGraphLoading}

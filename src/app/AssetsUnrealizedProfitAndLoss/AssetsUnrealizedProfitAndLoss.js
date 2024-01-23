@@ -39,11 +39,9 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
-  updateAverageCostBasis,
   updateCounterParty,
   updateFeeGraph,
 } from "../cost/Api.js";
@@ -59,6 +57,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
+  convertNtoNumber,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -79,6 +78,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      Average_cost_basis_local: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
@@ -189,6 +189,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.props.getUser();
     } else {
       this.props.updateWalletListFlag("assetsPage", true);
+      if (this.props.intelligenceState?.Average_cost_basis) {
+        this.trimAverageCostBasisLocally(
+          this.props.intelligenceState?.Average_cost_basis
+        );
+      }
       this.setState({
         AvgCostLoading: false,
       });
@@ -208,28 +213,47 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       clearInterval(window.checkCostTimer);
     };
   }
+  trimAverageCostBasisLocally = (sortedList) => {
+    let tempList = [];
+    if (sortedList) {
+      tempList = sortedList;
+    } else {
+      tempList = [...this.state.Average_cost_basis_local];
+    }
+
+    if (tempList.length > 0 && this.state.showDust) {
+      let array = tempList?.filter((e) => e.CurrentValue >= 1);
+      this.updateAverageCostBasisLocally(array);
+    } else {
+      this.updateAverageCostBasisLocally(tempList);
+    }
+  };
+  updateAverageCostBasisLocally = (newArray) => {
+    this.setState({
+      Average_cost_basis_local: newArray,
+    });
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
     ) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue < 1
-      );
-
-      if (array.length > 0 && this.state.showDust) {
-        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-          (e) => e.CurrentValue >= 1
+      this.props.updateWalletListFlag("assetsPage", true);
+      if (this.state.showDust) {
+        this.trimAverageCostBasisLocally(
+          this.props.intelligenceState.Average_cost_basis
         );
-        this.props.updateAverageCostBasis(array, this);
       } else {
-        this.combinedResults();
+        this.updateAverageCostBasisLocally(
+          this.props.intelligenceState.Average_cost_basis
+        );
       }
+      this.combinedResults();
     }
     // add wallet
-    if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
+    if (prevState.apiResponse !== this.state.apiResponse) {
+      this.props.updateWalletListFlag("assetsPage", true);
 
       this.props.getAllCoins();
 
@@ -238,8 +262,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         apiResponse: false,
       });
     }
-    if (!this.props.commonState.cost) {
-      this.props.updateWalletListFlag("cost", true);
+    if (!this.props.commonState.assetsPage) {
+      this.props.updateWalletListFlag("assetsPage", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
@@ -317,7 +341,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
       });
-      this.props.ResetAverageCostBasis(this);
     }
   };
   checkForInactivity = () => {
@@ -338,7 +361,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
 
   sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
+    let array = [...this.state.Average_cost_basis_local]; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -362,7 +385,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList, this);
+    this.trimAverageCostBasisLocally(sortedList);
+    // this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -388,7 +412,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -478,15 +501,9 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         showDust: !this.state.showDust,
       },
       () => {
-        if (this.state.showDust) {
-          let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-            (e) => e.CurrentValue >= 1
-          ); //all data
-          this.props.updateAverageCostBasis(array, this);
-        } else {
-          this.props.ResetAverageCostBasis(this);
-        }
-
+        this.trimAverageCostBasisLocally(
+          this.props.intelligenceState?.Average_cost_basis
+        );
         CostHideDust({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
@@ -516,8 +533,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
 
   render() {
-    let tableData = this.props.intelligenceState.Average_cost_basis;
-
     const columnData = [
       {
         labelName: "",
@@ -583,13 +598,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={rowData.AssetCode}
+                  text={
+                    (rowData.AssetCode ? rowData.AssetCode : "") +
+                    " [" +
+                    rowData?.chain?.name +
+                    "]"
+                  }
                 >
                   <div>
                     <CoinChip
                       coin_img_src={rowData.Asset}
                       coin_code={rowData.AssetCode}
                       chain={rowData?.chain}
+                      hideText={true}
                     />
                   </div>
                 </CustomOverlay>
@@ -635,21 +656,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.AverageCostPrice === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.AverageCostPrice.toFixed(2))
-                        ).toLocaleString("en-US")
+                    rowData.AverageCostPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.AverageCostPrice)
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.AverageCostPrice === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    {rowData.AverageCostPrice
+                      ? CurrencyType(false) +
                         numToCurrency(
                           rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")}
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -694,17 +713,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentPrice.toFixed(2))
-                    ).toLocaleString("en-US")
+                    rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.CurrentPrice)
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {CurrencyType(false) +
-                      numToCurrency(
-                        rowData.CurrentPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                    {rowData.CurrentPrice
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -748,12 +769,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(noExponents(rowData.Amount)).toLocaleString(
-                    "en-US"
-                  )}
+                  text={
+                    rowData.Amount && rowData.Amount !== 0
+                      ? convertNtoNumber(rowData.Amount)
+                      : "0"
+                  }
                 >
                   <span>
-                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                    {rowData.Amount
+                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                      : "0"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -791,12 +816,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    rowData.CostBasis
+                      ? CurrencyType(false) +
                         Number(
                           noExponents(rowData.CostBasis.toFixed(2))
                         ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -808,12 +833,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         });
                       }}
                     >
-                      {rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
                             rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")}
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -869,10 +894,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         });
                       }}
                     >
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentValue.toFixed(2)
-                        ).toLocaleString("en-US")}
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -945,10 +972,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -1187,13 +1214,18 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
-                  bottomCombiedValues
+                  message="No assets found"
+                  bottomCombiedValues={
+                    this.state.Average_cost_basis_local.length > 0
+                      ? true
+                      : false
+                  }
                   combinedCostBasis={this.state.combinedCostBasis}
                   combinedCurrentValue={this.state.combinedCurrentValue}
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  tableData={tableData}
+                  tableData={this.state.Average_cost_basis_local}
                   columnList={columnData}
                   headerHeight={64}
                   comingSoon={false}
@@ -1239,8 +1271,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 
   // average cost
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
+
   updateWalletListFlag,
   getAllWalletListApi,
   getUser,

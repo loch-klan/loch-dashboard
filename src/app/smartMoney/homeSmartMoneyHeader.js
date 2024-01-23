@@ -4,7 +4,6 @@ import {
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
-  ShareProfileIcon,
 } from "../../assets/images/icons";
 import { getAllCurrencyRatesApi } from "../common/Api";
 import { SmartMoneyShare } from "../../utils/AnalyticsFunctions";
@@ -49,23 +48,23 @@ export default function HomeSmartMoneyHeader(props) {
       !currencyRates && getAllCurrencyRatesApi();
     }, 1000);
   }, []); // <-- Have to pass in [] here!
-  const handleShare = () => {
-    SmartMoneyShare({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      isMobile: true,
-    });
-    let shareLink = BASE_URL_S3 + "leaderboard";
-    copyTextToClipboard(shareLink);
-  };
-  const copyTextToClipboard = async (text) => {
-    if ("clipboard" in navigator) {
-      toast.success("Link copied");
-      return await navigator.clipboard.writeText(text);
-    } else {
-      return document.execCommand("copy", true, text);
-    }
-  };
+  // const handleShare = () => {
+  //   SmartMoneyShare({
+  //     session_id: getCurrentUser().id,
+  //     email_address: getCurrentUser().email,
+  //     isMobile: true,
+  //   });
+  //   let shareLink = BASE_URL_S3 + "leaderboard";
+  //   copyTextToClipboard(shareLink);
+  // };
+  // const copyTextToClipboard = async (text) => {
+  //   if ("clipboard" in navigator) {
+  //     toast.success("Link copied");
+  //     return await navigator.clipboard.writeText(text);
+  //   } else {
+  //     return document.execCommand("copy", true, text);
+  //   }
+  // };
   return (
     <div className="homeSmartMoneyHeaderContainer">
       <div className="homeSmartMoneyHeader">
@@ -76,7 +75,7 @@ export default function HomeSmartMoneyHeader(props) {
               localLochUser.first_name ||
               localLochUser.last_name) ? (
               <>
-                <div
+                {/* <div
                   onClick={handleShare}
                   className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                 >
@@ -89,7 +88,7 @@ export default function HomeSmartMoneyHeader(props) {
                   <div className="homeSmartMoneyHeaderSignInJustText">
                     Share
                   </div>
-                </div>
+                </div> */}
                 <div
                   onClick={props.openAddAddressModal}
                   className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -145,7 +144,7 @@ export default function HomeSmartMoneyHeader(props) {
               <>
                 {!props.isFaq ? (
                   <>
-                    <div
+                    {/* <div
                       onClick={handleShare}
                       className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                     >
@@ -158,7 +157,7 @@ export default function HomeSmartMoneyHeader(props) {
                       <div className="homeSmartMoneyHeaderSignInJustText">
                         Share
                       </div>
-                    </div>
+                    </div> */}
                     <div
                       onClick={props.showFaqModal}
                       className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"

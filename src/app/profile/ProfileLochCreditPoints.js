@@ -2,6 +2,8 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  FeedbackCreditIcon,
+  StreakFireLochPointsIcon,
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
   UserCreditMailIcon,
@@ -19,6 +21,7 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
+import { updateWalletListFlag } from "../common/Api.js";
 import Loading from "../common/Loading.js";
 import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
@@ -44,13 +47,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "following",
         "x_follower",
         "joined_telegram",
+        "feedbacks_added",
+        "streak",
         // "twitter_spaces",
         // "provide_feedback",
         // "use_referral_code",
       ],
     };
   }
-
+  newPosBase = () => {
+    return 12;
+    // return this.state.tasksList.length;
+  };
   scrollRight = () => {
     if (this.state.isRightArrowDisabled) {
       return;
@@ -72,7 +80,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       left: newPos,
       behavior: "smooth",
     });
-    if (newPos === (this.state.tasksList.length / 3 - 1) * myElementWidth) {
+    if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
       this.setState({
         isRightArrowDisabled: true,
         isLeftArrowDisabled: false,
@@ -135,10 +143,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isLeftArrowDisabled: true,
           isRightArrowDisabled: false,
         });
-      } else if (
-        newPos ===
-        (this.state.tasksList.length / 3 - 1) * myElementWidth
-      ) {
+      } else if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
         this.setState({
           isLeftArrowDisabled: false,
           isRightArrowDisabled: true,
@@ -156,14 +161,22 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.isUpdate !== prevProps.isUpdate) {
+    // if (this.props.isUpdate !== prevProps.isUpdate) {
+    //   this.callApi();
+    //   this.setState({
+    //     isLeftArrowDisabled: true,
+    //     isRightArrowDisabled: false,
+    //   });
+    // }
+    if (!this.props.commonState.creditPointsBlock) {
+      this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
       this.setState({
         isLeftArrowDisabled: true,
         isRightArrowDisabled: false,
       });
     }
-    if(this.props.followFlag !== prevProps.followFlag){
+    if (this.props.followFlag !== prevProps.followFlag) {
       this.callApi();
     }
   }
@@ -194,6 +207,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     const openConnectWalletModal = () => {
       if (document.getElementById("topbar-connect-wallet-btn")) {
         document.getElementById("topbar-connect-wallet-btn").click();
+      }
+    };
+    const openProvideFeedbackModal = () => {
+      if (document.getElementById("sidebar-feedback-btn-full")) {
+        document.getElementById("sidebar-feedback-btn-full").click();
+      } else if (document.getElementById("sidebar-feedback-btn")) {
+        document.getElementById("sidebar-feedback-btn").click();
       }
     };
     const openConnectExchangeModal = () => {
@@ -242,6 +262,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       });
       openConnectWalletModal();
     };
+    const goClickOpenFeedback = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Provided feedback",
+      });
+      openProvideFeedbackModal();
+    };
     const goClickConnectExchange = () => {
       UserCreditGoClickedMP({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
@@ -267,7 +295,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       window.open("https://twitter.com/loch_chain", "_blank");
       const twitterFollow = new URLSearchParams();
       twitterFollow.append("credits", "x_follower");
-      this.props.addUserCredits(twitterFollow, this)
+      this.props.addUserCredits(twitterFollow, this);
       this.callApi();
     };
     const goClickJoinTelegram = () => {
@@ -392,15 +420,15 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickJoinTelegram}
         />
       );
-    } else if (whichBlock === "provide_feedback") {
+    } else if (whichBlock === "feedbacks_added") {
       return (
         <ProfileLochCreditPointsBlock
           title="Provided feedback"
-          earnPoints={3}
-          imageIcon={UserCreditWalletIcon}
+          earnPoints={2}
+          imageIcon={FeedbackCreditIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
-          // onClick={goClickAddTwoOrMoreAddresses}
+          onClick={goClickOpenFeedback}
         />
       );
     } else if (whichBlock === "use_referral_code") {
@@ -411,6 +439,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          // onClick={goClickConnectExchange}
+        />
+      );
+    } else if (whichBlock === "streak") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="7 day streak"
+          earnPoints={4}
+          imageIcon={StreakFireLochPointsIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          hideGoBtn
           // onClick={goClickConnectExchange}
         />
       );
@@ -517,6 +557,19 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}
           </div>
+          <div
+            // style={{
+            //   justifyContent: "flex-start",
+            //   paddingLeft: "2rem",
+            // }}
+            className="profileCreditPointsSection"
+          >
+            {this.state.tasksList
+              .slice(9, 11)
+              .map((singleTask, singleTaskIndex) => {
+                return this.returnWhichBlock(singleTask, singleTaskIndex);
+              })}
+          </div>
           {/* <div className="profileCreditPointsSection">
             {this.state.tasksList
               .slice(9, 12)
@@ -575,9 +628,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     );
   }
 }
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  commonState: state.CommonState,
+});
 const mapDispatchToProps = {
   getUserCredits,
+  updateWalletListFlag,
   addUserCredits,
 };
 ProfileLochCreditPoints.propTypes = {};

@@ -11,9 +11,9 @@
 
       p {
         display: inline;
-
+        color: var(--primarySubTextColor);
         &:hover {
-          color: $primary;
+          color: var(--primaryTextColor);
         }
       }
     }
@@ -23,7 +23,7 @@
       // display: flex;
       // align-items: center;
       padding: 1.2rem;
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       margin-bottom: 2rem;
 
@@ -197,44 +197,46 @@
           padding: 0.4rem;
           height: 14rem;
           overflow-y: scroll;
-
+          background-color: var(--cardBackgroud);
+          border-color: var(--cardBorder);
           .dropdown-item {
             padding: 0.8rem;
             position: relative;
             @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+            color: var(--primaryTextColor);
           }
         }
 
         .btn-primary:not(:disabled):not(.disabled):active {
-          background-color: rgba(229, 229, 230, 0.5) !important;
+          background-color: var(--primaryFilter);
           border: 0.1rem solid transparent !important;
-          color: $black-191;
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
         }
 
         .btn-primary.dropdown-toggle {
-          background-color: rgba(229, 229, 230, 0.5) !important;
+          background-color: var(--primaryFilter);
           border: 0.1rem solid transparent !important;
-          color: $black-191;
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
 
           &:hover {
-            border: 0.1rem solid $primary !important;
+            border: 0.1rem solid var(--primaryTextColor) !important;
           }
         }
 
         .btn-primary.dropdown-toggle:focus {
           box-shadow: none;
-          background-color: rgba(229, 229, 230, 0.5) !important;
-          border: 0.1rem solid $primary !important;
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          border: 0.1rem solid var(--primaryTextColor) !important;
+          color: var(--primaryTextColor);
         }
 
         .dropdown-toggle {
-          background-color: rgba(229, 229, 230, 0.5);
-          color: $black-191;
+          background-color: var(--primaryFilter);
+          color: var(--primaryTextColor);
           padding: 1.2rem 1.6rem;
           border-radius: 0.8rem;
         }
@@ -254,8 +256,8 @@
 
       .searchBar {
         display: flex;
-        background: $secondary;
-        border: 0.1rem solid #d4d4d4;
+        background-color: var(--cardBackgroud);
+        border: 0.1rem solid var(--cardBorder);
         align-items: center;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
@@ -263,7 +265,7 @@
 
         // padding: 0.7rem;
         &:hover {
-          border: 0.1rem solid #8e8e8e;
+          border: 0.1rem solid var(--primaryTextColor);
         }
 
         .search-icon {
@@ -286,6 +288,8 @@
             outline: none;
             @include font($black-191, "Inter-Medium", 1.6rem, 500, 1.9rem);
             width: 100%;
+            background-color: var(--cardBackgroud);
+            color: var(--primaryTextColor);
           }
 
           // input:focus {
@@ -305,7 +309,7 @@
       margin-bottom: 7rem;
       position: relative;
       .table-wrapper {
-        background: $secondary;
+        background: var(--cardBackgroud);
         box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
           0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
         border-radius: 1.2rem;
@@ -357,7 +361,7 @@
   }
 }
 .transaction-table-loading-wrapper-smaller {
-  height: 38rem;
+  height: 32rem;
   .animation-wrapper {
     height: 100%;
   }
@@ -390,7 +394,7 @@
       height: 42rem;
     }
     .not-found-mini-wrapper {
-      height: 22rem;
+      height: 30rem;
     }
   }
 }

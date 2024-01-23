@@ -69,12 +69,13 @@
         justify-content: space-between;
         height: 100%;
         width: calc(100% - 26rem);
+        background-color: var(--cardBackgroud);
 
         // width: 100%;
         position: relative;
         //
-        padding-left: 14.5rem;
-        padding-right: 13.4rem;
+        padding-left: 6rem;
+        padding-right: 5rem;
         .topWalletDropdownContainer {
           border-radius: 15px;
 
@@ -157,14 +158,14 @@
             padding-left: 1rem;
             padding-right: 1rem;
             // background-color: red;
-            border: 1px $grey-50 solid;
-            box-shadow: 0 0 10px 4px $grey-50;
+            border: 1px var(--sidebarActivePageColor) solid;
+            box-shadow:var(--topBarShadow);
             height: 100%;
             position: relative;
             .topBarHistory {
               border-radius: 10px;
-              border: 1px $grey-50 solid;
-              box-shadow: 0 0 10px 4px $grey-50;
+              border: 1px var(--sidebarActivePageColor) solid;
+              box-shadow: 0 0 10px 4px var(--sidebarActivePageColor);
               background-color: $secondary;
               width: 100%;
               position: absolute;
@@ -262,24 +263,25 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
+                color: var(--primaryTextColor);
                 &:-webkit-autofill:focus {
-                  box-shadow: 0 0 0 30px white inset !important;
-                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                  -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
                   transition: background-color 5000s ease-in-out 0s;
                 }
-                box-shadow: 0 0 0 30px white inset !important;
-                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
                 transition: background-color 5000s ease-in-out 0s;
 
                 &:hover {
                   &::placeholder {
-                    color: black;
+                    color: var(--invertMode);
                     opacity: 1; /* Firefox */
                   }
 
                   &::-ms-input-placeholder {
                     /* Edge 12 -18 */
-                    color: black;
+                    color: var(--invertMode);
                   }
                 }
               }
@@ -303,11 +305,11 @@
         }
 
         .topbar-btn {
-          background: rgba(229, 229, 230, 0.5);
-          border: 1px solid #f2f2f3;
+          background-color: var(--primaryFilter);
+          border: 0.1rem solid var(--primaryFilter);
           border-radius: 8px;
           padding: 1.2rem 2rem;
-          color: $black-191;
+          color: var(--primaryTextColor);
           font-weight: 600;
           font-size: 1.3rem;
           line-height: 1.5rem;
@@ -364,14 +366,15 @@
           }
           img {
             transition-duration: 300ms;
+            filter: var(--invertColor);
           }
           &:hover {
             background-color: $black-191;
-            border-color: $black-191;
-            color: $secondary;
+            background-color: var(--backColor);
+            color: var(--sameModeColor);
 
             img {
-              filter: invert(1);
+              filter: var(--invertColor2);
             }
             .noHoverEffect {
               filter: invert(0);
@@ -383,12 +386,12 @@
         }
         .topbar-btn-dark {
           background: $black-191;
-          border: 1px solid $black-191;
+          border: 1px solid var(--topbarAdressAddBorder);
           color: $secondary;
           &:hover {
-            background: rgba(229, 229, 230, 0.5);
+            color: var(--topbarAdressAddColorHover);
+            background-color: var(--topbarAdressAddBg);
             border: 1px solid #f2f2f3;
-            color: $black-191;
           }
         }
         .topbar-btn-dark-disabled {
@@ -397,7 +400,7 @@
           &:hover {
             background: $black-191;
             border: 1px solid $black-191;
-            color: $secondary;
+            color: var(--sameModeColor);
           }
         }
         .topbar-btn-light-disabled {
@@ -513,7 +516,7 @@
         .wallet-amount {
           font-size: 2.4rem;
           line-height: 3rem;
-          color: $black-1D2;
+          color: var(--sidebarWalletAmount);
         }
 
         .growth-div {
@@ -537,7 +540,8 @@
       }
       .welcome-card-topbar-closed {
         padding-left: 6rem;
-        padding-right: 21.9rem;
+        padding-right: 13.5rem;
+        background-color: var(--cardBackgroud);
       }
     }
 
@@ -1017,7 +1021,7 @@
     }
     .section-table,
     .section-chart {
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
@@ -1047,7 +1051,7 @@
         }
       }
       .portfolioHomeDefiCard {
-        min-height: 28rem;
+        min-height: 23.15rem;
 
         .defi-card-wrapper {
           padding: 0;
@@ -1080,175 +1084,177 @@
           }
         }
       }
-      .balance-sheet-card-portfolio-home {
-        position: relative;
+      .balance-sheet-card-portfolio-home-container {
         padding-left: 1rem;
         padding-right: 1rem;
-        .balance-dropdown {
-          position: absolute;
-          top: 5.3rem;
-          left: 0;
-          border-radius: 0px 0px 12px 12px;
-          border: 0.1rem solid #e5e5e680;
-          background-color: white;
-          border-top: none;
-          width: 100%;
-          z-index: 1;
-          .balance-dropdown-top-fake {
-            width: 100%;
-            height: 1.6rem;
-            display: flex;
-            .balance-dropdown-top-fake-left {
-              width: 50%;
-              height: 100%;
-            }
-            .balance-dropdown-top-fake-right {
-              width: 50%;
-              height: 100%;
-            }
-          }
-          .balance-list-content-parent {
-            .balance-list-content {
-              padding-top: 0;
-              max-height: 35rem;
-              overflow-y: scroll;
-              width: 100%;
-            }
-          }
-
-          .balance-sheet-list {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.15rem 0rem;
-            border-top: 1px solid rgba(229, 229, 230, 0.5);
-            padding-left: 2rem;
-            padding-right: 2rem;
-
-            .balance-amt {
-              background-color: rgba(229, 229, 230, 0.5);
-              border-radius: 4px;
-              padding: 6px;
-            }
-          }
-          .balance-sheet-list-no-border {
+        .balance-sheet-card-portfolio-home {
+          position: relative;
+          .balance-dropdown {
+            position: absolute;
+            top: 5.3rem;
+            left: 0;
+            border-radius: 0px 0px 12px 12px;
+            border: 0.1rem solid #e5e5e680;
+            background-color: white;
             border-top: none;
-          }
-        }
-        .balance-sheet-card {
-          border: 0.1rem solid #e5e5e680;
-          box-shadow: none;
-          border-radius: 12px;
-          margin-top: 1.6rem;
-          margin-bottom: 1.6rem;
-          user-select: none;
-          cursor: pointer;
-          transition-duration: 0ms;
-          padding: 0;
-          .balance-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            // margin-bottom: 1rem;
-            // border-radius: 12px;
+            width: 100%;
+            z-index: 1;
+            .balance-dropdown-top-fake {
+              width: 100%;
+              height: 1.6rem;
+              display: flex;
+              .balance-dropdown-top-fake-left {
+                width: 50%;
+                height: 100%;
+              }
+              .balance-dropdown-top-fake-right {
+                width: 50%;
+                height: 100%;
+              }
+            }
+            .balance-list-content-parent {
+              .balance-list-content {
+                padding-top: 0;
+                max-height: 35rem;
+                overflow-y: scroll;
+                width: 100%;
+              }
+            }
 
-            img {
-              height: 1.25rem;
-              width: 1.25rem;
-              margin-bottom: 5px;
-            }
-            // background-color: green;
-            .balance-sheet-card-credit {
-              margin: 0;
-              padding: 2rem 2rem 1.6rem;
-              padding-right: 0;
-              border-radius: 12px;
-              width: 50%;
+            .balance-sheet-list {
               display: flex;
               align-items: center;
-              justify-content: flex-start;
-              .defiMenu {
-                height: 10px;
-                margin: 0;
-              }
-              &:hover {
-                .defiMenu {
-                  filter: opacity(1);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #000000;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #000000;
-                }
+              justify-content: space-between;
+              padding: 1.15rem 0rem;
+              border-top: 1px solid rgba(229, 229, 230, 0.5);
+              padding-left: 2rem;
+              padding-right: 2rem;
+
+              .balance-amt {
+                background-color: rgba(229, 229, 230, 0.5);
+                border-radius: 4px;
+                padding: 6px;
               }
             }
-            .balance-sheet-card-credit-loading {
-              cursor: default;
-              &:hover {
-                .defiMenu {
-                  filter: opacity(0.5);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #636467;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #636467;
-                }
-              }
+            .balance-sheet-list-no-border {
+              border-top: none;
             }
-            .balance-sheet-card-debt {
-              .defiMenu {
-                height: 10px;
-                margin: 0;
-              }
-              margin: 0;
-              padding: 2rem 2rem 1.6rem;
-              padding-left: 0;
-              border-radius: 12px;
-              width: 50%;
+          }
+          .balance-sheet-card {
+            border: 0.1rem solid #e5e5e680;
+            box-shadow: none;
+            border-radius: 12px;
+            margin-top: 1.6rem;
+            margin-bottom: 1.6rem;
+            user-select: none;
+            cursor: pointer;
+            transition-duration: 0ms;
+            padding: 0;
+            .balance-card-header {
               display: flex;
               align-items: center;
-              justify-content: flex-end;
-              &:hover {
+              justify-content: space-between;
+              // margin-bottom: 1rem;
+              // border-radius: 12px;
+
+              img {
+                height: 1.25rem;
+                width: 1.25rem;
+                margin-bottom: 5px;
+              }
+              // background-color: green;
+              .balance-sheet-card-credit {
+                margin: 0;
+                padding: 2rem 2rem 1.6rem;
+                padding-right: 0;
+                border-radius: 12px;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
                 .defiMenu {
-                  filter: opacity(1);
+                  height: 10px;
+                  margin: 0;
                 }
-                .balance-sheet-card-credit-title {
-                  color: #000000;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #000000;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(1);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #000000;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #000000;
+                  }
                 }
               }
-            }
-            .balance-sheet-card-debt-loading {
-              cursor: default;
-              &:hover {
-                .defiMenu {
-                  filter: opacity(0.5);
-                }
-                .balance-sheet-card-credit-title {
-                  color: #636467;
-                }
-                .balance-sheet-card-credit-amount {
-                  color: #636467;
+              .balance-sheet-card-credit-loading {
+                cursor: default;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(0.5);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #636467;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #636467;
+                  }
                 }
               }
-            }
-            .balance-sheet-card-credit-title {
-              margin-right: 0.8rem;
-              color: #636467;
-            }
-            .balance-sheet-card-credit-amount {
-              margin-right: 0.8rem;
-              color: #636467;
-            }
-            .balance-sheet-card-credit-title-selected {
-              color: #000000;
-            }
-            .balance-sheet-card-credit-amount-selected {
-              color: #000000;
+              .balance-sheet-card-debt {
+                .defiMenu {
+                  height: 10px;
+                  margin: 0;
+                }
+                margin: 0;
+                padding: 2rem 2rem 1.6rem;
+                padding-left: 0;
+                border-radius: 12px;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(1);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #000000;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #000000;
+                  }
+                }
+              }
+              .balance-sheet-card-debt-loading {
+                cursor: default;
+                &:hover {
+                  .defiMenu {
+                    filter: opacity(0.5);
+                  }
+                  .balance-sheet-card-credit-title {
+                    color: #636467;
+                  }
+                  .balance-sheet-card-credit-amount {
+                    color: #636467;
+                  }
+                }
+              }
+              .balance-sheet-card-credit-title {
+                margin-right: 0.8rem;
+                color: #636467;
+              }
+              .balance-sheet-card-credit-amount {
+                margin-right: 0.8rem;
+                color: #636467;
+              }
+              .balance-sheet-card-credit-title-selected {
+                color: #000000;
+              }
+              .balance-sheet-card-credit-amount-selected {
+                color: #000000;
+              }
             }
           }
         }
@@ -1272,6 +1278,10 @@
             text-align: center;
             color: #636467;
             border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             cursor: pointer;
             transition-duration: 300ms;
             &:hover {
@@ -1284,6 +1294,48 @@
             cursor: default;
             &:hover {
               background-color: white;
+            }
+          }
+        }
+      }
+      .newHomeTableContainer {
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+          width: 0rem;
+          height: 0rem;
+        }
+
+        // &::-webkit-scrollbar-thumb {
+        //   border-radius: 0.8rem;
+        //   background-color: $scrollBar-thumb;
+        // }
+
+        // &::-webkit-scrollbar-track {
+        //   background-color: rgba(229, 229, 230, 0.5);
+        //   border-radius: 0.8rem;
+        // }
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              overflow-y: auto !important;
+              overflow-x: hidden !important;
+              max-height: 24rem !important;
+              min-height: 24rem !important;
+              &::-webkit-scrollbar {
+                width: 0.4rem;
+                height: 0rem;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 0.8rem;
+                background-color: $scrollBar-thumb;
+              }
+
+              &::-webkit-scrollbar-track {
+                background-color: rgba(229, 229, 230, 0.5);
+                // background-color: $grey-E5E;
+                border-radius: 0.8rem;
+              }
             }
           }
         }
@@ -1345,8 +1397,8 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 38rem;
-      min-height: 38rem;
+      height: 32rem;
+      min-height: 32rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
@@ -1384,8 +1436,8 @@
       height: 100%;
     }
     .chartAreaOldBar {
-      height: 34rem;
-      min-height: 34rem;
+      height: 29rem;
+      min-height: 29rem;
     }
     .header {
       h4 {
@@ -2129,4 +2181,16 @@
   &:hover {
     filter: brightness(0.5);
   }
+}
+
+.info-icon-i {
+  height: 12px;
+  width: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #cacbcc;
+  color: white;
+  font-size: 8px;
 }

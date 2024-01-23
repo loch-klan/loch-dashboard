@@ -28,7 +28,7 @@ import {
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser } from "../Portfolio/Api";
@@ -937,6 +937,10 @@ class TopWalletExchangeBar extends Component {
     });
   };
   passConnectExchangeClick = () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     const pathName = window.location.pathname;
     AddConnectExchangeModalOpen({
       session_id: getCurrentUser().id,
@@ -1003,6 +1007,10 @@ class TopWalletExchangeBar extends Component {
     this.props.updateUserWalletApi(data, this, yieldData);
   };
   connectWalletEthers = async () => {
+    let tempToken = getToken();
+    if (tempToken === "jsk") {
+      return null;
+    }
     ConnectWalletButtonClicked({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",

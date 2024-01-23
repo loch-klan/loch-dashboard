@@ -731,7 +731,9 @@ class SmartMoneyPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
-            let tempNetWorth = rowData.networth ? rowData.networth : 0;
+            let tempNetWorth = rowData.networth
+              ? rowData.networth.toFixed(2)
+              : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -783,7 +785,9 @@ class SmartMoneyPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
-            let tempNetflows = rowData.netflows ? rowData.netflows : 0;
+            let tempNetflows = rowData.netflows
+              ? rowData.netflows.toFixed(2)
+              : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -873,7 +877,7 @@ class SmartMoneyPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
-            let tempProfits = rowData.profits ? rowData.profits : 0;
+            let tempProfits = rowData.profits ? rowData.profits.toFixed(2) : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -1073,7 +1077,7 @@ class SmartMoneyPage extends BaseReactComponent {
       // },
     ];
 
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       return (
         // <MobileDevice isSmartMoney />
         <SmartMoneyMobilePage
@@ -1242,7 +1246,7 @@ class SmartMoneyPage extends BaseReactComponent {
                       openSignInOnclickModal={this.openSignInOnclickModal}
                       smartMoneyBlur={this.state.blurTable}
                       blurButtonClick={this.showAddSmartMoneyAddresses}
-                      isSmartMoney
+                      minimalPagination
                       noSubtitleBottomPadding
                       tableData={tableData}
                       columnList={columnList}
