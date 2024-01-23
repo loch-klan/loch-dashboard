@@ -229,7 +229,7 @@ class TopWalletExchangeBar extends Component {
       this.state.walletInput[0].coins.length > 0 &&
       !this.state.disableAddBtn
     ) {
-      this.handleAddWallet();
+      this.handleAddWallet(true);
     }
   };
   seeTheTopBarHistoryItems = () => {
@@ -1571,11 +1571,11 @@ class TopWalletExchangeBar extends Component {
                   ) || this.state.disableAddBtn
                     ? null
                     : () => {
-                        this.handleAddWallet(true);
+                        this.handleAddWallet(false);
                       }
                 }
               >
-                <span className="dotDotText">Replace</span>
+                <span className="dotDotText">Add</span>
               </div>
               <div
                 ref={this.props.buttonRef}
@@ -1595,11 +1595,11 @@ class TopWalletExchangeBar extends Component {
                   ) || this.state.disableAddBtn
                     ? null
                     : () => {
-                        this.handleAddWallet(false);
+                        this.handleAddWallet(true);
                       }
                 }
               >
-                <span className="dotDotText">Add</span>
+                <span className="dotDotText">Replace</span>
               </div>
             </div>
           ) : (
