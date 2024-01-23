@@ -220,7 +220,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphLoading: false,
       yieldOpportunitiesList: [],
       yieldOpportunitiesTotalCount: 0,
-      yieldOpportunitiesTableLoading: false,
+      yieldOpportunitiesTableLoading: true,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: 1,
