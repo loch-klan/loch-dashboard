@@ -287,10 +287,10 @@ class RealizedProfitAndLoss extends Component {
     let isDefault = true;
     if (
       (this.state.fromDate.constructor === Date &&
-        this.state.fromDateInitial === Date &&
+        this.state.fromDateInitial.constructor === Date &&
         !isSameDateAs(this.state.fromDate, this.state.fromDateInitial)) ||
       (this.state.toDate.constructor === Date &&
-        this.state.toDateInitial === Date &&
+        this.state.toDateInitial.constructor === Date &&
         !isSameDateAs(this.state.toDate, this.state.toDateInitial)) ||
       this.state.selectedAssets.length > 0
     ) {
