@@ -313,7 +313,7 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
   return [data, options, options2];
 };
 
-export const getCounterGraphData = (arr, parentCtx, isFromHome) => {
+export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -423,13 +423,7 @@ export const getCounterGraphData = (arr, parentCtx, isFromHome) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: isFromHome
-            ? labels.length > 3
-              ? false
-              : true
-            : labels.length > 8
-            ? false
-            : true,
+          display: isHome ? true : labels.length > 8 ? false : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
