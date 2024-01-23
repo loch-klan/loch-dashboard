@@ -54,7 +54,12 @@ export const getAllFeeApi = (ctx, startDate, endDate, isDefault = true) => {
       });
   };
 };
-export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
+export const getAllCounterFeeApi = (
+  ctx,
+  startDate,
+  endDate,
+  isDefault = true
+) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -72,21 +77,36 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
               return b.total_volume - a.total_volume;
             }
           );
-          g_data = g_data.slice(0, 3);
+          // g_data = g_data.slice(0, 3);
           // console.log("data", g_data)
-          dispatch({
-            type: COUNTER_PARTY_VOLUME,
-            payload: {
-              counterPartyData: res.data.data.counter_party_volume_traded,
-              counterPartyValue:
-                ctx.state.currentPage === "Home"
-                  ? getCounterGraphData(g_data, ctx)
-                  : getCounterGraphData(
-                      res.data.data.counter_party_volume_traded,
-                      ctx
-                    ),
-            },
-          });
+          if (isDefault) {
+            dispatch({
+              type: COUNTER_PARTY_VOLUME,
+              payload: {
+                counterPartyData: res.data.data.counter_party_volume_traded,
+                counterPartyValue:
+                  ctx.state.currentPage === "Home"
+                    ? getCounterGraphData(g_data, ctx, true)
+                    : getCounterGraphData(
+                        res.data.data.counter_party_volume_traded,
+                        ctx
+                      ),
+              },
+            });
+          }
+          console.log(
+            "res.data.data.counter_party_volume_traded ",
+            res.data.data.counter_party_volume_traded
+          );
+          if (ctx.setLocalCounterParty) {
+            ctx.setLocalCounterParty(
+              res.data.data.counter_party_volume_traded,
+              getCounterGraphData(
+                res.data.data.counter_party_volume_traded,
+                ctx
+              )
+            );
+          }
           ctx.setState({
             counterGraphLoading: false,
             // counterPartyData: res.data.data.counter_party_volume_traded,
@@ -100,7 +120,15 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
           });
         } else {
           toast.error(res.data.message || "Something Went Wrong");
+          ctx.setState({
+            counterGraphLoading: false,
+          });
         }
+      })
+      .catch((err) => {
+        ctx.setState({
+          counterGraphLoading: false,
+        });
       });
   };
 };

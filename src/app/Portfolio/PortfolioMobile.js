@@ -71,11 +71,7 @@ import {
 } from "../common/Api";
 import Loading from "../common/Loading";
 import Footer from "../common/footer";
-import {
-  ResetAverageCostBasis,
-  getAvgCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
+import { getAvgCostBasis, updateAverageCostBasis } from "../cost/Api";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
@@ -332,7 +328,7 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    
+
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -361,7 +357,7 @@ class PortfolioMobile extends BaseReactComponent {
         combinedReturn: tempcombinedReturn,
       });
 
-      this.callApi(page)
+      this.callApi(page);
     }
 
     if (
@@ -370,8 +366,6 @@ class PortfolioMobile extends BaseReactComponent {
     ) {
       this.callApi(this.state.currentPage || START_INDEX);
     }
-
-    
 
     if (
       prevPage !== page ||
@@ -2619,7 +2613,6 @@ const mapDispatchToProps = {
   getAvgCostBasis,
 
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,

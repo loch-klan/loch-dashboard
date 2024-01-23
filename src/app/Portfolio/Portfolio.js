@@ -128,7 +128,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
@@ -809,9 +808,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       this.trimGasFees();
     }
-    if (this.props.yieldOpportunitiesState) {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
       this.trimCounterpartyVolume();
     }
+
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -968,7 +971,6 @@ class Portfolio extends BaseReactComponent {
       this.endPageView();
     }
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
   }
   trimGasFees = () => {
     if (
@@ -999,27 +1001,14 @@ class Portfolio extends BaseReactComponent {
   trimCounterpartyVolume = () => {
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue[0] &&
-      this.props.intelligenceState.counterPartyValue[0].labels
+      this.props.intelligenceState.counterPartyValue
     ) {
-      const tempHolder = [
-        {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
-          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
-            ? this.props.intelligenceState.counterPartyValue[0].datasets
-            : [],
-        },
-        { ...this.props.intelligenceState.counterPartyValue[1] },
+      const tempHolder = getCounterGraphData(
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this,
+        true
+      );
 
-        { ...this.props.intelligenceState.counterPartyValue[2] },
-      ];
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
       });
@@ -4735,14 +4724,14 @@ class Portfolio extends BaseReactComponent {
                             this.state.callChildPriceGaugeApi
                           }
                         />
-                      ) : (
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           chainLoader={this.state.chainLoader}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -5042,7 +5031,6 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
