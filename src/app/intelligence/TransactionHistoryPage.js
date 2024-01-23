@@ -66,6 +66,7 @@ import {
   CurrencyType,
   TruncateText,
   UpgradeTriggered,
+  compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
   noExponents,
@@ -96,6 +97,7 @@ import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { isEqual } from "lodash";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -115,6 +117,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      intelligenceStateLocal: {},
       minAmount: "1",
       maxAmount: "1000000000",
       isShowingAge: true,
@@ -134,6 +137,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
+      addressList: address,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -203,6 +207,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
       isNetworkSearchUsed: false,
+      possibleMethods: ["receive", "send", "approve", "transfer"],
     };
     this.delayTimer = 0;
   }
@@ -406,6 +411,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.props.getUser();
         this.updateTimer(true);
         this.setState({ tableLoading: false });
+        if (this.props.intelligenceState) {
+          this.setState({
+            intelligenceStateLocal: this.props.intelligenceState,
+          });
+        }
         this.startPageView();
         return () => {
           clearInterval(window.checkTransactionHistoryTimer);
@@ -457,13 +467,47 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
+    let tempCond = [];
+    this.state.condition.forEach((tempEle) => {
+      if (tempEle.key !== SEARCH_BY_WALLET_ADDRESS_IN) {
+        tempCond.push(tempEle);
+      }
+    });
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : [];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    let tempCondTest = [...tempCond];
+    tempCond = [
+      ...tempCond,
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+    ];
+
+    let isDefault = true;
+
+    let originalCondition = [{ key: SEARCH_BY_NOT_DUST, value: true }];
+    let originalSort = [{ key: SORT_BY_TIMESTAMP, value: false }];
+    if (!compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
+      isDefault = false;
+    }
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    this.props.searchTransactionApi(data, this, page, isDefault);
   };
   onPageChange = () => {
     this.setState({
@@ -471,6 +515,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.walletList !== this.state.walletList) {
+      const allWalletAddresses = this.state.walletList.map((mapData) =>
+        mapData.address ? mapData.address : ""
+      );
+
+      this.setState({
+        addressList: allWalletAddresses,
+      });
+    }
     if (
       prevState.tableLoading !== this.state.tableLoading &&
       this.state.goToBottom &&
@@ -542,6 +595,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           key: SEARCH_BY_WALLET_ADDRESS_IN,
           value: address,
         },
+        { key: SEARCH_BY_NOT_DUST, value: true },
       ];
       this.props.getAllCoins();
       this.setState({
@@ -908,10 +962,25 @@ class TransactionHistoryPage extends BaseReactComponent {
     toast.success("Link copied");
     this.updateTimer();
   };
+  getAllTransactionHistoryLocal = (apiRes, apiPage) => {
+    const tempDataHolder = {
+      table: apiRes.results,
+      assetPriceList: apiRes.objects.asset_prices,
+      totalCount: apiRes.total_count,
+      totalPage: Math.ceil(apiRes.total_count / API_LIMIT),
+      currentPage: apiPage,
+    };
 
+    this.setState({
+      intelligenceStateLocal: {
+        ...tempDataHolder,
+        currentPage: apiPage,
+      },
+    });
+  };
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
-      this.props.intelligenceState;
+      this.state.intelligenceStateLocal;
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1006,7 +1075,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="cp history-table-header-col " id="time">
             <CustomOverlay
               position="top"
               isIcon={false}
@@ -1022,7 +1091,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -1062,7 +1131,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempOpp ? tempOpp : "-"}
               >
-                <span>{tempVal}</span>
+                <span className="primaryText">{tempVal}</span>
               </CustomOverlay>
             );
           }
@@ -1075,7 +1144,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1378,7 +1447,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1678,7 +1747,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1706,7 +1775,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 dotDotText">
                     {rowData.asset.code}
                   </div>
                 ) : (
@@ -1724,7 +1793,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1751,7 +1820,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempAmountVal ? tempAmountVal : "0.00"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                   {numToCurrency(tempAmountVal).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
@@ -1766,7 +1835,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -1819,7 +1888,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                     {CurrencyType(false) +
                       numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
@@ -1839,7 +1908,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
                     {tempValueThen
                       ? CurrencyType(false) +
                         numToCurrency(tempValueThen).toLocaleString("en-US")
@@ -1859,7 +1928,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -1876,37 +1945,57 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
+            let actualMethod = "";
+            if (rowData.method) {
+              actualMethod = rowData.method.toLowerCase();
+            }
+            if (!this.state.possibleMethods.includes(actualMethod)) {
+              let currentFromWalletAdd = "";
+              let currentToWalletAdd = "";
+              if (rowData.from.address) {
+                currentFromWalletAdd = rowData.from.address;
+              }
+              if (rowData.to.address) {
+                currentToWalletAdd = rowData.to.address;
+              }
+              if (this.state.addressList.includes(currentToWalletAdd)) {
+                actualMethod = "receive";
+              } else if (
+                this.state.addressList.includes(currentFromWalletAdd)
+              ) {
+                actualMethod = "send";
+              }
+            }
             return (
-              <>
+              <div className="gainLossContainer">
                 {rowData.method &&
                 (rowData.method.toLowerCase() === "send" ||
                   rowData.method.toLowerCase() === "receive") ? (
-                  <div className="gainLossContainer">
-                    <div
-                      className={`gainLoss ${
-                        rowData.method.toLowerCase() === "send"
-                          ? "loss"
-                          : "gain"
-                      }`}
-                    >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
-                        {rowData.method}
-                      </span>
-                    </div>
+                  <div
+                    className={`gainLoss ${
+                      rowData.method.toLowerCase() === "send" ? "loss" : "gain"
+                    }`}
+                  >
+                    <span className="text-capitalize inter-display-medium f-s-13 lh-16 interDisplayMediumTextDarkerText">
+                      {rowData.method}
+                    </span>
                   </div>
                 ) : (
-                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                    {rowData.method}
+                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div interDisplayMediumTextDarkerText">
+                    {actualMethod}
                   </div>
                 )}
-              </>
+              </div>
             );
           }
         },
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
               src={sortByIcon}
@@ -1932,7 +2021,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={rowData.network}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div dotDotText">
                     {rowData.network}
                   </div>
                 </CustomOverlay>
@@ -1948,7 +2037,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -1985,7 +2074,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                  className="inter-display-medium f-s-13 lh-16 ellipsis-div"
                 >
                   {tempHashVal}
                   <Image

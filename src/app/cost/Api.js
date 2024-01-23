@@ -15,7 +15,13 @@ import {
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
 
-export const getAllFeeApi = (ctx, startDate, endDate) => {
+export const getAllFeeApi = (
+  ctx,
+  startDate,
+  endDate,
+  isFromHome = false,
+  isDefault = true
+) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -27,13 +33,21 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       .post("wallet/transaction/get-gas-fee-overtime", data)
       .then((res) => {
         if (!res.data.error) {
-          dispatch({
-            type: GAS_FEES,
-            payload: {
-              GraphfeeData: res.data.data,
-              graphfeeValue: getGraphData(res.data.data, ctx),
-            },
-          });
+          if (isDefault) {
+            dispatch({
+              type: GAS_FEES,
+              payload: {
+                GraphfeeData: res.data.data,
+                graphfeeValue: getGraphData(res.data.data, ctx, isFromHome),
+              },
+            });
+          }
+          if (ctx.setLocalGasFees) {
+            ctx.setLocalGasFees(
+              res.data.data,
+              getGraphData(res.data.data, ctx, isFromHome)
+            );
+          }
           ctx.setState({
             barGraphLoading: false,
             //  GraphData: res.data.data,
@@ -46,7 +60,12 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       });
   };
 };
-export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
+export const getAllCounterFeeApi = (
+  ctx,
+  startDate,
+  endDate,
+  isFromHome = false
+) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -58,25 +77,16 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
       .post("wallet/transaction/get-counter-party-volume-traded", data)
       .then((res) => {
         if (!res.data.error) {
-          //  console.log("calling counter fees");
-          let g_data = res.data.data.counter_party_volume_traded.sort(
-            (a, b) => {
-              return b.total_volume - a.total_volume;
-            }
-          );
-          g_data = g_data.slice(0, 3);
           // console.log("data", g_data)
           dispatch({
             type: COUNTER_PARTY_VOLUME,
             payload: {
               counterPartyData: res.data.data.counter_party_volume_traded,
-              counterPartyValue:
-                ctx.state.currentPage === "Home"
-                  ? getCounterGraphData(g_data, ctx)
-                  : getCounterGraphData(
-                      res.data.data.counter_party_volume_traded,
-                      ctx
-                    ),
+              counterPartyValue: getCounterGraphData(
+                res.data.data.counter_party_volume_traded,
+                ctx,
+                isFromHome
+              ),
             },
           });
           ctx.setState({
@@ -111,15 +121,20 @@ export const updateCounterParty = (data, value, ctx) => {
 };
 
 // update counterpary value and data
-export const updateFeeGraph = (data, value, ctx) => {
+export const updateFeeGraph = (data, value, ctx, isDefault = true) => {
   return function (dispatch, getState) {
-    dispatch({
-      type: GAS_FEES,
-      payload: {
-        GraphfeeData: data,
-        graphfeeValue: value,
-      },
-    });
+    if (isDefault) {
+      dispatch({
+        type: GAS_FEES,
+        payload: {
+          GraphfeeData: data,
+          graphfeeValue: value,
+        },
+      });
+    }
+    if (ctx.setLocalGasFees) {
+      ctx.setLocalGasFees(data, value);
+    }
   };
 };
 
