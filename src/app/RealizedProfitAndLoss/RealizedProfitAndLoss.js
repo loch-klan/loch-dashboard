@@ -690,7 +690,7 @@ class RealizedProfitAndLoss extends Component {
               <div className="m-b-32">
                 <PageHeader
                   showNetflowExplainers
-                  title="Realized profit and loss"
+                  title="Flows"
                   subTitle="Understand your portfolio's net flows"
                   currentPage="realized-profit-and-loss"
                   ShareBtn={true}
