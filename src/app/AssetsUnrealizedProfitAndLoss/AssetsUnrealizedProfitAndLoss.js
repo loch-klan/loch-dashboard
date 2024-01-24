@@ -59,6 +59,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
+  amountFormat,
   convertNtoNumber,
   mobileCheck,
   noExponents,
@@ -804,9 +805,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   text={
                     rowData.CostBasis
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(rowData.CostBasis, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -865,9 +864,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   text={
                     rowData.CurrentValue
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -935,9 +932,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   text={
                     rowData.GainAmount
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount.toFixed(2)))
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          Math.abs(rowData.GainAmount),
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
