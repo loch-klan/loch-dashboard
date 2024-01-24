@@ -570,6 +570,20 @@
           }
         }
       }
+      .fillter_tabs_section {
+        .custom-dropdown {
+          background-color: rgba(229, 229, 230, 0.5);
+
+          .dropdown-footer {
+            .dropdown-btn {
+              &:hover {
+                background-color: unset !important;
+                color: unset !important;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
