@@ -21,14 +21,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
-import {
-  ResetAverageCostBasis,
-  getAllCounterFeeApi,
-  getAllFeeApi,
-  updateAverageCostBasis,
-  updateCounterParty,
-  updateFeeGraph,
-} from "../cost/Api";
+import { getAllFeeApi, updateFeeGraph } from "../cost/Api";
 import { getCounterGraphData, getGraphData } from "../cost/getGraphData";
 
 // add wallet
@@ -52,6 +45,9 @@ class GasFeesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedActiveBadgeLocal: [],
+      graphfeeValueLocal: [],
+      graphfeeDataLocal: {},
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
@@ -192,17 +188,15 @@ class GasFeesPage extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-    if (
-      this.props.intelligenceState &&
-      this.props.intelligenceState.GraphfeeData
-    ) {
-      if (this.props.intelligenceState.GraphfeeData) {
-        this.props.updateFeeGraph(
-          this.props.intelligenceState.GraphfeeData,
-          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
-          this
-        );
-      }
+    if (this.props.intelligenceState.graphfeeValue) {
+      this.setState({
+        graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
+      });
+    }
+    if (this.props.intelligenceState.GraphfeeData) {
+      this.setState({
+        graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
+      });
     }
     if (
       !this.props.commonState.gasFeesPage ||
@@ -235,48 +229,30 @@ class GasFeesPage extends Component {
       clearInterval(window.checkCostTimer);
     };
   }
-
+  setLocalGasFees = (passedGraphfeeData, passedGraphfeeValue) => {
+    this.setState({
+      graphfeeDataLocal: passedGraphfeeData,
+      graphfeeValueLocal: passedGraphfeeValue,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.intelligenceState.Average_cost_basis !==
-      this.props.intelligenceState.Average_cost_basis
+      prevProps.intelligenceState.graphfeeValue !==
+      this.props.intelligenceState.graphfeeValue
     ) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue < 1
-      );
-
-      if (array.length > 0 && this.state.showDust) {
-        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-          (e) => e.CurrentValue >= 1
-        );
-        this.props.updateAverageCostBasis(array, this);
-      } else {
-        let tempcombinedCostBasis = 0;
-        let tempcombinedCurrentValue = 0;
-        let tempcombinedUnrealizedGains = 0;
-        let tempcombinedReturn = 0;
-        if (this.props.intelligenceState?.net_return) {
-          tempcombinedReturn = this.props.intelligenceState?.net_return;
-        }
-        if (this.props.intelligenceState?.total_bal) {
-          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-        }
-        if (this.props.intelligenceState?.total_cost) {
-          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-        }
-        if (this.props.intelligenceState?.total_gain) {
-          tempcombinedUnrealizedGains =
-            this.props.intelligenceState?.total_gain;
-        }
-
-        this.setState({
-          combinedCostBasis: tempcombinedCostBasis,
-          combinedCurrentValue: tempcombinedCurrentValue,
-          combinedUnrealizedGains: tempcombinedUnrealizedGains,
-          combinedReturn: tempcombinedReturn,
-        });
-      }
+      this.setState({
+        graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
+      });
     }
+    if (
+      prevProps.intelligenceState.GraphfeeData !==
+      this.props.intelligenceState.GraphfeeData
+    ) {
+      this.setState({
+        graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
+      });
+    }
+
     // add wallet
     if (
       prevState.apiResponse !== this.state.apiResponse ||
@@ -327,6 +303,10 @@ class GasFeesPage extends Component {
   };
 
   getBlockchainFee(option, first) {
+    this.setState({
+      selectedActiveBadgeLocal: [],
+      gasFeesGraphLoading: true,
+    });
     const today = moment().valueOf();
     let handleSelected = "";
     // console.log("headle click");
@@ -337,28 +317,28 @@ class GasFeesPage extends Component {
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
-      this.props.getAllFeeApi(this, fiveyear, today);
+      this.props.getAllFeeApi(this, fiveyear, today, false);
       // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
-      this.props.getAllFeeApi(this, year, today);
+      this.props.getAllFeeApi(this, year, today, false);
       // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
-      this.props.getAllFeeApi(this, sixmonth, today);
+      this.props.getAllFeeApi(this, sixmonth, today, false);
       // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
-      this.props.getAllFeeApi(this, month, today);
+      this.props.getAllFeeApi(this, month, today, false);
       // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
-      this.props.getAllFeeApi(this, week, today);
+      this.props.getAllFeeApi(this, week, today, false);
       // console.log(week, today, "week");
       handleSelected = "Week";
     }
@@ -393,7 +373,6 @@ class GasFeesPage extends Component {
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
       });
-      this.props.ResetAverageCostBasis(this);
     }
   };
   checkForInactivity = () => {
@@ -410,15 +389,19 @@ class GasFeesPage extends Component {
   }
 
   handleBadge = (activeBadgeList, type) => {
+    this.setState({
+      selectedActiveBadgeLocal: [...activeBadgeList],
+    });
     let selectedChains = [];
     this.props.OnboardingState.coinsList?.map((item) => {
       if (activeBadgeList?.includes(item.id)) {
         selectedChains.push(item.code);
       }
     });
-    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
+
+    const GraphfeeData = this.state.graphfeeDataLocal;
     let graphDataMaster = [];
-    let counterPartyDataMaster = [];
+
     if (type === 1) {
       GraphfeeData.gas_fee_overtime &&
         GraphfeeData.gas_fee_overtime?.map((tempGraphData) => {
@@ -439,7 +422,8 @@ class GasFeesPage extends Component {
       this.props.updateFeeGraph(
         GraphfeeData,
         getGraphData(graphDataObj, this),
-        this
+        this,
+        false
       );
       const tempIsSearchUsed = this.state.isFeesChainSearchUsed;
       costFeesChainFilter({
@@ -450,34 +434,6 @@ class GasFeesPage extends Component {
       });
       this.updateTimer();
       this.setState({ isFeesChainSearchUsed: false });
-    } else {
-      counterPartyData &&
-        counterPartyData?.map((tempGraphData) => {
-          if (
-            activeBadgeList &&
-            (activeBadgeList.includes(tempGraphData?.chain?._id) ||
-              activeBadgeList.length === 0)
-          ) {
-            counterPartyDataMaster.push(tempGraphData);
-          }
-        });
-      // this.setState({
-      //   counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
-      // });
-      this.props.updateCounterParty(
-        counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this),
-        this
-      );
-      const tempIsSearchUsed = this.state.isVolumeChainSearchUsed;
-      costVolumeChainFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        selected: selectedChains,
-        isSearchUsed: tempIsSearchUsed,
-      });
-      this.updateTimer();
-      this.setState({ isVolumeChainSearchUsed: false });
     }
   };
   handleConnectModal = () => {
@@ -599,19 +555,20 @@ class GasFeesPage extends Component {
             >
               <BarGraphSection
                 data={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[0]
+                  this.state.graphfeeValueLocal &&
+                  this.state.graphfeeValueLocal[0]
                 }
                 options={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[1]
+                  this.state.graphfeeValueLocal &&
+                  this.state.graphfeeValueLocal[1]
                 }
                 options2={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[2]
+                  this.state.graphfeeValueLocal &&
+                  this.state.graphfeeValueLocal[2]
                 }
                 digit={this.state.GraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
+                selectedActiveBadge={this.state.selectedActiveBadgeLocal}
                 timeFunction={(e) => {
                   this.getBlockchainFee(e);
                 }}
@@ -648,19 +605,17 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getAllCoins,
   getAllFeeApi,
-  getAllCounterFeeApi,
 
   // avg cost
 
   // update counter party
-  updateCounterParty,
+
   // update fee
   updateFeeGraph,
   setPageFlagDefault,
 
   // average cost
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
+
   updateWalletListFlag,
   getAllWalletListApi,
   getUser,

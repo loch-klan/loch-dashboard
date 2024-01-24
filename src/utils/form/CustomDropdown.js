@@ -90,6 +90,7 @@ class CustomDropdown extends Component {
       this.props.options.forEach((e, i) => {
         let tempIsSelected = false;
         if (
+          this.props.selectedTokens.length === 0 ||
           this.props.selectedTokens.includes(e.name) ||
           this.props.selectedTokens.includes(e.label) ||
           this.props.selectedTokens.includes(e.value) ||
@@ -128,6 +129,7 @@ class CustomDropdown extends Component {
       this.props.options.forEach((e, i) => {
         let tempIsSelected = false;
         if (
+          this.props.selectedTokens.length === 0 ||
           this.props.selectedTokens.includes(e.name) ||
           this.props.selectedTokens.includes(e.label) ||
           this.props.selectedTokens.includes(e.value) ||
@@ -202,6 +204,11 @@ class CustomDropdown extends Component {
     // if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
     //   this.selectedAll(true);
     // }
+    if (
+      prevProps.selectedTokens?.length !== this.props.selectedTokens?.length
+    ) {
+      this.runItFirst();
+    }
     if (
       this.props.selectedTokens &&
       this.props.selectedTokens.length > 0 &&

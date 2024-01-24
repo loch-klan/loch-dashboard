@@ -128,7 +128,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
@@ -188,6 +187,7 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
       shouldCallTransactionTableApi: true,
@@ -820,9 +820,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       this.trimGasFees();
     }
-    if (this.props.yieldOpportunitiesState) {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
       this.trimCounterpartyVolume();
     }
+
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -979,7 +983,6 @@ class Portfolio extends BaseReactComponent {
       this.endPageView();
     }
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
   }
   trimGasFees = () => {
     if (
@@ -1009,27 +1012,14 @@ class Portfolio extends BaseReactComponent {
   trimCounterpartyVolume = () => {
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue[0] &&
-      this.props.intelligenceState.counterPartyValue[0].labels
+      this.props.intelligenceState.counterPartyValue
     ) {
-      const tempHolder = [
-        {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
-          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
-            ? this.props.intelligenceState.counterPartyValue[0].datasets
-            : [],
-        },
-        { ...this.props.intelligenceState.counterPartyValue[1] },
+      const tempHolder = getCounterGraphData(
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this,
+        true
+      );
 
-        { ...this.props.intelligenceState.counterPartyValue[2] },
-      ];
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
       });
@@ -1686,6 +1676,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
@@ -1952,7 +1945,6 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -3230,7 +3222,11 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState?.Average_cost_basis
+      ? this.props.intelligenceState.Average_cost_basis.filter(
+          (e) => e.CurrentValue >= 1
+        )
+      : [];
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
@@ -4407,7 +4403,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(1);
                             }}
                           >
-                            Realized Gains
+                            Flows
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4745,14 +4741,14 @@ class Portfolio extends BaseReactComponent {
                             this.state.callChildPriceGaugeApi
                           }
                         />
-                      ) : (
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           chainLoader={this.state.chainLoader}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -5052,7 +5048,6 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
