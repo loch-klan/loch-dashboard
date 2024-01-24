@@ -15,7 +15,12 @@ import Loading from "../../app/common/Loading";
 import SmartMoneyPagination from "./SmartMoneyPagination";
 import { ContributeTrophyIcon } from "../../assets/images/icons";
 import CustomOverlay from "./CustomOverlay";
-import { CurrencyType, noExponents, numToCurrency } from "../ReusableFunctions";
+import {
+  CurrencyType,
+  amountFormat,
+  noExponents,
+  numToCurrency,
+} from "../ReusableFunctions";
 
 import {
   ArrowDownLeftSmallIcon,
@@ -374,11 +379,11 @@ class CustomTable extends BaseReactComponent {
                       text={
                         this.props.combinedCostBasis
                           ? CurrencyType(false) +
-                            Number(
-                              noExponents(
-                                this.props.combinedCostBasis.toFixed(2)
-                              )
-                            ).toLocaleString("en-US")
+                            amountFormat(
+                              this.props.combinedCostBasis,
+                              "en-US",
+                              "USD"
+                            )
                           : CurrencyType(false) + "0.00"
                       }
                     >
@@ -419,11 +424,11 @@ class CustomTable extends BaseReactComponent {
                       text={
                         this.props.combinedCurrentValue
                           ? CurrencyType(false) +
-                            Number(
-                              noExponents(
-                                this.props.combinedCurrentValue.toFixed(2)
-                              )
-                            ).toLocaleString("en-US")
+                            amountFormat(
+                              this.props.combinedCurrentValue,
+                              "en-US",
+                              "USD"
+                            )
                           : CurrencyType(false) + "0.00"
                       }
                     >
@@ -472,13 +477,11 @@ class CustomTable extends BaseReactComponent {
                       text={
                         this.props.combinedUnrealizedGains
                           ? CurrencyType(false) +
-                            Math.abs(
-                              Number(
-                                noExponents(
-                                  this.props.combinedUnrealizedGains.toFixed(2)
-                                )
-                              )
-                            ).toLocaleString("en-US")
+                            amountFormat(
+                              Math.abs(this.props.combinedUnrealizedGains),
+                              "en-US",
+                              "USD"
+                            )
                           : CurrencyType(false) + "0.00"
                       }
                       colorCode="#000"

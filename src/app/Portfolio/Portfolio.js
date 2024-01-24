@@ -3024,10 +3024,7 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueToday
-                      ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueToday.toFixed(2))
-                        ).toLocaleString("en-US")
+                      ? amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3045,9 +3042,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     tempValueThen
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueThen.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3635,9 +3630,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.CurrentValue
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3708,9 +3701,11 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.GainAmount
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount.toFixed(2)))
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          Math.abs(rowData.GainAmount),
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
@@ -4017,9 +4012,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.CostBasis
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(rowData.CostBasis, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >

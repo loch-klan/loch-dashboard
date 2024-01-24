@@ -219,9 +219,11 @@ export const lightenDarkenColor = (hex, lum) => {
 };
 
 export const amountFormat = (number, locals, currency_type) => {
-  return new Intl.NumberFormat(locals, { currency: currency_type }).format(
-    number
-  );
+  return new Intl.NumberFormat(locals, {
+    currency: currency_type,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(number);
 };
 export const getPadding = (val, e, OnboardingState) => {
   let paddRight = 120;
