@@ -33,6 +33,10 @@
         .transactionHistoryCol {
           width: 16.67%;
           padding: 0;
+
+          .search-input{
+            box-shadow: none !important;
+          }
           svg {
             right: 1rem !important;
           }

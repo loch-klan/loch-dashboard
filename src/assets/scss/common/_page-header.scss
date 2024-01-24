@@ -109,26 +109,37 @@
             background-color: $grey-B0B;
           }
         }
+
+        &:hover{
+          .custom-control {
+            .custom-control-label {
+              &::before {
+                background-color: var(--gray);
+              }
+              cursor: pointer;
+            }
+          }
+        }
       }
 
       &:hover {
         .pageHeaderShareBtn {
-          color: $primary;
+          color: var(--primaryTextColor);
           .custom-control {
-            color: $primary;
+            color: var(--primaryTextColor);
             .custom-control-label {
-              color: $primary;
+              color: var(--primaryTextColor);
               &::after {
-                background-color: $primary;
+                background-color: var(--primaryTextColor);
               }
               &::before {
-                border-color: $primary;
+                border-color: var(--primaryTextColor);
               }
             }
           }
         }
         .pageHeaderShareImg {
-          filter: brightness(0);
+          filter: var(--hoverBrightnessValue);
         }
       }
     }

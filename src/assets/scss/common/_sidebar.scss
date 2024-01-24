@@ -278,6 +278,21 @@
 
   background-color: var(--sidebarBackgroud);
   width: 27.2rem;
+
+  .navbar-button-container-mode{
+    position: absolute;
+    top: 34px;
+    right: -10px;
+    img{
+      height: 20px;
+      width: 20px;
+    }
+    cursor: pointer;
+    &:hover{
+      filter: var(--hoverBrightnessValue);
+    
+    }
+  }
   .container {
     width: 27.2rem;
     padding-left: 2.4rem;
@@ -912,7 +927,7 @@
           0px 1px 1px rgba(0, 0, 0, 0.04);
         background-color: var(--primaryFilter);
         border: 0.1rem solid var(--primaryFilter);
-        img{
+        .sideBarFooterSignInIcon{
           filter:var(--invertColor)
         }
         &:hover {
@@ -923,7 +938,7 @@
             // background-color: white;
             border: 1.3px var(--sameModeColor) solid;
             background-color: var(--primaryTextColor);
-            img{
+            .sideBarFooterSignInIcon{
               filter: var(--hoverBrightnessValueInvert);
             }
           }
@@ -975,7 +990,7 @@
         &:hover {
           .sideBarFooterSignInIcon{
             filter: invert(0);
-            filter: brightness(10) !important;
+            filter: var(--hoverBrightnessValueInvert) !important;
           }
           .sideBarFooterSignedInLeaveContainer{
 
@@ -1005,11 +1020,11 @@
           }
           &:hover{
             .navbar-button {
-              color: white;
+              color: var(--sameModeColor);
             }
             img{
               opacity: 1 !important;
-              filter: brightness(10);
+              filter: var(--hoverBrightnessValueInvert);
             }
           }
         }

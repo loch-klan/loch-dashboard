@@ -666,12 +666,41 @@ function Sidebar(props) {
     <>
       <div
         style={{
-          zIndex: "99",
+          zIndex: "999",
+          // position: "relative",
         }}
         className={`sidebar-section ${
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}
       >
+        {isDarkMode ? (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={lightModeIcon} />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+          </span>
+        ) : (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={darkModeIcon} />
+            <span />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+          </span>
+        )}
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
@@ -1387,7 +1416,7 @@ function Sidebar(props) {
                       </div>
                       <div>Follow us</div>
                     </div>
-                    <div className="sidebar-footer-button-holder">
+                    {/* <div className="sidebar-footer-button-holder">
                       {isDarkMode ? (
                         <span
                           onClick={handleDarkMode}
@@ -1410,7 +1439,7 @@ function Sidebar(props) {
                           </Button>
                         </span>
                       )}
-                    </div>
+                    </div> */}
 
                     <div
                       className="m-b-12 footer-divOne"
