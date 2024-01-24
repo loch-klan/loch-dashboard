@@ -98,7 +98,8 @@ html {
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
+  min-height: 100vh;
 }
 
 h1,
@@ -159,7 +160,7 @@ body {
 }
 
 .inter-display-medium {
-  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
+  @include font(var(--primaryTextColor), "Inter-Medium", 1.2rem, 500, normal);
 }
 
 .inter-display-extra-bold {
@@ -557,7 +558,7 @@ body {
 }
 
 .grey-313 {
-  color: $grey-313;
+  color: var(--grey313);
 }
 
 .black-1D2 {
@@ -1345,10 +1346,10 @@ form {
 }
 
 .secondary-btn {
-  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  @include font(var(--sameModeColor), "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
-  background-color: transparent;
-  border: 1px solid $black-191;
+  background-color: var(--backColor);
+  border: 1px solid var(--black191);
   padding: 1.6rem 4rem;
   cursor: pointer;
 
@@ -1582,7 +1583,7 @@ form {
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
-    border: 0.1rem solid $grey-E5E;
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -1780,12 +1781,13 @@ form {
   // position: absolute;
   // top: 0.7rem;
   height: 2.6rem;
-  background: rgba(229, 229, 230, 0.5);
-  border: 0.1rem solid $grey-CAC;
+  background: var(--primaryFilter);
+  border: 0.1rem solid var(--secondaryLightColor);
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+  color: var(--primaryTextColor);
 
   .badge {
     // padding: 0.35rem 0.8rem 0.4rem;
@@ -1872,6 +1874,12 @@ form {
   }
 }
 
+.tableWatermark {
+  background: url(../../images/graph-logo.svg) no-repeat center center;
+  background-size: 104px 39px;
+  background-position-y: 48%;
+}
+
 .transaction-table-section {
   .graph-header {
     padding: 3.2rem 3.2rem 0rem 3.2rem;
@@ -1937,10 +1945,10 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightnessValue);
             }
           }
 
@@ -2080,7 +2088,7 @@ form {
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-
+            color: var(--primaryTextColor);
             &:hover {
               font-weight: 600;
             }
@@ -2139,6 +2147,9 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .no-data{
+    filter: var(--invertColor);
+  }
 }
 
 // slick slider positioning in loading animation
@@ -2184,7 +2195,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .copy-icon-top-bar-container {
@@ -2194,7 +2205,7 @@ textarea {
   .copy-icon-top-bar {
     cursor: pointer;
     &:hover {
-      filter: brightness(0.2);
+      filter: var(--hoverBrightnessValue);
     }
   }
 }
@@ -2403,10 +2414,10 @@ textarea {
           .custom-control-label {
             color: $primary;
             &::after {
-              background-color: $primary;
+              background-color: var(--primaryTextColor);
             }
             &::before {
-              border-color: $primary;
+              background-color: var(--primaryTextColor);
             }
           }
         }
@@ -2631,14 +2642,14 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
-    box-shadow: 0 0 0 30px white inset !important;
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
-  box-shadow: 0 0 0 30px white inset !important;
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {
@@ -2646,4 +2657,8 @@ input{
   &:hover {
     filter: brightness(0);
   }
+}
+.overlay-tool-tip-container{
+  background-color: var(--cardBackground);
+  color: var(--primaryTextColor);
 }

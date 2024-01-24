@@ -1,14 +1,12 @@
 import { Route } from "react-router-dom";
 import Portfolio from "./app/Portfolio/Portfolio";
 import Login from "./app/common/Login";
-import { Home } from "./app/home";
 import { Profile } from "./app/profile";
 import PrivateRoute from "./utils/PrivateRoute";
 import Sandbox from "./utils/form/Sandbox";
 
 import VerifyEmail from "./app/common/VerifyEmail";
 import Defi from "./app/defi/Defi";
-import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
@@ -26,8 +24,12 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import NewHome from "./app/home/NewHome";
+import Nft from "./app/nft/Nft";
+import Referral from "./app/referral/Referral";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import NewWelcome from "./app/home/NewWelcome";
+
 const routes = [
   {
     path: "/",
@@ -84,6 +86,12 @@ const routes = [
     name: "Assets",
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
+  },
+  {
+    path: "/nft",
+    name: "NFT",
+    type: PrivateRoute,
+    component: Nft,
   },
   {
     path: "/intelligence/transaction-history",

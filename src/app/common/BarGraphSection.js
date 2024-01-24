@@ -7,9 +7,14 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import { Form, Image } from "react-bootstrap";
-import { Bar } from "react-chartjs-2";
+import {
+  Bar,
+  Chart,
+  getDatasetAtEvent,
+  getElementAtEvent,
+} from "react-chartjs-2";
 import { connect } from "react-redux";
 import { BarGraphFooter } from "./BarGraphFooter";
 import { GraphHeader } from "./GraphHeader";
@@ -31,6 +36,8 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import DropDown from "./DropDown";
 import Loading from "./Loading";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 HC_rounded(Highcharts);
 
@@ -47,6 +54,7 @@ ChartJS.register(
 class BarGraphSection extends Component {
   constructor(props) {
     super(props);
+    this.selectorRef = React.createRef(null);
     this.state = {
       headerTitle: props.headerTitle,
       headerSubTitle: props.headerSubTitle,
@@ -99,7 +107,30 @@ class BarGraphSection extends Component {
       });
     }
   }
-
+  goToCounterPartyVolAddress = (clickedEvent) => {
+    if (this.selectorRef.current) {
+      if (getElementAtEvent(this.selectorRef.current, clickedEvent)) {
+        const tempHolder = getElementAtEvent(
+          this.selectorRef.current,
+          clickedEvent
+        );
+        if (
+          tempHolder[0] &&
+          (tempHolder[0].index || tempHolder[0].index === 0)
+        ) {
+          const clickedIndex = tempHolder[0].index;
+          if (clickedIndex || clickedIndex === 0) {
+            if (this.state.data?.labels[clickedIndex]) {
+              const goToThisAddress = this.state.data.labels[clickedIndex];
+              let slink = goToThisAddress;
+              let shareLink = BASE_URL_S3 + "home/" + slink;
+              window.open(shareLink, "_blank", "noreferrer");
+            }
+          }
+        }
+      }
+    }
+  };
   handleFooter = (event) => {
     this.setState({
       activeFooter: event.target.id,
@@ -255,6 +286,7 @@ class BarGraphSection extends Component {
     };
     // console.log("options ", options);
     // console.log("data ", data);
+    const chartRef = React.createRef();
     return (
       <div
         className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
@@ -271,6 +303,7 @@ class BarGraphSection extends Component {
                 flexDirection: "column",
                 paddingTop: "0rem",
                 paddingBottom: "0rem",
+                paddingLeft: "2rem",
               }
             : {
                 display: "flex",
@@ -715,7 +748,11 @@ class BarGraphSection extends Component {
               )}
               {/* Graph Section */}
               <div className={className} style={{ display: "flex" }}>
-                {options2 != undefined && isScroll && data.labels.length > 8 ? (
+                {options2 != undefined &&
+                isScroll &&
+                (this.props.isFromHome
+                  ? data.labels.length > 3
+                  : data.labels.length > 8) ? (
                   <div style={{ width: `${digit}rem` }}>
                     <Bar options={options2} data={data} />
                   </div>
@@ -725,7 +762,11 @@ class BarGraphSection extends Component {
 
                 <div
                   className={
-                    options2 != undefined && isScroll && data.labels.length > 8
+                    options2 != undefined &&
+                    isScroll &&
+                    (this.props.isFromHome
+                      ? data.labels.length > 3
+                      : data.labels.length > 8)
                       ? "ScrollArea"
                       : "ChartAreaWrapper"
                   }
@@ -733,7 +774,9 @@ class BarGraphSection extends Component {
                     width: `${
                       options2 != undefined &&
                       isScroll &&
-                      data.labels.length > 8
+                      (this.props.isFromHome
+                        ? data.labels.length > 3
+                        : data.labels.length > 8)
                         ? "calc(100 % - " + digit + "rem)"
                         : "100%"
                     }`,
@@ -758,12 +801,19 @@ class BarGraphSection extends Component {
                         this.props.newHomeSetup ? "chartAreaOldBar" : ""
                       }`}
                       style={
-                        data.labels.length > 8 && isScroll
+                        (this.props.isFromHome
+                          ? data.labels.length > 3
+                          : data.labels.length > 8) && isScroll
                           ? ScrollStyle
                           : NormalStyle
                       }
                     >
-                      <Bar options={options} data={data} />
+                      <Bar
+                        ref={this.selectorRef}
+                        onClick={this.goToCounterPartyVolAddress}
+                        options={options}
+                        data={data}
+                      />
                     </div>
                   ) : (
                     <>
