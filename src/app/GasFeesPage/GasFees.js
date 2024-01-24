@@ -188,17 +188,15 @@ class GasFeesPage extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
-    if (
-      this.props.intelligenceState &&
-      this.props.intelligenceState.GraphfeeData
-    ) {
-      if (this.props.intelligenceState.GraphfeeData) {
-        this.props.updateFeeGraph(
-          this.props.intelligenceState.GraphfeeData,
-          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
-          this
-        );
-      }
+    if (this.props.intelligenceState.graphfeeValue) {
+      this.setState({
+        graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
+      });
+    }
+    if (this.props.intelligenceState.GraphfeeData) {
+      this.setState({
+        graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
+      });
     }
     if (
       !this.props.commonState.gasFeesPage ||
@@ -314,6 +312,7 @@ class GasFeesPage extends Component {
   getBlockchainFee(option, first) {
     this.setState({
       selectedActiveBadgeLocal: [],
+      gasFeesGraphLoading: true,
     });
     const today = moment().valueOf();
     let handleSelected = "";

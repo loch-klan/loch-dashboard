@@ -66,6 +66,7 @@ import {
   CurrencyType,
   TruncateText,
   UpgradeTriggered,
+  amountFormat,
   compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
@@ -1882,9 +1883,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   text={
                     tempValueToday
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueToday.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1903,9 +1902,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   text={
                     tempValueThen
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueThen.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >

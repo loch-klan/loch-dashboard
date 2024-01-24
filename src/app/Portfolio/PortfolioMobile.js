@@ -20,11 +20,14 @@ import {
   Mobile_Home_Share,
   TimeSpentMobileHome,
   TransactionHistoryAddressCopied,
+  TransactionHistoryAssetFilter,
   TransactionHistoryHashCopied,
   TransactionHistoryHideDust,
+  TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
   TransactionHistoryPageSearch,
+  TransactionHistorySearch,
   TransactionHistorySortAmount,
   TransactionHistorySortAsset,
   TransactionHistorySortDate,
@@ -34,12 +37,18 @@ import {
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
   TransactionHistoryWalletClicked,
+  TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import {
   API_LIMIT,
   BASE_URL_S3,
   DEFAULT_PRICE,
+  SEARCH_BETWEEN_VALUE,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_CHAIN_IN,
   SEARCH_BY_NOT_DUST,
+  SEARCH_BY_TEXT,
+  SEARCH_BY_TIMESTAMP_IN,
   SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
   SORT_BY_ASSET,
@@ -51,10 +60,11 @@ import {
   SORT_BY_USD_VALUE_THEN,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   convertNtoNumber,
   noExponents,
   numToCurrency,
@@ -76,6 +86,7 @@ import { getAvgCostBasis, updateAverageCostBasis } from "../cost/Api";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
+  getFilters,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
@@ -96,6 +107,8 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import chevronRight from "./../../assets/images/icons/chevron-right.svg";
 import NftMobileBlock from "../nft/NftMobileBlock.js";
 
@@ -117,11 +130,13 @@ class PortfolioMobile extends BaseReactComponent {
       combinedReturn: 0,
       showHideDustVal: true,
       showHideDustValTrans: true,
-      isShowingAge: false,
+      isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       walletList: [],
-      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-      condition: [],
+      sortTransHistory: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      conditionTransHistory: [],
+      minAmountTransHistory: "1",
+      maxAmountTransHistory: "1000000000",
       tableSortOpt: [
         {
           title: "time",
@@ -205,9 +220,9 @@ class PortfolioMobile extends BaseReactComponent {
     };
   }
   handleTableSort = (val) => {
-    let sort = [...this.state.tableSortOpt];
+    let sortTransHistory = [...this.state.tableSortOpt];
     let obj = [];
-    sort?.map((el) => {
+    sortTransHistory?.map((el) => {
       if (el.title === val) {
         if (val === "time") {
           obj = [
@@ -324,8 +339,8 @@ class PortfolioMobile extends BaseReactComponent {
       obj = [{ key: obj[0].key, value: !obj[0].value }];
     }
     this.setState({
-      sort: obj,
-      tableSortOpt: sort,
+      sortTransHistory: obj,
+      tableSortOpt: sortTransHistory,
     });
   };
   searchIconLoaded = () => {
@@ -397,23 +412,23 @@ class PortfolioMobile extends BaseReactComponent {
         combinedReturn: tempcombinedReturn,
       });
 
-      this.callApi(page);
+      this.callApiTransHistory(page);
     }
 
     if (
-      prevState.condition !== this.state.condition ||
-      prevState.sort !== this.state.sort
+      prevState.conditionTransHistory !== this.state.conditionTransHistory ||
+      prevState.sortTransHistory !== this.state.sortTransHistory
     ) {
-      this.callApi(this.state.currentPage || START_INDEX);
+      this.callApiTransHistory(this.state.currentPage || START_INDEX);
     }
 
     if (
       prevPage !== page ||
-      prevState.condition !== this.state.condition ||
-      prevState.sort !== this.state.sort ||
+      prevState.conditionTransHistory !== this.state.conditionTransHistory ||
+      prevState.sortTransHistory !== this.state.sortTransHistory ||
       prevState.pageLimit !== this.state.pageLimit
     ) {
-      this.callApi(page);
+      this.callApiTransHistory(page);
       this.setState({
         currentPage: page,
       });
@@ -486,7 +501,7 @@ class PortfolioMobile extends BaseReactComponent {
       window.scrollTo(0, 0);
     }, 500);
 
-    this.callApi(this.state.currentPage || START_INDEX);
+    this.callApiTransHistory(this.state.currentPage || START_INDEX);
 
     this.startPageView();
     this.updateTimer(true);
@@ -504,7 +519,7 @@ class PortfolioMobile extends BaseReactComponent {
         { key: SEARCH_BY_NOT_DUST, value: true },
       ];
       this.setState({
-        condition: cond || [],
+        conditionTransHistory: cond || [],
         walletList: walletList || [],
       });
     }, 1500);
@@ -522,19 +537,40 @@ class PortfolioMobile extends BaseReactComponent {
     const tempExpiryTime = Date.now() + 1800000;
     window.sessionStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
   };
-  callApi = (page = START_INDEX) => {
+  callApiTransHistory = (page = START_INDEX) => {
+    let tempTokenHolder = getToken();
+    if (tempTokenHolder && tempTokenHolder !== "jsk") {
+      this.props.getFilters(this);
+    }
+    let tempCond = [];
+    this.state.conditionTransHistory.forEach((tempEle) => {
+      if (tempEle.key !== SEARCH_BY_WALLET_ADDRESS_IN) {
+        tempCond.push(tempEle);
+      }
+    });
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : [];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    tempCond = [
+      ...tempCond,
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+    ];
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    if (
-      this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN)
-        ?.value
-    ) {
-      this.props.searchTransactionApi(data, this, page);
-    }
+    data.append("sorts", JSON.stringify(this.state.sortTransHistory));
+    this.props.searchTransactionApi(data, this, page, true, true);
   };
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
@@ -589,24 +625,22 @@ class PortfolioMobile extends BaseReactComponent {
   };
 
   handleDustTrans = () => {
-    const d = this.state.condition.find(
-      (e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN
+    this.setState(
+      {
+        showHideDustValTrans: !this.state.showHideDustValTrans,
+      },
+      () => {
+        TransactionHistoryHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.updateTimer();
+        this.addConditionTransactionTable(
+          SEARCH_BY_NOT_DUST,
+          this.state.showHideDustValTrans
+        );
+      }
     );
-    this.setState({
-      showHideDustValTrans: !this.state.showHideDustValTrans,
-
-      condition: [
-        d,
-        { key: SEARCH_BY_NOT_DUST, value: !this.state.showHideDustValTrans },
-      ],
-    });
-
-    TransactionHistoryHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      isMobile: true,
-    });
-    this.updateTimer();
   };
   handleShare = () => {
     Mobile_Home_Share({
@@ -646,6 +680,144 @@ class PortfolioMobile extends BaseReactComponent {
       window.location.replace(shareLink);
     } else {
       window.open(shareLink, "_self");
+    }
+  };
+  addConditionTransactionTable = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
+    }
+    let index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.conditionTransHistory];
+    let search_index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      conditionTransHistory: arr,
+    });
+  };
+  onKeyPressTransHistorySearch = (curKey) => {
+    if (curKey && curKey.code && curKey.code === "Enter") {
+      this.addConditionTransactionTable(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched: this.state.search,
+      });
+    }
+  };
+  onChangeTransHistorySearchMethod = (ele) => {
+    this.setState({
+      search: ele.target.value,
+    });
+  };
+  handleNetworkSelectTransHistory = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addConditionTransactionTable(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmountTransHistory: min,
+          maxAmountTransHistory: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addConditionTransactionTable(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
     }
   };
   render() {
@@ -776,9 +948,9 @@ class PortfolioMobile extends BaseReactComponent {
             let tempOpp = "-";
             if (this.state.isShowingAge && rowData.age) {
               tempVal = rowData.age;
-              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm");
             } else if (!this.state.isShowingAge && rowData.time) {
-              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm");
               tempOpp = rowData.age;
             }
             return (
@@ -1417,9 +1589,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempValueToday
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueToday.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1437,9 +1607,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempValueThen
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueThen.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1834,9 +2002,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedCostBasis
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(this.state.combinedCostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          this.state.combinedCostBasis,
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1864,9 +2034,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CostBasis
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")
+                      amountFormat(rowData.CostBasis, "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
               >
@@ -1915,11 +2083,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedCurrentValue
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(
-                            this.state.combinedCurrentValue.toFixed(2)
-                          )
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          this.state.combinedCurrentValue,
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1947,9 +2115,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CurrentValue
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CurrentValue.toFixed(2))
-                      ).toLocaleString("en-US")
+                      amountFormat(rowData.CurrentValue, "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
               >
@@ -2001,13 +2167,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedUnrealizedGains
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(
-                            noExponents(
-                              this.state.combinedUnrealizedGains.toFixed(2)
-                            )
-                          )
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          Math.abs(this.state.combinedUnrealizedGains),
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
@@ -2049,9 +2213,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.GainAmount
                     ? CurrencyType(false) +
-                      Math.abs(
-                        Number(noExponents(rowData.GainAmount.toFixed(2)))
-                      ).toLocaleString("en-US")
+                      amountFormat(Math.abs(rowData.GainAmount), "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
                 colorCode="#000"
@@ -2518,7 +2680,7 @@ class PortfolioMobile extends BaseReactComponent {
                   columnList={columnData}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.props.AvgCostLoading}
                   isAnalytics="average cost basis"
                   addWatermark
                   xAxisScrollable
@@ -2578,49 +2740,139 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
+              <div
+                className="fillter_tabs_section"
+                style={{ marginTop: "1rem" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: "6px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="" style={{ width: "48%" }}>
+                    <CustomMinMaxDropdown
+                      filtername="Size"
+                      handleClick={(min, max) => this.handleAmount(min, max)}
+                      minAmount={this.state.minAmountTransHistory}
+                      maxAmount={this.state.maxAmountTransHistory}
+                      style={{ marginLeft: "5px !important" }}
+                    />
+                  </div>
+                  <div className="" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Years"
+                      style={{
+                        width: "100%",
+                        margin: "0px",
+                        paddingLeft: "5px ",
+                      }}
+                      options={this.props.intelligenceState.yearFilter}
+                      action={SEARCH_BY_TIMESTAMP_IN}
+                      handleClick={this.addConditionTransactionTable}
+                      searchIsUsed={this.timeSearchIsUsed}
+                      selectedTokens={this.state.selectedTimes}
+                      transactionHistorySavedData
+                      isMobile
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "12px",
+                  }}
+                >
+                  <div className="col-span-6" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Assets"
+                      options={this.props.intelligenceState.assetFilter}
+                      action={SEARCH_BY_ASSETS_IN}
+                      handleClick={this.addConditionTransactionTable}
+                      searchIsUsed={this.assetSearchIsUsed}
+                      selectedTokens={this.state.selectedAssets}
+                      transactionHistorySavedData
+                    />
+                  </div>
+                  <div className="col-span-6" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Networks"
+                      options={this.props.OnboardingState.coinsList}
+                      action={SEARCH_BY_CHAIN_IN}
+                      handleClick={this.handleNetworkSelectTransHistory}
+                      searchIsUsed={this.networkSearchIsUsed}
+                      isCaptialised
+                      isGreyChain
+                      selectedTokens={this.state.selectedNetworks}
+                      transactionHistorySavedData
+                    />
+                  </div>
+                </div>
+                {/* {fillter_tabs} */}
+                <div
+                  className="col-span-12"
+                  style={{ width: "100%", marginTop: "12px" }}
+                >
+                  <div
+                    className="transaction-table-mobile-search"
+                    style={{ display: "flex", width: "100%" }}
+                  >
+                    <Image src={SearchIcon} className="search-icon" />
+
+                    <input
+                      type="text"
+                      value={this.state.search}
+                      className="search-input"
+                      style={{
+                        flexGrow: "1",
+                      }}
+                      placeholder="Search"
+                      onChange={this.onChangeTransHistorySearchMethod}
+                      onKeyDown={this.onKeyPressTransHistorySearch}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion
                   title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message=" "
+                  message={"No Transactions Found"}
                   subTitle=""
                   tableData={tableDataTransaction}
                   columnList={columnListTransaction}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.state.tableLoading}
                   isAnalytics="average cost basis"
                   addWatermark
                   xAxisScrollable
-                  // yAxisScrollable
+                  bodyHeight={"1000px"}
                 />
               </div>
-              <div style={{ marginTop: "2rem" }}>
-                {totalPage > 1 && (
-                  <SmartMoneyPagination
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage + 1}
-                    pageCount={totalPage}
-                    pageLimit={API_LIMIT}
-                    onPageChange={(e) => {}}
-                    style={{ padding: "0px" }}
-                    isMobile
-                  />
-                )}
-              </div>
+
+              {!this.state.tableLoading ? (
+                <div style={{ marginTop: "2rem" }}>
+                  {totalPage > 1 && (
+                    <SmartMoneyPagination
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage + 1}
+                      pageCount={totalPage}
+                      pageLimit={API_LIMIT}
+                      onPageChange={(e) => {}}
+                      style={{ padding: "0px" }}
+                      isMobile
+                    />
+                  )}
+                </div>
+              ) : null}
+              
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -2705,7 +2957,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   // avg cost
   getAvgCostBasis,
-
+  getFilters,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,
