@@ -2697,6 +2697,11 @@ input{
   input{
     box-shadow: var(--inputShadow) !important;
     -webkit-box-shadow: var(--inputShadow) inset !important;
+    background: transparent;
+    color: var(--primaryTextColor) !important;
+    &:focus{
+      background-color: transparent;
+    }
   }
 
 }
