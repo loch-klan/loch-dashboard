@@ -71,11 +71,7 @@ import {
 } from "../common/Api";
 import Loading from "../common/Loading";
 import Footer from "../common/footer";
-import {
-  ResetAverageCostBasis,
-  getAvgCostBasis,
-  updateAverageCostBasis,
-} from "../cost/Api";
+import { getAvgCostBasis, updateAverageCostBasis } from "../cost/Api";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
@@ -2627,7 +2623,6 @@ const mapDispatchToProps = {
   getAvgCostBasis,
 
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
