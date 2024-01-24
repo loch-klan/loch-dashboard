@@ -1375,8 +1375,11 @@ class PortfolioMobile extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueToday.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1393,7 +1396,10 @@ class PortfolioMobile extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueThen.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1651,21 +1657,19 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  !rowData.AverageCostPrice || rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")
+                  rowData.AverageCostPrice
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.AverageCostPrice)
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {!rowData.AverageCostPrice || rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
+                  {rowData.AverageCostPrice
+                    ? CurrencyType(false) +
                       numToCurrency(
                         rowData.AverageCostPrice.toFixed(2)
-                      ).toLocaleString("en-US")}
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
             );
@@ -1702,10 +1706,8 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CurrentPrice
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CurrentPrice.toFixed(2))
-                      ).toLocaleString("en-US")
-                    : "N/A"
+                      convertNtoNumber(rowData.CurrentPrice)
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -1714,7 +1716,7 @@ class PortfolioMobile extends BaseReactComponent {
                       numToCurrency(
                         rowData.CurrentPrice.toFixed(2)
                       ).toLocaleString("en-US")
-                    : "N/A"}
+                    : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
             );
@@ -1749,15 +1751,15 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  rowData.Amount
-                    ? Number(noExponents(rowData.Amount)).toLocaleString(
-                        "en-US"
-                      )
-                    : 0.0
+                  rowData.Amount && rowData.Amount !== 0
+                    ? convertNtoNumber(rowData.Amount)
+                    : "0"
                 }
               >
                 <span>
-                  {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                  {rowData.Amount
+                    ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                    : "0"}
                 </span>
               </CustomOverlay>
             );
@@ -1790,25 +1792,23 @@ class PortfolioMobile extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    !this.state.combinedCostBasis ||
-                    this.state.combinedCostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    this.state.combinedCostBasis
+                      ? CurrencyType(false) +
                         Number(
                           noExponents(this.state.combinedCostBasis.toFixed(2))
                         ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common-container">
                     <div className="cost-common">
                       <span>
-                        {!this.state.combinedCostBasis ||
-                        this.state.combinedCostBasis === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
+                        {this.state.combinedCostBasis
+                          ? CurrencyType(false) +
                             numToCurrency(
                               this.state.combinedCostBasis.toFixed(2)
-                            ).toLocaleString("en-US")}
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
                       </span>
                     </div>
                   </div>
@@ -1822,23 +1822,23 @@ class PortfolioMobile extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  !rowData.CostBasis || rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
+                  rowData.CostBasis
+                    ? CurrencyType(false) +
                       Number(
                         noExponents(rowData.CostBasis.toFixed(2))
                       ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
                     <span>
-                      {!rowData.CostBasis || rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
                             rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")}
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>
@@ -1880,7 +1880,7 @@ class PortfolioMobile extends BaseReactComponent {
                             this.state.combinedCurrentValue.toFixed(2)
                           )
                         ).toLocaleString("en-US")
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common-container">
@@ -1891,7 +1891,7 @@ class PortfolioMobile extends BaseReactComponent {
                             numToCurrency(
                               this.state.combinedCurrentValue.toFixed(2)
                             ).toLocaleString("en-US")
-                          : "N/A"}
+                          : CurrencyType(false) + "0.00"}
                       </span>
                     </div>
                   </div>
@@ -1910,7 +1910,7 @@ class PortfolioMobile extends BaseReactComponent {
                       Number(
                         noExponents(rowData.CurrentValue.toFixed(2))
                       ).toLocaleString("en-US")
-                    : "N/A"
+                    : CurrencyType(false) + "0.00"
                 }
               >
                 <div className="cost-common-container">
@@ -1921,7 +1921,7 @@ class PortfolioMobile extends BaseReactComponent {
                           numToCurrency(
                             rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>
@@ -2033,10 +2033,10 @@ class PortfolioMobile extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </div>

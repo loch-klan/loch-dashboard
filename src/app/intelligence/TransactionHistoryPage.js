@@ -69,6 +69,7 @@ import {
   compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
+  noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import {
@@ -1868,8 +1869,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueToday.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1886,7 +1890,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        Number(
+                          noExponents(tempValueThen.toFixed(2))
+                        ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"
                   }
                 >

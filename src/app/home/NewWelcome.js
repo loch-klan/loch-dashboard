@@ -2034,7 +2034,9 @@ class NewWelcome extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
-            let tempNetWorth = rowData.networth ? rowData.networth : 0;
+            let tempNetWorth = rowData.networth
+              ? rowData.networth.toFixed(2)
+              : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -2086,7 +2088,9 @@ class NewWelcome extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
-            let tempNetflows = rowData.netflows ? rowData.netflows : 0;
+            let tempNetflows = rowData.netflows
+              ? rowData.netflows.toFixed(2)
+              : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
@@ -2176,7 +2180,7 @@ class NewWelcome extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
-            let tempProfits = rowData.profits ? rowData.profits : 0;
+            let tempProfits = rowData.profits ? rowData.profits.toFixed(2) : 0;
             let tempCurrencyRate = this.state.currency?.rate
               ? this.state.currency.rate
               : 0;
