@@ -112,7 +112,7 @@
           padding: 0.4rem;
           .dropdown-item {
             padding: 0.8rem;
-            color: #313233;
+            color: var(--grey313);
             font-family: "Inter-Medium";
             font-size: 1.3rem;
             font-weight: 500;
@@ -133,27 +133,27 @@
         .btn-primary.dropdown-toggle {
           background-color: transparent !important;
           border: 0.1rem solid #d4d4d4 !important;
-          color: #19191a;
+          color: var(--black191);
           padding: 0rem 1rem;
           height: 3rem;
           padding: 0rem 1.5rem;
           border-radius: 0.8rem;
 
           &:hover {
-            border: 0.1rem solid #0d0d0d !important;
+            border: 0.1rem solid var(--primaryTextColor) !important;
           }
         }
 
         .btn-primary.dropdown-toggle:focus {
           box-shadow: none;
           background-color: transparent !important;
-          border: 0.1rem solid #0d0d0d !important;
-          color: #19191a;
+          border: 0.1rem solid var(--primaryTextColor) !important;
+          color: var(--black191);
         }
 
         .dropdown-toggle {
           background-color: transparent;
-          color: #19191a;
+          color: var(--black191);
           padding: 0rem 1rem;
           height: 3rem;
           padding: 0rem 1.5rem;

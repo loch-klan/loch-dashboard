@@ -536,7 +536,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Account
             </span>
           </div>
@@ -636,7 +636,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             <Image
@@ -694,7 +694,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Remarks
             </span>
             <Image
@@ -732,7 +732,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Delete
             </span>
           </div>
@@ -843,6 +843,7 @@ class WatchListPage extends BaseReactComponent {
               handleShare={this.handleShare}
               btnText="Add address"
               handleBtn={this.handleAddWatchlistAddress}
+              mainThemeBtn={true}
             />
 
             <div className="fillter_tabs_section">
