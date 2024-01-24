@@ -601,7 +601,12 @@ class PortfolioMobile extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.history.push("/welcome?FromMobileHome=true");
+    let shareLink = BASE_URL_S3 + "welcome";
+    if (window.location) {
+      window.location.replace(shareLink);
+    } else {
+      window.open(shareLink, "_self");
+    }
   };
   render() {
     const { currency } = this.state;
@@ -1258,11 +1263,15 @@ class PortfolioMobile extends BaseReactComponent {
                 isText={true}
                 text={rowData.asset.code}
               >
-                {/* <CoinChip
-                                  coin_img_src={rowData.asset.symbol}
-                                  // coin_code={rowData.asset.code}
-                              /> */}
-                <Image src={rowData.asset.symbol} className="asset-symbol" />
+                {rowData.asset?.symbol ? (
+                  <Image src={rowData.asset.symbol} className="asset-symbol" />
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
@@ -1606,6 +1615,7 @@ class PortfolioMobile extends BaseReactComponent {
                     coin_img_src={rowData.Asset}
                     coin_code={rowData.AssetCode}
                     chain={rowData?.chain}
+                    hideText={true}
                   />
                 </div>
               </CustomOverlay>

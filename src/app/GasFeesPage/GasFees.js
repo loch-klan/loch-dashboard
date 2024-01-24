@@ -305,6 +305,7 @@ class GasFeesPage extends Component {
   getBlockchainFee(option, first) {
     this.setState({
       selectedActiveBadgeLocal: [],
+      gasFeesGraphLoading: true,
     });
     const today = moment().valueOf();
     let handleSelected = "";

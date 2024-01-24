@@ -447,7 +447,6 @@ class BarGraphSection extends Component {
                           handleClick={this.handleFunction}
                           isChain={true}
                           searchIsUsed={this.props.chainSearchIsUsed}
-                          // selectedTokens={this.state.activeBadge}
                         />
                       </div>
                       <div
