@@ -4398,7 +4398,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(1);
                             }}
                           >
-                            Realized Gains
+                            Flows
                             <CustomOverlay
                               position="top"
                               isIcon={false}
