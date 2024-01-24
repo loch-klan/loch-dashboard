@@ -54,6 +54,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   convertNtoNumber,
   noExponents,
   numToCurrency,
@@ -1377,9 +1378,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempValueToday
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueToday.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1397,9 +1396,7 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     tempValueThen
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(tempValueThen.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1794,9 +1791,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedCostBasis
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(this.state.combinedCostBasis.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          this.state.combinedCostBasis,
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1824,9 +1823,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CostBasis
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")
+                      amountFormat(rowData.CostBasis, "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
               >
@@ -1875,11 +1872,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedCurrentValue
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(
-                            this.state.combinedCurrentValue.toFixed(2)
-                          )
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          this.state.combinedCurrentValue,
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1907,9 +1904,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.CurrentValue
                     ? CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CurrentValue.toFixed(2))
-                      ).toLocaleString("en-US")
+                      amountFormat(rowData.CurrentValue, "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
               >
@@ -1961,13 +1956,11 @@ class PortfolioMobile extends BaseReactComponent {
                   text={
                     this.state.combinedUnrealizedGains
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(
-                            noExponents(
-                              this.state.combinedUnrealizedGains.toFixed(2)
-                            )
-                          )
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          Math.abs(this.state.combinedUnrealizedGains),
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
@@ -2009,9 +2002,7 @@ class PortfolioMobile extends BaseReactComponent {
                 text={
                   rowData.GainAmount
                     ? CurrencyType(false) +
-                      Math.abs(
-                        Number(noExponents(rowData.GainAmount.toFixed(2)))
-                      ).toLocaleString("en-US")
+                      amountFormat(Math.abs(rowData.GainAmount), "en-US", "USD")
                     : CurrencyType(false) + "0.00"
                 }
                 colorCode="#000"
