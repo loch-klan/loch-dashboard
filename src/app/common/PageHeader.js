@@ -315,8 +315,8 @@ export default function PageHeader(props) {
               {props.btnText && (
                 <Button
                   className={`${
-                    props.btnOutline ? "secondary-btn" : "primary-btn"
-                  }`}
+                    props.btnOutline ? "secondary-btn " : "primary-btn"
+                  } ${props.mainThemeBtn ? "main-button" : ""}`}
                   onClick={props.handleBtn}
                 >
                   {props.btnText}

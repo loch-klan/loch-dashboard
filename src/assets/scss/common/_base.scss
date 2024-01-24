@@ -1071,9 +1071,11 @@ form {
     width: 24rem;
     // box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.4rem;
-    border: 0.1rem solid $grey-CAC;
+    border: 0.1rem solid var(--dropdownContentBorderColor);
     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
       0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      background-color: var(--sameModeColor);
+      color: var(--primaryTextColor);
     // border: 0;
 
     .dropdown-item {
@@ -1158,7 +1160,7 @@ form {
   .ReactVirtualized__Table__Grid {
     // z-index: -1;
     height: auto !important;
-    background-color: $secondary;
+    background-color: var(--cardBackground);
     overflow: visible !important;
 
     .ReactVirtualized__Grid__innerScrollContainer {
@@ -1955,7 +1957,7 @@ form {
           &.no-hover {
             &:hover {
               span {
-                color: $grey-4F4;
+                color: var(--secondaryDarkTextColor);
               }
               img {
                 filter: none;
@@ -1994,7 +1996,7 @@ form {
         .ReactVirtualized__Table__rowColumn {
           font-size: 1.3rem;
           line-height: 1.6rem;
-          color: $grey-313;
+          color: var(--grey313);
           text-align: center;
           margin: 0rem;
           padding: 0 1rem;
@@ -2556,13 +2558,13 @@ textarea {
   // right: 2rem;
   cursor: pointer;
   user-select: none;
-  border: 1px solid rgba(29, 29, 31, 0.14);
+  border: 1px solid var(--cardBorder);
   &:hover {
     // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
     // border: 0.1rem solid rgba(229, 229, 230, 1);
     background: rgba(255, 255, 255, 0.001);
     border: 1px solid rgba(0, 113, 227, 0.2);
-    box-shadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
+    box-shadow: var(--custmCheckboxShadow)
     // background-color: #fff !important;
   }
 }
@@ -2581,13 +2583,13 @@ textarea {
     width: 100%;
 
     input {
-      @include font($primary, "Inter-Regular", 1.3rem, normal, 1.5rem);
+      @include font(var(--primaryTextColor), "Inter-Regular", 1.3rem, normal, 1.5rem);
       // padding: 1rem !important;
       min-height: 3rem;
       width: 100%;
       border-radius: 6px;
-      border: 1px solid #d4d4d4;
-
+      border: 1px solid var(--cardBorder);
+      background-color: transparent;
       &::placeholder {
         font-size: 1.3rem;
         line-height: 1.5rem;
@@ -2595,16 +2597,20 @@ textarea {
       }
 
       &:focus {
-        border: 1px solid $primary !important;
+        border: 1px solid var(--primaryTextColor) !important;
+      }
+
+      &:hover {
+        border: 1px solid var(--primaryTextColor);
       }
     }
 
     .form-control.is-valid {
       box-shadow: none;
-      border: 1px solid #d4d4d4;
+      border: 1px solid var(--cardBorder);
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
@@ -2661,4 +2667,36 @@ input {
 .overlay-tool-tip-container{
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
+}
+
+.main-button{
+  background-color: var(--mainButtonBg) !important;
+  box-shadow: var(--boxShadowMd) !important;
+  border: 0.1rem solid var(--greyE5e) !important;
+  color: var(--primaryTextColor) !important;
+  div{
+    color: var(--primaryTextColor) !important;
+  }
+  img{
+    filter: var(--invertColor) !important;
+  }
+  &:hover{
+    background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    
+    div{
+      color: var(--sameModeColor) !important;
+    }
+    img{
+      filter: var(--invertColor) !important;
+    }
+  }
+}
+
+.input-noshadow-dark{
+  input{
+    box-shadow: var(--inputShadow) !important;
+    -webkit-box-shadow: var(--inputShadow) inset !important;
+  }
+
 }
