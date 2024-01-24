@@ -163,7 +163,11 @@ class CustomTable extends BaseReactComponent {
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
                       gridClassName={`${
-                        this.props.addWatermark ? "tableWatermark" : ""
+                        this.props.addWatermark
+                          ? "tableWatermark"
+                          : this.props.fakeWatermark
+                          ? "tableWatermarkFake"
+                          : ""
                       } ${
                         this.props.bottomCombiedValues
                           ? "topMarginForCombiedValues"

@@ -78,6 +78,7 @@ function TransactionTable(props) {
         }
         isLoading={props.isLoading}
         addWatermark={props.addWatermark}
+        fakeWatermark={props.fakeWatermark}
         watermarkOnTop={props.watermarkOnTop}
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}

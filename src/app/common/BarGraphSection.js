@@ -257,7 +257,9 @@ class BarGraphSection extends Component {
     // console.log("data ", data);
     return (
       <div
-        className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
+        className={`bar-graph-section ${
+          this.props.floatingWatermark ? "tableWatermarkOverlay" : ""
+        } ${marginBottom ? marginBottom : ""}`}
         style={
           this.props.isCounterPartyMini
             ? {

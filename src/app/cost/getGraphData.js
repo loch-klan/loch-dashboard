@@ -108,22 +108,22 @@ export const getGraphData = (apidata, parentCtx) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,
@@ -403,22 +403,22 @@ export const getCounterGraphData = (arr, parentCtx) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,

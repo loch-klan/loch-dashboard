@@ -4322,7 +4322,7 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4340,7 +4340,8 @@ class Portfolio extends BaseReactComponent {
                               isArrow={true}
                               isLoading={this.state.AvgCostLoading}
                               isAnalytics="average cost basis"
-                              addWatermark
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4548,7 +4549,7 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
-                            className="tableWatermark"
+                            className="tableWatermarkOverlay"
                           >
                             <div
                               style={{
@@ -4581,6 +4582,7 @@ class Portfolio extends BaseReactComponent {
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : this.state.blockTwoSelectedItem === 3 ? (
@@ -4631,6 +4633,7 @@ class Portfolio extends BaseReactComponent {
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : null}
@@ -4869,7 +4872,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermark">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
@@ -4883,6 +4886,7 @@ class Portfolio extends BaseReactComponent {
                               isLoading={this.state.tableLoading}
                               watermarkOnTop
                               // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (
@@ -4905,7 +4909,7 @@ class Portfolio extends BaseReactComponent {
                         </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
@@ -4921,7 +4925,8 @@ class Portfolio extends BaseReactComponent {
                               isLoading={
                                 this.state.yieldOpportunitiesTableLoading
                               }
-                              addWatermark
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
