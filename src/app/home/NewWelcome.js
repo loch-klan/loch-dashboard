@@ -2617,7 +2617,7 @@ class NewWelcome extends BaseReactComponent {
                     src={ActiveSmartMoneySidebarIcon}
                     alt=""
                   />
-                  Leaderboard is ranked in descending order by net worth
+                  Sorted by net worth, pnl, and flows
                 </div>
 
                 {this.state.tableLoading ? (
