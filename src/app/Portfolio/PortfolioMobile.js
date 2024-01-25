@@ -2814,6 +2814,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.state.walletInput?.map((c, index) => (
                   <div className="topSearchBarMobileContainer">
                     <NewHomeInputBlock
+                      noAutofocus
                       onGoBtnClick={this.handleAddWallet}
                       hideMore
                       isMobile
