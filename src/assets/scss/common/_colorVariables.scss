@@ -75,8 +75,7 @@
   --profileHideMultiWallet: #f2f2f2;
 
 
-  --boxShadowMd:0px 2px 10px 10px rgba(0, 0, 0, 0.04),
-  0px 1px 1px 2px rgba(0, 0, 0, 0.04);
+  --boxShadowMd: 0 2px 10px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.04);
   --topBarShadow: 0 0 10px 4px #e5e5e680;
   --inputShadow:0 0 0 30px #FFF inset;
   --custmCheckboxShadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
@@ -84,6 +83,7 @@
 
   //borders
   --dropdownContentBorderColor: #e1e1e1;
+  --whiteTransparentBlackE5e5e6: transparent;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfadea7;
@@ -171,6 +171,7 @@
 
   //Borders
   --dropdownContentBorderColor: #313233;
+  --whiteTransparentBlackE5e5e6: #e5e5e6;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;

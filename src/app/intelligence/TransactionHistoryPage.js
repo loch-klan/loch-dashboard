@@ -1945,13 +1945,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                           : "gain"
                       }`}
                     >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 interDisplayMediumTextDarkerText">
+                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 interDisplayMediumTextDarkerText primaryText">
                         {rowData.method}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div interDisplayMediumTextDarkerText">
+                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 history-table-method transfer ellipsis-div interDisplayMediumTextDarkerText primaryText">
                     {rowData.method}
                   </div>
                 )}

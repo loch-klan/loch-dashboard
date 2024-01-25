@@ -316,7 +316,7 @@ export default function PageHeader(props) {
                 <Button
                   className={`${
                     props.btnOutline ? "secondary-btn " : "primary-btn"
-                  } ${props.mainThemeBtn ? "main-button" : ""}`}
+                  } ${props.mainThemeBtn ? "main-button-invert" : ""}`}
                   onClick={props.handleBtn}
                 >
                   {props.btnText}

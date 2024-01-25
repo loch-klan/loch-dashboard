@@ -253,7 +253,7 @@ class ProfileForm extends BaseReactComponent {
                 </Col>
               </Row>
               <Row>
-                <Col md={4} className="input-noshadow-dark">
+                <Col md={4} className="input-noshadow-dark p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
@@ -270,7 +270,7 @@ class ProfileForm extends BaseReactComponent {
                 <Col md={4}>
                   <div className="formBtnContainer">
                     <Button
-                      className="inter-display-semi-bold f-s-14 lh-24  submit-button main-button"
+                      className="inter-display-semi-bold f-s-14 lh-24  submit-button btn-tirtiarary"
                       type="submit"
                       onClick={() =>
                         ProfileSaved({

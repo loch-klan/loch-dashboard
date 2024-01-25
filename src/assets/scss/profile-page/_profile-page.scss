@@ -347,7 +347,7 @@
             .form-control {
               padding: 1.2rem 1.6rem;
               min-height: 4.3rem;
-              border: 0.1rem solid $grey-D4D;
+              border: 0.1rem solid var(--dropdownContentBorderColor);
             }
             .form-control:hover {
               border: 0.1rem solid var(--black191);

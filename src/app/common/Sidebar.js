@@ -710,7 +710,24 @@ function Sidebar(props) {
                 width: "100%",
               }}
             >
-              <div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={(e) => {
+                  let tempToken = getToken();
+                  if (tempToken === "jsk") {
+                    return null;
+                  }
+                  if (!isWallet) {
+                    e.preventDefault();
+                  } else {
+                    HomeMenu({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }
+                  props.history.push("/home");
+                }}
+              >
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
               </div>
