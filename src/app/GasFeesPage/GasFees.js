@@ -591,6 +591,7 @@ class GasFeesPage extends Component {
                 }
                 chainSearchIsUsed={this.feesChainSearchIsUsed}
                 oldBar
+                floatingWatermark
                 // height={420}
                 // width={824}
                 // comingSoon={false}

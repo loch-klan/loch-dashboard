@@ -1074,8 +1074,8 @@ form {
     border: 0.1rem solid var(--dropdownContentBorderColor);
     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
       0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-      background-color: var(--sameModeColor);
-      color: var(--primaryTextColor);
+    background-color: var(--sameModeColor);
+    color: var(--primaryTextColor);
     // border: 0;
 
     .dropdown-item {
@@ -1876,6 +1876,15 @@ form {
   }
 }
 
+.tableWatermarkOverlay {
+  background: url(../../images/graph-logo.svg) no-repeat center center !important;
+  background-size: 104px 39px;
+  background-position-y: 55%;
+}
+
+.watermarkOnTop {
+  background: transparent;
+}
 .tableWatermark {
   background: url(../../images/graph-logo.svg) no-repeat center center;
   background-size: 104px 39px;
@@ -1979,6 +1988,11 @@ form {
   }
   .tableWatermark {
     background: url(../../images/graph-logo.svg) no-repeat center center;
+    background-size: 104px 39px;
+    background-position-y: 48%;
+  }
+  .tableWatermarkFake {
+    background: transparent no-repeat center center;
     background-size: 104px 39px;
     background-position-y: 48%;
   }
@@ -2149,7 +2163,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .no-data{
+  .no-data {
     filter: var(--invertColor);
   }
 }
@@ -2564,7 +2578,7 @@ textarea {
     // border: 0.1rem solid rgba(229, 229, 230, 1);
     background: rgba(255, 255, 255, 0.001);
     border: 1px solid rgba(0, 113, 227, 0.2);
-    box-shadow: var(--custmCheckboxShadow)
+    box-shadow: var(--custmCheckboxShadow);
     // background-color: #fff !important;
   }
 }
@@ -2583,7 +2597,13 @@ textarea {
     width: 100%;
 
     input {
-      @include font(var(--primaryTextColor), "Inter-Regular", 1.3rem, normal, 1.5rem);
+      @include font(
+        var(--primaryTextColor),
+        "Inter-Regular",
+        1.3rem,
+        normal,
+        1.5rem
+      );
       // padding: 1rem !important;
       min-height: 3rem;
       width: 100%;
@@ -2664,39 +2684,38 @@ input {
     filter: brightness(0);
   }
 }
-.overlay-tool-tip-container{
+.overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
 }
 
-.main-button{
+.main-button {
   background-color: var(--mainButtonBg) !important;
   box-shadow: var(--boxShadowMd) !important;
   border: 0.1rem solid var(--greyE5e) !important;
   color: var(--primaryTextColor) !important;
-  div{
+  div {
     color: var(--primaryTextColor) !important;
   }
-  img{
+  img {
     filter: var(--invertColor) !important;
   }
-  &:hover{
+  &:hover {
     background-color: var(--backColor) !important;
     color: var(--sameModeColor) !important;
-    
-    div{
+
+    div {
       color: var(--sameModeColor) !important;
     }
-    img{
+    img {
       filter: var(--invertColor) !important;
     }
   }
 }
 
-.input-noshadow-dark{
-  input{
+.input-noshadow-dark {
+  input {
     box-shadow: var(--inputShadow) !important;
     -webkit-box-shadow: var(--inputShadow) inset !important;
   }
-
 }

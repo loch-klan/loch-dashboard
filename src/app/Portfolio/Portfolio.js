@@ -4325,7 +4325,7 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4343,7 +4343,8 @@ class Portfolio extends BaseReactComponent {
                               isArrow={true}
                               isLoading={this.state.AvgCostLoading}
                               isAnalytics="average cost basis"
-                              addWatermark
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4551,6 +4552,7 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
+                            className="tableWatermarkOverlay"
                           >
                             <div
                               style={{
@@ -4582,6 +4584,7 @@ class Portfolio extends BaseReactComponent {
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : this.state.blockTwoSelectedItem === 3 ? (
@@ -4632,6 +4635,7 @@ class Portfolio extends BaseReactComponent {
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : null}
@@ -4903,7 +4907,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
@@ -4915,7 +4919,9 @@ class Portfolio extends BaseReactComponent {
                               headerHeight={60}
                               isArrow={true}
                               isLoading={this.state.tableLoading}
-                              addWatermark
+                              watermarkOnTop
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (
@@ -4937,17 +4943,51 @@ class Portfolio extends BaseReactComponent {
                           ) : null}
                         </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
-                        <InflowOutflowPortfolioHome
-                          openChartPage={this.goToPriceGaugePage}
-                          hideExplainer
-                          // isHomepage
-                          showEth
-                          userWalletList={this.state.userWalletList}
-                          lochToken={this.state.lochToken}
-                          callChildPriceGaugeApi={
-                            this.state.callChildPriceGaugeApi
-                          }
-                        />
+                        <div>
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                            <TransactionTable
+                              message={"No yield opportunities found"}
+                              xAxisScrollable
+                              xAxisScrollableColumnWidth={4}
+                              noSubtitleBottomPadding
+                              disableOnLoading
+                              isMiniversion
+                              tableData={yieldOpportunitiesListTemp}
+                              showDataAtBottom
+                              columnList={YieldOppColumnData}
+                              headerHeight={60}
+                              isArrow={true}
+                              isLoading={
+                                this.state.yieldOpportunitiesTableLoading
+                              }
+                              // addWatermark
+                              fakeWatermark
+                            />
+                          </div>
+                          {!this.state.yieldOpportunitiesTableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToYieldOppPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {this.state.yieldOpportunitiesTotalCount &&
+                                this.state.yieldOpportunitiesTotalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10,
+                                      true
+                                    ).toLocaleString("en-US")}+ yield ${
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10 >
+                                      1
+                                        ? "opportunities"
+                                        : "opportunity"
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
                       ) : this.state.blockFourSelectedItem === 3 ? (
                         <PortfolioHomeInsightsBlock
                           history={this.props.history}
