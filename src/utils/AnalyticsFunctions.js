@@ -321,12 +321,14 @@ export const SearchBarAddressAdded = ({
   session_id,
   email_address,
   address,
+  isMobile = false,
 }) => {
   const event_name = "Search Bar: address added";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
     address: address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:email address added");
@@ -487,6 +489,7 @@ export const QuickAddWalletAddress = ({
   recognized_addresses,
   blockchains_detected,
   nicknames,
+  isMobile = false,
 }) => {
   const event_name = "Search bar:add wallet_address";
   const eventProperties = {
@@ -507,6 +510,7 @@ export const QuickAddWalletAddress = ({
     "recognized addresses": recognized_addresses,
     "blockchains detected": blockchains_detected,
     nicknames: nicknames,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Home:add wallet_address");
