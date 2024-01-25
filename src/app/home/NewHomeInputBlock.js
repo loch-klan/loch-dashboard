@@ -52,7 +52,8 @@ class NewHomeInputBlock extends BaseReactComponent {
                           id={`newWelcomeWallet-${index + 1}`}
                           name={`wallet${index + 1}`}
                           value={c.address || ""}
-                          className={`inter-display-regular f-s-15 lh-20 awInput`}
+                          className={`inter-display-regular f-s-15 lh-20 awInput awInputTopBar`}
+                          spellcheck="false"
                           placeholder={
                             this.props.isMobile
                               ? "Paste any wallet address or ENS"
@@ -86,6 +87,21 @@ class NewHomeInputBlock extends BaseReactComponent {
                             ) {
                               // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                               if (e.coinFound && e.coins.length > 0) {
+                                if (this.props.onGoBtnClick) {
+                                  // return null;
+                                  return (
+                                    <div
+                                      className={`addToAddressListMobileBtn ${
+                                        this.props.goBtnDisabled
+                                          ? "disableAddToAddressListMobileBtn"
+                                          : ""
+                                      }`}
+                                      onClick={this.props.onGoBtnClick}
+                                    >
+                                      Add
+                                    </div>
+                                  );
+                                }
                                 return (
                                   <CustomCoin
                                     isStatic
@@ -102,6 +118,20 @@ class NewHomeInputBlock extends BaseReactComponent {
                                   e.coins.length ===
                                   this.props.OnboardingState.coinsList.length
                                 ) {
+                                  if (this.props.onGoBtnClick) {
+                                    return (
+                                      <div
+                                        className={`addToAddressListMobileBtn ${
+                                          this.props.goBtnDisabled
+                                            ? "disableAddToAddressListMobileBtn"
+                                            : ""
+                                        }`}
+                                        onClick={this.props.onGoBtnClick}
+                                      >
+                                        Add
+                                      </div>
+                                    );
+                                  }
                                   return (
                                     <CustomCoin
                                       isStatic
