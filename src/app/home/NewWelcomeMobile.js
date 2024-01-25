@@ -1552,11 +1552,9 @@ class NewWelcomeMobile extends BaseReactComponent {
                     src={ActiveSmartMoneySidebarIcon}
                     alt=""
                   />
-                  Ranked in descending order by net worth
+                  Sorted by net worth, pnl, and flows
                 </div>
-                {/* <p className="new-homepage__body-content-table-header__subtitle-mobile">
-                    The lazy analyst’s guide to alpha
-                </p> */}
+
                 {this.props.tableLoading ? (
                   <div
                     style={{

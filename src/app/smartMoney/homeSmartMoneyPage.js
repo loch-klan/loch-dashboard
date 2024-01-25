@@ -1329,7 +1329,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               >
                 <PageHeader
                   title="Loch’s Leaderboard"
-                  subTitle="The lazy analyst’s guide to alpha"
+                  subTitle="Sorted by net worth, pnl, and flows"
                   currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />
