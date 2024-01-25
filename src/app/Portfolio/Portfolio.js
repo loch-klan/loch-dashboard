@@ -128,7 +128,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
@@ -188,6 +187,7 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
       shouldCallTransactionTableApi: true,
@@ -757,6 +757,18 @@ class Portfolio extends BaseReactComponent {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.GraphfeeData
+    ) {
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
+    }
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
     if (
@@ -808,9 +820,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       this.trimGasFees();
     }
-    if (this.props.yieldOpportunitiesState) {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
       this.trimCounterpartyVolume();
     }
+
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -967,7 +983,6 @@ class Portfolio extends BaseReactComponent {
       this.endPageView();
     }
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
   }
   trimGasFees = () => {
     if (
@@ -978,10 +993,9 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
-              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
-              : this.props.intelligenceState.graphfeeValue[0].labels,
+          labels: this.props.intelligenceState.graphfeeValue[0].labels
+            ? this.props.intelligenceState.graphfeeValue[0].labels
+            : [],
           datasets: this.props.intelligenceState.graphfeeValue[0].datasets
             ? this.props.intelligenceState.graphfeeValue[0].datasets
             : [],
@@ -998,27 +1012,14 @@ class Portfolio extends BaseReactComponent {
   trimCounterpartyVolume = () => {
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue[0] &&
-      this.props.intelligenceState.counterPartyValue[0].labels
+      this.props.intelligenceState.counterPartyValue
     ) {
-      const tempHolder = [
-        {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
-          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
-            ? this.props.intelligenceState.counterPartyValue[0].datasets
-            : [],
-        },
-        { ...this.props.intelligenceState.counterPartyValue[1] },
+      const tempHolder = getCounterGraphData(
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this,
+        true
+      );
 
-        { ...this.props.intelligenceState.counterPartyValue[2] },
-      ];
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
       });
@@ -1675,6 +1676,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
@@ -1941,7 +1945,6 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -3020,8 +3023,8 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3038,7 +3041,8 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3218,7 +3222,11 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState?.Average_cost_basis
+      ? this.props.intelligenceState.Average_cost_basis.filter(
+          (e) => e.CurrentValue >= 1
+        )
+      : [];
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
@@ -3620,10 +3628,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CurrentValue && rowData.CurrentValue !== 0
+                    rowData.CurrentValue
                       ? CurrencyType(false) +
-                        convertNtoNumber(rowData.CurrentValue)
-                      : "N/A"
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -3640,7 +3648,7 @@ class Portfolio extends BaseReactComponent {
                           numToCurrency(
                             rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3691,10 +3699,14 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainAmount && rowData.GainAmount !== 0
+                    rowData.GainAmount
                       ? CurrencyType(false) +
-                        Math.abs(convertNtoNumber(rowData.GainAmount))
-                      : "N/A"
+                        amountFormat(
+                          Math.abs(rowData.GainAmount),
+                          "en-US",
+                          "USD"
+                        )
+                      : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
                 >
@@ -3717,7 +3729,7 @@ class Portfolio extends BaseReactComponent {
                       {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3832,7 +3844,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.AverageCostPrice
                       ? CurrencyType(false) +
                         convertNtoNumber(rowData.AverageCostPrice)
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -3841,7 +3853,7 @@ class Portfolio extends BaseReactComponent {
                         numToCurrency(
                           rowData.AverageCostPrice.toFixed(2)
                         ).toLocaleString("en-US")
-                      : "N/A"}
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3892,7 +3904,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.CurrentPrice
                       ? CurrencyType(false) +
                         convertNtoNumber(rowData.CurrentPrice)
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -3901,7 +3913,7 @@ class Portfolio extends BaseReactComponent {
                         numToCurrency(
                           rowData.CurrentPrice.toFixed(2)
                         ).toLocaleString("en-US")
-                      : "N/A"}
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3951,13 +3963,13 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.Amount && rowData.Amount !== 0
                       ? convertNtoNumber(rowData.Amount)
-                      : "N/A"
+                      : "0"
                   }
                 >
                   <span>
                     {rowData.Amount
                       ? numToCurrency(rowData.Amount).toLocaleString("en-US")
-                      : "N/A"}
+                      : "0"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -3998,10 +4010,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    !rowData.CostBasis || rowData.CostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        convertNtoNumber(rowData.CostBasis)
+                    rowData.CostBasis
+                      ? CurrencyType(false) +
+                        amountFormat(rowData.CostBasis, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -4013,12 +4025,12 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {!rowData.CostBasis || rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
-                            rowData.CostBasis?.toFixed(2)
-                          ).toLocaleString("en-US")}
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -4391,7 +4403,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(1);
                             }}
                           >
-                            Realized Gains
+                            Flows
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4547,6 +4559,7 @@ class Portfolio extends BaseReactComponent {
                               Loch
                             </div>
                             <BarGraphSection
+                              digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
                               data={
@@ -4728,14 +4741,14 @@ class Portfolio extends BaseReactComponent {
                             this.state.callChildPriceGaugeApi
                           }
                         />
-                      ) : (
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           chainLoader={this.state.chainLoader}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -5035,7 +5048,6 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,

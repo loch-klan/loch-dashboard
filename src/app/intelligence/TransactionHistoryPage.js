@@ -66,8 +66,11 @@ import {
   CurrencyType,
   TruncateText,
   UpgradeTriggered,
+  amountFormat,
+  compareTwoArrayOfObjects,
   convertNtoNumber,
   mobileCheck,
+  noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import {
@@ -95,6 +98,7 @@ import ExitOverlay from "../common/ExitOverlay";
 import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { isEqual } from "lodash";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -114,6 +118,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      intelligenceStateLocal: {},
       minAmount: "1",
       maxAmount: "1000000000",
       isShowingAge: true,
@@ -405,6 +410,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.props.getUser();
         this.updateTimer(true);
         this.setState({ tableLoading: false });
+        if (this.props.intelligenceState) {
+          this.setState({
+            intelligenceStateLocal: this.props.intelligenceState,
+          });
+        }
         this.startPageView();
         return () => {
           clearInterval(window.checkTransactionHistoryTimer);
@@ -456,13 +466,47 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
+    let tempCond = [];
+    this.state.condition.forEach((tempEle) => {
+      if (tempEle.key !== SEARCH_BY_WALLET_ADDRESS_IN) {
+        tempCond.push(tempEle);
+      }
+    });
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : [];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    let tempCondTest = [...tempCond];
+    tempCond = [
+      ...tempCond,
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+    ];
+
+    let isDefault = true;
+
+    let originalCondition = [{ key: SEARCH_BY_NOT_DUST, value: true }];
+    let originalSort = [{ key: SORT_BY_TIMESTAMP, value: false }];
+    if (!compareTwoArrayOfObjects(originalCondition, tempCondTest)) {
+      isDefault = false;
+    }
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    this.props.searchTransactionApi(data, this, page);
+    this.props.searchTransactionApi(data, this, page, isDefault);
   };
   onPageChange = () => {
     this.setState({
@@ -541,6 +585,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           key: SEARCH_BY_WALLET_ADDRESS_IN,
           value: address,
         },
+        { key: SEARCH_BY_NOT_DUST, value: true },
       ];
       this.props.getAllCoins();
       this.setState({
@@ -907,10 +952,25 @@ class TransactionHistoryPage extends BaseReactComponent {
     toast.success("Link copied");
     this.updateTimer();
   };
+  getAllTransactionHistoryLocal = (apiRes, apiPage) => {
+    const tempDataHolder = {
+      table: apiRes.results,
+      assetPriceList: apiRes.objects.asset_prices,
+      totalCount: apiRes.total_count,
+      totalPage: Math.ceil(apiRes.total_count / API_LIMIT),
+      currentPage: apiPage,
+    };
 
+    this.setState({
+      intelligenceStateLocal: {
+        ...tempDataHolder,
+        currentPage: apiPage,
+      },
+    });
+  };
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
-      this.props.intelligenceState;
+      this.state.intelligenceStateLocal;
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1810,8 +1870,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -1829,7 +1890,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >

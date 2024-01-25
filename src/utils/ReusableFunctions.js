@@ -19,6 +19,26 @@ export const mobileCheck = () => {
   return false;
 };
 // TruncateText
+export const isSameDateAs = function (dateOne, dateTwo) {
+  return (
+    dateOne.getFullYear() === dateTwo.getFullYear() &&
+    dateOne.getMonth() === dateTwo.getMonth() &&
+    dateOne.getDate() === dateTwo.getDate()
+  );
+};
+export const compareTwoArrayOfObjects = (
+  first_array_of_objects,
+  second_array_of_objects
+) => {
+  return (
+    first_array_of_objects.length === second_array_of_objects.length &&
+    first_array_of_objects.every((element_1) =>
+      second_array_of_objects.some((element_2) =>
+        Object.keys(element_1).every((key) => element_1[key] === element_2[key])
+      )
+    )
+  );
+};
 export const convertNtoNumber = (n) => {
   if (n === undefined || n === null) {
     return "";
@@ -208,9 +228,11 @@ export const lightenDarkenColor = (hex, lum) => {
 };
 
 export const amountFormat = (number, locals, currency_type) => {
-  return new Intl.NumberFormat(locals, { currency: currency_type }).format(
-    number
-  );
+  return new Intl.NumberFormat(locals, {
+    currency: currency_type,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(number);
 };
 export const getPadding = (val, e, OnboardingState) => {
   let paddRight = 120;

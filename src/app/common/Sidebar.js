@@ -650,7 +650,13 @@ function Sidebar(props) {
         ? props.defiState.totalDebt
         : 0;
 
-      return tempWallet + tempCredit - tempDebt;
+      let tempAns = tempWallet + tempCredit - tempDebt;
+      if (tempAns) {
+        tempAns = tempAns.toFixed(2);
+      } else {
+        tempAns = 0;
+      }
+      return tempAns;
     }
     return 0;
   };
