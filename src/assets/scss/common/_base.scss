@@ -98,7 +98,8 @@ html {
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
+  min-height: 100vh;
 }
 
 h1,
@@ -159,7 +160,7 @@ body {
 }
 
 .inter-display-medium {
-  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
+  @include font(var(--primaryTextColor), "Inter-Medium", 1.2rem, 500, normal);
 }
 
 .inter-display-extra-bold {
@@ -557,7 +558,7 @@ body {
 }
 
 .grey-313 {
-  color: $grey-313;
+  color: var(--grey313);
 }
 
 .black-1D2 {
@@ -1070,9 +1071,11 @@ form {
     width: 24rem;
     // box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.4rem;
-    border: 0.1rem solid $grey-CAC;
+    border: 0.1rem solid var(--dropdownContentBorderColor);
     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
       0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+    background-color: var(--sameModeColor);
+    color: var(--primaryTextColor);
     // border: 0;
 
     .dropdown-item {
@@ -1157,7 +1160,7 @@ form {
   .ReactVirtualized__Table__Grid {
     // z-index: -1;
     height: auto !important;
-    background-color: $secondary;
+    background-color: var(--cardBackground);
     overflow: visible !important;
 
     .ReactVirtualized__Grid__innerScrollContainer {
@@ -1345,10 +1348,10 @@ form {
 }
 
 .secondary-btn {
-  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  @include font(var(--sameModeColor), "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
-  background-color: transparent;
-  border: 1px solid $black-191;
+  background-color: var(--backColor);
+  border: 1px solid var(--black191);
   padding: 1.6rem 4rem;
   cursor: pointer;
 
@@ -1582,7 +1585,7 @@ form {
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
-    border: 0.1rem solid $grey-E5E;
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -1780,12 +1783,13 @@ form {
   // position: absolute;
   // top: 0.7rem;
   height: 2.6rem;
-  background: rgba(229, 229, 230, 0.5);
-  border: 0.1rem solid $grey-CAC;
+  background: var(--primaryFilter);
+  border: 0.1rem solid var(--secondaryLightColor);
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+  color: var(--primaryTextColor);
 
   .badge {
     // padding: 0.35rem 0.8rem 0.4rem;
@@ -1878,8 +1882,13 @@ form {
   background-position-y: 55%;
 }
 
-.watermarkOnTop{
+.watermarkOnTop {
   background: transparent;
+}
+.tableWatermark {
+  background: url(../../images/graph-logo.svg) no-repeat center center;
+  background-size: 104px 39px;
+  background-position-y: 48%;
 }
 
 .transaction-table-section {
@@ -1922,7 +1931,6 @@ form {
     border: none;
   }
 
-
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
@@ -1948,17 +1956,17 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightnessValue);
             }
           }
 
           &.no-hover {
             &:hover {
               span {
-                color: $grey-4F4;
+                color: var(--secondaryDarkTextColor);
               }
               img {
                 filter: none;
@@ -2002,7 +2010,7 @@ form {
         .ReactVirtualized__Table__rowColumn {
           font-size: 1.3rem;
           line-height: 1.6rem;
-          color: $grey-313;
+          color: var(--grey313);
           text-align: center;
           margin: 0rem;
           padding: 0 1rem;
@@ -2096,7 +2104,7 @@ form {
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-
+            color: var(--primaryTextColor);
             &:hover {
               font-weight: 600;
             }
@@ -2155,6 +2163,9 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .no-data {
+    filter: var(--invertColor);
+  }
 }
 
 // slick slider positioning in loading animation
@@ -2200,7 +2211,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .copy-icon-top-bar-container {
@@ -2210,7 +2221,7 @@ textarea {
   .copy-icon-top-bar {
     cursor: pointer;
     &:hover {
-      filter: brightness(0.2);
+      filter: var(--hoverBrightnessValue);
     }
   }
 }
@@ -2419,10 +2430,10 @@ textarea {
           .custom-control-label {
             color: $primary;
             &::after {
-              background-color: $primary;
+              background-color: var(--primaryTextColor);
             }
             &::before {
-              border-color: $primary;
+              background-color: var(--primaryTextColor);
             }
           }
         }
@@ -2561,13 +2572,13 @@ textarea {
   // right: 2rem;
   cursor: pointer;
   user-select: none;
-  border: 1px solid rgba(29, 29, 31, 0.14);
+  border: 1px solid var(--cardBorder);
   &:hover {
     // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
     // border: 0.1rem solid rgba(229, 229, 230, 1);
     background: rgba(255, 255, 255, 0.001);
     border: 1px solid rgba(0, 113, 227, 0.2);
-    box-shadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
+    box-shadow: var(--custmCheckboxShadow);
     // background-color: #fff !important;
   }
 }
@@ -2586,13 +2597,19 @@ textarea {
     width: 100%;
 
     input {
-      @include font($primary, "Inter-Regular", 1.3rem, normal, 1.5rem);
+      @include font(
+        var(--primaryTextColor),
+        "Inter-Regular",
+        1.3rem,
+        normal,
+        1.5rem
+      );
       // padding: 1rem !important;
       min-height: 3rem;
       width: 100%;
       border-radius: 6px;
-      border: 1px solid #d4d4d4;
-
+      border: 1px solid var(--cardBorder);
+      background-color: transparent;
       &::placeholder {
         font-size: 1.3rem;
         line-height: 1.5rem;
@@ -2600,16 +2617,20 @@ textarea {
       }
 
       &:focus {
-        border: 1px solid $primary !important;
+        border: 1px solid var(--primaryTextColor) !important;
+      }
+
+      &:hover {
+        border: 1px solid var(--primaryTextColor);
       }
     }
 
     .form-control.is-valid {
       box-shadow: none;
-      border: 1px solid #d4d4d4;
+      border: 1px solid var(--cardBorder);
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
@@ -2647,19 +2668,54 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
-    box-shadow: 0 0 0 30px white inset !important;
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
-  box-shadow: 0 0 0 30px white inset !important;
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {
   transition-duration: 300ms;
   &:hover {
     filter: brightness(0);
+  }
+}
+.overlay-tool-tip-container {
+  background-color: var(--cardBackground);
+  color: var(--primaryTextColor);
+}
+
+.main-button {
+  background-color: var(--mainButtonBg) !important;
+  box-shadow: var(--boxShadowMd) !important;
+  border: 0.1rem solid var(--greyE5e) !important;
+  color: var(--primaryTextColor) !important;
+  div {
+    color: var(--primaryTextColor) !important;
+  }
+  img {
+    filter: var(--invertColor) !important;
+  }
+  &:hover {
+    background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+
+    div {
+      color: var(--sameModeColor) !important;
+    }
+    img {
+      filter: var(--invertColor) !important;
+    }
+  }
+}
+
+.input-noshadow-dark {
+  input {
+    box-shadow: var(--inputShadow) !important;
+    -webkit-box-shadow: var(--inputShadow) inset !important;
   }
 }

@@ -196,14 +196,25 @@ export const getInflowsAndOutflowsAssetsApi = (data, ctx) => {
       });
   };
 };
-export const searchTransactionApi = (data, ctx, page = 0) => {
+export const searchTransactionApi = (
+  data,
+  ctx,
+  page = 0,
+  isDefault = true,
+  callAnyways = false
+) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {
         // console.log(page)
         if (!res.data.error) {
-          dispatch(getAllTransactionHistory(res.data.data, page, ctx));
+          if (callAnyways || (page === 0 && isDefault)) {
+            dispatch(getAllTransactionHistory(res.data.data, page, ctx));
+          }
+          if (ctx.getAllTransactionHistoryLocal) {
+            ctx.getAllTransactionHistoryLocal(res.data.data, page, ctx);
+          }
 
           if (ctx) {
             ctx.setState({
@@ -368,7 +379,8 @@ export const getAssetProfitLoss = (
   startDate,
   endDate,
   selectedChains = false,
-  selectedAsset = false
+  selectedAsset = false,
+  isDefault = true
 ) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -382,18 +394,23 @@ export const getAssetProfitLoss = (
     if (selectedAsset && selectedAsset.length > 0) {
       data.append("asset_ids", JSON.stringify(selectedAsset));
     }
-
     postLoginInstance
       .post("wallet/transaction/get-asset-profit-loss", data)
       .then((res) => {
         if (!res.data.error) {
-          // console.log("asset profit loss", res.data.data);
-          dispatch({
-            type: PORTFOLIO_ASSET,
-            payload: {
-              ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
-            },
-          });
+          if (isDefault) {
+            dispatch({
+              type: PORTFOLIO_ASSET,
+              payload: {
+                ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
+              },
+            });
+          }
+          if (ctx.setProfitLossAssetLocal) {
+            ctx.setProfitLossAssetLocal(
+              getProfitLossAsset(res.data.data?.profit_loss)
+            );
+          }
           if (ctx) {
             ctx.setState({
               //  GraphData: res.data.data.profit_loss,
