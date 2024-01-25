@@ -941,6 +941,7 @@ class PortfolioMobile extends BaseReactComponent {
       this.props.updateTimer();
     }
   };
+  cancelAddingWallet = () => {};
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -2613,6 +2614,7 @@ class PortfolioMobile extends BaseReactComponent {
                       handleOnChange={this.handleOnChange}
                       onKeyDown={this.onKeyPressInput}
                       goBtnDisabled={this.state.disableAddBtn}
+                      removeFocusOnEnter
                     />
                   </div>
                 ))}
