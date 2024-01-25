@@ -761,7 +761,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Rank
             </span>
             {/* <Image
@@ -804,7 +804,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Wallet
             </span>
             {/* <Image
@@ -865,7 +865,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             {/* <Image
@@ -916,7 +916,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Net worth
             </span>
             {/* <Image
@@ -976,7 +976,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Realized PnL (1yr)
             </span>
           </div>
@@ -1062,7 +1062,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized PnL
             </span>
             {/* <Image
@@ -1152,7 +1152,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Follow
             </span>
             {/* <Image
@@ -1329,7 +1329,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               >
                 <PageHeader
                   title="Loch’s Leaderboard"
-                  subTitle="The lazy analyst’s guide to alpha"
+                  subTitle="Sorted by net worth, pnl, and flows"
                   currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />

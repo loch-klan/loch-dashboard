@@ -1,0 +1,61 @@
+.interDisplayMediumText {
+  font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplayMediumTextDarkerText {
+  color: #0d0d0d;
+}
+.interDisplaySemiBoldText {
+  font-family: "Inter-SemiBold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplayBoldText {
+  font-family: "Inter-Bold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplaySubText {
+  color: var(--primarySubTextColor);
+}
+.spaceGroteskMedium {
+  font-family: "SpaceGrotesk-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.secondaryText {
+  color: var(--secondaryTextColor);
+}
+.primaryText{
+  color: var(--primaryTextColor);
+}
+.secondaryTextLighter {
+  color: var(--secondaryLightColor);
+}
+.secondaryDarkText {
+  color: var(--secondaryDarkTextColor);
+  &:hover{
+    color: var(--primaryTextColor);
+  
+  }
+}
+.invertFilter {
+  filter: var(--invertColor);
+}
+.brightnessFilter {
+  &:hover {
+    filter: var(--hoverBrightness);
+  }
+}
+.footerLine{
+  border-top: 1px solid var(--cardBorder);
+}

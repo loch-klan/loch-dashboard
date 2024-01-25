@@ -91,7 +91,7 @@ export default function HomeSmartMoneyHeader(props) {
                 </div> */}
                 <div
                   onClick={props.openAddAddressModal}
-                  className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                  className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button main-button"
                 >
                   <div className="homeSmartMoneyHeaderSignInIconContainer homeSmartMoneyHeaderSignInIconNoColor">
                     <Image
@@ -108,7 +108,7 @@ export default function HomeSmartMoneyHeader(props) {
                     {" "}
                     <div
                       onClick={props.showFaqModal}
-                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button main-button"
                     >
                       <div className="homeSmartMoneyHeaderSignInIconContainer homeSmartMoneyHeaderSignInIconNoColor">
                         <Image
@@ -122,7 +122,7 @@ export default function HomeSmartMoneyHeader(props) {
                     </div>
                     <div
                       onClick={props.showHowItWorksModal}
-                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button main-button"
                       style={{
                         marginRight: "0rem",
                       }}
@@ -160,7 +160,7 @@ export default function HomeSmartMoneyHeader(props) {
                     </div> */}
                     <div
                       onClick={props.showFaqModal}
-                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button main-button"
                     >
                       <div className="homeSmartMoneyHeaderSignInIconContainer homeSmartMoneyHeaderSignInIconNoColor">
                         <Image
@@ -174,7 +174,7 @@ export default function HomeSmartMoneyHeader(props) {
                     </div>
                     <div
                       onClick={props.showHowItWorksModal}
-                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                      className="homeSmartMoneyHeaderSignInContainer homeSmartMoneyHeaderFaqContainer inter-display-medium f-s-13 lh-19 navbar-button main-button"
                       style={{
                         marginRight: "0rem",
                       }}
