@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { CustomCoin } from "../../utils/commonComponent";
 import { BaseReactComponent } from "../../utils/form";
+import React from "react";
 
 class NewHomeInputBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
+    this.inputRefCustom = React.createRef(null);
     this.state = {};
   }
 
@@ -18,7 +20,17 @@ class NewHomeInputBlock extends BaseReactComponent {
     }
     console.log(inputField);
   };
-
+  onKeyPressInputPass = (event) => {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
+    if (event.key === "Enter" && this.props.removeFocusOnEnter) {
+      event.preventDefault();
+      if (this.inputRefCustom?.current) {
+        this.inputRefCustom.current.blur();
+      }
+    }
+  };
   render() {
     const { c, index } = this.props;
     return (
@@ -48,7 +60,8 @@ class NewHomeInputBlock extends BaseReactComponent {
                     <div className="awTopInputWrapper">
                       <div className="awInputContainer">
                         <input
-                          onKeyDown={this.props.onKeyDown}
+                          ref={this.inputRefCustom}
+                          onKeyDown={this.onKeyPressInputPass}
                           id={`newWelcomeWallet-${index + 1}`}
                           name={`wallet${index + 1}`}
                           value={c.address || ""}

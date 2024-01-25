@@ -1014,6 +1014,7 @@ class PortfolioMobile extends BaseReactComponent {
       this.props.updateTimer();
     }
   };
+  cancelAddingWallet = () => {};
   addConditionTransactionTable = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -2824,6 +2825,7 @@ class PortfolioMobile extends BaseReactComponent {
                       handleOnChange={this.handleOnChange}
                       onKeyDown={this.onKeyPressInput}
                       goBtnDisabled={this.state.disableAddBtn}
+                      removeFocusOnEnter
                     />
                   </div>
                 ))}
