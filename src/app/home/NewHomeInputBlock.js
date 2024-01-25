@@ -26,7 +26,9 @@ class NewHomeInputBlock extends BaseReactComponent {
     }
     if (event.key === "Enter" && this.props.removeFocusOnEnter) {
       event.preventDefault();
-      this.inputRefCustom.current.blur();
+      if (this.inputRefCustom?.current) {
+        this.inputRefCustom.current.blur();
+      }
     }
   };
   render() {
