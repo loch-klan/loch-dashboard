@@ -65,7 +65,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                               ? this.props.handleOnChange
                               : null
                           }
-                          autoFocus
+                          autoFocus={this.props.noAutofocus ? false : true}
                           autoComplete="off"
                           onFocus={(e) => {
                             if (this.props.FocusInInput) {
