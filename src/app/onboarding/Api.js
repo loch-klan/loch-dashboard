@@ -124,7 +124,6 @@ export const detectCoin = (
                 });
               }
             } else {
-              console.log("Here");
               ctx.handleSetCoin({
                 ...wallet,
                 chain_detected: res.data.data.chain_detected,
