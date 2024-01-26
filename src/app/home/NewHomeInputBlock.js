@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { CustomCoin } from "../../utils/commonComponent";
 import { BaseReactComponent } from "../../utils/form";
+import React from "react";
 
 class NewHomeInputBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
+    this.inputRefCustom = React.createRef(null);
     this.state = {};
   }
 
@@ -18,7 +20,17 @@ class NewHomeInputBlock extends BaseReactComponent {
     }
     console.log(inputField);
   };
-
+  onKeyPressInputPass = (event) => {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
+    if (event.key === "Enter" && this.props.removeFocusOnEnter) {
+      event.preventDefault();
+      if (this.inputRefCustom?.current) {
+        this.inputRefCustom.current.blur();
+      }
+    }
+  };
   render() {
     const { c, index } = this.props;
     return (
@@ -48,11 +60,13 @@ class NewHomeInputBlock extends BaseReactComponent {
                     <div className="awTopInputWrapper">
                       <div className="awInputContainer">
                         <input
-                          onKeyDown={this.props.onKeyDown}
+                          ref={this.inputRefCustom}
+                          onKeyDown={this.onKeyPressInputPass}
                           id={`newWelcomeWallet-${index + 1}`}
                           name={`wallet${index + 1}`}
                           value={c.address || ""}
-                          className={`inter-display-regular f-s-15 lh-20 awInput`}
+                          className={`inter-display-regular f-s-15 lh-20 awInput awInputTopBar`}
+                          spellcheck="false"
                           placeholder={
                             this.props.isMobile
                               ? "Paste any wallet address or ENS"
@@ -64,7 +78,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                               ? this.props.handleOnChange
                               : null
                           }
-                          autoFocus
+                          autoFocus={this.props.noAutofocus ? false : true}
                           autoComplete="off"
                           onFocus={(e) => {
                             if (this.props.FocusInInput) {
@@ -86,6 +100,21 @@ class NewHomeInputBlock extends BaseReactComponent {
                             ) {
                               // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                               if (e.coinFound && e.coins.length > 0) {
+                                if (this.props.onGoBtnClick) {
+                                  // return null;
+                                  return (
+                                    <div
+                                      className={`addToAddressListMobileBtn ${
+                                        this.props.goBtnDisabled
+                                          ? "disableAddToAddressListMobileBtn"
+                                          : ""
+                                      }`}
+                                      onClick={this.props.onGoBtnClick}
+                                    >
+                                      Add
+                                    </div>
+                                  );
+                                }
                                 return (
                                   <CustomCoin
                                     isStatic
@@ -102,6 +131,20 @@ class NewHomeInputBlock extends BaseReactComponent {
                                   e.coins.length ===
                                   this.props.OnboardingState.coinsList.length
                                 ) {
+                                  if (this.props.onGoBtnClick) {
+                                    return (
+                                      <div
+                                        className={`addToAddressListMobileBtn ${
+                                          this.props.goBtnDisabled
+                                            ? "disableAddToAddressListMobileBtn"
+                                            : ""
+                                        }`}
+                                        onClick={this.props.onGoBtnClick}
+                                      >
+                                        Add
+                                      </div>
+                                    );
+                                  }
                                   return (
                                     <CustomCoin
                                       isStatic

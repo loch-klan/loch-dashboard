@@ -286,9 +286,10 @@ class CustomMinMaxDropdown extends Component {
             : this.props.isTopaccount
             ? "top-account-dropdown"
             : ""
-        }`}
+        } padding-mb-2`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
+        style={this.props.style}
       >
         <div
           className={`placeholder ${

@@ -21,8 +21,11 @@ export default function WalletCard(props) {
   const [show, setShow] = React.useState(false);
   const [EditModal, setEditModal] = React.useState(false);
   // const [showModal, toggleCopied] = React.useState(false);
-  function handleClose() {
+  function handleClose(startLoading) {
     setShow(false);
+    if (startLoading && props.handleStartLoading) {
+      props.handleStartLoading();
+    }
   }
   function handleShow() {
     setShow(true);
@@ -111,7 +114,10 @@ export default function WalletCard(props) {
     <>
       <div
         className="walletcard"
-        style={props?.protocol ? { paddingBottom: "2.4rem" } : {}}
+        style={{
+          paddingBottom: props?.protocol ? "2.4rem" : "",
+          marginBottom: props.isLastEle ? "0.8rem" : "",
+        }}
       >
         <>
           <div className={`${!props?.protocol ? "m-b-32" : ""} wallet-details`}>
@@ -259,7 +265,8 @@ export default function WalletCard(props) {
               walletMetaData={props.wallet_metadata}
               nickname={props.nickname}
               coinchips={props.wallet_coins}
-              makeApiCall={() => props.makeApiCall()}
+              apiResponse={() => props.makeApiCall()}
+              handleStopLoading={props.handleStopLoading}
             />
           ) : (
             ""
