@@ -277,7 +277,7 @@ class BarGraphSection extends Component {
     // console.log("bar digit", digit, Math.max(...data.datasets[0].data));
 
     const ScrollStyle = {
-      width: `${data && data.labels.length * 12.5}%`,
+      width: `${100}%`,
       minWidth: `${data && data.labels.length * 10}rem`,
     };
     const NormalStyle = {
