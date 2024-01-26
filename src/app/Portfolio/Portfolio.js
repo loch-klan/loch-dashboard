@@ -426,7 +426,7 @@ class Portfolio extends BaseReactComponent {
   }
   changeBlockOneItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockOneSelectedItem: itemNum,
       });
@@ -434,7 +434,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockTwoItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockTwoSelectedItem: itemNum,
       });
@@ -442,7 +442,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockThreeItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockThreeSelectedItem: itemNum,
       });
@@ -450,7 +450,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockFourItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockFourSelectedItem: itemNum,
       });
