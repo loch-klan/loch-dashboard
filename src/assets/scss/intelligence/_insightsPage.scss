@@ -168,8 +168,8 @@
         width: max-content;
         padding: 4px 8px;
         border-radius: 8px;
-        background-color: $black-191;
-        color: #ffffff;
+        background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
         text-transform: uppercase;
       }
     }

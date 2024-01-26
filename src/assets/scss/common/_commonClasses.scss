@@ -59,3 +59,50 @@
 .footerLine{
   border-top: 1px solid var(--cardBorder);
 }
+
+.no-box-shadow {
+  box-shadow: none !important;
+}
+
+.w-transaparent-b-w{
+  border: 1px solid var(--whiteTransparentBlackE5e5e6) !important;
+}
+.btn-bg-white-outline-black{
+    color: var(--black191);
+    border: 1px solid var(--black191);
+    background-color: transparent !important;
+}
+
+.hover-bg-black{
+  &:hover{
+    background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    border: 1px solid var(--black191) !important;
+  }
+}
+
+.btn-bg-black{
+  background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    border: 1px solid var(--black191) !important;
+}
+
+.hover-bg-white-outline-black{
+  &:hover{
+    background-color: var(--sameModeColor) !important;
+    color: var(--black191) !important;
+    border: 1px solid var(--black191) !important;
+  }
+}
+
+.btn-tirtiarary{
+  background-color: var(--primaryFilter) !important;
+    border: 0.1rem solid var(--primaryFilter);
+    color: var(--primaryTextColor);
+
+    &:hover{
+      border: 0.1rem solid var(--primaryFilter);
+      background-color: var(--backColor) !important;
+    color: var(--sameModeColor);
+    }
+}

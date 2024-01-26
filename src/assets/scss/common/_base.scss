@@ -1360,19 +1360,19 @@ form {
   &:active,
   &:focus,
   &:active:focus {
-    color: $black-191;
+    color: var(--black191);
     outline: none;
     box-shadow: none;
     background-color: transparent;
-    border: 1px solid $black-191;
+    border: 1px solid var(--black191);
   }
 
   &:hover {
     outline: none;
     box-shadow: none;
-    color: white;
-    border: 1px solid $black-191;
-    background-color: $black-191;
+    color: var(--black191);
+    border: 1px solid var(--black191);
+    background-color: transparent !important;
   }
 
   &:not(:disabled),
@@ -1857,8 +1857,8 @@ form {
 .coin-chip {
   display: flex;
   border-radius: 0.6rem;
-  border: 0.1rem solid $grey-CAC;
-  background-color: rgba(229, 229, 230, 0.5);
+  border: 0.1rem solid var(--cardBorder);
+  background-color: var(--primaryDropdownSelectedItem);
   width: max-content;
   height: 2.6rem;
   align-items: center;
@@ -1868,10 +1868,11 @@ form {
     height: 2.6rem;
     border-top-left-radius: 0.55rem;
     border-bottom-left-radius: 0.55rem;
+    filter: none !important;
   }
 
   .coin-percent {
-    color: $grey-313;
+    color: var(--grey313);
     padding: 0.5rem 0.6rem;
   }
 }
@@ -2691,8 +2692,8 @@ input {
 
 .main-button {
   background-color: var(--mainButtonBg) !important;
-  box-shadow: var(--boxShadowMd) !important;
-  border: 0.1rem solid var(--greyE5e) !important;
+  // box-shadow: var(--boxShadowMd) !important;
+  border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
   color: var(--primaryTextColor) !important;
   div {
     color: var(--primaryTextColor) !important;
@@ -2713,9 +2714,41 @@ input {
   }
 }
 
+.main-button-invert {
+  // border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
+  background-color: var(--backColor) !important;
+  color: var(--sameModeColor) !important;
+  div {
+    color: var(--sameModeColor) !important;
+  }
+  img {
+    filter: var(--invertColor) !important;
+  }
+  &:hover {
+    background-color: var(--mainButtonBg) !important;
+    color: var(--primaryTextColor) !important;
+
+    div {
+      color: var(--primaryTextColor) !important;
+    }
+    img {
+      filter: var(--invertColor) !important;
+    }
+  }
+}
+
 .input-noshadow-dark {
   input {
     box-shadow: var(--inputShadow) !important;
     -webkit-box-shadow: var(--inputShadow) inset !important;
+    background: transparent;
+    color: var(--primaryTextColor) !important;
+    &:focus {
+      background-color: transparent;
+    }
   }
+}
+
+.highcharts-background {
+  fill: var(--cardBackgroud);
 }

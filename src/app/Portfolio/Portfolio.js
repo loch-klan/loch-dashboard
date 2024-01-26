@@ -4280,7 +4280,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4314,7 +4314,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4421,7 +4421,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4453,7 +4453,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4487,7 +4487,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4691,7 +4691,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4725,7 +4725,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4829,7 +4829,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4863,7 +4863,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4895,7 +4895,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",

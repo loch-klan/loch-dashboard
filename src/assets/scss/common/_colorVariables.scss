@@ -36,6 +36,7 @@
   //TEMP
   --backColor: #000;
   --sameModeColor: #FFF;
+  --diffModeColorWithOpacity: #rgba(255, 255, 255, 0.05);
   --greyF2f: #f2f2f2;
   --grey636: #636467;
   --greyE5e: #e5e5e6;
@@ -71,10 +72,10 @@
 
     //Box shadow color
   --boxShadowColorMd: rgba(0, 0, 0, 0.04);
+  --profileHideMultiWallet: #f2f2f2;
 
 
-  --boxShadowMd:0px 2px 10px 10px rgba(0, 0, 0, 0.04),
-  0px 1px 1px 2px rgba(0, 0, 0, 0.04);
+  --boxShadowMd: 0 2px 10px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.04);
   --topBarShadow: 0 0 10px 4px #e5e5e680;
   --inputShadow:0 0 0 30px #FFF inset;
   --custmCheckboxShadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
@@ -82,6 +83,7 @@
 
   //borders
   --dropdownContentBorderColor: #e1e1e1;
+  --whiteTransparentBlackE5e5e6: transparent;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfadea7;
@@ -116,6 +118,8 @@
   --hoverBrightness: brightness(200%);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
+  --infoBrightnessPortfolio: brightness(0);
+  --infoBrightnessPortfolio: brightness(0.5);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
@@ -136,6 +140,7 @@
   --grey313: #fff;
   --backColor: #fff;
   --sameModeColor: #000;
+  --diffModeColorWithOpacity: #rgba(0, 0, 0, 0.05);
 
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.3);
@@ -159,6 +164,7 @@
 
   //Box shadow color
   --boxShadowColorMd: rgba(255, 255, 255, 0.04);
+  --profileHideMultiWallet: #101010;
 
   --boxShadowMd:none;
   --topBarShadow: none;
@@ -167,6 +173,7 @@
 
   //Borders
   --dropdownContentBorderColor: #313233;
+  --whiteTransparentBlackE5e5e6: #e5e5e6;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;

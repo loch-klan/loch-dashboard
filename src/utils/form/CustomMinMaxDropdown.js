@@ -395,7 +395,7 @@ class CustomMinMaxDropdown extends Component {
 
           <div className="dropdown-footer">
             <span
-              className="secondary-btn dropdown-btn"
+              className="secondary-btn dropdown-btn btn-bg-white-outline-black hover-bg-black"
               onClick={this.ClearAll}
             >
               Reset
@@ -405,7 +405,7 @@ class CustomMinMaxDropdown extends Component {
                 opacity: this.state.disableApply ? 0.5 : 1,
                 pointerEvents: this.state.disableApply ? "none" : "auto",
               }}
-              className="primary-btn dropdown-btn"
+              className="primary-btn dropdown-btn btn-bg-black hover-bg-white-outline-black"
               onClick={this.Apply}
             >
               Apply

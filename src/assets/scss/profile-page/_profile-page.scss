@@ -304,6 +304,7 @@
                   .profileLochCreditPointsBlockInfoBlockDescGoIcon {
                     height: 12px;
                     margin-left: 0.5rem;
+                    filter: var(--invertColor);
                   }
                 }
               }
@@ -337,7 +338,7 @@
           }
           .form-group {
             label {
-              @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+              @include font(var(--grey313), "Inter-Medium", 1.3rem, 500, 1.6rem);
               margin-bottom: 1.2rem;
               span {
                 display: none;
@@ -346,10 +347,10 @@
             .form-control {
               padding: 1.2rem 1.6rem;
               min-height: 4.3rem;
-              border: 0.1rem solid $grey-D4D;
+              border: 0.1rem solid var(--dropdownContentBorderColor);
             }
             .form-control:hover {
-              border: 0.1rem solid $black-191;
+              border: 0.1rem solid var(--black191);
             }
             .is-valid {
               box-shadow: none;

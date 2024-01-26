@@ -33,10 +33,10 @@
         }
         .sort-by-title:hover {
           span {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
           img {
-            filter: brightness(0.5);
+            filter: var(--hoverBrightnessValue);
           }
         }
         // .dropdown {
@@ -95,8 +95,8 @@
             // margin-right: 4.9rem;
             width: 85%;
             .wallet-img {
-              box-shadow: 0rem 0.4rem 0.8rem $grey-F2F,
-                0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+              box-shadow: 0rem 0.4rem 0.8rem var(--greyF2f),
+                0rem 0.1rem 0.3rem var(--diffModeColorWithOpacity);
               border-radius: 0.8rem;
               img {
                 border-radius: 0.8rem;
@@ -145,7 +145,7 @@
               }
 
               img:hover {
-                filter: brightness(0.5);
+                  filter: var(--hoverBrightnessValue);
               }
             }
           }
@@ -193,7 +193,7 @@
                 top: 0;
               }
               img:hover {
-                filter: none;
+                filter: var(--hoverBrightnessValue);
               }
             }
             &:hover {
@@ -224,7 +224,7 @@
             }
           }
           img:hover {
-            filter: brightness(0.5);
+            filter: var(--hoverBrightnessValue);
           }
         }
       }

@@ -1,7 +1,7 @@
 .defiMenu {
-  filter: opacity(0.5);
+  filter: invert(0.4);
   &:hover {
-    filter: opacity(1);
+    filter: var(--invertColor);
   }
 }
 .coming-soon-div {
@@ -1046,7 +1046,7 @@
           cursor: pointer;
           // transition-duration: 300ms;
           &:hover {
-            color: #0d0d0d;
+            color: var(--primaryTextColor);
           }
         }
       }
@@ -1095,7 +1095,7 @@
             left: 0;
             border-radius: 0px 0px 12px 12px;
             border: 0.1rem solid #e5e5e680;
-            background-color: white;
+            background-color: transparent;
             border-top: none;
             width: 100%;
             z-index: 1;
@@ -1178,13 +1178,13 @@
                 }
                 &:hover {
                   .defiMenu {
-                    filter: opacity(1);
+                    filter: var(--invertColor);
                   }
                   .balance-sheet-card-credit-title {
-                    color: #000000;
+                    color: var(--black191);
                   }
                   .balance-sheet-card-credit-amount {
-                    color: #000000;
+                    color: var(--black191);
                   }
                 }
               }
@@ -1217,13 +1217,13 @@
                 justify-content: flex-end;
                 &:hover {
                   .defiMenu {
-                    filter: opacity(1);
+                    filter: var(--invertColor);
                   }
                   .balance-sheet-card-credit-title {
-                    color: #000000;
+                    color: var(--black191);
                   }
                   .balance-sheet-card-credit-amount {
-                    color: #000000;
+                    color: var(--black191);
                   }
                 }
               }
@@ -1250,10 +1250,10 @@
                 color: #636467;
               }
               .balance-sheet-card-credit-title-selected {
-                color: #000000;
+                color: var(--primaryTextColor);
               }
               .balance-sheet-card-credit-amount-selected {
-                color: #000000;
+                color: var(--primaryTextColor);
               }
             }
           }
@@ -1265,7 +1265,7 @@
         padding: 1rem;
         padding-bottom: 0rem;
         .section-table-toggle {
-          background-color: #e5e5e680;
+          background-color: var(--sidebarActivePageColor);
           border-radius: 0.5rem;
           padding: 0.4rem;
           display: flex;
@@ -1283,17 +1283,18 @@
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            transition-duration: 300ms;
+            // transition-duration: 300ms;
             &:hover {
-              background-color: rgba(225, 225, 225, 0.5);
+              background-color: var(--cardBackgroud);
+              color: var(--black191);
             }
           }
           .section-table-toggle-element-selected {
-            background-color: white;
-            color: #19191a;
+            background-color: var(--cardBackgroud);
+            color: var(--black191);
             cursor: default;
             &:hover {
-              background-color: white;
+              background-color: var(--cardBackgroud);
             }
           }
         }
@@ -1424,9 +1425,9 @@
           margin-left: 0.5rem;
         }
         &:hover {
-          color: #0d0d0d;
+          color: var(--primaryTextColor);
           .seeMoreBtnIcon {
-            filter: brightness(0);
+            filter: var(--hoverBrightnessValue);
           }
         }
       }
@@ -1956,7 +1957,7 @@
         justify-content: flex-start;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .balance-sheet-card-credit-title {
             color: #000000;
@@ -1991,7 +1992,7 @@
         justify-content: flex-end;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .balance-sheet-card-credit-title {
             color: #000000;
@@ -2193,4 +2194,8 @@
   background: #cacbcc;
   color: white;
   font-size: 8px;
+}
+
+.info-icon-home{
+  filter: var(--infoBrightnessPortfolio);
 }
