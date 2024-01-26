@@ -595,6 +595,9 @@
                 border-radius: 1.2rem;
               }
             }
+            .nav-link-disabled {
+              pointer-events: none;
+            }
             .nav-link-closed {
               img {
                 margin-right: 0rem;
@@ -826,8 +829,8 @@
           cursor: pointer;
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
-            background-color: #e5e5e680;
-            border-color: transparent;
+          background-color: #e5e5e680;
+          border-color: transparent;
           &:hover {
             box-shadow: none;
             background-color: #0d0d0d;
@@ -849,7 +852,7 @@
           background-color: #f2f2f2;
           &:hover {
             background-color: #0d0d0d;
-            .sideBarFooterSignInIcon{
+            .sideBarFooterSignInIcon {
               filter: invert(0);
               filter: brightness(15) !important;
             }
@@ -860,7 +863,6 @@
         padding-bottom: 5rem;
         padding-top: 1rem;
         .sideBarFooterSignInIconContainerClosedForTwitter {
-          
           cursor: pointer;
           background-color: white;
           border: 1.3px $white-E5E solid;
@@ -891,7 +893,7 @@
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
-          background-color: #e5e5e680;
+        background-color: #e5e5e680;
         border-color: transparent;
         &:hover {
           box-shadow: none;
@@ -901,7 +903,7 @@
             background-color: white;
             border: 1.3px $white-E5E solid;
             background-color: #0d0d0d;
-            img{
+            img {
               filter: invert(0);
               filter: brightness(2.5);
             }
@@ -948,15 +950,12 @@
       .sideBarFooterSignedInContainer {
         justify-content: space-between;
         &:hover {
-          .sideBarFooterSignInIcon{
+          .sideBarFooterSignInIcon {
             filter: invert(0);
             filter: brightness(10) !important;
           }
-          .sideBarFooterSignedInLeaveContainer{
-
-            
+          .sideBarFooterSignedInLeaveContainer {
           }
-
         }
         .sideBarFooterSignInData {
           display: flex;
@@ -978,11 +977,11 @@
           img {
             width: 1.6rem;
           }
-          &:hover{
+          &:hover {
             .navbar-button {
               color: white;
             }
-            img{
+            img {
               opacity: 1 !important;
               filter: brightness(10);
             }
