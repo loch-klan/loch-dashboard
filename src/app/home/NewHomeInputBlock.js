@@ -103,15 +103,31 @@ class NewHomeInputBlock extends BaseReactComponent {
                                 if (this.props.onGoBtnClick) {
                                   // return null;
                                   return (
-                                    <div
-                                      className={`addToAddressListMobileBtn ${
-                                        this.props.goBtnDisabled
-                                          ? "disableAddToAddressListMobileBtn"
-                                          : ""
-                                      }`}
-                                      onClick={this.props.onGoBtnClick}
-                                    >
-                                      Add
+                                    <div className="addToAddressListMobileBtnContainer">
+                                      <div
+                                        className={`addToAddressListMobileBtn ${
+                                          this.props.goBtnDisabled
+                                            ? "disableAddToAddressListMobileBtn"
+                                            : ""
+                                        }`}
+                                        onClick={this.props.onGoBtnClick}
+                                      >
+                                        Add
+                                      </div>
+                                      <div
+                                        className={`replaceAddressListMobileBtn ${
+                                          this.props.goBtnDisabled
+                                            ? "disableAddToAddressListMobileBtn"
+                                            : ""
+                                        }`}
+                                        onClick={() => {
+                                          if (this.props.onGoBtnClick) {
+                                            this.props.onGoBtnClick(true);
+                                          }
+                                        }}
+                                      >
+                                        Replace
+                                      </div>
                                     </div>
                                   );
                                 }
@@ -131,20 +147,6 @@ class NewHomeInputBlock extends BaseReactComponent {
                                   e.coins.length ===
                                   this.props.OnboardingState.coinsList.length
                                 ) {
-                                  if (this.props.onGoBtnClick) {
-                                    return (
-                                      <div
-                                        className={`addToAddressListMobileBtn ${
-                                          this.props.goBtnDisabled
-                                            ? "disableAddToAddressListMobileBtn"
-                                            : ""
-                                        }`}
-                                        onClick={this.props.onGoBtnClick}
-                                      >
-                                        Add
-                                      </div>
-                                    );
-                                  }
                                   return (
                                     <CustomCoin
                                       isStatic
