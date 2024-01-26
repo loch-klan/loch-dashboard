@@ -145,7 +145,7 @@ class TopWalletAddressList extends Component {
   };
   handleSharePassFun = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     if (this.props.handleShare) {
@@ -154,7 +154,7 @@ class TopWalletAddressList extends Component {
   };
   addAddressToWatchListFun = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
@@ -969,6 +969,10 @@ class TopWalletAddressList extends Component {
   };
 
   RefreshButton = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
     window.sessionStorage.setItem("callTheUpdateAPI", true);
     HomeRefreshButton({
       email_address: getCurrentUser().email,
