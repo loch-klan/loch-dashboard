@@ -8,6 +8,11 @@
   }
 }
 
+.watchListSearchInput{
+  box-shadow: var(--inputShadow) !important;
+  -webkit-box-shadow: var(--inputShadow) inset !important;
+}
+
 .watchListTableContainer {
   .no-hover {
     cursor: default;
@@ -34,9 +39,9 @@
       cursor: pointer;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      &:hover {
-        .watchListDelete {
-          filter: brightness(0.5);
+      .watchListDelete {
+        &:hover {
+          filter: var(--hoverBrightnessValue);
         }
       }
     }

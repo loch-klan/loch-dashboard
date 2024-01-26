@@ -12,7 +12,8 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (apidata, parentCtx) => {
+export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
+  console.log("isFromHome is ", isFromHome);
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
@@ -60,18 +61,7 @@ export const getGraphData = (apidata, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              amountFormat(
-                (
-                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
-                    assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]] ||
-                  ctx.raw
-                )?.toFixed(2) * currency.rate,
-                "en-US",
-                "USD"
-              );
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -108,22 +98,22 @@ export const getGraphData = (apidata, parentCtx) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,
@@ -135,7 +125,13 @@ export const getGraphData = (apidata, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display: isFromHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
@@ -360,10 +356,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -403,22 +396,22 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,
@@ -479,7 +472,13 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function (value, index, ticks) {
-            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            if (this.getLabelForValue(value)) {
+              if (this.getLabelForValue(value).length >= 6) {
+                return this.getLabelForValue(value).slice(0, 4) || "Other";
+              }
+              return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            }
+            return null;
           },
         },
         grid: {

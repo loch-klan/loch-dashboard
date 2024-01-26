@@ -565,7 +565,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Asset"
             onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -627,7 +627,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Average Cost Price"
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
             <Image
@@ -684,7 +684,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Price"
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
             <Image
@@ -741,7 +741,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Amount"
             onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -794,7 +794,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Cost Basis"
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
             <Image
@@ -853,7 +853,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Value"
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
             <Image
@@ -912,7 +912,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
             <Image
@@ -990,7 +990,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
             <Image
@@ -1064,7 +1064,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Portfolio perc"
             onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
             <Image

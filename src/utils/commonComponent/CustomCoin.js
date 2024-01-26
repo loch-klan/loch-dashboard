@@ -10,7 +10,7 @@ function CustomCoin({
   isStatic,
   noNameJustIcon,
   overlayOnBottom,
-  hideMore
+  hideMore,
 }) {
   // console.log("coins", coins);
   if (isCohort) {
@@ -38,11 +38,7 @@ function CustomCoin({
               id={id}
               style={isStatic ? { position: "static" } : {}}
             >
-              <div
-                className={`chip-container-dual ${
-                  noNameJustIcon ? "chip-container-dual-justIcon" : ""
-                }`}
-              >
+              <div className="chip-container-dual">
                 <Image
                   src={sortedCoins[0]?.coinSymbol}
                   style={{
@@ -61,19 +57,13 @@ function CustomCoin({
               </div>
               {noNameJustIcon || hideMore ? null : (
                 <div className="chip-container">
-                  <CustomOverlay
-                    text={sortedCoins}
-                    position={overlayOnBottom ? "bottom" : "top"}
-                    className={
-                      overlayOnBottom ? "tool-tip-container-bottom-arrow" : ""
-                    }
-                  >
+                  <CustomOverlay text={sortedCoins} position="top">
                     <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
                       +{sortedCoins.length - 1}
                     </Badge>
                   </CustomOverlay>
                 </div>
-              ) }
+              )}
             </div>
           ) : (
             <div
@@ -119,7 +109,7 @@ function CustomCoin({
                                 <div className="bounce3"></div>
                             </div>
                         </div> */}
-          {loadingAnimation(true)}
+          {loadingAnimation()}
         </div>
       )}
     </>

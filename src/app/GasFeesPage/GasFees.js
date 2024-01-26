@@ -211,6 +211,13 @@ class GasFeesPage extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this),
+          this
+        );
+      }
       this.setState({
         gasFeesGraphLoading: false,
       });
@@ -311,34 +318,34 @@ class GasFeesPage extends Component {
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
-      this.props.getAllFeeApi(this, false, false);
+      this.props.getAllFeeApi(this, false, false, false);
       // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
-      this.props.getAllFeeApi(this, fiveyear, today, false);
+      this.props.getAllFeeApi(this, fiveyear, today, false, false);
       // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
-      this.props.getAllFeeApi(this, year, today, false);
+      this.props.getAllFeeApi(this, year, today, false, false);
       // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
-      this.props.getAllFeeApi(this, sixmonth, today, false);
+      this.props.getAllFeeApi(this, sixmonth, today, false, false);
       // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
-      this.props.getAllFeeApi(this, month, today, false);
+      this.props.getAllFeeApi(this, month, today, false, false);
       // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
-      this.props.getAllFeeApi(this, week, today, false);
+      this.props.getAllFeeApi(this, week, today, false, false);
       // console.log(week, today, "week");
       handleSelected = "Week";
     }
@@ -584,6 +591,7 @@ class GasFeesPage extends Component {
                 }
                 chainSearchIsUsed={this.feesChainSearchIsUsed}
                 oldBar
+                floatingWatermark
                 // height={420}
                 // width={824}
                 // comingSoon={false}

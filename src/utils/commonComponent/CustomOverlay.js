@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Image, Tooltip } from "react-bootstrap";
 import { lightenDarkenColor } from "../ReusableFunctions";
+import "./commonCoponentsStyles/_customOverlay.scss";
 
 function CustomOverlay({
   text,
@@ -172,6 +173,7 @@ function CustomOverlay({
       placement={position}
       delay={{ show: 250, hide: 100 }}
       overlay={renderTooltip}
+      className="overlay-tool-tip-container"
     >
       {children}
     </OverlayTrigger>

@@ -200,7 +200,7 @@ class ProfileForm extends BaseReactComponent {
           <Form onValidSubmit={this.onValidSubmit}>
             <div>
               <Row>
-                <Col md={4} className="p-r-0">
+                <Col md={4} className="p-r-0 input-noshadow-dark">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
                     label="First Name"
@@ -217,7 +217,7 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={4} className="p-r-0">
+                <Col md={4} className="p-r-0 input-noshadow-dark">
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
                     label="Last Name"
@@ -234,7 +234,7 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={4} className="p-r-0">
+                <Col md={4} className="p-r-0 input-noshadow-dark">
                   <FormElement
                     valueLink={this.linkState(this, "email")}
                     label="Email"
@@ -253,7 +253,7 @@ class ProfileForm extends BaseReactComponent {
                 </Col>
               </Row>
               <Row>
-                <Col md={4}>
+                <Col md={4} className="input-noshadow-dark p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
@@ -263,18 +263,14 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "(217) 331 - 1312",
                       },
                     }}
-                    classes={
-                      {
-                        // inputField: this.state.mobileNumber !== "" ? "done" : "",
-                      }
-                    }
+                    classes={"input-noshadow-dark"}
                   />
                 </Col>
                 <Col md={4}></Col>
                 <Col md={4}>
                   <div className="formBtnContainer">
                     <Button
-                      className="inter-display-semi-bold f-s-14 lh-24 black-191  submit-button"
+                      className="inter-display-semi-bold f-s-14 lh-24  submit-button btn-tirtiarary"
                       type="submit"
                       onClick={() =>
                         ProfileSaved({

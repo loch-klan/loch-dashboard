@@ -62,6 +62,7 @@ class CustomTable extends BaseReactComponent {
       isStickyHead,
       isMiniversion,
       wrapperStyle,
+      watermarkOnTop,
     } = this.props;
     return (
       <div
@@ -167,7 +168,11 @@ class CustomTable extends BaseReactComponent {
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
                       gridClassName={`${
-                        this.props.addWatermark ? "tableWatermark" : ""
+                        this.props.addWatermark
+                          ? "tableWatermark"
+                          : this.props.fakeWatermark
+                          ? "tableWatermarkFake"
+                          : ""
                       } ${
                         this.props.bottomCombiedValues
                           ? "topMarginForCombiedValues"
@@ -255,7 +260,7 @@ class CustomTable extends BaseReactComponent {
                           this.props.addWatermarkMoveUp
                             ? "tableWatermarkMoveUp"
                             : ""
-                        }`}
+                        } ${watermarkOnTop ? "watermarkOnTop" : ""}`}
                       >
                         {columnList &&
                           columnList.length > 0 &&
