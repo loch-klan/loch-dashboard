@@ -190,6 +190,7 @@ class Portfolio extends BaseReactComponent {
       walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
+      showTransactionHistoryDust: true,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -218,7 +219,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphLoading: false,
       yieldOpportunitiesList: [],
       yieldOpportunitiesTotalCount: 0,
-      yieldOpportunitiesTableLoading: false,
+      yieldOpportunitiesTableLoading: true,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: 1,
@@ -426,7 +427,7 @@ class Portfolio extends BaseReactComponent {
   }
   changeBlockOneItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockOneSelectedItem: itemNum,
       });
@@ -434,7 +435,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockTwoItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockTwoSelectedItem: itemNum,
       });
@@ -442,7 +443,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockThreeItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockThreeSelectedItem: itemNum,
       });
@@ -450,7 +451,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockFourItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockFourSelectedItem: itemNum,
       });
@@ -816,9 +817,15 @@ class Portfolio extends BaseReactComponent {
     }
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.graphfeeValue
+      this.props.intelligenceState.GraphfeeData
     ) {
-      this.trimGasFees();
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
     }
     if (
       this.props.intelligenceState &&
@@ -890,12 +897,6 @@ class Portfolio extends BaseReactComponent {
         // netflow breakdown
         this.props.getAssetProfitLoss(this, false, false, false);
       }
-    }
-    if (this.state.blockThreeSelectedItem === 1) {
-      this.setState({
-        shouldCallPriceGaugeApi: false,
-      });
-      this.callPriceGaugeApi();
     }
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
@@ -1084,7 +1085,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
       // Counterparty volume api call
       else if (
@@ -1109,12 +1110,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       if (
         this.state.blockThreeSelectedItem === 1 &&
-        this.state.shouldCallPriceGaugeApi
+        !this.props.commonState.yieldOpportunities
       ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
-          shouldCallPriceGaugeApi: false,
+          shouldCallYieldOppApi: false,
         });
-        this.callPriceGaugeApi();
+        this.callYieldOppApi();
       }
 
       if (
@@ -1148,14 +1150,12 @@ class Portfolio extends BaseReactComponent {
       }
       if (
         this.state.blockFourSelectedItem === 2 &&
-        (!this.state.yieldOpportunitiesList ||
-          !this.props.commonState.yieldOpportunities)
+        this.state.shouldCallPriceGaugeApi
       ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
-          shouldCallYieldOppApi: false,
+          shouldCallPriceGaugeApi: false,
         });
-        this.callYieldOppApi();
+        this.callPriceGaugeApi();
       }
       if (
         this.state.blockFourSelectedItem === 3 &&
@@ -1388,7 +1388,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+        this.props.getAllFeeApi(this, false, false, true);
       }
 
       // Counterparty volume api call
@@ -1409,11 +1409,15 @@ class Portfolio extends BaseReactComponent {
       }
 
       // BLOCK Three
-      if (this.state.blockThreeSelectedItem === 1) {
+      if (
+        this.state.blockThreeSelectedItem === 1 &&
+        !this.props.commonState.yieldOpportunities
+      ) {
+        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
-          shouldCallPriceGaugeApi: false,
+          shouldCallYieldOppApi: false,
         });
-        this.callPriceGaugeApi();
+        this.callYieldOppApi();
       }
       if (
         this.state.blockThreeSelectedItem === 2 &&
@@ -1431,14 +1435,12 @@ class Portfolio extends BaseReactComponent {
 
       if (
         this.state.blockFourSelectedItem === 2 &&
-        (!this.props.yieldOpportunitiesState.yield_pools ||
-          !this.props.commonState.yieldOpportunities)
+        this.state.shouldCallPriceGaugeApi
       ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
         this.setState({
-          shouldCallYieldOppApi: false,
+          shouldCallPriceGaugeApi: false,
         });
-        this.callYieldOppApi();
+        this.callPriceGaugeApi();
       }
       if (
         this.state.blockFourSelectedItem === 3 &&
@@ -2905,7 +2907,7 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData?.asset?.code ? rowData.asset.code : ""}
+                text={rowData?.asset?.code}
               >
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
@@ -4278,7 +4280,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4312,7 +4314,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4324,7 +4326,7 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4342,7 +4344,8 @@ class Portfolio extends BaseReactComponent {
                               isArrow={true}
                               isLoading={this.state.AvgCostLoading}
                               isAnalytics="average cost basis"
-                              addWatermark
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4418,7 +4421,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4450,7 +4453,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4484,7 +4487,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4550,6 +4553,7 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
+                            className="tableWatermarkOverlay"
                           >
                             <div
                               style={{
@@ -4575,13 +4579,13 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={true}
+                              isScroll
                               isLoading={this.state.gasFeesGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : this.state.blockTwoSelectedItem === 3 ? (
@@ -4625,13 +4629,14 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              isScrollVisible={false}
-                              isScroll={false}
+                              digit={this.state.counterGraphDigit}
+                              isScroll
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
+                              floatingWatermark
                             />
                           </div>
                         ) : null}
@@ -4670,7 +4675,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(1);
                             }}
                           >
-                            Price gauge
+                            Yield opportunities
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4678,7 +4683,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand when this token was bought and sold"
+                                "Yield bearing opportunties personalized for your portfolio"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -4686,7 +4691,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4720,7 +4725,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4731,17 +4736,50 @@ class Portfolio extends BaseReactComponent {
                         </div>
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
-                        <InflowOutflowPortfolioHome
-                          openChartPage={this.goToPriceGaugePage}
-                          hideExplainer
-                          // isHomepage
-                          showEth
-                          userWalletList={this.state.userWalletList}
-                          lochToken={this.state.lochToken}
-                          callChildPriceGaugeApi={
-                            this.state.callChildPriceGaugeApi
-                          }
-                        />
+                        <div>
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                            <TransactionTable
+                              xAxisScrollable
+                              xAxisScrollableColumnWidth={4.8}
+                              noSubtitleBottomPadding
+                              disableOnLoading
+                              isMiniversion
+                              tableData={tableData}
+                              columnList={columnList}
+                              headerHeight={60}
+                              isArrow={true}
+                              isLoading={
+                                this.state.yieldOpportunitiesTableLoading
+                              }
+                              watermarkOnTop
+                              // addWatermark
+                              fakeWatermark
+                            />
+                          </div>
+                          {!this.state.yieldOpportunitiesTableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToYieldOppPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {this.state.yieldOpportunitiesTotalCount &&
+                                this.state.yieldOpportunitiesTotalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10,
+                                      true
+                                    ).toLocaleString("en-US")}+ yield ${
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10 >
+                                      1
+                                        ? "opportunities"
+                                        : "opportunity"
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
                       ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
@@ -4791,7 +4829,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4809,7 +4847,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockFourItem(2);
                             }}
                           >
-                            Yield opportunities
+                            Price gauge
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4817,7 +4855,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Yield bearing opportunties personalized for your portfolio"
+                                "Understand when this token was bought and sold"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -4825,7 +4863,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4857,7 +4895,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4870,7 +4908,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
@@ -4882,7 +4920,9 @@ class Portfolio extends BaseReactComponent {
                               headerHeight={60}
                               isArrow={true}
                               isLoading={this.state.tableLoading}
-                              addWatermark
+                              watermarkOnTop
+                              // addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (
@@ -4904,50 +4944,17 @@ class Portfolio extends BaseReactComponent {
                           ) : null}
                         </div>
                       ) : this.state.blockFourSelectedItem === 2 ? (
-                        <div>
-                          <div className="newHomeTableContainer">
-                            <TransactionTable
-                              message={"No yield opportunities found"}
-                              xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
-                              noSubtitleBottomPadding
-                              disableOnLoading
-                              isMiniversion
-                              tableData={yieldOpportunitiesListTemp}
-                              showDataAtBottom
-                              columnList={YieldOppColumnData}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={
-                                this.state.yieldOpportunitiesTableLoading
-                              }
-                              addWatermark
-                            />
-                          </div>
-                          {!this.state.yieldOpportunitiesTableLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
-                              <div
-                                onClick={this.goToYieldOppPage}
-                                className="bottomExtraInfoText"
-                              >
-                                {this.state.yieldOpportunitiesTotalCount &&
-                                this.state.yieldOpportunitiesTotalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10,
-                                      true
-                                    ).toLocaleString("en-US")}+ yield ${
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10 >
-                                      1
-                                        ? "opportunities"
-                                        : "opportunity"
-                                    }`
-                                  : "Click here to see more"}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
+                        <InflowOutflowPortfolioHome
+                          openChartPage={this.goToPriceGaugePage}
+                          hideExplainer
+                          // isHomepage
+                          showEth
+                          userWalletList={this.state.userWalletList}
+                          lochToken={this.state.lochToken}
+                          callChildPriceGaugeApi={
+                            this.state.callChildPriceGaugeApi
+                          }
+                        />
                       ) : this.state.blockFourSelectedItem === 3 ? (
                         <PortfolioHomeInsightsBlock
                           history={this.props.history}
