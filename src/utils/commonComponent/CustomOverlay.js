@@ -102,14 +102,14 @@ function CustomOverlay({
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 ${
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 black-191 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
                 {heading}
               </div>
               <div
-                className={`w-100 inter-display-medium text-tooltip-subheading f-s-13 lh-16 ${
+                className={`w-100 text-tooltip-subheading f-s-13 lh-16 inter-display-medium  ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >

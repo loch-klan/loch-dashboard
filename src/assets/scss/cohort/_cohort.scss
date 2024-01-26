@@ -11,7 +11,7 @@
         0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
       margin-bottom: 2rem;
       padding: 0;
-      background-color: #fff;
+      background-color: var(--cardBackgroud);
       padding: 2rem 4rem;
       border-radius: 1.2rem;
     }
@@ -43,10 +43,10 @@
         }
         .sort-by-title:hover {
           span {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
           img {
-            filter: brightness(0.5);
+            filter: var(--hoverBrightnessValue);
           }
         }
         // .dropdown {

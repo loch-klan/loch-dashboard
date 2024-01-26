@@ -2454,7 +2454,7 @@ textarea {
   width: fit-content;
   cursor: pointer;
   &:hover {
-    color: $primary;
+    color: var(--primaryTextColor);
   }
 }
 
@@ -2734,4 +2734,40 @@ input{
 
 .highcharts-background{
   fill: var(--cardBackgroud);
+}
+
+// Calendar
+.react-calendar{
+  background-color: var(--cardBackgroud);
+}
+.react-calendar__navigation__label__labelText{
+  color: var(--primaryTextColor);
+}
+
+.react-calendar__tile--active {
+  background-color: var(--black191) !important;
+  color: var(--secondaryTextColor) !important;
+}
+
+.react-calendar__tile:disabled{
+  background-color: var(--primaryFilter) !important;
+}
+
+.react-calendar__navigation__arrow{
+  // color: var(--topbarAdressAddBorder) !important;
+  color: var(--black191);
+  background-color: transparent;
+  &:disabled{
+    // background-color: transparent;
+    color: $black-191;
+    // color: var(--sameModeColor) !important;
+  }
+  &:focus{
+    // color: var(--sameModeColor) !important;
+    color: $black-191;
+    background-color: var(--primaryFilter);
+  }
+  &:hover{
+    color: $black-191;
+  }
 }

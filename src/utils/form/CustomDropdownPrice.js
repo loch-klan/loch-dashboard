@@ -487,7 +487,7 @@ class CustomDropdown extends Component {
         style={{ position: "relative" }}
       >
         <div
-          className={`placeholderPriceDropdown ${
+          className={`placeholderPriceDropdown  ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme
@@ -551,7 +551,7 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content-price ${
+          className={`dropdown-content-price input-noshadow-dark ${
             this.state.showMenu ? "show" : ""
           }`}
           style={{

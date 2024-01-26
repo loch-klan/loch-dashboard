@@ -309,7 +309,7 @@ class PortfolioHomeDefiBlock extends Component {
                     style={
                       this.state.isYeildToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                           }
                         : { transform: "rotate(180deg)" }
                     }
@@ -361,7 +361,7 @@ class PortfolioHomeDefiBlock extends Component {
                     style={
                       this.state.isDebtToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                           }
                         : { transform: "rotate(180deg)" }
                     }

@@ -1485,7 +1485,7 @@ class PieChart2 extends BaseReactComponent {
                         style={
                           this.state.isChainToggle
                             ? {
-                                filter: "opacity(1)",
+                                filter: "var(--invertColor)",
                                 height: "1.25rem",
                                 width: "1.25rem",
                               }
@@ -1638,7 +1638,7 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isYeildToggle
                                 ? {
-                                    filter: "opacity(1)",
+                                    filter: "var(--invertColor)",
                                   }
                                 : { transform: "rotate(180deg)" }
                             }
@@ -1686,7 +1686,7 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isDebtToggle
                                 ? {
-                                    filter: "opacity(1)",
+                                    filter: "var(--invertColor)",
                                   }
                                 : { transform: "rotate(180deg)" }
                             }
