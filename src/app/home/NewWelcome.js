@@ -2609,6 +2609,17 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
+                <div className="new-homepage__body-content-table-header new-homepage__body-content-table-header_explainer">
+                  <img
+                    style={{
+                      opacity: 0,
+                    }}
+                    src={ActiveSmartMoneySidebarIcon}
+                    alt=""
+                  />
+                  Sorted by net worth, pnl, and flows
+                </div>
+
                 {this.state.tableLoading ? (
                   <div
                     style={{

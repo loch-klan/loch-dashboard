@@ -7,18 +7,134 @@
   display: flex;
   flex-direction: column;
 
-  .homepage-table-charts{
-    .custom-dropdown .placeholderPriceDropdown.lineChartPlaceholder{
+  .custom-dropdown {
+    margin-right: 0px !important;
+    padding-left: 5px;
+
+    .show {
+      margin-left: -5px;
+    }
+    .placeholderPriceDropdown {
+      justify-content: center;
+      gap: 4px;
+    }
+    .placeholder {
+      gap: 4px;
+      svg {
+        right: auto;
+        position: static;
+      }
+    }
+  }
+
+  .padding-mb-2 {
+    padding-left: 2px !important;
+  }
+
+  .placeholderPriceDropdown {
+    min-width: 100% !important;
+  }
+  .homepage-table-charts {
+    .custom-dropdown .placeholderPriceDropdown.lineChartPlaceholder {
       min-width: 10rem !important;
     }
   }
+  .custom-dropdown {
+    margin-right: 0px !important;
+    padding-left: 5px;
 
-  .asset-mobile-table{
-    .table-wrapper-mobile-y-scroll{
-      max-height: 65rem !important;
+    .show {
+      margin-left: -5px;
+    }
+    .placeholderPriceDropdown {
+      justify-content: center;
+      gap: 4px;
+    }
+    .placeholder {
+      gap: 4px;
+      svg {
+        right: auto;
+        position: static;
+      }
     }
   }
 
+  .padding-mb-2 {
+    padding-left: 2px !important;
+  }
+
+  .placeholderPriceDropdown {
+    min-width: 100% !important;
+  }
+
+  .asset-mobile-table {
+    .table-wrapper-mobile-y-scroll {
+      max-height: 65rem !important;
+    }
+  }
+  .transaction-table-mobile-search {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 10px;
+    gap: 10px;
+    border: 1px solid #d4d4d4;
+    background-color: white;
+    border-radius: 8px;
+    .search-icon {
+    }
+
+    .search-input {
+      width: 100%;
+      // box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+      border: none;
+      outline: none;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #19191a;
+      background-color: transparent;
+      &::placeholder {
+        color: #b0b1b3;
+      }
+      &:focus {
+        .transaction-table-mobile-search {
+          border: 1px solid black;
+        }
+      }
+    }
+  }
+
+  .transaction-table-mobile-search {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 10px;
+    gap: 10px;
+    border: 1px solid #d4d4d4;
+    background-color: white;
+    border-radius: 8px;
+    .search-icon {
+    }
+
+    .search-input {
+      width: 100%;
+      // box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+      border: none;
+      outline: none;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #19191a;
+      background-color: transparent;
+      &::placeholder {
+        color: #b0b1b3;
+      }
+      &:focus {
+        .transaction-table-mobile-search {
+          border: 1px solid black;
+        }
+      }
+    }
+  }
   .mpLoadingContainer {
     display: flex;
     align-items: center;
@@ -95,9 +211,10 @@
       background-color: white;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
         0px 1px 1px rgba(0, 0, 0, 0.04);
-      padding: 2rem;
+
       .mpcMobileShare {
         padding-left: 1rem;
+        margin-right: 2rem;
       }
       .mpcMobileSearchInput {
         display: flex;
@@ -105,7 +222,83 @@
         flex: 1;
         .mpcMobileSearchImage {
           height: 1.5rem;
+          margin: 2rem;
           margin-right: 0.5rem;
+        }
+        .topSearchBarMobileContainer {
+          // transform: translateY(-31px);
+          flex: 1;
+          padding: 0rem;
+          background-color: white;
+          padding-left: 0.5rem;
+          padding-right: 2rem;
+          font-size: 16px;
+          border: none;
+
+          .new-homepage__body-search_input_body {
+            .addWalletWrapper {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              // flex-direction: column;
+
+              .awInputWrapper {
+                border: none;
+                width: 100%;
+                .awLable {
+                  color: #b0b1b3;
+                  font-size: 14px;
+                }
+                .awInputContainer {
+                  flex: 1;
+                  display: flex;
+                  align-items: flex-start;
+                  flex-direction: column;
+                  padding-right: 0.5rem;
+
+                  .awInputTopBar {
+                    border: none;
+                    width: 100%;
+                    padding: 0;
+                    font-size: 16px;
+                    outline: none;
+
+                    &:focus {
+                      outline: none;
+                    }
+                    &::placeholder {
+                      color: #b0b1b3;
+                    }
+                  }
+                }
+                .addToAddressListMobileBtn {
+                  background: #19191a;
+                  color: #fff;
+                  padding: 0.6rem 1.2rem;
+                  border-radius: 0.8rem;
+                }
+                .disableAddToAddressListMobileBtn {
+                  opacity: 0.7;
+                }
+                .awTopInputWrapper {
+                  display: flex;
+                  align-items: center;
+                }
+                .awBottomInputWrapper {
+                  display: flex;
+                  align-items: center;
+                  overflow: hidden;
+                }
+              }
+
+              .wInputWrapper-mobile {
+                flex-direction: column-reverse;
+              }
+              .isAwInputWrapperValid {
+                border-color: #19191a;
+              }
+            }
+          }
         }
         .mpcMobileSearchPlaceholder {
           color: #b0b1b3;
@@ -454,6 +647,33 @@
           }
         }
       }
+      .fillter_tabs_section {
+        .custom-dropdown {
+          background-color: rgba(229, 229, 230, 0.5);
+
+          .dropdown-footer {
+            .dropdown-btn {
+              &:hover {
+                background-color: unset !important;
+                color: unset !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .homepage-mobile-view-more {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #7c7d81;
+    font-size: 14px;
+    font-weight: 600;
+    img {
+      width: 7px;
+      height: 14px;
     }
   }
 }
