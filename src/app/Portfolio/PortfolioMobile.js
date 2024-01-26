@@ -810,7 +810,7 @@ class PortfolioMobile extends BaseReactComponent {
     if (event.key === "Enter") {
       event.preventDefault();
       if (!this.state.disableAddBtn) {
-        this.handleAddWallet();
+        this.handleAddWallet(true);
       }
     }
   };
@@ -833,7 +833,7 @@ class PortfolioMobile extends BaseReactComponent {
       ],
     });
   };
-  handleAddWallet = () => {
+  handleAddWallet = (replaceAddresses) => {
     if (this.state.goBtnDisabled) {
       return null;
     }
@@ -850,22 +850,24 @@ class PortfolioMobile extends BaseReactComponent {
     });
     let addWalletList = [];
 
-    addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
-    if (addWalletList && addWalletList?.length > 0) {
-      addWalletList = addWalletList?.map((e) => {
-        return {
-          ...e,
-          showAddress: e.nickname === "" ? true : false,
-          showNickname: e.nickname === "" ? false : true,
-          showNameTag: e.nameTag === "" ? false : true,
-          apiAddress: e.address,
-        };
-      });
-    }
-    if (addWalletList && addWalletList.length > 0) {
-      for (let i = 0; i < addWalletList.length; i++) {
-        if (addWalletList[i].id === "wallet1") {
-          addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+    if (!replaceAddresses) {
+      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      if (addWalletList && addWalletList?.length > 0) {
+        addWalletList = addWalletList?.map((e) => {
+          return {
+            ...e,
+            showAddress: e.nickname === "" ? true : false,
+            showNickname: e.nickname === "" ? false : true,
+            showNameTag: e.nameTag === "" ? false : true,
+            apiAddress: e.address,
+          };
+        });
+      }
+      if (addWalletList && addWalletList.length > 0) {
+        for (let i = 0; i < addWalletList.length; i++) {
+          if (addWalletList[i].id === "wallet1") {
+            addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+          }
         }
       }
     }
@@ -958,18 +960,20 @@ class PortfolioMobile extends BaseReactComponent {
       // Single address
       const addressCreditScore = new URLSearchParams();
       addressCreditScore.append("credits", "address_added");
-
-      this.props.addUserCredits(addressCreditScore);
+      this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
 
       // Multiple address
       const multipleAddressCreditScore = new URLSearchParams();
       multipleAddressCreditScore.append("credits", "multiple_address_added");
-      this.props.addUserCredits(multipleAddressCreditScore);
+      this.props.addUserCredits(
+        multipleAddressCreditScore,
+        this.resetCreditPoints
+      );
     }
     if (creditIsEns) {
       const ensCreditScore = new URLSearchParams();
       ensCreditScore.append("credits", "ens_added");
-      this.props.addUserCredits(ensCreditScore);
+      this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
     }
     this.props.updateUserWalletApi(data, this, yieldData, true);
 
@@ -1015,6 +1019,7 @@ class PortfolioMobile extends BaseReactComponent {
     }
   };
   cancelAddingWallet = () => {};
+  resetCreditPoints = () => {};
   addConditionTransactionTable = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -2948,7 +2953,7 @@ class PortfolioMobile extends BaseReactComponent {
                     Assets
                   </h2>
                   <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -3056,7 +3061,7 @@ class PortfolioMobile extends BaseReactComponent {
                     Transactions
                   </h2>
                   <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
