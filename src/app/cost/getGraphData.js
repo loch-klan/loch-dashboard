@@ -430,7 +430,13 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: isHome ? true : labels.length > 8 ? false : true,
+          display: isHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
