@@ -78,6 +78,7 @@ class PortfolioHomeInsightsBlock extends Component {
                           boxShadow: "none",
                           border: "0.1rem solid #E5E5E6",
                           alignItems: "flex-start",
+                          background: "var(--cardBackgroud)",
                         }}
                         className="insights-card"
                         key={key}
