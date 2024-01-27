@@ -834,6 +834,7 @@ class TopWalletExchangeBar extends Component {
       recognized_addresses: recog_address,
       blockchains_detected: blockchainDetected,
       nicknames: nicknames,
+      isMobile: false,
     });
     if (this.props.updateTimer) {
       this.props.updateTimer();

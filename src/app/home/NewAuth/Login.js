@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
-import logo from "./../../../image/Loch.svg";
+import { CloseIconBlack } from "../../../assets/images/icons";
 import { validateEmail } from "../../../utils/validators";
-import {
-  CloseIconBlack,
-  CrossSmartMoneyIcon,
-  NewWelcomeLoginCrossIcon,
-} from "../../../assets/images/icons";
+import logo from "./../../../image/Loch.svg";
+import "./_newAuth.scss";
 
 const Login = ({
   show,

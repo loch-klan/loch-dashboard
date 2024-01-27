@@ -15,7 +15,13 @@ import {
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
 
-export const getAllFeeApi = (ctx, startDate, endDate, isDefault = true) => {
+export const getAllFeeApi = (
+  ctx,
+  startDate,
+  endDate,
+  isFromHome = false,
+  isDefault = true
+) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -32,14 +38,14 @@ export const getAllFeeApi = (ctx, startDate, endDate, isDefault = true) => {
               type: GAS_FEES,
               payload: {
                 GraphfeeData: res.data.data,
-                graphfeeValue: getGraphData(res.data.data, ctx),
+                graphfeeValue: getGraphData(res.data.data, ctx, isFromHome),
               },
             });
           }
           if (ctx.setLocalGasFees) {
             ctx.setLocalGasFees(
               res.data.data,
-              getGraphData(res.data.data, ctx)
+              getGraphData(res.data.data, ctx, isFromHome)
             );
           }
           ctx.setState({
