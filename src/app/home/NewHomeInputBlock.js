@@ -110,7 +110,9 @@ class NewHomeInputBlock extends BaseReactComponent {
                                             ? "disableAddToAddressListMobileBtn"
                                             : ""
                                         }`}
-                                        onClick={this.props.onGoBtnClick}
+                                        onClick={() => {
+                                          this.props.onGoBtnClick(false);
+                                        }}
                                       >
                                         Add
                                       </div>
