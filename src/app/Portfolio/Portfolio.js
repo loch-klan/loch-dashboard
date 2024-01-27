@@ -1008,7 +1008,7 @@ class Portfolio extends BaseReactComponent {
       this.props.intelligenceState.counterPartyValue
     ) {
       const tempHolder = getCounterGraphData(
-        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this.props.intelligenceState.counterPartyData,
         this,
         true
       );
@@ -4594,7 +4594,8 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData[2]
                               }
                               isScrollVisible={false}
-                              isScroll={false}
+                              isScroll={true}
+                              digit={this.state.counterGraphDigit}
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding

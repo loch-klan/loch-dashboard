@@ -121,7 +121,7 @@ class BarGraphSection extends Component {
           const clickedIndex = tempHolder[0].index;
           if (clickedIndex || clickedIndex === 0) {
             if (this.state.data?.labels[clickedIndex]) {
-              const goToThisAddress = this.state.data.labels[clickedIndex];
+              const goToThisAddress = this.state?.data.labels[clickedIndex];
               let slink = goToThisAddress;
               let shareLink = BASE_URL_S3 + "home/" + slink;
               window.open(shareLink, "_blank", "noreferrer");
@@ -278,7 +278,7 @@ class BarGraphSection extends Component {
 
     const ScrollStyle = {
       width: `${100}%`,
-      minWidth: `${data && data.labels.length * 10}rem`,
+      minWidth: `${data?.labels && data?.labels.length * 10}rem`,
     };
     const NormalStyle = {
       width: "100%",
@@ -755,8 +755,8 @@ class BarGraphSection extends Component {
                 {options2 != undefined &&
                 isScroll &&
                 (this.props.isFromHome
-                  ? data.labels.length > 3
-                  : data.labels.length > 8) ? (
+                  ? data?.labels.length > 3
+                  : data?.labels.length > 8) ? (
                   <div style={{ width: `${digit}rem` }}>
                     <Bar options={options2} data={data} />
                   </div>
@@ -769,8 +769,8 @@ class BarGraphSection extends Component {
                     options2 != undefined &&
                     isScroll &&
                     (this.props.isFromHome
-                      ? data.labels.length > 3
-                      : data.labels.length > 8)
+                      ? data?.labels.length > 3
+                      : data?.labels.length > 8)
                       ? "ScrollArea"
                       : "ChartAreaWrapper"
                   }
@@ -779,8 +779,8 @@ class BarGraphSection extends Component {
                       options2 != undefined &&
                       isScroll &&
                       (this.props.isFromHome
-                        ? data.labels.length > 3
-                        : data.labels.length > 8)
+                        ? data?.labels.length > 3
+                        : data?.labels.length > 8)
                         ? "calc(100 % - " + digit + "rem)"
                         : "100%"
                     }`,
@@ -806,8 +806,8 @@ class BarGraphSection extends Component {
                       }`}
                       style={
                         (this.props.isFromHome
-                          ? data.labels.length > 3
-                          : data.labels.length > 8) && isScroll
+                          ? data?.labels.length > 3
+                          : data?.labels.length > 8) && isScroll
                           ? ScrollStyle
                           : NormalStyle
                       }
