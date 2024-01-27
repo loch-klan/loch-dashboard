@@ -3,7 +3,11 @@ import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import { FollowTopBarIcon, ShareTopBarIcon } from "../../assets/images/icons";
+import {
+  FollowTopBarIcon,
+  ShareTopBarIcon,
+  StreakFireIcon,
+} from "../../assets/images/icons";
 import {
   AddConnectExchangeModalOpen,
   ConnectWalletButtonClicked,
@@ -936,7 +940,7 @@ class TopWalletAddressList extends Component {
           />
         ) : null}
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletAddressListDropdownContainer maxWidth50">
+          <div className="topWalletAddressListDropdownContainer">
             <TopBarDropDown
               deleteTheAddress={this.deleteTheAddress}
               class="topWalletAddressListDropdown"
@@ -954,37 +958,52 @@ class TopWalletAddressList extends Component {
         ) : (
           <div />
         )}
-        <div className="topWalletAddressListFollowShareContainer inter-display-medium">
-          {this.state.showFollowingAddress ? (
-            <div
-              ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn"
-              id="address-button"
-              onClick={this.addAddressToWatchListFun}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={FollowTopBarIcon}
-              />
-              <span className="dotDotText">
-                {this.state.isFollowingAddress ? "Following" : "Follow"}
-              </span>
-            </div>
-          ) : null}
-          {!this.props.hideShare ? (
-            <div
-              ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn ml-2"
-              id="address-button"
-              onClick={this.props.handleShare}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={ShareTopBarIcon}
-              />
-              <span className="dotDotText">Share</span>
-            </div>
-          ) : null}
+        <div className="topWalletAddressListFollowShareContainer inter-display-semibold">
+          <div className="topWalletAddressListStreakBtn">
+            <Image
+              className="topWalletAddressListStreakBtnIcon"
+              src={StreakFireIcon}
+            />
+            <span className="topWalletAddressListStreakBtnText">3</span>
+            <span className="topWalletAddressListStreakBtnText topWalletAddressListStreakMiddleMargin">
+              day
+            </span>
+            <span className="topWalletAddressListStreakSubtextBtnText">
+              streak
+            </span>
+          </div>
+          <div className="topWalletAddressListFollowShareParent">
+            {this.state.showFollowingAddress ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={FollowTopBarIcon}
+                />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            {!this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn ml-2"
+                id="address-button"
+                onClick={this.props.handleShare}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={ShareTopBarIcon}
+                />
+                <span className="dotDotText">Share</span>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );

@@ -16,7 +16,6 @@ import {
   GreyManIcon,
   InactiveSmartMoneySidebarIcon,
   SidebarLeftArrowIcon,
-  StreakFireIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons";
@@ -1017,36 +1016,7 @@ function Sidebar(props) {
                           Feedback
                         </NavLink>
                       </li>
-                      <li>
-                        <div
-                          className="nav-link nav-link-streak none"
-                          activeclassname="none"
-                          id="sidebar-streaks-btn-full"
-                        >
-                          <Image
-                            src={StreakFireIcon}
-                            // style={{ filter: "opacity(0.6)" }}
-                          />
-                          <span
-                            style={{
-                              color: "#5F33FF",
-                            }}
-                          >
-                            3
-                          </span>
-                          <span
-                            style={{
-                              color: "#5F33FF",
-                              marginLeft: "0.3rem",
-                              marginRight: "0.3rem",
-                            }}
-                          >
-                            day
-                          </span>
 
-                          <span>streak</span>
-                        </div>
-                      </li>
                       {/* <li>
                         <NavLink
                           exact={true}s
