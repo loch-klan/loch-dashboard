@@ -3,7 +3,11 @@ import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import { FollowTopBarIcon, ShareTopBarIcon } from "../../assets/images/icons";
+import {
+  FollowTopBarIcon,
+  ShareTopBarIcon,
+  StreakFireIcon,
+} from "../../assets/images/icons";
 import {
   AddConnectExchangeModalOpen,
   ConnectWalletButtonClicked,
@@ -1035,7 +1039,7 @@ class TopWalletAddressList extends Component {
           />
         ) : null}
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletAddressListDropdownContainer maxWidth50">
+          <div className="topWalletAddressListDropdownContainer">
             <TopBarDropDown
               deleteTheAddress={this.deleteTheAddress}
               class="topWalletAddressListDropdown"
@@ -1053,66 +1057,81 @@ class TopWalletAddressList extends Component {
         ) : (
           <div />
         )}
-        <div className="topWalletAddressListFollowShareContainer inter-display-medium">
-          {this.props.showUpdatesJustNowBtn ? (
-            <h2
-              className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
-              onClick={this.RefreshButton}
-              style={{
-                whiteSpace: "nowrap",
-              }}
-            >
-              <Image src={refreshIcon} />
-              Updated{" "}
-              <span
-                style={{ marginLeft: "3px" }}
-                className="inter-display-bold f-s-13 lh-15 grey-B0B"
+        <div className="topWalletAddressListFollowShareContainer inter-display-semibold">
+          <div className="topWalletAddressListStreakBtn">
+            <Image
+              className="topWalletAddressListStreakBtnIcon"
+              src={StreakFireIcon}
+            />
+            <span className="topWalletAddressListStreakBtnText">3</span>
+            <span className="topWalletAddressListStreakBtnText topWalletAddressListStreakMiddleMargin">
+              day
+            </span>
+            <span className="topWalletAddressListStreakSubtextBtnText">
+              streak
+            </span>
+          </div>
+          <div className="topWalletAddressListFollowShareParent">
+            {this.props.showUpdatesJustNowBtn ? (
+              <h2
+                className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                onClick={this.RefreshButton}
+                style={{
+                  whiteSpace: "nowrap",
+                }}
               >
-                {this.state.timeNumber === null
-                  ? "3"
-                  : this.state.timeNumber === 0
-                  ? " just now"
-                  : this.state.timeNumber}
-              </span>
-              <span>
-                {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                  ? this.state.timeUnit
-                  : this.state.timeNumber === 0
-                  ? ""
-                  : "h ago"}
-              </span>
-            </h2>
-          ) : null}
-          {this.state.showFollowingAddress ? (
-            <div
-              ref={this.props.buttonRef}
-              className="ml-3 topWalletAddressListFollowShareBtn"
-              id="address-button"
-              onClick={this.addAddressToWatchListFun}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={FollowTopBarIcon}
-              />
-              <span className="dotDotText">
-                {this.state.isFollowingAddress ? "Following" : "Follow"}
-              </span>
-            </div>
-          ) : null}
-          {!this.props.hideShare ? (
-            <div
-              ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn ml-2"
-              id="address-button"
-              onClick={this.handleSharePassFun}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={ShareTopBarIcon}
-              />
-              <span className="dotDotText">Share</span>
-            </div>
-          ) : null}
+                <Image src={refreshIcon} />
+                Updated{" "}
+                <span
+                  style={{ marginLeft: "3px" }}
+                  className="inter-display-bold f-s-13 lh-15 grey-B0B"
+                >
+                  {this.state.timeNumber === null
+                    ? "3"
+                    : this.state.timeNumber === 0
+                    ? " just now"
+                    : this.state.timeNumber}
+                </span>
+                <span>
+                  {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                    ? this.state.timeUnit
+                    : this.state.timeNumber === 0
+                    ? ""
+                    : "h ago"}
+                </span>
+              </h2>
+            ) : null}
+            {this.state.showFollowingAddress ? (
+              <div
+                ref={this.props.buttonRef}
+                className="ml-3 topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={FollowTopBarIcon}
+                />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            {!this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn ml-2"
+                id="address-button"
+                onClick={this.handleSharePassFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={ShareTopBarIcon}
+                />
+                <span className="dotDotText">Share</span>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );
