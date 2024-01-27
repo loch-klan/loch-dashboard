@@ -190,8 +190,6 @@ class Portfolio extends BaseReactComponent {
       walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
-      showTransactionHistoryDust: true,
-      shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
 
@@ -203,11 +201,10 @@ class Portfolio extends BaseReactComponent {
 
       // Should call block three
       shouldCallHistoricPerformanceApi: true,
-      shouldCallPriceGaugeApi: true,
       // Should call block three
 
       // Should call block four
-      shouldCallYieldOppApi: true,
+
       shouldCallInsightsApi: true,
       // Should call block four
 
@@ -744,6 +741,7 @@ class Portfolio extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.yieldOppSort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
+      this.props.updateWalletListFlag("yieldOpportunities", true);
       this.props.getYieldOpportunities(data, 0);
     }
   };
@@ -817,15 +815,9 @@ class Portfolio extends BaseReactComponent {
     }
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.GraphfeeData
+      this.props.intelligenceState.graphfeeValue
     ) {
-      if (this.props.intelligenceState.GraphfeeData) {
-        this.props.updateFeeGraph(
-          this.props.intelligenceState.GraphfeeData,
-          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
-          this
-        );
-      }
+      this.trimGasFees();
     }
     if (
       this.props.intelligenceState &&
@@ -870,7 +862,6 @@ class Portfolio extends BaseReactComponent {
           tableLoading: false,
         });
       } else {
-        this.props.updateWalletListFlag("transactionHistory", true);
         this.setState({
           tableLoading: true,
         });
@@ -898,6 +889,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAssetProfitLoss(this, false, false, false);
       }
     }
+    this.callPriceGaugeApi();
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -1016,7 +1008,7 @@ class Portfolio extends BaseReactComponent {
       this.props.intelligenceState.counterPartyValue
     ) {
       const tempHolder = getCounterGraphData(
-        this.props.intelligenceState.counterPartyData,
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
         this,
         true
       );
@@ -1085,7 +1077,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false, true);
+        this.props.getAllFeeApi(this, false, false);
       }
       // Counterparty volume api call
       else if (
@@ -1108,55 +1100,43 @@ class Portfolio extends BaseReactComponent {
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
-      if (
-        this.state.blockThreeSelectedItem === 1 &&
-        !this.props.commonState.yieldOpportunities
-      ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
-        this.setState({
-          shouldCallYieldOppApi: false,
-        });
-        this.callYieldOppApi();
+      if (this.state.blockThreeSelectedItem === 1) {
+        if (
+          !this.state.yieldOpportunitiesList ||
+          !this.props.commonState.yieldOpportunities
+        ) {
+          this.callYieldOppApi();
+        } else {
+          this.setState({
+            yieldOpportunitiesTableLoading: false,
+          });
+        }
       }
 
-      if (
-        this.state.blockThreeSelectedItem === 2 &&
-        (!this.props.portfolioState?.assetValueDay ||
-          !this.props.commonState.asset_value)
-      ) {
-        this.props.updateWalletListFlag("asset_value", true);
-        this.setState({
-          shouldCallHistoricPerformanceApi: false,
-        });
-        this.getGraphData();
-      } else {
-        this.setState({
-          graphLoading: false,
-        });
+      if (this.state.blockThreeSelectedItem === 2) {
+        if (
+          !this.props.portfolioState?.assetValueDay ||
+          !this.props.commonState.asset_value
+        ) {
+          this.props.updateWalletListFlag("asset_value", true);
+        }
       }
     }
     // Block Four
     if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
-      if (
-        this.state.blockFourSelectedItem === 1 &&
-        (!this.props.intelligenceState.table ||
-          !this.props.commonState.transactionHistory)
-      ) {
-        this.props.updateWalletListFlag("transactionHistory", true);
-        this.setState({
-          shouldCallTransactionTableApi: false,
-        });
-        this.getTableData();
+      if (this.state.blockFourSelectedItem === 2) {
+        if (
+          !this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory
+        ) {
+          this.getTableData();
+        } else {
+          this.setState({
+            graphLoading: false,
+          });
+        }
       }
-      if (
-        this.state.blockFourSelectedItem === 2 &&
-        this.state.shouldCallPriceGaugeApi
-      ) {
-        this.setState({
-          shouldCallPriceGaugeApi: false,
-        });
-        this.callPriceGaugeApi();
-      }
+
       if (
         this.state.blockFourSelectedItem === 3 &&
         (!this.state.updatedInsightList || !this.props.commonState.insight)
@@ -1248,11 +1228,9 @@ class Portfolio extends BaseReactComponent {
         shouldCallGraphFeesApi: true,
         shouldCallCounterPartyVolumeApi: true,
         shouldCallAssetsAvgCostBasisApi: true,
-        shouldCallTransactionTableApi: true,
-        shouldCallYieldOppApi: true,
+
         shouldCallInsightsApi: true,
         shouldCallHistoricPerformanceApi: true,
-        shouldCallPriceGaugeApi: true,
       });
 
       // if wallet address change
@@ -1339,19 +1317,16 @@ class Portfolio extends BaseReactComponent {
         this.props.updateWalletListFlag("defi", true);
       }
 
-      if (
-        this.state.blockFourSelectedItem === 1 &&
-        (!(
-          this.props.intelligenceState?.table &&
-          this.props.intelligenceState?.table.length > 0
-        ) ||
-          !this.props.commonState.transactionHistory)
-      ) {
-        this.props.updateWalletListFlag("transactionHistory", true);
-        this.setState({
-          shouldCallTransactionTableApi: false,
-        });
-        this.getTableData();
+      if (this.state.blockFourSelectedItem === 2) {
+        if (
+          !(
+            this.props.intelligenceState?.table &&
+            this.props.intelligenceState?.table.length > 0
+          ) ||
+          !this.props.commonState.transactionHistory
+        ) {
+          this.getTableData();
+        }
       }
 
       // BLOCK TWO
@@ -1388,7 +1363,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallGraphFeesApi: false,
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false, true);
+        this.props.getAllFeeApi(this, false, false);
       }
 
       // Counterparty volume api call
@@ -1411,12 +1386,9 @@ class Portfolio extends BaseReactComponent {
       // BLOCK Three
       if (
         this.state.blockThreeSelectedItem === 1 &&
-        !this.props.commonState.yieldOpportunities
+        (!this.props.yieldOpportunitiesState.yield_pools ||
+          !this.props.commonState.yieldOpportunities)
       ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
-        this.setState({
-          shouldCallYieldOppApi: false,
-        });
         this.callYieldOppApi();
       }
       if (
@@ -1432,16 +1404,10 @@ class Portfolio extends BaseReactComponent {
       }
 
       // BLOCK FOUR
-
-      if (
-        this.state.blockFourSelectedItem === 2 &&
-        this.state.shouldCallPriceGaugeApi
-      ) {
-        this.setState({
-          shouldCallPriceGaugeApi: false,
-        });
+      if (this.state.blockFourSelectedItem === 1) {
         this.callPriceGaugeApi();
       }
+
       if (
         this.state.blockFourSelectedItem === 3 &&
         (!this.props.intelligenceState?.updatedInsightList ||
@@ -1686,6 +1652,7 @@ class Portfolio extends BaseReactComponent {
     data.append("conditions", JSON.stringify(condition));
     data.append("limit", 10);
     data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.updateWalletListFlag("transactionHistory", true);
     this.props.searchTransactionApi(data, this);
   };
 
@@ -2907,7 +2874,7 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData?.asset?.code}
+                text={rowData?.asset?.code ? rowData.asset.code : ""}
               >
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
@@ -4158,7 +4125,6 @@ class Portfolio extends BaseReactComponent {
           tableDataCostBasis={tableDataCostBasis}
           AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
-          apiResponse={(e) => this.CheckApiResponse(e)}
         />
       );
     }
@@ -4280,7 +4246,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4314,7 +4280,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4326,7 +4292,7 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div className="newHomeTableContainer">
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4344,8 +4310,7 @@ class Portfolio extends BaseReactComponent {
                               isArrow={true}
                               isLoading={this.state.AvgCostLoading}
                               isAnalytics="average cost basis"
-                              // addWatermark
-                              fakeWatermark
+                              addWatermark
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4421,7 +4386,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4453,7 +4418,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4487,7 +4452,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4553,7 +4518,6 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
-                            className="tableWatermarkOverlay"
                           >
                             <div
                               style={{
@@ -4579,13 +4543,13 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeGraphFeesData &&
                                 this.state.homeGraphFeesData[2]
                               }
-                              isScroll
+                              isScrollVisible={false}
+                              isScroll={true}
                               isLoading={this.state.gasFeesGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
-                              floatingWatermark
                             />
                           </div>
                         ) : this.state.blockTwoSelectedItem === 3 ? (
@@ -4629,15 +4593,13 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              digit={this.state.counterGraphDigit}
                               isScrollVisible={false}
-                              isScroll={true}
+                              isScroll={false}
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
-                              floatingWatermark
                             />
                           </div>
                         ) : null}
@@ -4692,7 +4654,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4726,7 +4688,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4738,23 +4700,23 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div className="newHomeTableContainer">
                             <TransactionTable
+                              message={"No yield opportunities found"}
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4.8}
+                              xAxisScrollableColumnWidth={4}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
-                              tableData={tableData}
-                              columnList={columnList}
+                              tableData={yieldOpportunitiesListTemp}
+                              showDataAtBottom
+                              columnList={YieldOppColumnData}
                               headerHeight={60}
                               isArrow={true}
                               isLoading={
                                 this.state.yieldOpportunitiesTableLoading
                               }
-                              watermarkOnTop
-                              // addWatermark
-                              fakeWatermark
+                              addWatermark
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
@@ -4814,7 +4776,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockFourItem(1);
                             }}
                           >
-                            Transactions
+                            Price gauge
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4822,7 +4784,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Sort, filter, and dissect all your transactions from one place"
+                                "Understand when this token was bought and sold"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -4830,7 +4792,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4848,7 +4810,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockFourItem(2);
                             }}
                           >
-                            Price gauge
+                            Transactions
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4856,7 +4818,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand when this token was bought and sold"
+                                "Sort, filter, and dissect all your transactions from one place"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -4864,7 +4826,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4872,6 +4834,7 @@ class Portfolio extends BaseReactComponent {
                               />
                             </CustomOverlay>
                           </div>
+
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
                               this.state.blockFourSelectedItem === 3
@@ -4896,7 +4859,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4908,8 +4871,20 @@ class Portfolio extends BaseReactComponent {
                       </div>
 
                       {this.state.blockFourSelectedItem === 1 ? (
+                        <InflowOutflowPortfolioHome
+                          openChartPage={this.goToPriceGaugePage}
+                          hideExplainer
+                          // isHomepage
+                          showEth
+                          userWalletList={this.state.userWalletList}
+                          lochToken={this.state.lochToken}
+                          callChildPriceGaugeApi={
+                            this.state.callChildPriceGaugeApi
+                          }
+                        />
+                      ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div className="newHomeTableContainer">
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
@@ -4921,9 +4896,7 @@ class Portfolio extends BaseReactComponent {
                               headerHeight={60}
                               isArrow={true}
                               isLoading={this.state.tableLoading}
-                              watermarkOnTop
-                              // addWatermark
-                              fakeWatermark
+                              addWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (
@@ -4944,18 +4917,6 @@ class Portfolio extends BaseReactComponent {
                             </div>
                           ) : null}
                         </div>
-                      ) : this.state.blockFourSelectedItem === 2 ? (
-                        <InflowOutflowPortfolioHome
-                          openChartPage={this.goToPriceGaugePage}
-                          hideExplainer
-                          // isHomepage
-                          showEth
-                          userWalletList={this.state.userWalletList}
-                          lochToken={this.state.lochToken}
-                          callChildPriceGaugeApi={
-                            this.state.callChildPriceGaugeApi
-                          }
-                        />
                       ) : this.state.blockFourSelectedItem === 3 ? (
                         <PortfolioHomeInsightsBlock
                           history={this.props.history}
