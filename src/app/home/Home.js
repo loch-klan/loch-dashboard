@@ -921,7 +921,7 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
+    if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
       });
@@ -978,10 +978,10 @@ class Home extends BaseReactComponent {
             if (!mobileCheck()) {
               deleteToken();
             }
-            //  localStorage.setItem("defi_access", true);
-            //  localStorage.setItem("isPopup", true);
-            //  // localStorage.setItem("whalepodview", true);
-            //  localStorage.setItem(
+            //  window.sessionStorage.setItem("defi_access", true);
+            //  window.sessionStorage.setItem("isPopup", true);
+            //  // window.sessionStorage.setItem("whalepodview", true);
+            //  window.sessionStorage.setItem(
             //    "whalepodview",
             //    JSON.stringify({ access: true, id: "" })
             //  );
@@ -1008,10 +1008,10 @@ class Home extends BaseReactComponent {
         if (!mobileCheck()) {
           deleteToken();
         }
-        // localStorage.setItem("defi_access", true);
-        // localStorage.setItem("isPopup", true);
-        // // localStorage.setItem("whalepodview", true);
-        // localStorage.setItem(
+        // window.sessionStorage.setItem("defi_access", true);
+        // window.sessionStorage.setItem("isPopup", true);
+        // // window.sessionStorage.setItem("whalepodview", true);
+        // window.sessionStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );

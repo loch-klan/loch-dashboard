@@ -442,11 +442,11 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All chains"
                           options={coinsList}
+                          selectedTokens={this.props.selectedActiveBadge}
                           action={null}
                           handleClick={this.handleFunction}
                           isChain={true}
                           searchIsUsed={this.props.chainSearchIsUsed}
-                          // selectedTokens={this.state.activeBadge}
                         />
                       </div>
                       <div
@@ -461,6 +461,7 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All assets"
                           options={this.props.assetList}
+                          selectedTokens={this.props.selectedAssets}
                           action={null}
                           handleClick={this.props.handleAssetSelected}
                           // isChain={true}
@@ -530,6 +531,7 @@ class BarGraphSection extends Component {
                     >
                       <CustomDropdown
                         filtername="All chains selected"
+                        selectedTokens={this.props.selectedActiveBadge}
                         options={coinsList}
                         action={null}
                         handleClick={this.handleFunction}

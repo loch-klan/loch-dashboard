@@ -113,7 +113,7 @@ import {
   YieldOpportunitiesSortUSDvalue,
   YieldOppurtunitiesExpandediew,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -128,7 +128,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
@@ -188,7 +187,9 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
+      getCurrentTimeUpdater: false,
       shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
@@ -424,23 +425,40 @@ class Portfolio extends BaseReactComponent {
     };
   }
   changeBlockOneItem = (itemNum) => {
-    this.setState({
-      blockOneSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.setState({
+        blockOneSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockTwoItem = (itemNum) => {
-    this.setState({
-      blockTwoSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.setState({
+        blockTwoSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockThreeItem = (itemNum) => {
-    this.setState({
-      blockThreeSelectedItem: itemNum,
-    });
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.setState({
+        blockThreeSelectedItem: itemNum,
+      });
+    }
   };
   changeBlockFourItem = (itemNum) => {
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.setState({
+        blockFourSelectedItem: itemNum,
+      });
+    }
+  };
+  getCurrentTime = () => {
     this.setState({
-      blockFourSelectedItem: itemNum,
+      getCurrentTimeUpdater: !this.state.getCurrentTimeUpdater,
     });
   };
   onCloseModal = () => {
@@ -651,7 +669,7 @@ class Portfolio extends BaseReactComponent {
       callChildPriceGaugeApi: this.state.callChildPriceGaugeApi + 1,
     });
   };
-  callNetworksApi = () => {
+  callNetworksApi = (isUpdate) => {
     // Resetting the user wallet list, total and chain wallet
     this.props.settingDefaultValues(this);
 
@@ -669,7 +687,11 @@ class Portfolio extends BaseReactComponent {
               address: wallet.address,
               coinCode: coin.coinCode,
             };
-            this.props.getUserWallet(userCoinWallet, this, false, i);
+            if (isUpdate) {
+              this.props.getUserWallet(userCoinWallet, this, true, i);
+            } else {
+              this.props.getUserWallet(userCoinWallet, this, false, i);
+            }
           }
         });
       }
@@ -685,12 +707,17 @@ class Portfolio extends BaseReactComponent {
         });
       }
     });
-
     // connect exchange api
     // this.props.getExchangeBalance("binance", this);
     // this.props.getExchangeBalance("coinbase", this);
-    this.props.getExchangeBalances(this, false);
-
+    if (isUpdate) {
+      this.props.getExchangeBalances(this, true);
+    } else {
+      this.props.getExchangeBalances(this, false);
+    }
+    if (isUpdate) {
+      window.sessionStorage.removeItem("callTheUpdateAPI");
+    }
     if (!isFound) {
       this.setState({
         // overview loader and net worth loader
@@ -730,6 +757,18 @@ class Portfolio extends BaseReactComponent {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.GraphfeeData
+    ) {
+      if (this.props.intelligenceState.GraphfeeData) {
+        this.props.updateFeeGraph(
+          this.props.intelligenceState.GraphfeeData,
+          getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+          this
+        );
+      }
+    }
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
     if (
@@ -781,9 +820,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       this.trimGasFees();
     }
-    if (this.props.yieldOpportunitiesState) {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
       this.trimCounterpartyVolume();
     }
+
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -940,7 +983,6 @@ class Portfolio extends BaseReactComponent {
       this.endPageView();
     }
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
   }
   trimGasFees = () => {
     if (
@@ -951,10 +993,9 @@ class Portfolio extends BaseReactComponent {
     ) {
       const tempHolder = [
         {
-          labels:
-            this.props.intelligenceState.graphfeeValue[0].labels.length > 3
-              ? this.props.intelligenceState.graphfeeValue[0].labels.slice(0, 3)
-              : this.props.intelligenceState.graphfeeValue[0].labels,
+          labels: this.props.intelligenceState.graphfeeValue[0].labels
+            ? this.props.intelligenceState.graphfeeValue[0].labels
+            : [],
           datasets: this.props.intelligenceState.graphfeeValue[0].datasets
             ? this.props.intelligenceState.graphfeeValue[0].datasets
             : [],
@@ -971,27 +1012,14 @@ class Portfolio extends BaseReactComponent {
   trimCounterpartyVolume = () => {
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue[0] &&
-      this.props.intelligenceState.counterPartyValue[0].labels
+      this.props.intelligenceState.counterPartyValue
     ) {
-      const tempHolder = [
-        {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
-          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
-            ? this.props.intelligenceState.counterPartyValue[0].datasets
-            : [],
-        },
-        { ...this.props.intelligenceState.counterPartyValue[1] },
+      const tempHolder = getCounterGraphData(
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this,
+        true
+      );
 
-        { ...this.props.intelligenceState.counterPartyValue[2] },
-      ];
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
       });
@@ -1234,7 +1262,12 @@ class Portfolio extends BaseReactComponent {
         JSON.parse(tempAddWall) &&
         JSON.parse(tempAddWall)?.length > 0
       ) {
-        this.callNetworksApi();
+        let getItem = window.sessionStorage.getItem("callTheUpdateAPI");
+        if (getItem === "true") {
+          this.callNetworksApi(true);
+        } else {
+          this.callNetworksApi();
+        }
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
@@ -1643,6 +1676,9 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
@@ -1909,7 +1945,6 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -2870,15 +2905,17 @@ class Portfolio extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData?.asset?.code}
+                text={rowData?.asset?.code ? rowData.asset.code : ""}
               >
-                {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
-                {rowData?.asset?.symbol ? (
+                {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
-                ) : null}
+                ) : rowData.asset?.code ? (
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                    {rowData.asset.code}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </CustomOverlay>
             );
           }
@@ -2986,8 +3023,8 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3004,7 +3041,8 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3184,7 +3222,11 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState?.Average_cost_basis
+      ? this.props.intelligenceState.Average_cost_basis.filter(
+          (e) => e.CurrentValue >= 1
+        )
+      : [];
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
@@ -3242,7 +3284,7 @@ class Portfolio extends BaseReactComponent {
               <CoinChip
                 coin_img_src={rowData?.asset?.symbol}
                 coin_code={rowData?.asset?.code}
-                chain={rowData?.network}
+                chain={rowData?.chain}
               />
             );
           }
@@ -3506,7 +3548,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3532,7 +3574,12 @@ class Portfolio extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={rowData.AssetCode + " [" + rowData?.chain?.name + "]"}
+                  text={
+                    (rowData.AssetCode ? rowData.AssetCode : "") +
+                    " [" +
+                    rowData?.chain?.name +
+                    "]"
+                  }
                 >
                   <div>
                     <CoinChip
@@ -3583,9 +3630,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.CurrentValue
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentValue?.toFixed(2))
-                        ).toLocaleString("en-US")
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3601,7 +3646,7 @@ class Portfolio extends BaseReactComponent {
                       {rowData.CurrentValue
                         ? CurrencyType(false) +
                           numToCurrency(
-                            rowData.CurrentValue?.toFixed(2)
+                            rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
                         : CurrencyType(false) + "0.00"}
                     </span>
@@ -3656,9 +3701,11 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.GainAmount
                       ? CurrencyType(false) +
-                        Math.abs(
-                          Number(noExponents(rowData.GainAmount?.toFixed(2)))
-                        ).toLocaleString("en-US")
+                        amountFormat(
+                          Math.abs(rowData.GainAmount),
+                          "en-US",
+                          "USD"
+                        )
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
@@ -3679,10 +3726,10 @@ class Portfolio extends BaseReactComponent {
                       />
                     ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                      {tempDataHolder
+                      {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "0.00"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3772,7 +3819,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3794,21 +3841,19 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.AverageCostPrice?.toFixed(2))
-                        ).toLocaleString("en-US")
+                    rowData.AverageCostPrice
+                      ? CurrencyType(false) +
+                        convertNtoNumber(rowData.AverageCostPrice)
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.AverageCostPrice === 0 || !rowData.AverageCostPrice
-                      ? "N/A"
-                      : CurrencyType(false) +
+                    {rowData.AverageCostPrice
+                      ? CurrencyType(false) +
                         numToCurrency(
-                          rowData.AverageCostPrice?.toFixed(2)
-                        ).toLocaleString("en-US")}
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3834,7 +3879,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3858,9 +3903,7 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.CurrentPrice
                       ? CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CurrentPrice?.toFixed(2))
-                        ).toLocaleString("en-US")
+                        convertNtoNumber(rowData.CurrentPrice)
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3868,7 +3911,7 @@ class Portfolio extends BaseReactComponent {
                     {rowData.CurrentPrice
                       ? CurrencyType(false) +
                         numToCurrency(
-                          rowData.CurrentPrice?.toFixed(2)
+                          rowData.CurrentPrice.toFixed(2)
                         ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </span>
@@ -3896,7 +3939,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3917,12 +3960,16 @@ class Portfolio extends BaseReactComponent {
                   isIcon={false}
                   isInfo={true}
                   isText={true}
-                  text={Number(noExponents(rowData.Amount)).toLocaleString(
-                    "en-US"
-                  )}
+                  text={
+                    rowData.Amount && rowData.Amount !== 0
+                      ? convertNtoNumber(rowData.Amount)
+                      : "0"
+                  }
                 >
                   <span>
-                    {numToCurrency(rowData.Amount).toLocaleString("en-US")}
+                    {rowData.Amount
+                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                      : "0"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -3948,7 +3995,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.16,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3963,12 +4010,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CostBasis === 0 || !rowData.CostBasis
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        Number(
-                          noExponents(rowData.CostBasis?.toFixed(2))
-                        ).toLocaleString("en-US")
+                    rowData.CostBasis
+                      ? CurrencyType(false) +
+                        amountFormat(rowData.CostBasis, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -3980,12 +4025,12 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {rowData.CostBasis === 0 || !rowData.CostBasis
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
-                            rowData.CostBasis?.toFixed(2)
-                          ).toLocaleString("en-US")}
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -4188,6 +4233,8 @@ class Portfolio extends BaseReactComponent {
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}
+                showUpdatesJustNowBtn
+                getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
               />
               <div className="m-b-22 graph-table-section">
                 <Row>
@@ -4279,10 +4326,11 @@ class Portfolio extends BaseReactComponent {
                           <div className="newHomeTableContainer">
                             <TransactionTable
                               noSubtitleBottomPadding
+                              message="No assets found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={3.8}
+                              xAxisScrollableColumnWidth={4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
@@ -4355,7 +4403,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(1);
                             }}
                           >
-                            Realized Gains
+                            Flows
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4511,6 +4559,7 @@ class Portfolio extends BaseReactComponent {
                               Loch
                             </div>
                             <BarGraphSection
+                              digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
                               data={
@@ -4692,14 +4741,14 @@ class Portfolio extends BaseReactComponent {
                             this.state.callChildPriceGaugeApi
                           }
                         />
-                      ) : (
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           chainLoader={this.state.chainLoader}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -4857,6 +4906,7 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div className="newHomeTableContainer">
                             <TransactionTable
+                              message={"No yield opportunities found"}
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4}
                               noSubtitleBottomPadding
@@ -4998,7 +5048,6 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
