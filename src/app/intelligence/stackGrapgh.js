@@ -196,7 +196,7 @@ backdrop-filter: blur(15px);">
                                 <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
-          this.x === "Net" ? netColor : "#16182B"
+          this.x === "Net" ? netColor : "#ffffff"
         };">${CurrencyType(false)}${numToCurrency(
           net_amount * currency?.rate
         )}</b></div>${

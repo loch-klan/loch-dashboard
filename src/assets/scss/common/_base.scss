@@ -777,7 +777,7 @@ form {
       }
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor);
       }
     }
 
@@ -800,7 +800,7 @@ form {
       .custom-select__menu-list {
         border-radius: 0.4rem;
         padding: 0.4rem;
-        border: 0.1rem solid $grey-CAC;
+        border: 0.1rem solid var(--dropdownContentBorderColor);
         height: 20rem;
         // padding: 1rem;
         // padding: 0.4rem;
@@ -851,8 +851,11 @@ form {
     }
 
     .form-control.is-valid {
-      border: solid 1px $black-191;
+      border: solid 1px #d4d4d4;      ;
       background-image: none;
+      &:hover{
+        border-color: var(--black191);
+      }
     }
 
     // FOR CHANGE PASSWORD
@@ -890,8 +893,8 @@ form {
         padding-left: 0.9rem;
 
         .custom-select__single-value {
-          @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6);
-          color: $grey-313;
+          @include font(var(--grey313), "Inter-Medium", 1.3rem, 500, 1.6);
+          color: var(--grey313);
         }
 
         .custom-select__placeholder {
@@ -2469,7 +2472,7 @@ textarea {
         border: 0.1rem solid #d4d4d4;
       }
       .form-control:hover {
-        border: 0.1rem solid #19191a;
+        border: 0.1rem solid var(--black191);
       }
       .is-valid {
         box-shadow: none;
@@ -2661,9 +2664,9 @@ input{
   transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {
-  transition-duration: 300ms;
+  // transition-duration: 300ms;
   &:hover {
-    filter: brightness(0);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .overlay-tool-tip-container{
@@ -2772,3 +2775,19 @@ input{
   }
 }
 
+
+.line-chart-tooltip-section{
+  background-color: var(--cardBackgroud) !important;
+}
+
+.modal-content{
+  background-color: var(--cardBackgroud);
+}
+
+.connect-exchange {
+  .api-modal-header{
+    img{
+      filter: var(--invertColor);
+    }
+  }
+}

@@ -3113,7 +3113,9 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="network">
-            Network
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Network
+            </span>
             {/* <Image
               src={sortByIcon}
               className={

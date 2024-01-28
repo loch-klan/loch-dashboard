@@ -136,13 +136,14 @@
             .closebtnIcon {
               height: 1.8rem;
               width: 1.8rem;
+              filter: var(--invertColor);
             }
             height: 100%;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: $drop-button-hover;
+            background-color:var(--greyCardBackgroud);
             border-radius: 5rem;
             cursor: pointer;
           }
@@ -208,6 +209,9 @@
           height: auto !important;
           width: 100% !important;
           padding: 1rem 2rem !important;
+          &:hover{
+            border-color: var(--primaryTextColor);
+          }
         }
       }
     }
@@ -243,7 +247,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: $drop-button-hover;
+        background-color: var(--greyCardBackgroud);
         border-radius: 5rem;
         cursor: pointer;
       }

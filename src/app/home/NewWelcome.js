@@ -2547,10 +2547,13 @@ class NewWelcome extends BaseReactComponent {
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      className="new-homepage__body-trending-address-icon"
+                      alt=""
+                    />
                     <div
                       style={{
-                        color: "#19191A",
                         fontSize: "16px",
                       }}
                       className="inter-display-medium"
@@ -2612,7 +2615,7 @@ class NewWelcome extends BaseReactComponent {
                 {this.state.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",

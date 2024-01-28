@@ -34,19 +34,19 @@ const VerifyMobile = ({
 
   return (
     <Modal
-    size="md"
-    className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
-    dialogClassName={
-      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
-    }
-    show={show}
-    onHide={toggleModal}
-    centered
-    aria-labelledby="contained-modal-title-vcenter"
-    backdropClassName="exitoverlaymodalNewWelcome"
+      size="md"
+      className="exit-overlay-form newWelcomePageTranlucentModal welcome-modal-mobile"
+      dialogClassName={
+        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
+      }
+      show={show}
+      onHide={toggleModal}
+      centered
+      aria-labelledby="contained-modal-title-vcenter"
+      backdropClassName="exitoverlaymodalNewWelcome"
     >
-      <Modal.Body style={{position:'relative'}}>
-      <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
+      <Modal.Body style={{ position: "relative" }}>
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
           <div
             className="new-homepage-auth-content-close "
             onClick={toggleModal}
@@ -61,18 +61,24 @@ const VerifyMobile = ({
           </div>
         </div>
         {/* <div className="new-auth-mobile-wrap"> */}
-          <div className="new-auth new-auth-mobile verify-otp" style={{paddingBottom:'48px'}}>
-            <div className="new-auth-content">
-            
-              <img className="new-auth-content-logo new-auth-content-logo-mobile" src={logo} alt="" />
-              <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
-                <h4 className="new-auth-content-title">Enter code</h4>
-                <p className="new-auth-content-subtitle">
-                  The verification code is sent to your email
-                </p>
-              </div>
-              <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile new-auth-content-input-holder--otp">
-                {/* <input
+        <div
+          className="new-auth new-auth-mobile verify-otp"
+          style={{ paddingBottom: "48px" }}
+        >
+          <div className="new-auth-content input-noshadow-dark">
+            <img
+              className="new-auth-content-logo new-auth-content-logo-mobile"
+              src={logo}
+              alt=""
+            />
+            <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
+              <h4 className="new-auth-content-title">Enter code</h4>
+              <p className="new-auth-content-subtitle">
+                The verification code is sent to your email
+              </p>
+            </div>
+            <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile new-auth-content-input-holder--otp">
+              {/* <input
                   className="new-auth-content-input"
                   type="text"
                   placeholder="Enter OTP"
@@ -81,32 +87,36 @@ const VerifyMobile = ({
                     handleChangeOTP(e.target.value);
                   }}
                 /> */}
-                <OTPInputs numberOfDigits={6} handleChangeOTP={handleChangeOTP} isMobile/>
-                <button
-                  style={{
-                    opacity: otp?.length>5 ? 1 : 0.5,
-                  }}
-                  onClick={handleSubmitOTP}
-                  ref={submitRef}
-                  className={`new-auth-content-button ${
-                    otp ? "new-auth-content-button--hover" : ""
-                  }`}
-                >
-                  Verify
-                </button>
-              </div>
-              <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
-                <p
-                  onClick={() => {
-                    handleSubmitEmail(true);
-                  }}
-                  className="new-auth-content-bottom-cta new-auth-content-bottom-cta--mobile"
-                >
-                  Send code again
-                </p>
-              </div>
+              <OTPInputs
+                numberOfDigits={6}
+                handleChangeOTP={handleChangeOTP}
+                isMobile
+              />
+              <button
+                style={{
+                  opacity: otp?.length > 5 ? 1 : 0.5,
+                }}
+                onClick={handleSubmitOTP}
+                ref={submitRef}
+                className={`new-auth-content-button ${
+                  otp ? "new-auth-content-button--hover" : ""
+                }`}
+              >
+                Verify
+              </button>
+            </div>
+            <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
+              <p
+                onClick={() => {
+                  handleSubmitEmail(true);
+                }}
+                className="new-auth-content-bottom-cta new-auth-content-bottom-cta--mobile"
+              >
+                Send code again
+              </p>
             </div>
           </div>
+        </div>
         {/* </div> */}
       </Modal.Body>
     </Modal>

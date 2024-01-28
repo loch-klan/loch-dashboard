@@ -103,7 +103,7 @@ export const getGraphData = (apidata, parentCtx) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },
@@ -398,7 +398,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },
