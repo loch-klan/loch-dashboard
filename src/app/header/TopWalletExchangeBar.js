@@ -938,7 +938,7 @@ class TopWalletExchangeBar extends Component {
   };
   passConnectExchangeClick = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     const pathName = window.location.pathname;
@@ -1008,7 +1008,7 @@ class TopWalletExchangeBar extends Component {
   };
   connectWalletEthers = async () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     ConnectWalletButtonClicked({
