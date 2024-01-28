@@ -46,7 +46,6 @@ ChartJS.register(
 
 class BarGraphSection extends Component {
   constructor(props) {
-    console.log("props.data is ", props.data);
     super(props);
     this.state = {
       headerTitle: props.headerTitle,
@@ -322,7 +321,7 @@ class BarGraphSection extends Component {
                   {showFooter && (
                     <div
                       style={{
-                        width: "75%",
+                        width: this.props.showBadges ? "75%" : "100%",
                       }}
                     >
                       <BarGraphFooter
@@ -443,11 +442,11 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All chains"
                           options={coinsList}
+                          selectedTokens={this.props.selectedActiveBadge}
                           action={null}
                           handleClick={this.handleFunction}
                           isChain={true}
                           searchIsUsed={this.props.chainSearchIsUsed}
-                          // selectedTokens={this.state.activeBadge}
                         />
                       </div>
                       <div
@@ -462,6 +461,7 @@ class BarGraphSection extends Component {
                         <CustomDropdown
                           filtername="All assets"
                           options={this.props.assetList}
+                          selectedTokens={this.props.selectedAssets}
                           action={null}
                           handleClick={this.props.handleAssetSelected}
                           // isChain={true}
@@ -531,6 +531,7 @@ class BarGraphSection extends Component {
                     >
                       <CustomDropdown
                         filtername="All chains selected"
+                        selectedTokens={this.props.selectedActiveBadge}
                         options={coinsList}
                         action={null}
                         handleClick={this.handleFunction}
@@ -909,7 +910,7 @@ class BarGraphSection extends Component {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "38rem",
+                    height: "32rem",
                   }
                 : {
                     flex: 1,

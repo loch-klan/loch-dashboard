@@ -22,10 +22,7 @@ import { getCurrentUser } from "../../utils/ManageToken.js";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
-  getAllFeeApi,
-  updateAverageCostBasis,
   updateCounterParty,
   updateFeeGraph,
 } from "../cost/Api.js";
@@ -46,11 +43,14 @@ import {
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      counterPartyDataLocal: [],
+      counterPartyValueLocal: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
@@ -211,6 +211,12 @@ class CounterPartyVolume extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  setLocalCounterParty = (passedGraphfeeData, passedGraphfeeValue) => {
+    this.setState({
+      counterPartyDataLocal: passedGraphfeeData,
+      counterPartyValueLocal: passedGraphfeeValue,
+    });
+  };
   componentDidMount() {
     if (mobileCheck()) {
       this.props.history.push("/home");
@@ -238,6 +244,11 @@ class CounterPartyVolume extends Component {
     } else {
       this.setState({
         counterGraphLoading: false,
+        counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
+        counterPartyValueLocal: getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this
+        ),
       });
     }
 
@@ -257,47 +268,16 @@ class CounterPartyVolume extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.intelligenceState.Average_cost_basis !==
-      this.props.intelligenceState.Average_cost_basis
-    ) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-        (e) => e.CurrentValue < 1
-      );
-
-      if (array.length > 0 && this.state.showDust) {
-        let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-          (e) => e.CurrentValue >= 1
-        );
-        this.props.updateAverageCostBasis(array, this);
-      } else {
-        let tempcombinedCostBasis = 0;
-        let tempcombinedCurrentValue = 0;
-        let tempcombinedUnrealizedGains = 0;
-        let tempcombinedReturn = 0;
-        if (this.props.intelligenceState?.net_return) {
-          tempcombinedReturn = this.props.intelligenceState?.net_return;
-        }
-        if (this.props.intelligenceState?.total_bal) {
-          tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-        }
-        if (this.props.intelligenceState?.total_cost) {
-          tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-        }
-        if (this.props.intelligenceState?.total_gain) {
-          tempcombinedUnrealizedGains =
-            this.props.intelligenceState?.total_gain;
-        }
-
-        this.setState({
-          combinedCostBasis: tempcombinedCostBasis,
-          combinedCurrentValue: tempcombinedCurrentValue,
-          combinedUnrealizedGains: tempcombinedUnrealizedGains,
-          combinedReturn: tempcombinedReturn,
-        });
-      }
-    }
     // add wallet
+    if (
+      this.props.intelligenceState.counterPartyData !==
+      prevProps.intelligenceState.counterPartyData
+    ) {
+      this.setState({
+        counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
+        counterPartyValueLocal: this.props.intelligenceState.counterPartyValue,
+      });
+    }
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
@@ -344,6 +324,9 @@ class CounterPartyVolume extends Component {
   };
 
   getCounterPartyFee(option, first) {
+    this.setState({
+      counterGraphLoading: true,
+    });
     const today = moment().unix();
     let handleSelected = "";
     // console.log("headle click");
@@ -354,25 +337,29 @@ class CounterPartyVolume extends Component {
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
-      this.props.getAllCounterFeeApi(this, fiveyear, today);
+      this.props.getAllCounterFeeApi(this, fiveyear, today, false);
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
-      this.props.getAllCounterFeeApi(this, year, today);
+      this.props.getAllCounterFeeApi(this, year, today, false);
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
-      this.props.getAllCounterFeeApi(this, sixmonth, today);
+      this.props.getAllCounterFeeApi(this, sixmonth, today, false);
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
-      this.props.getAllCounterFeeApi(this, month, today);
+      this.props.getAllCounterFeeApi(this, month, today, false);
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
-      this.props.getAllCounterFeeApi(this, week, today);
+      this.props.getAllCounterFeeApi(this, week, today, false);
       handleSelected = "Week";
+    } else {
+      this.setState({
+        counterGraphLoading: false,
+      });
     }
     if (!first) {
       CounterpartyFeesTimeFilter({
@@ -403,7 +390,6 @@ class CounterPartyVolume extends Component {
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
       });
-      this.props.ResetAverageCostBasis(this);
     }
   };
   checkForInactivity = () => {
@@ -426,7 +412,8 @@ class CounterPartyVolume extends Component {
         selectedChains.push(item.code);
       }
     });
-    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
+    const { GraphfeeData } = this.props.intelligenceState;
+    const counterPartyData = [...this.state.counterPartyDataLocal];
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
     if (type === 1) {
@@ -494,33 +481,6 @@ class CounterPartyVolume extends Component {
     this.setState({ connectModal: !this.state.connectModal });
   };
 
-  sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
-    let sortedList = array.sort((a, b) => {
-      let valueA = a[key];
-      let valueB = b[key];
-      if (key === "AssetCode") {
-        valueA = valueA.toLowerCase();
-        valueB = valueB.toLowerCase();
-        return order
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      } else {
-        valueA = parseFloat(valueA);
-        valueB = parseFloat(valueB);
-      }
-      if (order) {
-        return valueA - valueB;
-      } else {
-        return valueB - valueA;
-      }
-    });
-
-    // this.setState({
-    //   sortedList,
-    // });
-    this.props.updateAverageCostBasis(sortedList, this);
-  };
   // sort
 
   handleShare = () => {
@@ -582,6 +542,10 @@ class CounterPartyVolume extends Component {
             ""
           )}
           <div className="cost-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -635,22 +599,22 @@ class CounterPartyVolume extends Component {
             >
               <BarGraphSection
                 data={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[0]
+                  this.state.counterPartyValueLocal &&
+                  this.state.counterPartyValueLocal[0]
                 }
                 options={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[1]
+                  this.state.counterPartyValueLocal &&
+                  this.state.counterPartyValueLocal[1]
                 }
                 options2={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[2]
+                  this.state.counterPartyValueLocal &&
+                  this.state.counterPartyValueLocal[2]
                 }
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => this.getCounterPartyFee(e)}
                 showFooter={true}
-                showBadges={true}
+                // showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
                 isLoading={this.state.counterGraphLoading}
@@ -679,7 +643,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   getAllCoins,
-  getAllFeeApi,
+
   getAllCounterFeeApi,
 
   // avg cost
@@ -691,8 +655,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 
   // average cost
-  ResetAverageCostBasis,
-  updateAverageCostBasis,
+
   updateWalletListFlag,
   getAllWalletListApi,
   getUser,

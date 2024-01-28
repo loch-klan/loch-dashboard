@@ -15,7 +15,12 @@ import Loading from "../../app/common/Loading";
 import SmartMoneyPagination from "./SmartMoneyPagination";
 import { ContributeTrophyIcon } from "../../assets/images/icons";
 import CustomOverlay from "./CustomOverlay";
-import { CurrencyType, noExponents, numToCurrency } from "../ReusableFunctions";
+import {
+  CurrencyType,
+  amountFormat,
+  noExponents,
+  numToCurrency,
+} from "../ReusableFunctions";
 
 import {
   ArrowDownLeftSmallIcon,
@@ -56,7 +61,7 @@ class CustomTable extends BaseReactComponent {
       isLoading,
       isStickyHead,
       isMiniversion,
-      wrapperStyle
+      wrapperStyle,
     } = this.props;
     return (
       <div
@@ -138,7 +143,11 @@ class CustomTable extends BaseReactComponent {
                     <Table
                       width={
                         this.props.xAxisScrollable
-                          ? width * (columnList.length / 3.5)
+                          ? width *
+                            (columnList.length /
+                              (this.props.xAxisScrollableColumnWidth
+                                ? this.props.xAxisScrollableColumnWidth
+                                : 3.5))
                           : width
                       }
                       height={
@@ -368,14 +377,14 @@ class CustomTable extends BaseReactComponent {
                       isInfo={true}
                       isText={true}
                       text={
-                        this.props.combinedCostBasis === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
-                            Number(
-                              noExponents(
-                                this.props.combinedCostBasis.toFixed(2)
-                              )
-                            ).toLocaleString("en-US")
+                        this.props.combinedCostBasis
+                          ? CurrencyType(false) +
+                            amountFormat(
+                              this.props.combinedCostBasis,
+                              "en-US",
+                              "USD"
+                            )
+                          : CurrencyType(false) + "0.00"
                       }
                     >
                       <div className="cost-common">
@@ -387,12 +396,12 @@ class CustomTable extends BaseReactComponent {
                             // });
                           }}
                         >
-                          {this.props.combinedCostBasis === 0
-                            ? "N/A"
-                            : CurrencyType(false) +
+                          {this.props.combinedCostBasis
+                            ? CurrencyType(false) +
                               numToCurrency(
                                 this.props.combinedCostBasis.toFixed(2)
-                              ).toLocaleString("en-US")}
+                              ).toLocaleString("en-US")
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
@@ -413,14 +422,14 @@ class CustomTable extends BaseReactComponent {
                       isInfo={true}
                       isText={true}
                       text={
-                        this.props.combinedCurrentValue === 0
-                          ? "N/A"
-                          : CurrencyType(false) +
-                            Number(
-                              noExponents(
-                                this.props.combinedCurrentValue.toFixed(2)
-                              )
-                            ).toLocaleString("en-US")
+                        this.props.combinedCurrentValue
+                          ? CurrencyType(false) +
+                            amountFormat(
+                              this.props.combinedCurrentValue,
+                              "en-US",
+                              "USD"
+                            )
+                          : CurrencyType(false) + "0.00"
                       }
                     >
                       <div className="cost-common">
@@ -432,12 +441,12 @@ class CustomTable extends BaseReactComponent {
                             // });
                           }}
                         >
-                          {this.props.combinedCurrentValue === 0
-                            ? "N/A"
-                            : CurrencyType(false) +
+                          {this.props.combinedCurrentValue
+                            ? CurrencyType(false) +
                               numToCurrency(
                                 this.props.combinedCurrentValue.toFixed(2)
-                              ).toLocaleString("en-US")}
+                              ).toLocaleString("en-US")
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
@@ -468,13 +477,11 @@ class CustomTable extends BaseReactComponent {
                       text={
                         this.props.combinedUnrealizedGains
                           ? CurrencyType(false) +
-                            Math.abs(
-                              Number(
-                                noExponents(
-                                  this.props.combinedUnrealizedGains.toFixed(2)
-                                )
-                              )
-                            ).toLocaleString("en-US")
+                            amountFormat(
+                              Math.abs(this.props.combinedUnrealizedGains),
+                              "en-US",
+                              "USD"
+                            )
                           : CurrencyType(false) + "0.00"
                       }
                       colorCode="#000"
@@ -501,7 +508,7 @@ class CustomTable extends BaseReactComponent {
                               numToCurrency(
                                 this.props.combinedUnrealizedGains
                               ).toLocaleString("en-US")
-                            : "0.00"}
+                            : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
                     </CustomOverlay>
@@ -606,7 +613,10 @@ class CustomTable extends BaseReactComponent {
             ) : null}
           </>
         )}
-        {this.props.isSmartMoney || this.props.paginationNew ? (
+
+        {this.props.isSmartMoney ||
+        this.props.paginationNew ||
+        this.props.minimalPagination ? (
           tableData && tableData.length >= 1 && totalPage >= 1 ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
@@ -620,6 +630,7 @@ class CustomTable extends BaseReactComponent {
               pageLimit={this.props.pageLimit}
               changePageLimit={this.props.changePageLimit}
               onPageChange={this.props.onPageChange}
+              hidePaginationRecords={this.props.hidePaginationRecords}
             />
           ) : null
         ) : (

@@ -28,6 +28,7 @@ import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesP
 
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import Nft from "./app/nft/Nft";
+import NewWelcome from "./app/home/NewWelcome";
 const routes = [
   {
     path: "/",
@@ -40,7 +41,7 @@ const routes = [
     path: "/welcome",
     name: "Home",
     type: Route,
-    component: Home,
+    component: NewWelcome,
   },
   {
     path: "/profile",
@@ -97,12 +98,12 @@ const routes = [
     type: PrivateRoute,
     component: TransactionHistoryPage,
   },
-  {
-    path: "/intelligence/asset-value",
-    name: "Asset Value",
-    type: PrivateRoute,
-    component: AssetValueGraph,
-  },
+  // {
+  //   path: "/intelligence/asset-value",
+  //   name: "Asset Value",
+  //   type: PrivateRoute,
+  //   component: AssetValueGraph,
+  // },
   {
     path: "/intelligence/insights",
     name: "Insights",

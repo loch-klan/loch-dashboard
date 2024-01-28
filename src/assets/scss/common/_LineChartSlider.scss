@@ -465,6 +465,7 @@
 
 .highcharts-tooltip {
   // box-shadow : 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+  z-index: 999;
   .line-chart-tooltip {
     display: flex;
     flex-direction: column;
@@ -509,4 +510,8 @@
       }
     }
   }
+}
+
+.highcharts-tooltip-container{
+  z-index: 999 !important;
 }

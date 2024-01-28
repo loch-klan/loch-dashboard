@@ -24,7 +24,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnClick = (addItem) => {
-    if (!this.props.smartMoneyBlur) {
+    if (!this.props.smartMoneyBlur &&this.props.handleFollowUnfollow) {
       this.props.handleFollowUnfollow(
         this.props.mapData.account,
         addItem,
@@ -54,7 +54,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             {this.props.mapData.account ? (
               <div
                 onClick={() => {
-                  if (!this.props.smartMoneyBlur) {
+                  if (!this.props.smartMoneyBlur && !this.props.welcomePage) {
                     let lochUser = getCurrentUser().id;
 
                     let slink = this.props.mapData.account;
@@ -149,6 +149,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className={`inter-display-medium msmbBIAmount`}>
               <CheckboxCustomTable
                 handleOnClick={this.handleOnClick}
+                welcomePage={this.props.welcomePage}
                 isChecked={this.props.mapData.following}
                 noMargin
                 dontSelectIt={this.props.smartMoneyBlur}

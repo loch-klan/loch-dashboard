@@ -112,7 +112,7 @@
         }
         .closebtnContainer {
           height: 4.5rem;
-          width: 4.5rem;
+          min-width: 4.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -145,6 +145,12 @@
             background-color: $drop-button-hover;
             border-radius: 5rem;
             cursor: pointer;
+          }
+          .closebtnLight {
+            transition-duration: 300ms;
+            &:hover {
+              filter: invert(1) !important;
+            }
           }
           &:hover {
             padding: 0rem;
@@ -240,6 +246,12 @@
         background-color: $drop-button-hover;
         border-radius: 5rem;
         cursor: pointer;
+      }
+      .closebtnLight {
+        transition-duration: 300ms;
+        &:hover {
+          filter: invert(1) !important;
+        }
       }
       &:hover {
         padding: 0rem;
@@ -583,6 +595,7 @@
                 border-radius: 1.2rem;
               }
             }
+
             .nav-link-closed {
               img {
                 margin-right: 0rem;
@@ -814,13 +827,18 @@
           cursor: pointer;
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
-          background-color: white;
+          background-color: #e5e5e680;
+          border-color: transparent;
           &:hover {
             box-shadow: none;
-            background-color: $grey-F2F;
+            background-color: #0d0d0d;
             color: $black-191;
             .sideBarFooterSignInIconContainer {
-              background-color: white;
+              // background-color: white;
+            }
+            .sideBarFooterSignInIcon {
+              filter: invert(0);
+              filter: brightness(2.5);
             }
           }
 
@@ -831,7 +849,11 @@
         .sideBarFooterSignInIconContainerClosedSignedIn {
           background-color: #f2f2f2;
           &:hover {
-            background-color: white;
+            background-color: #0d0d0d;
+            .sideBarFooterSignInIcon {
+              filter: invert(0);
+              filter: brightness(15) !important;
+            }
           }
         }
       }
@@ -839,16 +861,17 @@
         padding-bottom: 5rem;
         padding-top: 1rem;
         .sideBarFooterSignInIconContainerClosedForTwitter {
-          background-color: #e5e5e680;
-          border-color: transparent;
+          cursor: pointer;
+          background-color: white;
+          border: 1.3px $white-E5E solid;
           &:hover {
-            background-color: black;
+            background-color: $grey-F2F;
             color: white;
             .sideBarFooterSignInIconContainerForTwitter {
               background-color: transparent;
             }
             .sideBarFooterSignInIconForTwitter {
-              filter: invert(100);
+              // filter: invert(100);
             }
           }
         }
@@ -858,7 +881,6 @@
         padding-top: 2rem;
       }
       .sideBarFooterSignInContainer {
-        color: $grey-313;
         padding: 1rem;
         display: flex;
         align-items: center;
@@ -866,17 +888,23 @@
         margin-bottom: 2rem;
         border-radius: 0.8rem;
         transition-duration: 300ms;
-        border: 1.3px $white-E5E solid;
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
-        background-color: white;
+        background-color: #e5e5e680;
+        border-color: transparent;
         &:hover {
           box-shadow: none;
-          background-color: $grey-F2F;
-          color: $black-191;
+          background-color: #0d0d0d;
+          color: white;
           .sideBarFooterSignInIconContainer {
             background-color: white;
+            border: 1.3px $white-E5E solid;
+            background-color: #0d0d0d;
+            img {
+              filter: invert(0);
+              filter: brightness(2.5);
+            }
           }
         }
 
@@ -899,16 +927,17 @@
         }
       }
       .sideBarFooterSignInContainerForTwitter {
-        background-color: #e5e5e680;
-        border-color: transparent;
+        border: 1.3px $white-E5E solid;
+        color: $grey-313;
+        background-color: white;
+        .sideBarFooterSignInIconForTwitter {
+          filter: invert(0) !important;
+        }
         &:hover {
-          background-color: black;
-          color: white;
+          background-color: $grey-F2F;
+          color: $black-191;
           .sideBarFooterSignInIconContainerForTwitter {
             background-color: transparent;
-          }
-          .sideBarFooterSignInIconForTwitter {
-            filter: invert(100);
           }
         }
         .sideBarFooterSignInIconContainerForTwitter {
@@ -918,6 +947,14 @@
       }
       .sideBarFooterSignedInContainer {
         justify-content: space-between;
+        &:hover {
+          .sideBarFooterSignInIcon {
+            filter: invert(0);
+            filter: brightness(10) !important;
+          }
+          .sideBarFooterSignedInLeaveContainer {
+          }
+        }
         .sideBarFooterSignInData {
           display: flex;
           align-items: center;
@@ -940,7 +977,11 @@
           }
           &:hover {
             .navbar-button {
-              color: $primary;
+              color: white;
+            }
+            img {
+              opacity: 1 !important;
+              filter: brightness(10);
             }
           }
         }

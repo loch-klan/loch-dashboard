@@ -37,6 +37,7 @@ import {
 
 import { toast } from "react-toastify";
 import {
+  isSameDateAs,
   mobileCheck,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions.js";
@@ -45,11 +46,16 @@ import FixAddModal from "../common/FixAddModal.js";
 import Footer from "../common/footer.js";
 import UpgradeModal from "../common/upgradeModal.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fromDateInitial: new Date(
+        new Date().setFullYear(new Date().getFullYear() - 1)
+      ),
+      toDateInitial: new Date(new Date().setDate(new Date().getDate() - 1)),
       fromDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
       toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
@@ -66,7 +72,7 @@ class RealizedProfitAndLoss extends Component {
       updatedInsightList: [],
       isLoading: false,
       // profit loss asset data
-      ProfitLossAsset: [],
+      ProfitLossAssetLocal: [],
       // title: "Max",
       title: 0,
       RightShow: true,
@@ -171,7 +177,11 @@ class RealizedProfitAndLoss extends Component {
       this.checkForInactivity();
     }, 900000);
   };
-
+  setProfitLossAssetLocal = (ProfitLossAssetPassed) => {
+    this.setState({
+      ProfitLossAssetLocal: ProfitLossAssetPassed,
+    });
+  };
   componentDidMount() {
     if (mobileCheck()) {
       this.props.history.push("/home");
@@ -234,6 +244,11 @@ class RealizedProfitAndLoss extends Component {
         netFlowLoading: false,
       });
       this.assetList();
+      if (this.props.intelligenceState?.ProfitLossAsset) {
+        this.setState({
+          ProfitLossAssetLocal: this.props.intelligenceState?.ProfitLossAsset,
+        });
+      }
     }
 
     let obj = UpgradeTriggered();
@@ -269,12 +284,26 @@ class RealizedProfitAndLoss extends Component {
       netFlowLoading: true,
       isGraphLoading: true,
     });
+    let isDefault = true;
+    if (
+      (this.state.fromDate.constructor === Date &&
+        this.state.fromDateInitial.constructor === Date &&
+        !isSameDateAs(this.state.fromDate, this.state.fromDateInitial)) ||
+      (this.state.toDate.constructor === Date &&
+        this.state.toDateInitial.constructor === Date &&
+        !isSameDateAs(this.state.toDate, this.state.toDateInitial)) ||
+      this.state.selectedAssets.length > 0
+    ) {
+      isDefault = false;
+    }
+
     this.props.getAssetProfitLoss(
       this,
       moment.utc(this.state.fromDate).add(1, "days").unix(),
       moment.utc(this.state.toDate).add(1, "days").unix(),
       [],
-      this.state.selectedAssets
+      this.state.selectedAssets,
+      isDefault
     );
     // this.props.getProfitAndLossApi(
     //   this,
@@ -287,6 +316,14 @@ class RealizedProfitAndLoss extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     // used for filter
+    if (
+      prevProps.intelligenceState?.ProfitLossAsset !==
+      this.props.intelligenceState?.ProfitLossAsset
+    ) {
+      this.setState({
+        ProfitLossAssetLocal: this.props.intelligenceState?.ProfitLossAsset,
+      });
+    }
     if (
       prevState.fromDate !== this.state.fromDate ||
       prevState.toDate !== this.state.toDate
@@ -311,7 +348,7 @@ class RealizedProfitAndLoss extends Component {
     }
     if (prevState.apiResponse != this.state.apiResponse) {
       this.props.getAllCoins();
-      this.timeFilter(0);
+      // this.timeFilter(0);
 
       this.assetList();
       this.setState({
@@ -484,12 +521,27 @@ class RealizedProfitAndLoss extends Component {
     // );
 
     // for asset Breakdown
+    let isDefault = true;
+    if (
+      (startDate.constructor === Date &&
+        this.state.fromDateInitial === Date &&
+        !isSameDateAs(startDate, this.state.fromDateInitial)) ||
+      (endDate.constructor === Date &&
+        this.state.toDateInitial === Date &&
+        !isSameDateAs(endDate, this.state.toDateInitial)) ||
+      this.state.selectedAssets.length > 0 ||
+      selectedChains.length > 0
+    ) {
+      isDefault = false;
+    }
+
     this.props.getAssetProfitLoss(
       this,
       startDate,
       endDate,
       selectedChains,
-      this.state.selectedAssets
+      this.state.selectedAssets,
+      isDefault
     );
 
     const tempIsSearchUsed = this.state.isChainSearchUsed;
@@ -617,6 +669,10 @@ class RealizedProfitAndLoss extends Component {
         </div>
         <div className="intelligence-page-section">
           <div className="intelligence-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}
@@ -634,7 +690,7 @@ class RealizedProfitAndLoss extends Component {
               <div className="m-b-32">
                 <PageHeader
                   showNetflowExplainers
-                  title="Realized profit and loss"
+                  title="Flows"
                   subTitle="Understand your portfolio's net flows"
                   currentPage="realized-profit-and-loss"
                   ShareBtn={true}
@@ -669,6 +725,7 @@ class RealizedProfitAndLoss extends Component {
                     data={null}
                     options={null}
                     coinsList={this.props.OnboardingState.coinsList}
+                    selectedActiveBadge={this.state.selectedActiveBadge}
                     isSwitch={this.state.isSwitch}
                     setSwitch={this.setSwitch}
                     marginBottom="m-b-32"
@@ -678,15 +735,14 @@ class RealizedProfitAndLoss extends Component {
                     showToken={true}
                     activeTitle={this.state.title}
                     assetList={this.state.AssetList}
+                    selectedAssets={this.state.selectedAssets}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
                     }
-                    ProfitLossAsset={
-                      this.props.intelligenceState.ProfitLossAsset
-                    }
+                    ProfitLossAsset={this.state.ProfitLossAssetLocal}
                     handleAssetSelected={this.handleAssetSelected}
                     getObj={true}
-                    isGraphLoading={this.state.isGraphLoading}
+                    isGraphLoading={this.state.netFlowLoading}
                     chainSearchIsUsed={this.chainSearchIsUsed}
                     assetSearchIsUsed={this.assetSearchIsUsed}
                     showSwitch={false}

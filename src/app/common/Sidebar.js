@@ -15,6 +15,7 @@ import {
   BlackManIcon,
   GreyManIcon,
   InactiveSmartMoneySidebarIcon,
+  PersonRoundedSigninIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
@@ -37,6 +38,8 @@ import logo from "../../image/Loch.svg";
 import {
   ExportMenu,
   FeedbackMenu,
+  FeedbackSidebar,
+  FeedbackSubmitted,
   GeneralPopup,
   HomeMenu,
   MenuApi,
@@ -50,22 +53,37 @@ import {
   SignupMenu,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
+import {
+  getCurrentUser,
+  getToken,
+  resetPreviewAddress,
+} from "../../utils/ManageToken";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import { addUserCredits } from "../profile/Api.js";
+import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
+import {
+  getAllCurrencyApi,
+  getAllCurrencyRatesApi,
+  sendUserFeedbackApi,
+  updateWalletListFlag,
+} from "./Api";
+import AuthModal from "./AuthModal";
+import ConfirmLeaveModal from "./ConformLeaveModal";
+import FeedbackModal from "./FeedbackModal";
+import SharePortfolio from "./SharePortfolio";
+import SidebarModal from "./SidebarModal";
+import UserFeedbackModal from "./UserFeedbackModal.js";
+import UpgradeModal from "./upgradeModal";
+
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import { getAllCurrencyApi, getAllCurrencyRatesApi } from "./Api";
-import AuthModal from "./AuthModal";
-import ConfirmLeaveModal from "./ConformLeaveModal";
-import ConnectModal from "./ConnectModal";
 import ExitOverlay from "./ExitOverlay";
-import FeedbackModal from "./FeedbackModal";
-import SharePortfolio from "./SharePortfolio";
-import SidebarModal from "./SidebarModal";
-import UpgradeModal from "./upgradeModal";
+import ConnectModal from "./ConnectModal.js";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
+import { toast } from "react-toastify";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -91,6 +109,7 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
   const [signInModalAnimation, setSignInModalAnimation] = useState(true);
   const [signUpModalAnimation, setSignUpModalAnimation] = useState(true);
+  const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
@@ -303,6 +322,10 @@ function Sidebar(props) {
     }
   };
   const handleGoToProfile = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
     props.history.push("/profile");
   };
   const handleApiModal = () => {
@@ -352,6 +375,10 @@ function Sidebar(props) {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
   const openSigninModal = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -381,6 +408,56 @@ function Sidebar(props) {
   };
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
+  };
+  const handleUserFeedbackModal = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
+    FeedbackSidebar({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    setUserFeedbackModal(!userFeedbackModal);
+  };
+  const hideUserFeedbackModal = (passedAddress) => {
+    setUserFeedbackModal(false);
+    if (passedAddress && passedAddress.length > 0 && passedAddress[0].value) {
+      let tempAnsHolder = [];
+      passedAddress.forEach((res) => {
+        if (res.value) {
+          tempAnsHolder.push(res.value);
+        } else {
+          tempAnsHolder.push("");
+        }
+      });
+      const passFedbackData = new URLSearchParams();
+      passFedbackData.append("feedback", JSON.stringify(tempAnsHolder));
+      FeedbackSubmitted({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      props.sendUserFeedbackApi(passFedbackData, addFeedbackPoints);
+    }
+  };
+  const addFeedbackPoints = () => {
+    const exchangeCreditScore = new URLSearchParams();
+    exchangeCreditScore.append("credits", "feedbacks_added");
+    props.addUserCredits(exchangeCreditScore, null, resetCreditPoints);
+  };
+  const resetCreditPoints = () => {
+    props.updateWalletListFlag("creditPointsBlock", false);
+  };
+  const handleShare = () => {
+    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : getCurrentUser().id;
+    const link = `${BASE_URL_S3}home/${slink}`;
+    navigator.clipboard.writeText(link);
+    toast.success("Share link has been copied");
   };
 
   React.useEffect(() => {
@@ -549,20 +626,34 @@ function Sidebar(props) {
         ? props.defiState.totalDebt
         : 0;
 
-      return tempWallet + tempCredit - tempDebt;
+      let tempAns = tempWallet + tempCredit - tempDebt;
+      if (tempAns) {
+        tempAns = tempAns.toFixed(2);
+      } else {
+        tempAns = 0;
+      }
+      return tempAns;
     }
     return 0;
   };
   return (
     <>
-      <div className="sidebar-section">
+      <div
+        style={{
+          zIndex: "99",
+        }}
+        className="sidebar-section"
+      >
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
             <div
               // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
               className={`logo home-topbar`}
-              style={{ marginBottom: "0", width: "100%" }}
+              style={{
+                marginBottom: "0",
+                width: "100%",
+              }}
             >
               <div>
                 <Image src={logo} />
@@ -623,7 +714,11 @@ function Sidebar(props) {
                               className="nav-link nav-link-closed"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -658,6 +753,11 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -696,6 +796,11 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -762,6 +867,11 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/profile"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -785,6 +895,28 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                             </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Feedback"}
+                          >
+                            <div
+                              className={`nav-link nav-link-closed`}
+                              style={{ backround: "transparent" }}
+                              id="sidebar-feedback-btn"
+                              onClick={handleUserFeedbackModal}
+                              // activeclassname="active"
+                            >
+                              <Image
+                                src={feedbackIcon}
+                                // className="followingImg"
+                              />
+                            </div>
                           </CustomOverlay>
                         </li>
                       </ul>
@@ -831,7 +963,11 @@ function Sidebar(props) {
                               className="nav-link"
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
-                                // console.log("user",getCurrentUser())
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -859,6 +995,11 @@ function Sidebar(props) {
                               className={`nav-link`}
                               to="/watchlist"
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -888,6 +1029,11 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -915,6 +1061,11 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
@@ -967,6 +1118,37 @@ function Sidebar(props) {
                           </li>
                         </>
                       )}
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={handleUserFeedbackModal}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                          id="sidebar-feedback-btn-full"
+                        >
+                          <Image
+                            src={feedbackIcon}
+                            // style={{ filter: "opacity(0.6)" }}
+                          />
+                          Feedback
+                        </NavLink>
+                      </li>
+                      {/* <li>
+                        <NavLink
+                          exact={true}s
+                          onClick={handleConnectModal}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image
+                            src={LinkIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
+                          Connect Exchanges
+                        </NavLink>
+                      </li> */}
                     </ul>
                   </nav>
                 </div>
@@ -1011,11 +1193,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedSignedIn inter-display-medium f-s-13 lh-19 "
+                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={BlackManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1034,7 +1216,7 @@ function Sidebar(props) {
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                           </CustomOverlay>
@@ -1092,10 +1274,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
                           >
                             <div className="sideBarFooterSignInData">
-                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignedInIconContainer">
+                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                                 <Image
+                                  style={{
+                                    height: "12px",
+                                    width: "12px",
+                                  }}
                                   className="sideBarFooterSignInIcon"
-                                  src={BlackManIcon}
+                                  src={PersonRoundedSigninIcon}
                                 />
                               </div>
                               <div className="dotDotText">
@@ -1131,10 +1317,14 @@ function Sidebar(props) {
                             className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
                             id="sidebar-open-sign-in-btn"
                           >
-                            <div className="sideBarFooterSignInIconContainer">
+                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
                               <Image
+                                style={{
+                                  height: "12px",
+                                  width: "12px",
+                                }}
                                 className="sideBarFooterSignInIcon"
-                                src={GreyManIcon}
+                                src={PersonRoundedSigninIcon}
                               />
                             </div>
                             <div>Sign in / up</div>
@@ -1339,6 +1529,16 @@ function Sidebar(props) {
       )}
 
       {/* after 15 sec open this */}
+      {userFeedbackModal ? (
+        <UserFeedbackModal
+          trackPos={trackPos}
+          dragPosition={dragPosition}
+          onHide={hideUserFeedbackModal}
+          history={history}
+          popupType="general_popup"
+          tracking={history.location.pathname.substring(1)}
+        />
+      ) : null}
 
       {signinPopup ? (
         <SidebarModal
@@ -1355,10 +1555,14 @@ function Sidebar(props) {
     </>
   );
 }
+const mapDispatchToProps = {
+  sendUserFeedbackApi,
+  addUserCredits,
+  updateWalletListFlag,
+};
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
 });
-const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

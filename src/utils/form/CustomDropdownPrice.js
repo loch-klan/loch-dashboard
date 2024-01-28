@@ -494,6 +494,9 @@ class CustomDropdown extends Component {
               ? "lineChartPlaceholder"
               : ""
           }`}
+          style={{
+            minWidth: this.props.isHomepage ? "10rem" : "",
+          }}
           onClick={this.dropdownClicked}
         >
           {this.props.singleSelect

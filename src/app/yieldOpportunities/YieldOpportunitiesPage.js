@@ -22,7 +22,6 @@ import {
   SORT_BY_VALUE,
   START_INDEX,
 } from "../../utils/Constant";
-import { searchTransactionApi } from "../intelligence/Api";
 import { getYieldOpportunities } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import { toast } from "react-toastify";
@@ -50,6 +49,7 @@ import {
   CurrencyType,
   UpgradeTriggered,
   amountFormat,
+  compareTwoArrayOfObjects,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -76,6 +76,7 @@ import { getFilters } from "../intelligence/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -318,7 +319,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         listOfAddresses = JSON.stringify(tempWalletList);
       }
     }
-
+    let isDefault = true;
+    let originalCondition = [];
+    let originalSort = [{ key: SORT_BY_TVL, value: false }];
+    if (!compareTwoArrayOfObjects(originalCondition, this.state.condition)) {
+      isDefault = false;
+    }
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
@@ -327,8 +336,20 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
-      this.props.getYieldOpportunities(data, page);
+      this.props.getYieldOpportunities(data, page, this, isDefault);
     }
+  };
+  getAllYieldOppLocal = (apiResponseLocal) => {
+    this.setState({
+      yieldOpportunitiesList: apiResponseLocal.yield_pools
+        ? apiResponseLocal.yield_pools
+        : [],
+      totalPage: apiResponseLocal.total_count
+        ? Math.ceil(apiResponseLocal.total_count / API_LIMIT)
+        : 0,
+      tableLoading: false,
+      currentPage: apiResponseLocal.currentPage,
+    });
   };
   onPageChange = () => {
     this.setState({
@@ -950,6 +971,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
       },
     ];
+
     return (
       <>
         {/* topbar */}
@@ -975,6 +997,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1093,10 +1119,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
-                    page={this.state.currentPage}
+                    page={this.state.currentPage ? this.state.currentPage : 0}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
                     addWatermark
+                    minimalPagination
+                    hidePaginationRecords
                   />
                   <Footer />
                 </>
@@ -1121,7 +1149,6 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
 });
 const mapDispatchToProps = {
-  searchTransactionApi,
   getYieldOpportunities,
   getFilters,
   getAllCoins,

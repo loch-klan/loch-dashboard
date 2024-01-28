@@ -37,11 +37,13 @@ import { getProtocolBalanceApi } from "../Portfolio/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { getAllWalletListApi } from "../wallet/Api";
 import { updateDefiData } from "./Api";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class Defi extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      defiStateLocally: {},
       // store current currency
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
       sortBy: [
@@ -152,6 +154,11 @@ class Defi extends Component {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 300);
+    if (this.props.defiState && this.props.commonState.defi) {
+      this.setState({
+        defiStateLocally: this.props.defiState,
+      });
+    }
     return () => {
       clearInterval(window.checkDefiTimer);
     };
@@ -194,7 +201,11 @@ class Defi extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-
+    if (prevProps.defiState !== this.props.defiState) {
+      this.setState({
+        defiStateLocally: this.props.defiState,
+      });
+    }
     if (!this.props.commonState.defi) {
       this.props.updateDefiData({
         totalYield: 0,
@@ -247,7 +258,7 @@ class Defi extends Component {
     }
   }
   sortArray = (key, order) => {
-    let array = this.props.defiState?.defiList;
+    let array = [...this.state.defiStateLocally?.defiList];
     if (array) {
       let sortedList = array.sort((a, b) => {
         let valueA = a[key] ? a[key] : 0;
@@ -271,10 +282,18 @@ class Defi extends Component {
           return valueB - valueA;
         }
       });
-      this.props.updateDefiData({ sortedList });
+      // this.props.updateDefiData({ sortedList });
+      this.updateDefiDataLocally(sortedList);
     }
   };
-
+  updateDefiDataLocally = (sortedList) => {
+    this.setState({
+      defiStateLocally: {
+        ...this.state.defiStateLocally,
+        defiList: sortedList,
+      },
+    });
+  };
   handleSort = (e) => {
     // down == true means ascending and down == false means descending
     let isDown = true;
@@ -502,6 +521,10 @@ class Defi extends Component {
         </div>
         <div className="cohort-page-section m-t-80">
           <div className="cohort-section page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -581,9 +604,9 @@ class Defi extends Component {
                             }`}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalYield &&
+                            {this.state.defiStateLocally.totalYield &&
                               numToCurrency(
-                                this.props.defiState.totalYield *
+                                this.state.defiStateLocally.totalYield *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -602,50 +625,55 @@ class Defi extends Component {
                       </div>
                       {this.state.isYeildToggle ? (
                         <div className="balance-sheet-list-container">
-                          {this.props.defiState.YieldValues?.length !== 0 &&
-                            this.props.defiState.YieldValues?.map((item, i) => {
-                              return (
-                                <div
-                                  className="balance-sheet-list"
-                                  style={
-                                    i ===
-                                    this.props.defiState.YieldValues?.length - 1
-                                      ? { paddingBottom: "0.3rem" }
-                                      : {}
-                                  }
-                                  key={`defiYEildValue-${i}`}
-                                >
-                                  <span className="inter-display-medium f-s-16 lh-19">
-                                    {item.name}
-                                  </span>
-                                  <CustomOverlay
-                                    position="top"
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={
-                                      CurrencyType(false) +
-                                      amountFormat(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.state.currency?.rate || 1),
-                                        "en-US",
-                                        "USD"
-                                      )
+                          {this.state.defiStateLocally.YieldValues?.length !==
+                            0 &&
+                            this.state.defiStateLocally.YieldValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balance-sheet-list"
+                                    style={
+                                      i ===
+                                      this.state.defiStateLocally.YieldValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
                                     }
+                                    key={`defiYEildValue-${i}`}
                                   >
-                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                      {CurrencyType(false)}
-                                      {numToCurrency(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.state.currency?.rate || 1),
-                                        "en-US",
-                                        "USD"
-                                      )}
+                                    <span className="inter-display-medium f-s-16 lh-19">
+                                      {item.name}
                                     </span>
-                                  </CustomOverlay>
-                                </div>
-                              );
-                            })}
+                                    <CustomOverlay
+                                      position="top"
+                                      isIcon={false}
+                                      isInfo={true}
+                                      isText={true}
+                                      text={
+                                        CurrencyType(false) +
+                                        amountFormat(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {numToCurrency(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </CustomOverlay>
+                                  </div>
+                                );
+                              }
+                            )}
                         </div>
                       ) : null}
                     </Col>
@@ -672,9 +700,9 @@ class Defi extends Component {
                             }`}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalDebt &&
+                            {this.state.defiStateLocally.totalDebt &&
                               numToCurrency(
-                                this.props.defiState.totalDebt *
+                                this.state.defiStateLocally.totalDebt *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -693,50 +721,55 @@ class Defi extends Component {
                       </div>
                       {this.state.isDebtToggle ? (
                         <div className="balance-sheet-list-container">
-                          {this.props.defiState.DebtValues?.length !== 0 &&
-                            this.props.defiState.DebtValues?.map((item, i) => {
-                              return (
-                                <div
-                                  className="balance-sheet-list"
-                                  style={
-                                    i ===
-                                    this.props.defiState.DebtValues?.length - 1
-                                      ? { paddingBottom: "0.3rem" }
-                                      : {}
-                                  }
-                                  key={`defiDebtValue-${i}`}
-                                >
-                                  <span className="inter-display-medium f-s-16 lh-19">
-                                    {item.name}
-                                  </span>
-                                  <CustomOverlay
-                                    position="top"
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={
-                                      CurrencyType(false) +
-                                      amountFormat(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.state.currency?.rate || 1),
-                                        "en-US",
-                                        "USD"
-                                      )
+                          {this.state.defiStateLocally.DebtValues?.length !==
+                            0 &&
+                            this.state.defiStateLocally.DebtValues?.map(
+                              (item, i) => {
+                                return (
+                                  <div
+                                    className="balance-sheet-list"
+                                    style={
+                                      i ===
+                                      this.state.defiStateLocally.DebtValues
+                                        ?.length -
+                                        1
+                                        ? { paddingBottom: "0.3rem" }
+                                        : {}
                                     }
+                                    key={`defiDebtValue-${i}`}
                                   >
-                                    <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                      {CurrencyType(false)}
-                                      {numToCurrency(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.state.currency?.rate || 1),
-                                        "en-US",
-                                        "USD"
-                                      )}
+                                    <span className="inter-display-medium f-s-16 lh-19">
+                                      {item.name}
                                     </span>
-                                  </CustomOverlay>
-                                </div>
-                              );
-                            })}
+                                    <CustomOverlay
+                                      position="top"
+                                      isIcon={false}
+                                      isInfo={true}
+                                      isText={true}
+                                      text={
+                                        CurrencyType(false) +
+                                        amountFormat(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {numToCurrency(
+                                          item.totalPrice.toFixed(2) *
+                                            (this.state.currency?.rate || 1),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </CustomOverlay>
+                                  </div>
+                                );
+                              }
+                            )}
                         </div>
                       ) : null}
                     </Col>
@@ -789,9 +822,9 @@ class Defi extends Component {
 
             {/* start card */}
 
-            {this.props.defiState?.defiList &&
-            this.props.defiState.defiList.length !== 0 ? (
-              this.props.defiState?.defiList?.map((card, index) => {
+            {this.state.defiStateLocally?.defiList &&
+            this.state.defiStateLocally.defiList.length !== 0 ? (
+              this.state.defiStateLocally?.defiList?.map((card, index) => {
                 return (
                   <div
                     key={`sortedList-${index}`}
@@ -1004,8 +1037,8 @@ class Defi extends Component {
                   </div>
                 );
               })
-            ) : this.props.defiState?.defiList &&
-              this.props.defiState.defiList.length === 0 ? (
+            ) : this.state.defiStateLocally?.defiList &&
+              this.state.defiStateLocally.defiList.length === 0 ? (
               // <Col md={12}>
 
               <div

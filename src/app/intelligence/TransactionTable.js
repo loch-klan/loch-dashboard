@@ -35,9 +35,11 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}
         xAxisScrollable={props.xAxisScrollable}
+        xAxisScrollableColumnWidth={props.xAxisScrollableColumnWidth}
         yAxisScrollable={props.yAxisScrollable}
         onBlurSignInClick={props.onBlurSignInClick}
         moreData={props.moreData}
@@ -51,7 +53,8 @@ function TransactionTable(props) {
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
         paginationNew={props.paginationNew}
-        isSmartMoney={props.isSmartMoney}
+        minimalPagination={props.minimalPagination}
+        hidePaginationRecords={props.hidePaginationRecords}
         showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"
