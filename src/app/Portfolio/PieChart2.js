@@ -55,6 +55,7 @@ import {
   isFollowedByUser,
 } from "./Api";
 import PieChart2Mobile from "./PieChart2Mobile";
+import { filter } from "lodash";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -1567,6 +1568,7 @@ class PieChart2 extends BaseReactComponent {
                                 "#000000",
                                 -0.15
                               )}`,
+                              filter: "var(--invertColor)",
                             }}
                           />
                           Centralized Exchanges

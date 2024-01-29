@@ -1262,7 +1262,7 @@ form {
         position: -webkit-sticky; /* Safari */
         position: sticky;
         top: 0;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         z-index: 100;
         border-top-left-radius: 1.2rem;
         border-top-right-radius: 1.2rem;
@@ -1897,7 +1897,7 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
+  background: url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {
