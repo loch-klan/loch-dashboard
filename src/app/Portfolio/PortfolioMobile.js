@@ -2608,7 +2608,7 @@ class PortfolioMobile extends BaseReactComponent {
                       // });
                     }
                   }}
-                  message=" "
+                  message="No assets found"
                   subTitle=""
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
