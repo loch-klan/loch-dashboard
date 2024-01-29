@@ -1249,7 +1249,7 @@
       }
     }
     .mobileSmartMoneyBlock {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       margin-bottom: 1.5rem;
       border-radius: 1.2rem;
       box-shadow: 0 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -1272,7 +1272,7 @@
             margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
-            color: #313233;
+            color: var(--grey313);
             margin-right: 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
@@ -1288,13 +1288,13 @@
         .msmbHeaderRight {
           margin-left: 2rem;
           .msmbHeaderNetWorth {
-            background-color: hsla(240, 2%, 90%, 0.5);
+            background-color: var(--greyCardBackgroud);
             border-radius: 0.4rem;
             padding: 0.6rem;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 13px;
-            color: #313233;
+            color: var(--grey313);
           }
         }
       }
@@ -1313,7 +1313,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            color: #96979a;
+            color: var(--sidebarBottomOptions);
             font-size: 13px;
           }
           .msmbBIAmount {
@@ -1899,7 +1899,8 @@
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: #fff;
+          background-color: var(--cardBackgroud);
+          border: 1px solid var(--borderwhiteDarkLight);
           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
             0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
