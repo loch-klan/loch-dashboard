@@ -49,7 +49,7 @@
                 cursor: pointer;
                 transition-duration: 300ms;
                 &:hover {
-                  color: #0d0d0d;
+                  color: var(--primaryTextColor);
                 }
               }
             }
@@ -859,7 +859,8 @@
           border-color: transparent;
           &:hover {
             box-shadow: none;
-            background-color: #0d0d0d;
+            background-color: #181818;
+            border-color: var(--whiteTransparentBlackE5e5e6);
             color: $black-191;
             .sideBarFooterSignInIconContainer {
               // background-color: white;
@@ -890,17 +891,23 @@
         padding-top: 1rem;
         .sideBarFooterSignInIconContainerClosedForTwitter {
           cursor: pointer;
-          background-color: white;
+          background-color: var(--cardBackgroud);
           border: 1.3px $white-E5E solid;
+          .sideBarFooterSignInIconForTwitter {
+            filter: var(--invertColor);
+          }
           &:hover {
-            background-color: $grey-F2F;
+            background-color:var(--primaryFilter);
             color: white;
             .sideBarFooterSignInIconContainerForTwitter {
               background-color: transparent;
             }
             .sideBarFooterSignInIconForTwitter {
-              // filter: invert(100);
+              filter: var(--invertColor);
             }
+            // .sideBarFooterSignInIconForTwitter {
+            //   filter: var(--hoverBrightnessValueInvert);
+            // }
           }
         }
       }

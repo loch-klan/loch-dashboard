@@ -258,12 +258,13 @@ justify-content: center;
               .active {
                 background-color: var(--primaryTextColor);
                 border: 1px solid var(--black191);
+                color: var(--sameModeColor);
                 &:hover {
                   border-color: $secondary;
                   box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
                     0px 1rem 1rem rgba(0, 0, 0, 0.04);
                   color: var(--black191);
-                  background-color: $secondary;
+                  background-color: var(--sameModeColor);
                 }
               }
 

@@ -1734,13 +1734,16 @@ form {
   }
 
   .button-tooltip {
-    background-color: $secondary;
-    color: $grey-313;
+    background-color: var(--cardBackgroud);
+    color: var(--grey313);
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    img{
+      filter: var(--invertColor);
+    }
 
     // padding: 1.2rem 1.6rem;
     // gap: 1.2rem;
@@ -1748,7 +1751,7 @@ form {
     span {
       display: flex;
       align-items: center;
-      color: $grey-313;
+      color: var(--grey313);
       text-align: left;
       margin-left: 1.2rem;
     }

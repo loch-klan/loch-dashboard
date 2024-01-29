@@ -73,7 +73,7 @@
 }
 .btn-bg-white-outline-black{
     color: var(--black191);
-    border: 1px solid var(--black191);
+    border: 1px solid var(--black191) !important;
     background-color: transparent !important;
 }
 
@@ -120,4 +120,7 @@
 
 .text-same-mode-color{
   color: var(--sameModeColor) !important;
+}
+.invertTextColor{
+  color: var(--invertMode);
 }

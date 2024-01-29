@@ -87,7 +87,7 @@ const Login = ({
                   if (validateEmail(email)) handleSubmitEmail();
                 }}
                 ref={submitRef}
-                className={`new-auth-content-button main-button-invert${
+                className={`new-auth-content-button  ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""
                 }`}
               >
