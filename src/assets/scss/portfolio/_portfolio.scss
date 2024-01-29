@@ -262,14 +262,6 @@
                 outline: none;
                 height: 100%;
                 font-size: 15px;
-                &:-webkit-autofill:focus {
-                  box-shadow: 0 0 0 30px white inset !important;
-                  -webkit-box-shadow: 0 0 0 30px white inset !important;
-                  transition: background-color 5000s ease-in-out 0s;
-                }
-                box-shadow: 0 0 0 30px white inset !important;
-                -webkit-box-shadow: 0 0 0 30px white inset !important;
-                transition: background-color 5000s ease-in-out 0s;
 
                 &:hover {
                   &::placeholder {

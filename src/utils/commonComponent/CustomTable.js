@@ -328,7 +328,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.05",
+                    flex: "0.066",
                   }}
                 ></div>
                 <div
@@ -336,7 +336,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.1",
+                    flex: "0.066",
                   }}
                 >
                   <div className="inter-display-medium bottomCombinedItemBlock">
@@ -348,7 +348,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.12",
+                    flex: "0.1",
                   }}
                 ></div>
                 <div
@@ -372,7 +372,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div className="cost-common-container">
@@ -417,7 +417,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div className="cost-common-container">
@@ -462,7 +462,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -524,7 +524,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -586,7 +586,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -613,6 +613,14 @@ class CustomTable extends BaseReactComponent {
                       </div>
                     </CustomOverlay>
                   </div>
+                  <div
+                    aria-colindex="1"
+                    role="gridcell"
+                    className="bottomCombinedItemBlock"
+                    style={{
+                      flex: "0.066",
+                    }}
+                  ></div>
                 </div>
               </div>
             ) : null}
