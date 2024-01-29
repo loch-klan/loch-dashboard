@@ -57,10 +57,12 @@
 
     .new-auth-content-logo {
       width: 38px;
+      filter: var(--invertColor);
     }
 
     .new-auth-content-logo-mobile{
       margin-bottom: -12px;
+      filter: var(--invertColor);
     }
 
     .new-auth-content-title-holder {
@@ -72,7 +74,7 @@
         font-size: 28px;
         font-weight: 500;
         line-height: 120%;
-        color: #19191A;
+        color: var(--black191);
       }
 
       .new-auth-content-subtitle {
@@ -95,7 +97,7 @@
         height: 55px;
         border: 1px solid #e5e5e6;
         border-radius: 8px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         color: #4a4b4d;
         padding: 18px 12px;
         font-size: 16px;
@@ -154,7 +156,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #141414 !important;
         box-shadow: 0px 18px 88px -4px rgba(0,0,0,0.25), 0px 8px 28px -6px rgba(0,0,0,0.25);
         border-radius: 8px;
         font-size: 16px;

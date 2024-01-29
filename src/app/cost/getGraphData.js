@@ -12,7 +12,8 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (apidata, parentCtx) => {
+export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
+  console.log("isFromHome is ", isFromHome);
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
@@ -42,10 +43,10 @@ export const getGraphData = (apidata, parentCtx) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--cardBackgroud)",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: "var(--black191)",
         padding: 12,
         borderWidth: 1,
         borderColor: "#E5E7EB",
@@ -60,18 +61,7 @@ export const getGraphData = (apidata, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              amountFormat(
-                (
-                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
-                    assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]] ||
-                  ctx.raw
-                )?.toFixed(2) * currency.rate,
-                "en-US",
-                "USD"
-              );
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -103,7 +93,7 @@ export const getGraphData = (apidata, parentCtx) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },
@@ -135,7 +125,13 @@ export const getGraphData = (apidata, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display: isFromHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
@@ -342,10 +338,10 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--cardBackgroud)",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: "var(--black191)",
         padding: 12,
         borderWidth: 1,
         borderColor: "#E5E7EB",
@@ -360,10 +356,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 =
-              "Fees: " +
-              CurrencyType(false) +
-              numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label0 = "Click to analyze";
             let label1 =
               "Volume: " +
               CurrencyType(false) +
@@ -398,7 +391,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },

@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Image, Tooltip } from "react-bootstrap";
 import { lightenDarkenColor } from "../ReusableFunctions";
+import "./commonCoponentsStyles/_customOverlay.scss";
 
 function CustomOverlay({
   text,
@@ -101,14 +102,14 @@ function CustomOverlay({
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 ${
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 black-191 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
                 {heading}
               </div>
               <div
-                className={`w-100 inter-display-medium text-tooltip-subheading f-s-13 lh-16 ${
+                className={`w-100 text-tooltip-subheading f-s-13 lh-16 inter-display-medium  ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
@@ -172,6 +173,7 @@ function CustomOverlay({
       placement={position}
       delay={{ show: 250, hide: 100 }}
       overlay={renderTooltip}
+      className="overlay-tool-tip-container"
     >
       {children}
     </OverlayTrigger>

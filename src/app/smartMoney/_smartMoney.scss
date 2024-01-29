@@ -872,11 +872,12 @@
               width: 9.3rem;
               height: 22rem;
               overflow-y: auto;
-              background: white;
+              background: var(--cardBackgroud);
               left: -9px !important;
               .dropdown-item {
                 display: flex;
                 justify-content: space-between;
+                color: var(--primaryTextColor);
               }
             }
           }
@@ -969,7 +970,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: white;
+        background-color: var(--cardBackgroud);
 
         .smartMoneyFAQModalAnswerBlock {
           padding: 1.5rem 1.5rem;
@@ -978,7 +979,7 @@
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
           .smartMoneyFAQModalAnswerBlockQues {
-            color: #000000;
+            color: var(--primaryTextColor);
           }
           .smartMoneyFAQModalAnswerBlockAns {
             color: #b0b1b3;
@@ -987,7 +988,7 @@
         }
       }
       .smartMoneyFAQModalBlocks {
-        background-color: #f8f8f8;
+        background-color: var(--primaryFilter);
         border: 0.1rem solid #e5e5e6;
         padding: 1.5rem 1.5rem;
         border-radius: 1.2rem;
@@ -995,7 +996,7 @@
         cursor: pointer;
         transition-duration: 300ms;
         &:hover {
-          background-color: white;
+          background-color: var(--cardBackgroud);
           // border-color: white;
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
@@ -1337,7 +1338,7 @@
       background-color: white;
       border-color: white;
       box-shadow: none;
-      margin-right: 2.5rem;
+      margin-right: 5px;
       &:hover {
         background-color: #19191a;
         .homeSmartMoneyHeaderSignInJustText {
@@ -1438,11 +1439,12 @@
               width: 9.3rem;
               height: 22rem;
               overflow-y: auto;
-              background: white;
+              background: var(--cardBackgroud);
               left: -9px !important;
               .dropdown-item {
                 display: flex;
                 justify-content: space-between;
+                color: var(--primaryTextColor);
               }
             }
           }

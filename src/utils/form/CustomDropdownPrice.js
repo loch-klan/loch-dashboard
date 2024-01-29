@@ -484,10 +484,10 @@ class CustomDropdown extends Component {
         }`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
-        style={{ position: "relative" }}
+        style={{ position: "relative", ...this.props.style }}
       >
         <div
-          className={`placeholderPriceDropdown ${
+          className={`placeholderPriceDropdown  ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme
@@ -519,10 +519,11 @@ class CustomDropdown extends Component {
                 : " " + this.props.placeholderName + " selected")
             : this.getSelected()?.length + " Selected"}
 
-          {!this.props.isLineChart &&
+          {
+          !this.props.isLineChart &&
             !this.props.isChain &&
             !this.props.LightTheme && (
-              <span>
+              <span style={{marginRight:this.props.IconwithoutPadding?'5px':''}}>
                 <svg
                   height="20"
                   width="20"
@@ -551,12 +552,12 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content-price ${
+          className={`dropdown-content-price input-noshadow-dark ${
             this.state.showMenu ? "show" : ""
           }`}
           style={{
             minWidth: `${
-              this.props.isLineChart || this.props.isChain ? "100%" : "130px"
+              this.props.isLineChart || this.props.isChain ||this.props.isMobile ? "100%" : "130px"
             }`,
           }}
         >

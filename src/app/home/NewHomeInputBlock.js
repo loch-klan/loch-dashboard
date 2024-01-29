@@ -35,7 +35,7 @@ class NewHomeInputBlock extends BaseReactComponent {
     const { c, index } = this.props;
     return (
       <div
-        className={`new-homepage__body-search_input_body_container ${
+        className={`new-homepage__body-search_input_body_container input-noshadow-dark ${
           this.props.isMobile
             ? "new-homepage__body-search_input_body_container-mobile"
             : ""

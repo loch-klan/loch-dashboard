@@ -2,7 +2,7 @@
   opacity: 0.07 !important;
 }
 
-.modal-new-welcome-v-top{
+.modal-new-welcome-v-top {
   align-items: start;
   padding-top: 12rem;
 }
@@ -44,10 +44,10 @@ justify-content: center;
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .exit-overlay-modal-new-welcome {
     .modal-content {
-      background-color: rgba(255, 255, 255, 1);
+      // background-color: rgba(255, 255, 255, 1);
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: var(--glassCardBg);
     }
   }
 }
@@ -75,6 +75,7 @@ justify-content: center;
         img {
           width: 2.4rem;
           height: 2.4rem;
+          filter: var(--invertColor);
         }
 
         padding: 1.8rem;
@@ -103,13 +104,16 @@ justify-content: center;
         padding: 1.3rem;
         top: 2.8rem;
         right: 2.8rem;
-        background-color: $drop-button-hover;
+        background-color: var(--greyCardBackgroud);
         border-radius: 5rem;
         cursor: pointer;
         transition: all 0.4s ease;
         display: flex;
         align-items: center;
         justify-content: center;
+        img{
+          filter: var(--invertColor);
+        }
         &:hover {
           scale: 1.1;
         }
@@ -194,17 +198,17 @@ justify-content: center;
           transition-duration: 300ms;
           cursor: pointer;
           &:hover {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
         }
         .skip-link {
           &:hover {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
         }
 
         h6 {
-          color: $primary;
+          color: var(--primaryTextColor);
           margin-bottom: 0.6rem;
         }
 
@@ -224,7 +228,7 @@ justify-content: center;
               }
 
               .is-valid {
-                border: 0.1rem solid $black-191;
+                border: 0.1rem solid var(--black191);
                 border-radius: 0.8rem;
                 box-shadow: 0rem 0.8rem 2.2rem -0.6rem rgba(24, 39, 75, 0.12),
                   0rem 1.4rem 6.4rem -0.4rem rgba(24, 39, 75, 0.12);
@@ -246,13 +250,13 @@ justify-content: center;
               }
 
               .active {
-                background-color: $primary;
-                border: 1px solid $black-191;
+                background-color: var(--primaryTextColor);
+                border: 1px solid var(--black191);
                 &:hover {
                   border-color: $secondary;
                   box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
                     0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                  color: $black-191;
+                  color: var(--black191);
                   background-color: $secondary;
                 }
               }
@@ -265,7 +269,7 @@ justify-content: center;
           &.auth-modal {
             form {
               .is-valid {
-                border: 0.1rem solid $black-191;
+                border: 0.1rem solid var(--black191);
                 border-radius: 0.8rem;
                 box-shadow: none;
                 // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
@@ -336,7 +340,7 @@ justify-content: center;
               button {
                 padding: 0rem;
                 background-color: $secondary;
-                color: $black-191;
+                color: var(--black191);
               }
             }
           }
@@ -430,18 +434,18 @@ justify-content: center;
               cursor: pointer;
               &.active {
                 padding: 1.1rem 1.5rem;
-                border: 1px solid $black-191;
+                border: 1px solid var(--black191);
                 border-radius: 8px;
-                color: $black-191;
+                color: var(--black191);
                 box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
                   0px 14px 64px -4px rgba(24, 39, 75, 0.12);
               }
 
               &:hover {
                 padding: 1.1rem 1.5rem;
-                border: 1px solid $black-191;
+                border: 1px solid var(--black191);
                 border-radius: 8px;
-                color: $black-191;
+                color: var(--black191);
               }
             }
           }
@@ -462,13 +466,13 @@ justify-content: center;
               }
             }
             &:hover {
-              // color: $black-191;
-              // border: 1px solid $black-191;
+              // color: var(--black191);
+              // border: 1px solid var(--black191);
               // background-color: transparent;
               border-color: $secondary;
               box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
                 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-              color: $black-191;
+              color: var(--black191);
               background-color: $secondary;
             }
           }
@@ -487,7 +491,7 @@ justify-content: center;
               // }
 
               // label {
-              //   @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
+              //   @include font(var(--primaryTextColor), "Inter-Medium", 0.9rem, 500, 15px);
               // }
             }
           }
@@ -526,7 +530,7 @@ justify-content: center;
               align-items: center;
               p {
                 margin-left: 0.5rem;
-                color: $black-191;
+                color: var(--black191);
               }
             }
 
@@ -546,7 +550,7 @@ justify-content: center;
               .form-control {
                 font-size: 1.6rem;
                 line-height: 1.8rem;
-                color: $black-191;
+                color: var(--black191);
                 font-weight: 400;
                 padding: 1.3rem 1.6rem;
                 min-height: 4.3rem;
@@ -612,7 +616,7 @@ justify-content: center;
 
                 input {
                   width: 100%;
-                  // border: 0.1rem solid $black-191;
+                  // border: 0.1rem solid var(--black191);
                   border: 1px solid #d4d4d4;
                   border-radius: 0.8rem;
                   // padding: 1.05rem 15.7rem 1.05rem 1.2rem;
@@ -693,13 +697,13 @@ justify-content: center;
                   }
                 }
                 &:hover {
-                  // color: $black-191;
-                  // border: 1px solid $black-191;
+                  // color: var(--black191);
+                  // border: 1px solid var(--black191);
                   // background-color: transparent;
                   border-color: $secondary;
                   box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
                     0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                  color: $black-191;
+                  color: var(--black191);
                   background-color: $secondary;
                 }
               }
@@ -738,7 +742,7 @@ justify-content: center;
                     }
 
                     .is-valid {
-                      border: 0.1rem solid $black-191;
+                      border: 0.1rem solid var(--black191);
                       border-radius: 0.8rem;
                       box-shadow: 0rem 0.8rem 2.2rem -0.6rem rgba(24, 39, 75, 0.12),
                         0rem 1.4rem 6.4rem -0.4rem rgba(24, 39, 75, 0.12);
@@ -761,8 +765,8 @@ justify-content: center;
                     }
 
                     .active {
-                      background-color: $primary;
-                      border: 1px solid $black-191;
+                      background-color: var(--primaryTextColor);
+                      border: 1px solid var(--black191);
                       &:hover {
                         border-color: $secondary;
                         box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
@@ -811,7 +815,7 @@ justify-content: center;
       .connect-head {
         padding: 0 21rem;
         h6 {
-          color: $black-191;
+          color: var(--black191);
         }
         h6,
         .sub-heading {
@@ -861,8 +865,8 @@ justify-content: center;
         .connect-div {
           cursor: pointer;
           padding: 2rem;
-          border: 1px solid $grey-E5E;
-          background-color: $grey-F8F;
+          border: 1px solid var(--currenyConvertorBorder);
+          background-color: var(--primaryFilter);
           border-radius: 1.6rem;
           display: flex;
           align-items: center;
@@ -882,14 +886,14 @@ justify-content: center;
           &:hover {
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
               0px 1rem 1rem rgba(0, 0, 0, 0.04);
-            background-color: #ffffff;
+            background-color: var(--sameModeColor);
           }
         }
       }
       .exchange-tab {
         h3 {
           &:hover {
-            color: $black-191;
+            color: var(--black191);
           }
         }
       }
@@ -903,7 +907,7 @@ justify-content: center;
               label {
                 margin-bottom: 1.2rem;
                 font-size: 1.3rem;
-                color: $grey-313;
+                color: var(--grey313);
                 line-height: 16px;
               }
             }
@@ -913,14 +917,14 @@ justify-content: center;
               border: 0.1rem solid $grey-D4D;
             }
             .form-control:hover {
-              border: 0.1rem solid $black-191;
+              border: 0.1rem solid var(--black191);
             }
             .is-valid {
               box-shadow: none;
             }
             .done {
               box-shadow: 0 0 0.4rem $grey-D3D;
-              border: 0.1rem solid $black-191;
+              border: 0.1rem solid var(--black191);
             }
           }
         }
@@ -931,7 +935,7 @@ justify-content: center;
             padding: 1.6rem 2rem;
             border: 1px solid $grey-E5E;
             border-radius: 1.2rem;
-            background-color: $grey-F8F;
+            background-color: var(--primaryFilter);
             margin-right: 0.6rem;
             margin-left: 1rem;
           }
@@ -983,7 +987,7 @@ justify-content: center;
             border-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
               0px 1rem 1rem rgba(0, 0, 0, 0.04);
-            color: $black-191;
+            color: var(--black191);
             background-color: $secondary;
           }
         }
@@ -1039,7 +1043,7 @@ justify-content: center;
 
     .react-calendar__month-view {
       .react-calendar__month-view__days__day--weekend {
-        color: $black-191;
+        color: var(--black191);
       }
       .react-calendar__tile--now {
         background: inherit;
@@ -1057,7 +1061,7 @@ justify-content: center;
         }
       }
       .react-calendar__tile--active {
-        background-color: $black-191;
+        background-color: var(--black191);
         border-radius: 0.4rem;
         color: $secondary !important;
       }
@@ -1081,10 +1085,10 @@ justify-content: center;
         &:hover {
           background-color: $drop-button-hover;
           border-radius: 0.4rem;
-          color: $black-191 !important;
+          color: var(--black191) !important;
         }
         &:active {
-          background-color: $black-191;
+          background-color: var(--black191);
           border-radius: 0.4rem;
           color: $secondary !important;
         }

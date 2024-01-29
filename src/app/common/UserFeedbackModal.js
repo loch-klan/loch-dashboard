@@ -147,9 +147,8 @@ class UserFeedbackModal extends BaseReactComponent {
                           ) : null}
                           <div>
                             <h6
-                              className="inter-display-medium f-s-16"
+                              className="inter-display-medium f-s-16 primaryText"
                               style={{
-                                color: "#262626",
                                 width:
                                   this.state.questions[
                                     this.state.currentQuestion
@@ -218,13 +217,20 @@ class UserFeedbackModal extends BaseReactComponent {
                                         <div
                                           style={{
                                             cursor: "pointer",
-                                            color:
-                                              this.state.questions[
-                                                this.state.currentQuestion
-                                              ].value == item
-                                                ? "#19191A"
-                                                : "#96979A",
+                                            // color:
+                                            //   this.state.questions[
+                                            //     this.state.currentQuestion
+                                            //   ].value == item
+                                            //     ? "#19191A"
+                                            //     : "#96979A",
                                           }}
+                                          className={`feedbackQuestion ${
+                                            this.state.questions[
+                                              this.state.currentQuestion
+                                            ].value == item
+                                              ? "feedbackQuestionActive"
+                                              : ""
+                                          }`}
                                           onClick={() => {
                                             let questions =
                                               this.state.questions;
@@ -243,7 +249,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                   )}
                                 </div>
                               ) : (
-                                <div className="form-group">
+                                <div className="form-group input-noshadow-dark">
                                   <input
                                     className="form-control"
                                     type="text"
@@ -311,7 +317,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                     type="submit"
                                     style={{
                                       border: "none",
-                                      background: "#19191A",
+                                      background: "var(--black191)",
                                       opacity: this.state.questions[
                                         this.state.currentQuestion
                                       ].value
