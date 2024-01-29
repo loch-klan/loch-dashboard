@@ -246,7 +246,7 @@ class BarGraphSection extends Component {
     // console.log("bar digit", digit, Math.max(...data.datasets[0].data));
 
     const ScrollStyle = {
-      width: `${data && data.labels.length * 12.5}%`,
+      width: `${100}%`,
       minWidth: `${data && data.labels.length * 10}rem`,
     };
     const NormalStyle = {
@@ -721,7 +721,11 @@ class BarGraphSection extends Component {
               )}
               {/* Graph Section */}
               <div className={className} style={{ display: "flex" }}>
-                {options2 != undefined && isScroll && data.labels.length > 8 ? (
+                {options2 != undefined &&
+                isScroll &&
+                (this.props.isFromHome
+                  ? data.labels.length > 3
+                  : data.labels.length > 8) ? (
                   <div style={{ width: `${digit}rem` }}>
                     <Bar options={options2} data={data} />
                   </div>
@@ -731,7 +735,11 @@ class BarGraphSection extends Component {
 
                 <div
                   className={
-                    options2 != undefined && isScroll && data.labels.length > 8
+                    options2 != undefined &&
+                    isScroll &&
+                    (this.props.isFromHome
+                      ? data.labels.length > 3
+                      : data.labels.length > 8)
                       ? "ScrollArea"
                       : "ChartAreaWrapper"
                   }
@@ -739,7 +747,9 @@ class BarGraphSection extends Component {
                     width: `${
                       options2 != undefined &&
                       isScroll &&
-                      data.labels.length > 8
+                      (this.props.isFromHome
+                        ? data.labels.length > 3
+                        : data.labels.length > 8)
                         ? "calc(100 % - " + digit + "rem)"
                         : "100%"
                     }`,
@@ -764,7 +774,9 @@ class BarGraphSection extends Component {
                         this.props.newHomeSetup ? "chartAreaOldBar" : ""
                       }`}
                       style={
-                        data.labels.length > 8 && isScroll
+                        (this.props.isFromHome
+                          ? data.labels.length > 3
+                          : data.labels.length > 8) && isScroll
                           ? ScrollStyle
                           : NormalStyle
                       }
