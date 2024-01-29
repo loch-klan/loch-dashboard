@@ -2339,6 +2339,16 @@ export const WatchlistPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+export const NFTPage = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Page View: NFT";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
 
 // Page View: Onboarding
 export const OnboardingMobilePage = () => {
@@ -5058,6 +5068,21 @@ export const TimeSpentWatchlist = ({
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TimeSpentNFT = ({
+  session_id,
+  email_address,
+  time_spent,
+  isMobile,
+}) => {
+  const event_name = "NFT: time spent on nft page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
