@@ -1878,8 +1878,11 @@ form {
   background-position-y: 55%;
 }
 
-.watermarkOnTop{
+.watermarkOnTop {
   background: transparent;
+}
+.tableWatermarkOverlayCounterParty {
+  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
 }
 
 .transaction-table-section {
@@ -1921,7 +1924,6 @@ form {
   .ReactVirtualized__Table__row {
     border: none;
   }
-
 
   .ReactVirtualized__Table__headerRow {
     height: auto;
@@ -2647,7 +2649,7 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
     box-shadow: 0 0 0 30px white inset !important;
     -webkit-box-shadow: 0 0 0 30px white inset !important;

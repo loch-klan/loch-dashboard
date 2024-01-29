@@ -322,7 +322,7 @@ function Sidebar(props) {
   };
   const handleGoToProfile = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     props.history.push("/profile");
@@ -375,7 +375,7 @@ function Sidebar(props) {
   };
   const openSigninModal = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     setComingDirectly(false);
@@ -410,7 +410,7 @@ function Sidebar(props) {
   };
   const handleUserFeedbackModal = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     FeedbackSidebar({
@@ -625,7 +625,13 @@ function Sidebar(props) {
         ? props.defiState.totalDebt
         : 0;
 
-      return tempWallet + tempCredit - tempDebt;
+      let tempAns = tempWallet + tempCredit - tempDebt;
+      if (tempAns) {
+        tempAns = tempAns.toFixed(2);
+      } else {
+        tempAns = 0;
+      }
+      return tempAns;
     }
     return 0;
   };
@@ -708,7 +714,8 @@ function Sidebar(props) {
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -746,7 +753,8 @@ function Sidebar(props) {
                               to="/watchlist"
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -788,7 +796,8 @@ function Sidebar(props) {
                               to="/home-leaderboard"
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -825,7 +834,8 @@ function Sidebar(props) {
                               to="/profile"
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -920,7 +930,8 @@ function Sidebar(props) {
                               to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -951,7 +962,8 @@ function Sidebar(props) {
                               to="/watchlist"
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -984,7 +996,8 @@ function Sidebar(props) {
                               exact={true}
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {
@@ -1015,7 +1028,8 @@ function Sidebar(props) {
                               exact={true}
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (tempToken === "jsk") {
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
                                   return null;
                                 }
                                 if (!isWallet) {

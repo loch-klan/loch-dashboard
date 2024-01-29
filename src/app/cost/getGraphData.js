@@ -317,7 +317,7 @@ export const getGraphData = (apidata, parentCtx) => {
   return [data, options, options2];
 };
 
-export const getCounterGraphData = (arr, parentCtx) => {
+export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -430,7 +430,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display: isHome ? true : labels.length > 8 ? false : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,

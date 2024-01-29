@@ -22,7 +22,6 @@ import {
   SORT_BY_VALUE,
   START_INDEX,
 } from "../../utils/Constant";
-import { searchTransactionApi } from "../intelligence/Api";
 import { getYieldOpportunities } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import { toast } from "react-toastify";
@@ -50,6 +49,7 @@ import {
   CurrencyType,
   UpgradeTriggered,
   amountFormat,
+  compareTwoArrayOfObjects,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -295,7 +295,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
-    this.props.updateWalletListFlag("yieldOpportunities", true);
     let listOfAddresses = "";
     if (
       this.props.walletState &&
@@ -320,7 +319,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         listOfAddresses = JSON.stringify(tempWalletList);
       }
     }
-
+    let isDefault = true;
+    let originalCondition = [];
+    let originalSort = [{ key: SORT_BY_TVL, value: false }];
+    if (!compareTwoArrayOfObjects(originalCondition, this.state.condition)) {
+      isDefault = false;
+    }
+    if (!compareTwoArrayOfObjects(this.state.sort, originalSort)) {
+      isDefault = false;
+    }
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
@@ -329,8 +336,21 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
-      this.props.getYieldOpportunities(data, page);
+      this.props.updateWalletListFlag("yieldOpportunities", true);
+      this.props.getYieldOpportunities(data, page, this, isDefault);
     }
+  };
+  getAllYieldOppLocal = (apiResponseLocal) => {
+    this.setState({
+      yieldOpportunitiesList: apiResponseLocal.yield_pools
+        ? apiResponseLocal.yield_pools
+        : [],
+      totalPage: apiResponseLocal.total_count
+        ? Math.ceil(apiResponseLocal.total_count / API_LIMIT)
+        : 0,
+      tableLoading: false,
+      currentPage: apiResponseLocal.currentPage,
+    });
   };
   onPageChange = () => {
     this.setState({
@@ -382,7 +402,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState.yieldOpportunities) {
-      this.props.updateWalletListFlag("yieldOpportunities", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
@@ -952,6 +971,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
       },
     ];
+
     return (
       <>
         {/* topbar */}
@@ -1099,11 +1119,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
-                    page={
-                      this.props?.yieldOpportunitiesState?.currentPage
-                        ? this.props?.yieldOpportunitiesState?.currentPage
-                        : 0
-                    }
+                    page={this.state.currentPage ? this.state.currentPage : 0}
                     tableLoading={this.state.tableLoading}
                     onPageChange={this.onPageChange}
                     addWatermark
@@ -1133,7 +1149,6 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
 });
 const mapDispatchToProps = {
-  searchTransactionApi,
   getYieldOpportunities,
   getFilters,
   getAllCoins,

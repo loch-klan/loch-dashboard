@@ -128,7 +128,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
 import UpgradeModal from "../common/upgradeModal";
 import {
-  ResetAverageCostBasis,
   getAllCounterFeeApi,
   getAllFeeApi,
   getAvgCostBasis,
@@ -188,9 +187,9 @@ class Portfolio extends BaseReactComponent {
     this.state = {
       counterGraphDigit: 3,
       GraphDigit: 3,
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
-      shouldCallTransactionTableApi: true,
       shouldCallAssetsAvgCostBasisApi: true,
       // Should call block one
 
@@ -202,11 +201,10 @@ class Portfolio extends BaseReactComponent {
 
       // Should call block three
       shouldCallHistoricPerformanceApi: true,
-      shouldCallPriceGaugeApi: true,
       // Should call block three
 
       // Should call block four
-      shouldCallYieldOppApi: true,
+
       shouldCallInsightsApi: true,
       // Should call block four
 
@@ -218,7 +216,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphLoading: false,
       yieldOpportunitiesList: [],
       yieldOpportunitiesTotalCount: 0,
-      yieldOpportunitiesTableLoading: false,
+      yieldOpportunitiesTableLoading: true,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: 1,
@@ -426,7 +424,7 @@ class Portfolio extends BaseReactComponent {
   }
   changeBlockOneItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockOneSelectedItem: itemNum,
       });
@@ -434,7 +432,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockTwoItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockTwoSelectedItem: itemNum,
       });
@@ -442,7 +440,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockThreeItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockThreeSelectedItem: itemNum,
       });
@@ -450,7 +448,7 @@ class Portfolio extends BaseReactComponent {
   };
   changeBlockFourItem = (itemNum) => {
     let tempToken = getToken();
-    if (tempToken !== "jsk") {
+    if (tempToken && tempToken !== "jsk") {
       this.setState({
         blockFourSelectedItem: itemNum,
       });
@@ -743,6 +741,7 @@ class Portfolio extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.yieldOppSort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
+      this.props.updateWalletListFlag("yieldOpportunities", true);
       this.props.getYieldOpportunities(data, 0);
     }
   };
@@ -820,9 +819,13 @@ class Portfolio extends BaseReactComponent {
     ) {
       this.trimGasFees();
     }
-    if (this.props.yieldOpportunitiesState) {
+    if (
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue
+    ) {
       this.trimCounterpartyVolume();
     }
+
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -859,7 +862,6 @@ class Portfolio extends BaseReactComponent {
           tableLoading: false,
         });
       } else {
-        this.props.updateWalletListFlag("transactionHistory", true);
         this.setState({
           tableLoading: true,
         });
@@ -887,12 +889,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAssetProfitLoss(this, false, false, false);
       }
     }
-    if (this.state.blockThreeSelectedItem === 1) {
-      this.setState({
-        shouldCallPriceGaugeApi: false,
-      });
-      this.callPriceGaugeApi();
-    }
+    this.callPriceGaugeApi();
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
@@ -979,7 +976,6 @@ class Portfolio extends BaseReactComponent {
       this.endPageView();
     }
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
   }
   trimGasFees = () => {
     if (
@@ -1009,27 +1005,14 @@ class Portfolio extends BaseReactComponent {
   trimCounterpartyVolume = () => {
     if (
       this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue[0] &&
-      this.props.intelligenceState.counterPartyValue[0].labels
+      this.props.intelligenceState.counterPartyValue
     ) {
-      const tempHolder = [
-        {
-          labels:
-            this.props.intelligenceState.counterPartyValue[0].labels.length > 3
-              ? this.props.intelligenceState.counterPartyValue[0].labels.slice(
-                  0,
-                  3
-                )
-              : this.props.intelligenceState.counterPartyValue[0].labels,
-          datasets: this.props.intelligenceState.counterPartyValue[0].datasets
-            ? this.props.intelligenceState.counterPartyValue[0].datasets
-            : [],
-        },
-        { ...this.props.intelligenceState.counterPartyValue[1] },
+      const tempHolder = getCounterGraphData(
+        this.props.intelligenceState.counterPartyData.slice(0, 3),
+        this,
+        true
+      );
 
-        { ...this.props.intelligenceState.counterPartyValue[2] },
-      ];
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
       });
@@ -1117,56 +1100,43 @@ class Portfolio extends BaseReactComponent {
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
-      if (
-        this.state.blockThreeSelectedItem === 1 &&
-        this.state.shouldCallPriceGaugeApi
-      ) {
-        this.setState({
-          shouldCallPriceGaugeApi: false,
-        });
-        this.callPriceGaugeApi();
+      if (this.state.blockThreeSelectedItem === 1) {
+        if (
+          !this.state.yieldOpportunitiesList ||
+          !this.props.commonState.yieldOpportunities
+        ) {
+          this.callYieldOppApi();
+        } else {
+          this.setState({
+            yieldOpportunitiesTableLoading: false,
+          });
+        }
       }
 
-      if (
-        this.state.blockThreeSelectedItem === 2 &&
-        (!this.props.portfolioState?.assetValueDay ||
-          !this.props.commonState.asset_value)
-      ) {
-        this.props.updateWalletListFlag("asset_value", true);
-        this.setState({
-          shouldCallHistoricPerformanceApi: false,
-        });
-        this.getGraphData();
-      } else {
-        this.setState({
-          graphLoading: false,
-        });
+      if (this.state.blockThreeSelectedItem === 2) {
+        if (
+          !this.props.portfolioState?.assetValueDay ||
+          !this.props.commonState.asset_value
+        ) {
+          this.props.updateWalletListFlag("asset_value", true);
+        }
       }
     }
     // Block Four
     if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
-      if (
-        this.state.blockFourSelectedItem === 1 &&
-        (!this.props.intelligenceState.table ||
-          !this.props.commonState.transactionHistory)
-      ) {
-        this.props.updateWalletListFlag("transactionHistory", true);
-        this.setState({
-          shouldCallTransactionTableApi: false,
-        });
-        this.getTableData();
+      if (this.state.blockFourSelectedItem === 2) {
+        if (
+          !this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory
+        ) {
+          this.getTableData();
+        } else {
+          this.setState({
+            graphLoading: false,
+          });
+        }
       }
-      if (
-        this.state.blockFourSelectedItem === 2 &&
-        (!this.state.yieldOpportunitiesList ||
-          !this.props.commonState.yieldOpportunities)
-      ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
-        this.setState({
-          shouldCallYieldOppApi: false,
-        });
-        this.callYieldOppApi();
-      }
+
       if (
         this.state.blockFourSelectedItem === 3 &&
         (!this.state.updatedInsightList || !this.props.commonState.insight)
@@ -1258,11 +1228,9 @@ class Portfolio extends BaseReactComponent {
         shouldCallGraphFeesApi: true,
         shouldCallCounterPartyVolumeApi: true,
         shouldCallAssetsAvgCostBasisApi: true,
-        shouldCallTransactionTableApi: true,
-        shouldCallYieldOppApi: true,
+
         shouldCallInsightsApi: true,
         shouldCallHistoricPerformanceApi: true,
-        shouldCallPriceGaugeApi: true,
       });
 
       // if wallet address change
@@ -1349,19 +1317,16 @@ class Portfolio extends BaseReactComponent {
         this.props.updateWalletListFlag("defi", true);
       }
 
-      if (
-        this.state.blockFourSelectedItem === 1 &&
-        (!(
-          this.props.intelligenceState?.table &&
-          this.props.intelligenceState?.table.length > 0
-        ) ||
-          !this.props.commonState.transactionHistory)
-      ) {
-        this.props.updateWalletListFlag("transactionHistory", true);
-        this.setState({
-          shouldCallTransactionTableApi: false,
-        });
-        this.getTableData();
+      if (this.state.blockFourSelectedItem === 2) {
+        if (
+          !(
+            this.props.intelligenceState?.table &&
+            this.props.intelligenceState?.table.length > 0
+          ) ||
+          !this.props.commonState.transactionHistory
+        ) {
+          this.getTableData();
+        }
       }
 
       // BLOCK TWO
@@ -1419,11 +1384,12 @@ class Portfolio extends BaseReactComponent {
       }
 
       // BLOCK Three
-      if (this.state.blockThreeSelectedItem === 1) {
-        this.setState({
-          shouldCallPriceGaugeApi: false,
-        });
-        this.callPriceGaugeApi();
+      if (
+        this.state.blockThreeSelectedItem === 1 &&
+        (!this.props.yieldOpportunitiesState.yield_pools ||
+          !this.props.commonState.yieldOpportunities)
+      ) {
+        this.callYieldOppApi();
       }
       if (
         this.state.blockThreeSelectedItem === 2 &&
@@ -1438,18 +1404,10 @@ class Portfolio extends BaseReactComponent {
       }
 
       // BLOCK FOUR
-
-      if (
-        this.state.blockFourSelectedItem === 2 &&
-        (!this.props.yieldOpportunitiesState.yield_pools ||
-          !this.props.commonState.yieldOpportunities)
-      ) {
-        this.props.updateWalletListFlag("yieldOpportunities", true);
-        this.setState({
-          shouldCallYieldOppApi: false,
-        });
-        this.callYieldOppApi();
+      if (this.state.blockFourSelectedItem === 1) {
+        this.callPriceGaugeApi();
       }
+
       if (
         this.state.blockFourSelectedItem === 3 &&
         (!this.props.intelligenceState?.updatedInsightList ||
@@ -1686,11 +1644,15 @@ class Portfolio extends BaseReactComponent {
       },
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
     data.append("conditions", JSON.stringify(condition));
     data.append("limit", 10);
     data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.updateWalletListFlag("transactionHistory", true);
     this.props.searchTransactionApi(data, this);
   };
 
@@ -1952,7 +1914,6 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
       this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -3031,8 +2992,8 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    tempValueToday && tempValueToday !== "0"
-                      ? CurrencyType(false) + tempValueToday
+                    tempValueToday
+                      ? amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3049,7 +3010,8 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueThen
-                      ? CurrencyType(false) + tempValueThen
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -3229,7 +3191,11 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState?.Average_cost_basis
+      ? this.props.intelligenceState.Average_cost_basis.filter(
+          (e) => e.CurrentValue >= 1
+        )
+      : [];
     if (tableDataCostBasis.length < 6) {
       const tempTableDataCostBasis = [...tableDataCostBasis];
       // for (let i = tableDataCostBasis.length; i < 6; i++) {
@@ -3631,10 +3597,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.CurrentValue && rowData.CurrentValue !== 0
+                    rowData.CurrentValue
                       ? CurrencyType(false) +
-                        convertNtoNumber(rowData.CurrentValue)
-                      : "N/A"
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -3651,7 +3617,7 @@ class Portfolio extends BaseReactComponent {
                           numToCurrency(
                             rowData.CurrentValue.toFixed(2)
                           ).toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3702,10 +3668,14 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    rowData.GainAmount && rowData.GainAmount !== 0
+                    rowData.GainAmount
                       ? CurrencyType(false) +
-                        Math.abs(convertNtoNumber(rowData.GainAmount))
-                      : "N/A"
+                        amountFormat(
+                          Math.abs(rowData.GainAmount),
+                          "en-US",
+                          "USD"
+                        )
+                      : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
                 >
@@ -3728,7 +3698,7 @@ class Portfolio extends BaseReactComponent {
                       {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
-                        : "N/A"}
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -3843,7 +3813,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.AverageCostPrice
                       ? CurrencyType(false) +
                         convertNtoNumber(rowData.AverageCostPrice)
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -3852,7 +3822,7 @@ class Portfolio extends BaseReactComponent {
                         numToCurrency(
                           rowData.AverageCostPrice.toFixed(2)
                         ).toLocaleString("en-US")
-                      : "N/A"}
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3903,7 +3873,7 @@ class Portfolio extends BaseReactComponent {
                     rowData.CurrentPrice
                       ? CurrencyType(false) +
                         convertNtoNumber(rowData.CurrentPrice)
-                      : "N/A"
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <span className="inter-display-medium f-s-13 lh-16 grey-313">
@@ -3912,7 +3882,7 @@ class Portfolio extends BaseReactComponent {
                         numToCurrency(
                           rowData.CurrentPrice.toFixed(2)
                         ).toLocaleString("en-US")
-                      : "N/A"}
+                      : CurrencyType(false) + "0.00"}
                   </span>
                 </CustomOverlay>
               </div>
@@ -3962,13 +3932,13 @@ class Portfolio extends BaseReactComponent {
                   text={
                     rowData.Amount && rowData.Amount !== 0
                       ? convertNtoNumber(rowData.Amount)
-                      : "N/A"
+                      : "0"
                   }
                 >
                   <span>
                     {rowData.Amount
                       ? numToCurrency(rowData.Amount).toLocaleString("en-US")
-                      : "N/A"}
+                      : "0"}
                   </span>
                 </CustomOverlay>
               </span>
@@ -4009,10 +3979,10 @@ class Portfolio extends BaseReactComponent {
                   isInfo={true}
                   isText={true}
                   text={
-                    !rowData.CostBasis || rowData.CostBasis === 0
-                      ? "N/A"
-                      : CurrencyType(false) +
-                        convertNtoNumber(rowData.CostBasis)
+                    rowData.CostBasis
+                      ? CurrencyType(false) +
+                        amountFormat(rowData.CostBasis, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
                   }
                 >
                   <div className="cost-common">
@@ -4024,12 +3994,12 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     >
-                      {!rowData.CostBasis || rowData.CostBasis === 0
-                        ? "N/A"
-                        : CurrencyType(false) +
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
                           numToCurrency(
-                            rowData.CostBasis?.toFixed(2)
-                          ).toLocaleString("en-US")}
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
                 </CustomOverlay>
@@ -4403,7 +4373,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockTwoItem(1);
                             }}
                           >
-                            Realized Gains
+                            Flows
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4672,7 +4642,7 @@ class Portfolio extends BaseReactComponent {
                               this.changeBlockThreeItem(1);
                             }}
                           >
-                            Price gauge
+                            Yield opportunities
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -4680,7 +4650,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand when this token was bought and sold"
+                                "Yield bearing opportunties personalized for your portfolio"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -4733,25 +4703,58 @@ class Portfolio extends BaseReactComponent {
                         </div>
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
-                        <InflowOutflowPortfolioHome
-                          openChartPage={this.goToPriceGaugePage}
-                          hideExplainer
-                          // isHomepage
-                          showEth
-                          userWalletList={this.state.userWalletList}
-                          lochToken={this.state.lochToken}
-                          callChildPriceGaugeApi={
-                            this.state.callChildPriceGaugeApi
-                          }
-                        />
-                      ) : (
+                        <div>
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                            <TransactionTable
+                              message={"No yield opportunities found"}
+                              xAxisScrollable
+                              xAxisScrollableColumnWidth={4}
+                              noSubtitleBottomPadding
+                              disableOnLoading
+                              isMiniversion
+                              tableData={yieldOpportunitiesListTemp}
+                              showDataAtBottom
+                              columnList={YieldOppColumnData}
+                              headerHeight={60}
+                              isArrow={true}
+                              isLoading={
+                                this.state.yieldOpportunitiesTableLoading
+                              }
+                              fakeWatermark
+                            />
+                          </div>
+                          {!this.state.yieldOpportunitiesTableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToYieldOppPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {this.state.yieldOpportunitiesTotalCount &&
+                                this.state.yieldOpportunitiesTotalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10,
+                                      true
+                                    ).toLocaleString("en-US")}+ yield ${
+                                      this.state.yieldOpportunitiesTotalCount -
+                                        10 >
+                                      1
+                                        ? "opportunities"
+                                        : "opportunity"
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           chainLoader={this.state.chainLoader}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </Col>
                   <Col md={6}>
@@ -4775,6 +4778,40 @@ class Portfolio extends BaseReactComponent {
                             }`}
                             onClick={() => {
                               this.changeBlockFourItem(1);
+                            }}
+                          >
+                            Price gauge
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand when this token was bought and sold"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "14px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockFourSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockFourItem(2);
                             }}
                           >
                             Transactions
@@ -4801,40 +4838,7 @@ class Portfolio extends BaseReactComponent {
                               />
                             </CustomOverlay>
                           </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                              this.state.blockFourSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockFourItem(2);
-                            }}
-                          >
-                            Yield opportunities
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Yield bearing opportunties personalized for your portfolio"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "14px",
-                                }}
-                              />
-                            </CustomOverlay>
-                          </div>
+
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
                               this.state.blockFourSelectedItem === 3
@@ -4871,6 +4875,18 @@ class Portfolio extends BaseReactComponent {
                       </div>
 
                       {this.state.blockFourSelectedItem === 1 ? (
+                        <InflowOutflowPortfolioHome
+                          openChartPage={this.goToPriceGaugePage}
+                          hideExplainer
+                          // isHomepage
+                          showEth
+                          userWalletList={this.state.userWalletList}
+                          lochToken={this.state.lochToken}
+                          callChildPriceGaugeApi={
+                            this.state.callChildPriceGaugeApi
+                          }
+                        />
+                      ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
                           <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
@@ -4901,52 +4917,6 @@ class Portfolio extends BaseReactComponent {
                                       true
                                     ).toLocaleString("en-US")}+ transaction${
                                       totalCount - 10 > 1 ? "s" : ""
-                                    }`
-                                  : "Click here to see more"}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : this.state.blockFourSelectedItem === 2 ? (
-                        <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
-                            <TransactionTable
-                              message={"No yield opportunities found"}
-                              xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
-                              noSubtitleBottomPadding
-                              disableOnLoading
-                              isMiniversion
-                              tableData={yieldOpportunitiesListTemp}
-                              showDataAtBottom
-                              columnList={YieldOppColumnData}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={
-                                this.state.yieldOpportunitiesTableLoading
-                              }
-                              // addWatermark
-                              fakeWatermark
-                            />
-                          </div>
-                          {!this.state.yieldOpportunitiesTableLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
-                              <div
-                                onClick={this.goToYieldOppPage}
-                                className="bottomExtraInfoText"
-                              >
-                                {this.state.yieldOpportunitiesTotalCount &&
-                                this.state.yieldOpportunitiesTotalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10,
-                                      true
-                                    ).toLocaleString("en-US")}+ yield ${
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10 >
-                                      1
-                                        ? "opportunities"
-                                        : "opportunity"
                                     }`
                                   : "Click here to see more"}
                               </div>
@@ -5054,7 +5024,6 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   // average cost
-  ResetAverageCostBasis,
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,

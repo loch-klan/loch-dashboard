@@ -259,7 +259,9 @@ class BarGraphSection extends Component {
       <div
         className={`bar-graph-section ${
           this.props.floatingWatermark && !this.props.isLoading
-            ? "tableWatermarkOverlay"
+            ? this.props.isCounterPartyGasFeesPage
+              ? "tableWatermarkOverlayCounterParty"
+              : "tableWatermarkOverlay"
             : ""
         } ${marginBottom ? marginBottom : ""}`}
         style={
@@ -535,6 +537,7 @@ class BarGraphSection extends Component {
                     >
                       <CustomDropdown
                         filtername="All chains selected"
+                        selectedTokens={this.props.selectedActiveBadge}
                         options={coinsList}
                         action={null}
                         handleClick={this.handleFunction}

@@ -2,7 +2,12 @@ import { postLoginInstance } from "../../utils";
 import { API_LIMIT } from "../../utils/Constant";
 import { YIELD_OPPORTUNITIES } from "./ActionTypes";
 
-export const getYieldOpportunities = (data, page = 0) => {
+export const getYieldOpportunities = (
+  data,
+  page = 0,
+  ctx,
+  isDefault = true
+) => {
   return function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-yield-pools", data)
@@ -22,10 +27,15 @@ export const getYieldOpportunities = (data, page = 0) => {
               totalPage: totalPage,
               currentPage: page,
             };
-            dispatch({
-              type: YIELD_OPPORTUNITIES,
-              payload: sendData,
-            });
+            if (page === 0 && isDefault) {
+              dispatch({
+                type: YIELD_OPPORTUNITIES,
+                payload: sendData,
+              });
+            }
+            if (ctx.getAllYieldOppLocal) {
+              ctx.getAllYieldOppLocal(sendData);
+            }
           }
         } else {
         }
