@@ -410,7 +410,10 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.props.commonState?.mobilePortfolioPage) {
+      this.props.updateWalletListFlag("mobilePortfolioPage", true);
+      this.callApi(page);
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -438,8 +441,6 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
-
-      this.callApiTransHistory(page);
     }
 
     if (
@@ -575,23 +576,24 @@ class PortfolioMobile extends BaseReactComponent {
         tempCond.push(tempEle);
       }
     });
+
+    this.setState({ tableLoading: true });
     const arr = window.sessionStorage.getItem("addWallet")
       ? JSON.parse(window.sessionStorage.getItem("addWallet"))
       : [];
-    this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
-    });
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
-    tempCond = [
-      ...tempCond,
+    let condition = [
       {
         key: SEARCH_BY_WALLET_ADDRESS_IN,
         value: address,
       },
+      { key: SEARCH_BY_NOT_DUST, value: true },
     ];
-    this.setState({ tableLoading: true });
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(tempCond));
@@ -2991,7 +2993,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -3041,7 +3043,7 @@ class PortfolioMobile extends BaseReactComponent {
                   isArrow={true}
                   isLoading={this.props.AvgCostLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                   yAxisScrollable
@@ -3209,7 +3211,7 @@ class PortfolioMobile extends BaseReactComponent {
                   isArrow={true}
                   isLoading={this.state.tableLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                 />

@@ -193,6 +193,11 @@ class GasFeesPage extends Component {
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
       });
     }
+    this.props.updateFeeGraph(
+      this.props.intelligenceState.GraphfeeData,
+      getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+      this
+    );
     if (this.props.intelligenceState.GraphfeeData) {
       this.setState({
         graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
@@ -591,6 +596,7 @@ class GasFeesPage extends Component {
                 }
                 chainSearchIsUsed={this.feesChainSearchIsUsed}
                 oldBar
+                isCounterPartyGasFeesPage
                 floatingWatermark
                 // height={420}
                 // width={824}

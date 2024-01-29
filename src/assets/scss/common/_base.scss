@@ -1889,6 +1889,9 @@ form {
 .watermarkOnTop {
   background: transparent;
 }
+.tableWatermarkOverlayCounterParty {
+  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
+}
 .tableWatermark {
   background: url(../../images/graph-logo.svg) no-repeat center center;
   background-size: 104px 39px;
@@ -2806,4 +2809,16 @@ input {
       filter: var(--invertColor);
     }
   }
+}
+textarea:focus,
+input:focus {
+  outline: none;
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }

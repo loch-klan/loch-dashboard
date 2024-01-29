@@ -4703,7 +4703,7 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div className="newHomeTableContainer tableWatermarkOverlay">
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
@@ -4719,7 +4719,7 @@ class Portfolio extends BaseReactComponent {
                               isLoading={
                                 this.state.yieldOpportunitiesTableLoading
                               }
-                              addWatermark
+                              fakeWatermark
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (

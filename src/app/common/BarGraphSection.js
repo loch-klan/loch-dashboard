@@ -291,7 +291,9 @@ class BarGraphSection extends Component {
       <div
         className={`bar-graph-section ${
           this.props.floatingWatermark && !this.props.isLoading
-            ? "tableWatermarkOverlay"
+            ? this.props.isCounterPartyGasFeesPage
+              ? "tableWatermarkOverlayCounterParty"
+              : "tableWatermarkOverlay"
             : ""
         } ${marginBottom ? marginBottom : ""}`}
         style={
