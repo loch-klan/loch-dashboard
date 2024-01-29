@@ -479,7 +479,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function (value, index, ticks) {
-            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            return this.getLabelForValue(value)?.substr(0, 4) || "Other";
           },
         },
         grid: {
