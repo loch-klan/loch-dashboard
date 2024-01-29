@@ -479,12 +479,12 @@
                 display: flex;
                 align-items: center;
                 padding: 1rem;
-                border: 0.1rem solid #e5e5e6;
+                border: 0.1rem solid var(--borderwhiteDarkLight);
                 border-radius: 1rem;
                 transition-duration: 300ms;
                 cursor: pointer;
                 &:hover {
-                  border-color: #19191a;
+                  border-color: var(--black191);
                 }
                 .trendingAddressesBlockItemWalletContainer {
                   margin-right: 0.5rem;
@@ -1249,7 +1249,7 @@
       }
     }
     .mobileSmartMoneyBlock {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       margin-bottom: 1.5rem;
       border-radius: 1.2rem;
       box-shadow: 0 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -1272,7 +1272,7 @@
             margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
-            color: #313233;
+            color: var(--grey313);
             margin-right: 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
@@ -1288,13 +1288,13 @@
         .msmbHeaderRight {
           margin-left: 2rem;
           .msmbHeaderNetWorth {
-            background-color: hsla(240, 2%, 90%, 0.5);
+            background-color: var(--greyCardBackgroud);
             border-radius: 0.4rem;
             padding: 0.6rem;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 13px;
-            color: #313233;
+            color: var(--grey313);
           }
         }
       }
@@ -1313,7 +1313,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            color: #96979a;
+            color: var(--sidebarBottomOptions);
             font-size: 13px;
           }
           .msmbBIAmount {
@@ -1436,12 +1436,12 @@
           align-items: center;
           padding: 12px;
           gap: 12px;
-          border: 0.1rem solid #e5e5e6;
+          border: 0.1rem solid var(--borderwhiteDarkLight);
           border-radius: 1rem;
           transition-duration: 300ms;
           cursor: pointer;
           &:hover {
-            border-color: #19191a;
+            border-color: var(--black191);
           }
           .trendingAddressesBlockItemWalletContainer {
             margin-right: 0.5rem;
@@ -1715,10 +1715,10 @@
         &:hover {
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
             .new-homepage__body-search-copy-icon {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
           }
         }
@@ -1763,6 +1763,9 @@
         background: var(--cardBackgroud);
         box-shadow: 0px 6.31px 6.31px -3.155px rgba(24, 39, 75, 0.08),
           0px 3.155px 4.732px -3.155px rgba(24, 39, 75, 0.12);
+          .dropdown-menu{
+            background: var(--cardBackgroud);
+          }
       }
 
       .new-homepage__body-content-mobile {
@@ -1788,7 +1791,11 @@
         font-weight: 500;
         line-height: 120%;
         gap: 8px;
-        color: #19191a;
+        color: var(--black191);
+        img{
+          filter: var(--invertColor);
+        
+        }
       }
       .new-homepage__body-content-table-header_explainer {
         padding-top: 0px;
@@ -1827,7 +1834,7 @@
           .newWelcomeAddedAddressesBlockDelContainer {
             width: 4.5rem;
             margin-right: 1.5rem;
-            background-color: white;
+            background-color: var(--cardBackgroud);
             border-radius: 12px;
             height: 4.5rem;
             display: flex;
@@ -1892,7 +1899,8 @@
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: #fff;
+          background-color: var(--cardBackgroud);
+          border: 1px solid var(--borderwhiteDarkLight);
           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
             0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }

@@ -25,7 +25,7 @@
         margin: 0;
 
         .modal-content {
-          border-color: white;
+          border-color: var(--sidebarActivePageColor);
           transition-duration: 300ms;
           &:active {
             border-color: rgba(0, 0, 0, 0.2);
@@ -49,7 +49,7 @@
                 cursor: pointer;
                 transition-duration: 300ms;
                 &:hover {
-                  color: #0d0d0d;
+                  color: var(--primaryTextColor);
                 }
               }
             }
@@ -872,7 +872,7 @@
           align-items: center;
           justify-content: center;
           border-radius: 1rem;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           border: 1.3px $white-E5E solid;
           cursor: pointer;
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -881,7 +881,8 @@
           border-color: transparent;
           &:hover {
             box-shadow: none;
-            background-color: #0d0d0d;
+            background-color: #181818;
+            border-color: var(--whiteTransparentBlackE5e5e6);
             color: $black-191;
             .sideBarFooterSignInIconContainer {
               // background-color: white;
@@ -912,17 +913,23 @@
         padding-top: 1rem;
         .sideBarFooterSignInIconContainerClosedForTwitter {
           cursor: pointer;
-          background-color: white;
+          background-color: var(--cardBackgroud);
           border: 1.3px $white-E5E solid;
+          .sideBarFooterSignInIconForTwitter {
+            filter: var(--invertColor);
+          }
           &:hover {
-            background-color: $grey-F2F;
+            background-color:var(--primaryFilter);
             color: white;
             .sideBarFooterSignInIconContainerForTwitter {
               background-color: transparent;
             }
             .sideBarFooterSignInIconForTwitter {
-              // filter: invert(100);
+              filter: var(--invertColor);
             }
+            // .sideBarFooterSignInIconForTwitter {
+            //   filter: var(--hoverBrightnessValueInvert);
+            // }
           }
         }
       }
@@ -937,7 +944,7 @@
         justify-content: center;
         margin-bottom: 2rem;
         border-radius: 0.8rem;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
           0px 1px 1px rgba(0, 0, 0, 0.04);
@@ -961,7 +968,7 @@
         }
 
         .sideBarFooterSignInIconContainer {
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           margin-right: 0.5rem;
           border: 0.1rem solid $white-E5E;
           min-width: 2.5rem;

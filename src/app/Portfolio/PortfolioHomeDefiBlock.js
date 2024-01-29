@@ -514,14 +514,14 @@ class PortfolioHomeDefiBlock extends Component {
                               <Row key={`carItem-${i}`} className="table-head">
                                 <Col md={3}>
                                   <div className="header-col">
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Asset
                                     </span>
                                   </div>
                                 </Col>
                                 <Col md={3}>
                                   <div className="header-col">
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Type
                                     </span>
                                   </div>
@@ -533,7 +533,7 @@ class PortfolioHomeDefiBlock extends Component {
                                     }}
                                     className="header-col"
                                   >
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Balance
                                     </span>
                                   </div>
@@ -545,7 +545,7 @@ class PortfolioHomeDefiBlock extends Component {
                                     }}
                                     className="header-col"
                                   >
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       USD Value
                                     </span>
                                   </div>
@@ -737,7 +737,7 @@ class PortfolioHomeDefiBlock extends Component {
               {this.state.totalDefiPositions > 3 ? (
                 <div className="inter-display-medium bottomExtraInfo">
                   <div
-                    className="bottomExtraInfoText"
+                    className="bottomExtraInfoText secondaryDarkText"
                     onClick={this.goToDefiPage}
                   >
                     Click here to see{" "}

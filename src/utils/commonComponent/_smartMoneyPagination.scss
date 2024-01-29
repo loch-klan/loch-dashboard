@@ -31,7 +31,7 @@
       cursor: default;
       filter: opacity(0.5);
       &:hover {
-        filter: brightness(1);
+        filter: brightness(0) !important;
       }
       .smartMoneyPaginationArrow {
         height: 1rem;
@@ -243,7 +243,7 @@
         cursor: default;
         filter: opacity(0.5);
         &:hover {
-          filter: brightness(1);
+          filter:opacity(0.5);
         }
         .smartMoneyPaginationArrow {
           height: 1rem;

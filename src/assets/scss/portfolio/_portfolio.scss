@@ -317,7 +317,7 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           display: flex;
           align-items: center;
           .dotDotText {
@@ -399,17 +399,17 @@
           cursor: default;
           &:hover {
             background: $black-191;
-            border: 1px solid $black-191;
-            color: var(--sameModeColor);
+          border: 1px solid var(--topbarAdressAddBorder);
+          color: $secondary;
           }
         }
         .topbar-btn-light-disabled {
           opacity: 0.5;
           cursor: default;
           &:hover {
-            background: rgba(229, 229, 230, 0.5);
-            border: 1px solid #f2f2f3;
-            color: $black-191;
+            background-color: var(--primaryFilter);
+            border: 0.1rem solid var(--primaryFilter);
+            color: var(--primaryTextColor);
           }
         }
         .topbar-btn-white-with-border {
@@ -1415,7 +1415,7 @@
         display: flex;
         align-items: center;
         font-size: 13px;
-        color: #4f4f4f;
+        color: var(--secondaryDarkTextColor);
         font-weight: 500;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {

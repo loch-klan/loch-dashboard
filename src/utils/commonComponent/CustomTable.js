@@ -273,6 +273,7 @@ class CustomTable extends BaseReactComponent {
                                 className={item.className}
                                 label={item.labelName}
                                 dataKey={item.dataKey}
+                                style={item.style}
                                 cellRenderer={({ rowData, rowIndex }) => {
                                   return item.cell(
                                     rowData,

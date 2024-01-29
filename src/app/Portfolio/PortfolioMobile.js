@@ -1262,7 +1262,7 @@ class PortfolioMobile extends BaseReactComponent {
               onClick={() => {
                 this.toggleAgeTimestamp();
               }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
+              className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
               style={{
                 textDecoration: "underline",
               }}
@@ -1314,7 +1314,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1552,7 +1552,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1788,7 +1788,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1836,7 +1836,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1880,7 +1880,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -1971,7 +1971,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -2020,7 +2020,10 @@ class PortfolioMobile extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
                 src={sortByIcon}
@@ -2062,7 +2065,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -2137,7 +2140,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Asset"
             // onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
           </div>
@@ -2184,7 +2187,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Average Cost Price"
             // onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
           </div>
@@ -2231,7 +2234,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Price"
             // onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
           </div>
@@ -2278,7 +2281,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Amount"
             // onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 gsecondaryDarkText">
               Amount
             </span>
           </div>
@@ -2321,7 +2324,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Cost Basis"
             // onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
           </div>
@@ -2402,7 +2405,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Value"
             // onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
           </div>
@@ -2483,7 +2486,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gainamount"
             // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
           </div>
@@ -2594,7 +2597,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
           </div>
@@ -2704,7 +2707,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
           </div>
@@ -2806,7 +2809,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch">
+            <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{

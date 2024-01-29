@@ -2224,7 +2224,7 @@ class Portfolio extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -2280,7 +2280,7 @@ class Portfolio extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -2566,7 +2566,7 @@ class Portfolio extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -2848,7 +2848,7 @@ class Portfolio extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -2897,7 +2897,7 @@ class Portfolio extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -2942,7 +2942,7 @@ class Portfolio extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -3035,7 +3035,7 @@ class Portfolio extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -3082,7 +3082,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="network">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Network
             </span>
             {/* <Image
@@ -3128,7 +3128,7 @@ class Portfolio extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -3230,7 +3230,7 @@ class Portfolio extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleYieldOppTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -3268,7 +3268,7 @@ class Portfolio extends BaseReactComponent {
             id="project"
             onClick={() => this.handleYieldOppTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Project
             </span>
             <Image
@@ -3304,7 +3304,7 @@ class Portfolio extends BaseReactComponent {
             id="tvl"
             onClick={() => this.handleYieldOppTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               TVL
             </span>
             <Image
@@ -3363,7 +3363,7 @@ class Portfolio extends BaseReactComponent {
             id="apy"
             onClick={() => this.handleYieldOppTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               APY
             </span>
             <Image
@@ -3411,7 +3411,7 @@ class Portfolio extends BaseReactComponent {
             id="usdValue"
             onClick={() => this.handleYieldOppTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Value
             </span>
             <Image
@@ -3470,7 +3470,7 @@ class Portfolio extends BaseReactComponent {
             id="pool"
             onClick={() => this.handleYieldOppTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Pool
             </span>
             <Image
@@ -3508,7 +3508,7 @@ class Portfolio extends BaseReactComponent {
             id="Asset"
             onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -3573,7 +3573,7 @@ class Portfolio extends BaseReactComponent {
             id="Current Value"
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
             <Image
@@ -3635,7 +3635,7 @@ class Portfolio extends BaseReactComponent {
             id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
             <Image
@@ -3716,7 +3716,7 @@ class Portfolio extends BaseReactComponent {
             id="Portfolio perc"
             onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
             <Image
@@ -3779,7 +3779,7 @@ class Portfolio extends BaseReactComponent {
             id="Average Cost Price"
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
             <Image
@@ -3839,7 +3839,7 @@ class Portfolio extends BaseReactComponent {
             id="Current Price"
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
             <Image
@@ -3899,7 +3899,7 @@ class Portfolio extends BaseReactComponent {
             id="Amount"
             onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -3955,7 +3955,7 @@ class Portfolio extends BaseReactComponent {
             id="Cost Basis"
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
             <Image
@@ -4018,7 +4018,7 @@ class Portfolio extends BaseReactComponent {
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
             <Image
@@ -4319,7 +4319,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToAssetsPage}
-                                className="bottomExtraInfoText"
+                                className="bottomExtraInfoText secondaryDarkText"
                               >
                                 {this.props.intelligenceState
                                   ?.Average_cost_basis &&
@@ -4906,7 +4906,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToTransactionHistoryPage}
-                                className="bottomExtraInfoText"
+                                className="bottomExtraInfoText secondaryDarkText"
                               >
                                 {totalCount && totalCount > 10
                                   ? `Click here to see ${numToCurrency(

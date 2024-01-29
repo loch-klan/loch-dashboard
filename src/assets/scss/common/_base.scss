@@ -663,6 +663,9 @@ body {
 }
 
 .Toastify__toast {
+  background-color: var(--cardBackgroud);
+  border: 1px solid var(--sidebarActivePageColor);
+  color: var(--black191);
   padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
@@ -670,7 +673,7 @@ body {
     gap: 10px;
     margin: 0;
     padding: 0;
-    @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
+    @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
 
     .Toastify__toast-icon {
       margin-right: 0;
@@ -1259,7 +1262,7 @@ form {
         position: -webkit-sticky; /* Safari */
         position: sticky;
         top: 0;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         z-index: 100;
         border-top-left-radius: 1.2rem;
         border-top-right-radius: 1.2rem;
@@ -1731,13 +1734,16 @@ form {
   }
 
   .button-tooltip {
-    background-color: $secondary;
-    color: $grey-313;
+    background-color: var(--cardBackgroud);
+    color: var(--grey313);
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    img {
+      filter: var(--invertColor);
+    }
 
     // padding: 1.2rem 1.6rem;
     // gap: 1.2rem;
@@ -1745,7 +1751,7 @@ form {
     span {
       display: flex;
       align-items: center;
-      color: $grey-313;
+      color: var(--grey313);
       text-align: left;
       margin-left: 1.2rem;
     }
@@ -1890,12 +1896,8 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
-}
-.tableWatermark {
-  background: url(../../images/graph-logo.svg) no-repeat center center;
-  background-size: 104px 39px;
-  background-position-y: 48%;
+  background: url(../../images/graph-logo.svg) no-repeat center center,
+    var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {
@@ -2807,6 +2809,25 @@ input {
   .api-modal-header {
     img {
       filter: var(--invertColor);
+    }
+  }
+}
+.top-l-r-3 {
+  border-top-left-radius: 12px;
+}
+.bottom-l-r-3 {
+}
+
+.transaction-history-table-yield-opportunity {
+  .ReactVirtualized__Grid__innerScrollContainer {
+    .ReactVirtualized__Table__row {
+      &:nth-last-child(1) {
+        .ReactVirtualized__Table__rowColumn {
+          &:nth-child(1) {
+            border-bottom-left-radius: 12px;
+          }
+        }
+      }
     }
   }
 }

@@ -1489,7 +1489,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                     />
                     <div
                       style={{
-                        color: "#19191A",
+                        color: "var(--black191)",
                         fontSize: "16px",
                         fontWeight: "500",
                       }}

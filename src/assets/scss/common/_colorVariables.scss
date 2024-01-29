@@ -85,10 +85,19 @@
   //borders
   --dropdownContentBorderColor: #e1e1e1;
   --whiteTransparentBlackE5e5e6: transparent;
+  --borderwhiteDarkLight:#e5e5e6;
+  --popupCenterIconsBorder:transparent;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfadea7;
   --lochPointsBadgeWarningBg: #fcebd780;
+
+
+  //yield opportunities
+  --yieldOppYourPortfolioContainerBg: #e5e5e640;
+
+  //watermarkOpacity
+  --watermarkOpacity: 1;
 }
 [data-theme="dark"] {
   // UPDATED
@@ -176,8 +185,16 @@
   //Borders
   --dropdownContentBorderColor: #313233;
   --whiteTransparentBlackE5e5e6: #e5e5e6;
+  --borderwhiteDarkLight: #2a2a2a;
+  --popupCenterIconsBorder:#2a2a2a;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;
   --lochPointsBadgeWarningBg: #fcebd730;
+
+  //yield opportunities
+  --yieldOppYourPortfolioContainerBg: #e5e5e610;
+
+  //watermarkOpacity
+  --watermarkOpacity: 0.1;
 }
