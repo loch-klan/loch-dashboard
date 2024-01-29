@@ -103,6 +103,9 @@ class EditWalletModal extends BaseReactComponent {
   };
 
   handleDelete = () => {
+    if (this.props.onHide) {
+      this.props.onHide(true);
+    }
     const walletType = this.state.walletNameList.find(
       (e) => e.id === this.state.walletName
     );
@@ -275,6 +278,7 @@ class EditWalletModal extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   updateWalletApi,

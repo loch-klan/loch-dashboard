@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
 import {
   CloseIconBlack,
@@ -8,6 +7,7 @@ import {
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
 import OTPInputs from "./OTPInputs";
+import "./_newAuth.scss";
 
 const Verify = ({
   show,

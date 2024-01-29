@@ -242,6 +242,16 @@ class CounterPartyVolume extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
+      if (this.props.intelligenceState.counterPartyData) {
+        this.props.updateCounterParty(
+          this.props.intelligenceState.counterPartyData,
+          getCounterGraphData(
+            this.props.intelligenceState.counterPartyData,
+            this
+          ),
+          this
+        );
+      }
       this.setState({
         counterGraphLoading: false,
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
@@ -594,6 +604,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >
