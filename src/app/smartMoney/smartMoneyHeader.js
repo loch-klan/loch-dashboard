@@ -173,7 +173,7 @@ export default function SmartMoneyHeader(props) {
             }}
             className="rightSmartMoneyContainerSubHeading inter-display-medium"
           >
-            The lazy analyst’s guide to alpha
+            Sorted by net worth, pnl, and flows
           </p>
         </div>
 

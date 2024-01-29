@@ -29,7 +29,7 @@ export default function SmartMoneyMobileHeader(props) {
             }}
             className="smheaderTextSubHeading inter-display-medium"
           >
-            The lazy analyst’s guide to alpha
+            Sorted by net worth, pnl, and flows
           </div>
         </div>
       </div>

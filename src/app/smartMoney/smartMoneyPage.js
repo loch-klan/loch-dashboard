@@ -774,8 +774,8 @@ class SmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
-              Realized PnL (1yr)
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Flows (1 year)
             </span>
           </div>
         ),

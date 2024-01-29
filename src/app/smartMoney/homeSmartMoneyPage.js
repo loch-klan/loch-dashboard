@@ -976,8 +976,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
-              Realized PnL (1yr)
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Flows (1 year)
             </span>
           </div>
         ),
@@ -1329,7 +1329,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               >
                 <PageHeader
                   title="Loch’s Leaderboard"
-                  subTitle="The lazy analyst’s guide to alpha"
+                  subTitle="Sorted by net worth, pnl, and flows"
                   currentPage={"home-leaderboard"}
                   updateTimer={this.updateTimer}
                 />

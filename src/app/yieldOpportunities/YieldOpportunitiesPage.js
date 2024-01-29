@@ -336,6 +336,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     data.append("wallet_addresses", listOfAddresses);
     if (listOfAddresses) {
+      this.props.updateWalletListFlag("yieldOpportunities", true);
       this.props.getYieldOpportunities(data, page, this, isDefault);
     }
   };
@@ -401,7 +402,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState.yieldOpportunities) {
-      this.props.updateWalletListFlag("yieldOpportunities", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));

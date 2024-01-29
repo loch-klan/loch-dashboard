@@ -108,22 +108,22 @@ export const getGraphData = (apidata, parentCtx) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,
@@ -403,22 +403,22 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         },
       },
     },
-    watermark: {
-      image: GraphLogoImage,
+    // watermark: {
+    //   image: GraphLogoImage,
 
-      x: 0,
-      y: 30,
+    //   x: 0,
+    //   y: 30,
 
-      width: 104,
-      height: 39,
+    //   width: 104,
+    //   height: 39,
 
-      opacity: 1,
+    //   opacity: 1,
 
-      alignX: "middle",
-      alignY: "middle",
+    //   alignX: "middle",
+    //   alignY: "middle",
 
-      position: "back",
-    },
+    //   position: "back",
+    // },
     scales: {
       y: {
         //   min: min,
@@ -430,7 +430,13 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: isHome ? true : labels.length > 8 ? false : true,
+          display: isHome
+            ? labels.length > 3
+              ? false
+              : true
+            : labels.length > 8
+            ? false
+            : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,
@@ -473,7 +479,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function (value, index, ticks) {
-            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
+            return this.getLabelForValue(value)?.substr(0, 4) || "Other";
           },
         },
         grid: {
