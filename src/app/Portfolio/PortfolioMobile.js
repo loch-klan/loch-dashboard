@@ -356,7 +356,10 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.props.commonState?.mobilePortfolioPage) {
+      this.props.updateWalletListFlag("mobilePortfolioPage", true);
+      this.callApi(page);
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -384,8 +387,6 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
-
-      this.callApi(page);
     }
 
     if (
@@ -512,17 +513,29 @@ class PortfolioMobile extends BaseReactComponent {
   };
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : [];
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    let condition = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+      { key: SEARCH_BY_NOT_DUST, value: true },
+    ];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("conditions", JSON.stringify(condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
-    if (
-      this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN)
-        ?.value
-    ) {
-      this.props.searchTransactionApi(data, this, page);
-    }
+
+    this.props.searchTransactionApi(data, this, page);
   };
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
@@ -2780,7 +2793,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -2828,9 +2841,9 @@ class PortfolioMobile extends BaseReactComponent {
                   columnList={columnData}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.props.AvgCostLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                   yAxisScrollable
@@ -2887,7 +2900,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll">
+              <div className="section-table section-table-mobile-scroll tableWatermarkOverlayCounterParty">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -2909,27 +2922,29 @@ class PortfolioMobile extends BaseReactComponent {
                   columnList={columnListTransaction}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.state.tableLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   // yAxisScrollable
                 />
               </div>
-              <div style={{ marginTop: "2rem" }}>
-                {totalPage > 1 && (
-                  <SmartMoneyPagination
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage + 1}
-                    pageCount={totalPage}
-                    pageLimit={API_LIMIT}
-                    onPageChange={(e) => {}}
-                    style={{ padding: "0px" }}
-                    isMobile
-                  />
-                )}
-              </div>
+              {!this.state.tableLoading ? (
+                <div style={{ marginTop: "2rem" }}>
+                  {totalPage > 1 && (
+                    <SmartMoneyPagination
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage + 1}
+                      pageCount={totalPage}
+                      pageLimit={API_LIMIT}
+                      onPageChange={(e) => {}}
+                      style={{ padding: "0px" }}
+                      isMobile
+                    />
+                  )}
+                </div>
+              ) : null}
 
               <div className="mobileFooterContainer">
                 <div>
