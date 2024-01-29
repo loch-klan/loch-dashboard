@@ -126,14 +126,14 @@ class UserFeedbackModal extends BaseReactComponent {
                               }}
                             >
                               <div
-                                className={`closebtn closebtnLight ${
+                                className={`closebtn closebtnLight userFeedbackPrevBtn ${
                                   this.state.email ? "active" : ""
                                 }`}
                                 onClick={this.goToPrevQuestion}
                                 type="submit"
                                 style={{
                                   border: "none",
-                                  backgroundColor: "white",
+                                  backgroundColor: "var(--cardBackgroud)",
                                   opacity: "1",
                                   cursor: "pointer",
                                 }}

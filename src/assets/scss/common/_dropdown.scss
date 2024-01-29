@@ -170,7 +170,7 @@
         position: absolute;
         top: 52%;
         transform: translateY(-50%);
-        filter: var(--invertColor);
+        filter: var(--hoverBrightnessValueInvert);
         left: 1rem;
       }
     }
@@ -340,8 +340,8 @@
     width: 100%;
     min-width: 130px;
     z-index: 1;
-    background-color: #ffffff;
-    border: 1px solid #e1e1e1;
+    background-color: var(--sameModeColor);
+    border: 1px solid var(--dropdownContentBorderColor);
     // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
     border-radius: 4px;
 
@@ -352,7 +352,7 @@
 
       /* Links inside the dropdown */
       span {
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -409,14 +409,14 @@
       }
       .dropdown-search-input {
         flex: 1;
-        background: #ffffff;
+        background: var(--sameModeColor);
         width: 100%;
         border: none;
         box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
         border-radius: 4px;
         padding: 1rem 1rem 1rem 2.5rem;
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
 
         &:focus,
         :active,
@@ -426,21 +426,21 @@
         }
 
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+          @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
         }
       }
       .dropdown-search-input-smaller {
         padding: 1rem 1rem 1rem 2rem;
         font-size: 1rem;
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1rem, 500, 1.6rem);
+          @include font(var(--sameModeColor), "Inter-Medium", 1rem, 500, 1.6rem);
         }
       }
       img {
         position: absolute;
         top: 52%;
         transform: translateY(-50%);
-        filter: var(--hoverBrightnessValueInvert);
+        filter: var(--invertColor);
         left: 1rem;
       }
     }

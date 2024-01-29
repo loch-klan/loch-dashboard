@@ -367,8 +367,8 @@ class AddWatchListAddressModal extends BaseReactComponent {
           </div>
         ) : null}
         <Modal.Header>
-          <div className="api-modal-header">
-            <Image src={EyeIcon} />
+          <div className="api-modal-header popup-main-icon-with-border">
+            <Image src={EyeIcon} className="" />
           </div>
           <div className="closebtn" onClick={this.hideModal}>
             <Image src={CloseIcon} />
@@ -414,6 +414,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 elem,
                                 this.props.OnboardingState
                               )}
+                              autoComplete="off"
                               onKeyDown={this.handleTabPress}
                               onFocus={(e) => {
                                 // console.log(e);

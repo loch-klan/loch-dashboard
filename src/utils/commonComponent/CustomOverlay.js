@@ -147,17 +147,30 @@ function CustomOverlay({
         <ul>
           {text.map((e, i) =>
             i !== 0 ? (
-              <li key={i}>
+              <li
+                style={{
+                  border: "0.1rem solid var(--secondaryLightColor) !important",
+                }}
+                key={i}
+              >
                 <Image
                   src={e.coinSymbol}
-                  style={{
-                    border: `1px solid ${lightenDarkenColor(
-                      e.coinColor,
-                      -0.15
-                    )} `,
-                  }}
+                  style={
+                    {
+                      // border: `1px solid ${lightenDarkenColor(
+                      //   e.coinColor,
+                      //   -0.15
+                      // )} `,
+                    }
+                  }
                 />
-                <span className="inter-display-medium f-s-13 grey-313 lh-16">
+                <span
+                  className="inter-display-medium f-s-13 grey-313 lh-16"
+                  style={{
+                    width: "100%",
+                    backgroundColor: "var(--primaryFilter)",
+                  }}
+                >
                   {e.coinName}
                 </span>
               </li>

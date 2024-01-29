@@ -663,6 +663,9 @@ body {
 }
 
 .Toastify__toast {
+  background-color: var(--cardBackgroud);
+  border: 1px solid var(--sidebarActivePageColor);
+  color: var(--black191);
   padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
@@ -670,7 +673,7 @@ body {
     gap: 10px;
     margin: 0;
     padding: 0;
-    @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
+    @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
 
     .Toastify__toast-icon {
       margin-right: 0;
@@ -2788,6 +2791,26 @@ input{
   .api-modal-header{
     img{
       filter: var(--invertColor);
+    }
+  }
+}
+.top-l-r-3{
+  border-top-left-radius: 12px;
+}
+.bottom-l-r-3{
+}
+
+.transaction-history-table-yield-opportunity{
+   .ReactVirtualized__Grid__innerScrollContainer{
+    .ReactVirtualized__Table__row{
+      &:nth-last-child(1){
+        .ReactVirtualized__Table__rowColumn{
+
+          &:nth-child(1){
+            border-bottom-left-radius: 12px;
+          }
+        }
+      }
     }
   }
 }

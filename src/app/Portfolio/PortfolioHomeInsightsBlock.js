@@ -76,7 +76,7 @@ class PortfolioHomeInsightsBlock extends Component {
                           marginTop: "1rem",
                           marginBottom: "0rem",
                           boxShadow: "none",
-                          border: "0.1rem solid #E5E5E6",
+                          border: "0.1rem solid var(--borderwhiteDarkLight)",
                           alignItems: "flex-start",
                           background: "var(--cardBackgroud)",
                         }}
@@ -167,7 +167,7 @@ class PortfolioHomeInsightsBlock extends Component {
 
             <div className="inter-display-medium bottomExtraInfo">
               <div
-                className="bottomExtraInfoText"
+                className="bottomExtraInfoText secondaryDarkText"
                 onClick={this.goToInsightsPage}
               >
                 Click here to see more

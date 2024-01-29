@@ -47,6 +47,10 @@
     color: var(--primaryTextColor);
   
   }
+  &.secondaryDarkText-nohover{
+    color: var(--secondaryDarkTextColor);
+  
+  }
 }
 .invertFilter {
   filter: var(--invertColor);
@@ -112,4 +116,8 @@
 }
 .grey-233{
   color: var(--grey313);
+}
+
+.text-same-mode-color{
+  color: var(--sameModeColor) !important;
 }

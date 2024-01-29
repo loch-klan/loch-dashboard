@@ -745,8 +745,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
+        headerClassName: "yeildOppYourPortfolioContainer top-l-r-3",
+        cell: (rowData, dataKey, index) => {
           if (dataKey === "asset") {
             return (
               <CoinChip
@@ -1104,7 +1104,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 Yield opportunities
               </div>
             </div>
-            <div className="transaction-history-table">
+            <div className="transaction-history-table transaction-history-table-yield-opportunity">
               {this.state.tableLoading ? (
                 <div className="loadingSizeContainer">
                   <Loading />
