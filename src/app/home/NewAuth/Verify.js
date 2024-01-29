@@ -63,7 +63,7 @@ const Verify = ({
           </div>
         </div>
         <div className="new-auth verify-otp">
-          <div className="new-auth-content">
+          <div className="new-auth-content input-noshadow-dark">
             <img className="new-auth-content-logo" src={logo} alt="" />
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Enter code</h4>

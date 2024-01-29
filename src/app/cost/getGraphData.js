@@ -43,10 +43,10 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--cardBackgroud)",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: "var(--black191)",
         padding: 12,
         borderWidth: 1,
         borderColor: "#E5E7EB",
@@ -93,7 +93,7 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },
@@ -338,10 +338,10 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--cardBackgroud)",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: "var(--black191)",
         padding: 12,
         borderWidth: 1,
         borderColor: "#E5E7EB",
@@ -391,7 +391,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return "var(--black191)";
           },
         },
       },

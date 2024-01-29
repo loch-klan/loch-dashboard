@@ -1469,7 +1469,7 @@
             gap: 3px;
             align-items: flex-start;
             .inter-display-medium {
-              color: #19191a;
+              color: var(--black191);
             }
             .trendingAddressesBlockItemDataContainerAmount {
               // margin-top: 0.2rem;
@@ -1488,12 +1488,15 @@
         position: absolute;
         top: 50px;
         left: 0;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         width: 100%;
         padding: 24px;
         border-radius: 12px;
         box-shadow: 0px 14px 64px -4px rgba(24, 39, 75, 0.12),
           0px 8px 22px -6px rgba(24, 39, 75, 0.12);
+          .new-homepage__body-trending-address-icon{
+            filter: var(--invertColor);
+          }
 
         .new-homepage__body-trending-address__address-wrapper {
           margin-top: 30px;
@@ -1540,7 +1543,7 @@
         width: 100%;
         padding: 2rem 1.5rem;
         border-radius: 12px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
 
         display: flex;
         align-items: center;
@@ -1701,7 +1704,7 @@
         width: 100%;
         padding: 2rem 1.5rem;
         border-radius: 12px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
         display: flex;
         align-items: center;
@@ -1734,10 +1737,10 @@
           }
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
             .new-homepage__body-search-copy-icon {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
           }
         }
@@ -1745,10 +1748,10 @@
 
       .new-homepage__body-search-mobile {
         .new-homepage__body-search-paste-text {
-          filter: brightness(0.3);
+          filter: var(--hoverBrightnessValue);
         }
         .new-homepage__body-search-copy-icon {
-          filter: brightness(0.3);
+          filter: var(--hoverBrightnessValue);
         }
       }
 
@@ -1757,7 +1760,7 @@
         // height: 500px;
         margin-top: 24px;
         border-radius: 12px;
-        background: #fff;
+        background: var(--cardBackgroud);
         box-shadow: 0px 6.31px 6.31px -3.155px rgba(24, 39, 75, 0.08),
           0px 3.155px 4.732px -3.155px rgba(24, 39, 75, 0.12);
       }
