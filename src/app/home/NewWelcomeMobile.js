@@ -1548,9 +1548,17 @@ class NewWelcomeMobile extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
-                {/* <p className="new-homepage__body-content-table-header__subtitle-mobile">
-                    The lazy analyst’s guide to alpha
-                </p> */}
+                <div className="new-homepage__body-content-table-header new-homepage__body-content-table-header-mobile new-homepage__body-content-table-header_explainer">
+                  <img
+                    style={{
+                      opacity: 0,
+                    }}
+                    src={ActiveSmartMoneySidebarIcon}
+                    alt=""
+                  />
+                  Sorted by net worth, pnl, and flows
+                </div>
+
                 {this.props.tableLoading ? (
                   <div
                     style={{

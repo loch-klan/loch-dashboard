@@ -12,7 +12,7 @@ function TransactionTable(props) {
         display: "flex",
         flexDirection: "column",
       }}
-      className="transaction-table-section h-100"
+      className="transaction-table-section h-100 "
     >
       {props.title ? (
         <GraphHeader
@@ -54,6 +54,8 @@ function TransactionTable(props) {
         changePageLimit={props.changePageLimit}
         minimalPagination={props.minimalPagination}
         hidePaginationRecords={props.hidePaginationRecords}
+        paginationNew={props.paginationNew}
+        isSmartMoney={props.isSmartMoney}
         showHeaderOnEmpty={props.showHeaderOnEmpty}
         className={`transaction-table ${props?.className} ${
           props.comingSoon && "blur-effect"
@@ -78,6 +80,8 @@ function TransactionTable(props) {
         }
         isLoading={props.isLoading}
         addWatermark={props.addWatermark}
+        fakeWatermark={props.fakeWatermark}
+        watermarkOnTop={props.watermarkOnTop}
         addWatermarkMoveUp={props.addWatermarkMoveUp}
         onPageChange={props.onPageChange}
         isMiniversion={props.isMiniversion}
