@@ -62,6 +62,8 @@
   --sidebarActivePageColor: #e5e5e680;
   --sidebarBottomOptions: #b0b1b3;
   --sidebarWalletAmount:#1d2129;
+  --sidebarHoverLink:'white';
+  --sidebarHoverShadow:0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.12);
 
   // Headers
   --headerSelectEyeBg:#e5e5e6;
@@ -174,6 +176,8 @@
   --sidebarActivePageColor: #2a2a2a;
   --sidebarBottomOptions: #96979a;
   --sidebarWalletAmount:white;
+  --sidebarHoverLink:#2a2a2a34;
+  --sidebarHoverShadow:none;
 
   //buttons
   --mainButtonBg:transparent;
