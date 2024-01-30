@@ -19,6 +19,7 @@ import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
 import Loading from "../common/Loading";
+import PageHeader from "../common/PageHeader";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -649,7 +650,7 @@ class NFT extends BaseReactComponent {
       );
     }
     return (
-      <div className="nft-page">
+      <div>
         <div className="portfolio-page-section">
           <div
             className="portfolio-container page"
@@ -667,27 +668,14 @@ class NFT extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
-            <div
-              className="rightSmartMoneyContainer"
-              style={{ marginBottom: "1.5rem" }}
-            >
-              <div className={`rightSmartMoneyContainerHeadingParent`}>
-                <div
-                  className={`rightSmartMoneyContainerHeading inter-display-medium f-s-24 lh-30 m-b-8`}
-                >
-                  NFT Collection
-                </div>
-              </div>
-              <p
-                style={{
-                  // marginTop: "0.3rem",
-                  fontSize: "16px",
-                }}
-                className="rightSmartMoneyContainerSubHeading inter-display-medium f-s-16 lh-19"
-              >
-                Browse the NFTs held by this wallet
-              </p>
-            </div>
+            <PageHeader
+              title={"NFT Collection"}
+              subTitle={"Browse the NFTs held by this wallet"}
+              currentPage={"nft"}
+              history={this.props.history}
+              ShareBtn={false}
+              updateTimer={this.updateTimer}
+            />
             <div className="transaction-history-table">
               <TransactionTable
                 // wrapperStyle={{ minHeight: "500px" }}
