@@ -207,6 +207,11 @@ export const searchTransactionApi = (
     postLoginInstance
       .post("wallet/transaction/search-transaction", data)
       .then((res) => {
+        if (ctx) {
+          ctx.setState({
+            tableLoading: false,
+          });
+        }
         // console.log(page)
         if (!res.data.error) {
           if (callAnyways || (page === 0 && isDefault)) {
@@ -215,17 +220,16 @@ export const searchTransactionApi = (
           if (ctx.getAllTransactionHistoryLocal) {
             ctx.getAllTransactionHistoryLocal(res.data.data, page, ctx);
           }
-
-          if (ctx) {
-            ctx.setState({
-              tableLoading: false,
-            });
-          }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
       })
       .catch((err) => {
+        if (ctx) {
+          ctx.setState({
+            tableLoading: false,
+          });
+        }
         // console.log("Search transaction ", err)
       });
   };

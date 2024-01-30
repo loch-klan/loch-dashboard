@@ -17,6 +17,8 @@ import {
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
   Mobile_Home_Share,
+  QuickAddWalletAddress,
+  SearchBarAddressAdded,
   TimeSpentMobileHome,
   TransactionHistoryAddressCopied,
   TransactionHistoryAssetFilter,
@@ -77,6 +79,7 @@ import {
   getDetectedChainsApi,
   getUser,
   setPageFlagDefault,
+  updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
 import Loading from "../common/Loading";
@@ -90,7 +93,11 @@ import {
   searchTransactionApi,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip.js";
 import {
@@ -108,6 +115,9 @@ import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
 import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
 import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
+import { setHeaderReducer } from "../header/HeaderAction.js";
+import { addUserCredits } from "../profile/Api.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -117,6 +127,23 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      disableAddBtn: false,
+      addButtonVisible: false,
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
       startTime: "",
       showPopupModal: true,
       showSearchIcon: false,
@@ -343,7 +370,10 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.props.commonState?.mobilePortfolioPage) {
+      this.props.updateWalletListFlag("mobilePortfolioPage", true);
+      this.callApiTransHistory(page);
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -371,8 +401,6 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
-
-      this.callApiTransHistory(page);
     }
 
     if (
@@ -780,6 +808,317 @@ class PortfolioMobile extends BaseReactComponent {
       );
     }
   };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item?.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleOnChange = (e) => {
+    let { name, value } = e.target;
+
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].address;
+
+      walletCopy[foundIndex].address = value;
+      if (value === "" || prevValue !== value) {
+        walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
+      }
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+      walletInput: walletCopy,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // timeout;
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnWalletAddress(name, value);
+    }, 1000);
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          false,
+          false
+        );
+      }
+    }
+  };
+  onKeyPressInput = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (!this.state.disableAddBtn) {
+        this.handleAddWallet(true);
+      }
+    }
+  };
+  hideTheTopBarHistoryItems = () => {
+    this.setState({
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+    });
+  };
+  handleAddWallet = (replaceAddresses) => {
+    if (this.state.goBtnDisabled) {
+      return null;
+    }
+    if (this.state.walletInput[0]) {
+      SearchBarAddressAdded({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: this.state.walletInput[0].address,
+        isMobile: true,
+      });
+    }
+    this.setState({
+      disableAddBtn: true,
+    });
+    let addWalletList = [];
+
+    if (!replaceAddresses) {
+      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      if (addWalletList && addWalletList?.length > 0) {
+        addWalletList = addWalletList?.map((e) => {
+          return {
+            ...e,
+            showAddress: e.nickname === "" ? true : false,
+            showNickname: e.nickname === "" ? false : true,
+            showNameTag: e.nameTag === "" ? false : true,
+            apiAddress: e.address,
+          };
+        });
+      }
+      if (addWalletList && addWalletList.length > 0) {
+        for (let i = 0; i < addWalletList.length; i++) {
+          if (addWalletList[i].id === "wallet1") {
+            addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+          }
+        }
+      }
+    }
+    let tempWalletInput = this.state.walletInput[0];
+    addWalletList = [...addWalletList, tempWalletInput];
+
+    let arr = [];
+    let addressList = [];
+    let nicknameArr = {};
+    let isChainDetected = [];
+    let total_address = 0;
+    let walletList = [];
+    for (let i = 0; i < addWalletList.length; i++) {
+      let curr = addWalletList[i];
+
+      let isIncluded = false;
+      const whatIndex = arr.findIndex(
+        (resRes) =>
+          resRes?.trim()?.toLowerCase() ===
+            curr?.address?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.displayAddress?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.apiAddress?.trim()?.toLowerCase()
+      );
+      if (whatIndex !== -1) {
+        isIncluded = true;
+      }
+      if (!isIncluded && curr.address) {
+        walletList.push(curr);
+        if (curr.address) {
+          arr.push(curr.address?.trim());
+        }
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        if (curr.displayAddress) {
+          arr.push(curr.displayAddress?.trim());
+        }
+        if (curr.apiAddress) {
+          arr.push(curr.apiAddress?.trim());
+        }
+        addressList.push(curr.address?.trim());
+        isChainDetected.push(curr?.coinFound);
+        total_address = total_address + 1;
+      }
+    }
+
+    let addWallet = walletList;
+
+    addWallet?.forEach((w, i) => {
+      if (w.id) {
+      } else {
+        w.id = `wallet${i + 1}`;
+      }
+    });
+
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    // data.append("wallet_addresses", JSON.stringify(arr));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+    // data.append("chain_detected", chain_detechted);
+
+    // if its upload then we pass user id
+    if (this.state.isChangeFile) {
+      data.append("user_id", getCurrentUser().id);
+      this.setState({
+        isChangeFile: false,
+      });
+    }
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+
+    if (creditIsAddress) {
+      // Single address
+      const addressCreditScore = new URLSearchParams();
+      addressCreditScore.append("credits", "address_added");
+      this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
+
+      // Multiple address
+      const multipleAddressCreditScore = new URLSearchParams();
+      multipleAddressCreditScore.append("credits", "multiple_address_added");
+      this.props.addUserCredits(
+        multipleAddressCreditScore,
+        this.resetCreditPoints
+      );
+    }
+    if (creditIsEns) {
+      const ensCreditScore = new URLSearchParams();
+      ensCreditScore.append("credits", "ens_added");
+      this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
+    }
+    this.props.updateUserWalletApi(data, this, yieldData, true);
+
+    const address = addWalletList?.map((e) => e.address);
+
+    const addressDeleted = this.state.deletedAddress;
+    const unrecog_address = addWalletList
+      ?.filter((e) => !e.coinFound)
+      ?.map((e) => e.address);
+    const recog_address = addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((e) => e.address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((obj) => {
+        let coinName = obj.coins
+          ?.filter((e) => e.chain_detected)
+          ?.map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    QuickAddWalletAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      addresses_added: address,
+      ENS_added: address,
+      addresses_deleted: addressDeleted,
+      ENS_deleted: addressDeleted,
+      unrecognized_addresses: unrecog_address,
+      recognized_addresses: recog_address,
+      blockchains_detected: blockchainDetected,
+      nicknames: nicknames,
+      isMobile: true,
+    });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+  };
+  cancelAddingWallet = () => {};
+  resetCreditPoints = () => {};
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -2427,7 +2766,7 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
             ) : null}
             <div className="mpcMobileSearch">
-              <div onClick={this.goToWelcome} className="mpcMobileSearchInput">
+              <div className="mpcMobileSearchInput">
                 <Image
                   style={{
                     opacity: this.state.showSearchIcon ? 1 : 0,
@@ -2436,20 +2775,41 @@ class PortfolioMobile extends BaseReactComponent {
                   className="mpcMobileSearchImage"
                   src={SearchIcon}
                 />
-                <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
+                {/* <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
                   Search for another address / ENS
+                </div> */}
+                {this.state.walletInput?.map((c, index) => (
+                  <div className="topSearchBarMobileContainer">
+                    <NewHomeInputBlock
+                      noAutofocus
+                      onGoBtnClick={this.handleAddWallet}
+                      hideMore
+                      isMobile
+                      c={c}
+                      index={index}
+                      walletInput={this.state.walletInput}
+                      handleOnChange={this.handleOnChange}
+                      onKeyDown={this.onKeyPressInput}
+                      goBtnDisabled={this.state.disableAddBtn}
+                      removeFocusOnEnter
+                    />
+                  </div>
+                ))}
+              </div>
+              {!(
+                this.state.walletInput && this.state.walletInput[0].address
+              ) ? (
+                <div className="mpcMobileShare" onClick={this.handleShare}>
+                  <Image
+                    style={{
+                      opacity: this.state.showShareIcon ? 1 : 0,
+                    }}
+                    onLoad={this.shareIconLoaded}
+                    className="mpcMobileSearchImage"
+                    src={SharePortfolioIconWhite}
+                  />
                 </div>
-              </div>
-              <div className="mpcMobileShare" onClick={this.handleShare}>
-                <Image
-                  style={{
-                    opacity: this.state.showShareIcon ? 1 : 0,
-                  }}
-                  onLoad={this.shareIconLoaded}
-                  className="mpcMobileSearchImage"
-                  src={SharePortfolioIconWhite}
-                />
-              </div>
+              ) : null}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
@@ -2554,7 +2914,7 @@ class PortfolioMobile extends BaseReactComponent {
                     Assets
                   </h2>
                   <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -2592,7 +2952,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -2642,7 +3002,7 @@ class PortfolioMobile extends BaseReactComponent {
                   isArrow={true}
                   isLoading={this.props.AvgCostLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                   yAxisScrollable
@@ -2661,7 +3021,7 @@ class PortfolioMobile extends BaseReactComponent {
                     Transactions
                   </h2>
                   <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -2795,7 +3155,13 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
 
-              <div className="section-table section-table-mobile-scroll">
+              <div
+                className={`section-table section-table-mobile-scroll ${
+                  tableDataTransaction.length > 0
+                    ? "tableWatermarkOverlayCounterParty"
+                    : ""
+                }`}
+              >
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
@@ -2809,7 +3175,7 @@ class PortfolioMobile extends BaseReactComponent {
                   isArrow={true}
                   isLoading={this.state.tableLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                 />
@@ -2853,6 +3219,7 @@ const mapStateToProps = (state) => ({
   defiState: state.DefiState,
 });
 const mapDispatchToProps = {
+  detectCoin,
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
@@ -2873,6 +3240,9 @@ const mapDispatchToProps = {
   // avg cost
   getAvgCostBasis,
   getFilters,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,

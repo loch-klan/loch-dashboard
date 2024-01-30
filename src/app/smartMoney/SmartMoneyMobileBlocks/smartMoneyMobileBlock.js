@@ -24,7 +24,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnClick = (addItem) => {
-    if (!this.props.smartMoneyBlur &&this.props.handleFollowUnfollow) {
+    if (!this.props.smartMoneyBlur && this.props.handleFollowUnfollow) {
       this.props.handleFollowUnfollow(
         this.props.mapData.account,
         addItem,
@@ -97,7 +97,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
         <div className="msmbBody">
           <div className="msmbBodyItem">
             <div className="inter-display-medium msmbBITitle">
-              Realized PnL (1yr)
+              Flows (1 year)
             </div>
             <div className={`inter-display-medium msmbBIAmount`}>
               {this.props.netFlows !== 0 ? (

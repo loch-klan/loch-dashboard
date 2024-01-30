@@ -834,6 +834,7 @@ class TopWalletExchangeBar extends Component {
       recognized_addresses: recog_address,
       blockchains_detected: blockchainDetected,
       nicknames: nicknames,
+      isMobile: false,
     });
     if (this.props.updateTimer) {
       this.props.updateTimer();
@@ -938,7 +939,7 @@ class TopWalletExchangeBar extends Component {
   };
   passConnectExchangeClick = () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     const pathName = window.location.pathname;
@@ -1008,7 +1009,7 @@ class TopWalletExchangeBar extends Component {
   };
   connectWalletEthers = async () => {
     let tempToken = getToken();
-    if (tempToken === "jsk") {
+    if (!tempToken || tempToken === "jsk") {
       return null;
     }
     ConnectWalletButtonClicked({

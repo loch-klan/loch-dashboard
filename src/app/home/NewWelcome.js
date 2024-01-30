@@ -55,7 +55,11 @@ import {
   EmailAddressAdded,
   LPC_Go,
   LPConnectExchange,
+  OnboardingMobilePage,
+  OnboardingPage,
   SignInOnClickWelcomeLeaderboard,
+  TimeSpentOnboarding,
+  TimeSpentOnboardingMobile,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -101,6 +105,7 @@ class NewWelcome extends BaseReactComponent {
     super(props);
     this.state = {
       currentMetamaskWallet: {},
+      startTime: "",
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -1238,15 +1243,29 @@ class NewWelcome extends BaseReactComponent {
       }
     );
   };
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    if (mobileCheck()) {
+      OnboardingMobilePage({});
+    } else {
+      OnboardingPage({});
+    }
+    window.checkMobileWelcomeTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
-      "smartMoneyPageExpiryTime"
+      "mobileWelcomePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
-      // this.startPageView();
+      this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem(
+      "mobileWelcomePageExpiryTime",
+      tempExpiryTime
+    );
   };
 
   onPageChange = (mobile = true) => {
@@ -1459,7 +1478,48 @@ class NewWelcome extends BaseReactComponent {
     this.callApi(this.state.currentPage || START_INDEX);
 
     // this.startPageView();
+
+    this.startPageView();
     this.updateTimer(true);
+    return () => {
+      clearInterval(window.checkMobileWelcomeTimer);
+    };
+  }
+
+  checkForInactivity = () => {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileWelcomePageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+
+  endPageView = () => {
+    clearInterval(window.checkMobileWelcomeTimer);
+    window.sessionStorage.removeItem("mobileWelcomePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      if (mobileCheck()) {
+        TimeSpentOnboardingMobile({
+          time_spent: TimeSpent,
+        });
+      } else {
+        TimeSpentOnboarding({
+          time_spent: TimeSpent,
+        });
+      }
+    }
+  };
+
+  componentWillUnmount() {
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "mobileWelcomePageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   checkUser = () => {
@@ -2078,7 +2138,7 @@ class NewWelcome extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Realized PnL (1yr)
+              Flows (1 year)
             </span>
           </div>
         ),
@@ -2549,6 +2609,17 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
+                <div className="new-homepage__body-content-table-header new-homepage__body-content-table-header_explainer">
+                  <img
+                    style={{
+                      opacity: 0,
+                    }}
+                    src={ActiveSmartMoneySidebarIcon}
+                    alt=""
+                  />
+                  Sorted by net worth, pnl, and flows
+                </div>
+
                 {this.state.tableLoading ? (
                   <div
                     style={{

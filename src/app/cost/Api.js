@@ -74,7 +74,9 @@ export const getAllCounterFeeApi = (
           //  console.log("calling counter fees");
           let g_data = res.data.data.counter_party_volume_traded.sort(
             (a, b) => {
-              return b.total_volume - a.total_volume;
+              let bTotal_volume = b.total_volume ? b.total_volume : 0;
+              let aTotal_volume = a.total_volume ? a.total_volume : 0;
+              return bTotal_volume - aTotal_volume;
             }
           );
           // g_data = g_data.slice(0, 3);
@@ -83,14 +85,11 @@ export const getAllCounterFeeApi = (
             dispatch({
               type: COUNTER_PARTY_VOLUME,
               payload: {
-                counterPartyData: res.data.data.counter_party_volume_traded,
+                counterPartyData: g_data,
                 counterPartyValue:
                   ctx.state.currentPage === "Home"
                     ? getCounterGraphData(g_data, ctx, true)
-                    : getCounterGraphData(
-                        res.data.data.counter_party_volume_traded,
-                        ctx
-                      ),
+                    : getCounterGraphData(g_data, ctx),
               },
             });
           }
@@ -99,13 +98,7 @@ export const getAllCounterFeeApi = (
             res.data.data.counter_party_volume_traded
           );
           if (ctx.setLocalCounterParty) {
-            ctx.setLocalCounterParty(
-              res.data.data.counter_party_volume_traded,
-              getCounterGraphData(
-                res.data.data.counter_party_volume_traded,
-                ctx
-              )
-            );
+            ctx.setLocalCounterParty(g_data, getCounterGraphData(g_data, ctx));
           }
           ctx.setState({
             counterGraphLoading: false,
