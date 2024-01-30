@@ -93,6 +93,15 @@
                   padding: 0rem 1rem;
                   border-radius: 8px;
                   border: 0.1rem solid #d4d4d4;
+                  outline: none;
+                  &:-webkit-autofill:focus {
+                    box-shadow: 0 0 0 30px white inset !important;
+                    -webkit-box-shadow: 0 0 0 30px white inset !important;
+                    transition: background-color 5000s ease-in-out 0s;
+                  }
+                  box-shadow: 0 0 0 30px white inset !important;
+                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  transition: background-color 5000s ease-in-out 0s;
                 }
               }
               .assets-remarks-floating-block-buttons-container {
