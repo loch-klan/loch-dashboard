@@ -412,7 +412,7 @@ class PortfolioMobile extends BaseReactComponent {
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
-      this.callApi(page);
+      this.callApiTransHistory(page);
     }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
