@@ -2146,11 +2146,17 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--badgeGreenBg);
+            span{
+              color: var(--badgeGreencolor) !important;
+            }
           }
-
+          
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--badgeRedBg);
+            span{
+              color: var(--badgeRedcolor) !important;
+            }
           }
         }
       }
