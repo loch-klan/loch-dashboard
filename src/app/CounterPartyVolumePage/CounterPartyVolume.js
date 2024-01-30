@@ -627,6 +627,8 @@ class CounterPartyVolume extends Component {
                 // comingSoon={true}
                 chainSearchIsUsed={this.volumeChainSearchIsUsed}
                 oldBar
+                floatingWatermark
+                isCounterPartyGasFeesPage
               />
             </div>
             <Footer />

@@ -2138,7 +2138,7 @@ class NewWelcome extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Realized PnL (1yr)
+              Flows (1 year)
             </span>
           </div>
         ),
@@ -2609,6 +2609,17 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ActiveSmartMoneySidebarIcon} alt="" />
                   Loch’s Leaderboard
                 </div>
+                <div className="new-homepage__body-content-table-header new-homepage__body-content-table-header_explainer">
+                  <img
+                    style={{
+                      opacity: 0,
+                    }}
+                    src={ActiveSmartMoneySidebarIcon}
+                    alt=""
+                  />
+                  Sorted by net worth, pnl, and flows
+                </div>
+
                 {this.state.tableLoading ? (
                   <div
                     style={{

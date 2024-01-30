@@ -1872,6 +1872,19 @@ form {
   }
 }
 
+.tableWatermarkOverlay {
+  background: url(../../images/graph-logo.svg) no-repeat center center !important;
+  background-size: 104px 39px;
+  background-position-y: 55%;
+}
+
+.watermarkOnTop {
+  background: transparent;
+}
+.tableWatermarkOverlayCounterParty {
+  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
+}
+
 .transaction-table-section {
   .graph-header {
     padding: 3.2rem 3.2rem 0rem 3.2rem;
@@ -1969,6 +1982,11 @@ form {
   }
   .tableWatermark {
     background: url(../../images/graph-logo.svg) no-repeat center center;
+    background-size: 104px 39px;
+    background-position-y: 48%;
+  }
+  .tableWatermarkFake {
+    background: transparent no-repeat center center;
     background-size: 104px 39px;
     background-position-y: 48%;
   }
@@ -2631,7 +2649,7 @@ textarea {
   pointer-events: none;
 }
 
-input{
+input {
   &:-webkit-autofill:focus {
     box-shadow: 0 0 0 30px white inset !important;
     -webkit-box-shadow: 0 0 0 30px white inset !important;
