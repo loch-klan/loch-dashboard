@@ -279,7 +279,7 @@ class PortfolioHomeDefiBlock extends Component {
                   }}
                 >
                   <span
-                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-title-selected"
@@ -290,7 +290,7 @@ class PortfolioHomeDefiBlock extends Component {
                     Credit
                   </span>
                   <span
-                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-amount-selected"
@@ -331,7 +331,7 @@ class PortfolioHomeDefiBlock extends Component {
                   }}
                 >
                   <span
-                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13 secondaryDarkText
                              ${
                                this.state.isDebtToggle
                                  ? "balance-sheet-card-credit-title-selected"
@@ -342,7 +342,7 @@ class PortfolioHomeDefiBlock extends Component {
                     Debt
                   </span>
                   <span
-                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isDebtToggle
                                 ? "balance-sheet-card-credit-amount-selected"

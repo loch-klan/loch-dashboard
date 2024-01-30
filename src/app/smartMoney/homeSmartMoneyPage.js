@@ -1358,6 +1358,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                       alignItems: "center",
                       justifyContent: "center",
                       height: "69rem",
+                      background: "var(--cardBackgroud)",
+                      borderRadius: "1.2rem",
                     }}
                   >
                     <Loading />

@@ -2957,7 +2957,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                   <div
                     onClick={this.hideThePopupModal}
-                    className="mpcHFGoBtn inter-display-medium f-s-13"
+                    className="mpcHFGoBtn inter-display-medium f-s-13 btn-bg-black"
                   >
                     Ok
                   </div>
@@ -3151,61 +3151,76 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message="No assets found"
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ? []
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length > 0
-                      ? [
-                          {},
-                          ...this.props.intelligenceState.Average_cost_basis.filter(
+              <div
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
+              >
+                <div
+                  className={`section-table section-table-mobile-scroll asset-mobile-table ${
+                    this.props.AvgCostLoading
+                      ? ""
+                      : "tableWatermarkOverlayCounterParty"
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    handleClick={() => {
+                      if (this.state.lochToken) {
+                        this.props.history.push("/intelligence/costs");
+                        // AverageCostBasisEView({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }
+                    }}
+                    message="No assets found"
+                    subTitle=""
+                    tableData={
+                      this.props.intelligenceState.Average_cost_basis &&
+                      this.props.intelligenceState.Average_cost_basis.length < 1
+                        ? []
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
                             (item) => {
                               return item.CurrentValue > 1;
                             }
-                          ),
-                        ]
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length < 1
-                      ? []
-                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                  yAxisScrollable
-                />
+                          ).length > 0
+                        ? [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis.filter(
+                              (item) => {
+                                return item.CurrentValue > 1;
+                              }
+                            ),
+                          ]
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
+                            (item) => {
+                              return item.CurrentValue > 1;
+                            }
+                          ).length < 1
+                        ? []
+                        : [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis,
+                          ]
+                    }
+                    columnList={columnData}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.props.AvgCostLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                    yAxisScrollable
+                  />
+                </div>
               </div>
 
               <div
@@ -3335,7 +3350,7 @@ class PortfolioMobile extends BaseReactComponent {
                   style={{ width: "100%", marginTop: "12px" }}
                 >
                   <div
-                    className="transaction-table-mobile-search"
+                    className="transaction-table-mobile-search input-noshadow-dark"
                     style={{ display: "flex", width: "100%" }}
                   >
                     <Image src={SearchIcon} className="search-icon" />
@@ -3356,29 +3371,35 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
 
               <div
-                className={`section-table section-table-mobile-scroll ${
-                  tableDataTransaction.length > 0
-                    ? "tableWatermarkOverlayCounterParty"
-                    : ""
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  message={"No Transactions Found"}
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.state.tableLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                />
+                <div
+                  className={`section-table section-table-mobile-scroll ${
+                    tableDataTransaction.length > 0 && !this.state.tableLoading
+                      ? "tableWatermarkOverlayCounterParty"
+                      : ""
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    message={"No Transactions Found"}
+                    subTitle=""
+                    tableData={tableDataTransaction}
+                    columnList={columnListTransaction}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.state.tableLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                  />
+                </div>
               </div>
 
               {!this.state.tableLoading ? (

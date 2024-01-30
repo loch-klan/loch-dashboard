@@ -4294,7 +4294,13 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.AvgCostLoading
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4703,7 +4709,13 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.yieldOpportunitiesTableLoading
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
@@ -4726,7 +4738,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToYieldOppPage}
-                                className="bottomExtraInfoText"
+                                className="bottomExtraInfoText secondaryDarkText"
                               >
                                 {this.state.yieldOpportunitiesTotalCount &&
                                 this.state.yieldOpportunitiesTotalCount > 10
@@ -4887,7 +4899,13 @@ class Portfolio extends BaseReactComponent {
                         />
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
-                          <div className="newHomeTableContainer">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.tableLoading
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}

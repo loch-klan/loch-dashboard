@@ -1887,7 +1887,7 @@ form {
 }
 
 .tableWatermarkOverlay {
-  background: url(../../images/graph-logo.svg) no-repeat center center !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
   background-size: 104px 39px;
   background-position-y: 55%;
 }
@@ -1896,8 +1896,7 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: url(../../images/graph-logo.svg) no-repeat center center,
-    var(--cardBackgroud) !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
 }
 
 .transaction-table-section {
@@ -2146,11 +2145,17 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--badgeGreenBg);
+            span{
+              color: var(--badgeGreencolor) !important;
+            }
           }
-
+          
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--badgeRedBg);
+            span{
+              color: var(--badgeRedcolor) !important;
+            }
           }
         }
       }
@@ -2655,6 +2660,16 @@ textarea {
 }
 .highcharts-area {
   cursor: pointer;
+}
+.highcharts-xaxis-labels{
+
+  text{
+    color: var(--secondaryDarkTextColor) !important;
+    &:hover{
+      color: var(--primaryTextColor) !important;
+      
+    }
+  }
 }
 .page-header {
   margin-bottom: 1.5rem;
