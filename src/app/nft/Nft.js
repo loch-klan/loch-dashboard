@@ -102,7 +102,7 @@ class NFT extends BaseReactComponent {
     });
 
     this.getOtherData();
-    this.callApi(this.state.currentPage || START_INDEX);
+
     this.startPageView();
     this.updateTimer(true);
     if (
@@ -115,6 +115,8 @@ class NFT extends BaseReactComponent {
         tableData: this.props.NFTState?.nfts,
         isLoading: false,
       });
+    } else {
+      this.callApi(this.state.currentPage || START_INDEX);
     }
   }
   getOtherData = () => {
