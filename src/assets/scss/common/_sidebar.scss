@@ -660,7 +660,7 @@
               &:hover {
                 cursor: pointer;
                 box-shadow: var(--sidebarHoverShadow);
-                background-color: var(--sidebarHoverLink);
+                background-color: var(--sidebarHoverLink) !important;
                 border-radius: 1.2rem;
               }
             }

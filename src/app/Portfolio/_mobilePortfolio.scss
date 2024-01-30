@@ -8,6 +8,33 @@
   display: flex;
   flex-direction: column;
 
+  .custom-dropdown {
+    margin-right: 0px !important;
+    padding-left: 5px;
+
+    .show {
+      margin-left: -5px;
+    }
+    .placeholderPriceDropdown {
+      justify-content: center;
+      gap: 4px;
+    }
+    .placeholder {
+      gap: 4px;
+      svg {
+        right: auto;
+        position: static;
+      }
+    }
+  }
+
+  .padding-mb-2 {
+    padding-left: 2px !important;
+  }
+
+  .placeholderPriceDropdown {
+    min-width: 100% !important;
+  }
   .homepage-table-charts {
     .custom-dropdown .placeholderPriceDropdown.lineChartPlaceholder {
       min-width: 10rem !important;
@@ -17,6 +44,41 @@
   .asset-mobile-table {
     .table-wrapper-mobile-y-scroll {
       max-height: 65rem !important;
+    }
+  }
+  .transaction-table-mobile-search {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 10px;
+    gap: 10px;
+    border: 1px solid var(--borderwhiteDarkLight);
+    background-color: var(--cardBackgroud);
+    border-radius: 8px;
+    .search-icon {
+    }
+
+    .search-input {
+      width: 100%;
+      // box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+      border: none;
+      outline: none;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #19191a;
+      background-color: transparent;
+      &::placeholder {
+        color: #b0b1b3;
+      }
+      &:focus {
+        .transaction-table-mobile-search {
+          border: 1px solid black;
+        }
+      }
+    }
+
+    &:hover{
+      border-color: var(--primaryTextColor);
     }
   }
 
@@ -44,14 +106,14 @@
       justify-content: center;
       padding: 0rem 2rem;
       .mpcHomeFloatingElement {
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         width: 100%;
         border-radius: 1.2rem;
         padding: 2rem;
-        box-shadow: 0px 0 2rem 0.8rem rgba(24, 39, 75, 0.08),
-          0rem 0 2rem 0.8rem rgba(24, 39, 75, 0.08);
+        box-shadow: var(--floatingAppPopupShadow);
         display: flex;
         align-items: center;
+        border: 1px solid var(--borderwhiteDarkLight);
 
         .mpcHFMacIconContainer {
           background-color: #e5e5e680;
@@ -83,7 +145,7 @@
       }
     }
     .section-table {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
@@ -161,14 +223,14 @@
                   align-items: center;
 
                   .replaceAddressListMobileBtn {
-                    background-color: #19191a;
-                    color: #fff;
+                    background-color: var(--black191);
+                    color: var(--cardBackgroud);
                     padding: 0.6rem 1.2rem;
                     border-radius: 0.8rem;
                   }
                   .addToAddressListMobileBtn {
-                    background-color: #f2f2f2;
-                    color: #19191a;
+                    background-color: var(--primaryBackgroud);
+                    color: var(--black191);
                     padding: 0.6rem 1.2rem;
                     border-radius: 0.8rem;
                     margin-right: 1rem;
@@ -352,7 +414,7 @@
           
           .balance-sheet-card-credit-title {
             margin-right: 0.8rem;
-            color: #636467;
+            color: var(--secondaryDarkTextColor);
           }
           .balance-sheet-card-credit-amount {
             margin-right: 0.8rem;
@@ -549,6 +611,20 @@
         .chain-card-child {
           .portfolioNetworksText {
             color: var(--sidebarTextColor);
+          }
+        }
+      }
+      .fillter_tabs_section {
+        .custom-dropdown {
+          background-color: rgba(229, 229, 230, 0.5);
+
+          .dropdown-footer {
+            .dropdown-btn {
+              &:hover {
+                background-color: unset !important;
+                color: unset !important;
+              }
+            }
           }
         }
       }

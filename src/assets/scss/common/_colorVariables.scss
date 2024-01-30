@@ -104,6 +104,10 @@
 
   //pagination
   --paginationInputBg:white;
+
+  //mobile
+  --floatingAppPopupShadow:0px 0 2rem 0.8rem rgba(24, 39, 75, 0.08),
+  0rem 0 2rem 0.8rem rgba(24, 39, 75, 0.08);
 }
 [data-theme="dark"] {
   // UPDATED
@@ -209,4 +213,7 @@
 
   //pagination
   --paginationInputBg:#101010;
+
+  //mobile
+  --floatingAppPopupShadow:none;
 }
