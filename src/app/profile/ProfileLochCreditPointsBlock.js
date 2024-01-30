@@ -40,7 +40,7 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
                 {this.props.earnPoints === 1 ? "" : "s"}
               </span>
             </div>
-            {!this.props.isDone ? (
+            {!(this.props.isDone || this.props.hideGoBtn) ? (
               <div
                 onClick={this.props.onClick}
                 className="profileLochCreditPointsBlockInfoBlockDescGoContainer"

@@ -1482,10 +1482,14 @@ class NewWelcomeMobile extends BaseReactComponent {
                       gap: "8px",
                     }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      alt=""
+                      className="new-homepage__body-trending-address-icon"
+                    />
                     <div
                       style={{
-                        color: "#19191A",
+                        color: "var(--black191)",
                         fontSize: "16px",
                         fontWeight: "500",
                       }}

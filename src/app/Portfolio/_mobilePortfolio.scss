@@ -1,5 +1,6 @@
 .mobilePortfolioContainer {
-  height: 100vh;
+  // height: 100vh;
+  background-color: var(--primaryBackground);
   width: 100vw;
   position: absolute;
   left: 0;
@@ -39,6 +40,33 @@
       min-width: 10rem !important;
     }
   }
+  .custom-dropdown {
+    margin-right: 0px !important;
+    padding-left: 5px;
+
+    .show {
+      margin-left: -5px;
+    }
+    .placeholderPriceDropdown {
+      justify-content: center;
+      gap: 4px;
+    }
+    .placeholder {
+      gap: 4px;
+      svg {
+        right: auto;
+        position: static;
+      }
+    }
+  }
+
+  .padding-mb-2 {
+    padding-left: 2px !important;
+  }
+
+  .placeholderPriceDropdown {
+    min-width: 100% !important;
+  }
 
   .asset-mobile-table {
     .table-wrapper-mobile-y-scroll {
@@ -77,6 +105,37 @@
     }
   }
 
+  .transaction-table-mobile-search {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 10px;
+    gap: 10px;
+    border: 1px solid #d4d4d4;
+    background-color: white;
+    border-radius: 8px;
+    .search-icon {
+    }
+
+    .search-input {
+      width: 100%;
+      // box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 10px 0px rgba(0, 0, 0, 0.04);
+      border: none;
+      outline: none;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #19191a;
+      background-color: transparent;
+      &::placeholder {
+        color: #b0b1b3;
+      }
+      &:focus {
+        .transaction-table-mobile-search {
+          border: 1px solid black;
+        }
+      }
+    }
+  }
   .mpLoadingContainer {
     display: flex;
     align-items: center;
@@ -150,7 +209,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: white;
+      background-color: var(--cardBackgroud);
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
         0px 1px 1px rgba(0, 0, 0, 0.04);
 
@@ -171,7 +230,7 @@
           // transform: translateY(-31px);
           flex: 1;
           padding: 0rem;
-          background-color: white;
+          background-color: var(--cardBackgroud);
           padding-left: 0.5rem;
           padding-right: 2rem;
           font-size: 16px;
@@ -267,6 +326,7 @@
       flex: 1;
       padding: 2rem;
       padding-bottom: 0;
+      background-color: var(--primaryBackgroud);
       display: flex;
       flex-direction: column;
       .mobileFooterContainer {
@@ -276,7 +336,7 @@
         justify-content: flex-end;
       }
       .accountsAmountContainer {
-        background-color: #e5e5e6;
+        background-color: var(--currenyConvertorBorder);
         padding: 1.6rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.8rem;
@@ -307,7 +367,7 @@
         }
       }
       .balance-sheet-card {
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
           0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
         border-radius: 12px;
@@ -342,13 +402,14 @@
             justify-content: flex-start;
             &:hover {
               .defiMenu {
-                filter: opacity(1);
+                filter: var(--invertColor);
               }
+              
               .balance-sheet-card-credit-title {
-                color: #000000;
+                color: var(--black191);
               }
               .balance-sheet-card-credit-amount {
-                color: #000000;
+                color: var(--black191);
               }
             }
           }
@@ -358,6 +419,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
+              
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -377,13 +439,14 @@
             justify-content: flex-end;
             &:hover {
               .defiMenu {
-                filter: opacity(1);
+                filter: var(--invertColor);
               }
+              
               .balance-sheet-card-credit-title {
-                color: #000000;
+                color: var(--black191);
               }
               .balance-sheet-card-credit-amount {
-                color: #000000;
+                color: var(--black191);
               }
             }
           }
@@ -393,6 +456,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
+              
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -401,6 +465,7 @@
               }
             }
           }
+          
           .balance-sheet-card-credit-title {
             margin-right: 0.8rem;
             color: #636467;
@@ -409,11 +474,12 @@
             margin-right: 0.8rem;
             color: #b0b1b3;
           }
+          
           .balance-sheet-card-credit-title-selected {
-            color: #000000;
+            color: var(--black191);
           }
           .balance-sheet-card-credit-amount-selected {
-            color: #000000;
+            color: var(--black191);
           }
         }
 
@@ -495,7 +561,7 @@
             color: #636467;
           }
         }
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
           0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
         border-radius: 12px;
@@ -509,11 +575,11 @@
         transition-duration: 300ms;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .chain-card-child {
             .portfolioNetworksText {
-              color: #000000;
+              color: var(--primaryTextColor);
             }
           }
         }
@@ -522,7 +588,7 @@
           // margin-top: 1rem;
           position: absolute;
           top: 4.3rem;
-          background-color: #ffffff;
+          background-color: var(--cardBackgroud);
           left: 0;
           box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
             0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -565,6 +631,7 @@
               position: relative;
               margin-right: 1rem;
               z-index: 1;
+              filter: var(--invertColor);
             }
 
             .chain-list-amt {
@@ -586,7 +653,7 @@
           }
           .chain-card-child {
             .portfolioNetworksText {
-              color: #636467;
+              color: var(--sidebarTextColor);
             }
           }
         }
@@ -597,7 +664,7 @@
         }
         .chain-card-child {
           .portfolioNetworksText {
-            color: #000000;
+            color: var(--sidebarTextColor);
           }
         }
       }
@@ -618,14 +685,14 @@
     }
   }
 
-  .homepage-mobile-view-more{
+  .homepage-mobile-view-more {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #7C7D81;
+    color: #7c7d81;
     font-size: 14px;
     font-weight: 600;
-    img{
+    img {
       width: 7px;
       height: 14px;
     }

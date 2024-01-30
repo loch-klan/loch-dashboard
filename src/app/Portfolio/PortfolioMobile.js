@@ -10,7 +10,7 @@ import {
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -559,22 +559,7 @@ class PortfolioMobile extends BaseReactComponent {
         tempCond.push(tempEle);
       }
     });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
-      : [];
-    this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
-    });
-    let address = arr?.map((wallet) => {
-      return wallet.address;
-    });
-    tempCond = [
-      ...tempCond,
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-    ];
+
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
@@ -1192,6 +1177,144 @@ class PortfolioMobile extends BaseReactComponent {
       isNftLoading: false,
     });
   };
+  addConditionTransactionTable = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
+    }
+    let index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.conditionTransHistory];
+    let search_index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      conditionTransHistory: arr,
+    });
+  };
+  onKeyPressTransHistorySearch = (curKey) => {
+    if (curKey && curKey.code && curKey.code === "Enter") {
+      this.addConditionTransactionTable(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched: this.state.search,
+      });
+    }
+  };
+  onChangeTransHistorySearchMethod = (ele) => {
+    this.setState({
+      search: ele.target.value,
+    });
+  };
+  handleNetworkSelectTransHistory = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addConditionTransactionTable(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmountTransHistory: min,
+          maxAmountTransHistory: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addConditionTransactionTable(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
+    }
+  };
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -1294,7 +1417,7 @@ class PortfolioMobile extends BaseReactComponent {
               onClick={() => {
                 this.toggleAgeTimestamp();
               }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
+              className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
               style={{
                 textDecoration: "underline",
               }}
@@ -1346,7 +1469,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1584,7 +1707,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1820,7 +1943,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1868,7 +1991,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1912,7 +2035,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -2003,7 +2126,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -2052,7 +2175,10 @@ class PortfolioMobile extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
                 src={sortByIcon}
@@ -2094,7 +2220,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -2169,7 +2295,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Asset"
             // onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
           </div>
@@ -2216,7 +2342,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Average Cost Price"
             // onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
           </div>
@@ -2263,7 +2389,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Price"
             // onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
           </div>
@@ -2310,7 +2436,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Amount"
             // onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 gsecondaryDarkText">
               Amount
             </span>
           </div>
@@ -2353,7 +2479,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Cost Basis"
             // onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
           </div>
@@ -2434,7 +2560,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Value"
             // onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
           </div>
@@ -2515,7 +2641,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gainamount"
             // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
           </div>
@@ -2626,7 +2752,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
           </div>
@@ -2736,7 +2862,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
           </div>
@@ -2838,7 +2964,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch">
+            <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{
@@ -3271,6 +3397,7 @@ class PortfolioMobile extends BaseReactComponent {
                   )}
                 </div>
               ) : null}
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3372,6 +3499,10 @@ const mapDispatchToProps = {
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
+  getFilters,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,

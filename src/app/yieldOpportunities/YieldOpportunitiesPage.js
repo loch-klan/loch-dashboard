@@ -730,7 +730,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -745,8 +745,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         coumnWidth: 0.16,
         isCell: true,
         className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
+        headerClassName: "yeildOppYourPortfolioContainer top-l-r-3",
+        cell: (rowData, dataKey, index) => {
           if (dataKey === "asset") {
             return (
               <CoinChip
@@ -765,7 +765,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="usdValue"
             onClick={() => this.handleTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Value
             </span>
             <Image
@@ -820,7 +820,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="project"
             onClick={() => this.handleTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Project
             </span>
             <Image
@@ -851,7 +851,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="pool"
             onClick={() => this.handleTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Pool
             </span>
             <Image
@@ -882,7 +882,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="tvl"
             onClick={() => this.handleTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               TVL
             </span>
             <Image
@@ -934,7 +934,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             id="apy"
             onClick={() => this.handleTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               APY
             </span>
             <Image
@@ -1071,7 +1071,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
                   {/* {fillter_tabs} */}
                   <Col md={4}>
-                    <div className="searchBar">
+                    <div className="searchBar input-noshadow-dark">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
                         valueLink={this.linkState(
@@ -1096,7 +1096,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 </Row>
               </Form>
             </div>
-            <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 grey-4F4">
+            <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 secondaryDarkTextColor">
               <div className="yeildOppTitleItems yeildOppTitleLeft">
                 Your portfolio
               </div>
@@ -1104,7 +1104,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 Yield opportunities
               </div>
             </div>
-            <div className="transaction-history-table">
+            <div className="transaction-history-table transaction-history-table-yield-opportunity">
               {this.state.tableLoading ? (
                 <div className="loadingSizeContainer">
                   <Loading />

@@ -103,6 +103,9 @@ class EditWalletModal extends BaseReactComponent {
   };
 
   handleDelete = () => {
+    if (this.props.onHide) {
+      this.props.onHide(true);
+    }
     const walletType = this.state.walletNameList.find(
       (e) => e.id === this.state.walletName
     );
@@ -225,7 +228,7 @@ class EditWalletModal extends BaseReactComponent {
                   : "day"
               } ago`}</p>
               <div className="m-b-32 coinchips">{chips}</div>
-              <div className="edit-form">
+              <div className="edit-form input-noshadow-dark">
                 <FormElement
                   valueLink={this.linkState(this, "displayAddress")}
                   label="Wallet Address"
@@ -257,7 +260,10 @@ class EditWalletModal extends BaseReactComponent {
                   >
                     Delete wallet
                   </Button>
-                  <Button className="primary-btn" type="submit">
+                  <Button
+                    className="primary-btn main-button-invert"
+                    type="submit"
+                  >
                     Save changes
                   </Button>
                 </div>
@@ -272,6 +278,7 @@ class EditWalletModal extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   updateWalletApi,

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import PageHeader from "../common/PageHeader.js";
 import { getAllCoins } from "../onboarding/Api.js";
 
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
@@ -52,6 +52,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   ExportIconWhite,
+  RemarksDownArrowIcon,
 } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
@@ -79,6 +80,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openRemarksBlock: -1,
       Average_cost_basis_local: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
@@ -257,7 +259,9 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.props.updateWalletListFlag("assetsPage", true);
 
       this.props.getAllCoins();
-
+      this.setState({
+        openRemarksBlock: -1,
+      });
       this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
@@ -538,7 +542,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: "",
         dataKey: "Numbering",
-        coumnWidth: 0.05,
+        coumnWidth: 0.066,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -565,7 +569,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Asset"
             onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -576,7 +580,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.066,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -627,7 +631,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Average Cost Price"
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
             <Image
@@ -638,7 +642,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -684,7 +688,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Price"
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
             <Image
@@ -741,7 +745,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Amount"
             onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -794,7 +798,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Cost Basis"
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
             <Image
@@ -805,7 +809,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -853,7 +857,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Value"
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
             <Image
@@ -864,7 +868,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -912,7 +916,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
             <Image
@@ -923,7 +927,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
@@ -990,7 +994,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
             <Image
@@ -1001,7 +1005,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -1064,7 +1068,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Portfolio perc"
             onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
             <Image
@@ -1075,7 +1079,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "PortfolioPercentage",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
@@ -1112,6 +1116,80 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </span>
                   </div>
                 </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col" id="Asset">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Remarks
+            </span>
+          </div>
+        ),
+        dataKey: "Asset",
+
+        coumnWidth: 0.066,
+        isCell: true,
+        cell: (rowData, dataKey, currentIndex) => {
+          const toggleEditBlock = () => {
+            if (this.state.openRemarksBlock === currentIndex) {
+              this.setState({
+                openRemarksBlock: -1,
+              });
+            } else {
+              this.setState({
+                openRemarksBlock: currentIndex,
+              });
+            }
+          };
+          if (dataKey === "Asset") {
+            return (
+              <div className="assets-remarks-container">
+                <div
+                  onClick={toggleEditBlock}
+                  className="assets-remarks-blocks"
+                >
+                  <Image
+                    src={RemarksDownArrowIcon}
+                    className={`assets-remarks-icon ${
+                      this.state.openRemarksBlock === currentIndex
+                        ? "assets-remarks-icon-flipped"
+                        : ""
+                    }`}
+                  />
+                </div>
+                <div
+                  className={`assets-remarks-floating-block ${
+                    currentIndex === this.state.openRemarksBlock
+                      ? "show-assets-remarks-floating-block"
+                      : ""
+                  }`}
+                >
+                  <div className="assets-remarks-floating-block-items">
+                    <div className="assets-remarks-floating-block-input-container">
+                      <input
+                        placeholder="Add remark here"
+                        className="inter-display-medium assets-remarks-floating-block-input"
+                      />
+                    </div>
+                    <div className="assets-remarks-floating-block-buttons-container">
+                      <div
+                        className={`inter-display-medium assets-remarks-floating-block-buttons ml-2 assets-remarks-floating-block-buttons-dark`}
+                      >
+                        <span className="dotDotText">Update</span>
+                      </div>
+                      <div
+                        className={`inter-display-medium assets-remarks-floating-block-buttons ml-2`}
+                        onClick={toggleEditBlock}
+                      >
+                        <span className="dotDotText">Cancel</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           }

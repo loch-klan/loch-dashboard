@@ -176,6 +176,9 @@ export const deleteWallet = (ctx, data) => {
   postLoginInstance
     .post("organisation/user/delete-user-wallet", data)
     .then((res) => {
+      if (ctx.props.handleStopLoading) {
+        ctx.props.handleStopLoading();
+      }
       if (!res.data.error) {
         let walletAddress = ctx.state.walletAddress;
         let arr = JSON.parse(window.sessionStorage.getItem("addWallet"));
@@ -216,6 +219,9 @@ export const deleteWallet = (ctx, data) => {
       }
     })
     .catch((err) => {
+      if (ctx.props.handleStopLoading) {
+        ctx.props.handleStopLoading();
+      }
       console.log("deketeWallet-Api ", err);
     });
 };
@@ -244,8 +250,11 @@ export const deleteAccount = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/delete-user-account", data)
     .then((res) => {
-      // console.log(res)
+      if (ctx.props.handleStopLoading) {
+        ctx.props.handleStopLoading();
+      }
       if (!res.data.error) {
+        console.log("Account deleted?");
         ctx.props.onHide();
         ctx.props.makeApiCall();
 
@@ -255,6 +264,9 @@ export const deleteAccount = (data, ctx) => {
       }
     })
     .catch((err) => {
+      if (ctx.props.handleStopLoading) {
+        ctx.props.handleStopLoading();
+      }
       console.log("update account name", err);
     });
 };

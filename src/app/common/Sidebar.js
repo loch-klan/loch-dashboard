@@ -19,6 +19,8 @@ import {
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import {
   default as ActiveProfileIcon,
@@ -28,11 +30,11 @@ import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import ActiveHomeIcon from "../../image/HomeIcon.svg";
 import logo from "../../image/Loch.svg";
 import {
@@ -75,15 +77,17 @@ import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
+import { toast } from "react-toastify";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
-import ExitOverlay from "./ExitOverlay";
 import ConnectModal from "./ConnectModal.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
+import ExitOverlay from "./ExitOverlay";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -136,6 +140,14 @@ function Sidebar(props) {
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
     JSON.parse(window.sessionStorage.getItem("previewAddress"))
+  );
+
+  // Dark mode
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.querySelector("body").getAttribute("data-theme") &&
+      document.querySelector("body").getAttribute("data-theme") === "dark"
+      ? true
+      : false
   );
 
   React.useEffect(() => {
@@ -460,6 +472,19 @@ function Sidebar(props) {
     toast.success("Share link has been copied");
   };
 
+  const handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      setIsDarkMode(false);
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      setIsDarkMode(true);
+    }
+  };
+
   React.useEffect(() => {
     let currency = JSON.parse(window.sessionStorage.getItem("currency"));
 
@@ -640,10 +665,41 @@ function Sidebar(props) {
     <>
       <div
         style={{
-          zIndex: "99",
+          zIndex: "999",
+          // position: "relative",
         }}
-        className="sidebar-section"
+        className={`sidebar-section ${
+          props.isSidebarClosed ? "sidebar-section-closed" : ""
+        }`}
       >
+        {isDarkMode ? (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={lightModeIcon} />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+          </span>
+        ) : (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={darkModeIcon} />
+            <span />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+          </span>
+        )}
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
@@ -655,7 +711,24 @@ function Sidebar(props) {
                 width: "100%",
               }}
             >
-              <div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={(e) => {
+                  let tempToken = getToken();
+                  if (tempToken === "jsk") {
+                    return null;
+                  }
+                  if (!isWallet) {
+                    e.preventDefault();
+                  } else {
+                    HomeMenu({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }
+                  props.history.push("/home");
+                }}
+              >
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
               </div>
@@ -783,7 +856,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -822,6 +894,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+
                         <li>
                           <CustomOverlay
                             position="top"
@@ -846,11 +919,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                             </NavLink>
                           </CustomOverlay>
@@ -955,7 +1024,7 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isSubmenu.me && (
+                      {isSubmenu?.me && (
                         <>
                           <li>
                             <NavLink
@@ -1080,11 +1149,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                               NFTs
                             </NavLink>
@@ -1134,6 +1199,7 @@ function Sidebar(props) {
                           Feedback
                         </NavLink>
                       </li>
+
                       {/* <li>
                         <NavLink
                           exact={true}s
@@ -1178,7 +1244,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content-closed">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1263,7 +1329,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content">
-                    {!isSubmenu.discover && (
+                    {!isSubmenu?.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1345,6 +1411,30 @@ function Sidebar(props) {
                       </div>
                       <div>Follow us</div>
                     </div>
+                    {/* <div className="sidebar-footer-button-holder">
+                      {isDarkMode ? (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={lightModeIcon} />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Light Mode
+                          </Button>
+                        </span>
+                      ) : (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={darkModeIcon} />
+                          <span />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Dark Mode
+                          </Button>
+                        </span>
+                      )}
+                    </div> */}
 
                     <div
                       className="m-b-12 footer-divOne"
