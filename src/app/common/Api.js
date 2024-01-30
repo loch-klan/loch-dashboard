@@ -211,6 +211,12 @@ export const updateUserWalletApi = (
               // const allChains = getState().OnboardingState.coinsList;
             })
             .catch((err) => {});
+          postLoginInstance
+            .post("wallet/user-wallet/add-nfts", yieldData)
+            .then(() => {
+              // const allChains = getState().OnboardingState.coinsList;
+            })
+            .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
           if (ctx.hideTheTopBarHistoryItems) {

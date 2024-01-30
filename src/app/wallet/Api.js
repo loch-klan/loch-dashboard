@@ -45,6 +45,12 @@ export const getAllWalletListApi = (data, ctx) => {
               .catch(() => {
                 console.log("Issue here");
               });
+            postLoginInstance
+              .post("wallet/user-wallet/add-nfts", yieldData)
+              .then(() => {})
+              .catch(() => {
+                console.log("Issue here");
+              });
           }
           dispatch(getAllWalletList({ walletdata, totalWalletAmt }));
           ctx.setState({

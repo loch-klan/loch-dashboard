@@ -114,13 +114,14 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import chevronRight from "./../../assets/images/icons/chevron-right.svg";
+import NftMobileBlock from "../nft/NftMobileBlock.js";
+import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
-import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
-import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
-import chevronRight from "./../../assets/images/icons/chevron-right.svg";
-import NftMobileBlock from "../nft/NftMobileBlock.js";
+import { getNFT } from "../nft/NftApi.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -130,6 +131,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      nftSort: [],
       disableAddBtn: false,
       addButtonVisible: false,
       walletInput: [
@@ -206,43 +208,8 @@ class PortfolioMobile extends BaseReactComponent {
           up: false,
         },
       ],
-      nftTableData: [
-        {
-          holding: "2",
-          collection: "Pudgy Penguins",
-          imgs: [NftDummy, NftDummy],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-        {
-          holding: "7",
-          collection: "Bored Apes",
-          imgs: [
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-          ],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-        {
-          holding: "4",
-          collection: "Yacht Club",
-          imgs: [NftDummy, NftDummy, NftDummy, NftDummy],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-      ],
+      nftTableData: [],
+      isNftLoading: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
@@ -410,6 +377,9 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
+    if (!this.props.commonState?.nftPage) {
+      this.callNftApi();
+    }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
       this.callApiTransHistory(page);
@@ -490,6 +460,19 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    if (
+      this.props.NFTState &&
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts?.length > 0 &&
+      this.props.commonState.nftPage
+    ) {
+      this.setState({
+        nftTableData: this.props.NFTState?.nfts,
+        isNftLoading: false,
+      });
+    } else {
+      this.callNftApi();
+    }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
       let tempcombinedCurrentValue = 0;
@@ -578,22 +561,6 @@ class PortfolioMobile extends BaseReactComponent {
     });
 
     this.setState({ tableLoading: true });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
-      : [];
-    let address = arr?.map((wallet) => {
-      return wallet.address;
-    });
-    let condition = [
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-      { key: SEARCH_BY_NOT_DUST, value: true },
-    ];
-    this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
-    });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(tempCond));
@@ -709,6 +676,144 @@ class PortfolioMobile extends BaseReactComponent {
       window.location.replace(shareLink);
     } else {
       window.open(shareLink, "_self");
+    }
+  };
+  addConditionTransactionTable = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
+    }
+    let index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.conditionTransHistory];
+    let search_index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      conditionTransHistory: arr,
+    });
+  };
+  onKeyPressTransHistorySearch = (curKey) => {
+    if (curKey && curKey.code && curKey.code === "Enter") {
+      this.addConditionTransactionTable(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched: this.state.search,
+      });
+    }
+  };
+  onChangeTransHistorySearchMethod = (ele) => {
+    this.setState({
+      search: ele.target.value,
+    });
+  };
+  handleNetworkSelectTransHistory = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addConditionTransactionTable(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmountTransHistory: min,
+          maxAmountTransHistory: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addConditionTransactionTable(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
     }
   };
   handleSetCoin = (data) => {
@@ -1022,6 +1127,56 @@ class PortfolioMobile extends BaseReactComponent {
   };
   cancelAddingWallet = () => {};
   resetCreditPoints = () => {};
+  callNftApi = (page = START_INDEX) => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      isLoadingNft: true,
+    });
+
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let arr = [];
+    let addressList = [];
+    if (addWalletList && addWalletList.length > 0) {
+      for (let i = 0; i < addWalletList.length; i++) {
+        let curr = addWalletList[i];
+        let isIncluded = false;
+
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          arr.push(curr.address?.trim());
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      }
+    }
+    let tempNFTData = new URLSearchParams();
+
+    tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    let isDefault = false;
+    if (this.state.nftSort.length === 0) {
+      isDefault = true;
+    }
+
+    this.props.getNFT(tempNFTData, this, isDefault);
+  };
+  setLocalNftData = (data) => {
+    this.setState({
+      nftTableData: data.nfts,
+      isNftLoading: false,
+    });
+  };
   addConditionTransactionTable = (key, value) => {
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
@@ -3012,7 +3167,7 @@ class PortfolioMobile extends BaseReactComponent {
                       // });
                     }
                   }}
-                  message=" "
+                  message="No assets found"
                   subTitle=""
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
@@ -3200,7 +3355,13 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
 
-              <div className="section-table section-table-mobile-scroll">
+              <div
+                className={`section-table section-table-mobile-scroll ${
+                  tableDataTransaction.length > 0
+                    ? "tableWatermarkOverlayCounterParty"
+                    : ""
+                }`}
+              >
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
@@ -3259,28 +3420,39 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
               <div style={{ marginTop: "16px" }}>
-                <div className="nft-page-mobile">
+                {this.state.isNftLoading ? (
                   <div
-                    className="mobileSmartMoneyListContainer"
-                    style={{ padding: "0px" }}
+                    style={{
+                      height: "45vh",
+                    }}
                   >
-                    {this.state.nftTableData.map((mapData, index) => {
-                      return (
-                        <NftMobileBlock
-                          data={mapData}
-                          style={{
-                            marginBottom:
-                              index === this.state.nftTableData.length - 1
-                                ? "0px"
-                                : "1.5rem",
-                          }}
-                        />
-                      );
-                    })}
+                    <div className="mpLoadingContainer">
+                      <Loading />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="nft-page-mobile">
+                    <div
+                      className="mobileSmartMoneyListContainer"
+                      style={{ padding: "0px" }}
+                    >
+                      {this.state.nftTableData.map((mapData, index) => {
+                        return (
+                          <NftMobileBlock
+                            data={mapData}
+                            style={{
+                              marginBottom:
+                                index === this.state.nftTableData.length - 1
+                                  ? "0px"
+                                  : "1.5rem",
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
-
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
@@ -3300,6 +3472,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   defiState: state.DefiState,
+  NFTState: state.NFTState,
 });
 const mapDispatchToProps = {
   detectCoin,
@@ -3322,6 +3495,10 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   // avg cost
   getAvgCostBasis,
+  getFilters,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
@@ -3332,6 +3509,7 @@ const mapDispatchToProps = {
   getDetectedChainsApi,
   GetAllPlan,
   getUser,
+  getNFT,
 };
 PortfolioMobile.propTypes = {};
 
