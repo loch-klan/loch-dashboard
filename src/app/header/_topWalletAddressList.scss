@@ -233,7 +233,7 @@
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     .topWalletAddressListFollowShareParent {
       display: flex;
       align-items: center;
@@ -272,6 +272,7 @@
       align-items: center;
       user-select: none;
       width: max-content;
+      margin-left: 1rem;
 
       img {
         position: relative;
