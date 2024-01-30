@@ -208,7 +208,7 @@ class PortfolioMobile extends BaseReactComponent {
       ],
       nftTableData: [
         {
-          holding: "3",
+          holding: "2",
           collection: "Pudgy Penguins",
           imgs: [NftDummy, NftDummy],
           total_spent: 10,
@@ -217,7 +217,7 @@ class PortfolioMobile extends BaseReactComponent {
           volume: 100,
         },
         {
-          holding: "3",
+          holding: "7",
           collection: "Bored Apes",
           imgs: [
             NftDummy,
@@ -234,18 +234,9 @@ class PortfolioMobile extends BaseReactComponent {
           volume: 100,
         },
         {
-          holding: "3",
-          collection: "Pudgy Penguins",
-          imgs: [NftDummy],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-        {
-          holding: "3",
-          collection: "Pudgy Penguins",
-          imgs: [NftDummy, NftDummy, NftDummy],
+          holding: "4",
+          collection: "Yacht Club",
+          imgs: [NftDummy, NftDummy, NftDummy, NftDummy],
           total_spent: 10,
           max_price: 12,
           avg_price: 10,

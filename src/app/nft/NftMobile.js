@@ -1,15 +1,19 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
+
+import { BaseReactComponent } from "../../utils/form";
+import Loading from "../common/Loading";
 import {
   BlackManIcon,
   GreyManIcon,
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
+  ShareProfileIcon,
 } from "../../assets/images/icons";
-import { BaseReactComponent } from "../../utils/form";
-import Loading from "../common/Loading";
+import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
 import NftMobileBlock from "./NftMobileBlock";
 import NftMobileHeader from "./NftMobileHeader";
 import "./_nft.scss";
@@ -115,7 +119,7 @@ class NFTMobile extends BaseReactComponent {
                       </div>
                     </div> */}
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                  {/* <div className="mobileSmartMoneyBtnSignInBottomBtns">
                     <div
                       onClick={this.showFaqModal}
                       className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -192,7 +196,7 @@ class NFTMobile extends BaseReactComponent {
                         Add address
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 <>
@@ -228,7 +232,7 @@ class NFTMobile extends BaseReactComponent {
                       </div>
                     </div>
                   </div>
-                  <div className="mobileSmartMoneyBtnSignInBottomBtns">
+                  {/* <div className="mobileSmartMoneyBtnSignInBottomBtns">
                     <div
                       //   onClick={this.showFaqModal}
                       className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
@@ -284,7 +288,7 @@ class NFTMobile extends BaseReactComponent {
                         How it works
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
