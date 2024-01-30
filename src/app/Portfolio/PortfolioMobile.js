@@ -121,6 +121,7 @@ import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
+import { getNFT } from "../nft/NftApi.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -130,6 +131,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      nftSort: [],
       disableAddBtn: false,
       addButtonVisible: false,
       walletInput: [
@@ -206,43 +208,8 @@ class PortfolioMobile extends BaseReactComponent {
           up: false,
         },
       ],
-      nftTableData: [
-        {
-          holding: "2",
-          collection: "Pudgy Penguins",
-          imgs: [NftDummy, NftDummy],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-        {
-          holding: "7",
-          collection: "Bored Apes",
-          imgs: [
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-            NftDummy,
-          ],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-        {
-          holding: "4",
-          collection: "Yacht Club",
-          imgs: [NftDummy, NftDummy, NftDummy, NftDummy],
-          total_spent: 10,
-          max_price: 12,
-          avg_price: 10,
-          volume: 100,
-        },
-      ],
+      nftTableData: [],
+      isNftLoading: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
@@ -410,6 +377,9 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
+    if (!this.props.commonState?.nftPage) {
+      this.callNftApi();
+    }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
       this.callApiTransHistory(page);
@@ -490,6 +460,19 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    if (
+      this.props.NFTState &&
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts?.length > 0 &&
+      this.props.commonState.nftPage
+    ) {
+      this.setState({
+        nftTableData: this.props.NFTState?.nfts,
+        isNftLoading: false,
+      });
+    } else {
+      this.callNftApi();
+    }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
       let tempcombinedCurrentValue = 0;
@@ -1159,6 +1142,56 @@ class PortfolioMobile extends BaseReactComponent {
   };
   cancelAddingWallet = () => {};
   resetCreditPoints = () => {};
+  callNftApi = (page = START_INDEX) => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      isLoadingNft: true,
+    });
+
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let arr = [];
+    let addressList = [];
+    if (addWalletList && addWalletList.length > 0) {
+      for (let i = 0; i < addWalletList.length; i++) {
+        let curr = addWalletList[i];
+        let isIncluded = false;
+
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          arr.push(curr.address?.trim());
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      }
+    }
+    let tempNFTData = new URLSearchParams();
+
+    tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    let isDefault = false;
+    if (this.state.nftSort.length === 0) {
+      isDefault = true;
+    }
+
+    this.props.getNFT(tempNFTData, this, isDefault);
+  };
+  setLocalNftData = (data) => {
+    this.setState({
+      nftTableData: data.nfts,
+      isNftLoading: false,
+    });
+  };
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -3260,26 +3293,38 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
               <div style={{ marginTop: "16px" }}>
-                <div className="nft-page-mobile">
+                {this.state.isNftLoading ? (
                   <div
-                    className="mobileSmartMoneyListContainer"
-                    style={{ padding: "0px" }}
+                    style={{
+                      height: "45vh",
+                    }}
                   >
-                    {this.state.nftTableData.map((mapData, index) => {
-                      return (
-                        <NftMobileBlock
-                          data={mapData}
-                          style={{
-                            marginBottom:
-                              index === this.state.nftTableData.length - 1
-                                ? "0px"
-                                : "1.5rem",
-                          }}
-                        />
-                      );
-                    })}
+                    <div className="mpLoadingContainer">
+                      <Loading />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="nft-page-mobile">
+                    <div
+                      className="mobileSmartMoneyListContainer"
+                      style={{ padding: "0px" }}
+                    >
+                      {this.state.nftTableData.map((mapData, index) => {
+                        return (
+                          <NftMobileBlock
+                            data={mapData}
+                            style={{
+                              marginBottom:
+                                index === this.state.nftTableData.length - 1
+                                  ? "0px"
+                                  : "1.5rem",
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="mobileFooterContainer">
                 <div>
@@ -3300,6 +3345,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   defiState: state.DefiState,
+  NFTState: state.NFTState,
 });
 const mapDispatchToProps = {
   detectCoin,
@@ -3332,6 +3378,7 @@ const mapDispatchToProps = {
   getDetectedChainsApi,
   GetAllPlan,
   getUser,
+  getNFT,
 };
 PortfolioMobile.propTypes = {};
 

@@ -34,7 +34,7 @@ const NftMobileBlock = ({ data, style }) => {
             justifyContent: "center",
           }}
         >
-          {data.imgs.slice(0, 3).map((item, index) => {
+          {/* {data.imgs?.slice(0, 3).map((item, index) => {
             return (
               <img
                 src={item}
@@ -43,8 +43,8 @@ const NftMobileBlock = ({ data, style }) => {
                 style={{ width: "20px", height: "20px" }}
               />
             );
-          })}
-          {data.imgs.length > 3 ? (
+          })} */}
+          {/* {data.imgs.length > 3 ? (
             <span
               style={{
                 fontSize: "12px",
@@ -55,7 +55,7 @@ const NftMobileBlock = ({ data, style }) => {
             >
               {data.imgs.length - 3}+
             </span>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
       <div className="msmbBody">

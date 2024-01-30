@@ -2,18 +2,9 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 
+import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
 import { BaseReactComponent } from "../../utils/form";
 import Loading from "../common/Loading";
-import {
-  BlackManIcon,
-  GreyManIcon,
-  InfoCircleSmartMoneyIcon,
-  PlusCircleSmartMoneyIcon,
-  QuestionmarkCircleSmartMoneyIcon,
-  ShareProfileIcon,
-} from "../../assets/images/icons";
-import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock";
-import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
 import NftMobileBlock from "./NftMobileBlock";
 import NftMobileHeader from "./NftMobileHeader";
 import "./_nft.scss";
