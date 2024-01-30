@@ -8,7 +8,8 @@
   margin-bottom: 1.5rem;
   //Left
   .topWalletAddressListDropdownContainer {
-    border-radius: 15px;
+    width: 50%;
+    padding-right: 1.6rem;
     .topbar-btn {
       background-color: var(--primaryFilter);
       border: 0.1rem solid var(--greyE5e);
@@ -229,11 +230,49 @@
   .topWalletAddressListFollowShareContainer {
     display: flex;
     align-items: center;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .topWalletAddressListFollowShareParent {
+      display: flex;
+      align-items: center;
+    }
+    .topWalletAddressListStreakBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #5f33ff0d;
+      border: 0.1rem solid transparent;
+      height: 4.5rem;
+      border-radius: 1rem;
+      font-size: 13px;
+      .topWalletAddressListStreakBtnIcon {
+        height: 14px;
+        margin-right: 0.8rem;
+      }
+      .topWalletAddressListStreakBtnText {
+        color: #5f33ff;
+        font-weight: 500;
+      }
+      .topWalletAddressListStreakMiddleMargin {
+        margin: 0rem 0.3rem;
+      }
+      .topWalletAddressListStreakSubtextBtnText {
+        color: #7c7d81;
+      }
+      cursor: pointer;
+      padding: 0rem 1rem;
+      &:hover {
+        background-color: #5f33ff27 !important;
+      }
+    }
     .refresh-btn {
       display: flex;
       align-items: center;
       user-select: none;
       width: max-content;
+      margin-left: 1rem;
 
       img {
         position: relative;

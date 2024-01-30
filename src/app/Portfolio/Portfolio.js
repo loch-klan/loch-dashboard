@@ -4127,7 +4127,6 @@ class Portfolio extends BaseReactComponent {
           tableDataCostBasis={tableDataCostBasis}
           AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
-          apiResponse={(e) => this.CheckApiResponse(e)}
         />
       );
     }
@@ -4249,7 +4248,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4283,7 +4282,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4319,8 +4318,7 @@ class Portfolio extends BaseReactComponent {
                               isArrow={true}
                               isLoading={this.state.AvgCostLoading}
                               isAnalytics="average cost basis"
-                              // addWatermark
-                              fakeWatermark
+                              addWatermark
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4396,7 +4394,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4428,7 +4426,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4462,7 +4460,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4528,7 +4526,6 @@ class Portfolio extends BaseReactComponent {
                             style={{
                               position: "relative",
                             }}
-                            className="tableWatermarkOverlay"
                           >
                             <div
                               style={{
@@ -4561,7 +4558,6 @@ class Portfolio extends BaseReactComponent {
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
-                              floatingWatermark
                             />
                           </div>
                         ) : this.state.blockTwoSelectedItem === 3 ? (
@@ -4605,15 +4601,14 @@ class Portfolio extends BaseReactComponent {
                                 this.state.homeCounterpartyVolumeData &&
                                 this.state.homeCounterpartyVolumeData[2]
                               }
-                              digit={this.state.counterGraphDigit}
                               isScrollVisible={false}
                               isScroll={true}
+                              digit={this.state.counterGraphDigit}
                               isLoading={this.state.counterGraphLoading}
                               oldBar
                               noSubtitleBottomPadding
                               newHomeSetup
                               noSubtitleTopPadding
-                              floatingWatermark
                             />
                           </div>
                         ) : null}
@@ -4668,7 +4663,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4702,7 +4697,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4812,7 +4807,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4846,7 +4841,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4879,7 +4874,7 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon info-icon-home"
+                                className="infoIcon"
                                 style={{
                                   cursor: "pointer",
                                   height: "14px",
@@ -4922,9 +4917,7 @@ class Portfolio extends BaseReactComponent {
                               headerHeight={60}
                               isArrow={true}
                               isLoading={this.state.tableLoading}
-                              watermarkOnTop
-                              // addWatermark
-                              fakeWatermark
+                              addWatermark
                             />
                           </div>
                           {!this.state.tableLoading ? (

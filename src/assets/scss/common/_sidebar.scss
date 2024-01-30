@@ -283,18 +283,17 @@
   background-color: var(--sidebarBackgroud);
   width: 27.2rem;
 
-  .navbar-button-container-mode{
+  .navbar-button-container-mode {
     position: absolute;
     top: 34px;
     right: -10px;
-    img{
+    img {
       height: 20px;
       width: 20px;
     }
     cursor: pointer;
-    &:hover{
+    &:hover {
       filter: var(--hoverBrightnessValue);
-    
     }
   }
   .container {
@@ -340,7 +339,13 @@
         margin-right: 1rem;
       }
       .loch-text {
-        @include font(var(--primaryTextColor), "Inter-Medium", 2.4rem, 500, 24px);
+        @include font(
+          var(--primaryTextColor),
+          "Inter-Medium",
+          2.4rem,
+          500,
+          24px
+        );
         vertical-align: middle;
       }
 
@@ -367,7 +372,13 @@
           border: 1px solid transparent;
           padding: 1.2rem;
           border-radius: 8px;
-          @include font(var(--secondaryTextColor), "Inter-SemiBold", 1rem, 600, 12px);
+          @include font(
+            var(--secondaryTextColor),
+            "Inter-SemiBold",
+            1rem,
+            600,
+            12px
+          );
           &:focus {
             border: 1px solid var(--currenyConvertorText);
           }
@@ -578,6 +589,7 @@
 
             margin-bottom: 1rem;
             .nav-link {
+              border-radius: 1.2rem;
               font-family: "Inter-Medium";
               color: var(--sidebarTextColor);
               font-size: 1.3rem;
@@ -612,9 +624,19 @@
               }
 
               &:hover {
-                box-shadow: var(--sidebarHoverShadow);
+                box-shadow: 0px 8px 28px -6px var(--primaryBoxShadowColor),
+                  0px 18px 88px -4px var(--primaryBoxShadowColor);
                 border-radius: 1.2rem;
-                background-color: var(--sidebarHoverLink);
+                box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+                  0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                  background-color: var(--sidebarHoverLink);
+              }
+            }
+            .nav-link-streak {
+              background-color: #5f33ff0d !important;
+              &:hover {
+                box-shadow: none !important;
+                background-color: #5f33ff27 !important;
               }
             }
 
@@ -637,7 +659,7 @@
               color: var(--primaryTextColor);
               font-size: 1.3rem;
               font-weight: 500;
-              img{
+              img {
                 filter: var(--invertColor) !important;
               }
               &:hover {
@@ -829,7 +851,7 @@
 
           &:hover {
             background-color: #f6f6f7;
-            .sidebar-footer-toggle-image{
+            .sidebar-footer-toggle-image {
               filter: invert(0);
             }
           }
@@ -935,18 +957,18 @@
           0px 1px 1px rgba(0, 0, 0, 0.04);
         background-color: var(--primaryFilter);
         border: 0.1rem solid var(--primaryFilter);
-        .sideBarFooterSignInIcon{
-          filter:var(--invertColor)
+        .sideBarFooterSignInIcon {
+          filter: var(--invertColor);
         }
         &:hover {
           box-shadow: none;
           background-color: var(--backColor);
-      color: var(--sameModeColor);
+          color: var(--sameModeColor);
           .sideBarFooterSignInIconContainer {
             // background-color: white;
             border: 1.3px var(--sameModeColor) solid;
             background-color: var(--primaryTextColor);
-            .sideBarFooterSignInIcon{
+            .sideBarFooterSignInIcon {
               filter: var(--hoverBrightnessValueInvert);
             }
           }
@@ -1070,7 +1092,7 @@
           }
         }
       }
-      .sidebar-footer-button-holder{
+      .sidebar-footer-button-holder {
         margin-bottom: 20px;
         .navbar-button-container {
           .navbar-button {
@@ -1130,13 +1152,13 @@
   }
 }
 
-.sidebar-section-closed{
+.sidebar-section-closed {
   background-color: transparent !important;
 
-  .scroll-menu-wrapper-closed{
+  .scroll-menu-wrapper-closed {
     background-color: var(--sidebarBackgroud);
   }
-  .sidebar-footer-closed-container{
+  .sidebar-footer-closed-container {
     background-color: var(--sidebarBackgroud);
   }
 }
