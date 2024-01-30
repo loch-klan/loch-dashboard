@@ -644,6 +644,11 @@
                 box-shadow: none;
               }
             }
+            #sidebar-feedback-btn-full{
+              img{
+                filter: none !important;
+              }
+            }
             .none {
               background-color: transparent;
               font-family: "Inter-Medium";

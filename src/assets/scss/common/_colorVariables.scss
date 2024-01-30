@@ -3,6 +3,7 @@
   --sidebarBackgroud: white;
   --primaryBackgroud: #f2f2f2;
   --cardBackgroud: white;
+  --cardBackgroudWithOpacity: rgba(255, 255, 255,0);
   --cardBorder: #cacbcc;
   --greyCardBackgroud: #e5e5e680;
   --cardSeperator: #e5e5e680;
@@ -98,12 +99,16 @@
 
   //watermarkOpacity
   --watermarkOpacity: 1;
+
+  //pagination
+  --paginationInputBg:white;
 }
 [data-theme="dark"] {
   // UPDATED
   --sidebarBackgroud: #141414;
   --primaryBackgroud: #101010;
   --cardBackgroud: #181818;
+  --cardBackgroudWithOpacity: rgba(24,24,24,0.5);
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
@@ -197,4 +202,7 @@
 
   //watermarkOpacity
   --watermarkOpacity: 0.1;
+
+  //pagination
+  --paginationInputBg:#101010;
 }

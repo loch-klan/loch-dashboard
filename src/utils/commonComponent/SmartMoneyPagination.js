@@ -128,7 +128,7 @@ const SmartMoneyPagination = (props) => {
   if (mobileCheck()) {
     return (
       <div className="mobileSmartMoneyPagingation" style={props.style}>
-        <div className="smartMoneyPaginationContainer">
+        <div className="smartMoneyPaginationContainer ">
           <div
             className={`smartMoneyPaginationArrowContainer ${
               props.page === 1
@@ -146,7 +146,7 @@ const SmartMoneyPagination = (props) => {
               onLoad={leftLogoLoadingComplete}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14">
+          <h5 className="inter-display-medium f-s-14 input-noshadow-dark">
             <input
               type="number"
               name="pagenumber"
@@ -231,7 +231,7 @@ const SmartMoneyPagination = (props) => {
               className={"smartMoneyPaginationArrow"}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14">
+          <h5 className="inter-display-medium f-s-14 input-noshadow-dark">
             <input
               type="number"
               name="pagenumber"
