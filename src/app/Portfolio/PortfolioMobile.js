@@ -401,6 +401,14 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
+      if (
+        !(
+          this.props.intelligenceState &&
+          this.props.intelligenceState?.table?.length > 0
+        )
+      ) {
+        this.callApiTransHistory(page);
+      }
     }
 
     if (
