@@ -18,13 +18,18 @@ import {
   MobileHomePageView,
   Mobile_Home_Search_New_Address,
   Mobile_Home_Share,
+  QuickAddWalletAddress,
+  SearchBarAddressAdded,
   TimeSpentMobileHome,
   TransactionHistoryAddressCopied,
+  TransactionHistoryAssetFilter,
   TransactionHistoryHashCopied,
   TransactionHistoryHideDust,
+  TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
   TransactionHistoryPageSearch,
+  TransactionHistorySearch,
   TransactionHistorySortAmount,
   TransactionHistorySortAsset,
   TransactionHistorySortDate,
@@ -34,12 +39,18 @@ import {
   TransactionHistorySortUSDAmount,
   TransactionHistorySortUSDFee,
   TransactionHistoryWalletClicked,
+  TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import {
   API_LIMIT,
   BASE_URL_S3,
   DEFAULT_PRICE,
+  SEARCH_BETWEEN_VALUE,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_CHAIN_IN,
   SEARCH_BY_NOT_DUST,
+  SEARCH_BY_TEXT,
+  SEARCH_BY_TIMESTAMP_IN,
   SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
   SORT_BY_ASSET,
@@ -51,7 +62,7 @@ import {
   SORT_BY_USD_VALUE_THEN,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
@@ -69,6 +80,7 @@ import {
   getDetectedChainsApi,
   getUser,
   setPageFlagDefault,
+  updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
 import Loading from "../common/Loading";
@@ -77,11 +89,16 @@ import { getAvgCostBasis, updateAverageCostBasis } from "../cost/Api";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
+  getFilters,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip.js";
 import {
@@ -99,6 +116,11 @@ import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
 import chevronRight from "./../../assets/images/icons/chevron-right.svg";
 import NftMobileBlock from "../nft/NftMobileBlock.js";
+import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
+import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
+import { setHeaderReducer } from "../header/HeaderAction.js";
+import { addUserCredits } from "../profile/Api.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -108,6 +130,23 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      disableAddBtn: false,
+      addButtonVisible: false,
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
       startTime: "",
       showPopupModal: true,
       showSearchIcon: false,
@@ -118,11 +157,13 @@ class PortfolioMobile extends BaseReactComponent {
       combinedReturn: 0,
       showHideDustVal: true,
       showHideDustValTrans: true,
-      isShowingAge: false,
+      isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       walletList: [],
-      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-      condition: [],
+      sortTransHistory: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      conditionTransHistory: [],
+      minAmountTransHistory: "1",
+      maxAmountTransHistory: "1000000000",
       tableSortOpt: [
         {
           title: "time",
@@ -215,9 +256,9 @@ class PortfolioMobile extends BaseReactComponent {
     };
   }
   handleTableSort = (val) => {
-    let sort = [...this.state.tableSortOpt];
+    let sortTransHistory = [...this.state.tableSortOpt];
     let obj = [];
-    sort?.map((el) => {
+    sortTransHistory?.map((el) => {
       if (el.title === val) {
         if (val === "time") {
           obj = [
@@ -334,8 +375,8 @@ class PortfolioMobile extends BaseReactComponent {
       obj = [{ key: obj[0].key, value: !obj[0].value }];
     }
     this.setState({
-      sort: obj,
-      tableSortOpt: sort,
+      sortTransHistory: obj,
+      tableSortOpt: sortTransHistory,
     });
   };
   searchIconLoaded = () => {
@@ -378,7 +419,10 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-
+    if (!this.props.commonState?.mobilePortfolioPage) {
+      this.props.updateWalletListFlag("mobilePortfolioPage", true);
+      this.callApiTransHistory(page);
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -406,24 +450,22 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
-
-      this.callApi(page);
     }
 
     if (
-      prevState.condition !== this.state.condition ||
-      prevState.sort !== this.state.sort
+      prevState.conditionTransHistory !== this.state.conditionTransHistory ||
+      prevState.sortTransHistory !== this.state.sortTransHistory
     ) {
-      this.callApi(this.state.currentPage || START_INDEX);
+      this.callApiTransHistory(this.state.currentPage || START_INDEX);
     }
 
     if (
       prevPage !== page ||
-      prevState.condition !== this.state.condition ||
-      prevState.sort !== this.state.sort ||
+      prevState.conditionTransHistory !== this.state.conditionTransHistory ||
+      prevState.sortTransHistory !== this.state.sortTransHistory ||
       prevState.pageLimit !== this.state.pageLimit
     ) {
-      this.callApi(page);
+      this.callApiTransHistory(page);
       this.setState({
         currentPage: page,
       });
@@ -496,7 +538,7 @@ class PortfolioMobile extends BaseReactComponent {
       window.scrollTo(0, 0);
     }, 500);
 
-    this.callApi(this.state.currentPage || START_INDEX);
+    this.callApiTransHistory(this.state.currentPage || START_INDEX);
 
     this.startPageView();
     this.updateTimer(true);
@@ -514,7 +556,7 @@ class PortfolioMobile extends BaseReactComponent {
         { key: SEARCH_BY_NOT_DUST, value: true },
       ];
       this.setState({
-        condition: cond || [],
+        conditionTransHistory: cond || [],
         walletList: walletList || [],
       });
     }, 1500);
@@ -532,19 +574,40 @@ class PortfolioMobile extends BaseReactComponent {
     const tempExpiryTime = Date.now() + 1800000;
     window.sessionStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
   };
-  callApi = (page = START_INDEX) => {
+  callApiTransHistory = (page = START_INDEX) => {
+    let tempTokenHolder = getToken();
+    if (tempTokenHolder && tempTokenHolder !== "jsk") {
+      this.props.getFilters(this);
+    }
+    let tempCond = [];
+    this.state.conditionTransHistory.forEach((tempEle) => {
+      if (tempEle.key !== SEARCH_BY_WALLET_ADDRESS_IN) {
+        tempCond.push(tempEle);
+      }
+    });
+    const arr = window.sessionStorage.getItem("addWallet")
+      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      : [];
+    this.setState({
+      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+    });
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    tempCond = [
+      ...tempCond,
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+    ];
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("conditions", JSON.stringify(tempCond));
     data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    if (
-      this.state.condition.find((e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN)
-        ?.value
-    ) {
-      this.props.searchTransactionApi(data, this, page);
-    }
+    data.append("sorts", JSON.stringify(this.state.sortTransHistory));
+    this.props.searchTransactionApi(data, this, page, true, true);
   };
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
@@ -599,24 +662,22 @@ class PortfolioMobile extends BaseReactComponent {
   };
 
   handleDustTrans = () => {
-    const d = this.state.condition.find(
-      (e) => e.key === SEARCH_BY_WALLET_ADDRESS_IN
+    this.setState(
+      {
+        showHideDustValTrans: !this.state.showHideDustValTrans,
+      },
+      () => {
+        TransactionHistoryHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.updateTimer();
+        this.addConditionTransactionTable(
+          SEARCH_BY_NOT_DUST,
+          this.state.showHideDustValTrans
+        );
+      }
     );
-    this.setState({
-      showHideDustValTrans: !this.state.showHideDustValTrans,
-
-      condition: [
-        d,
-        { key: SEARCH_BY_NOT_DUST, value: !this.state.showHideDustValTrans },
-      ],
-    });
-
-    TransactionHistoryHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      isMobile: true,
-    });
-    this.updateTimer();
   };
   handleShare = () => {
     Mobile_Home_Share({
@@ -658,6 +719,455 @@ class PortfolioMobile extends BaseReactComponent {
       window.open(shareLink, "_self");
     }
   };
+  addConditionTransactionTable = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
+    }
+    let index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.conditionTransHistory];
+    let search_index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      conditionTransHistory: arr,
+    });
+  };
+  onKeyPressTransHistorySearch = (curKey) => {
+    if (curKey && curKey.code && curKey.code === "Enter") {
+      this.addConditionTransactionTable(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched: this.state.search,
+      });
+    }
+  };
+  onChangeTransHistorySearchMethod = (ele) => {
+    this.setState({
+      search: ele.target.value,
+    });
+  };
+  handleNetworkSelectTransHistory = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addConditionTransactionTable(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmountTransHistory: min,
+          maxAmountTransHistory: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addConditionTransactionTable(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
+    }
+  };
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item?.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleOnChange = (e) => {
+    let { name, value } = e.target;
+
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].address;
+
+      walletCopy[foundIndex].address = value;
+      if (value === "" || prevValue !== value) {
+        walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
+      }
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+      walletInput: walletCopy,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // timeout;
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnWalletAddress(name, value);
+    }, 1000);
+  };
+  getCoinBasedOnWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          false,
+          false
+        );
+      }
+    }
+  };
+  onKeyPressInput = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (!this.state.disableAddBtn) {
+        this.handleAddWallet(true);
+      }
+    }
+  };
+  hideTheTopBarHistoryItems = () => {
+    this.setState({
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+    });
+  };
+  handleAddWallet = (replaceAddresses) => {
+    if (this.state.goBtnDisabled) {
+      return null;
+    }
+    if (this.state.walletInput[0]) {
+      SearchBarAddressAdded({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: this.state.walletInput[0].address,
+        isMobile: true,
+      });
+    }
+    this.setState({
+      disableAddBtn: true,
+    });
+    let addWalletList = [];
+
+    if (!replaceAddresses) {
+      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      if (addWalletList && addWalletList?.length > 0) {
+        addWalletList = addWalletList?.map((e) => {
+          return {
+            ...e,
+            showAddress: e.nickname === "" ? true : false,
+            showNickname: e.nickname === "" ? false : true,
+            showNameTag: e.nameTag === "" ? false : true,
+            apiAddress: e.address,
+          };
+        });
+      }
+      if (addWalletList && addWalletList.length > 0) {
+        for (let i = 0; i < addWalletList.length; i++) {
+          if (addWalletList[i].id === "wallet1") {
+            addWalletList[i].id = "wallet" + (addWalletList.length + 1);
+          }
+        }
+      }
+    }
+    let tempWalletInput = this.state.walletInput[0];
+    addWalletList = [...addWalletList, tempWalletInput];
+
+    let arr = [];
+    let addressList = [];
+    let nicknameArr = {};
+    let isChainDetected = [];
+    let total_address = 0;
+    let walletList = [];
+    for (let i = 0; i < addWalletList.length; i++) {
+      let curr = addWalletList[i];
+
+      let isIncluded = false;
+      const whatIndex = arr.findIndex(
+        (resRes) =>
+          resRes?.trim()?.toLowerCase() ===
+            curr?.address?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.displayAddress?.trim()?.toLowerCase() ||
+          resRes?.trim()?.toLowerCase() ===
+            curr?.apiAddress?.trim()?.toLowerCase()
+      );
+      if (whatIndex !== -1) {
+        isIncluded = true;
+      }
+      if (!isIncluded && curr.address) {
+        walletList.push(curr);
+        if (curr.address) {
+          arr.push(curr.address?.trim());
+        }
+        nicknameArr[curr.address?.trim()] = curr.nickname;
+        if (curr.displayAddress) {
+          arr.push(curr.displayAddress?.trim());
+        }
+        if (curr.apiAddress) {
+          arr.push(curr.apiAddress?.trim());
+        }
+        addressList.push(curr.address?.trim());
+        isChainDetected.push(curr?.coinFound);
+        total_address = total_address + 1;
+      }
+    }
+
+    let addWallet = walletList;
+
+    addWallet?.forEach((w, i) => {
+      if (w.id) {
+      } else {
+        w.id = `wallet${i + 1}`;
+      }
+    });
+
+    if (addWallet) {
+      this.props.setHeaderReducer(addWallet);
+    }
+    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    const data = new URLSearchParams();
+    const yieldData = new URLSearchParams();
+    // data.append("wallet_addresses", JSON.stringify(arr));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    yieldData.append("wallet_addresses", JSON.stringify(addressList));
+    // data.append("chain_detected", chain_detechted);
+
+    // if its upload then we pass user id
+    if (this.state.isChangeFile) {
+      data.append("user_id", getCurrentUser().id);
+      this.setState({
+        isChangeFile: false,
+      });
+    }
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+
+    if (creditIsAddress) {
+      // Single address
+      const addressCreditScore = new URLSearchParams();
+      addressCreditScore.append("credits", "address_added");
+      this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
+
+      // Multiple address
+      const multipleAddressCreditScore = new URLSearchParams();
+      multipleAddressCreditScore.append("credits", "multiple_address_added");
+      this.props.addUserCredits(
+        multipleAddressCreditScore,
+        this.resetCreditPoints
+      );
+    }
+    if (creditIsEns) {
+      const ensCreditScore = new URLSearchParams();
+      ensCreditScore.append("credits", "ens_added");
+      this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
+    }
+    this.props.updateUserWalletApi(data, this, yieldData, true);
+
+    const address = addWalletList?.map((e) => e.address);
+
+    const addressDeleted = this.state.deletedAddress;
+    const unrecog_address = addWalletList
+      ?.filter((e) => !e.coinFound)
+      ?.map((e) => e.address);
+    const recog_address = addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((e) => e.address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    addWalletList
+      ?.filter((e) => e.coinFound)
+      ?.map((obj) => {
+        let coinName = obj.coins
+          ?.filter((e) => e.chain_detected)
+          ?.map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    QuickAddWalletAddress({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      addresses_added: address,
+      ENS_added: address,
+      addresses_deleted: addressDeleted,
+      ENS_deleted: addressDeleted,
+      unrecognized_addresses: unrecog_address,
+      recognized_addresses: recog_address,
+      blockchains_detected: blockchainDetected,
+      nicknames: nicknames,
+      isMobile: true,
+    });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+  };
+  cancelAddingWallet = () => {};
+  resetCreditPoints = () => {};
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -786,9 +1296,9 @@ class PortfolioMobile extends BaseReactComponent {
             let tempOpp = "-";
             if (this.state.isShowingAge && rowData.age) {
               tempVal = rowData.age;
-              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempOpp = moment(rowData.time).format("MM/DD/YY hh:mm");
             } else if (!this.state.isShowingAge && rowData.time) {
-              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm:ss");
+              tempVal = moment(rowData.time).format("MM/DD/YY hh:mm");
               tempOpp = rowData.age;
             }
             return (
@@ -2305,7 +2815,7 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
             ) : null}
             <div className="mpcMobileSearch">
-              <div onClick={this.goToWelcome} className="mpcMobileSearchInput">
+              <div className="mpcMobileSearchInput">
                 <Image
                   style={{
                     opacity: this.state.showSearchIcon ? 1 : 0,
@@ -2314,20 +2824,41 @@ class PortfolioMobile extends BaseReactComponent {
                   className="mpcMobileSearchImage"
                   src={SearchIcon}
                 />
-                <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
+                {/* <div className="mpcMobileSearchPlaceholder inter-display-medium f-s-12">
                   Search for another address / ENS
+                </div> */}
+                {this.state.walletInput?.map((c, index) => (
+                  <div className="topSearchBarMobileContainer">
+                    <NewHomeInputBlock
+                      noAutofocus
+                      onGoBtnClick={this.handleAddWallet}
+                      hideMore
+                      isMobile
+                      c={c}
+                      index={index}
+                      walletInput={this.state.walletInput}
+                      handleOnChange={this.handleOnChange}
+                      onKeyDown={this.onKeyPressInput}
+                      goBtnDisabled={this.state.disableAddBtn}
+                      removeFocusOnEnter
+                    />
+                  </div>
+                ))}
+              </div>
+              {!(
+                this.state.walletInput && this.state.walletInput[0].address
+              ) ? (
+                <div className="mpcMobileShare" onClick={this.handleShare}>
+                  <Image
+                    style={{
+                      opacity: this.state.showShareIcon ? 1 : 0,
+                    }}
+                    onLoad={this.shareIconLoaded}
+                    className="mpcMobileSearchImage"
+                    src={SharePortfolioIconWhite}
+                  />
                 </div>
-              </div>
-              <div className="mpcMobileShare" onClick={this.handleShare}>
-                <Image
-                  style={{
-                    opacity: this.state.showShareIcon ? 1 : 0,
-                  }}
-                  onLoad={this.shareIconLoaded}
-                  className="mpcMobileSearchImage"
-                  src={SharePortfolioIconWhite}
-                />
-              </div>
+              ) : null}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
@@ -2432,7 +2963,7 @@ class PortfolioMobile extends BaseReactComponent {
                     Assets
                   </h2>
                   <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -2470,7 +3001,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table">
+              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -2486,7 +3017,7 @@ class PortfolioMobile extends BaseReactComponent {
                       // });
                     }
                   }}
-                  message=" "
+                  message="No assets found"
                   subTitle=""
                   tableData={
                     this.props.intelligenceState.Average_cost_basis &&
@@ -2518,14 +3049,204 @@ class PortfolioMobile extends BaseReactComponent {
                   columnList={columnData}
                   headerHeight={60}
                   isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
+                  isLoading={this.props.AvgCostLoading}
                   isAnalytics="average cost basis"
-                  addWatermark
+                  fakeWatermark
                   xAxisScrollable
                   bodyHeight={"1000px"}
                   yAxisScrollable
                 />
               </div>
+
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "4.8rem",
+                  alignItems: "start",
+                }}
+              >
+                <div>
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
+                    {/* Unrealized profit and loss */}
+                    Transactions
+                  </h2>
+                  <p
+                    className="inter-display-medium f-s-13 lh-16 grey-ADA"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Scroll left and right to view more
+                  </p>
+                </div>
+                <div
+                  className="d-flex"
+                  style={{ alignItems: "center", paddingTop: "2px" }}
+                >
+                  <div
+                    onClick={this.handleDustTrans}
+                    className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
+                  >
+                    <Form.Check
+                      type="switch"
+                      checked={this.state.showHideDustValTrans}
+                      // onChange={(e) => {
+                      //   this.setState({
+                      //     switchselected: e.target.checked,
+                      //   });
+                      //   if (this.props.setSwitch) {
+                      //     this.props.setSwitch();
+                      //   }
+                      // }}
+                      label={
+                        this.state.showHideDustValTrans
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="fillter_tabs_section"
+                style={{ marginTop: "1rem" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: "6px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="" style={{ width: "48%" }}>
+                    <CustomMinMaxDropdown
+                      filtername="Size"
+                      handleClick={(min, max) => this.handleAmount(min, max)}
+                      minAmount={this.state.minAmountTransHistory}
+                      maxAmount={this.state.maxAmountTransHistory}
+                      style={{ marginLeft: "5px !important" }}
+                    />
+                  </div>
+                  <div className="" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Years"
+                      style={{
+                        width: "100%",
+                        margin: "0px",
+                        paddingLeft: "5px ",
+                      }}
+                      options={this.props.intelligenceState.yearFilter}
+                      action={SEARCH_BY_TIMESTAMP_IN}
+                      handleClick={this.addConditionTransactionTable}
+                      searchIsUsed={this.timeSearchIsUsed}
+                      selectedTokens={this.state.selectedTimes}
+                      transactionHistorySavedData
+                      isMobile
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "12px",
+                  }}
+                >
+                  <div className="col-span-6" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Assets"
+                      options={this.props.intelligenceState.assetFilter}
+                      action={SEARCH_BY_ASSETS_IN}
+                      handleClick={this.addConditionTransactionTable}
+                      searchIsUsed={this.assetSearchIsUsed}
+                      selectedTokens={this.state.selectedAssets}
+                      transactionHistorySavedData
+                    />
+                  </div>
+                  <div className="col-span-6" style={{ width: "48%" }}>
+                    <CustomDropdown
+                      filtername="Networks"
+                      options={this.props.OnboardingState.coinsList}
+                      action={SEARCH_BY_CHAIN_IN}
+                      handleClick={this.handleNetworkSelectTransHistory}
+                      searchIsUsed={this.networkSearchIsUsed}
+                      isCaptialised
+                      isGreyChain
+                      selectedTokens={this.state.selectedNetworks}
+                      transactionHistorySavedData
+                    />
+                  </div>
+                </div>
+                {/* {fillter_tabs} */}
+                <div
+                  className="col-span-12"
+                  style={{ width: "100%", marginTop: "12px" }}
+                >
+                  <div
+                    className="transaction-table-mobile-search"
+                    style={{ display: "flex", width: "100%" }}
+                  >
+                    <Image src={SearchIcon} className="search-icon" />
+
+                    <input
+                      type="text"
+                      value={this.state.search}
+                      className="search-input"
+                      style={{
+                        flexGrow: "1",
+                      }}
+                      placeholder="Search"
+                      onChange={this.onChangeTransHistorySearchMethod}
+                      onKeyDown={this.onKeyPressTransHistorySearch}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`section-table section-table-mobile-scroll ${
+                  tableDataTransaction.length > 0
+                    ? "tableWatermarkOverlayCounterParty"
+                    : ""
+                }`}
+              >
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  message={"No Transactions Found"}
+                  subTitle=""
+                  tableData={tableDataTransaction}
+                  columnList={columnListTransaction}
+                  headerHeight={60}
+                  isArrow={true}
+                  isLoading={this.state.tableLoading}
+                  isAnalytics="average cost basis"
+                  fakeWatermark
+                  xAxisScrollable
+                  bodyHeight={"1000px"}
+                />
+              </div>
+
+              {!this.state.tableLoading ? (
+                <div style={{ marginTop: "2rem" }}>
+                  {totalPage > 1 && (
+                    <SmartMoneyPagination
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage + 1}
+                      pageCount={totalPage}
+                      pageLimit={API_LIMIT}
+                      onPageChange={(e) => {}}
+                      style={{ padding: "0px" }}
+                      isMobile
+                    />
+                  )}
+                </div>
+              ) : null}
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -2569,101 +3290,6 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div
-                className="d-flex justify-content-between"
-                style={{
-                  marginTop: "4.8rem",
-                  alignItems: "start",
-                }}
-              >
-                <div>
-                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
-                    {/* Unrealized profit and loss */}
-                    Transactions
-                  </h2>
-                  <p
-                    class="inter-display-medium f-s-13 lh-16 grey-ADA"
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Scroll left and right to view more
-                  </p>
-                </div>
-                <div
-                  className="d-flex"
-                  style={{ alignItems: "center", paddingTop: "2px" }}
-                >
-                  <div
-                    onClick={this.handleDustTrans}
-                    className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
-                  >
-                    <Form.Check
-                      type="switch"
-                      checked={this.state.showHideDustValTrans}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
-                      label={
-                        this.state.showHideDustValTrans
-                          ? "Reveal dust (less than $1)"
-                          : "Hide dust (less than $1)"
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="section-table section-table-mobile-scroll">
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message=" "
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  // isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  addWatermark
-                  xAxisScrollable
-                  // yAxisScrollable
-                />
-              </div>
-              <div style={{ marginTop: "2rem" }}>
-                {totalPage > 1 && (
-                  <SmartMoneyPagination
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage + 1}
-                    pageCount={totalPage}
-                    pageLimit={API_LIMIT}
-                    onPageChange={(e) => {}}
-                    style={{ padding: "0px" }}
-                    isMobile
-                  />
-                )}
-              </div>
-
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
@@ -2685,6 +3311,7 @@ const mapStateToProps = (state) => ({
   defiState: state.DefiState,
 });
 const mapDispatchToProps = {
+  detectCoin,
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
@@ -2704,7 +3331,10 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   // avg cost
   getAvgCostBasis,
-
+  getFilters,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,
