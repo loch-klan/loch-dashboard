@@ -80,7 +80,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openRemarksBlock: -1,
+      openRemarksBlock: 2,
+      AddedRemarksBlocks: [],
       Average_cost_basis_local: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
@@ -1134,8 +1135,22 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         coumnWidth: 0.066,
         isCell: true,
         cell: (rowData, dataKey, currentIndex) => {
-          const toggleEditBlock = () => {
+          const toggleEditBlock = (addedRemark = false) => {
             if (this.state.openRemarksBlock === currentIndex) {
+              if (addedRemark) {
+                let tempHolder = [
+                  ...this.state.AddedRemarksBlocks,
+                  currentIndex,
+                ];
+                this.setState(
+                  {
+                    AddedRemarksBlocks: tempHolder,
+                  },
+                  () => {
+                    toast.success("Remark added");
+                  }
+                );
+              }
               this.setState({
                 openRemarksBlock: -1,
               });
@@ -1150,15 +1165,15 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               <div className="assets-remarks-container">
                 <div
                   onClick={toggleEditBlock}
-                  className="assets-remarks-blocks"
+                  className={`assets-remarks-blocks ${
+                    this.state.AddedRemarksBlocks.includes(currentIndex)
+                      ? "assets-remarks-blocks-selected"
+                      : ""
+                  }`}
                 >
                   <Image
                     src={RemarksDownArrowIcon}
-                    className={`assets-remarks-icon ${
-                      this.state.openRemarksBlock === currentIndex
-                        ? "assets-remarks-icon-flipped"
-                        : ""
-                    }`}
+                    className={`assets-remarks-icon`}
                   />
                 </div>
                 <div
@@ -1169,23 +1184,77 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   }`}
                 >
                   <div className="assets-remarks-floating-block-items">
-                    <div className="assets-remarks-floating-block-input-container">
-                      <input
-                        placeholder="Add remark here"
-                        className="inter-display-medium assets-remarks-floating-block-input"
-                      />
+                    <div className="assets-remarks-floating-block-items-numbering">
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={Number(
+                          noExponents(currentIndex + 1)
+                        ).toLocaleString("en-US")}
+                      >
+                        <span className="inter-display-medium f-s-13">
+                          {Number(noExponents(currentIndex + 1)).toLocaleString(
+                            "en-US"
+                          )}
+                        </span>
+                      </CustomOverlay>
                     </div>
-                    <div className="assets-remarks-floating-block-buttons-container">
-                      <div
-                        className={`inter-display-medium assets-remarks-floating-block-buttons ml-2 assets-remarks-floating-block-buttons-dark`}
+                    <div
+                      onMouseEnter={() => {
+                        CostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
+                      }}
+                      className="assets-remarks-floating-block-avg-cost-price"
+                    >
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          (rowData.AssetCode ? rowData.AssetCode : "") +
+                          " [" +
+                          rowData?.chain?.name +
+                          "]"
+                        }
                       >
-                        <span className="dotDotText">Update</span>
+                        <div>
+                          <CoinChip
+                            coin_img_src={rowData.Asset}
+                            coin_code={rowData.AssetCode}
+                            chain={rowData?.chain}
+                            hideText={true}
+                          />
+                        </div>
+                      </CustomOverlay>
+                    </div>
+                    <div className="assets-remarks-floating-block-items-actual-data">
+                      <div className="assets-remarks-floating-block-input-container">
+                        <input
+                          placeholder="Add remark here"
+                          className="inter-display-medium assets-remarks-floating-block-input"
+                        />
                       </div>
-                      <div
-                        className={`inter-display-medium assets-remarks-floating-block-buttons ml-2`}
-                        onClick={toggleEditBlock}
-                      >
-                        <span className="dotDotText">Cancel</span>
+                      <div className="assets-remarks-floating-block-buttons-container">
+                        <div
+                          className={`inter-display-medium assets-remarks-floating-block-buttons ml-2 assets-remarks-floating-block-buttons-dark`}
+                          onClick={() => {
+                            toggleEditBlock(true);
+                          }}
+                        >
+                          <span className="dotDotText">Update</span>
+                        </div>
+                        <div
+                          className={`inter-display-medium assets-remarks-floating-block-buttons ml-2`}
+                          onClick={toggleEditBlock}
+                        >
+                          <span className="dotDotText">Cancel</span>
+                        </div>
                       </div>
                     </div>
                   </div>
