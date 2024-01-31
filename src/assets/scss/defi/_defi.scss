@@ -175,7 +175,26 @@
   padding: 2rem 0rem 4rem;
   border-radius: 1.2rem;
 }
+.defi-card-wrapper-container {
+  max-height: 42vh;
+  overflow: scroll;
+  padding-right: 0.5rem;
+  margin-bottom: 3.5rem;
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0rem;
+    transform: translateX(1rem);
+  }
 
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.8rem;
+    background-color: $scrollBar-thumb;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(229, 229, 230, 0.5);
+    border-radius: 0.8rem;
+  }
+}
 .defi-card-wrapper {
   background: #ffffff;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
