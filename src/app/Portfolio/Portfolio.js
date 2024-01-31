@@ -1161,11 +1161,10 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (
-      (this.props.intelligenceState &&
-        this.props.intelligenceState.graphfeeValue &&
-        this.props.intelligenceState.graphfeeValue !==
-          prevProps.intelligenceState.graphfeeValue) ||
-      this.props.darkModeState?.flag !== prevProps.darkModeState?.flag
+      this.props.intelligenceState &&
+      this.props.intelligenceState.graphfeeValue &&
+      this.props.intelligenceState.graphfeeValue !==
+        prevProps.intelligenceState.graphfeeValue
     ) {
       this.trimGasFees();
     }
@@ -1199,11 +1198,10 @@ class Portfolio extends BaseReactComponent {
       });
     }
     if (
-      (this.props.intelligenceState &&
-        this.props.intelligenceState.counterPartyValue &&
-        this.props.intelligenceState.counterPartyValue !==
-          prevProps.intelligenceState.counterPartyValue) ||
-      this.props.darkModeState?.flag !== prevProps.darkModeState?.flag
+      this.props.intelligenceState &&
+      this.props.intelligenceState.counterPartyValue &&
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
     ) {
       this.trimCounterpartyVolume();
     }
@@ -1462,6 +1460,15 @@ class Portfolio extends BaseReactComponent {
         this.setState({ userWalletList: this.props.location.state?.addWallet });
         this.apiCall();
       }
+    }
+
+    if (this.props.darkModeState?.flag !== prevProps.darkModeState?.flag) {
+      this.props.updateFeeGraph(
+        this.props.intelligenceState.GraphfeeData,
+        getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+        this
+      );
+      this.trimCounterpartyVolume();
     }
   }
 

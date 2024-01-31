@@ -296,6 +296,16 @@ class CounterPartyVolume extends Component {
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
     }
+    if (this.props.darkModeState != prevProps.darkModeState) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this
+        ),
+        this
+      );
+    }
   }
 
   // For add new address
@@ -642,6 +652,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getAllCoins,
