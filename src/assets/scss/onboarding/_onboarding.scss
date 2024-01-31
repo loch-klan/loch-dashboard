@@ -1425,7 +1425,7 @@
       transform: translateY(-31px);
 
       .trendingAddressesBlockItemContainer {
-        width: 22%;
+        flex:1 ;
         overflow: hidden;
         box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.04),
           0px 4px 10px 0px rgba(0, 0, 0, 0.04);
@@ -1499,7 +1499,7 @@
           margin-top: 30px;
           display: flex;
           justify-content: space-between;
-          gap: 28px;
+          gap: 16px;
           flex-wrap: wrap;
           align-items: center;
 
