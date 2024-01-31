@@ -9,8 +9,10 @@ import ReactGA from "react-ga4";
 import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
 import { switchToDarkMode, switchToLightMode } from "./utils/ReusableFunctions";
+import { connect } from "react-redux";
+import { SwitchDarkMode } from "./app/common/Api";
 
-function App() {
+function App(props) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
@@ -46,8 +48,10 @@ function App() {
     let isDarkTheme = localStorage.getItem("isDarkTheme");
     if (isDarkTheme && isDarkTheme === "true") {
       switchToDarkMode();
+      props.SwitchDarkMode(true);
     } else {
       switchToLightMode();
+      props.SwitchDarkMode(false);
     }
   }, []);
 
@@ -91,5 +95,9 @@ function App() {
   );
   // );
 }
+const mapDispatchToProps = {
+  SwitchDarkMode,
+};
 
-export default App;
+const mapStateToProps = (state) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(App);

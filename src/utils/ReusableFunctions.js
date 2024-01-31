@@ -2,7 +2,15 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
-export const mobileCheck = (isSmartMoney) => {
+import { DARK_MODE } from "../app/intelligence/ActionTypes";
+import { SwitchDarkMode } from "../app/common/Api";
+export const mobileCheck = () => {
+  // if (
+  //   BASE_URL_S3 ===
+  //   "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+  // ) {
+  //   return false;
+  // }
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
@@ -104,10 +112,12 @@ export const replaceHistory = (history, page = 1, searchValue = "") => {
 export const switchToDarkMode = () => {
   document.querySelector("body").setAttribute("data-theme", "dark");
   localStorage.setItem("isDarkTheme", true);
+  // SwitchDarkMode(true);
 };
 export const switchToLightMode = () => {
   document.querySelector("body").setAttribute("data-theme", "light");
   localStorage.setItem("isDarkTheme", false);
+  // SwitchDarkMode(false);
 };
 
 export const calculateTotalPageCount = (totalCount) => {

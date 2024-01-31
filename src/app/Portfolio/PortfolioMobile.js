@@ -9,6 +9,8 @@ import {
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
@@ -70,6 +72,8 @@ import {
   convertNtoNumber,
   noExponents,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
@@ -158,6 +162,11 @@ class PortfolioMobile extends BaseReactComponent {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       showHideDustVal: true,
+      isDarkMode:
+        document.querySelector("body").getAttribute("data-theme") &&
+        document.querySelector("body").getAttribute("data-theme") === "dark"
+          ? true
+          : false,
       showHideDustValTrans: true,
       isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
@@ -889,6 +898,22 @@ class PortfolioMobile extends BaseReactComponent {
     this.timeout = setTimeout(() => {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
+  };
+  handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+    }
   };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
@@ -3010,6 +3035,42 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               ) : null}
             </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              {this.state.isDarkMode ? (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={lightModeIcon} />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                </span>
+              ) : (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={darkModeIcon} />
+                  <span />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                </span>
+              )}
+            </div>
             <div className="mpcHomePage">
               <WelcomeCard
                 handleShare={this.handleShare}
@@ -3369,7 +3430,6 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-
               <div
                 className="bg-card-main"
                 style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
@@ -3401,7 +3461,6 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               </div>
-
               {!this.state.tableLoading ? (
                 <div style={{ marginTop: "2rem" }}>
                   {totalPage > 1 && (

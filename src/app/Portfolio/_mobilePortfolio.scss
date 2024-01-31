@@ -385,7 +385,7 @@
         user-select: none;
         position: relative;
         cursor: pointer;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         padding: 0;
         .balance-card-header {
           display: flex;
@@ -581,7 +581,7 @@
         //   cursor: pointer;
         position: relative;
         cursor: pointer;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         &:hover {
           .defiMenu {
             filter: var(--invertColor);

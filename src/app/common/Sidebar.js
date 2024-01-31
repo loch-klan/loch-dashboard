@@ -64,6 +64,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
+  SwitchDarkMode,
   getAllCurrencyApi,
   getAllCurrencyRatesApi,
   sendUserFeedbackApi,
@@ -479,9 +480,11 @@ function Sidebar(props) {
     if (darkOrLight === "dark") {
       setIsDarkMode(false);
       switchToLightMode();
+      props.SwitchDarkMode(false);
     } else {
       switchToDarkMode();
       setIsDarkMode(true);
+      props.SwitchDarkMode(true);
     }
   };
 
@@ -1649,6 +1652,7 @@ const mapDispatchToProps = {
   sendUserFeedbackApi,
   addUserCredits,
   updateWalletListFlag,
+  SwitchDarkMode,
 };
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,

@@ -491,7 +491,7 @@ body {
 }
 
 .grey-4F4 {
-  color: $grey-4F4;
+  color: var(--secondaryDarkTextColor);
 }
 
 .primary-color {
@@ -1896,7 +1896,7 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {

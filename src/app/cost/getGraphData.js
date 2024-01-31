@@ -43,13 +43,17 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "var(--cardBackgroud)",
+        backgroundColor: parentCtx?.props?.darkModeState?.flag
+          ? "#181818"
+          : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: "var(--black191)",
+        color: parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a",
         padding: 12,
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: parentCtx?.props?.darkModeState?.flag
+          ? "#2D2D2D"
+          : "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
@@ -93,7 +97,7 @@ export const getGraphData = (apidata, parentCtx, isFromHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "var(--black191)";
+            return parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a";
           },
         },
       },
@@ -338,13 +342,17 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "var(--cardBackgroud)",
+        backgroundColor: parentCtx?.props?.darkModeState?.flag
+          ? "#181818"
+          : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: "var(--black191)",
+        color: parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a",
         padding: 12,
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: parentCtx?.props?.darkModeState?.flag
+          ? "#2D2D2D"
+          : "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
@@ -391,7 +399,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "var(--black191)";
+            return parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a";
           },
         },
       },
