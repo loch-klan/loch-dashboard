@@ -2952,7 +2952,14 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div className="section-table section-table-mobile-scroll asset-mobile-table tableWatermarkOverlayCounterParty">
+              <div
+                className={`section-table section-table-mobile-scroll asset-mobile-table ${
+                  this.state.AvgCostLoading ||
+                  this.props.intelligenceState?.Average_cost_basis?.length < 1
+                    ? ""
+                    : "tableWatermarkOverlayCounterParty"
+                }`}
+              >
                 {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
@@ -3157,9 +3164,9 @@ class PortfolioMobile extends BaseReactComponent {
 
               <div
                 className={`section-table section-table-mobile-scroll ${
-                  tableDataTransaction.length > 0
-                    ? "tableWatermarkOverlayCounterParty"
-                    : ""
+                  this.state.tableLoading || tableDataTransaction?.length < 1
+                    ? ""
+                    : "tableWatermarkOverlayCounterParty"
                 }`}
               >
                 <TransactionTable
