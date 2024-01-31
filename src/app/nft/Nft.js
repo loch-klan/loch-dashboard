@@ -20,6 +20,7 @@ import NftMobile from "./NftMobile";
 import "./_nft.scss";
 import Loading from "../common/Loading";
 import PageHeader from "../common/PageHeader";
+import Footer from "../common/footer";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -361,9 +362,8 @@ class NFT extends BaseReactComponent {
                 text={rowData.collection}
               >
                 <div
-                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div nowrap-div"
                   style={{
-                    textDecoration: "underline",
                     lineHeight: "120%",
                   }}
                 >
@@ -403,17 +403,19 @@ class NFT extends BaseReactComponent {
                       justifyContent: "center",
                     }}
                   >
-                    {/* {rowData.imgs?.slice(0, 10).map((item, index) => {
-                      return (
-                        <img
-                          src={item}
-                          alt=""
-                          key={index}
-                          style={{ width: "20px", height: "20px" }}
-                        />
-                      );
-                    })} */}
-                    {/* {rowData.imgs?.length > 10 ? (
+                    {rowData.imgs && rowData.imgs.length > 0
+                      ? rowData.imgs?.slice(0, 10).map((item, index) => {
+                          return (
+                            <img
+                              src={item}
+                              alt=""
+                              key={index}
+                              className="nftImageIcon"
+                            />
+                          );
+                        })
+                      : null}
+                    {rowData.imgs && rowData.imgs.length > 10 ? (
                       <span
                         style={{
                           fontSize: "12px",
@@ -424,7 +426,7 @@ class NFT extends BaseReactComponent {
                       >
                         {rowData.imgs.length - 4}+
                       </span>
-                    ) : null} */}
+                    ) : null}
                   </div>
                 }
               >
@@ -436,17 +438,19 @@ class NFT extends BaseReactComponent {
                     justifyContent: "center",
                   }}
                 >
-                  {/* {rowData.imgs?.slice(0, 4).map((item, index) => {
-                    return (
-                      <img
-                        src={item}
-                        alt=""
-                        key={index}
-                        style={{ width: "20px", height: "20px" }}
-                      />
-                    );
-                  })} */}
-                  {/* {rowData.imgs.length > 4 ? (
+                  {rowData.imgs && rowData.imgs.length > 0
+                    ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                        return (
+                          <img
+                            src={item}
+                            alt=""
+                            key={index}
+                            className="nftImageIcon"
+                          />
+                        );
+                      })
+                    : null}
+                  {rowData.imgs && rowData.imgs.length > 4 ? (
                     <span
                       style={{
                         fontSize: "12px",
@@ -457,7 +461,7 @@ class NFT extends BaseReactComponent {
                     >
                       {rowData.imgs.length - 4}+
                     </span>
-                  ) : null} */}
+                  ) : null}
                 </div>
               </CustomOverlay>
             );
@@ -666,8 +670,8 @@ class NFT extends BaseReactComponent {
             </div>
           </div>
         </div>
-        <div className="history-table-section m-t-80">
-          <div className="history-table page">
+        <div className="cost-page-section ">
+          <div className="cost-section page">
             <PageHeader
               title={"NFT Collection"}
               subTitle={"Browse the NFTs held by this wallet"}
@@ -676,9 +680,13 @@ class NFT extends BaseReactComponent {
               ShareBtn={false}
               updateTimer={this.updateTimer}
             />
-            <div className="transaction-history-table">
+            <div
+              style={{
+                flex: 1,
+              }}
+              className="cost-table-section"
+            >
               <TransactionTable
-                // wrapperStyle={{ minHeight: "500px" }}
                 noSubtitleBottomPadding
                 tableData={this.state.tableData}
                 columnList={columnList}
@@ -694,6 +702,7 @@ class NFT extends BaseReactComponent {
                 paginationNew
               />
             </div>
+            <Footer />
           </div>
         </div>
       </div>

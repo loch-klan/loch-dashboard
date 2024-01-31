@@ -1,8 +1,11 @@
-.nft-page{
-
-
-min-width: 120rem;
-.rightSmartMoneyContainer {
+.nftImageIcon {
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+}
+.nft-page {
+  min-width: 120rem;
+  .rightSmartMoneyContainer {
     flex: 1;
     padding: 0rem;
     margin-right: 1rem;
@@ -38,9 +41,9 @@ min-width: 120rem;
       font-size: 1.3rem;
     }
   }
-  }
+}
 
-.nft-page-mobile{
+.nft-page-mobile {
   .mobileSmartMoneyBtnsContainer {
     margin-top: 11rem;
     padding: 0rem 2rem;
@@ -205,6 +208,9 @@ min-width: 120rem;
             color: #b0b1b3;
             text-decoration: underline;
             font-size: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
         }
         .msmbHeaderRight {

@@ -209,7 +209,7 @@ class PortfolioMobile extends BaseReactComponent {
         },
       ],
       nftTableData: [],
-      isNftLoading: false,
+      isLoadingNft: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
@@ -468,7 +468,7 @@ class PortfolioMobile extends BaseReactComponent {
     ) {
       this.setState({
         nftTableData: this.props.NFTState?.nfts,
-        isNftLoading: false,
+        isLoadingNft: false,
       });
     } else {
       this.callNftApi();
@@ -1189,7 +1189,7 @@ class PortfolioMobile extends BaseReactComponent {
   setLocalNftData = (data) => {
     this.setState({
       nftTableData: data.nfts,
-      isNftLoading: false,
+      isLoadingNft: false,
     });
   };
   render() {
@@ -3293,7 +3293,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
               <div style={{ marginTop: "16px" }}>
-                {this.state.isNftLoading ? (
+                {this.state.isLoadingNft ? (
                   <div
                     style={{
                       height: "45vh",
@@ -3309,19 +3309,21 @@ class PortfolioMobile extends BaseReactComponent {
                       className="mobileSmartMoneyListContainer"
                       style={{ padding: "0px" }}
                     >
-                      {this.state.nftTableData.map((mapData, index) => {
-                        return (
-                          <NftMobileBlock
-                            data={mapData}
-                            style={{
-                              marginBottom:
-                                index === this.state.nftTableData.length - 1
-                                  ? "0px"
-                                  : "1.5rem",
-                            }}
-                          />
-                        );
-                      })}
+                      {this.state.nftTableData
+                        .slice(0, 3)
+                        .map((mapData, index) => {
+                          return (
+                            <NftMobileBlock
+                              data={mapData}
+                              style={{
+                                marginBottom:
+                                  index === this.state.nftTableData.length - 1
+                                    ? "0px"
+                                    : "1.5rem",
+                              }}
+                            />
+                          );
+                        })}
                     </div>
                   </div>
                 )}
