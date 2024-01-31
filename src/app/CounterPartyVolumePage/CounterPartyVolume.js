@@ -642,7 +642,6 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
-  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getAllCoins,

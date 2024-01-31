@@ -280,13 +280,6 @@ class GasFeesPage extends Component {
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
     }
-    if (this.props.darkModeState != prevProps.darkModeState) {
-      this.props.updateFeeGraph(
-        this.props.intelligenceState.GraphfeeData,
-        getGraphData(this.props.intelligenceState.GraphfeeData, this),
-        this
-      );
-    }
   }
 
   // For add new address
@@ -433,7 +426,7 @@ class GasFeesPage extends Component {
       // });
       this.props.updateFeeGraph(
         GraphfeeData,
-        getGraphData(graphDataObj, this, this.props.darkModeState.flag),
+        getGraphData(graphDataObj, this),
         this,
         false
       );
@@ -614,7 +607,6 @@ class GasFeesPage extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
-  darkModeState: state.darkModeState,
   commonState: state.CommonState,
 });
 const mapDispatchToProps = {

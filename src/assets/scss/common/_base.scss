@@ -1897,7 +1897,7 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {

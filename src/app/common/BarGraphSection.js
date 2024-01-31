@@ -98,15 +98,6 @@ class BarGraphSection extends Component {
         digit: this.props.digit,
       });
     }
-
-    if (this.props.darkModeState != prevProps.darkModeState) {
-      let activeFooter = this.props.showFooterDropdown
-        ? this.props.activeDropdown
-        : this.state.activeFooter;
-      if (this.props.handleBadge) {
-        this.props.handleBadge(this.state.activeBadgeList, activeFooter);
-      }
-    }
   }
 
   handleFooter = (event) => {
@@ -267,7 +258,7 @@ class BarGraphSection extends Component {
     return (
       <div
         className={`bar-graph-section ${
-          this.props.floatingWatermark && !this.props.isLoading
+          this.props.floatingWatermark && !this.props.isLoading && data
             ? this.props.isCounterPartyGasFeesPage
               ? "tableWatermarkOverlayCounterParty"
               : "tableWatermarkOverlay"
@@ -959,9 +950,7 @@ BarGraphSection.defaultProps = {
   isScroll: false,
 };
 
-const mapStateToProps = (state) => ({
-  darkModeState: state.darkModeState,
-});
+const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BarGraphSection);
