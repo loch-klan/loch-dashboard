@@ -1384,7 +1384,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   showDust={this.state.showDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
-                  className="cost-basis-table"
                   addWatermark
                 />
               </div>

@@ -2023,6 +2023,9 @@ form {
           margin: 0rem;
           padding: 0 1rem;
 
+          .nowrap-div {
+            white-space: nowrap;
+          }
           .ellipsis-div {
             overflow: hidden;
             text-overflow: ellipsis;
