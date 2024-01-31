@@ -176,6 +176,7 @@ class GasFeesPage extends Component {
     }, 900000);
   };
   componentDidMount() {
+    console.log("darkmode", this.props.darkModeState);
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
@@ -607,6 +608,7 @@ class GasFeesPage extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
+  darkModeState: state.darkModeState,
   commonState: state.CommonState,
 });
 const mapDispatchToProps = {

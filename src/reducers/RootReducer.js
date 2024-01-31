@@ -34,6 +34,7 @@ import {
 } from "../app/watchlist/redux/WatchListReducer";
 import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
 import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
+import DarkModeReducer from "../app/intelligence/darkMode";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -52,6 +53,7 @@ export default combineReducers({
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
+  darkModeState: DarkModeReducer,
   InflowOutflowSelectedAssetState: InflowOutflowSelectedAssetReducer,
   InflowOutflowAssetListState: InflowOutflowAssetListReducer,
   InflowOutflowChartState: InflowOutflowChartReducer,

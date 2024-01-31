@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
+import { DARK_MODE } from "../app/intelligence/ActionTypes";
 export const mobileCheck = () => {
   // if (
   //   BASE_URL_S3 ===
