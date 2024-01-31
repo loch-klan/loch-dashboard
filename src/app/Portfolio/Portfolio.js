@@ -978,6 +978,7 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
   }
   trimGasFees = () => {
+    console.log("calling trim gas fees");
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.graphfeeValue &&
@@ -1160,10 +1161,11 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (
-      this.props.intelligenceState &&
-      this.props.intelligenceState.graphfeeValue &&
-      this.props.intelligenceState.graphfeeValue !==
-        prevProps.intelligenceState.graphfeeValue
+      (this.props.intelligenceState &&
+        this.props.intelligenceState.graphfeeValue &&
+        this.props.intelligenceState.graphfeeValue !==
+          prevProps.intelligenceState.graphfeeValue) ||
+      this.props.darkModeState?.flag !== prevProps.darkModeState?.flag
     ) {
       this.trimGasFees();
     }
@@ -1197,10 +1199,11 @@ class Portfolio extends BaseReactComponent {
       });
     }
     if (
-      this.props.intelligenceState &&
-      this.props.intelligenceState.counterPartyValue &&
-      this.props.intelligenceState.counterPartyValue !==
-        prevProps.intelligenceState.counterPartyValue
+      (this.props.intelligenceState &&
+        this.props.intelligenceState.counterPartyValue &&
+        this.props.intelligenceState.counterPartyValue !==
+          prevProps.intelligenceState.counterPartyValue) ||
+      this.props.darkModeState?.flag !== prevProps.darkModeState?.flag
     ) {
       this.trimCounterpartyVolume();
     }
@@ -5026,6 +5029,7 @@ const mapStateToProps = (state) => ({
   yieldOpportunitiesState: state.YieldOpportunitiesState,
   walletState: state.walletState,
   inflowsOutflowsList: state.inflowsOutflowsList,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getCoinRate,

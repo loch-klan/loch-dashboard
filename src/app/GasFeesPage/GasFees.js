@@ -176,7 +176,6 @@ class GasFeesPage extends Component {
     }, 900000);
   };
   componentDidMount() {
-    console.log("darkmode", this.props.darkModeState);
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
@@ -280,6 +279,13 @@ class GasFeesPage extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+    }
+    if (this.props.darkModeState != prevProps.darkModeState) {
+      this.props.updateFeeGraph(
+        this.props.intelligenceState.GraphfeeData,
+        getGraphData(this.props.intelligenceState.GraphfeeData, this),
+        this
+      );
     }
   }
 
@@ -427,7 +433,7 @@ class GasFeesPage extends Component {
       // });
       this.props.updateFeeGraph(
         GraphfeeData,
-        getGraphData(graphDataObj, this),
+        getGraphData(graphDataObj, this, this.props.darkModeState.flag),
         this,
         false
       );
