@@ -2633,6 +2633,7 @@ class NewWelcome extends BaseReactComponent {
                       justifyContent: "center",
                       alignItems: "center",
                       padding: "100px 0",
+                      borderRadius: "12px",
                     }}
                   >
                     <Loading />

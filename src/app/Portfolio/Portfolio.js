@@ -4296,7 +4296,8 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div
                             className={`newHomeTableContainer ${
-                              this.state.AvgCostLoading
+                              this.state.AvgCostLoading ||
+                              tableDataCostBasis?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
                             }`}
@@ -4711,7 +4712,8 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div
                             className={`newHomeTableContainer ${
-                              this.state.yieldOpportunitiesTableLoading
+                              this.state.yieldOpportunitiesTableLoading ||
+                              yieldOpportunitiesListTemp?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
                             }`}
@@ -4901,7 +4903,7 @@ class Portfolio extends BaseReactComponent {
                         <div>
                           <div
                             className={`newHomeTableContainer ${
-                              this.state.tableLoading
+                              this.state.tableLoading || tableData?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
                             }`}
