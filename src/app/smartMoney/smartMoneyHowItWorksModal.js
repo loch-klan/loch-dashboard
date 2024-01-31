@@ -61,11 +61,11 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
             className="addCommunitySmartMoneyWrapperParent"
           >
             <div className="exit-overlay-body" style={{ padding: "0rem" }}>
-              <h6 className="inter-display-medium f-s-25 w-100 text-left">
+              <h6 className="inter-display-medium f-s-25 w-100 text-left text-same-mode-color">
                 About Loch Leaderboard
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 w-100 text-left">
-              The intelligent way to manage your portfolio
+                The intelligent way to manage your portfolio
               </p>
             </div>
             <div className="smartMoneyHowItWorksModalBodyScrollContainer">

@@ -3,13 +3,14 @@ import React from "react";
 import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import NftDummy from "./../../assets/images/nft_dummy.png";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -113,11 +114,14 @@ import {
 import PieChart2 from "./PieChart2";
 import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
+import chevronRight from "./../../assets/images/icons/chevron-right.svg";
+import NftMobileBlock from "../nft/NftMobileBlock.js";
 import CustomDropdown from "../../utils/form/CustomDropdownPrice.js";
 import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
+import { getNFT } from "../nft/NftApi.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -127,6 +131,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      nftSort: [],
       disableAddBtn: false,
       addButtonVisible: false,
       walletInput: [
@@ -203,6 +208,8 @@ class PortfolioMobile extends BaseReactComponent {
           up: false,
         },
       ],
+      nftTableData: [],
+      isLoadingNft: false,
       currency: JSON.parse(window.sessionStorage.getItem("currency")),
     };
   }
@@ -370,6 +377,9 @@ class PortfolioMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
+    if (!this.props.commonState?.nftPage) {
+      this.callNftApi();
+    }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
       this.callApiTransHistory(page);
@@ -450,6 +460,19 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    if (
+      this.props.NFTState &&
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts?.length > 0 &&
+      this.props.commonState.nftPage
+    ) {
+      this.setState({
+        nftTableData: this.props.NFTState?.nfts,
+        isLoadingNft: false,
+      });
+    } else {
+      this.callNftApi();
+    }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
       let tempcombinedCurrentValue = 0;
@@ -536,22 +559,7 @@ class PortfolioMobile extends BaseReactComponent {
         tempCond.push(tempEle);
       }
     });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
-      : [];
-    this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
-    });
-    let address = arr?.map((wallet) => {
-      return wallet.address;
-    });
-    tempCond = [
-      ...tempCond,
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-    ];
+
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
@@ -1119,6 +1127,194 @@ class PortfolioMobile extends BaseReactComponent {
   };
   cancelAddingWallet = () => {};
   resetCreditPoints = () => {};
+  callNftApi = (page = START_INDEX) => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      isLoadingNft: true,
+    });
+
+    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let arr = [];
+    let addressList = [];
+    if (addWalletList && addWalletList.length > 0) {
+      for (let i = 0; i < addWalletList.length; i++) {
+        let curr = addWalletList[i];
+        let isIncluded = false;
+
+        const whatIndex = arr.findIndex(
+          (resRes) =>
+            resRes?.trim()?.toLowerCase() ===
+              curr?.address?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.displayAddress?.trim()?.toLowerCase() ||
+            resRes?.trim()?.toLowerCase() ===
+              curr?.apiAddress?.trim()?.toLowerCase()
+        );
+        if (whatIndex !== -1) {
+          isIncluded = true;
+        }
+        if (!isIncluded && curr.address) {
+          arr.push(curr.address?.trim());
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.address?.trim());
+          addressList.push(curr.address?.trim());
+        }
+      }
+    }
+    let tempNFTData = new URLSearchParams();
+
+    tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    let isDefault = false;
+    if (this.state.nftSort.length === 0) {
+      isDefault = true;
+    }
+
+    this.props.getNFT(tempNFTData, this, isDefault);
+  };
+  setLocalNftData = (data) => {
+    this.setState({
+      nftTableData: data.nfts,
+      isLoadingNft: false,
+    });
+  };
+  addConditionTransactionTable = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({ isNetworkSearchUsed: false, selectedNetworks: value });
+    }
+    let index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.conditionTransHistory];
+    let search_index = this.state.conditionTransHistory.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      conditionTransHistory: arr,
+    });
+  };
+  onKeyPressTransHistorySearch = (curKey) => {
+    if (curKey && curKey.code && curKey.code === "Enter") {
+      this.addConditionTransactionTable(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched: this.state.search,
+      });
+    }
+  };
+  onChangeTransHistorySearchMethod = (ele) => {
+    this.setState({
+      search: ele.target.value,
+    });
+  };
+  handleNetworkSelectTransHistory = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addConditionTransactionTable(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  handleAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minAmountTransHistory: min,
+          maxAmountTransHistory: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addConditionTransactionTable(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
+    }
+  };
   render() {
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
@@ -1221,7 +1417,7 @@ class PortfolioMobile extends BaseReactComponent {
               onClick={() => {
                 this.toggleAgeTimestamp();
               }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
+              className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
               style={{
                 textDecoration: "underline",
               }}
@@ -1273,7 +1469,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1511,7 +1707,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1747,7 +1943,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1795,7 +1991,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1839,7 +2035,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -1930,7 +2126,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -1979,7 +2175,10 @@ class PortfolioMobile extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
                 src={sortByIcon}
@@ -2021,7 +2220,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -2096,7 +2295,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Asset"
             // onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
           </div>
@@ -2143,7 +2342,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Average Cost Price"
             // onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
           </div>
@@ -2190,7 +2389,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Price"
             // onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
           </div>
@@ -2237,7 +2436,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Amount"
             // onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 gsecondaryDarkText">
               Amount
             </span>
           </div>
@@ -2280,7 +2479,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Cost Basis"
             // onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
           </div>
@@ -2361,7 +2560,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Value"
             // onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
           </div>
@@ -2442,7 +2641,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gainamount"
             // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
           </div>
@@ -2553,7 +2752,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
           </div>
@@ -2663,7 +2862,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
           </div>
@@ -2758,14 +2957,14 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                   <div
                     onClick={this.hideThePopupModal}
-                    className="mpcHFGoBtn inter-display-medium f-s-13"
+                    className="mpcHFGoBtn inter-display-medium f-s-13 btn-bg-black"
                   >
                     Ok
                   </div>
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch">
+            <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{
@@ -2953,68 +3152,77 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
               <div
-                className={`section-table section-table-mobile-scroll asset-mobile-table ${
-                  this.state.AvgCostLoading ||
-                  this.props.intelligenceState?.Average_cost_basis?.length < 1
-                    ? ""
-                    : "tableWatermarkOverlayCounterParty"
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message="No assets found"
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ? []
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length > 0
-                      ? [
-                          {},
-                          ...this.props.intelligenceState.Average_cost_basis.filter(
+                <div
+                  className={`section-table section-table-mobile-scroll asset-mobile-table ${
+                    this.props.AvgCostLoading
+                      ? ""
+                      : "tableWatermarkOverlayCounterParty"
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    handleClick={() => {
+                      if (this.state.lochToken) {
+                        this.props.history.push("/intelligence/costs");
+                        // AverageCostBasisEView({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }
+                    }}
+                    message="No assets found"
+                    subTitle=""
+                    tableData={
+                      this.props.intelligenceState.Average_cost_basis &&
+                      this.props.intelligenceState.Average_cost_basis.length < 1
+                        ? []
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
                             (item) => {
                               return item.CurrentValue > 1;
                             }
-                          ),
-                        ]
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length < 1
-                      ? []
-                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                  yAxisScrollable
-                />
+                          ).length > 0
+                        ? [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis.filter(
+                              (item) => {
+                                return item.CurrentValue > 1;
+                              }
+                            ),
+                          ]
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
+                            (item) => {
+                              return item.CurrentValue > 1;
+                            }
+                          ).length < 1
+                        ? []
+                        : [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis,
+                          ]
+                    }
+                    columnList={columnData}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.props.AvgCostLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                    yAxisScrollable
+                  />
+                </div>
               </div>
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3142,7 +3350,7 @@ class PortfolioMobile extends BaseReactComponent {
                   style={{ width: "100%", marginTop: "12px" }}
                 >
                   <div
-                    className="transaction-table-mobile-search"
+                    className="transaction-table-mobile-search input-noshadow-dark"
                     style={{ display: "flex", width: "100%" }}
                   >
                     <Image src={SearchIcon} className="search-icon" />
@@ -3163,29 +3371,35 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
 
               <div
-                className={`section-table section-table-mobile-scroll ${
-                  this.state.tableLoading || tableDataTransaction?.length < 1
-                    ? ""
-                    : "tableWatermarkOverlayCounterParty"
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  message={"No Transactions Found"}
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.state.tableLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                />
+                <div
+                  className={`section-table section-table-mobile-scroll ${
+                    tableDataTransaction.length > 0 && !this.state.tableLoading
+                      ? "tableWatermarkOverlayCounterParty"
+                      : ""
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    message={"No Transactions Found"}
+                    subTitle=""
+                    tableData={tableDataTransaction}
+                    columnList={columnListTransaction}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.state.tableLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                  />
+                </div>
               </div>
 
               {!this.state.tableLoading ? (
@@ -3205,6 +3419,63 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               ) : null}
 
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  marginTop: "4.8rem",
+                  alignItems: "center",
+                }}
+              >
+                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* Unrealized profit and loss */}
+                  NFTs
+                </h2>
+                <div
+                  className="homepage-mobile-view-more"
+                  onClick={() => {
+                    this.props.history.push("/nft");
+                  }}
+                >
+                  View more
+                  <img src={chevronRight} alt="" />
+                </div>
+              </div>
+              <div style={{ marginTop: "16px" }}>
+                {this.state.isLoadingNft ? (
+                  <div
+                    style={{
+                      height: "45vh",
+                    }}
+                  >
+                    <div className="mpLoadingContainer">
+                      <Loading />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="nft-page-mobile">
+                    <div
+                      className="mobileSmartMoneyListContainer"
+                      style={{ padding: "0px" }}
+                    >
+                      {this.state.nftTableData
+                        .slice(0, 3)
+                        .map((mapData, index) => {
+                          return (
+                            <NftMobileBlock
+                              data={mapData}
+                              style={{
+                                marginBottom:
+                                  index === this.state.nftTableData.length - 1
+                                    ? "0px"
+                                    : "1.5rem",
+                              }}
+                            />
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
@@ -3224,6 +3495,7 @@ const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
   defiState: state.DefiState,
+  NFTState: state.NFTState,
 });
 const mapDispatchToProps = {
   detectCoin,
@@ -3250,12 +3522,17 @@ const mapDispatchToProps = {
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
+  getFilters,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,
   getDetectedChainsApi,
   GetAllPlan,
   getUser,
+  getNFT,
 };
 PortfolioMobile.propTypes = {};
 

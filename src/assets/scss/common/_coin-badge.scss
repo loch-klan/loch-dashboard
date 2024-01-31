@@ -17,18 +17,21 @@
 
     .badge-name {
       padding: 0.8rem 1.2rem;
-      background: #ffffff;
-      border: 0.1rem solid $grey-CAC;
+      background: var(--primaryFilter);
+      color: var(--black191);
+      border: 0.1rem solid var(--dropdownContentBorderColor);
       border-radius: 0.8rem;
       cursor: pointer;
     }
 
     .badge-active {
       // background-color: $yellow-F5E ;
-      border: 0.1rem solid $black-191;
+      border: 0.1rem solid var(--black191);
+      color: var(--primaryTextColor);
     }
     .badge-name:hover {
-      border: 0.1rem solid $black-191;
+      color: var(--primaryTextColor);
+      border: 0.1rem solid var(--black191);
     }
     &:hover {
       &::-webkit-scrollbar {
@@ -68,7 +71,7 @@
       }
     }
     .dropdown-toggle {
-      box-shadow: -25px 0px 24px 20px $grey-F2F;
+      box-shadow: -25px 0px 24px 20px var(--profileHideMultiWallet);
       padding: 1.1rem 1.9rem 1.1rem 1.6rem;
       background: $secondary;
       border: 0.1rem solid $grey-B0B;
@@ -93,7 +96,7 @@
   height: 100%;
   position: absolute;
   right: 0;
-  box-shadow: 0px 0px 15px 20px #f2f2f2;
+  box-shadow: 0px 0px 15px 20px var(--primaryBackgroud);
 }
 .coinchips::-webkit-scrollbar,
 .badge-list::-webkit-scrollbar {

@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
-import logo from "./../../../image/Loch.svg";
+import { CloseIconBlack } from "../../../assets/images/icons";
 import { validateEmail } from "../../../utils/validators";
-import {
-  CloseIconBlack,
-  CrossSmartMoneyIcon,
-  NewWelcomeLoginCrossIcon,
-} from "../../../assets/images/icons";
+import logo from "./../../../image/Loch.svg";
+import "./_newAuth.scss";
 
 const Login = ({
   show,
@@ -46,7 +42,6 @@ const Login = ({
       backdropClassName="exitoverlaymodalNewWelcome"
       contentClassName="new-welcome-modal-content"
       animation={false}
-      
     >
       <Modal.Body style={{ position: "relative" }}>
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
@@ -64,7 +59,7 @@ const Login = ({
           </div>
         </div>
         <div className="new-auth" style={{ paddingBottom: "106px" }}>
-          <div className="new-auth-content">
+          <div className="new-auth-content input-noshadow-dark">
             <img className="new-auth-content-logo " src={logo} alt="" />
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Sign in</h4>
@@ -88,7 +83,7 @@ const Login = ({
                   if (validateEmail(email)) handleSubmitEmail();
                 }}
                 ref={submitRef}
-                className={`new-auth-content-button ${
+                className={`new-auth-content-button  ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""
                 }`}
               >

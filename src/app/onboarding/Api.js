@@ -387,6 +387,13 @@ export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
               .catch(() => {
                 console.log("Issue here");
               });
+
+            postLoginInstance
+              .post("wallet/user-wallet/add-nfts")
+              .then((res) => {})
+              .catch(() => {
+                console.log("Issue here");
+              });
           }
         } else {
           UserWrongCode({ email_address: ctx.state.email });
@@ -615,6 +622,14 @@ export const createAnonymousUserApi = (
                   type: YIELD_POOLS,
                   payload: res,
                 });
+              })
+              .catch(() => {
+                console.log("Issue here");
+              });
+            postLoginInstance
+              .post("wallet/user-wallet/add-nfts", yieldData)
+              .then(() => {
+                
               })
               .catch(() => {
                 console.log("Issue here");

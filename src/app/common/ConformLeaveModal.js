@@ -35,12 +35,12 @@ class ConfirmLeaveModal extends BaseReactComponent {
       >
         <Modal.Body>
           <div className="leave-modal-body">
-            <p className="inter-display-medium f-s-20 lh-24 m-b-30 black-000">
+            <p className="inter-display-medium f-s-20 lh-24 m-b-30 invertTextColor">
               Are you sure you want to leave ?{" "}
             </p>
             <div className="leave-modal-btn-section">
               <Button
-                className="secondary-btn m-r-24"
+                className="secondary-btn m-r-24 main-button btn-bg-white-outline-black"
                 onClick={() => {
                   resetUser();
                   window.sessionStorage.setItem("refresh", false);
