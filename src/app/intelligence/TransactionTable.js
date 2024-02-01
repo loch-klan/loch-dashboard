@@ -52,6 +52,7 @@ function TransactionTable(props) {
         combinedReturn={props.combinedReturn}
         pageLimit={props.pageLimit}
         changePageLimit={props.changePageLimit}
+        paginationNew={props.paginationNew}
         minimalPagination={props.minimalPagination}
         hidePaginationRecords={props.hidePaginationRecords}
         showHeaderOnEmpty={props.showHeaderOnEmpty}

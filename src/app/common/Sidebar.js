@@ -28,6 +28,7 @@ import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
 import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
@@ -821,6 +822,39 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        {/* <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"NFTs"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/nft"
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/nft"
+                                    ? NFTIcon
+                                    : NFTIcon
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1023,7 +1057,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1032,6 +1066,33 @@ function Sidebar(props) {
                                   e.preventDefault();
                                   return null;
                                 }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  ProfileMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/nft"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={
+                                  activeTab === "/nft"
+                                    ? NFTIcon
+                                    : NFTIcon
+                                }
+                              />
+                              NFTs
+                            </NavLink>
+                          </li> */}
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
