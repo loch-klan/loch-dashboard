@@ -253,7 +253,7 @@ class ProfileForm extends BaseReactComponent {
                 </Col>
               </Row>
               <Row>
-                <Col md={4}>
+                <Col md={4} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
