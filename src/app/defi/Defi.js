@@ -617,7 +617,7 @@ class Defi extends Component {
                           style={
                             this.state.isYeildToggle
                               ? {
-                                  filter: "opacity(1)",
+                                  filter: "var(--invertColor)",
                                 }
                               : { transform: "rotate(180deg)" }
                           }
@@ -713,7 +713,7 @@ class Defi extends Component {
                           style={
                             this.state.isDebtToggle
                               ? {
-                                  filter: "opacity(1)",
+                                  filter: "var(--invertColor)",
                                 }
                               : { transform: "rotate(180deg)" }
                           }
@@ -821,222 +821,227 @@ class Defi extends Component {
             {/* End filter */}
 
             {/* start card */}
-
             {this.state.defiStateLocally?.defiList &&
             this.state.defiStateLocally.defiList.length !== 0 ? (
-              this.state.defiStateLocally?.defiList?.map((card, index) => {
-                return (
-                  <div
-                    key={`sortedList-${index}`}
-                    className="defi-card-wrapper"
-                    style={{
-                      minWidth: "85rem",
-                    }}
-                  >
-                    <div className="top-title-wrapper">
-                      <div className="heading-image">
-                        <Image src={card?.logoUrl} />
+              <div className="defi-card-wrapper-container">
+                {this.state.defiStateLocally?.defiList?.map((card, index) => {
+                  return (
+                    <div
+                      key={`sortedList-${index}`}
+                      className="defi-card-wrapper"
+                      style={{
+                        minWidth: "85rem",
+                      }}
+                    >
+                      <div className="top-title-wrapper">
+                        <div className="heading-image">
+                          <Image src={card?.logoUrl} />
+                          <h3 className="inter-display-medium f-s-16 lh-19">
+                            {card?.name}
+                          </h3>
+                        </div>
                         <h3 className="inter-display-medium f-s-16 lh-19">
-                          {card?.name}
+                          {CurrencyType(false)}
+                          {numToCurrency(
+                            card?.netBalance * (this.state.currency?.rate || 1)
+                          )}{" "}
+                          <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
+                            {CurrencyType(true)}
+                          </span>
                         </h3>
                       </div>
-                      <h3 className="inter-display-medium f-s-16 lh-19">
-                        {CurrencyType(false)}
-                        {numToCurrency(
-                          card?.netBalance * (this.state.currency?.rate || 1)
-                        )}{" "}
-                        <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
-                          {CurrencyType(true)}
-                        </span>
-                      </h3>
-                    </div>
 
-                    {/* Table Content */}
-                    {card.items
-                      ? card.items.map((groupComp, i) => {
-                          return (
-                            <>
-                              <Row key={`carItem-${i}`} className="table-head">
-                                <Col md={4}>
-                                  <div className="cp header-col">
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                                      {groupComp.type}
-                                    </span>
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div
-                                    style={{
-                                      justifyContent: "center",
-                                    }}
-                                    className="cp header-col"
-                                  >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                                      Balance
-                                    </span>
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div
-                                    style={{
-                                      justifyContent: "flex-end",
-                                    }}
-                                    className="cp header-col"
-                                  >
-                                    <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                                      USD Value
-                                    </span>
-                                  </div>
-                                </Col>
-                              </Row>
-                              {groupComp?.walletItems &&
-                              groupComp.walletItems.length > 0
-                                ? groupComp.walletItems.map(
-                                    (rowData, indexTwo) => {
-                                      return (
-                                        <Row
-                                          key={`defiTableRows-${i}-${index}-${indexTwo}`}
-                                          className="table-content-row"
-                                        >
-                                          <Col md={4}>
-                                            <div className="d-flex align-items-center h-100">
-                                              <div className="overlap-img">
-                                                {rowData.logos?.length > 0
-                                                  ? rowData.logos?.map(
-                                                      (e, indexThree) => {
+                      {/* Table Content */}
+                      {card.items
+                        ? card.items.map((groupComp, i) => {
+                            return (
+                              <>
+                                <Row
+                                  key={`carItem-${i}`}
+                                  className="table-head"
+                                >
+                                  <Col md={4}>
+                                    <div className="cp header-col">
+                                      <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                        {groupComp.type}
+                                      </span>
+                                    </div>
+                                  </Col>
+                                  <Col md={4}>
+                                    <div
+                                      style={{
+                                        justifyContent: "center",
+                                      }}
+                                      className="cp header-col"
+                                    >
+                                      <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                        Balance
+                                      </span>
+                                    </div>
+                                  </Col>
+                                  <Col md={4}>
+                                    <div
+                                      style={{
+                                        justifyContent: "flex-end",
+                                      }}
+                                      className="cp header-col"
+                                    >
+                                      <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                                        USD Value
+                                      </span>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                {groupComp?.walletItems &&
+                                groupComp.walletItems.length > 0
+                                  ? groupComp.walletItems.map(
+                                      (rowData, indexTwo) => {
+                                        return (
+                                          <Row
+                                            key={`defiTableRows-${i}-${index}-${indexTwo}`}
+                                            className="table-content-row"
+                                          >
+                                            <Col md={4}>
+                                              <div className="d-flex align-items-center h-100">
+                                                <div className="overlap-img">
+                                                  {rowData.logos?.length > 0
+                                                    ? rowData.logos?.map(
+                                                        (e, indexThree) => {
+                                                          return (
+                                                            <Image
+                                                              key={`defiTableRowAsset-${i}-${index}-${indexTwo}-${indexThree}`}
+                                                              src={e}
+                                                              style={{
+                                                                zIndex:
+                                                                  rowData.logos
+                                                                    ?.length -
+                                                                  indexThree,
+                                                                marginLeft:
+                                                                  indexThree ===
+                                                                  0
+                                                                    ? "0"
+                                                                    : "-1rem",
+                                                              }}
+                                                            />
+                                                          );
+                                                        }
+                                                      )
+                                                    : null}
+                                                </div>
+                                                {rowData.asset ? (
+                                                  <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
+                                                    {rowData.asset}
+                                                  </h3>
+                                                ) : null}
+                                              </div>
+                                            </Col>
+
+                                            <Col md={4}>
+                                              <div className="d-flex flex-column align-items-center justify-content-center h-100 ">
+                                                {rowData?.balance
+                                                  ? rowData.balance.map(
+                                                      (e, indexFour) => {
                                                         return (
-                                                          <Image
-                                                            key={`defiTableRowAsset-${i}-${index}-${indexTwo}-${indexThree}`}
-                                                            src={e}
-                                                            style={{
-                                                              zIndex:
-                                                                rowData.logos
-                                                                  ?.length -
-                                                                indexThree,
-                                                              marginLeft:
-                                                                indexThree === 0
-                                                                  ? "0"
-                                                                  : "-1rem",
-                                                            }}
-                                                          />
+                                                          <CustomOverlay
+                                                            position="top"
+                                                            isIcon={false}
+                                                            isInfo={true}
+                                                            isText={true}
+                                                            text={
+                                                              e
+                                                                ? convertNtoNumber(
+                                                                    e
+                                                                  )
+                                                                : "0.00"
+                                                            }
+                                                          >
+                                                            <div
+                                                              className={`${
+                                                                indexFour > 0
+                                                                  ? "mt-3"
+                                                                  : ""
+                                                              } inter-display-medium f-s-15 lh-15`}
+                                                              key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                            >
+                                                              {e
+                                                                ? isNaN(e)
+                                                                  ? e
+                                                                  : numToCurrency(
+                                                                      convertNtoNumber(
+                                                                        e
+                                                                      ),
+                                                                      "en-US",
+                                                                      "USD"
+                                                                    )
+                                                                : "0.00"}
+                                                            </div>
+                                                          </CustomOverlay>
                                                         );
                                                       }
                                                     )
                                                   : null}
                                               </div>
-                                              {rowData.asset ? (
-                                                <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
-                                                  {rowData.asset}
-                                                </h3>
-                                              ) : null}
-                                            </div>
-                                          </Col>
-
-                                          <Col md={4}>
-                                            <div className="d-flex flex-column align-items-center justify-content-center h-100 ">
-                                              {rowData?.balance
-                                                ? rowData.balance.map(
-                                                    (e, indexFour) => {
-                                                      return (
-                                                        <CustomOverlay
-                                                          position="top"
-                                                          isIcon={false}
-                                                          isInfo={true}
-                                                          isText={true}
-                                                          text={
-                                                            e
-                                                              ? convertNtoNumber(
-                                                                  e
-                                                                )
-                                                              : "0.00"
-                                                          }
-                                                        >
-                                                          <div
-                                                            className={`${
-                                                              indexFour > 0
-                                                                ? "mt-3"
-                                                                : ""
-                                                            } inter-display-medium f-s-15 lh-15`}
-                                                            key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
-                                                          >
-                                                            {e
-                                                              ? isNaN(e)
-                                                                ? e
-                                                                : numToCurrency(
-                                                                    convertNtoNumber(
-                                                                      e
-                                                                    ),
-                                                                    "en-US",
-                                                                    "USD"
-                                                                  )
-                                                              : "0.00"}
-                                                          </div>
-                                                        </CustomOverlay>
-                                                      );
+                                            </Col>
+                                            <Col md={4}>
+                                              {rowData.usdValue ? (
+                                                <div className="d-flex align-items-center justify-content-end h-100">
+                                                  <CustomOverlay
+                                                    position="top"
+                                                    isIcon={false}
+                                                    isInfo={true}
+                                                    isText={true}
+                                                    text={
+                                                      CurrencyType(false) +
+                                                      amountFormat(
+                                                        rowData.usdValue.toFixed(
+                                                          2
+                                                        ),
+                                                        "en-US",
+                                                        "USD"
+                                                      )
                                                     }
-                                                  )
-                                                : null}
-                                            </div>
-                                          </Col>
-                                          <Col md={4}>
-                                            {rowData.usdValue ? (
-                                              <div className="d-flex align-items-center justify-content-end h-100">
-                                                <CustomOverlay
-                                                  position="top"
-                                                  isIcon={false}
-                                                  isInfo={true}
-                                                  isText={true}
-                                                  text={
-                                                    CurrencyType(false) +
-                                                    amountFormat(
-                                                      rowData.usdValue.toFixed(
-                                                        2
-                                                      ),
-                                                      "en-US",
-                                                      "USD"
-                                                    )
-                                                  }
-                                                >
-                                                  <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
-                                                    {CurrencyType(false)}
-                                                    {numToCurrency(
-                                                      rowData.usdValue.toFixed(
-                                                        2
-                                                      ),
-                                                      "en-US",
-                                                      "USD"
-                                                    )}
-                                                  </div>
-                                                </CustomOverlay>
-                                              </div>
-                                            ) : (
-                                              <div className="d-flex align-items-center justify-content-end h-100">
-                                                <CustomOverlay
-                                                  position="top"
-                                                  isIcon={false}
-                                                  isInfo={true}
-                                                  isText={true}
-                                                  text={"$0.00"}
-                                                >
-                                                  <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
-                                                    $0.00
-                                                  </div>
-                                                </CustomOverlay>
-                                              </div>
-                                            )}
-                                          </Col>
-                                        </Row>
-                                      );
-                                    }
-                                  )
-                                : null}
-                            </>
-                          );
-                        })
-                      : null}
-                  </div>
-                );
-              })
+                                                  >
+                                                    <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                      {CurrencyType(false)}
+                                                      {numToCurrency(
+                                                        rowData.usdValue.toFixed(
+                                                          2
+                                                        ),
+                                                        "en-US",
+                                                        "USD"
+                                                      )}
+                                                    </div>
+                                                  </CustomOverlay>
+                                                </div>
+                                              ) : (
+                                                <div className="d-flex align-items-center justify-content-end h-100">
+                                                  <CustomOverlay
+                                                    position="top"
+                                                    isIcon={false}
+                                                    isInfo={true}
+                                                    isText={true}
+                                                    text={"$0.00"}
+                                                  >
+                                                    <div className="overflowValueContainer inter-display-medium f-s-15 lh-15">
+                                                      $0.00
+                                                    </div>
+                                                  </CustomOverlay>
+                                                </div>
+                                              )}
+                                            </Col>
+                                          </Row>
+                                        );
+                                      }
+                                    )
+                                  : null}
+                              </>
+                            );
+                          })
+                        : null}
+                    </div>
+                  );
+                })}
+              </div>
             ) : this.state.defiStateLocally?.defiList &&
               this.state.defiStateLocally.defiList.length === 0 ? (
               // <Col md={12}>

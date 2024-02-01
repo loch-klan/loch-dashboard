@@ -143,7 +143,7 @@
         0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
       margin-bottom: 2rem;
       padding: 0;
-      background-color: #fff;
+      background-color: var(--cardBackgroud);
       padding: 2rem;
       border-radius: 1.2rem;
       .animation-wrapper {
@@ -166,7 +166,7 @@
     }
     .profileCreditPointsContainer {
       min-width: 85rem;
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
 
       box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
         0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
@@ -210,6 +210,7 @@
             height: 13px;
             width: 10px;
             cursor: pointer;
+            filter: var(--invertColor);
             transition-duration: 300ms;
             opacity: 0.75;
             &:hover {
@@ -290,11 +291,11 @@
                     margin-left: 0.3rem;
                   }
                   .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
-                    background-color: #fcebd780;
+                    background-color: var(--lochPointsBadgeWarningBg);
                     color: #f19938;
                   }
                   .profileLochCreditPointsBlockInfoBlockDescPointsDone {
-                    background-color: #bdfadea7;
+                    background-color: var(--lochPointsBadgeSuccessBg);
                     color: #18c278;
                   }
                 }
@@ -312,6 +313,7 @@
                   .profileLochCreditPointsBlockInfoBlockDescGoIcon {
                     height: 12px;
                     margin-left: 0.5rem;
+                    filter: var(--invertColor);
                   }
                 }
               }
@@ -322,7 +324,7 @@
     }
     .profile-form-section {
       min-width: 85rem;
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       padding: 3.2rem;
       box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
         0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
@@ -345,7 +347,7 @@
           }
           .form-group {
             label {
-              @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+              @include font(var(--grey313), "Inter-Medium", 1.3rem, 500, 1.6rem);
               margin-bottom: 1.2rem;
               span {
                 display: none;
@@ -354,10 +356,10 @@
             .form-control {
               padding: 1.2rem 1.6rem;
               min-height: 4.3rem;
-              border: 0.1rem solid $grey-D4D;
+              border: 0.1rem solid var(--dropdownContentBorderColor);
             }
             .form-control:hover {
-              border: 0.1rem solid $black-191;
+              border: 0.1rem solid var(--black191);
             }
             .is-valid {
               box-shadow: none;

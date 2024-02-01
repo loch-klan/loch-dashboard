@@ -24,6 +24,7 @@ import {
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
+import { DARK_MODE } from "../intelligence/ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -68,6 +69,15 @@ export const addLocalWalletList = (passedData) => {
   return function (dispatch, getState) {
     dispatch({
       type: LOCAL_ADD_WALLET_LIST,
+      payload: passedData,
+    });
+  };
+};
+
+export const SwitchDarkMode = (passedData) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: DARK_MODE,
       payload: passedData,
     });
   };
@@ -211,6 +221,12 @@ export const updateUserWalletApi = (
               // const allChains = getState().OnboardingState.coinsList;
             })
             .catch((err) => {});
+          postLoginInstance
+            .post("wallet/user-wallet/add-nfts", yieldData)
+            .then(() => {
+              // const allChains = getState().OnboardingState.coinsList;
+            })
+            .catch((err) => {});
         } else {
           toast.error(res.data.message || "Something went wrong");
           if (ctx.hideTheTopBarHistoryItems) {
@@ -225,7 +241,6 @@ export const updateUserWalletApi = (
         }
       })
       .catch((err) => {
-        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
