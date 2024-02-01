@@ -113,6 +113,7 @@
   --floatingAppPopupShadow:0px 0 2rem 0.8rem rgba(24, 39, 75, 0.08),
   0rem 0 2rem 0.8rem rgba(24, 39, 75, 0.08);
   --mobileTransactionFiltersBg: #e5e5e680;
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -123,19 +124,19 @@
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
-  --primaryTextColor: white;
+  --primaryTextColor: rgba(255,255,255,0.85);
   --primarySubTextColor: #7c7d81;
   --primaryGainColor: rgba(208, 252, 234, 1);
   --primaryLossColor: rgba(250, 217, 217, 1);
   --primaryDropdownBackground: #313233;
-  --primaryDropdownBorder: white;
+  --primaryDropdownBorder: rgba(255,255,255,0.85);
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
-  --black191:white;
-  --invertMode:white;
+  --black191:rgba(255,255,255,0.85);
+  --invertMode:rgba(255,255,255,0.85);
   --glassCardBg: rgba(24,24,24,0.8);
 
   // FILTERS
@@ -155,7 +156,7 @@
   // Headers
   --headerSelectEyeBg:#313233;
   --topbarAdressAddBorder: #e5e5e6;
-  --topbarAdressAddBg: #fff;
+  --topbarAdressAddBg: rgba(255,255,255,0.85);
   --topbarAdressAddColorHover: #000;
 
   //TEMP
@@ -163,8 +164,8 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
-  --grey313: #fff;
-  --backColor: #fff;
+  --grey313: rgba(255,255,255,0.85);
+  --backColor: rgba(255,255,255,0.85);
   --sameModeColor: #000;
   --diffModeColorWithOpacity: #rgba(0, 0, 0, 0.05);
 
@@ -184,6 +185,119 @@
   --sidebarActivePageColor: #2a2a2a;
   --sidebarBottomOptions: #96979a;
   --sidebarWalletAmount:white;
+  --sidebarHoverLink:#2a2a2a34;
+  --sidebarHoverShadow:none;
+
+  //buttons and badges
+  --mainButtonBg:transparent;
+  --badgeGreenBg: rgba(208, 252,234,0.1);
+  --badgeGreencolor: rgba(208, 252,234,1);
+  --badgeRedBg: rgba(250, 219, 219, 0.1);
+  --badgeRedcolor: rgba(250, 219, 219, 1);
+
+
+  //Box shadow color
+  --boxShadowColorMd: rgba(255, 255, 255, 0.04);
+  --profileHideMultiWallet: #101010;
+
+  --boxShadowMd:none;
+  --topBarShadow: none;
+  --inputShadow:none;
+  --custmCheckboxShadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.4);
+
+  //Borders
+  --dropdownContentBorderColor: #313233;
+  --whiteTransparentBlackE5e5e6: #e5e5e6;
+  --borderwhiteDarkLight: #2a2a2a;
+  --popupCenterIconsBorder:#2a2a2a;
+
+  //badges
+  --lochPointsBadgeSuccessBg: #bdfade30;
+  --lochPointsBadgeWarningBg: #fcebd730;
+
+  //yield opportunities
+  --yieldOppYourPortfolioContainerBg: #e5e5e610;
+
+  //watermarkOpacity
+  --watermarkOpacity: 0.1;
+
+  //pagination
+  --paginationInputBg:#101010;
+
+  //mobile
+  --floatingAppPopupShadow:none;
+  --mobileTransactionFiltersBg: #e5e5e61a;
+}
+[data-theme="dark2"] {
+  // UPDATED
+  --sidebarBackgroud: rgb(22,24,28);
+  --primaryBackgroud: #101010;
+  --cardBackgroud: rgb(22,24,28);
+  --cardBackgroudWithOpacity: rgba(24,24,28,0.0);
+  --cardBorder: #010202;
+  --greyCardBackgroud: #313233;
+  --cardSeperator: #313233;
+  --primaryTextColor: #e7e9ea;
+  --primarySubTextColor: #7c7d81;
+  --primaryGainColor: rgba(208, 252, 234, 1);
+  --primaryLossColor: rgba(250, 217, 217, 1);
+  --primaryDropdownBackground: #313233;
+  --primaryDropdownBorder: rgba(255,255,255,0.9);
+  --primaryDropdownSelectedItem: #313233;
+  --primaryBoxShadowColor: #2a2a2a;
+  --primaryBoxShadowDarkerColor: #2a2a2a;
+  --primaryFilter: #313233;
+  --primaryActiveFilter: #636467;
+  --black191:#e7e9ea;
+  --invertMode:rgba(255,255,255);
+  --glassCardBg: rgba(24,24,24,0.8);
+
+  // FILTERS
+  --scrollBarThumb: #cacbcc;
+  --invertColor: invert(100%);
+  --invertColor2: invert(0%);
+  --hoverBrightness: brightness(200%);
+  --hoverBrightnessValue: brightness(20);
+  --hoverBrightnessValueInvert: brightness(0);
+  --infoBrightnessPortfolio: brightness(0.8);
+
+  // Secondary
+  --secondaryTextColor: #7c7d81;
+  --secondaryLightColor: #545558;
+  --secondaryDarkTextColor: #cacbcccc;
+
+  // Headers
+  --headerSelectEyeBg:#313233;
+  --topbarAdressAddBorder: #e5e5e6;
+  --topbarAdressAddBg: rgba(255,255,255,0.9);
+  --topbarAdressAddColorHover: #000;
+
+  //TEMP
+  --greyF2f: #f2f2f2;
+  --grey636: #636467;
+  --greyE5e: #e5e5e6;
+  --greyCac: #cacbcc;
+  --grey313: rgba(255,255,255,0.9);
+  --backColor: rgba(255,255,255,0.9);
+  --sameModeColor: #000;
+  --diffModeColorWithOpacity: #rgba(0, 0, 0, 0.05);
+
+  //Insight Page
+  --insightBlurColorOne: rgba(255, 255, 255, 0.3);
+  --insightBlurColorTwo: rgba(255, 244, 158, 0.3);
+
+  //Table
+  --tableNumberCover: #313233;
+  --tablePersonalTint: rgba(16, 16, 16, 0.6);
+  --tableHeadingLightBorder: #313233;
+
+  //Sidebar
+  --currenyConvertorBorder: #7c7d81;
+  --currenyConvertorText: #7c7d81;
+  --sidebarTextColor: #636467;
+  --sidebarActivePageColor: #2d2e2f;
+  --sidebarBottomOptions: #96979a;
+  --sidebarWalletAmount:rgba(255,255,255,0.9);
   --sidebarHoverLink:#2a2a2a34;
   --sidebarHoverShadow:none;
 

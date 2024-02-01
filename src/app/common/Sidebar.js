@@ -146,8 +146,10 @@ function Sidebar(props) {
   const [isDarkMode, setIsDarkMode] = useState(
     document.querySelector("body").getAttribute("data-theme") &&
       document.querySelector("body").getAttribute("data-theme") === "dark"
-      ? true
-      : false
+      ? "dark"
+      : document.querySelector("body").getAttribute("data-theme") === "dark2"
+      ? "dark2"
+      : "light"
   );
 
   React.useEffect(() => {
@@ -472,19 +474,33 @@ function Sidebar(props) {
     toast.success("Share link has been copied");
   };
 
-  const handleDarkMode = () => {
+  const handleDarkMode = (status = "light") => {
     const darkOrLight = document
       .querySelector("body")
       .getAttribute("data-theme");
-    if (darkOrLight === "dark") {
-      setIsDarkMode(false);
+    if (status == "light") {
+      setIsDarkMode("light");
       switchToLightMode();
       props.SwitchDarkMode(false);
+    } else if (status == "dark") {
+      console.log("here ia m");
+      switchToDarkMode("dark");
+      setIsDarkMode("dark");
+      props.SwitchDarkMode(true);
     } else {
-      switchToDarkMode();
-      setIsDarkMode(true);
+      switchToDarkMode("dark2");
+      setIsDarkMode("dark2");
       props.SwitchDarkMode(true);
     }
+    // if (darkOrLight === "dark") {
+    //   setIsDarkMode('light');
+    //   switchToLightMode();
+    //   props.SwitchDarkMode(false);
+    // } else {
+    //   switchToDarkMode();
+    //   setIsDarkMode(true);
+    //   props.SwitchDarkMode(true);
+    // }
   };
 
   React.useEffect(() => {
@@ -674,11 +690,12 @@ function Sidebar(props) {
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}
       >
-        {isDarkMode ? (
+        {isDarkMode == "dark" ? (
           <span
-            onClick={handleDarkMode}
+            onClick={() => handleDarkMode("light")}
             style={{
               zIndex: "9",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -689,13 +706,45 @@ function Sidebar(props) {
           </span>
         ) : (
           <span
-            onClick={handleDarkMode}
+            onClick={() => handleDarkMode("dark")}
             style={{
               zIndex: "9",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
             <Image src={darkModeIcon} />
+            <span />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+          </span>
+        )}
+        {isDarkMode == "dark2" ? (
+          <span
+            onClick={() => handleDarkMode("light")}
+            style={{
+              zIndex: "9",
+              right: "-25px",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={lightModeIcon} />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+          </span>
+        ) : (
+          <span
+            onClick={() => handleDarkMode("dark2")}
+            style={{
+              zIndex: "9",
+              right: "-25px",
+              color: "var(--primaryTextColor)",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={darkModeIcon} /> 1
             <span />
             {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
               Dark Mode

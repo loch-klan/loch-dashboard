@@ -11,6 +11,8 @@ import {
   NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
@@ -37,6 +39,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
@@ -63,6 +67,7 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
+  SwitchDarkMode,
   detectNameTag,
   getAllCurrencyRatesApi,
   setPageFlagDefault,
@@ -106,6 +111,11 @@ class NewWelcome extends BaseReactComponent {
     this.state = {
       currentMetamaskWallet: {},
       startTime: "",
+      isDarkMode:
+        document.querySelector("body").getAttribute("data-theme") &&
+        document.querySelector("body").getAttribute("data-theme") === "dark"
+          ? true
+          : false,
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -730,6 +740,27 @@ class NewWelcome extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
+  handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      // setIsDarkMode(false);
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+      this.props.SwitchDarkMode(false);
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+      // setIsDarkMode(true);
+      this.props.SwitchDarkMode(true);
+    }
+  };
+
   isDisabled = () => {
     let isDisableAddFlagCount = 0;
     let isDisableGoFlagCount = 0;
@@ -2397,7 +2428,10 @@ class NewWelcome extends BaseReactComponent {
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
             <div className="d-flex justify-content-between">
-              <div className="d-flex" style={{ gap: "12px" }}>
+              <div
+                className="d-flex"
+                style={{ gap: "12px", alignItems: "center" }}
+              >
                 <button
                   onClick={this.connectWalletEthers}
                   className="new-homepage-btn new-homepage-btn--blur"
@@ -2412,6 +2446,36 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
+                {this.state.isDarkMode ? (
+                  <span
+                    onClick={this.handleDarkMode}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={lightModeIcon} />
+                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                  </span>
+                ) : (
+                  <span
+                    onClick={this.handleDarkMode}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={darkModeIcon} />
+                    <span />
+                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                  </span>
+                )}
               </div>
               {this.checkUser() ? null : (
                 <button
@@ -2800,6 +2864,7 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  SwitchDarkMode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

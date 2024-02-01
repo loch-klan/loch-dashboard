@@ -1888,6 +1888,7 @@ form {
 }
 
 .tableWatermarkOverlay {
+  // background: url(../../images/graph-logo.svg) no-repeat center center !important;
   background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
   background-size: 104px 39px;
   background-position-y: 55%;
@@ -1897,6 +1898,7 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
+  // background: url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
   background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
 }
 

@@ -109,9 +109,9 @@ export const replaceHistory = (history, page = 1, searchValue = "") => {
   });
 };
 
-export const switchToDarkMode = () => {
-  document.querySelector("body").setAttribute("data-theme", "dark");
-  localStorage.setItem("isDarkTheme", true);
+export const switchToDarkMode = (str) => {
+  document.querySelector("body").setAttribute("data-theme", str);
+  localStorage.setItem("isDarkTheme", str || true);
   // SwitchDarkMode(true);
 };
 export const switchToLightMode = () => {
