@@ -278,7 +278,8 @@ class BarGraphSection extends Component {
 
     const ScrollStyle = {
       width: `${100}%`,
-      minWidth: `${data?.labels && data?.labels.length * 10}rem`,
+      minWidth: `${100}rem`,
+      height: "100%",
     };
     const NormalStyle = {
       width: "100%",

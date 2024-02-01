@@ -125,6 +125,7 @@ import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
+import BarGraphSection from "../common/BarGraphSection.js";
 import { getNFT } from "../nft/NftApi.js";
 
 class PortfolioMobile extends BaseReactComponent {
@@ -469,6 +470,9 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    setTimeout(() => {
+      this.props.changeBlockTwoItem(2);
+    }, 500);
     if (
       this.props.NFTState &&
       this.props.NFTState?.nfts &&
@@ -3161,6 +3165,7 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3477,6 +3482,68 @@ class PortfolioMobile extends BaseReactComponent {
                   )}
                 </div>
               ) : null}
+              <div
+                style={{
+                  marginTop: "3rem",
+                }}
+              >
+                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
+                  Gas fees
+                </h2>
+                <div className="portfolio-page-section portfolio-page-section-mobile">
+                  <div
+                    className="section-table"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      paddingBottom: "2rem",
+                    }}
+                  >
+                    <div className="profit-chart">
+                      <div
+                        style={{
+                          position: "relative",
+                        }}
+                        className="tableWatermarkOverlay"
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <BarGraphSection
+                          digit={this.props.GraphDigit}
+                          isFromHome
+                          openChartPage={this.goToGasFeesSpentPage}
+                          data={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[0]
+                          }
+                          options={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[1]
+                          }
+                          options2={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[2]
+                          }
+                          isScrollVisible={false}
+                          isScroll={true}
+                          isLoading={this.props.gasFeesGraphLoading}
+                          oldBar
+                          noSubtitleBottomPadding
+                          newHomeSetup
+                          noSubtitleTopPadding
+                          floatingWatermark
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div
                 className="d-flex justify-content-between"

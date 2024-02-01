@@ -4137,6 +4137,11 @@ class Portfolio extends BaseReactComponent {
           tableDataCostBasis={tableDataCostBasis}
           AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
+          apiResponse={(e) => this.CheckApiResponse(e)}
+          changeBlockTwoItem={this.changeBlockTwoItem}
+          homeGraphFeesData={this.state.homeGraphFeesData}
+          GraphDigit={this.state.GraphDigit}
+          gasFeesGraphLoading={this.state.gasFeesGraphLoading}
         />
       );
     }
