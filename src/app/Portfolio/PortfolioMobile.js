@@ -79,6 +79,7 @@ import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPaginati
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import {
   GetAllPlan,
+  SwitchDarkMode,
   getAllCurrencyRatesApi,
   getDetectedChainsApi,
   getUser,
@@ -160,8 +161,11 @@ class PortfolioMobile extends BaseReactComponent {
       isDarkMode:
         document.querySelector("body").getAttribute("data-theme") &&
         document.querySelector("body").getAttribute("data-theme") === "dark"
-          ? true
-          : false,
+          ? "dark"
+          : document.querySelector("body").getAttribute("data-theme") ===
+            "dark2"
+          ? "dark2"
+          : "light",
       showHideDustValTrans: true,
       isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
@@ -891,21 +895,39 @@ class PortfolioMobile extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
-  handleDarkMode = () => {
+  handleDarkMode = (status = "light") => {
     const darkOrLight = document
       .querySelector("body")
       .getAttribute("data-theme");
-    if (darkOrLight === "dark") {
+    if (status == "light") {
       this.setState({
-        isDarkMode: false,
+        isDarkMode: "light",
       });
-      switchToLightMode();
+      switchToLightMode("light");
+      this.props.SwitchDarkMode(false);
+    } else if (status == "dark") {
+      console.log("here ia m");
+      switchToDarkMode("dark");
+      this.setState({
+        isDarkMode: "dark",
+      });
+      this.props.SwitchDarkMode(true);
     } else {
-      switchToDarkMode();
+      switchToDarkMode("dark2");
       this.setState({
-        isDarkMode: true,
+        isDarkMode: "dark2",
       });
+      this.props.SwitchDarkMode(true);
     }
+    // if (darkOrLight === "dark") {
+    //   setIsDarkMode('light');
+    //   switchToLightMode();
+    //   props.SwitchDarkMode(false);
+    // } else {
+    //   switchToDarkMode();
+    //   setIsDarkMode(true);
+    //   props.SwitchDarkMode(true);
+    // }
   };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
@@ -2846,11 +2868,13 @@ class PortfolioMobile extends BaseReactComponent {
                 marginTop: "20px",
               }}
             >
-              {this.state.isDarkMode ? (
+              {this.state.isDarkMode == "dark" ? (
                 <span
-                  onClick={this.handleDarkMode}
+                  onClick={() => this.handleDarkMode("light")}
                   style={{
                     zIndex: "9",
+                    cursor: "pointer",
+                    right: "10px",
                   }}
                   className="navbar-button-container-mode"
                 >
@@ -2861,13 +2885,50 @@ class PortfolioMobile extends BaseReactComponent {
                 </span>
               ) : (
                 <span
-                  onClick={this.handleDarkMode}
+                  onClick={() => this.handleDarkMode("dark")}
                   style={{
                     zIndex: "9",
+                    cursor: "pointer",
+                    right: "10px",
                   }}
                   className="navbar-button-container-mode"
                 >
                   <Image src={darkModeIcon} />
+                  <span />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                </span>
+              )}
+              {this.state.isDarkMode == "dark2" ? (
+                <span
+                  onClick={() => this.handleDarkMode("light")}
+                  style={{
+                    zIndex: "9",
+                    cursor: "pointer",
+                    right: "-25px",
+                    marginLeft: "10px",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={lightModeIcon} />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                </span>
+              ) : (
+                <span
+                  onClick={() => this.handleDarkMode("dark2")}
+                  style={{
+                    zIndex: "9",
+                    cursor: "pointer",
+                    right: "-25px",
+                    color: "var(--primaryTextColor)",
+                    marginLeft: "10px",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={darkModeIcon} /> 1
                   <span />
                   {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
               Dark Mode
@@ -3306,6 +3367,7 @@ const mapDispatchToProps = {
   getUserWallet,
   settingDefaultValues,
   getAllCoins,
+  SwitchDarkMode,
   getAllParentChains,
   searchTransactionApi,
   getAssetGraphDataApi,

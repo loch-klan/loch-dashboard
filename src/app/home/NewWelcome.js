@@ -114,8 +114,11 @@ class NewWelcome extends BaseReactComponent {
       isDarkMode:
         document.querySelector("body").getAttribute("data-theme") &&
         document.querySelector("body").getAttribute("data-theme") === "dark"
-          ? true
-          : false,
+          ? "dark"
+          : document.querySelector("body").getAttribute("data-theme") ===
+            "dark2"
+          ? "dark2"
+          : "light",
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -740,25 +743,60 @@ class NewWelcome extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
-  handleDarkMode = () => {
+  // handleDarkMode = () => {
+  //   const darkOrLight = document
+  //     .querySelector("body")
+  //     .getAttribute("data-theme");
+  //   if (darkOrLight === "dark") {
+  //     // setIsDarkMode(false);
+  //     this.setState({
+  //       isDarkMode: false,
+  //     });
+  //     switchToLightMode();
+  //     this.props.SwitchDarkMode(false);
+  //   } else {
+  //     switchToDarkMode();
+  //     this.setState({
+  //       isDarkMode: true,
+  //     });
+  //     // setIsDarkMode(true);
+  //     this.props.SwitchDarkMode(true);
+  //   }
+  // };
+
+  handleDarkMode = (status = "light") => {
     const darkOrLight = document
       .querySelector("body")
       .getAttribute("data-theme");
-    if (darkOrLight === "dark") {
-      // setIsDarkMode(false);
+    if (status == "light") {
       this.setState({
-        isDarkMode: false,
+        isDarkMode: "light",
       });
       switchToLightMode();
       this.props.SwitchDarkMode(false);
-    } else {
-      switchToDarkMode();
+    } else if (status == "dark") {
+      console.log("here ia m");
+      switchToDarkMode("dark");
       this.setState({
-        isDarkMode: true,
+        isDarkMode: "dark",
       });
-      // setIsDarkMode(true);
+      this.props.SwitchDarkMode(true);
+    } else {
+      switchToDarkMode("dark2");
+      this.setState({
+        isDarkMode: "dark2",
+      });
       this.props.SwitchDarkMode(true);
     }
+    // if (darkOrLight === "dark") {
+    //   setIsDarkMode('light');
+    //   switchToLightMode();
+    //   props.SwitchDarkMode(false);
+    // } else {
+    //   switchToDarkMode();
+    //   setIsDarkMode(true);
+    //   props.SwitchDarkMode(true);
+    // }
   };
 
   isDisabled = () => {
@@ -2446,12 +2484,13 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
-                {this.state.isDarkMode ? (
+                {this.state.isDarkMode == "dark" ? (
                   <span
-                    onClick={this.handleDarkMode}
+                    onClick={() => this.handleDarkMode("light")}
                     style={{
                       zIndex: "9",
                       cursor: "pointer",
+                      right: "10px",
                     }}
                     className="navbar-button-container-mode"
                   >
@@ -2462,14 +2501,48 @@ class NewWelcome extends BaseReactComponent {
                   </span>
                 ) : (
                   <span
-                    onClick={this.handleDarkMode}
+                    onClick={() => this.handleDarkMode("dark")}
                     style={{
                       zIndex: "9",
                       cursor: "pointer",
+                      right: "10px",
                     }}
                     className="navbar-button-container-mode"
                   >
                     <Image src={darkModeIcon} />
+                    <span />
+                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                  </span>
+                )}
+                {this.state.isDarkMode == "dark2" ? (
+                  <span
+                    onClick={() => this.handleDarkMode("light")}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                      right: "-25px",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={lightModeIcon} />
+                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                  </span>
+                ) : (
+                  <span
+                    onClick={() => this.handleDarkMode("dark2")}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                      right: "-25px",
+                      color: "var(--primaryTextColor)",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={darkModeIcon} /> 1
                     <span />
                     {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
               Dark Mode

@@ -158,13 +158,13 @@
             padding-left: 1rem;
             padding-right: 1rem;
             // background-color: red;
-            border: 1px var(--sidebarActivePageColor) solid;
+            border: 1px var(--borderwhiteDarkLight) solid;
             box-shadow:var(--topBarShadow);
             height: 100%;
             position: relative;
             .topBarHistory {
               border-radius: 10px;
-              border: 1px var(--sidebarActivePageColor) solid;
+              border: 1px var(--borderwhiteDarkLight) solid;
               box-shadow: var(--boxShadowMd);
               background-color: var(--cardBackgroud);
               width: 100%;
