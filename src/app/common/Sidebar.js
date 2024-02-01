@@ -822,7 +822,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
+                        {/* <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -854,7 +854,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1057,7 +1057,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1088,7 +1088,7 @@ function Sidebar(props) {
                               />
                               NFTs
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li>
                             <NavLink
                               exact={true}

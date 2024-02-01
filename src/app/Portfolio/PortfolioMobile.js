@@ -3271,7 +3271,7 @@ class PortfolioMobile extends BaseReactComponent {
                   )}
                 </div>
               ) : null}
-              <div
+              {/* <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "4.8rem",
@@ -3279,7 +3279,6 @@ class PortfolioMobile extends BaseReactComponent {
                 }}
               >
                 <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                  {/* Unrealized profit and loss */}
                   NFTs
                 </h2>
                 <div
@@ -3291,8 +3290,8 @@ class PortfolioMobile extends BaseReactComponent {
                   View more
                   <img src={chevronRight} alt="" />
                 </div>
-              </div>
-              <div style={{ marginTop: "16px" }}>
+              </div> */}
+              {/* <div style={{ marginTop: "16px" }}>
                 {this.state.isLoadingNft ? (
                   <div
                     style={{
@@ -3327,7 +3326,7 @@ class PortfolioMobile extends BaseReactComponent {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
