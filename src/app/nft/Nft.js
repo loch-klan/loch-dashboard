@@ -389,81 +389,57 @@ class NFT extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "imgs") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {rowData.imgs && rowData.imgs.length > 0
-                      ? rowData.imgs?.slice(0, 10).map((item, index) => {
-                          return (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  justifyContent: "center",
+                }}
+              >
+                {rowData.imgs && rowData.imgs.length > 0
+                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                      return (
+                        <CustomOverlay
+                          position="top"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text={
                             <img
                               src={item}
                               alt=""
                               key={index}
-                              className="nftImageIcon"
+                              className="nftImageIcon nftImageIconLarger"
+                              style={{
+                                marginRight: "0rem",
+                              }}
                             />
-                          );
-                        })
-                      : null}
-                    {rowData.imgs && rowData.imgs.length > 10 ? (
-                      <span
-                        style={{
-                          fontSize: "12px",
-                          lineHeight: "120%",
-                          color: "#96979A",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {rowData.imgs.length - 4}+
-                      </span>
-                    ) : null}
-                  </div>
-                }
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    justifyContent: "center",
-                  }}
-                >
-                  {rowData.imgs && rowData.imgs.length > 0
-                    ? rowData.imgs?.slice(0, 4).map((item, index) => {
-                        return (
+                          }
+                        >
                           <img
                             src={item}
                             alt=""
                             key={index}
                             className="nftImageIcon"
                           />
-                        );
-                      })
-                    : null}
-                  {rowData.imgs && rowData.imgs.length > 4 ? (
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        lineHeight: "120%",
-                        color: "#96979A",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {rowData.imgs.length - 4}+
-                    </span>
-                  ) : null}
-                </div>
-              </CustomOverlay>
+                        </CustomOverlay>
+                      );
+                    })
+                  : null}
+                {rowData.imgs && rowData.imgs.length > 4 ? (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      lineHeight: "120%",
+                      color: "#96979A",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {rowData.imgs.length - 4}+
+                  </span>
+                ) : null}
+              </div>
             );
           }
         },
@@ -702,7 +678,6 @@ class NFT extends BaseReactComponent {
                 paginationNew
               />
             </div>
-            <Footer />
           </div>
         </div>
       </div>

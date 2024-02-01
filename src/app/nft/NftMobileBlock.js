@@ -8,7 +8,6 @@ const NftMobileBlock = ({ data, style }) => {
         <div className="msmbHeaderLeft">
           <div
             style={{
-              textDecoration: "underline",
               marginRight: "6px",
             }}
             className="inter-display-medium msmbHeaderNickName"
