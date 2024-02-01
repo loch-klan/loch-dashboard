@@ -271,7 +271,9 @@ class CounterPartyVolume extends Component {
     // add wallet
     if (
       this.props.intelligenceState.counterPartyData !==
-      prevProps.intelligenceState.counterPartyData
+        prevProps.intelligenceState.counterPartyData ||
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
     ) {
       this.setState({
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
