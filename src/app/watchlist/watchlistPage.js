@@ -536,7 +536,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Account
             </span>
           </div>
@@ -636,7 +636,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             <Image
@@ -694,7 +694,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Remarks
             </span>
             <Image
@@ -732,7 +732,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Delete
             </span>
           </div>
@@ -843,18 +843,19 @@ class WatchListPage extends BaseReactComponent {
               handleShare={this.handleShare}
               btnText="Add address"
               handleBtn={this.handleAddWatchlistAddress}
+              mainThemeBtn={true}
             />
-
-            <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {/* <div style={{ width: "60%" }}>
+            <div style={{ paddingBottom: "2rem" }}>
+              <div className="fillter_tabs_section">
+                <Form onValidSubmit={this.onValidSubmit}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {/* <div style={{ width: "60%" }}>
                     <CustomDropdown
                       filtername="Type"
                       options={[...[{ value: "Allasset", label: "All" }]]}
@@ -866,69 +867,68 @@ class WatchListPage extends BaseReactComponent {
                     />
                   </div> */}
 
-                  {/* {fillter_tabs} */}
-                  <div style={{ width: "100%" }}>
-                    <div className="searchBar top-account-search">
-                      <Image src={searchIcon} className="search-icon" />
-                      <div className="form-groupContainer">
-                        <FormElement
-                          valueLink={this.linkState(
-                            this,
-                            "search",
-                            this.onChangeMethod
-                          )}
-                          control={{
-                            type: CustomTextControl,
-                            settings: {
-                              placeholder: "Search",
-                            },
-                          }}
-                          classes={{
-                            inputField: "search-input watchListSearchInput",
-                            prefix: "search-prefix",
-                            suffix: "search-suffix",
-                          }}
-                        />
+                    {/* {fillter_tabs} */}
+                    <div style={{ width: "100%" }}>
+                      <div className="searchBar top-account-search">
+                        <Image src={searchIcon} className="search-icon" />
+                        <div className="form-groupContainer">
+                          <FormElement
+                            valueLink={this.linkState(
+                              this,
+                              "search",
+                              this.onChangeMethod
+                            )}
+                            control={{
+                              type: CustomTextControl,
+                              settings: {
+                                placeholder: "Search",
+                              },
+                            }}
+                            classes={{
+                              inputField: "search-input watchListSearchInput",
+                              prefix: "search-prefix",
+                              suffix: "search-suffix",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Form>
-            </div>
+                </Form>
+              </div>
 
-            <div className="transaction-history-table watchListTableContainer">
-              {this.state.tableLoading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "69rem",
-                  }}
-                >
-                  <Loading />
-                </div>
-              ) : (
-                <>
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    showHeaderOnEmpty
-                    tableData={this.state.tableData}
-                    columnList={columnList}
-                    message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    minimalPagination
-                    hidePaginationRecords
-                  />
-                </>
-              )}
+              <div className="transaction-history-table watchListTableContainer">
+                {this.state.tableLoading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "69rem",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <TransactionTable
+                      noSubtitleBottomPadding
+                      showHeaderOnEmpty
+                      tableData={this.state.tableData}
+                      columnList={columnList}
+                      message="Follow wallet addresses or ENS names effortlessly. Add notes and review them when you wish."
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      addWatermark
+                    />
+                  </>
+                )}
+              </div>
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
       </>

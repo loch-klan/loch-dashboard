@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Image, Tooltip } from "react-bootstrap";
 import { lightenDarkenColor } from "../ReusableFunctions";
+import "./commonCoponentsStyles/_customOverlay.scss";
 
 function CustomOverlay({
   text,
@@ -101,14 +102,14 @@ function CustomOverlay({
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 ${
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 mb-4 black-191 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
                 {heading}
               </div>
               <div
-                className={`w-100 inter-display-medium text-tooltip-subheading f-s-13 lh-16 ${
+                className={`w-100 text-tooltip-subheading f-s-13 lh-16 inter-display-medium  ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
@@ -146,17 +147,30 @@ function CustomOverlay({
         <ul>
           {text.map((e, i) =>
             i !== 0 ? (
-              <li key={i}>
+              <li
+                style={{
+                  border: "0.1rem solid var(--secondaryLightColor) !important",
+                }}
+                key={i}
+              >
                 <Image
                   src={e.coinSymbol}
-                  style={{
-                    border: `1px solid ${lightenDarkenColor(
-                      e.coinColor,
-                      -0.15
-                    )} `,
-                  }}
+                  style={
+                    {
+                      // border: `1px solid ${lightenDarkenColor(
+                      //   e.coinColor,
+                      //   -0.15
+                      // )} `,
+                    }
+                  }
                 />
-                <span className="inter-display-medium f-s-13 grey-313 lh-16">
+                <span
+                  className="inter-display-medium f-s-13 grey-313 lh-16"
+                  style={{
+                    width: "100%",
+                    backgroundColor: "var(--primaryFilter)",
+                  }}
+                >
                   {e.coinName}
                 </span>
               </li>
@@ -172,6 +186,7 @@ function CustomOverlay({
       placement={position}
       delay={{ show: 250, hide: 100 }}
       overlay={renderTooltip}
+      className="overlay-tool-tip-container"
     >
       {children}
     </OverlayTrigger>

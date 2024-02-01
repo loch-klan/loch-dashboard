@@ -237,11 +237,21 @@ class CounterPartyVolume extends Component {
         this.props.intelligenceState.counterPartyValue[0]
       )
     ) {
-      this.props.getAllCoins();
+      // this.props.getAllCoins();
       this.getCounterPartyFee(0, true);
-      this.props.GetAllPlan();
-      this.props.getUser();
+      // this.props.GetAllPlan();
+      // this.props.getUser();
     } else {
+      if (this.props.intelligenceState.counterPartyData) {
+        this.props.updateCounterParty(
+          this.props.intelligenceState.counterPartyData,
+          getCounterGraphData(
+            this.props.intelligenceState.counterPartyData,
+            this
+          ),
+          this
+        );
+      }
       this.setState({
         counterGraphLoading: false,
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
@@ -271,7 +281,9 @@ class CounterPartyVolume extends Component {
     // add wallet
     if (
       this.props.intelligenceState.counterPartyData !==
-      prevProps.intelligenceState.counterPartyData
+        prevProps.intelligenceState.counterPartyData ||
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
     ) {
       this.setState({
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
@@ -281,7 +293,7 @@ class CounterPartyVolume extends Component {
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
-      this.props.getAllCoins();
+      // this.props.getAllCoins();
       this.getCounterPartyFee(0);
       this.setState({
         apiResponse: false,
@@ -295,6 +307,16 @@ class CounterPartyVolume extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+    }
+    if (this.props.darkModeState != prevProps.darkModeState) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this
+        ),
+        this
+      );
     }
   }
 
@@ -594,6 +616,7 @@ class CounterPartyVolume extends Component {
                 position: "relative",
                 // minHeight: "66.5rem",
                 minWidth: "85rem",
+                cursor: "pointer",
               }}
               id="counterpartyvolume"
             >
@@ -642,6 +665,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getAllCoins,
