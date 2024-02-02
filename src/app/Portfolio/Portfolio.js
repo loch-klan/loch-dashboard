@@ -4126,10 +4126,19 @@ class Portfolio extends BaseReactComponent {
           AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
           apiResponse={(e) => this.CheckApiResponse(e)}
-          changeBlockTwoItem={this.changeBlockTwoItem}
-          homeGraphFeesData={this.state.homeGraphFeesData}
-          GraphDigit={this.state.GraphDigit}
+          //States
           gasFeesGraphLoading={this.state.gasFeesGraphLoading}
+          counterGraphLoading={this.state.counterGraphLoading}
+          homeGraphFeesData={this.state.homeGraphFeesData}
+          homeCounterpartyVolumeData={this.state.homeCounterpartyVolumeData}
+          GraphDigit={this.state.GraphDigit}
+          counterGraphDigit={this.state.counterGraphDigit}
+          blockTwoSelectedItem={this.state.blockTwoSelectedItem}
+          //Changes states
+          changeBlockTwoItem={this.changeBlockTwoItem}
+          //Go to pages
+          goToGasFeesSpentPage={this.goToGasFeesSpentPage}
+          goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
         />
       );
     }
