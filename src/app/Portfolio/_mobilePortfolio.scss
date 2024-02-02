@@ -209,6 +209,42 @@
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
       margin-top: 1.6rem;
     }
+    .mobile-portfolio-blocks {
+      margin-top: 3rem;
+      background-color: white;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      .section-table-toggle-mobile {
+        background-color: #e5e5e680;
+        border-radius: 0.5rem;
+        padding: 0.4rem;
+        display: flex;
+        align-items: center;
+        .section-table-toggle-element {
+          font-size: 13px;
+          flex: 1;
+          padding: 0.5rem;
+          white-space: nowrap;
+          text-align: center;
+          color: #636467;
+          border-radius: 0.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+          transition-duration: 300ms;
+        }
+        .section-table-toggle-element-selected {
+          background-color: white;
+          color: #19191a;
+          cursor: default;
+          &:hover {
+            background-color: white;
+          }
+        }
+      }
+    }
     .mpcMobileSearch {
       display: flex;
       align-items: center;
