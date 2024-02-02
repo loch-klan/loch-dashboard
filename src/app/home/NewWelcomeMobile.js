@@ -54,6 +54,7 @@ import {
   EmailAddressAdded,
   LPC_Go,
   LPConnectExchange,
+  Mobile_LPC_Go,
   SignInOnClickWelcomeLeaderboard,
 } from "../../utils/AnalyticsFunctions.js";
 import {
@@ -532,7 +533,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         nicknames.push({ address: address, nickname: nickname });
       });
 
-    LPC_Go({
+    Mobile_LPC_Go({
       addresses: address,
       ENS: address,
       chains_detected_against_them: blockchainDetected,

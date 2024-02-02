@@ -1746,11 +1746,16 @@ export const AddTextboxHome = ({ session_id }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
 };
-export const ClickTrendingAddress = ({ session_id, address }) => {
+export const ClickTrendingAddress = ({
+  session_id,
+  address,
+  isMobile = false,
+}) => {
   const event_name = "Landing Page Conversion: trending address clicked";
   const eventProperties = {
     "session id": session_id,
     address: address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
