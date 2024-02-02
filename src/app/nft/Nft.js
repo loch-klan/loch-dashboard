@@ -285,7 +285,7 @@ class NFT extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span
               onClick={() => {
                 this.toggleAgeTimestamp();
@@ -294,7 +294,7 @@ class NFT extends BaseReactComponent {
             >
               Holdings
             </span>
-            <Image
+            {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
               }
@@ -302,7 +302,7 @@ class NFT extends BaseReactComponent {
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
-            />
+            /> */}
           </div>
         ),
         dataKey: "holding",
@@ -329,7 +329,7 @@ class NFT extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span
               onClick={() => {
                 this.handleTableSort(this.state.tableSortOpt[1].title);
@@ -339,12 +339,12 @@ class NFT extends BaseReactComponent {
               Collection
             </span>
 
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
-            />
+            /> */}
           </div>
         ),
         dataKey: "collection",
@@ -376,7 +376,7 @@ class NFT extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Image
             </span>
@@ -446,7 +446,7 @@ class NFT extends BaseReactComponent {
       },
       // {
       //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
+      //     <div className="cp history-table-header-col no-hover" id="time">
       //       <span
       //         onClick={() => {
       //           this.toggleAgeTimestamp();
@@ -490,7 +490,7 @@ class NFT extends BaseReactComponent {
       // },
       // {
       //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
+      //     <div className="cp history-table-header-col no-hover" id="time">
       //       <span
       //         onClick={() => {
       //           this.toggleAgeTimestamp();
@@ -534,7 +534,7 @@ class NFT extends BaseReactComponent {
       // },
       // {
       //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
+      //     <div className="cp history-table-header-col no-hover" id="time">
       //       <span
       //         onClick={() => {
       //           this.toggleAgeTimestamp();
@@ -578,7 +578,7 @@ class NFT extends BaseReactComponent {
       // },
       // {
       //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
+      //     <div className="cp history-table-header-col no-hover" id="time">
       //       <span
       //         onClick={() => {
       //           this.toggleAgeTimestamp();
