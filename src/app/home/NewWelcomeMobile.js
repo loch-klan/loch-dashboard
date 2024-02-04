@@ -1399,7 +1399,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
-                  Sign in
+                  Sign in / up
                 </button>
               )}
             </div>
