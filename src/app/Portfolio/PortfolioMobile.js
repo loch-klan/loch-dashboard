@@ -1193,6 +1193,10 @@ class PortfolioMobile extends BaseReactComponent {
     let tempNFTData = new URLSearchParams();
 
     tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    tempNFTData.append("start", page * API_LIMIT);
+    tempNFTData.append("conditions", JSON.stringify([]));
+    tempNFTData.append("limit", API_LIMIT);
+    tempNFTData.append("sorts", JSON.stringify([]));
     let isDefault = false;
     if (this.state.nftSort.length === 0) {
       isDefault = true;

@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { addLocalWalletList } from "../common/Api";
-import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { getAllWalletList } from "./WalletAction";
 
 export const getAllWalletListApi = (data, ctx) => {
@@ -34,23 +33,6 @@ export const getAllWalletListApi = (data, ctx) => {
           if (window.sessionStorage.getItem("lochToken")) {
             const yieldData = new URLSearchParams();
             yieldData.append("wallet_addresses", JSON.stringify(passAddress));
-            postLoginInstance
-              .post("wallet/user-wallet/add-yield-pools", yieldData)
-              .then((res) => {
-                dispatch({
-                  type: YIELD_POOLS,
-                  payload: res,
-                });
-              })
-              .catch(() => {
-                console.log("Issue here");
-              });
-            postLoginInstance
-              .post("wallet/user-wallet/add-nfts", yieldData)
-              .then(() => {})
-              .catch(() => {
-                console.log("Issue here");
-              });
           }
           dispatch(getAllWalletList({ walletdata, totalWalletAmt }));
           ctx.setState({
