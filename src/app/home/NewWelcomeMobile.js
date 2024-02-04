@@ -980,8 +980,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         email_address: this.state.emailSignup,
         session_id: "",
       });
-      signIn(this, data, true, val, true);
-      console.log("here");
+      // signIn(this, data, true, val, true);
       this.toggleAuthModal("redirect");
     }
   };

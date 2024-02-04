@@ -1554,7 +1554,7 @@ class NewWelcome extends BaseReactComponent {
         email_address: this.state.emailSignup,
         session_id: "",
       });
-      signIn(this, data, true, val, true);
+      // signIn(this, data, true, val, true);
       this.toggleAuthModal("redirect");
     }
   };
