@@ -98,6 +98,8 @@ import SmartMoneyMobileModalContainer from "../smartMoney/SmartMoneyMobileBlocks
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
 import OutsideClickHandler from "react-outside-click-handler";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import SignUpMobile from "./NewAuth/SignUpMobile.js";
+import RedirectMobile from "./NewAuth/RedirectMobile.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
@@ -139,6 +141,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       isAddAnotherButtonsDisabled: false,
       authmodal: "",
       email: "",
+      emailSignup: "",
       otp: "",
       walletInput: [
         {
@@ -969,6 +972,20 @@ class NewWelcomeMobile extends BaseReactComponent {
     }
   };
 
+  handleSubmitEmailSignup = (val = false) => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.email.toLowerCase());
+      EmailAddressAdded({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+      signIn(this, data, true, val, true);
+      console.log("here");
+      this.toggleAuthModal("redirect");
+    }
+  };
+
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
@@ -1345,6 +1362,25 @@ class NewWelcomeMobile extends BaseReactComponent {
               });
             }}
             handleSubmitOTP={this.handleSubmitOTP}
+          />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUpMobile
+            toggleModal={this.toggleAuthModal}
+            smartMoneyLogin={this.state.smartMoneyLogin}
+            isMobile
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            show={this.state.authmodal == "signup"}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <RedirectMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
           />
         ) : null}
         <div className="new-homepage__header new-homepage__header-mobile">
