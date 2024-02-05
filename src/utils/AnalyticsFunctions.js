@@ -3944,6 +3944,37 @@ export const YieldOpportunitiesPageBack = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const NftPageNext = ({
+  session_id,
+  email_address,
+  page_no,
+  isMobile = false,
+}) => {
+  const event_name = "NFT: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const NftPageBack = ({
+  session_id,
+  email_address,
+  page_no,
+  isMobile = false,
+}) => {
+  const event_name = "NFT: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryPageNext = ({
   session_id,
   email_address,

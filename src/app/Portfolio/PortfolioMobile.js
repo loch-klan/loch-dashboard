@@ -378,7 +378,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState?.nftPage) {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
@@ -471,7 +471,7 @@ class PortfolioMobile extends BaseReactComponent {
         isLoadingNft: false,
       });
     } else {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
@@ -3275,7 +3275,7 @@ class PortfolioMobile extends BaseReactComponent {
                   )}
                 </div>
               ) : null}
-              <div
+              {/* <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "4.8rem",
@@ -3283,7 +3283,6 @@ class PortfolioMobile extends BaseReactComponent {
                 }}
               >
                 <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                  {/* Unrealized profit and loss */}
                   NFTs
                 </h2>
                 <div
@@ -3331,7 +3330,7 @@ class PortfolioMobile extends BaseReactComponent {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />

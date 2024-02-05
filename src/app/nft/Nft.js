@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NFTPage, TimeSpentNFT } from "../../utils/AnalyticsFunctions";
+import {
+  NFTPage,
+  NftPageBack,
+  NftPageNext,
+  TimeSpentNFT,
+} from "../../utils/AnalyticsFunctions";
 import { API_LIMIT, START_INDEX } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { mobileCheck } from "../../utils/ReusableFunctions";
@@ -17,6 +22,7 @@ import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
 import HandleBrokenImages from "../common/HandleBrokenImages";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -81,6 +87,7 @@ class NFT extends BaseReactComponent {
 
   componentDidMount() {
     if (mobileCheck()) {
+      this.props.history.push("/home");
       this.setState({
         isMobileDevice: true,
       });
@@ -256,6 +263,22 @@ class NFT extends BaseReactComponent {
       this.setState({
         currentPage: page,
       });
+
+      if (prevPage - 1 === page) {
+        NftPageBack({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          page_no: page + 1,
+        });
+        this.updateTimer();
+      } else if (prevPage + 1 === page) {
+        NftPageNext({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          page_no: page + 1,
+        });
+        this.updateTimer();
+      }
     }
   }
   handleTableSort = (val) => {
@@ -302,12 +325,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span
-              onClick={() => {
-                this.toggleAgeTimestamp();
-              }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
-            >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Holdings
             </span>
             {/* <Image
@@ -328,17 +346,9 @@ class NFT extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "holding") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.holding}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-                  {rowData.holding}
-                </div>
-              </CustomOverlay>
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                {rowData.holding}
+              </div>
             );
           }
         },
@@ -346,12 +356,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span
-              onClick={() => {
-                this.handleTableSort(this.state.tableSortOpt[1].title);
-              }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
-            >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Collection
             </span>
 
@@ -370,22 +375,14 @@ class NFT extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "collection") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.collection}
+              <div
+                className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div nowrap-div"
+                style={{
+                  lineHeight: "120%",
+                }}
               >
-                <div
-                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div nowrap-div"
-                  style={{
-                    lineHeight: "120%",
-                  }}
-                >
-                  {rowData.collection}
-                </div>
-              </CustomOverlay>
+                {rowData.collection}
+              </div>
             );
           }
         },
@@ -421,6 +418,7 @@ class NFT extends BaseReactComponent {
                             src={item}
                             key={index}
                             className="nftImageIcon"
+                            imageOnError={NFTIcon}
                           />
                         );
                       }
