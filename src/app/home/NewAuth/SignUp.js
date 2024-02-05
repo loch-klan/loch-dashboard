@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import { CloseIconBlack } from "../../../assets/images/icons";
-import { validateEmail } from "../../../utils/validators";
-import logo from "./../../../image/Loch.svg";
 import "./_newAuth.scss";
+import logo from "./../../../image/Loch.svg";
+import { validateEmail } from "../../../utils/validators";
+import {
+  CloseIconBlack,
+  CrossSmartMoneyIcon,
+  NewWelcomeLoginCrossIcon,
+} from "../../../assets/images/icons";
 
-const Login = ({
+const SignUp = ({
   show,
   toggleModal,
   handleChangeEmail,
   email,
   handleSubmitEmail,
-  smartMoneyLogin,
 }) => {
   const submitRef = React.useRef(null);
 
@@ -62,11 +65,13 @@ const Login = ({
           <div className="new-auth-content">
             <img className="new-auth-content-logo " src={logo} alt="" />
             <div className="new-auth-content-title-holder">
-              <h4 className="new-auth-content-title">Sign in</h4>
-              <p className="new-auth-content-subtitle">
-                {!smartMoneyLogin
-                  ? "Get right back into your account"
-                  : "Sign in to access Loch’s Leaderboard"}
+              <h4 className="new-auth-content-title">Sign up with Loch</h4>
+              <p
+                className="new-auth-content-subtitle"
+                style={{ textAlign: "center" }}
+              >
+                Don’t let your hard work go to waste. Add your email so <br />{" "}
+                you can analyze your portfolio with superpowers
               </p>
             </div>
             <div className="new-auth-content-input-holder ">
@@ -83,21 +88,21 @@ const Login = ({
                   if (validateEmail(email)) handleSubmitEmail();
                 }}
                 ref={submitRef}
-                className={`new-auth-content-button  ${
+                className={`new-auth-content-button ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""
                 }`}
               >
-                Sign in
+                Sign Up
               </button>
             </div>
             <div className="new-auth-content-bottom-cta-holder">
               <p
                 onClick={() => {
-                  toggleModal("signup");
+                  toggleModal("login");
                 }}
                 className="new-auth-content-bottom-cta"
               >
-                Don’t have an account yet?
+                Already have an account?
               </p>
             </div>
           </div>
@@ -107,4 +112,4 @@ const Login = ({
   );
 };
 
-export default Login;
+export default SignUp;

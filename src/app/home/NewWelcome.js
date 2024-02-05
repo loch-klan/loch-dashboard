@@ -99,6 +99,8 @@ import MobileHome from "./MobileHome.js";
 import Loading from "../common/Loading.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import OutsideClickHandler from "react-outside-click-handler";
+import SignUp from "./NewAuth/SignUp.js";
+import Redirect from "./NewAuth/Redirect.js";
 
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
@@ -653,6 +655,7 @@ class NewWelcome extends BaseReactComponent {
       leaderboardSignIn: false,
       email: "",
       otp: "",
+      emailSignup: "",
       walletInput: [
         {
           id: `wallet1`,
@@ -1543,6 +1546,19 @@ class NewWelcome extends BaseReactComponent {
     }
   };
 
+  handleSubmitEmailSignup = (val = false) => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.email.toLowerCase());
+      EmailAddressAdded({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+      // signIn(this, data, true, val, true);
+      this.toggleAuthModal("redirect");
+    }
+  };
+
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
@@ -2393,6 +2409,23 @@ class NewWelcome extends BaseReactComponent {
             }}
             handleSubmitOTP={this.handleSubmitOTP}
           />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUp
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "signup"}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <Redirect
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
+          />
         ) : null}
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
@@ -2428,7 +2461,7 @@ class NewWelcome extends BaseReactComponent {
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
-                  Sign in
+                  Sign in / up
                 </button>
               )}
             </div>

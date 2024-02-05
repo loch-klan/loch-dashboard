@@ -180,7 +180,13 @@ export const detectNameTag = (
   };
 };
 
-export const signIn = (ctx, data, v2 = false, resend = false) => {
+export const signIn = (
+  ctx,
+  data,
+  v2 = false,
+  resend = false,
+  isSignup = false
+) => {
   preLoginInstance
     .post("organisation/user/send-otp", data)
     .then((res) => {
@@ -203,7 +209,11 @@ export const signIn = (ctx, data, v2 = false, resend = false) => {
         //email Valid
         EmailAddressVerified({ email_address: ctx.state.email });
         if (v2) {
-          ctx.toggleAuthModal("verify");
+          if (isSignup) {
+            ctx.toggleAuthModal("redirect");
+          } else {
+            ctx.toggleAuthModal("verify");
+          }
           if (resend) {
             toast.success("OTP sent successfully");
           }
@@ -628,9 +638,7 @@ export const createAnonymousUserApi = (
               });
             postLoginInstance
               .post("wallet/user-wallet/add-nfts", yieldData)
-              .then(() => {
-                
-              })
+              .then(() => {})
               .catch(() => {
                 console.log("Issue here");
               });

@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import { CloseIconBlack } from "../../../assets/images/icons";
-import { validateEmail } from "../../../utils/validators";
-import logo from "./../../../image/Loch.svg";
 import "./_newAuth.scss";
+import logo from "./../../../image/Loch.svg";
+import { validateEmail } from "../../../utils/validators";
+import {
+  CheckIcon,
+  CloseIconBlack,
+  CrossSmartMoneyIcon,
+  NewWelcomeLoginCrossIcon,
+} from "../../../assets/images/icons";
 
-const Login = ({
-  show,
-  toggleModal,
-  handleChangeEmail,
-  email,
-  handleSubmitEmail,
-  smartMoneyLogin,
-}) => {
+const Redirect = ({ show, toggleModal }) => {
   const submitRef = React.useRef(null);
 
   useEffect(() => {
@@ -58,48 +56,33 @@ const Login = ({
             />
           </div>
         </div>
-        <div className="new-auth">
+        <div className="new-auth" style={{ padding: "116px 0px" }}>
           <div className="new-auth-content">
-            <img className="new-auth-content-logo " src={logo} alt="" />
+            <img
+              className="new-auth-content-logo "
+              style={{ width: "40px" }}
+              src={CheckIcon}
+              alt=""
+            />
             <div className="new-auth-content-title-holder">
-              <h4 className="new-auth-content-title">Sign in</h4>
-              <p className="new-auth-content-subtitle">
-                {!smartMoneyLogin
-                  ? "Get right back into your account"
-                  : "Sign in to access Loch’s Leaderboard"}
-              </p>
-            </div>
-            <div className="new-auth-content-input-holder ">
-              <input
-                className="new-auth-content-input"
-                type="text"
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => handleChangeEmail(e.target.value)}
-              />
-              <button
-                style={{ opacity: validateEmail(email) ? 1 : 0.5 }}
-                onClick={() => {
-                  if (validateEmail(email)) handleSubmitEmail();
-                }}
-                ref={submitRef}
-                className={`new-auth-content-button  ${
-                  validateEmail(email) ? "new-auth-content-button--hover" : ""
-                }`}
-              >
-                Sign in
-              </button>
-            </div>
-            <div className="new-auth-content-bottom-cta-holder">
+              <h4 className="new-auth-content-title">Success!</h4>
               <p
-                onClick={() => {
-                  toggleModal("signup");
-                }}
-                className="new-auth-content-bottom-cta"
+                className="new-auth-content-subtitle"
+                style={{ textAlign: "center" }}
               >
-                Don’t have an account yet?
+                Your account has been verified. You can now <br /> close this
+                tab.
               </p>
             </div>
+            {/* <div className="new-auth-content-input-holder ">
+              <button
+                ref={submitRef}
+                style={{ width: "140px" }}
+                className={`new-auth-content-button new-auth-content-button--hover`}
+              >
+                Ok
+              </button>
+            </div> */}
           </div>
         </div>
       </Modal.Body>
@@ -107,4 +90,4 @@ const Login = ({
   );
 };
 
-export default Login;
+export default Redirect;

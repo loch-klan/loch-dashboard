@@ -3169,7 +3169,6 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
-
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3292,7 +3291,6 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               </div>
-
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3642,7 +3640,6 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 )}
               </div>
-
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3651,7 +3648,6 @@ class PortfolioMobile extends BaseReactComponent {
                 }}
               >
                 <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                  {/* Unrealized profit and loss */}
                   NFTs
                 </h2>
                 <div
@@ -3663,7 +3659,7 @@ class PortfolioMobile extends BaseReactComponent {
                   View more
                   <img src={chevronRight} alt="" />
                 </div>
-              </div>
+              </div>{" "}
               <div style={{ marginTop: "16px" }}>
                 {this.state.isLoadingNft ? (
                   <div
