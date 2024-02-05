@@ -378,7 +378,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState?.nftPage) {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
@@ -471,7 +471,7 @@ class PortfolioMobile extends BaseReactComponent {
         isLoadingNft: false,
       });
     } else {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
@@ -1179,6 +1179,10 @@ class PortfolioMobile extends BaseReactComponent {
     let tempNFTData = new URLSearchParams();
 
     tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    tempNFTData.append("start", page * API_LIMIT);
+    tempNFTData.append("conditions", JSON.stringify([]));
+    tempNFTData.append("limit", API_LIMIT);
+    tempNFTData.append("sorts", JSON.stringify([]));
     let isDefault = false;
     if (this.state.nftSort.length === 0) {
       isDefault = true;
