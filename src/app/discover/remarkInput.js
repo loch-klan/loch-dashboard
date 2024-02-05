@@ -37,7 +37,7 @@ class RemarkInput extends BaseReactComponent {
           alignItems: "center",
           justifyContent: "center",
         }}
-        className="remarkInput"
+        className="remarkInput input-noshadow-dark"
       >
         <Form onValidSubmit={this.onSubmit}>
           <FormElement

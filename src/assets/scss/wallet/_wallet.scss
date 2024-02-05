@@ -33,10 +33,10 @@
         }
         .sort-by-title:hover {
           span {
-            color: $primary;
+            color: var(--primaryTextColor);
           }
           img {
-            filter: brightness(0.5);
+            filter: var(--hoverBrightnessValue);
           }
         }
         // .dropdown {
@@ -60,7 +60,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 2rem;
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
         0px 1px 1px rgba(0, 0, 0, 0.04);
@@ -79,7 +79,7 @@
       min-width: 85rem;
       .walletcard {
         padding: 2.4rem 2.4rem 1.4rem;
-        background-color: $secondary;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
           0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
         border-radius: 1.6rem;
@@ -95,8 +95,8 @@
             // margin-right: 4.9rem;
             width: 85%;
             .wallet-img {
-              box-shadow: 0rem 0.4rem 0.8rem $grey-F2F,
-                0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+              box-shadow: 0rem 0.4rem 0.8rem var(--greyF2f),
+                0rem 0.1rem 0.3rem var(--diffModeColorWithOpacity);
               border-radius: 0.8rem;
               img {
                 border-radius: 0.8rem;
@@ -145,7 +145,7 @@
               }
 
               img:hover {
-                filter: brightness(0.5);
+                  filter: var(--hoverBrightnessValue);
               }
             }
           }
@@ -193,7 +193,7 @@
                 top: 0;
               }
               img:hover {
-                filter: none;
+                filter: var(--hoverBrightnessValue);
               }
             }
             &:hover {
@@ -224,7 +224,7 @@
             }
           }
           img:hover {
-            filter: brightness(0.5);
+            filter: var(--hoverBrightnessValue);
           }
         }
       }
@@ -233,7 +233,7 @@
           0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
         margin-bottom: 2rem;
         padding: 0;
-        background-color: #fff;
+        background-color: var(--cardBackgroud);
         padding: 2rem;
         border-radius: 1.2rem;
         .animation-wrapper {

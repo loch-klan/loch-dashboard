@@ -41,6 +41,7 @@ class Footer extends Component {
             marginBottom: "2.6rem",
             minWidth: this.state.isMobileDevice ? "" : "85rem",
           }}
+          className="footerLine"
         />
         <div
           className="m-b-30"
@@ -52,7 +53,7 @@ class Footer extends Component {
           }}
         >
           <div style={{ width: "50%" }}>
-            <p className="inter-display-medium f-s-15 grey-ADA">
+            <p className="inter-display-medium f-s-15 secondaryText">
               Loch, Inc. © {moment().format("YYYY")}
             </p>
           </div>
@@ -118,7 +119,7 @@ class Footer extends Component {
             style={{
               minWidth: this.state.isMobileDevice ? "" : "85rem",
             }}
-            className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA footerText"
+            className=" secondaryText inter-display-medium f-s-13 lh-16 m-b-40 footerText "
           >
             The content made available on this web page and our mobile
             applications ("Platform") is for informational purposes only. You

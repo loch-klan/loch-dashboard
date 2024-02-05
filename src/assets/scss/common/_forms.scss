@@ -20,9 +20,18 @@
 }
 
 .customRadioContainerActive{
-    border: 1px solid #19191A;
+    border: 1px solid var(--black191);
     .customRadioActive{
-        background-color: #19191A;
+        background-color: var(--black191);
+    }
+}
+.feedbackQuestion{
+    color: #96979A;
+    &:hover{
+        color: var(--black191);
+    }
+    &.feedbackQuestionActive{
+        color: var(--black191);
     }
 }
 
