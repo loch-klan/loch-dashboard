@@ -1349,6 +1349,10 @@ class PortfolioMobile extends BaseReactComponent {
     }
   };
   render() {
+    console.log(
+      "this.props.intelligenceState.ProfitLossAsset",
+      this.props.intelligenceState.ProfitLossAsset
+    );
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
 
@@ -3486,7 +3490,7 @@ class PortfolioMobile extends BaseReactComponent {
               ) : null}
               <div className="mobile-portfolio-blocks">
                 <div className="section-table-toggle-mobile">
-                  {/* <div
+                  <div
                     className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                       this.props.blockTwoSelectedItem === 1
                         ? "section-table-toggle-element-selected"
@@ -3497,7 +3501,7 @@ class PortfolioMobile extends BaseReactComponent {
                     }}
                   >
                     Flows
-                  </div> */}
+                  </div>
                   <div
                     className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                       this.props.blockTwoSelectedItem === 2
@@ -3523,19 +3527,47 @@ class PortfolioMobile extends BaseReactComponent {
                     Counterparties
                   </div>
                 </div>
-
-                {this.props.blockTwoSelectedItem === 2 ? (
-                  <div className="portfolio-page-section portfolio-page-section-mobile">
-                    <div
-                      className="section-table"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingBottom: "2rem",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <div className="profit-chart">
+                <div className="portfolio-page-section portfolio-page-section-mobile">
+                  <div
+                    className="section-table"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      paddingBottom: "2rem",
+                      boxShadow: "none",
+                    }}
+                  >
+                    <div className="profit-chart">
+                      {this.props.blockTwoSelectedItem === 1 ? (
+                        <BarGraphSection
+                          openChartPage={() => {}}
+                          newHomeSetup
+                          disableOnLoading
+                          noSubtitleBottomPadding
+                          noSubtitleTopPadding
+                          loaderHeight={15.5}
+                          isScrollVisible={false}
+                          data={
+                            this.props.intelligenceState?.graphValue &&
+                            this.props.intelligenceState?.graphValue[0]
+                          }
+                          options={
+                            this.props.intelligenceState?.graphValue &&
+                            this.props.intelligenceState?.graphValue[1]
+                          }
+                          coinsList={this.props.OnboardingState.coinsList}
+                          showFooter={false}
+                          showBadges={false}
+                          showSwitch={false}
+                          isLoading={this.props.netFlowLoading}
+                          className={"portfolio-profit-and-loss"}
+                          isMinichart={true}
+                          ProfitLossAsset={
+                            this.props.intelligenceState.ProfitLossAsset
+                          }
+                          isSwitch
+                        />
+                      ) : this.props.blockTwoSelectedItem === 2 ? (
                         <div
                           style={{
                             position: "relative",
@@ -3553,7 +3585,6 @@ class PortfolioMobile extends BaseReactComponent {
                           <BarGraphSection
                             digit={this.props.GraphDigit}
                             isFromHome
-                            // openChartPage={this.props.goToGasFeesSpentPage}
                             openChartPage={() => {}}
                             data={
                               this.props.homeGraphFeesData &&
@@ -3577,27 +3608,8 @@ class PortfolioMobile extends BaseReactComponent {
                             floatingWatermark
                           />
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="portfolio-page-section portfolio-page-section-mobile">
-                    <div
-                      className="section-table"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingBottom: "2rem",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <div className="profit-chart">
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                          className="tableWatermarkOverlay"
-                        >
+                      ) : this.props.blockTwoSelectedItem === 3 ? (
+                        <>
                           <div
                             style={{
                               position: "absolute",
@@ -3634,11 +3646,11 @@ class PortfolioMobile extends BaseReactComponent {
                             noSubtitleTopPadding
                             floatingWatermark
                           />
-                        </div>
-                      </div>
+                        </>
+                      ) : null}
                     </div>
                   </div>
-                )}
+                </div>
               </div>
               <div
                 className="d-flex justify-content-between"
