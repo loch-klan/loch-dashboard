@@ -822,7 +822,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        {/* <li>
+                        <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -846,15 +846,11 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li> */}
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1057,7 +1053,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          {/* <li>
+                          <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1080,15 +1076,11 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                               NFTs
                             </NavLink>
-                          </li> */}
+                          </li>
                           <li>
                             <NavLink
                               exact={true}
