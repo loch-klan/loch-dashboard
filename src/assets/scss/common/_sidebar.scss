@@ -533,7 +533,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 0.1rem solid #e5e5e680;
+            border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
             width: 100%;
             padding-bottom: 1.2rem;
             margin-bottom: 1.2rem;
@@ -804,13 +804,13 @@
       .sidebar-footer-closed-container {
         // background-color: white;
         width: 10.2rem;
-        border-top: 0.1rem solid #e5e5e680;
+        border-top: 0.1rem solid var(--sidebarSectionalBOrder);
       }
       width: 100%;
 
       padding: 0rem !important;
       .sidebar-footer-toggle-container {
-        border-top: 0.1rem solid #e5e5e680;
+        border-top: 0.1rem solid var(--sidebarSectionalBOrder);
         width: 100%;
         display: flex;
         align-items: center;
@@ -818,7 +818,7 @@
         .sidebar-footer-toggle {
           cursor: pointer;
           transform: translateY(-50%);
-          border: 0.1rem solid #e5e5e6;
+          border: 0.1rem solid var(--sidebarSectionalBOrder);
           background-color: var(--sidebarBackgroud);
           height: 3rem;
           width: 3rem;
@@ -974,7 +974,7 @@
       .sideBarFooterSignInContainerForTwitter {
         border: 1.3px $white-E5E solid;
         color: var(--primaryTextColor);
-        background-color: var(--mainButtonBg);
+        background-color: var(--mainButtonBgTwitter);
         .sideBarFooterSignInIconForTwitter {
           filter: var(--invertColor) !important;
         }

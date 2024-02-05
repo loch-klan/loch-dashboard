@@ -43,11 +43,11 @@ export const getGraphData = (apidata, parentCtx) => {
       tooltip: {
         displayColors: false,
         backgroundColor: parentCtx?.props?.darkModeState?.flag
-          ? "#181818"
+          ? "#1A1A1A"
           : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a",
+        color: parentCtx?.props?.darkModeState?.flag ? "#CACBCC" : "#19191a",
         padding: 12,
         borderWidth: 1,
         borderColor: parentCtx?.props?.darkModeState?.flag
@@ -107,7 +107,9 @@ export const getGraphData = (apidata, parentCtx) => {
             };
           },
           labelTextColor: function (context) {
-            return parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a";
+            return parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC"
+              : "#19191a";
           },
         },
       },
@@ -347,11 +349,11 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
       tooltip: {
         displayColors: false,
         backgroundColor: parentCtx?.props?.darkModeState?.flag
-          ? "#181818"
+          ? "#1A1A1A"
           : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a",
+        color: parentCtx?.props?.darkModeState?.flag ? "#CACBCC" : "#19191a",
         padding: 12,
         borderWidth: 1,
         borderColor: parentCtx?.props?.darkModeState?.flag
@@ -406,7 +408,9 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return parentCtx?.props?.darkModeState?.flag ? "white" : "#19191a";
+            return parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC"
+              : "#19191a";
           },
         },
       },

@@ -149,6 +149,7 @@
           align-items: center;
           justify-content: start;
           .topBarContainer {
+            background-color: var(--topbarBackgroud);
             display: flex;
             align-items: stretch;
             justify-content: center;
@@ -265,12 +266,12 @@
                 font-size: 15px;
                 color: var(--primaryTextColor);
                 &:-webkit-autofill:focus {
-                  box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
-                  -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                  box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
+                  -webkit-box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
                   transition: background-color 5000s ease-in-out 0s;
                 }
-                box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
-                -webkit-box-shadow: 0 0 0 30px var(--cardBackgroud) inset !important;
+                box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
+                -webkit-box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
                 transition: background-color 5000s ease-in-out 0s;
 
                 &:hover {
@@ -1133,6 +1134,7 @@
               .balance-amt {
                 background-color: rgba(229, 229, 230, 0.5);
                 border-radius: 4px;
+                color: var(--tableCostCommonColor) !important;
                 padding: 6px;
               }
             }
@@ -1265,7 +1267,7 @@
         padding: 1rem;
         padding-bottom: 0rem;
         .section-table-toggle {
-          background-color: var(--sidebarActivePageColor);
+          background-color: var(--tableSectionToggleBg);
           border-radius: 0.5rem;
           padding: 0.4rem;
           display: flex;
@@ -1415,7 +1417,7 @@
         display: flex;
         align-items: center;
         font-size: 13px;
-        color: var(--secondaryDarkTextColor);
+        color: var(--secondaryDarkTextColorNew);
         font-weight: 500;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {
@@ -2095,6 +2097,7 @@
           background-color: rgba(229, 229, 230, 0.5);
           border-radius: 4px;
           padding: 6px;
+          color: var(--tableCostCommonColor) !important;
         }
       }
     }

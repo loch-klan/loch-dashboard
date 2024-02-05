@@ -52,7 +52,7 @@
     margin: 0;
     padding: 0;
     background: transparent;
-    border: 0.1rem solid #b0b1b3;
+    border: 0.1rem solid var(--borderwhiteDarkLight);
     border-radius: 0.8rem;
     color: #19191a;
     user-select: none;
@@ -170,7 +170,7 @@
         position: absolute;
         top: 52%;
         transform: translateY(-50%);
-        filter: var(--hoverBrightnessValueInvert);
+        filter: var(--invertColor);
         left: 1rem;
       }
     }

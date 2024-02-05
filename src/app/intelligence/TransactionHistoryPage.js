@@ -1121,7 +1121,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempOpp ? tempOpp : "-"}
               >
-                <span className="primaryText">{tempVal}</span>
+                <span className="primaryTextGrey">{tempVal}</span>
               </CustomOverlay>
             );
           }
@@ -1765,7 +1765,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13 lh-16 dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 dotDotText primaryTextGrey">
                     {rowData.asset.code}
                   </div>
                 ) : (
@@ -1810,7 +1810,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 text={tempAmountVal ? tempAmountVal : "0.00"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
+                <div className="inter-display-medium f-s-13 lh-16 ellipsis-div primaryTextGrey">
                   {numToCurrency(tempAmountVal).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
@@ -1876,13 +1876,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div primaryTextGrey">
                     {CurrencyType(false) +
                       numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
                 </CustomOverlay>
                 <span style={{ padding: "2px" }}></span>
-                <span className="primaryText">(</span>
+                <span className="primaryTextGrey">(</span>
                 <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -1895,14 +1895,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div primaryTextGrey">
                     {tempValueThen
                       ? CurrencyType(false) +
                         numToCurrency(tempValueThen).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </div>
                 </CustomOverlay>
-                <span className="primaryText">)</span>
+                <span className="primaryTextGrey">)</span>
               </div>
             );
           }
@@ -1991,7 +1991,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   isText={true}
                   text={rowData.network}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 ellipsis-div dotDotText primaryTextGrey">
                     {rowData.network}
                   </div>
                 </CustomOverlay>
@@ -2044,7 +2044,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 ellipsis-div"
+                  className="inter-display-medium f-s-13 lh-16 ellipsis-div primaryTextGrey"
                 >
                   {tempHashVal}
                   <Image

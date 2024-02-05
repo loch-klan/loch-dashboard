@@ -38,17 +38,20 @@
 .primaryText{
   color: var(--primaryTextColor);
 }
+.primaryTextGrey{
+  color: var(--primaryTextColorGrey);
+}
 .secondaryTextLighter {
   color: var(--secondaryLightColor);
 }
 .secondaryDarkText {
-  color: var(--secondaryDarkTextColor);
+  color: var(--secondaryDarkTextColorNew);
   &:hover{
     color: var(--primaryTextColor);
   
   }
   &.secondaryDarkText-nohover{
-    color: var(--secondaryDarkTextColor);
+    color: var(--secondaryDarkTextColorNew);
   
   }
 }

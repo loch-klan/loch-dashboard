@@ -8,6 +8,7 @@
   --greyCardBackgroud: #e5e5e680;
   --cardSeperator: #e5e5e680;
   --primaryTextColor: #0d0d0d;
+  --primaryTextColorGrey: #0d0d0d;
   --primarySubTextColor: #adadad;
   --primaryGainColor: rgba(208, 252, 234, 0.5);
   --primaryLossColor: rgba(250, 217, 217, 0.5);
@@ -18,7 +19,7 @@
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
   --primaryFilter: #f2f2f2;
   --primaryActiveFilter: #fff;
-  --black191:#19191a;
+  --black191:rgb(13, 7, 7);
   --invertMode:black;
   --glassCardBg: rgba(255,255,255,0.8);
 
@@ -34,6 +35,7 @@
   --secondaryTextColor: #adadad;
   --secondaryLightColor: #cacbcc;
   --secondaryDarkTextColor: #4f4f4f;
+  --secondaryDarkTextColorNew: #4f4f4f;
 
   //TEMP
   --backColor: #000;
@@ -44,6 +46,7 @@
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
   --grey313: #313233;
+  --greyb0b: #b0b1b3;
 
   //Insight Page
   --insightBlurColorOne: rgba(255, 255, 255, 0.8);
@@ -54,6 +57,8 @@
   --tablePersonalTint: #e5e5e640;
   --tableHeadingLightBorder: #19191a;
   --topbarAdressAddColorHover: #fff;
+  --tableSectionToggleBg:#e5e5e680;
+  --tableCostCommonColor: #313233;
 
   //Sidebar
   --currenyConvertorBorder: #e5e5e6;
@@ -64,15 +69,18 @@
   --sidebarWalletAmount:#1d2129;
   --sidebarHoverLink:'white';
   --sidebarHoverShadow:0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.12);
+  --sidebarSectionalBOrder: #e5e5e680;
 
   // Headers
   --headerSelectEyeBg:#e5e5e6;
   --topbarAdressAddBorder: #e5e5e6;
   --topbarAdressAddBg: #f2f2f2;
   --topbarAdressAddColorHover: #0d0d0d;
+  --topbarBackgroud:transparent;
 
   //buttons and badges
   --mainButtonBg:#FFF;
+  --mainButtonBgTwitter:#FFF;
   --badgeGreenBg: rgba(208, 252,234,0.5);
   --badgeGreencolor: #313233;
   --badgeRedBg: rgba(250, 219, 219, 0.5);
@@ -117,14 +125,15 @@
 }
 [data-theme="dark"] {
   // UPDATED
-  --sidebarBackgroud: #32333B;
-  --primaryBackgroud: #282829;
-  --cardBackgroud: #32333B;
-  --cardBackgroudWithOpacity: rgba(24,24,24,0.0);
+  --sidebarBackgroud: #1A1A1A;
+  --primaryBackgroud: #141414;
+  --cardBackgroud: #1A1A1A;
+  --cardBackgroudWithOpacity: rgba(26,26,26,0.9);
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
-  --primaryTextColor: rgba(255,255,255,0.85);
+  --primaryTextColor: #CACBCC;
+  --primaryTextColorGrey: #7C7D81;
   --primarySubTextColor: #7c7d81;
   --primaryGainColor: rgba(208, 252, 234, 1);
   --primaryLossColor: rgba(250, 217, 217, 1);
@@ -133,9 +142,9 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
-  --primaryFilter: #585858;
+  --primaryFilter: #303030;
   --primaryActiveFilter: #636467;
-  --black191:rgba(255,255,255,0.85);
+  --black191:#CACBCC;
   --invertMode:rgba(255,255,255,0.85);
   --glassCardBg: rgba(24,24,24,0.8);
 
@@ -152,20 +161,23 @@
   --secondaryTextColor: #7c7d81;
   --secondaryLightColor: #545558;
   --secondaryDarkTextColor: #cacbcc;
+  --secondaryDarkTextColorNew: #96979A;
 
   // Headers
   --headerSelectEyeBg:#313233;
   --topbarAdressAddBorder: #e5e5e6;
   --topbarAdressAddBg: rgba(255,255,255,0.85);
   --topbarAdressAddColorHover: #000;
+  --topbarBackgroud:#202020;
 
   //TEMP
   --greyF2f: #f2f2f2;
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
-  --grey313: rgba(255,255,255,0.85);
-  --backColor: rgba(255,255,255,0.85);
+  --grey313: #7C7D81;
+  --greyb0b: #4A4B4D;
+  --backColor: rgba(255,255,255,0.95);
   --sameModeColor: #282829;
   --diffModeColorWithOpacity: #rgba(0, 0, 0, 0.05);
 
@@ -177,19 +189,23 @@
   --tableNumberCover: #313233;
   --tablePersonalTint: rgba(16, 16, 16, 0.6);
   --tableHeadingLightBorder: #313233;
+  --tableSectionToggleBg:#101010;
+  --tableCostCommonColor:#141414;
 
   //Sidebar
   --currenyConvertorBorder: #7c7d81;
   --currenyConvertorText: #7c7d81;
-  --sidebarTextColor: #9b9b9b;
-  --sidebarActivePageColor: #2a2a2a;
+  --sidebarTextColor: #636467;
+  --sidebarActivePageColor: #303030;
   --sidebarBottomOptions: #96979a;
-  --sidebarWalletAmount:white;
+  --sidebarWalletAmount:#CACBCC;
   --sidebarHoverLink:#282828bd;
   --sidebarHoverShadow:none;
+  --sidebarSectionalBOrder: #303030;
 
   //buttons and badges
-  --mainButtonBg:transparent;
+  --mainButtonBg:#101010;
+  --mainButtonBgTwitter:transparent;
   --badgeGreenBg: rgba(208, 252,234,0.1);
   --badgeGreencolor: rgba(208, 252,234,1);
   --badgeRedBg: rgba(250, 219, 219, 0.1);
@@ -222,7 +238,7 @@
   --watermarkOpacity: 0.1;
 
   //pagination
-  --paginationInputBg:#101010;
+  --paginationInputBg:#141414;
 
   //mobile
   --floatingAppPopupShadow:none;

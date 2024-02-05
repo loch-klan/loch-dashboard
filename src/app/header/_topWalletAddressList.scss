@@ -240,6 +240,7 @@
         margin-right: 0.6rem;
         width: 1.3rem;
         height: 1.3rem;
+        filter: brightness(0.5)
       }
 
       &:hover {
@@ -250,7 +251,7 @@
         }
 
         img {
-          filter: var(--hoverBrightnessValue);
+          filter: var(--hoverBrightnessValue) !important;
         }
       }
     }

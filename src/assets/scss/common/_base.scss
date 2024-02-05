@@ -574,7 +574,7 @@ body {
 }
 
 .grey-B0B {
-  color: $grey-B0B;
+  color: var(--greyb0b);
 }
 
 .grey-969 {
@@ -1945,7 +1945,7 @@ form {
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
-    border-bottom: 0.1rem solid $grey-E5E;
+    border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
 
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
@@ -1998,7 +1998,7 @@ form {
     background-color: green;
   }
   .tableWatermark {
-    background: url(../../images/graph-logo.svg) no-repeat center center;
+    background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center;
     background-size: 104px 39px;
     background-position-y: 48%;
   }
@@ -2109,14 +2109,19 @@ form {
               padding: 0.6rem;
               width: fit-content;
               background: rgba(229, 229, 230, 0.5);
+              color: var(--tableCostCommonColor) !important;
+              span{
+                color: var(--tableCostCommonColor) !important;
+              
+              }
             }
           }
 
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-            color: var(--primaryTextColor);
             &:hover {
+              color: var(--primaryTextColor);
               font-weight: 600;
             }
           }
@@ -2844,6 +2849,14 @@ input {
           }
         }
       }
+    }
+  }
+}
+
+.portfolio-profit-and-loss{
+  .highcharts-root{
+    img{
+      opacity: 0.5 !important;
     }
   }
 }
