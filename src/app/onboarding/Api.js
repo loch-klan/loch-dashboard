@@ -180,6 +180,24 @@ export const detectNameTag = (
   };
 };
 
+export const signUpWelcome = (ctx, data, toggleAuthModal) => {
+  return async function (dispatch, getState) {
+    preLoginInstance
+      .post("organisation/user/update-user", data)
+      .then((res) => {
+        if (res.data.error) {
+          toast.error(res.data.message || "Something Went Wrong");
+        } else if (res.data.error === false) {
+          if (toggleAuthModal) {
+            toggleAuthModal("redirect");
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong");
+      });
+  };
+};
 export const signIn = (
   ctx,
   data,
