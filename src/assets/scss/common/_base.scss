@@ -538,7 +538,7 @@ body {
 }
 
 .black-000 {
-  color: $black-000;
+  color: var(--primaryTextColor);
 }
 
 .black-262 {
@@ -2766,7 +2766,7 @@ input {
 .input-noshadow-dark{
   input{
     box-shadow: var(--inputShadow) !important;
-    -webkit-box-shadow: var(--inputShadow) inset !important;
+    -webkit-box-shadow: var(--inputShadow) !important;
     background: transparent;
     color: var(--primaryTextColor) !important;
     &:focus{
@@ -2859,4 +2859,13 @@ input {
       opacity: 0.5 !important;
     }
   }
+}
+
+.export-timeline{
+    .date-picker-control{
+      
+        border-color: var(--topbarBackgroud) !important;
+        color: var(--primaryTextColor) !important;
+      
+    }
 }

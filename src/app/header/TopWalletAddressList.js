@@ -1086,7 +1086,7 @@ class TopWalletAddressList extends Component {
           {this.state.showFollowingAddress ? (
             <div
               ref={this.props.buttonRef}
-              className="ml-3 topWalletAddressListFollowShareBtn"
+              className="ml-3 topWalletAddressListFollowShareBtn BorderNew"
               id="address-button"
               onClick={this.addAddressToWatchListFun}
             >
@@ -1102,7 +1102,7 @@ class TopWalletAddressList extends Component {
           {!this.props.hideShare ? (
             <div
               ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn ml-2"
+              className="topWalletAddressListFollowShareBtn ml-2 BorderNew"
               id="address-button"
               onClick={this.handleSharePassFun}
             >

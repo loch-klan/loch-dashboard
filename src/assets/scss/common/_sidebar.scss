@@ -264,7 +264,7 @@
   }
 }
 .sidebar-modal-section {
-  z-index: 101;
+  z-index: 999999;  /* to avoid it to hide under sidebar */
   position: relative;
 }
 .sidebar-section {
@@ -382,7 +382,7 @@
             height: 22rem;
             overflow-y: auto;
             background: var(--cardBackgroud);
-            border-color: var(--cardBackgroud);
+            border-color: var(--borderwhiteDarkLight);
             left: -9px !important;
             .dropdown-item {
               display: flex;
@@ -945,7 +945,7 @@
           .sideBarFooterSignInIconContainer {
             // background-color: white;
             border: 1.3px var(--sameModeColor) solid;
-            background-color: var(--primaryTextColor);
+            background-color: var(--backColor);
             .sideBarFooterSignInIcon{
               filter: var(--hoverBrightnessValueInvert);
             }

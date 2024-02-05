@@ -406,13 +406,16 @@ export const getAssetProfitLoss = (
             dispatch({
               type: PORTFOLIO_ASSET,
               payload: {
-                ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
+                ProfitLossAsset: getProfitLossAsset(
+                  res.data.data?.profit_loss,
+                  ctx
+                ),
               },
             });
           }
           if (ctx.setProfitLossAssetLocal) {
             ctx.setProfitLossAssetLocal(
-              getProfitLossAsset(res.data.data?.profit_loss)
+              getProfitLossAsset(res.data.data?.profit_loss, ctx)
             );
           }
           if (ctx) {

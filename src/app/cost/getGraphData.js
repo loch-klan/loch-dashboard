@@ -173,6 +173,7 @@ export const getGraphData = (apidata, parentCtx) => {
           display: true,
           borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
           drawTicks: false,
+          color: parentCtx?.props?.darkModeState?.flag ? "#404040" : "#e5e5e6",
         },
       },
       x: {
@@ -477,6 +478,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           display: true,
           borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
           drawTicks: false,
+          color: parentCtx?.props?.darkModeState?.flag ? "#404040" : "#e5e5e6",
         },
       },
       x: {

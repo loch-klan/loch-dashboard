@@ -405,7 +405,7 @@ justify-content: center;
         padding-bottom: 3.4rem;
         .export-body {
           .export-timeline {
-            background-color: $grey-E5E;
+            background-color: var(--tableSectionToggleBg);
             padding: 2.2rem 0;
             margin: 3.2rem 0;
             width: 100%;
@@ -1010,17 +1010,17 @@ justify-content: center;
     width: 30.1rem;
     position: absolute;
     top: 5.3rem;
-    border-color: $secondary;
+    border-color: var(--topbarBackgroud);
     border-radius: 0.8rem;
   }
   .calendar-select {
     padding: 0.6rem;
-    border: 1px solid $secondary;
+    border: 1px solid var(--topbarBackgroud);
     border-radius: 0.8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0px 6.17911px 18.5373px rgba(109, 109, 109, 0.15);
+    box-shadow: var(--boxShadowCalender);
     .react-calendar__navigation {
       justify-content: center;
       align-items: center;

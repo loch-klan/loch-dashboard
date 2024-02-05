@@ -846,7 +846,7 @@ class ExitOverlay extends BaseReactComponent {
               this.props.modalType === "exportModal" ||
               this.props.modalType === "create_account" ||
               (this.props.modalType === "cohort" && !this.props.isEdit) ? (
-                <div className="api-modal-header">
+                <div className="api-modal-header popup-main-icon-with-border">
                   <Image src={this.props.iconImage} />
                 </div>
               ) : this.props.isEdit ? (
@@ -994,6 +994,7 @@ class ExitOverlay extends BaseReactComponent {
                               Export data from{" "}
                             </div>
                             <FormElement
+                              classes={"BorderNew"}
                               hideOnblur={this.props.hideOnblur}
                               showHiddenError={this.props.showHiddenError}
                               valueLink={this.linkState(
@@ -1153,7 +1154,7 @@ class ExitOverlay extends BaseReactComponent {
                         </Button>
                       ) : (
                         <Button
-                          className="primary-btn"
+                          className="primary-btn main-button-invert btn btn-primary"
                           onClick={() => this.handleExportNow()}
                         >
                           Export Now

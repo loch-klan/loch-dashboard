@@ -674,6 +674,7 @@ const mapStateToProps = (state) => ({
   // add wallet
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts

@@ -7,12 +7,14 @@ import {
 
 const labels = ["Inflow", "Outflow", "Net"];
 
-export const getProfitLossAsset = (arr) => {
+export const getProfitLossAsset = (arr, parentCtx) => {
   // console.log(arr);
   //   Find total inflows by calculating inflows.totalvolume
   // Find total outflows by calculating outflows.totalvolume
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
+
+  console.log("m here", parentCtx?.props?.darkModeState);
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   let fees = arr?.fees;
 
@@ -80,6 +82,7 @@ export const getProfitLossAsset = (arr) => {
             .image(GraphLogo, x, y, imageWidth, imageHeight)
             .attr({
               zIndex: 1, // Set the zIndex so it appears above the chart
+              opacity: parentCtx?.props?.darkModeState?.flag ? 0.1 : 1,
             })
             .add();
         },
@@ -123,6 +126,9 @@ export const getProfitLossAsset = (arr) => {
         },
       },
       gridLineDashStyle: "longdash",
+      gridLineColor: parentCtx?.props?.darkModeState?.flag
+        ? "#404040"
+        : "#e5e5e6",
     },
     tooltip: {
       shared: true,

@@ -78,6 +78,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    console.log("updating");
     if (prevState.formattedXAxis !== this.state.formattedXAxis) {
       let diff = Math.round(
         this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5
@@ -375,6 +376,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
                 zIndex: 99,
+                opacity: parent?.props?.darkModeState?.flag ? 0.1 : 1,
               })
               .add();
           },
@@ -465,6 +467,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         opposite: false,
         offset: this.props.hideTimeFilter ? 20 : 40,
         gridLineDashStyle: "longdash",
+        gridLineColor: parent?.props?.darkModeState?.flag
+          ? "#404040"
+          : "#e5e5e6",
         stackLabels: {
           enabled: false,
         },
@@ -748,7 +753,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           lineWidth: 2,
           type: "areaspline",
           fillOpacity: 1,
-          lineColor: "#B0B1B3",
+          lineColor: "#red",
           dataGrouping: {
             groupPixelWidth: 0,
           },
@@ -778,5 +783,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  darkModeState: state.darkModeState,
 });
 export default connect(mapStateToProps)(InflowOutflowChartSlider);
