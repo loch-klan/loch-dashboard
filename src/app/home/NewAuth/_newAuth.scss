@@ -57,10 +57,12 @@
 
     .new-auth-content-logo {
       width: 38px;
+      filter: var(--invertColor);
     }
 
     .new-auth-content-logo-mobile{
       margin-bottom: -12px;
+      filter: var(--invertColor);
     }
 
     .new-auth-content-title-holder {
@@ -72,7 +74,7 @@
         font-size: 28px;
         font-weight: 500;
         line-height: 120%;
-        color: #19191A;
+        color: var(--black191);
       }
 
       .new-auth-content-subtitle {
@@ -93,9 +95,9 @@
       .new-auth-content-input {
         width: 320px;
         height: 55px;
-        border: 1px solid #e5e5e6;
+        border: 1px solid var(--borderwhiteDarkLight);
         border-radius: 8px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         color: #4a4b4d;
         padding: 18px 12px;
         font-size: 16px;
@@ -105,12 +107,12 @@
         }
 
         &:hover {
-          border: 1px solid var(--Blue-100, rgba(0, 0, 0, 0.5));
+          border: 1px solid var(--primaryTextColor);
         }
 
         &:focus {
           outline: none;
-          border: 1px solid var(--Blue-100, rgba(0, 0, 0, 0.5));
+          border: 1px solid var(--primaryTextColor);
           background: rgba(215, 215, 215, 0.197);
         }
       }
@@ -126,17 +128,17 @@
             width: 52px;
             height: 60px;
             border-radius: 8px;
-            border: 1px solid  #E5E5E6;
+            border: 1px solid  var(--borderwhiteDarkLight);
             text-align: center;
             outline: none;
 
             &:hover {
-              border: 1px solid var(--Blue-100, rgba(0, 0, 0, 0.5));
+              border: 1px solid var(--primaryTextColor);
             }
     
             &:focus {
               outline: none;
-              border: 1px solid var(--Blue-100, rgba(0, 0, 0, 0.5));
+              border: 1px solid var(--primaryTextColor);
               background: rgba(215, 215, 215, 0.197);
             }
         }
@@ -148,13 +150,13 @@
       }
 
       .new-auth-content-button {
-        color: white;
+        color: var(--sameModeColor);
+        background-color: var(--primaryTextColor);
         padding: 0 28px;
         height: 55px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #141414 !important;
         box-shadow: 0px 18px 88px -4px rgba(0,0,0,0.25), 0px 8px 28px -6px rgba(0,0,0,0.25);
         border-radius: 8px;
         font-size: 16px;
@@ -166,9 +168,9 @@
 
       .new-auth-content-button--hover {
         &:hover {
-          border: 1px solid white;
-          background-color: white !important;
-          color: #141414;
+          border: 1px solid var(--sameModeColor);
+          background-color: var(--sameModeColor) !important;
+          color: var(--primaryTextColor);
           // border: 1px solid #141414;
           box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
             0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
@@ -204,7 +206,7 @@
         font-weight: 600;
 
         &:hover {
-          color: #141414;
+          color: var(--primaryTextColor);
         }
       }
       .new-auth-content-bottom-cta--mobile{

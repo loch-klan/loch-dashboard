@@ -1,4 +1,3 @@
-import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 
@@ -332,7 +331,6 @@ export const SearchBarAddressAdded = ({
     isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
 };
 export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
@@ -341,7 +339,14 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
     "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
+};
+export const EmailAddressAddedSignUp = ({ session_id, email_address }) => {
+  const event_name = "Landing Page Conversion:sign up email address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //5. Landing Page Conversion:email address verified
@@ -2343,6 +2348,16 @@ export const WatchlistPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+export const NFTPage = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Page View: NFT";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
 
 // Page View: Onboarding
 export const OnboardingMobilePage = () => {
@@ -3532,11 +3547,13 @@ export const TransactionHistorySearch = ({
   session_id,
   email_address,
   searched,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    isMobile: isMobile,
     searched: searched,
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3562,6 +3579,7 @@ export const TransactionHistoryYearFilter = ({
   email_address,
   year_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: years filter";
   const eventProperties = {
@@ -3569,6 +3587,7 @@ export const TransactionHistoryYearFilter = ({
     "email address": email_address,
     "year selected": year_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3593,6 +3612,7 @@ export const TransactionHistoryAssetFilter = ({
   email_address,
   asset_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: assets filter";
   const eventProperties = {
@@ -3600,6 +3620,7 @@ export const TransactionHistoryAssetFilter = ({
     "email address": email_address,
     "asset selected": asset_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3611,6 +3632,7 @@ export const TransactionHistoryNetworkFilter = ({
   email_address,
   network_filter,
   isSearchUsed,
+  isMobile = false,
 }) => {
   const event_name = "Transaction History: networks filter";
   const eventProperties = {
@@ -3618,6 +3640,7 @@ export const TransactionHistoryNetworkFilter = ({
     "email address": email_address,
     "networks selected": network_filter,
     "search used": isSearchUsed,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -5062,6 +5085,21 @@ export const TimeSpentWatchlist = ({
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TimeSpentNFT = ({
+  session_id,
+  email_address,
+  time_spent,
+  isMobile,
+}) => {
+  const event_name = "NFT: time spent on nft page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

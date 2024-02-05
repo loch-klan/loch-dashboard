@@ -15,7 +15,7 @@ const LoginMobile = ({
   handleChangeEmail,
   email,
   handleSubmitEmail,
-  smartMoneyLogin
+  smartMoneyLogin,
 }) => {
   const submitRef = React.useRef(null);
 
@@ -47,7 +47,7 @@ const LoginMobile = ({
       contentClassName="new-welcome-modal-content"
       animation={false}
     >
-      <Modal.Body style={{position:'relative'}}>
+      <Modal.Body style={{ position: "relative" }}>
         {/* <div className="new-auth-mobile-wrap"> */}
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
           <div
@@ -63,16 +63,17 @@ const LoginMobile = ({
             />
           </div>
         </div>
-        <div
-          className="new-auth new-auth-mobile"
-        >
-          <div className="new-auth-content" >
-          
-            <img className="new-auth-content-logo new-auth-content-logo-mobile" src={logo} alt="" />
+        <div className="new-auth new-auth-mobile">
+          <div className="new-auth-content">
+            <img
+              className="new-auth-content-logo new-auth-content-logo-mobile"
+              src={logo}
+              alt=""
+            />
             <div className="new-auth-content-title-holder new-auth-content-title-holder-mobile">
               <h4 className="new-auth-content-title">Sign in</h4>
               <p className="new-auth-content-subtitle">
-              {!smartMoneyLogin
+                {!smartMoneyLogin
                   ? "Get right back into your account"
                   : "Sign in to access Loch’s Leaderboard"}
               </p>
@@ -98,11 +99,16 @@ const LoginMobile = ({
                 Sign in
               </button>
             </div>
-            {/* <div className='new-auth-content-bottom-cta-holder'>
-                          <p className='new-auth-content-bottom-cta'>
-                          Don’t have an account yet?
-                          </p>
-                      </div> */}
+            <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
+              <p
+                onClick={() => {
+                  toggleModal("signup");
+                }}
+                className="new-auth-content-bottom-cta "
+              >
+                Don’t have an account yet?
+              </p>
+            </div>
           </div>
         </div>
         {/* </div> */}

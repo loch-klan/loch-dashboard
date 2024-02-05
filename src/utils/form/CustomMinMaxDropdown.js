@@ -286,9 +286,10 @@ class CustomMinMaxDropdown extends Component {
             : this.props.isTopaccount
             ? "top-account-dropdown"
             : ""
-        }`}
+        } padding-mb-2`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
+        style={this.props.style}
       >
         <div
           className={`placeholder ${
@@ -360,10 +361,9 @@ class CustomMinMaxDropdown extends Component {
             minWidth: `${
               this.props.isLineChart || this.props.isChain ? "100%" : "130px"
             }`,
-            backgroundColor: "white",
           }}
         >
-          <div className="dropdownMinMaxHeader inter-display-medium f-s-13 black-191">
+          <div className="dropdownMinMaxHeader inter-display-medium f-s-13 ">
             Token Transfer Amount ($)
           </div>
           <div className="dropdown-search-wrapper dropdown-search-wrapper-min-max">
@@ -395,7 +395,7 @@ class CustomMinMaxDropdown extends Component {
 
           <div className="dropdown-footer">
             <span
-              className="secondary-btn dropdown-btn"
+              className="secondary-btn dropdown-btn btn-bg-white-outline-black hover-bg-black"
               onClick={this.ClearAll}
             >
               Reset
@@ -405,7 +405,7 @@ class CustomMinMaxDropdown extends Component {
                 opacity: this.state.disableApply ? 0.5 : 1,
                 pointerEvents: this.state.disableApply ? "none" : "auto",
               }}
-              className="primary-btn dropdown-btn"
+              className="primary-btn dropdown-btn btn-bg-black hover-bg-white-outline-black"
               onClick={this.Apply}
             >
               Apply
