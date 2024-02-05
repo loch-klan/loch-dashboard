@@ -53,6 +53,7 @@ import {
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  EmailAddressAddedSignUp,
   LPC_Go,
   LPConnectExchange,
   OnboardingMobilePage,
@@ -81,6 +82,7 @@ import {
   getAllCoins,
   getAllParentChains,
   signIn,
+  signUpWelcome,
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
@@ -1546,16 +1548,16 @@ class NewWelcome extends BaseReactComponent {
     }
   };
 
-  handleSubmitEmailSignup = (val = false) => {
+  handleSubmitEmailSignup = () => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
-      EmailAddressAdded({
+      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append("type", "welcome");
+      EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
       });
-      // signIn(this, data, true, val, true);
-      this.toggleAuthModal("redirect");
+      this.props.signUpWelcome(this, data, this.toggleAuthModal);
     }
   };
 
@@ -2830,6 +2832,7 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  signUpWelcome,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

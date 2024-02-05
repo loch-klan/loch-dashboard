@@ -332,7 +332,6 @@ export const SearchBarAddressAdded = ({
     isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
 };
 export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
@@ -341,7 +340,14 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
     "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
+};
+export const EmailAddressAddedSignUp = ({ session_id, email_address }) => {
+  const event_name = "Landing Page Conversion:sign up email address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //5. Landing Page Conversion:email address verified
