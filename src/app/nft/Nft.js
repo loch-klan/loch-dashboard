@@ -31,6 +31,7 @@ class NFT extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     this.state = {
+      goToBottom: false,
       apiResponse: false,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       tableData: [
@@ -237,7 +238,26 @@ class NFT extends BaseReactComponent {
       isLoading: false,
     });
   };
+  onPageChange = () => {
+    this.setState({
+      goToBottom: true,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.isLoading !== this.state.isLoading &&
+      this.state.goToBottom &&
+      !this.state.isLoading
+    ) {
+      this.setState(
+        {
+          goToBottom: false,
+        },
+        () => {
+          window.scroll(0, document.body.scrollHeight);
+        }
+      );
+    }
     if (this.props.NFTState !== prevProps.NFTState) {
       this.setState({
         tableData: this.props.NFTState?.nfts,
@@ -500,7 +520,7 @@ class NFT extends BaseReactComponent {
                 page={this.state.currentPage}
                 isLoading={this.state.isLoading}
                 pageLimit={10}
-                onPageChange={() => {}}
+                onPageChange={this.onPageChange}
                 addWatermark
                 paginationNew
                 hidePaginationRecords
