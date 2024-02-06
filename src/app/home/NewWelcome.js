@@ -25,7 +25,7 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import {
-  deleteToken,
+  deleteAddWallet,
   getCurrentUser,
   getToken,
   setLocalStoraage,
@@ -44,6 +44,7 @@ import CheckboxCustomTable from "../common/customCheckboxTable";
 import TransactionTable from "../intelligence/TransactionTable";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   AddTextbox,
   ClickTrendingAddress,
@@ -71,6 +72,7 @@ import {
   updateWalletListFlag,
 } from "../common/Api";
 import ConnectModal from "../common/ConnectModal.js";
+import Loading from "../common/Loading.js";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
@@ -87,22 +89,19 @@ import {
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
 import Login from "./NewAuth/Login.js";
+import Redirect from "./NewAuth/Redirect.js";
+import SignUp from "./NewAuth/SignUp.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
-import MobileHome from "./MobileHome.js";
-import Loading from "../common/Loading.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
-import OutsideClickHandler from "react-outside-click-handler";
-import SignUp from "./NewAuth/SignUp.js";
-import Redirect from "./NewAuth/Redirect.js";
 
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
@@ -1338,6 +1337,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    deleteAddWallet();
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -2523,7 +2523,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body">
-          <form className="new-homepage__body-container">
+          <div className="new-homepage__body-container">
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({
@@ -2823,7 +2823,7 @@ class NewWelcome extends BaseReactComponent {
                 </div>
               </div>
             )}
-          </form>
+          </div>
         </div>
       </div>
     );
