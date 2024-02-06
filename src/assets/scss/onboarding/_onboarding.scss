@@ -1760,6 +1760,46 @@
         background: #fff;
         box-shadow: 0px 6.31px 6.31px -3.155px rgba(24, 39, 75, 0.08),
           0px 3.155px 4.732px -3.155px rgba(24, 39, 75, 0.12);
+        .smartMoneyTable {
+          .table-wrapper {
+            .custom-table {
+              .ReactVirtualized__Table__Grid {
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                max-height: 62vh !important;
+                padding-left: 0rem;
+                margin-bottom: 0.8rem !important;
+
+                &::-webkit-scrollbar {
+                  width: 0.4rem;
+                  height: 0rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                  border-radius: 0.8rem;
+                  background-color: #cacbcc;
+                }
+
+                &::-webkit-scrollbar-track {
+                  background-color: rgba(229, 229, 230, 0.5);
+                  border-radius: 0.8rem;
+                }
+              }
+            }
+          }
+          .noScroll {
+            .ReactVirtualized__Table__Grid {
+              &::-webkit-scrollbar {
+                width: 0rem !important;
+                height: 0rem !important;
+              }
+
+              &::-webkit-scrollbar-track {
+                border-radius: 0rem !important;
+              }
+            }
+          }
+        }
       }
 
       .new-homepage__body-content-mobile {
