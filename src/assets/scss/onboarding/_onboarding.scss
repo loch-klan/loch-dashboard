@@ -2037,7 +2037,14 @@
       outline: none;
     }
   }
-
+  .new-homepage-btn--white-non-click {
+    cursor: default;
+    &:hover {
+      backdrop-filter: none;
+      background: white !important;
+      color: #313233 !important;
+    }
+  }
   .new-homepage-btn--blur {
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.15);

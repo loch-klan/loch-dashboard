@@ -109,6 +109,7 @@ class NewWelcome extends BaseReactComponent {
     super(props);
     this.state = {
       currentMetamaskWallet: {},
+      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       startTime: "",
       onboardingWalletAddress: [
         {
@@ -1366,7 +1367,7 @@ class NewWelcome extends BaseReactComponent {
         this.props.setPageFlagDefault();
 
         // if (!mobileCheck()) {
-        deleteToken();
+        // deleteToken();
         // }
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
@@ -1375,14 +1376,14 @@ class NewWelcome extends BaseReactComponent {
           : false;
         if (user) {
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // } else {
           // this.props.history.push("/home");
           // }
         } else {
           this.props.setPageFlagDefault();
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // }
           //  window.sessionStorage.setItem("defi_access", true);
           //  window.sessionStorage.setItem("isPopup", true);
@@ -1410,7 +1411,7 @@ class NewWelcome extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
       // if (!mobileCheck()) {
-      deleteToken();
+      // deleteToken();
       // }
       // window.sessionStorage.setItem("defi_access", true);
       // window.sessionStorage.setItem("isPopup", true);
@@ -2448,7 +2449,27 @@ class NewWelcome extends BaseReactComponent {
                   Connect Exchange
                 </button>
               </div>
-              {this.checkUser() ? null : (
+              {this.state.lochUser &&
+              (this.state.lochUser.email ||
+                this.state.lochUser.first_name ||
+                this.state.lochUser.last_name) ? (
+                <button
+                  className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
+                  style={{ padding: "8px 12px" }}
+                >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
+                    <img src={personRounded} alt="" />
+                  </div>
+                  {this.state.lochUser.first_name ||
+                  this.state.lochUser.last_name
+                    ? `${this.state.lochUser.first_name} ${
+                        this.state.lochUser.last_name
+                          ? this.state.lochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed In"}
+                </button>
+              ) : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}

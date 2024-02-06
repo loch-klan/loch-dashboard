@@ -29,6 +29,7 @@ import Nft from "./app/nft/Nft";
 import Referral from "./app/referral/Referral";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import NewWelcome from "./app/home/NewWelcome";
+import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 
 const routes = [
   {
@@ -155,6 +156,12 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/verify-email-welcome",
+    name: "Verify Email Welcome",
+    type: Route,
+    component: VerifyEmailWelcome,
   },
   {
     path: "/verify-email-smart-money",
