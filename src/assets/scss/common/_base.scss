@@ -2108,10 +2108,10 @@ form {
               border-radius: 0.4rem;
               padding: 0.6rem;
               width: fit-content;
-              background: rgba(229, 229, 230, 0.5);
-              color: var(--tableCostCommonColor) !important;
+              background: var(--tableCostCommonBg);
+              color: var(--grey313) !important;
               span{
-                color: var(--tableCostCommonColor) !important;
+                color: var(--grey313) !important;
               
               }
             }

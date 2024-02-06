@@ -261,7 +261,7 @@ class AuthModal extends BaseReactComponent {
         <Modal.Header>
           {this.state.isShowOtp || this.props.signinBack ? (
             <div
-              className="signin-header back-icon"
+              className="signin-header back-icon "
               onClick={
                 this.state.isShowOtp ? this.handleBack : this.props.signinBack
               }
@@ -270,7 +270,7 @@ class AuthModal extends BaseReactComponent {
             </div>
           ) : null}
           {this.props.iconImage ? (
-            <div className="api-modal-header">
+            <div className="api-modal-header popup-main-icon-with-border">
               <Image src={this.props.iconImage} />
             </div>
           ) : (

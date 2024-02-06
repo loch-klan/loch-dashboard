@@ -1522,7 +1522,7 @@ class ConnectModal extends BaseReactComponent {
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
-            <div className="api-modal-header">
+            <div className="api-modal-header popup-main-icon-with-border">
               <Image src={this.props.iconImage} />
             </div>
           )}

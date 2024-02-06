@@ -917,8 +917,11 @@ class ExitOverlay extends BaseReactComponent {
                   )}
                 </div>
               ) : (
-                <div className="exitOverlayIcon">
-                  <Image src={ExitOverlayIcon} />
+                <div className="exitOverlayIcon popup-main-icon-with-border">
+                  <Image
+                    src={ExitOverlayIcon}
+                    style={{ filter: "var(--invertColor)" }}
+                  />
                 </div>
               )}
               {this.props.goToSignIn && !this.props.comingDirectly ? (
@@ -1165,7 +1168,7 @@ class ExitOverlay extends BaseReactComponent {
                   ) : this.props.modalType === "cohort" ? (
                     <div className="cohort-body">
                       <div
-                        className="cohort-item-wrapper input-error-wrapper"
+                        className="cohort-item-wrapper input-error-wrapper input-noshadow-dark"
                         style={{ marginBottom: "0rem" }}
                       >
                         {!this.state.showWarningMsg ? (
@@ -1492,7 +1495,7 @@ class ExitOverlay extends BaseReactComponent {
                                     )}
                                   {!this.state.emailAdded &&
                                     !this.state.isIndexed && (
-                                      <div className="email-section">
+                                      <div className="email-section input-noshadow-dark">
                                         <Form
                                           onValidSubmit={this.EmailNotification}
                                         >
@@ -1606,7 +1609,7 @@ class ExitOverlay extends BaseReactComponent {
                     can watch your whales with binoculars
                   </p>
                   {/* this.props.isSkip(); */}
-                  <div className="email-section">
+                  <div className="email-section input-noshadow-dark">
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
                         hideOnblur={this.props.hideOnblur}
@@ -1695,7 +1698,7 @@ class ExitOverlay extends BaseReactComponent {
                       you can analyze your portfolio with superpowers
                     </p>
                   )}
-                  <div className="email-section">
+                  <div className="email-section input-noshadow-dark">
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
                         hideOnblur={this.props.hideOnblur}

@@ -2010,6 +2010,11 @@
     font-weight: 600;
     line-height: 120%;
   }
+  .new-homepage-btn--mode{
+    img{
+      filter: brightness(3);
+    }
+  }
 
   .new-homepage-btn--white {
     background-color: white !important;

@@ -31,6 +31,7 @@
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(4);
+  --updatedAgoFilter: brightness(1);
 
   // Secondary
   --secondaryTextColor: #adadad;
@@ -60,6 +61,7 @@
   --topbarAdressAddColorHover: #fff;
   --tableSectionToggleBg:#e5e5e680;
   --tableCostCommonColor: #313233;
+  --tableCostCommonBg:rgba(229, 229, 230, 0.5);
 
   //Sidebar
   --currenyConvertorBorder: #e5e5e6;
@@ -138,7 +140,7 @@
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
   --primaryTextColor: #CACBCC;
-  --primaryTextColorGrey: #7C7D81;
+  --primaryTextColorGrey: #CACBCC;
   --primarySubTextColor: #7c7d81;
   --primaryGainColor: rgba(208, 252, 234, 1);
   --primaryLossColor: rgba(250, 217, 217, 1);
@@ -161,6 +163,7 @@
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;
+  --updatedAgoFilter: brightness(0.5);
 
   // Secondary
   --secondaryTextColor: #7c7d81;
@@ -180,7 +183,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
-  --grey313: #7C7D81;
+  --grey313: #CACBCC;
   --greyb0b: #4A4B4D;
   --backColor: rgba(255,255,255,0.95);
   --sameModeColor: #282829;
@@ -196,6 +199,7 @@
   --tableHeadingLightBorder: #313233;
   --tableSectionToggleBg:#101010;
   --tableCostCommonColor:#141414;
+  --tableCostCommonBg:#303030;
 
   //Sidebar
   --currenyConvertorBorder: #7c7d81;
@@ -230,7 +234,7 @@
   //Borders
   --dropdownContentBorderColor: #313233;
   --whiteTransparentBlackE5e5e6: #e5e5e6;
-  --borderwhiteDarkLight: #5e5e5e;
+  --borderwhiteDarkLight: #313233;
   --popupCenterIconsBorder:#2a2a2a;
 
   //badges

@@ -46,14 +46,11 @@ function App(props) {
 
   useEffect(() => {
     let isDarkTheme = localStorage.getItem("isDarkTheme");
-    if (isDarkTheme && isDarkTheme === "dark") {
-      switchToDarkMode("dark");
-      props.SwitchDarkMode(true);
-    } else if (isDarkTheme && isDarkTheme === "dark2") {
-      switchToDarkMode("dark2");
+    if (isDarkTheme && isDarkTheme === "true") {
+      switchToDarkMode();
       props.SwitchDarkMode(true);
     } else {
-      switchToLightMode("light");
+      switchToLightMode();
       props.SwitchDarkMode(false);
     }
   }, []);

@@ -1562,7 +1562,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 {this.props.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",

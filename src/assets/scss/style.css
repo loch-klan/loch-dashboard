@@ -2688,7 +2688,7 @@ form .radio-wrapper.inline .radio-control {
   .ReactVirtualized__Table__row
   .ReactVirtualized__Table__rowColumn
   .cost-common {
-  background: rgba(229, 229, 230, 0.5);
+  background: var(--tableCostCommonBg);
   border-radius: 0.4rem;
   padding: 0.6rem;
   width: -webkit-max-content;

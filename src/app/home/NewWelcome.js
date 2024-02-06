@@ -2484,37 +2484,31 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
+
                 {this.state.isDarkMode == "dark" ? (
-                  <span
+                  <button
                     onClick={() => this.handleDarkMode("light")}
-                    style={{
-                      zIndex: "9",
-                      cursor: "pointer",
-                      right: "10px",
-                    }}
-                    className="navbar-button-container-mode"
+                    className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode"
                   >
-                    <Image src={lightModeIcon} />
-                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
-                  </span>
+                    <img
+                      style={{ height: "14px", width: "14px" }}
+                      src={lightModeIcon}
+                      alt=""
+                    />
+                    Light Mode
+                  </button>
                 ) : (
-                  <span
+                  <button
                     onClick={() => this.handleDarkMode("dark")}
-                    style={{
-                      zIndex: "9",
-                      cursor: "pointer",
-                      right: "10px",
-                    }}
-                    className="navbar-button-container-mode"
+                    className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode"
                   >
-                    <Image src={darkModeIcon} />
-                    <span />
-                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
-                  </span>
+                    <img
+                      style={{ height: "14px", width: "14px" }}
+                      src={darkModeIcon}
+                      alt=""
+                    />
+                    Dark Mode
+                  </button>
                 )}
                 {/* {this.state.isDarkMode == "dark2" ? (
                   <span
