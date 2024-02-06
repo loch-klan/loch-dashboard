@@ -25,7 +25,6 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import {
-  deleteToken,
   getCurrentUser,
   getToken,
   setLocalStoraage,
@@ -108,6 +107,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     super(props);
     this.state = {
       currentMetamaskWallet: {},
+      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -832,26 +832,15 @@ class NewWelcomeMobile extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("stop_redirect"));
       if (isStopRedirect) {
         this.props.setPageFlagDefault();
-
-        if (!mobileCheck()) {
-          deleteToken();
-        }
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
         let user = window.sessionStorage.getItem("lochUser")
           ? JSON.parse(window.sessionStorage.getItem("lochUser"))
           : false;
         if (user) {
-          if (!mobileCheck()) {
-            deleteToken();
-          } else {
-            this.props.history.push("/home");
-          }
         } else {
           this.props.setPageFlagDefault();
-          if (!mobileCheck()) {
-            deleteToken();
-          }
+
           //  window.sessionStorage.setItem("defi_access", true);
           //  window.sessionStorage.setItem("isPopup", true);
           //  // window.sessionStorage.setItem("whalepodview", true);
@@ -877,9 +866,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     } else {
       this.props.setPageFlagDefault();
-      if (!mobileCheck()) {
-        deleteToken();
-      }
+
       // window.sessionStorage.setItem("defi_access", true);
       // window.sessionStorage.setItem("isPopup", true);
       // // window.sessionStorage.setItem("whalepodview", true);
