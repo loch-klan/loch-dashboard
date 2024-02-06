@@ -3426,7 +3426,7 @@ class PortfolioMobile extends BaseReactComponent {
                     <div className="profit-chart">
                       {this.props.blockTwoSelectedItem === 1 ? (
                         <BarGraphSection
-                          openChartPage={() => {}}
+                          // openChartPage={() => {}}
                           newHomeSetup
                           disableOnLoading
                           noSubtitleBottomPadding
@@ -3471,7 +3471,7 @@ class PortfolioMobile extends BaseReactComponent {
                           <BarGraphSection
                             digit={this.props.GraphDigit}
                             isFromHome
-                            openChartPage={() => {}}
+                            // openChartPage={() => {}}
                             data={
                               this.props.homeGraphFeesData &&
                               this.props.homeGraphFeesData[0]
@@ -3507,10 +3507,7 @@ class PortfolioMobile extends BaseReactComponent {
                           <BarGraphSection
                             digit={this.props.counterGraphDigit}
                             isFromHome
-                            // openChartPage={
-                            //   this.props.goToCounterPartyVolumePage
-                            // }
-                            openChartPage={() => {}}
+                            // openChartPage={() => {}}
                             data={
                               this.props.homeCounterpartyVolumeData &&
                               this.props.homeCounterpartyVolumeData[0]
