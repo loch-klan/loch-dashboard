@@ -695,7 +695,7 @@ function Sidebar(props) {
             onClick={() => handleDarkMode("light")}
             style={{
               zIndex: "9",
-              right: "10px",
+              right: "0px",
             }}
             className="navbar-button-container-mode"
           >
@@ -709,7 +709,7 @@ function Sidebar(props) {
             onClick={() => handleDarkMode("dark")}
             style={{
               zIndex: "9",
-              right: "10px",
+              right: "0px",
             }}
             className="navbar-button-container-mode"
           >
@@ -720,7 +720,7 @@ function Sidebar(props) {
             </Button> */}
           </span>
         )}
-        {isDarkMode == "dark2" ? (
+        {/* {isDarkMode == "dark2" ? (
           <span
             onClick={() => handleDarkMode("light")}
             style={{
@@ -730,9 +730,6 @@ function Sidebar(props) {
             className="navbar-button-container-mode"
           >
             <Image src={lightModeIcon} />
-            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
           </span>
         ) : (
           <span
@@ -746,11 +743,9 @@ function Sidebar(props) {
           >
             <Image src={darkModeIcon} /> 1
             <span />
-            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
+            
           </span>
-        )}
+        )} */}
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">

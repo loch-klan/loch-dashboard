@@ -2516,7 +2516,7 @@ class NewWelcome extends BaseReactComponent {
             </Button> */}
                   </span>
                 )}
-                {this.state.isDarkMode == "dark2" ? (
+                {/* {this.state.isDarkMode == "dark2" ? (
                   <span
                     onClick={() => this.handleDarkMode("light")}
                     style={{
@@ -2527,9 +2527,6 @@ class NewWelcome extends BaseReactComponent {
                     className="navbar-button-container-mode"
                   >
                     <Image src={lightModeIcon} />
-                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
                   </span>
                 ) : (
                   <span
@@ -2544,11 +2541,8 @@ class NewWelcome extends BaseReactComponent {
                   >
                     <Image src={darkModeIcon} /> 1
                     <span />
-                    {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
                   </span>
-                )}
+                )} */}
               </div>
               {this.checkUser() ? null : (
                 <button

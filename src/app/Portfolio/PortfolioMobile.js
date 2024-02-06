@@ -2879,9 +2879,6 @@ class PortfolioMobile extends BaseReactComponent {
                   className="navbar-button-container-mode"
                 >
                   <Image src={lightModeIcon} />
-                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
                 </span>
               ) : (
                 <span
@@ -2895,12 +2892,9 @@ class PortfolioMobile extends BaseReactComponent {
                 >
                   <Image src={darkModeIcon} />
                   <span />
-                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
                 </span>
               )}
-              {this.state.isDarkMode == "dark2" ? (
+              {/* {this.state.isDarkMode == "dark2" ? (
                 <span
                   onClick={() => this.handleDarkMode("light")}
                   style={{
@@ -2912,9 +2906,6 @@ class PortfolioMobile extends BaseReactComponent {
                   className="navbar-button-container-mode"
                 >
                   <Image src={lightModeIcon} />
-                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
                 </span>
               ) : (
                 <span
@@ -2930,11 +2921,8 @@ class PortfolioMobile extends BaseReactComponent {
                 >
                   <Image src={darkModeIcon} /> 1
                   <span />
-                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
                 </span>
-              )}
+              )} */}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
