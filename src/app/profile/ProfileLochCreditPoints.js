@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   FeedbackCreditIcon,
+  StreakFireLochPointsIcon,
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
   UserCreditMailIcon,
@@ -47,6 +48,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "x_follower",
         "joined_telegram",
         "feedbacks_added",
+        "streak",
         // "twitter_spaces",
         // "provide_feedback",
         // "use_referral_code",
@@ -440,6 +442,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           // onClick={goClickConnectExchange}
         />
       );
+    } else if (whichBlock === "streak") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title="7 day streak"
+          earnPoints={4}
+          imageIcon={StreakFireLochPointsIcon}
+          isDone={this.state.tasksDone.includes(whichBlock)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          hideGoBtn
+          // onClick={goClickConnectExchange}
+        />
+      );
     }
     return null;
   };
@@ -487,18 +501,23 @@ class ProfileLochCreditPoints extends BaseReactComponent {
               style={{
                 marginRight: "3rem",
                 marginLeft: "2.5rem",
-                opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
               }}
               onClick={this.scrollLeft}
-              className="profileCreditPointsHeaderRightArrowIcon"
+              className={`profileCreditPointsHeaderRightArrowIcon ${
+                this.state.isLeftArrowDisabled
+                  ? "profileCreditPointsHeaderRightArrowIconDisabled"
+                  : ""
+              }`}
               src={UserCreditScrollLeftArrowIcon}
             />
             <Image
-              style={{
-                opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
-              }}
+              style={{}}
               onClick={this.scrollRight}
-              className="profileCreditPointsHeaderRightArrowIcon"
+              className={`profileCreditPointsHeaderRightArrowIcon ${
+                this.state.isRightArrowDisabled
+                  ? "profileCreditPointsHeaderRightArrowIconDisabled"
+                  : ""
+              }`}
               src={UserCreditScrollRightArrowIcon}
             />
           </div>
@@ -544,14 +563,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
               })}
           </div>
           <div
-            style={{
-              justifyContent: "flex-start",
-              paddingLeft: "2rem",
-            }}
+            // style={{
+            //   justifyContent: "flex-start",
+            //   paddingLeft: "2rem",
+            // }}
             className="profileCreditPointsSection"
           >
             {this.state.tasksList
-              .slice(9, 10)
+              .slice(9, 11)
               .map((singleTask, singleTaskIndex) => {
                 return this.returnWhichBlock(singleTask, singleTaskIndex);
               })}

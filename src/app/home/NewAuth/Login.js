@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
-import logo from "./../../../image/Loch.svg";
+import { CloseIconBlack } from "../../../assets/images/icons";
 import { validateEmail } from "../../../utils/validators";
-import {
-  CloseIconBlack,
-  CrossSmartMoneyIcon,
-  NewWelcomeLoginCrossIcon,
-} from "../../../assets/images/icons";
+import logo from "./../../../image/Loch.svg";
+import "./_newAuth.scss";
 
 const Login = ({
   show,
@@ -87,7 +83,7 @@ const Login = ({
                   if (validateEmail(email)) handleSubmitEmail();
                 }}
                 ref={submitRef}
-                className={`new-auth-content-button ${
+                className={`new-auth-content-button  ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""
                 }`}
               >
