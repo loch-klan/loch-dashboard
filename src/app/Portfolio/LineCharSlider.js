@@ -860,6 +860,7 @@ class LineChartSlider extends BaseReactComponent {
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
                 zIndex: 99, // Set the zIndex so it appears above the chart
+                class: "watermark-opacity",
               })
               .add();
           },

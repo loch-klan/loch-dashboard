@@ -82,7 +82,8 @@ export const getProfitLossAsset = (arr, parentCtx) => {
             .image(GraphLogo, x, y, imageWidth, imageHeight)
             .attr({
               zIndex: 1, // Set the zIndex so it appears above the chart
-              opacity: parentCtx?.props?.darkModeState?.flag ? 0.1 : 1,
+              // opacity: parentCtx?.props?.darkModeState?.flag ? 0.1 : 1,
+              class: "watermark-opacity",
             })
             .add();
         },
@@ -97,6 +98,11 @@ export const getProfitLossAsset = (arr, parentCtx) => {
     },
     xAxis: {
       categories: labels,
+      labels: {
+        style: {
+          color: parentCtx?.props?.darkModeState?.flag ? "#96979a" : "#4f4f4f",
+        },
+      },
     },
     yAxis: {
       showLastLabel: true,
@@ -122,7 +128,7 @@ export const getProfitLossAsset = (arr, parentCtx) => {
           fontSize: 12,
           fontFamily: "Inter-Regular",
           fontWeight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#96979a" : "#4f4f4f",
         },
       },
       gridLineDashStyle: "longdash",

@@ -376,7 +376,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
                 zIndex: 99,
-                opacity: parent?.props?.darkModeState?.flag ? 0.1 : 1,
+                // opacity: parent?.props?.darkModeState?.flag ? 0.1 : 1,
+                class: "watermark-opacity",
               })
               .add();
           },
