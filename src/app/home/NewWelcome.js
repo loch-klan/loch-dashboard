@@ -2698,7 +2698,7 @@ class NewWelcome extends BaseReactComponent {
                   <div
                     className="smartMoneyTable"
                     style={{
-                      marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                      marginBottom: "5rem",
                     }}
                   >
                     <TransactionTable
@@ -2719,9 +2719,7 @@ class NewWelcome extends BaseReactComponent {
                         this.onPageChange(false);
                       }}
                       pageLimit={this.state.pageLimit}
-                      changePageLimit={() => {
-                        this.changePageLimit(false);
-                      }}
+                      changePageLimit={this.changePageLimit}
                       addWatermark
                       className={this.state.blurTable ? "noScroll" : ""}
                       onBlurSignInClick={this.showSignInModal}
