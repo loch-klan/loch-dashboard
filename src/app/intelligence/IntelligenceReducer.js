@@ -81,7 +81,11 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
         graphValue: action.payload.graphValue,
       };
     case PORTFOLIO_ASSET:
-      return { ...state, ProfitLossAsset: action.payload.ProfitLossAsset };
+      return {
+        ...state,
+        ProfitLossAsset: action.payload.ProfitLossAsset,
+        ProfitLossAssetData: action.payload.ProfitLossAssetData,
+      };
     case TRANSACTION_FILTER:
       return {
         ...state,

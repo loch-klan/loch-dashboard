@@ -280,7 +280,7 @@ class GasFeesPage extends Component {
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
     }
-    if (this.props.darkModeState != prevProps.darkModeState) {
+    if (this.props.darkModeState !== prevProps.darkModeState) {
       this.props.updateFeeGraph(
         this.props.intelligenceState.GraphfeeData,
         getGraphData(this.props.intelligenceState.GraphfeeData, this),

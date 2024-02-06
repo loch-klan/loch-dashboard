@@ -410,6 +410,7 @@ export const getAssetProfitLoss = (
                   res.data.data?.profit_loss,
                   ctx
                 ),
+                ProfitLossAssetData: res.data.data?.profit_loss,
               },
             });
           }
@@ -437,6 +438,20 @@ export const getAssetProfitLoss = (
       .catch((err) => {
         // console.log("err ", err)
       });
+  };
+};
+export const updateAssetProfitLoss = (passedData, ctx) => {
+  return async function (dispatch, getState) {
+    dispatch({
+      type: PORTFOLIO_ASSET,
+      payload: {
+        ProfitLossAsset: getProfitLossAsset(passedData, ctx),
+        ProfitLossAssetData: passedData,
+      },
+    });
+    if (ctx.setProfitLossAssetLocal) {
+      ctx.setProfitLossAssetLocal(getProfitLossAsset(passedData, ctx));
+    }
   };
 };
 
