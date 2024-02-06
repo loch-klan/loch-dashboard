@@ -9,8 +9,10 @@ import {
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -70,6 +72,8 @@ import {
   convertNtoNumber,
   noExponents,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
@@ -121,6 +125,7 @@ import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
+import BarGraphSection from "../common/BarGraphSection.js";
 import { getNFT } from "../nft/NftApi.js";
 
 class PortfolioMobile extends BaseReactComponent {
@@ -158,6 +163,11 @@ class PortfolioMobile extends BaseReactComponent {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       showHideDustVal: true,
+      isDarkMode:
+        document.querySelector("body").getAttribute("data-theme") &&
+        document.querySelector("body").getAttribute("data-theme") === "dark"
+          ? true
+          : false,
       showHideDustValTrans: true,
       isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
@@ -411,6 +421,14 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
+      if (
+        !(
+          this.props.intelligenceState &&
+          this.props.intelligenceState?.table?.length > 0
+        )
+      ) {
+        this.callApiTransHistory(page);
+      }
     }
 
     if (
@@ -460,6 +478,9 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    setTimeout(() => {
+      this.props.changeBlockTwoItem(2);
+    }, 500);
     if (
       this.props.NFTState &&
       this.props.NFTState?.nfts &&
@@ -905,6 +926,22 @@ class PortfolioMobile extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
+  handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+    }
+  };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -1179,6 +1216,10 @@ class PortfolioMobile extends BaseReactComponent {
     let tempNFTData = new URLSearchParams();
 
     tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    tempNFTData.append("start", page * API_LIMIT);
+    tempNFTData.append("conditions", JSON.stringify([]));
+    tempNFTData.append("limit", API_LIMIT);
+    tempNFTData.append("sorts", JSON.stringify([]));
     let isDefault = false;
     if (this.state.nftSort.length === 0) {
       isDefault = true;
@@ -1192,7 +1233,12 @@ class PortfolioMobile extends BaseReactComponent {
       isLoadingNft: false,
     });
   };
+
   render() {
+    console.log(
+      "this.props.intelligenceState.ProfitLossAsset",
+      this.props.intelligenceState.ProfitLossAsset
+    );
     const { currency } = this.state;
     const { assetPriceList, table, totalPage } = this.props.intelligenceState;
 
@@ -1294,7 +1340,7 @@ class PortfolioMobile extends BaseReactComponent {
               onClick={() => {
                 this.toggleAgeTimestamp();
               }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
+              className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
               style={{
                 textDecoration: "underline",
               }}
@@ -1346,7 +1392,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1584,7 +1630,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1820,7 +1866,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1868,7 +1914,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1912,7 +1958,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -2003,7 +2049,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -2052,7 +2098,10 @@ class PortfolioMobile extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
                 src={sortByIcon}
@@ -2094,7 +2143,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -2169,7 +2218,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Asset"
             // onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
           </div>
@@ -2216,7 +2265,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Average Cost Price"
             // onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
           </div>
@@ -2263,7 +2312,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Price"
             // onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
           </div>
@@ -2310,7 +2359,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Amount"
             // onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 gsecondaryDarkText">
               Amount
             </span>
           </div>
@@ -2353,7 +2402,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Cost Basis"
             // onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
           </div>
@@ -2434,7 +2483,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Value"
             // onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
           </div>
@@ -2515,7 +2564,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gainamount"
             // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
           </div>
@@ -2626,7 +2675,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
           </div>
@@ -2736,7 +2785,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
           </div>
@@ -2831,14 +2880,14 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                   <div
                     onClick={this.hideThePopupModal}
-                    className="mpcHFGoBtn inter-display-medium f-s-13"
+                    className="mpcHFGoBtn inter-display-medium f-s-13 btn-bg-black"
                   >
                     Ok
                   </div>
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch">
+            <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{
@@ -2883,6 +2932,42 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               ) : null}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              {this.state.isDarkMode ? (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={lightModeIcon} />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                </span>
+              ) : (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={darkModeIcon} />
+                  <span />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                </span>
+              )}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
@@ -3026,69 +3111,76 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
               <div
-                className={`section-table section-table-mobile-scroll asset-mobile-table ${
-                  this.state.AvgCostLoading ||
-                  this.props.intelligenceState?.Average_cost_basis?.length < 1
-                    ? ""
-                    : "tableWatermarkOverlayCounterParty"
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  handleClick={() => {
-                    if (this.state.lochToken) {
-                      this.props.history.push("/intelligence/costs");
-                      // AverageCostBasisEView({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }
-                  }}
-                  message="No assets found"
-                  subTitle=""
-                  tableData={
-                    this.props.intelligenceState.Average_cost_basis &&
-                    this.props.intelligenceState.Average_cost_basis.length < 1
-                      ? []
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length > 0
-                      ? [
-                          {},
-                          ...this.props.intelligenceState.Average_cost_basis.filter(
+                <div
+                  className={`section-table section-table-mobile-scroll asset-mobile-table ${
+                    this.props.AvgCostLoading
+                      ? ""
+                      : "tableWatermarkOverlayCounterParty"
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  {/* <div className="section-table-mobile-scroll-top-cover" /> */}
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    handleClick={() => {
+                      if (this.state.lochToken) {
+                        this.props.history.push("/intelligence/costs");
+                        // AverageCostBasisEView({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }
+                    }}
+                    message="No assets found"
+                    subTitle=""
+                    tableData={
+                      this.props.intelligenceState.Average_cost_basis &&
+                      this.props.intelligenceState.Average_cost_basis.length < 1
+                        ? []
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
                             (item) => {
                               return item.CurrentValue > 1;
                             }
-                          ),
-                        ]
-                      : this.state.showHideDustVal &&
-                        this.props.intelligenceState.Average_cost_basis.filter(
-                          (item) => {
-                            return item.CurrentValue > 1;
-                          }
-                        ).length < 1
-                      ? []
-                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
-                  }
-                  columnList={columnData}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.props.AvgCostLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                  yAxisScrollable
-                />
+                          ).length > 0
+                        ? [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis.filter(
+                              (item) => {
+                                return item.CurrentValue > 1;
+                              }
+                            ),
+                          ]
+                        : this.state.showHideDustVal &&
+                          this.props.intelligenceState.Average_cost_basis.filter(
+                            (item) => {
+                              return item.CurrentValue > 1;
+                            }
+                          ).length < 1
+                        ? []
+                        : [
+                            {},
+                            ...this.props.intelligenceState.Average_cost_basis,
+                          ]
+                    }
+                    columnList={columnData}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.props.AvgCostLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                    yAxisScrollable
+                  />
+                </div>
               </div>
-
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3216,7 +3308,7 @@ class PortfolioMobile extends BaseReactComponent {
                   style={{ width: "100%", marginTop: "12px" }}
                 >
                   <div
-                    className="transaction-table-mobile-search"
+                    className="transaction-table-mobile-search input-noshadow-dark"
                     style={{ display: "flex", width: "100%" }}
                   >
                     <Image src={SearchIcon} className="search-icon" />
@@ -3235,33 +3327,37 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-
               <div
-                className={`section-table section-table-mobile-scroll ${
-                  this.state.tableLoading || tableDataTransaction?.length < 1
-                    ? ""
-                    : "tableWatermarkOverlayCounterParty"
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  message={"No Transactions Found"}
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.state.tableLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                />
+                <div
+                  className={`section-table section-table-mobile-scroll ${
+                    tableDataTransaction.length > 0 && !this.state.tableLoading
+                      ? "tableWatermarkOverlayCounterParty"
+                      : ""
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    message={"No Transactions Found"}
+                    subTitle=""
+                    tableData={tableDataTransaction}
+                    columnList={columnListTransaction}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.state.tableLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                  />
+                </div>
               </div>
-
               {!this.state.tableLoading ? (
                 <div style={{ marginTop: "2rem" }}>
                   {totalPage > 1 && (
@@ -3278,7 +3374,168 @@ class PortfolioMobile extends BaseReactComponent {
                   )}
                 </div>
               ) : null}
-              {/* <div
+              <div className="mobile-portfolio-blocks">
+                <div className="section-table-toggle-mobile">
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockTwoSelectedItem === 1
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockTwoItem(1);
+                    }}
+                  >
+                    Flows
+                  </div>
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockTwoSelectedItem === 2
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockTwoItem(2);
+                    }}
+                  >
+                    Gas fees
+                  </div>
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockTwoSelectedItem === 3
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockTwoItem(3);
+                    }}
+                  >
+                    Counterparties
+                  </div>
+                </div>
+                <div className="portfolio-page-section portfolio-page-section-mobile">
+                  <div
+                    className="section-table"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      paddingBottom: "2rem",
+                      boxShadow: "none",
+                    }}
+                  >
+                    <div className="profit-chart">
+                      {this.props.blockTwoSelectedItem === 1 ? (
+                        <BarGraphSection
+                          // openChartPage={() => {}}
+                          newHomeSetup
+                          disableOnLoading
+                          noSubtitleBottomPadding
+                          noSubtitleTopPadding
+                          loaderHeight={15.5}
+                          isScrollVisible={false}
+                          data={
+                            this.props.intelligenceState?.graphValue &&
+                            this.props.intelligenceState?.graphValue[0]
+                          }
+                          options={
+                            this.props.intelligenceState?.graphValue &&
+                            this.props.intelligenceState?.graphValue[1]
+                          }
+                          coinsList={this.props.OnboardingState.coinsList}
+                          showFooter={false}
+                          showBadges={false}
+                          showSwitch={false}
+                          isLoading={this.props.netFlowLoading}
+                          className={"portfolio-profit-and-loss"}
+                          isMinichart={true}
+                          ProfitLossAsset={
+                            this.props.intelligenceState.ProfitLossAsset
+                          }
+                          isSwitch
+                        />
+                      ) : this.props.blockTwoSelectedItem === 2 ? (
+                        <div
+                          style={{
+                            position: "relative",
+                          }}
+                          className="tableWatermarkOverlay"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <BarGraphSection
+                            digit={this.props.GraphDigit}
+                            isFromHome
+                            // openChartPage={() => {}}
+                            data={
+                              this.props.homeGraphFeesData &&
+                              this.props.homeGraphFeesData[0]
+                            }
+                            options={
+                              this.props.homeGraphFeesData &&
+                              this.props.homeGraphFeesData[1]
+                            }
+                            options2={
+                              this.props.homeGraphFeesData &&
+                              this.props.homeGraphFeesData[2]
+                            }
+                            isScrollVisible={false}
+                            isScroll={true}
+                            isLoading={this.props.gasFeesGraphLoading}
+                            oldBar
+                            noSubtitleBottomPadding
+                            newHomeSetup
+                            noSubtitleTopPadding
+                            floatingWatermark
+                          />
+                        </div>
+                      ) : this.props.blockTwoSelectedItem === 3 ? (
+                        <>
+                          <div
+                            style={{
+                              position: "absolute",
+                              opacity: 0,
+                            }}
+                          >
+                            Loch
+                          </div>
+                          <BarGraphSection
+                            digit={this.props.counterGraphDigit}
+                            isFromHome
+                            // openChartPage={() => {}}
+                            data={
+                              this.props.homeCounterpartyVolumeData &&
+                              this.props.homeCounterpartyVolumeData[0]
+                            }
+                            options={
+                              this.props.homeCounterpartyVolumeData &&
+                              this.props.homeCounterpartyVolumeData[1]
+                            }
+                            options2={
+                              this.props.homeCounterpartyVolumeData &&
+                              this.props.homeCounterpartyVolumeData[2]
+                            }
+                            isScrollVisible={false}
+                            isScroll={true}
+                            isLoading={this.props.counterGraphLoading}
+                            oldBar
+                            noSubtitleBottomPadding
+                            newHomeSetup
+                            noSubtitleTopPadding
+                            floatingWatermark
+                          />
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "4.8rem",
@@ -3297,8 +3554,8 @@ class PortfolioMobile extends BaseReactComponent {
                   View more
                   <img src={chevronRight} alt="" />
                 </div>
-              </div> */}
-              {/* <div style={{ marginTop: "16px" }}>
+              </div>{" "}
+              <div style={{ marginTop: "16px" }}>
                 {this.state.isLoadingNft ? (
                   <div
                     style={{
@@ -3333,7 +3590,7 @@ class PortfolioMobile extends BaseReactComponent {
                     </div>
                   </div>
                 )}
-              </div> */}
+              </div>
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />
@@ -3380,6 +3637,10 @@ const mapDispatchToProps = {
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
+  getFilters,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,

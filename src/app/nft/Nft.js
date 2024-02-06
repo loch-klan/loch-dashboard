@@ -1,7 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { NFTPage, TimeSpentNFT } from "../../utils/AnalyticsFunctions";
 import { API_LIMIT, START_INDEX } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -10,17 +8,15 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { GetAllPlan, getUser, updateWalletListFlag } from "../common/Api";
+import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
-import NftDummy from "./../../assets/images/nft_dummy.png";
 import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
-import Loading from "../common/Loading";
-import PageHeader from "../common/PageHeader";
-import Footer from "../common/footer";
+import HandleBrokenImages from "../common/HandleBrokenImages";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -217,6 +213,10 @@ class NFT extends BaseReactComponent {
     let tempNFTData = new URLSearchParams();
 
     tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
+    tempNFTData.append("start", page * API_LIMIT);
+    tempNFTData.append("conditions", JSON.stringify([]));
+    tempNFTData.append("limit", API_LIMIT);
+    tempNFTData.append("sorts", JSON.stringify([]));
     let isDefault = false;
     if (this.state.sort.length === 0) {
       isDefault = true;
@@ -240,6 +240,22 @@ class NFT extends BaseReactComponent {
     if (!this.props.commonState.nftPage) {
       this.getOtherData();
       this.callApi(this.state.currentPage || START_INDEX);
+    }
+
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort
+    ) {
+      this.callApi(page);
+      this.setState({
+        currentPage: page,
+      });
     }
   }
   handleTableSort = (val) => {
@@ -285,7 +301,7 @@ class NFT extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span
               onClick={() => {
                 this.toggleAgeTimestamp();
@@ -294,7 +310,7 @@ class NFT extends BaseReactComponent {
             >
               Holdings
             </span>
-            <Image
+            {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
               }
@@ -302,7 +318,7 @@ class NFT extends BaseReactComponent {
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
-            />
+            /> */}
           </div>
         ),
         dataKey: "holding",
@@ -329,7 +345,7 @@ class NFT extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span
               onClick={() => {
                 this.handleTableSort(this.state.tableSortOpt[1].title);
@@ -339,12 +355,12 @@ class NFT extends BaseReactComponent {
               Collection
             </span>
 
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
-            />
+            /> */}
           </div>
         ),
         dataKey: "collection",
@@ -376,7 +392,7 @@ class NFT extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div className="history-table-header-col no-hover" id="time">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Image
             </span>
@@ -389,267 +405,56 @@ class NFT extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "imgs") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {rowData.imgs && rowData.imgs.length > 0
-                      ? rowData.imgs?.slice(0, 10).map((item, index) => {
-                          return (
-                            <img
-                              src={item}
-                              alt=""
-                              key={index}
-                              className="nftImageIcon"
-                            />
-                          );
-                        })
-                      : null}
-                    {rowData.imgs && rowData.imgs.length > 10 ? (
-                      <span
-                        style={{
-                          fontSize: "12px",
-                          lineHeight: "120%",
-                          color: "#96979A",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {rowData.imgs.length - 4}+
-                      </span>
-                    ) : null}
-                  </div>
-                }
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  justifyContent: "center",
+                }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    justifyContent: "center",
-                  }}
-                >
-                  {rowData.imgs && rowData.imgs.length > 0
-                    ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                {rowData.imgs && rowData.imgs.length > 0
+                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                      if (item) {
                         return (
-                          <img
+                          <HandleBrokenImages
                             src={item}
-                            alt=""
                             key={index}
                             className="nftImageIcon"
                           />
                         );
-                      })
-                    : null}
-                  {rowData.imgs && rowData.imgs.length > 4 ? (
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        lineHeight: "120%",
-                        color: "#96979A",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {rowData.imgs.length - 4}+
-                    </span>
-                  ) : null}
-                </div>
-              </CustomOverlay>
+                      }
+                      return null;
+                    })
+                  : null}
+                {rowData.imgs && rowData.imgs.length > 4 ? (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      lineHeight: "120%",
+                      color: "#96979A",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {rowData.imgs.length - 4}+
+                  </span>
+                ) : null}
+              </div>
             );
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
-      //       <span
-      //         onClick={() => {
-      //           this.toggleAgeTimestamp();
-      //         }}
-      //         className="inter-display-medium f-s-13 lh-16 grey-4F4"
-      //       >
-      //         Total Spent <br /> (ETH)
-      //       </span>
-      //       <Image
-      //         onClick={() =>
-      //           this.handleTableSort(this.state.tableSortOpt[2].title)
-      //         }
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "total_spent",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "total_spent") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={rowData.total_spent}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-      //             {rowData.total_spent}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
-      //       <span
-      //         onClick={() => {
-      //           this.toggleAgeTimestamp();
-      //         }}
-      //         className="inter-display-medium f-s-13 lh-16 grey-4F4"
-      //       >
-      //         Max Price <br /> (ETH)
-      //       </span>
-      //       <Image
-      //         onClick={() =>
-      //           this.handleTableSort(this.state.tableSortOpt[3].title)
-      //         }
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "max_price",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "max_price") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={rowData.max_price}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-      //             {rowData.max_price}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
-      //       <span
-      //         onClick={() => {
-      //           this.toggleAgeTimestamp();
-      //         }}
-      //         className="inter-display-medium f-s-13 lh-16 grey-4F4"
-      //       >
-      //         Avg Price <br /> (ETH)
-      //       </span>
-      //       <Image
-      //         onClick={() =>
-      //           this.handleTableSort(this.state.tableSortOpt[4].title)
-      //         }
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "avg_price",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "avg_price") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={rowData.avg_price}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-      //             {rowData.avg_price}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div className="cp history-table-header-col" id="time">
-      //       <span
-      //         onClick={() => {
-      //           this.toggleAgeTimestamp();
-      //         }}
-      //         className="inter-display-medium f-s-13 lh-16 grey-4F4"
-      //       >
-      //         Volume <br /> (ETH)
-      //       </span>
-      //       <Image
-      //         onClick={() =>
-      //           this.handleTableSort(this.state.tableSortOpt[5].title)
-      //         }
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "volume",
-
-      //   coumnWidth: 0.15,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "volume") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={rowData.volume}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
-      //             {rowData.volume}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
     ];
     if (this.state.isMobileDevice) {
       return (
         <NftMobile
           isLoading={this.state.isLoading}
           tableData={this.state.tableData}
+          currentPage={this.state.currentPage}
+          pageCount={this.props.NFTState?.total_count}
+          pageLimit={10}
+          location={this.props.location}
+          history={this.props.history}
         />
       );
     }
@@ -670,8 +475,8 @@ class NFT extends BaseReactComponent {
             </div>
           </div>
         </div>
-        <div className="cost-page-section ">
-          <div className="cost-section page">
+        <div className="history-table-section m-t-80">
+          <div className="history-table page">
             <PageHeader
               title={"NFT Collection"}
               subTitle={"Browse the NFTs held by this wallet"}
@@ -684,7 +489,7 @@ class NFT extends BaseReactComponent {
               style={{
                 flex: 1,
               }}
-              className="cost-table-section"
+              className="transaction-history-table"
             >
               <TransactionTable
                 noSubtitleBottomPadding
@@ -700,9 +505,9 @@ class NFT extends BaseReactComponent {
                 onPageChange={() => {}}
                 addWatermark
                 paginationNew
+                hidePaginationRecords
               />
             </div>
-            <Footer />
           </div>
         </div>
       </div>

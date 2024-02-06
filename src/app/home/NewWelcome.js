@@ -1935,7 +1935,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Rank
             </span>
             {/* <Image
@@ -1967,7 +1967,7 @@ class NewWelcome extends BaseReactComponent {
                   className="inter-display-medium f-s-13"
                   style={{
                     fontWeight: "700",
-                    color: "#313233",
+                    color: "var(--grey313)",
                   }}
                 >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
@@ -1984,7 +1984,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Wallet
             </span>
             {/* <Image
@@ -2045,7 +2045,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             {/* <Image
@@ -2096,7 +2096,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Net worth
             </span>
             {/* <Image
@@ -2156,7 +2156,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Flows (1 year)
             </span>
           </div>
@@ -2242,7 +2242,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized PnL
             </span>
             {/* <Image
@@ -2328,7 +2328,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Follow
             </span>
           </div>
@@ -2603,10 +2603,13 @@ class NewWelcome extends BaseReactComponent {
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      className="new-homepage__body-trending-address-icon"
+                      alt=""
+                    />
                     <div
                       style={{
-                        color: "#19191A",
                         fontSize: "16px",
                       }}
                       className="inter-display-medium"
@@ -2679,7 +2682,7 @@ class NewWelcome extends BaseReactComponent {
                 {this.state.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",
