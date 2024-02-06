@@ -2172,7 +2172,7 @@ form {
 }
 
 .loading-wrapper {
-  background-color: $secondary;
+  background-color: var(--cardBackgroud);
   padding: 5rem;
   box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
     0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -2872,4 +2872,15 @@ input {
 
 .watermark-opacity{
   opacity: var(--watermarkOpacity);
+}
+
+.highcharts-axis-line{
+  stroke: var(--sidebarSectionalBOrderNoOpacity);
+}
+
+.highcharts-yaxis-labels{
+  text{
+    color: var(--primaryTextColor) !important;
+    fill:  var(--primaryTextColor) !important;
+  }
 }

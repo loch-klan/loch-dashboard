@@ -977,6 +977,7 @@ class LineChartSlider extends BaseReactComponent {
         max: categories.length - 0.5,
         // plotLines: plotLines,
         plotLines: updatedPlotLine,
+        lineColor: this?.props?.darkModeState?.flag ? "#303030" : "#e5e5e6",
       },
 
       yAxis: {
@@ -1003,7 +1004,7 @@ class LineChartSlider extends BaseReactComponent {
             fontSize: 12,
             fontFamily: "Inter-Regular",
             fontWeight: 400,
-            color: "#B0B1B3",
+            color: parent?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           },
         },
       },
@@ -1791,6 +1792,7 @@ backdrop-filter: blur(15px);">
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  darkModeState: state.darkMode,
 });
 export default connect(mapStateToProps)(LineChartSlider);
 // export default LineChartSlider;

@@ -98,9 +98,10 @@ export const getProfitLossAsset = (arr, parentCtx) => {
     },
     xAxis: {
       categories: labels,
+      lineColor: parentCtx?.props?.darkModeState?.flag ? "#303030" : "#e5e5e6",
       labels: {
         style: {
-          color: parentCtx?.props?.darkModeState?.flag ? "#96979a" : "#4f4f4f",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
         },
       },
     },
@@ -128,7 +129,7 @@ export const getProfitLossAsset = (arr, parentCtx) => {
           fontSize: 12,
           fontFamily: "Inter-Regular",
           fontWeight: 400,
-          color: parentCtx?.props?.darkModeState?.flag ? "#96979a" : "#4f4f4f",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
         },
       },
       gridLineDashStyle: "longdash",
@@ -205,7 +206,7 @@ export const getProfitLossAsset = (arr, parentCtx) => {
         return `<div class="top-section py-4" style="background-color:var(--cardBackgroud); border: 1px solid var(--cardBorder); border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
+                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#cacbcc; display:flex; justify-content:space-between"><b>${
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
           this.x === "Net" ? netColor : "#ffffff"

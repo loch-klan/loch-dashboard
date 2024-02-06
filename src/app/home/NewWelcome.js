@@ -114,11 +114,8 @@ class NewWelcome extends BaseReactComponent {
       isDarkMode:
         document.querySelector("body").getAttribute("data-theme") &&
         document.querySelector("body").getAttribute("data-theme") === "dark"
-          ? "dark"
-          : document.querySelector("body").getAttribute("data-theme") ===
-            "dark2"
-          ? "dark2"
-          : "light",
+          ? true
+          : false,
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -768,23 +765,16 @@ class NewWelcome extends BaseReactComponent {
     const darkOrLight = document
       .querySelector("body")
       .getAttribute("data-theme");
-    if (status == "light") {
+    if (darkOrLight === "dark") {
       this.setState({
-        isDarkMode: "light",
+        isDarkMode: false,
       });
       switchToLightMode();
       this.props.SwitchDarkMode(false);
-    } else if (status == "dark") {
-      console.log("here ia m");
-      switchToDarkMode("dark");
-      this.setState({
-        isDarkMode: "dark",
-      });
-      this.props.SwitchDarkMode(true);
     } else {
-      switchToDarkMode("dark2");
+      switchToDarkMode();
       this.setState({
-        isDarkMode: "dark2",
+        isDarkMode: true,
       });
       this.props.SwitchDarkMode(true);
     }
@@ -1857,6 +1847,12 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    let sMode = document.querySelector("body").getAttribute("data-theme");
+    if (this.state.isDarkMode !== (sMode === "dark")) {
+      this.setState({
+        isDarkMode: sMode === "dark",
+      });
+    }
     if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
         this.setState({
@@ -2485,7 +2481,7 @@ class NewWelcome extends BaseReactComponent {
                   Connect Exchange
                 </button>
 
-                {this.state.isDarkMode == "dark" ? (
+                {this.state.isDarkMode ? (
                   <button
                     onClick={() => this.handleDarkMode("light")}
                     className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode"

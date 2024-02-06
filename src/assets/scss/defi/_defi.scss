@@ -218,7 +218,7 @@
   }
 
   .table-head {
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--sidebarSectionalBOrder);
     padding: 2.2rem 0rem 2.2rem;
     margin: 0;
 
@@ -241,7 +241,7 @@
 
   .table-content-row {
     margin: 0;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--sidebarSectionalBOrder);
     padding: 2.2rem 0rem 2.2rem;
 
     .gray-chip {

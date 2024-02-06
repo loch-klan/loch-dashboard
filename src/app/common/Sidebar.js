@@ -149,12 +149,13 @@ function Sidebar(props) {
       : false
   );
 
-  console.log(
-    "darkmode",
-    document.querySelector("body").getAttribute("data-theme") == "dark",
-    isDarkMode
-  );
-
+  useEffect(() => {
+    setIsDarkMode(
+      document.querySelector("body").getAttribute("data-theme") == "dark"
+        ? true
+        : false
+    );
+  }, [document.querySelector("body").getAttribute("data-theme") == "dark"]);
   React.useEffect(() => {
     // console.log("in use effect");
 
@@ -484,9 +485,11 @@ function Sidebar(props) {
     if (darkOrLight === "dark") {
       setIsDarkMode(false);
       switchToLightMode();
+      props.SwitchDarkMode(false);
     } else {
       switchToDarkMode();
       setIsDarkMode(true);
+      props.SwitchDarkMode(true);
     }
   };
   React.useEffect(() => {

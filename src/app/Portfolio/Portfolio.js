@@ -16,6 +16,7 @@ import {
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
+  updateAssetProfitLoss,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
@@ -1469,6 +1470,12 @@ class Portfolio extends BaseReactComponent {
         this
       );
       this.trimCounterpartyVolume();
+      if (this.props.intelligenceState?.ProfitLossAssetData) {
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this
+        );
+      }
     }
   }
 
@@ -5072,6 +5079,7 @@ const mapDispatchToProps = {
   getProtocolBalanceApi,
   updateFeeGraph,
   updateCounterParty,
+  updateAssetProfitLoss,
 };
 Portfolio.propTypes = {};
 

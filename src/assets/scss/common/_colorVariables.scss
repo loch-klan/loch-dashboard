@@ -30,7 +30,7 @@
   --hoverBrightness: brightness(50%);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
-  --infoBrightnessPortfolio: brightness(4);
+  --infoBrightnessPortfolio: brightness(4.2);
   --updatedAgoFilter: brightness(1);
 
   // Secondary
@@ -73,6 +73,7 @@
   --sidebarHoverLink:'white';
   --sidebarHoverShadow:0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.12);
   --sidebarSectionalBOrder: #e5e5e680;
+  --sidebarSectionalBOrderNoOpacity: #e5e5e6;
 
   // Headers
   --headerSelectEyeBg:#e5e5e6;
@@ -211,6 +212,7 @@
   --sidebarHoverLink:#282828bd;
   --sidebarHoverShadow:none;
   --sidebarSectionalBOrder: #303030;
+  --sidebarSectionalBOrderNoOpacity: #303030;
 
   //buttons and badges
   --mainButtonBg:#101010;

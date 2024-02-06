@@ -457,7 +457,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
@@ -487,7 +487,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -524,7 +524,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -549,7 +549,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             // console.log(
