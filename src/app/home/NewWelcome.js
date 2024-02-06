@@ -1530,7 +1530,6 @@ class NewWelcome extends BaseReactComponent {
   checkUser = () => {
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
-    console.log(token, lochUser);
     if (token && lochUser && lochUser?.email) {
       return true;
     } else {
@@ -1552,11 +1551,12 @@ class NewWelcome extends BaseReactComponent {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
       data.append("email", this.state.emailSignup.toLowerCase());
-      data.append("type", "welcome");
+      data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
       });
+
       this.props.signUpWelcome(this, data, this.toggleAuthModal);
     }
   };
