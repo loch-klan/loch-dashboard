@@ -340,11 +340,16 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const EmailAddressAddedSignUp = ({ session_id, email_address }) => {
+export const EmailAddressAddedSignUp = ({
+  session_id,
+  email_address,
+  isMobile = false,
+}) => {
   const event_name = "Landing Page Conversion:sign up email address added";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
