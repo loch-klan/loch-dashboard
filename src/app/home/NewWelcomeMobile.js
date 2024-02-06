@@ -1388,7 +1388,27 @@ class NewWelcomeMobile extends BaseReactComponent {
         <div className="new-homepage__header new-homepage__header-mobile">
           <div className="new-homepage__header-container new-homepage__header-container-mobile">
             <div className="d-flex justify-content-end">
-              {this.checkUser() ? null : (
+              {this.state.lochUser &&
+              (this.state.lochUser.email ||
+                this.state.lochUser.first_name ||
+                this.state.lochUser.last_name) ? (
+                <button
+                  className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
+                  style={{ padding: "8px 12px" }}
+                >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
+                    <img src={personRounded} alt="" />
+                  </div>
+                  {this.state.lochUser.first_name ||
+                  this.state.lochUser.last_name
+                    ? `${this.state.lochUser.first_name} ${
+                        this.state.lochUser.last_name
+                          ? this.state.lochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed In"}
+                </button>
+              ) : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}
