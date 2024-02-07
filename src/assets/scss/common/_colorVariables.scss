@@ -100,6 +100,10 @@
   --inputShadow:0 0 0 30px #FFF inset;
   --custmCheckboxShadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
   --boxShadowCalender: 0px 6.17911px 18.5373px rgba(109, 109, 109, 0.15);
+  --trendingAddressShadow:0px 14px 64px -4px rgba(24, 39, 75, 0.12),
+  0px 8px 22px -6px rgba(24, 39, 75, 0.12);
+  --welcomeWalletInputShadow:0px 14px 64px -4px rgba(24, 39, 75, 0.12),
+  0px 8px 22px -6px rgba(24, 39, 75, 0.12);
 
 
   //borders
@@ -232,6 +236,8 @@
   --inputShadow:none;
   --custmCheckboxShadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.4);
   --boxShadowCalender: none;
+  --trendingAddressShadow:none;
+  --welcomeWalletInputShadow:none;
 
   //Borders
   --dropdownContentBorderColor: #313233;
