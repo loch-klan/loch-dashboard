@@ -899,23 +899,16 @@ class PortfolioMobile extends BaseReactComponent {
     const darkOrLight = document
       .querySelector("body")
       .getAttribute("data-theme");
-    if (status == "light") {
+    if (darkOrLight === "dark") {
       this.setState({
-        isDarkMode: "light",
+        isDarkMode: false,
       });
-      switchToLightMode("light");
+      switchToLightMode();
       this.props.SwitchDarkMode(false);
-    } else if (status == "dark") {
-      console.log("here ia m");
-      switchToDarkMode("dark");
-      this.setState({
-        isDarkMode: "dark",
-      });
-      this.props.SwitchDarkMode(true);
     } else {
-      switchToDarkMode("dark2");
+      switchToDarkMode();
       this.setState({
-        isDarkMode: "dark2",
+        isDarkMode: true,
       });
       this.props.SwitchDarkMode(true);
     }
@@ -2791,6 +2784,48 @@ class PortfolioMobile extends BaseReactComponent {
     ];
     return (
       <div className="mobilePortfolioContainer">
+        <div
+          style={{
+            display: "flex",
+            position: "fixed",
+            justifyContent: "center",
+            alignItems: "center",
+            bottom: "10px",
+            left: "10px",
+            zIndex: "9999",
+            background: "var(--cardBackgroud)",
+            padding: "10px",
+            borderRadius: "50%",
+            border: "1px solid var(--sidebarSectionalBOrderNoOpacity)",
+          }}
+        >
+          {this.state.isDarkMode ? (
+            <span
+              onClick={() => this.handleDarkMode()}
+              style={{
+                zIndex: "9",
+                cursor: "pointer",
+                right: "10px",
+              }}
+              className="navbar-button-container-mode"
+            >
+              <Image src={lightModeIcon} />
+            </span>
+          ) : (
+            <span
+              onClick={() => this.handleDarkMode()}
+              style={{
+                zIndex: "9",
+                cursor: "pointer",
+                right: "10px",
+              }}
+              className="navbar-button-container-mode"
+            >
+              <Image src={darkModeIcon} />
+              <span />
+            </span>
+          )}
+        </div>
         {this.props.loader ? (
           <div className="mpLoadingContainer">
             <Loading />
@@ -2860,69 +2895,6 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               ) : null}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              {this.state.isDarkMode == "dark" ? (
-                <span
-                  onClick={() => this.handleDarkMode("light")}
-                  style={{
-                    zIndex: "9",
-                    cursor: "pointer",
-                    right: "10px",
-                  }}
-                  className="navbar-button-container-mode"
-                >
-                  <Image src={lightModeIcon} />
-                </span>
-              ) : (
-                <span
-                  onClick={() => this.handleDarkMode("dark")}
-                  style={{
-                    zIndex: "9",
-                    cursor: "pointer",
-                    right: "10px",
-                  }}
-                  className="navbar-button-container-mode"
-                >
-                  <Image src={darkModeIcon} />
-                  <span />
-                </span>
-              )}
-              {/* {this.state.isDarkMode == "dark2" ? (
-                <span
-                  onClick={() => this.handleDarkMode("light")}
-                  style={{
-                    zIndex: "9",
-                    cursor: "pointer",
-                    right: "-25px",
-                    marginLeft: "10px",
-                  }}
-                  className="navbar-button-container-mode"
-                >
-                  <Image src={lightModeIcon} />
-                </span>
-              ) : (
-                <span
-                  onClick={() => this.handleDarkMode("dark2")}
-                  style={{
-                    zIndex: "9",
-                    cursor: "pointer",
-                    right: "-25px",
-                    color: "var(--primaryTextColor)",
-                    marginLeft: "10px",
-                  }}
-                  className="navbar-button-container-mode"
-                >
-                  <Image src={darkModeIcon} /> 1
-                  <span />
-                </span>
-              )} */}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
