@@ -24,6 +24,7 @@ import {
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
+import { DARK_MODE } from "../intelligence/ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -68,6 +69,15 @@ export const addLocalWalletList = (passedData) => {
   return function (dispatch, getState) {
     dispatch({
       type: LOCAL_ADD_WALLET_LIST,
+      payload: passedData,
+    });
+  };
+};
+
+export const SwitchDarkMode = (passedData) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: DARK_MODE,
       payload: passedData,
     });
   };
@@ -231,7 +241,6 @@ export const updateUserWalletApi = (
         }
       })
       .catch((err) => {
-        console.log("Three ", err);
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
@@ -242,7 +251,7 @@ export const updateUserWalletApi = (
   };
 };
 
-export const verifyEmailApi = (ctx, data) => {
+export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
   preLoginInstance
     .post("organisation/user/verify-email", data)
     .then((res) => {
@@ -329,7 +338,7 @@ export const verifyEmailApi = (ctx, data) => {
         //     },
         //   });
         // }, 3000);
-        getUserAddresses(ctx);
+        getUserAddresses(ctx, stayOnWelcomePage);
       } else {
         ctx.setState({ error: true });
       }
@@ -341,7 +350,7 @@ export const verifyEmailApi = (ctx, data) => {
 
 // get user detail for chain
 
-export const getUserAddresses = (ctx) => {
+export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
@@ -412,12 +421,21 @@ export const getUserAddresses = (ctx) => {
       window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
-        ctx.props.history.push({
-          pathname: "/home",
-          state: {
-            isVerified: !apiResponse?.wallets ? true : false,
-          },
-        });
+        if (stayOnWelcomePage) {
+          ctx.props.history.push({
+            pathname: "/",
+            state: {
+              isVerified: !apiResponse?.wallets ? true : false,
+            },
+          });
+        } else {
+          ctx.props.history.push({
+            pathname: "/home",
+            state: {
+              isVerified: !apiResponse?.wallets ? true : false,
+            },
+          });
+        }
       }, 3000);
     } else {
       toast.error(res.data.message || "Something Went Wrong");

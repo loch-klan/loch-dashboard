@@ -9,8 +9,10 @@ import {
   ArrowUpRightSmallIcon,
   MacIcon,
   SharePortfolioIconWhite,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { CopyClipboardIcon } from "../../assets/images/index.js";
 import {
@@ -70,6 +72,8 @@ import {
   convertNtoNumber,
   noExponents,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
@@ -160,6 +164,11 @@ class PortfolioMobile extends BaseReactComponent {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       showHideDustVal: true,
+      isDarkMode:
+        document.querySelector("body").getAttribute("data-theme") &&
+        document.querySelector("body").getAttribute("data-theme") === "dark"
+          ? true
+          : false,
       showHideDustValTrans: true,
       isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
@@ -413,6 +422,14 @@ class PortfolioMobile extends BaseReactComponent {
         combinedUnrealizedGains: tempcombinedUnrealizedGains,
         combinedReturn: tempcombinedReturn,
       });
+      if (
+        !(
+          this.props.intelligenceState &&
+          this.props.intelligenceState?.table?.length > 0
+        )
+      ) {
+        this.callApiTransHistory(page);
+      }
     }
 
     if (
@@ -462,6 +479,9 @@ class PortfolioMobile extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    setTimeout(() => {
+      this.props.changeBlockTwoItem(2);
+    }, 500);
     if (
       this.props.NFTState &&
       this.props.NFTState?.nfts &&
@@ -907,6 +927,22 @@ class PortfolioMobile extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
+  handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+    }
+  };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -1198,6 +1234,7 @@ class PortfolioMobile extends BaseReactComponent {
       isLoadingNft: false,
     });
   };
+
   render() {
     console.log(
       "this.props.intelligenceState.ProfitLossAsset",
@@ -1304,7 +1341,7 @@ class PortfolioMobile extends BaseReactComponent {
               onClick={() => {
                 this.toggleAgeTimestamp();
               }}
-              className="inter-display-medium f-s-13 lh-16 grey-4F4"
+              className="inter-display-medium f-s-13 lh-16 secondaryDarkText"
               style={{
                 textDecoration: "underline",
               }}
@@ -1356,7 +1393,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               From
             </span>
             <Image
@@ -1594,7 +1631,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               To
             </span>
             <Image
@@ -1830,7 +1867,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
             <Image
@@ -1878,7 +1915,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Amount
             </span>
             <Image
@@ -1922,7 +1959,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -2013,7 +2050,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Method
             </span>
             <Image
@@ -2062,7 +2099,10 @@ class PortfolioMobile extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
+          <div
+            className="cp history-table-header-col secondaryDarkText"
+            id="network"
+          >
             Network
             {/* <Image
                 src={sortByIcon}
@@ -2104,7 +2144,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Hash
             </span>
             {/* <Image
@@ -2179,7 +2219,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Asset"
             // onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Asset
             </span>
           </div>
@@ -2226,7 +2266,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Average Cost Price"
             // onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Avg cost price
             </span>
           </div>
@@ -2273,7 +2313,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Price"
             // onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current price
             </span>
           </div>
@@ -2320,7 +2360,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Amount"
             // onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 gsecondaryDarkText">
               Amount
             </span>
           </div>
@@ -2363,7 +2403,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Cost Basis"
             // onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Cost basis
             </span>
           </div>
@@ -2444,7 +2484,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Current Value"
             // onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Current value
             </span>
           </div>
@@ -2525,7 +2565,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gainamount"
             // onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized gain
             </span>
           </div>
@@ -2636,7 +2676,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Return
             </span>
           </div>
@@ -2746,7 +2786,7 @@ class PortfolioMobile extends BaseReactComponent {
             id="Gain loss"
             // onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Portfolio (%)
             </span>
           </div>
@@ -2841,14 +2881,14 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                   <div
                     onClick={this.hideThePopupModal}
-                    className="mpcHFGoBtn inter-display-medium f-s-13"
+                    className="mpcHFGoBtn inter-display-medium f-s-13 btn-bg-black"
                   >
                     Ok
                   </div>
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch">
+            <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{
@@ -2893,6 +2933,42 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               ) : null}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              {this.state.isDarkMode ? (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={lightModeIcon} />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+                </span>
+              ) : (
+                <span
+                  onClick={this.handleDarkMode}
+                  style={{
+                    zIndex: "9",
+                  }}
+                  className="navbar-button-container-mode"
+                >
+                  <Image src={darkModeIcon} />
+                  <span />
+                  {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+                </span>
+              )}
             </div>
             <div className="mpcHomePage">
               <WelcomeCard
@@ -3220,7 +3296,7 @@ class PortfolioMobile extends BaseReactComponent {
                   style={{ width: "100%", marginTop: "12px" }}
                 >
                   <div
-                    className="transaction-table-mobile-search"
+                    className="transaction-table-mobile-search input-noshadow-dark"
                     style={{ display: "flex", width: "100%" }}
                   >
                     <Image src={SearchIcon} className="search-icon" />
@@ -3239,33 +3315,37 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-
               <div
-                className={`section-table section-table-mobile-scroll ${
-                  this.state.tableLoading || tableDataTransaction?.length < 1
-                    ? ""
-                    : "tableWatermarkOverlayCounterParty"
-                }`}
+                className="bg-card-main"
+                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
               >
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  disableOnLoading
-                  isMiniversion
-                  title=""
-                  message={"No Transactions Found"}
-                  subTitle=""
-                  tableData={tableDataTransaction}
-                  columnList={columnListTransaction}
-                  headerHeight={60}
-                  isArrow={true}
-                  isLoading={this.state.tableLoading}
-                  isAnalytics="average cost basis"
-                  fakeWatermark
-                  xAxisScrollable
-                  bodyHeight={"1000px"}
-                />
+                <div
+                  className={`section-table section-table-mobile-scroll ${
+                    tableDataTransaction.length > 0 && !this.state.tableLoading
+                      ? "tableWatermarkOverlayCounterParty"
+                      : ""
+                  }`}
+                  style={{ marginTop: "0px" }}
+                >
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    disableOnLoading
+                    isMiniversion
+                    title=""
+                    message={"No Transactions Found"}
+                    subTitle=""
+                    tableData={tableDataTransaction}
+                    columnList={columnListTransaction}
+                    headerHeight={60}
+                    isArrow={true}
+                    isLoading={this.state.tableLoading}
+                    isAnalytics="average cost basis"
+                    fakeWatermark
+                    xAxisScrollable
+                    bodyHeight={"1000px"}
+                  />
+                </div>
               </div>
-
               {!this.state.tableLoading ? (
                 <div style={{ marginTop: "2rem" }}>
                   {totalPage > 1 && (
@@ -3684,8 +3764,13 @@ class PortfolioMobile extends BaseReactComponent {
                   View more
                   <img src={chevronRight} alt="" />
                 </div>
+<<<<<<< HEAD
               </div> */}
               {/* <div style={{ marginTop: "16px" }}>
+=======
+              </div>{" "}
+              <div style={{ marginTop: "16px" }}>
+>>>>>>> 5342308097f9870b7b7915f069cc018d8654f1b8
                 {this.state.isLoadingNft ? (
                   <div
                     style={{
@@ -3767,6 +3852,10 @@ const mapDispatchToProps = {
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
+  setHeaderReducer,
+  addUserCredits,
+  updateUserWalletApi,
+  getFilters,
   // average cost
   updateAverageCostBasis,
   getAssetProfitLoss,

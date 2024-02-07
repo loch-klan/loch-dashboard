@@ -95,7 +95,7 @@ class SmartMoneyFaqModal extends BaseReactComponent {
               <Image src={BackArrowSmartMoneyIcon} />
             </div>
           ) : null}
-          <div className="api-modal-header">
+          <div className="api-modal-header popup-main-icon-with-border">
             <Image src={SmartMoneyFaqModalIcon} />
           </div>
           <div className="closebtn" onClick={this.state.onHide}>
