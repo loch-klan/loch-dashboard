@@ -1968,6 +1968,8 @@ class NewWelcome extends BaseReactComponent {
           onPageChange={this.onPageChange}
           changePageLimit={this.changePageLimit}
           blurTable={this.state.blurTable}
+          isDarkMode={this.state.isDarkMode}
+          handleDarkMode={this.handleDarkMode}
         />
       );
     }

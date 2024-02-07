@@ -11,6 +11,8 @@ import {
   NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
@@ -1349,7 +1351,32 @@ class NewWelcomeMobile extends BaseReactComponent {
         ) : null}
         <div className="new-homepage__header new-homepage__header-mobile">
           <div className="new-homepage__header-container new-homepage__header-container-mobile">
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-between">
+              {this.props.isDarkMode ? (
+                <button
+                  onClick={() => this.props.handleDarkMode("light")}
+                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode  new-homepage-btn--blur--nover"
+                >
+                  <img
+                    style={{ height: "14px", width: "14px" }}
+                    src={lightModeIcon}
+                    alt=""
+                  />
+                  Light Mode
+                </button>
+              ) : (
+                <button
+                  onClick={() => this.props.handleDarkMode("dark")}
+                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode  new-homepage-btn--blur--nover"
+                >
+                  <img
+                    style={{ height: "14px", width: "14px" }}
+                    src={darkModeIcon}
+                    alt=""
+                  />
+                  Dark Mode
+                </button>
+              )}
               {this.checkUser() ? null : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
