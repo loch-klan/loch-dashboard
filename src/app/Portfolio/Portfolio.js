@@ -4127,7 +4127,13 @@ class Portfolio extends BaseReactComponent {
           location={this.props.location}
           apiResponse={(e) => this.CheckApiResponse(e)}
           CostBasisColumnData={CostBasisColumnData}
+          yieldOpportunitiesListTemp={yieldOpportunitiesListTemp}
+          YieldOppColumnData={YieldOppColumnData}
           //States
+          yieldOpportunitiesTableLoading={
+            this.state.yieldOpportunitiesTableLoading
+          }
+          yieldOpportunitiesTotalCount={this.state.yieldOpportunitiesTotalCount}
           gasFeesGraphLoading={this.state.gasFeesGraphLoading}
           counterGraphLoading={this.state.counterGraphLoading}
           homeGraphFeesData={this.state.homeGraphFeesData}
@@ -4139,12 +4145,14 @@ class Portfolio extends BaseReactComponent {
           blockTwoSelectedItem={this.state.blockTwoSelectedItem}
           blockFourSelectedItem={this.state.blockFourSelectedItem}
           blockOneSelectedItem={this.state.blockOneSelectedItem}
+          blockThreeSelectedItem={this.state.blockThreeSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
           AvgCostLoading={this.state.AvgCostLoading}
           //Changes states
-          changeBlockTwoItem={this.changeBlockTwoItem}
           changeBlockFourItem={this.changeBlockFourItem}
           changeBlockOneItem={this.changeBlockOneItem}
+          changeBlockTwoItem={this.changeBlockTwoItem}
+          changeBlockThreeItem={this.changeBlockThreeItem}
           //Go to pages
           goToGasFeesSpentPage={this.goToGasFeesSpentPage}
           goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
