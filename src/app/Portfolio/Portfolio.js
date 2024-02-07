@@ -3251,6 +3251,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "asset") {
             return (
               <CoinChip
+                hideNameWithouthImage
                 coin_img_src={rowData?.asset?.symbol}
                 coin_code={rowData?.asset?.code}
                 chain={rowData?.chain}

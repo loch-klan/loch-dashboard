@@ -160,9 +160,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             ) : null}
             <div
               className={`main-section-right ${
+                (props.location.pathname === "/nft" && isMobile)
+                ?
+                ""
+                :
+              
                 props.location.pathname !== "/welcome" &&
                 !props.match.params.podName
-                  ? isSidebarClosed
+                  ? isSidebarClosed 
                     ? "main-section-right-margin-handler-closed"
                     : "main-section-right-margin-handler"
                   : ""

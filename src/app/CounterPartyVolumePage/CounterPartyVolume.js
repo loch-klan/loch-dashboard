@@ -237,10 +237,10 @@ class CounterPartyVolume extends Component {
         this.props.intelligenceState.counterPartyValue[0]
       )
     ) {
-      this.props.getAllCoins();
+      // this.props.getAllCoins();
       this.getCounterPartyFee(0, true);
-      this.props.GetAllPlan();
-      this.props.getUser();
+      // this.props.GetAllPlan();
+      // this.props.getUser();
     } else {
       this.setState({
         counterGraphLoading: false,
@@ -281,7 +281,7 @@ class CounterPartyVolume extends Component {
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
-      this.props.getAllCoins();
+      // this.props.getAllCoins();
       this.getCounterPartyFee(0);
       this.setState({
         apiResponse: false,
