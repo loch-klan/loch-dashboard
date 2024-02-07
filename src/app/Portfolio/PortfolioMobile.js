@@ -3315,140 +3315,70 @@ class PortfolioMobile extends BaseReactComponent {
                     Defi
                   </div>
                 </div>
-                {this.props.blockTwoSelectedItem === 1 ? (
-                  <div>
-                    <div
-                      className={`newHomeTableContainer ${
-                        this.props.AvgCostLoading ||
-                        this.props.tableDataCostBasis?.length < 1
-                          ? ""
-                          : "tableWatermarkOverlay"
-                      }`}
-                    >
-                      <TransactionTable
-                        noSubtitleBottomPadding
-                        disableOnLoading
-                        isMiniversion
-                        message="No assets found"
-                        tableData={
-                          this.props.tableDataCostBasis
-                            ? this.props.tableDataCostBasis.slice(0, 10)
-                            : []
-                        }
-                        columnList={this.props.CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.props.AvgCostLoading}
-                        isAnalytics="average cost basis"
-                        fakeWatermark
-                        xAxisScrollable
-                        yAxisScrollable
-                      />
-                    </div>
-                    {!this.props.AvgCostLoading ? (
-                      <div className="inter-display-medium bottomExtraInfo">
-                        <div
-                          onClick={this.goToAssetsPage}
-                          className="bottomExtraInfoText"
-                        >
-                          {this.props.intelligenceState?.Average_cost_basis &&
+                <div className="mobile-portfolio-blocks-content">
+                  {this.props.blockTwoSelectedItem === 1 ? (
+                    <div>
+                      <div
+                        className={`newHomeTableContainer ${
+                          this.props.AvgCostLoading ||
+                          this.props.tableDataCostBasis?.length < 1
+                            ? ""
+                            : "tableWatermarkOverlay"
+                        } ${
                           this.props.intelligenceState.Average_cost_basis
-                            .length > 10
-                            ? `Click here to see ${numToCurrency(
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length - 10,
-                                true
-                              ).toLocaleString("en-US")}+ asset${
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length -
-                                  10 >
-                                1
-                                  ? "s"
-                                  : ""
-                              }`
-                            : "Click here to see more"}
-                        </div>
+                            .length <= 10
+                            ? "newHomeTableContainerNoShowMore"
+                            : "newHomeTableContainerNoShowMore"
+                        }`}
+                      >
+                        <TransactionTable
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          message="No assets found"
+                          tableData={
+                            this.props.tableDataCostBasis
+                              ? this.props.tableDataCostBasis.slice(0, 10)
+                              : []
+                          }
+                          columnList={this.props.CostBasisColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.props.AvgCostLoading}
+                          isAnalytics="average cost basis"
+                          fakeWatermark
+                          xAxisScrollable
+                          yAxisScrollable
+                        />
                       </div>
-                    ) : null}
-                  </div>
-                ) : this.props.blockTwoSelectedItem === 2 ? (
-                  <div
-                    style={{
-                      position: "relative",
-                    }}
-                    className="tableWatermarkOverlay"
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        opacity: 0,
-                      }}
-                    >
-                      Loch
+                      {/* {!this.props.AvgCostLoading ? (
+                        <div className="inter-display-medium bottomExtraInfo">
+                          <div
+                            onClick={this.goToAssetsPage}
+                            className="bottomExtraInfoText"
+                          >
+                            {this.props.intelligenceState?.Average_cost_basis &&
+                            this.props.intelligenceState.Average_cost_basis
+                              .length > 10
+                              ? `Click here to see ${numToCurrency(
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length - 10,
+                                  true
+                                ).toLocaleString("en-US")}+ asset${
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length -
+                                    10 >
+                                  1
+                                    ? "s"
+                                    : ""
+                                }`
+                              : "Click here to see more"}
+                          </div>
+                        </div>
+                      ) : null} */}
                     </div>
-                    <BarGraphSection
-                      digit={this.props.GraphDigit}
-                      isFromHome
-                      // openChartPage={() => {}}
-                      data={
-                        this.props.homeGraphFeesData &&
-                        this.props.homeGraphFeesData[0]
-                      }
-                      options={
-                        this.props.homeGraphFeesData &&
-                        this.props.homeGraphFeesData[1]
-                      }
-                      options2={
-                        this.props.homeGraphFeesData &&
-                        this.props.homeGraphFeesData[2]
-                      }
-                      isScrollVisible={false}
-                      isScroll={true}
-                      isLoading={this.props.gasFeesGraphLoading}
-                      oldBar
-                      noSubtitleBottomPadding
-                      newHomeSetup
-                      noSubtitleTopPadding
-                      floatingWatermark
-                    />
-                  </div>
-                ) : this.props.blockTwoSelectedItem === 3 ? (
-                  <>
-                    <div
-                      style={{
-                        position: "absolute",
-                        opacity: 0,
-                      }}
-                    >
-                      Loch
-                    </div>
-                    <BarGraphSection
-                      digit={this.props.counterGraphDigit}
-                      isFromHome
-                      // openChartPage={() => {}}
-                      data={
-                        this.props.homeCounterpartyVolumeData &&
-                        this.props.homeCounterpartyVolumeData[0]
-                      }
-                      options={
-                        this.props.homeCounterpartyVolumeData &&
-                        this.props.homeCounterpartyVolumeData[1]
-                      }
-                      options2={
-                        this.props.homeCounterpartyVolumeData &&
-                        this.props.homeCounterpartyVolumeData[2]
-                      }
-                      isScrollVisible={false}
-                      isScroll={true}
-                      isLoading={this.props.counterGraphLoading}
-                      oldBar
-                      noSubtitleBottomPadding
-                      newHomeSetup
-                      noSubtitleTopPadding
-                      floatingWatermark
-                    />
-                  </>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
               <div className="mobile-portfolio-blocks">
                 <div className="section-table-toggle-mobile">
@@ -3489,17 +3419,16 @@ class PortfolioMobile extends BaseReactComponent {
                     Counterparties
                   </div>
                 </div>
-                <div className="portfolio-page-section portfolio-page-section-mobile">
+                <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
                   <div
-                    className="section-table"
+                    className="section-table section-table-mobile"
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      paddingBottom: "2rem",
                       boxShadow: "none",
                     }}
                   >
-                    <div className="profit-chart">
+                    <div className="profit-chart profit-chart-mobile">
                       {this.props.blockTwoSelectedItem === 1 ? (
                         <BarGraphSection
                           // openChartPage={() => {}}

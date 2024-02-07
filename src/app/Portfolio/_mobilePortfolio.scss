@@ -152,6 +152,26 @@
       background-color: white;
       padding: 1rem;
       border-radius: 1.2rem;
+      min-height: 50rem;
+      max-height: 50rem;
+      display: flex;
+      flex-direction: column;
+
+      .mobile-portfolio-blocks-content {
+        flex: 1;
+      }
+
+      .section-table-mobile {
+        padding: 0rem !important;
+        margin: 0rem !important;
+        .profit-chart-mobile {
+          .bar-graph-section {
+            height: 44rem;
+            min-height: 44rem;
+          }
+        }
+      }
+
       .bottomExtraInfo {
         display: flex;
         align-items: center;
@@ -184,8 +204,8 @@
             .ReactVirtualized__Table__Grid {
               overflow-y: auto !important;
               overflow-x: hidden !important;
-              max-height: 24rem !important;
-              min-height: 24rem !important;
+              max-height: 35rem !important;
+              min-height: 35rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
@@ -200,6 +220,16 @@
                 background-color: rgba(229, 229, 230, 0.5);
                 border-radius: 0.8rem;
               }
+            }
+          }
+        }
+      }
+      .newHomeTableContainerNoShowMore {
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              max-height: 38.5rem !important;
+              min-height: 38.5rem !important;
             }
           }
         }
