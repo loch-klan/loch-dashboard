@@ -6,7 +6,11 @@ import {
   NftPageNext,
   TimeSpentNFT,
 } from "../../utils/AnalyticsFunctions";
-import { API_LIMIT, START_INDEX } from "../../utils/Constant";
+import {
+  API_LIMIT,
+  SEARCH_BY_WALLET_ADDRESS,
+  START_INDEX,
+} from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -219,10 +223,15 @@ class NFT extends BaseReactComponent {
       }
     }
     let tempNFTData = new URLSearchParams();
+    const tempCond = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS,
+        value: addressList,
+      },
+    ];
 
-    tempNFTData.append("wallet_addresses", JSON.stringify(addressList));
     tempNFTData.append("start", page * API_LIMIT);
-    tempNFTData.append("conditions", JSON.stringify([]));
+    tempNFTData.append("conditions", JSON.stringify(tempCond));
     tempNFTData.append("limit", API_LIMIT);
     tempNFTData.append("sorts", JSON.stringify([]));
     let isDefault = false;
