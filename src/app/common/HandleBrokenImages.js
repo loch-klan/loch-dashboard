@@ -4,7 +4,19 @@ export default function HandleBrokenImages(props) {
   const hideThisImage = () => {
     setHideImage(true);
   };
+
   if (hideImage) {
+    if (props.imageOnError) {
+      return (
+        <img
+          alt=""
+          src={props.imageOnError}
+          key={props.index}
+          className={props.className}
+          onError={hideThisImage}
+        />
+      );
+    }
     return null;
   }
   return (

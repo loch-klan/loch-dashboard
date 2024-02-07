@@ -127,6 +127,7 @@ import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
 import BarGraphSection from "../common/BarGraphSection.js";
 import { getNFT } from "../nft/NftApi.js";
+import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -388,7 +389,7 @@ class PortfolioMobile extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
     if (!this.props.commonState?.nftPage) {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (!this.props.commonState?.mobilePortfolioPage) {
       this.props.updateWalletListFlag("mobilePortfolioPage", true);
@@ -492,7 +493,7 @@ class PortfolioMobile extends BaseReactComponent {
         isLoadingNft: false,
       });
     } else {
-      this.callNftApi();
+      // this.callNftApi();
     }
     if (this.props.intelligenceState.Average_cost_basis) {
       let tempcombinedCostBasis = 0;
@@ -3059,7 +3060,8 @@ class PortfolioMobile extends BaseReactComponent {
                 getProtocolTotal={this.props.getProtocolTotal}
                 updateTimer={this.props.updateTimer}
               />
-              <div
+
+              {/* <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "3rem",
@@ -3068,7 +3070,7 @@ class PortfolioMobile extends BaseReactComponent {
               >
                 <div>
                   <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
-                    {/* Unrealized profit and loss */}
+                    
                     Assets
                   </h2>
                   <p
@@ -3093,14 +3095,7 @@ class PortfolioMobile extends BaseReactComponent {
                     <Form.Check
                       type="switch"
                       checked={this.state.showHideDustVal}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
+                    
                       label={
                         this.state.showHideDustVal
                           ? "Reveal dust (less than $1)"
@@ -3109,78 +3104,71 @@ class PortfolioMobile extends BaseReactComponent {
                     />
                   </div>
                 </div>
-              </div>
-              <div
-                className="bg-card-main"
-                style={{ marginTop: "1.6rem", borderRadius: "1.2rem" }}
+              </div> */}
+              {/* <div
+                className={`section-table section-table-mobile-scroll asset-mobile-table ${
+                  this.state.AvgCostLoading ||
+                  this.props.intelligenceState?.Average_cost_basis?.length < 1
+                    ? ""
+                    : "tableWatermarkOverlayCounterParty"
+                }`}
               >
-                <div
-                  className={`section-table section-table-mobile-scroll asset-mobile-table ${
-                    this.props.AvgCostLoading
-                      ? ""
-                      : "tableWatermarkOverlayCounterParty"
-                  }`}
-                  style={{ marginTop: "0px" }}
-                >
-                  {/* <div className="section-table-mobile-scroll-top-cover" /> */}
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    disableOnLoading
-                    isMiniversion
-                    title=""
-                    handleClick={() => {
-                      if (this.state.lochToken) {
-                        this.props.history.push("/intelligence/costs");
-                        // AverageCostBasisEView({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        // });
-                      }
-                    }}
-                    message="No assets found"
-                    subTitle=""
-                    tableData={
-                      this.props.intelligenceState.Average_cost_basis &&
-                      this.props.intelligenceState.Average_cost_basis.length < 1
-                        ? []
-                        : this.state.showHideDustVal &&
-                          this.props.intelligenceState.Average_cost_basis.filter(
-                            (item) => {
-                              return item.CurrentValue > 1;
-                            }
-                          ).length > 0
-                        ? [
-                            {},
-                            ...this.props.intelligenceState.Average_cost_basis.filter(
-                              (item) => {
-                                return item.CurrentValue > 1;
-                              }
-                            ),
-                          ]
-                        : this.state.showHideDustVal &&
-                          this.props.intelligenceState.Average_cost_basis.filter(
-                            (item) => {
-                              return item.CurrentValue > 1;
-                            }
-                          ).length < 1
-                        ? []
-                        : [
-                            {},
-                            ...this.props.intelligenceState.Average_cost_basis,
-                          ]
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  title=""
+                  handleClick={() => {
+                    if (this.state.lochToken) {
+                      this.props.history.push("/intelligence/costs");
+                      // AverageCostBasisEView({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      // });
                     }
-                    columnList={columnData}
-                    headerHeight={60}
-                    isArrow={true}
-                    isLoading={this.props.AvgCostLoading}
-                    isAnalytics="average cost basis"
-                    fakeWatermark
-                    xAxisScrollable
-                    bodyHeight={"1000px"}
-                    yAxisScrollable
-                  />
-                </div>
-              </div>
+                  }}
+                  message="No assets found"
+                  subTitle=""
+                  tableData={
+                    this.props.intelligenceState.Average_cost_basis &&
+                    this.props.intelligenceState.Average_cost_basis.length < 1
+                      ? []
+                      : this.state.showHideDustVal &&
+                        this.props.intelligenceState.Average_cost_basis.filter(
+                          (item) => {
+                            return item.CurrentValue > 1;
+                          }
+                        ).length > 0
+                      ? [
+                          {},
+                          ...this.props.intelligenceState.Average_cost_basis.filter(
+                            (item) => {
+                              return item.CurrentValue > 1;
+                            }
+                          ),
+                        ]
+                      : this.state.showHideDustVal &&
+                        this.props.intelligenceState.Average_cost_basis.filter(
+                          (item) => {
+                            return item.CurrentValue > 1;
+                          }
+                        ).length < 1
+                      ? []
+                      : [{}, ...this.props.intelligenceState.Average_cost_basis]
+                  }
+                  columnList={columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  isLoading={this.props.AvgCostLoading}
+                  isAnalytics="average cost basis"
+                  fakeWatermark
+                  xAxisScrollable
+                  bodyHeight={"1000px"}
+                  yAxisScrollable
+                />
+              </div> 
+              */}
+
               <div
                 className="d-flex justify-content-between"
                 style={{
@@ -3378,6 +3366,172 @@ class PortfolioMobile extends BaseReactComponent {
                 <div className="section-table-toggle-mobile">
                   <div
                     className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockThreeSelectedItem === 1
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockThreeItem(1);
+                    }}
+                  >
+                    Yield opportunities
+                  </div>
+                </div>
+                <div className="mobile-portfolio-blocks-content">
+                  {this.props.blockThreeSelectedItem === 1 ? (
+                    <div>
+                      <div
+                        className={`newHomeTableContainer newHomeTableContainerMobile ${
+                          this.props.yieldOpportunitiesTableLoading ||
+                          this.props.yieldOpportunitiesListTemp?.length < 1
+                            ? ""
+                            : "tableWatermarkOverlay"
+                        } ${
+                          this.props.yieldOpportunitiesTotalCount?.length <= 10
+                            ? "newHomeTableContainerNoShowMore"
+                            : "newHomeTableContainerNoShowMore"
+                        }`}
+                      >
+                        <TransactionTable
+                          message={"No yield opportunities found"}
+                          xAxisScrollable
+                          xAxisScrollableColumnWidth={3}
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          tableData={this.props.yieldOpportunitiesListTemp}
+                          showDataAtBottom
+                          columnList={this.props.YieldOppColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.props.yieldOpportunitiesTableLoading}
+                          fakeWatermark
+                        />
+                      </div>
+                      {/* {!this.state.yieldOpportunitiesTableLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.goToYieldOppPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.state.yieldOpportunitiesTotalCount &&
+                          this.state.yieldOpportunitiesTotalCount > 10
+                            ? `Click here to see ${numToCurrency(
+                                this.state.yieldOpportunitiesTotalCount -
+                                  10,
+                                true
+                              ).toLocaleString("en-US")}+ yield ${
+                                this.state.yieldOpportunitiesTotalCount -
+                                  10 >
+                                1
+                                  ? "opportunities"
+                                  : "opportunity"
+                              }`
+                            : "Click here to see more"}
+                        </div>
+                      </div>
+                    ) : null} */}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks">
+                <div className="section-table-toggle-mobile">
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockOneSelectedItem === 1
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockOneItem(1);
+                    }}
+                  >
+                    Assets
+                  </div>
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockOneSelectedItem === 2
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockOneItem(2);
+                    }}
+                  >
+                    Defi
+                  </div>
+                </div>
+                <div className="mobile-portfolio-blocks-content">
+                  {this.props.blockOneSelectedItem === 1 ? (
+                    <div>
+                      <div
+                        className={`newHomeTableContainer newHomeTableContainerMobile ${
+                          this.props.AvgCostLoading ||
+                          this.props.tableDataCostBasis?.length < 1
+                            ? ""
+                            : "tableWatermarkOverlay"
+                        } ${
+                          this.props.intelligenceState.Average_cost_basis
+                            .length <= 10
+                            ? "newHomeTableContainerNoShowMore"
+                            : "newHomeTableContainerNoShowMore"
+                        }`}
+                      >
+                        <TransactionTable
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          message="No assets found"
+                          tableData={
+                            this.props.tableDataCostBasis
+                              ? this.props.tableDataCostBasis.slice(0, 10)
+                              : []
+                          }
+                          columnList={this.props.CostBasisColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.props.AvgCostLoading}
+                          isAnalytics="average cost basis"
+                          fakeWatermark
+                          xAxisScrollable
+                          yAxisScrollable
+                          xAxisScrollableColumnWidth={3}
+                        />
+                      </div>
+                      {/* {!this.props.AvgCostLoading ? (
+                        <div className="inter-display-medium bottomExtraInfo">
+                          <div
+                            onClick={this.goToAssetsPage}
+                            className="bottomExtraInfoText"
+                          >
+                            {this.props.intelligenceState?.Average_cost_basis &&
+                            this.props.intelligenceState.Average_cost_basis
+                              .length > 10
+                              ? `Click here to see ${numToCurrency(
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length - 10,
+                                  true
+                                ).toLocaleString("en-US")}+ asset${
+                                  this.props.intelligenceState
+                                    .Average_cost_basis.length -
+                                    10 >
+                                  1
+                                    ? "s"
+                                    : ""
+                                }`
+                              : "Click here to see more"}
+                          </div>
+                        </div>
+                      ) : null} */}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks">
+                <div className="section-table-toggle-mobile">
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                       this.props.blockTwoSelectedItem === 1
                         ? "section-table-toggle-element-selected"
                         : ""
@@ -3413,17 +3567,16 @@ class PortfolioMobile extends BaseReactComponent {
                     Counterparties
                   </div>
                 </div>
-                <div className="portfolio-page-section portfolio-page-section-mobile">
+                <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
                   <div
-                    className="section-table"
+                    className="section-table section-table-mobile"
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      paddingBottom: "2rem",
                       boxShadow: "none",
                     }}
                   >
-                    <div className="profit-chart">
+                    <div className="profit-chart profit-chart-mobile">
                       {this.props.blockTwoSelectedItem === 1 ? (
                         <BarGraphSection
                           // openChartPage={() => {}}
@@ -3452,6 +3605,7 @@ class PortfolioMobile extends BaseReactComponent {
                             this.props.intelligenceState.ProfitLossAsset
                           }
                           isSwitch
+                          isMobileGraph
                         />
                       ) : this.props.blockTwoSelectedItem === 2 ? (
                         <div
@@ -3492,6 +3646,7 @@ class PortfolioMobile extends BaseReactComponent {
                             newHomeSetup
                             noSubtitleTopPadding
                             floatingWatermark
+                            isMobileGraph
                           />
                         </div>
                       ) : this.props.blockTwoSelectedItem === 3 ? (
@@ -3528,6 +3683,7 @@ class PortfolioMobile extends BaseReactComponent {
                             newHomeSetup
                             noSubtitleTopPadding
                             floatingWatermark
+                            isMobileGraph
                           />
                         </>
                       ) : null}
@@ -3535,7 +3691,61 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
               </div>
-              <div
+
+              {/* Transactions, gas fees and insights */}
+              <div className="mobile-portfolio-blocks">
+                <div className="section-table-toggle-mobile">
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockFourSelectedItem === 1
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockFourItem(1);
+                    }}
+                  >
+                    Transactions
+                  </div>
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockFourSelectedItem === 2
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockFourItem(2);
+                    }}
+                  >
+                    Price Guage
+                  </div>
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockFourSelectedItem === 3
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockFourItem(3);
+                    }}
+                  >
+                    Insights
+                  </div>
+                </div>
+                <div className="mobile-portfolio-blocks-content">
+                  {this.props.blockFourSelectedItem === 1 ? null : this.props
+                      .blockFourSelectedItem === 2 ? null : this.props
+                      .blockFourSelectedItem === 3 ? (
+                    <PortfolioHomeInsightsBlock
+                      history={this.props.history}
+                      updatedInsightList={this.props.updatedInsightList}
+                      insightsBlockLoading={this.props.insightsBlockLoading}
+                      isMobile
+                    />
+                  ) : null}
+                </div>
+              </div>
+              {/* <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "4.8rem",
@@ -3554,8 +3764,13 @@ class PortfolioMobile extends BaseReactComponent {
                   View more
                   <img src={chevronRight} alt="" />
                 </div>
+<<<<<<< HEAD
+              </div> */}
+              {/* <div style={{ marginTop: "16px" }}>
+=======
               </div>{" "}
               <div style={{ marginTop: "16px" }}>
+>>>>>>> 5342308097f9870b7b7915f069cc018d8654f1b8
                 {this.state.isLoadingNft ? (
                   <div
                     style={{
@@ -3590,7 +3805,7 @@ class PortfolioMobile extends BaseReactComponent {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="mobileFooterContainer">
                 <div>
                   <Footer isMobile />

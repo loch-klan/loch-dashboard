@@ -4136,20 +4136,35 @@ class Portfolio extends BaseReactComponent {
           isLoadingNet={this.state.isLoadingNet}
           history={this.props.history}
           tableDataCostBasis={tableDataCostBasis}
-          AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
           apiResponse={(e) => this.CheckApiResponse(e)}
+          CostBasisColumnData={CostBasisColumnData}
+          yieldOpportunitiesListTemp={yieldOpportunitiesListTemp}
+          YieldOppColumnData={YieldOppColumnData}
           //States
+          yieldOpportunitiesTableLoading={
+            this.state.yieldOpportunitiesTableLoading
+          }
+          yieldOpportunitiesTotalCount={this.state.yieldOpportunitiesTotalCount}
           gasFeesGraphLoading={this.state.gasFeesGraphLoading}
           counterGraphLoading={this.state.counterGraphLoading}
           homeGraphFeesData={this.state.homeGraphFeesData}
           homeCounterpartyVolumeData={this.state.homeCounterpartyVolumeData}
           GraphDigit={this.state.GraphDigit}
           counterGraphDigit={this.state.counterGraphDigit}
+          updatedInsightList={this.state.updatedInsightList}
+          insightsBlockLoading={this.state.insightsBlockLoading}
           blockTwoSelectedItem={this.state.blockTwoSelectedItem}
+          blockFourSelectedItem={this.state.blockFourSelectedItem}
+          blockOneSelectedItem={this.state.blockOneSelectedItem}
+          blockThreeSelectedItem={this.state.blockThreeSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
+          AvgCostLoading={this.state.AvgCostLoading}
           //Changes states
+          changeBlockFourItem={this.changeBlockFourItem}
+          changeBlockOneItem={this.changeBlockOneItem}
           changeBlockTwoItem={this.changeBlockTwoItem}
+          changeBlockThreeItem={this.changeBlockThreeItem}
           //Go to pages
           goToGasFeesSpentPage={this.goToGasFeesSpentPage}
           goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
