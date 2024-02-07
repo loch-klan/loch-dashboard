@@ -2984,7 +2984,7 @@ class PortfolioMobile extends BaseReactComponent {
                 updateTimer={this.props.updateTimer}
               />
 
-              <div
+              {/* <div
                 className="d-flex justify-content-between"
                 style={{
                   marginTop: "3rem",
@@ -2993,7 +2993,7 @@ class PortfolioMobile extends BaseReactComponent {
               >
                 <div>
                   <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313 m-b-5">
-                    {/* Unrealized profit and loss */}
+                    
                     Assets
                   </h2>
                   <p
@@ -3018,14 +3018,7 @@ class PortfolioMobile extends BaseReactComponent {
                     <Form.Check
                       type="switch"
                       checked={this.state.showHideDustVal}
-                      // onChange={(e) => {
-                      //   this.setState({
-                      //     switchselected: e.target.checked,
-                      //   });
-                      //   if (this.props.setSwitch) {
-                      //     this.props.setSwitch();
-                      //   }
-                      // }}
+                    
                       label={
                         this.state.showHideDustVal
                           ? "Reveal dust (less than $1)"
@@ -3034,8 +3027,8 @@ class PortfolioMobile extends BaseReactComponent {
                     />
                   </div>
                 </div>
-              </div>
-              <div
+              </div> */}
+              {/* <div
                 className={`section-table section-table-mobile-scroll asset-mobile-table ${
                   this.state.AvgCostLoading ||
                   this.props.intelligenceState?.Average_cost_basis?.length < 1
@@ -3043,7 +3036,6 @@ class PortfolioMobile extends BaseReactComponent {
                     : "tableWatermarkOverlayCounterParty"
                 }`}
               >
-                {/* <div className="section-table-mobile-scroll-top-cover" /> */}
                 <TransactionTable
                   noSubtitleBottomPadding
                   disableOnLoading
@@ -3097,7 +3089,8 @@ class PortfolioMobile extends BaseReactComponent {
                   bodyHeight={"1000px"}
                   yAxisScrollable
                 />
-              </div>
+              </div> 
+              */}
 
               <div
                 className="d-flex justify-content-between"
@@ -3297,7 +3290,7 @@ class PortfolioMobile extends BaseReactComponent {
                         : ""
                     }`}
                     onClick={() => {
-                      this.props.changeBlockTwoItem(1);
+                      this.props.changeBlockOneItem(1);
                     }}
                   >
                     Assets
@@ -3309,14 +3302,14 @@ class PortfolioMobile extends BaseReactComponent {
                         : ""
                     }`}
                     onClick={() => {
-                      this.props.changeBlockTwoItem(2);
+                      this.props.changeBlockOneItem(2);
                     }}
                   >
                     Defi
                   </div>
                 </div>
                 <div className="mobile-portfolio-blocks-content">
-                  {this.props.blockTwoSelectedItem === 1 ? (
+                  {this.props.blockOneSelectedItem === 1 ? (
                     <div>
                       <div
                         className={`newHomeTableContainer ${

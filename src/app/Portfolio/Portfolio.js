@@ -4135,10 +4135,12 @@ class Portfolio extends BaseReactComponent {
           GraphDigit={this.state.GraphDigit}
           counterGraphDigit={this.state.counterGraphDigit}
           blockTwoSelectedItem={this.state.blockTwoSelectedItem}
+          blockOneSelectedItem={this.state.blockOneSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
           AvgCostLoading={this.state.AvgCostLoading}
           //Changes states
           changeBlockTwoItem={this.changeBlockTwoItem}
+          changeBlockOneItem={this.changeBlockOneItem}
           //Go to pages
           goToGasFeesSpentPage={this.goToGasFeesSpentPage}
           goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
