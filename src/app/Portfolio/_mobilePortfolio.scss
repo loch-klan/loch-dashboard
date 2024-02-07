@@ -234,6 +234,11 @@
           }
         }
       }
+      .newHomeTableContainerMobile {
+        .transaction-table-loading-wrapper {
+          height: 44rem;
+        }
+      }
       .section-table-toggle-mobile {
         background-color: #e5e5e680;
         border-radius: 0.5rem;

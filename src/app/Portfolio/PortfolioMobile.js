@@ -3285,7 +3285,80 @@ class PortfolioMobile extends BaseReactComponent {
                 <div className="section-table-toggle-mobile">
                   <div
                     className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockTwoSelectedItem === 1
+                      this.props.blockThreeSelectedItem === 1
+                        ? "section-table-toggle-element-selected"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      this.props.changeBlockThreeItem(1);
+                    }}
+                  >
+                    Yield opportunities
+                  </div>
+                </div>
+                <div className="mobile-portfolio-blocks-content">
+                  {this.props.blockThreeSelectedItem === 1 ? (
+                    <div>
+                      <div
+                        className={`newHomeTableContainer newHomeTableContainerMobile ${
+                          this.props.yieldOpportunitiesTableLoading ||
+                          this.props.yieldOpportunitiesListTemp?.length < 1
+                            ? ""
+                            : "tableWatermarkOverlay"
+                        } ${
+                          this.props.yieldOpportunitiesTotalCount?.length <= 10
+                            ? "newHomeTableContainerNoShowMore"
+                            : "newHomeTableContainerNoShowMore"
+                        }`}
+                      >
+                        <TransactionTable
+                          message={"No yield opportunities found"}
+                          xAxisScrollable
+                          xAxisScrollableColumnWidth={3}
+                          noSubtitleBottomPadding
+                          disableOnLoading
+                          isMiniversion
+                          tableData={this.props.yieldOpportunitiesListTemp}
+                          showDataAtBottom
+                          columnList={this.props.YieldOppColumnData}
+                          headerHeight={60}
+                          isArrow={true}
+                          isLoading={this.props.yieldOpportunitiesTableLoading}
+                          fakeWatermark
+                        />
+                      </div>
+                      {/* {!this.state.yieldOpportunitiesTableLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.goToYieldOppPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.state.yieldOpportunitiesTotalCount &&
+                          this.state.yieldOpportunitiesTotalCount > 10
+                            ? `Click here to see ${numToCurrency(
+                                this.state.yieldOpportunitiesTotalCount -
+                                  10,
+                                true
+                              ).toLocaleString("en-US")}+ yield ${
+                                this.state.yieldOpportunitiesTotalCount -
+                                  10 >
+                                1
+                                  ? "opportunities"
+                                  : "opportunity"
+                              }`
+                            : "Click here to see more"}
+                        </div>
+                      </div>
+                    ) : null} */}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks">
+                <div className="section-table-toggle-mobile">
+                  <div
+                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                      this.props.blockOneSelectedItem === 1
                         ? "section-table-toggle-element-selected"
                         : ""
                     }`}
@@ -3297,7 +3370,7 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                   <div
                     className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockTwoSelectedItem === 2
+                      this.props.blockOneSelectedItem === 2
                         ? "section-table-toggle-element-selected"
                         : ""
                     }`}
@@ -3312,7 +3385,7 @@ class PortfolioMobile extends BaseReactComponent {
                   {this.props.blockOneSelectedItem === 1 ? (
                     <div>
                       <div
-                        className={`newHomeTableContainer ${
+                        className={`newHomeTableContainer newHomeTableContainerMobile ${
                           this.props.AvgCostLoading ||
                           this.props.tableDataCostBasis?.length < 1
                             ? ""
@@ -3342,6 +3415,7 @@ class PortfolioMobile extends BaseReactComponent {
                           fakeWatermark
                           xAxisScrollable
                           yAxisScrollable
+                          xAxisScrollableColumnWidth={3}
                         />
                       </div>
                       {/* {!this.props.AvgCostLoading ? (
@@ -3450,6 +3524,7 @@ class PortfolioMobile extends BaseReactComponent {
                             this.props.intelligenceState.ProfitLossAsset
                           }
                           isSwitch
+                          isMobileGraph
                         />
                       ) : this.props.blockTwoSelectedItem === 2 ? (
                         <div
@@ -3490,6 +3565,7 @@ class PortfolioMobile extends BaseReactComponent {
                             newHomeSetup
                             noSubtitleTopPadding
                             floatingWatermark
+                            isMobileGraph
                           />
                         </div>
                       ) : this.props.blockTwoSelectedItem === 3 ? (
@@ -3526,6 +3602,7 @@ class PortfolioMobile extends BaseReactComponent {
                             newHomeSetup
                             noSubtitleTopPadding
                             floatingWatermark
+                            isMobileGraph
                           />
                         </>
                       ) : null}
