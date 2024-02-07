@@ -149,7 +149,7 @@ export const getGraphData = (apidata, parentCtx) => {
           lineHeight: 20,
           family: "Helvetica Neue",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           callback: function (value, index, ticks) {
             // console.log('value',value);
             // console.log('index',index);
@@ -182,7 +182,7 @@ export const getGraphData = (apidata, parentCtx) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -215,7 +215,7 @@ export const getGraphData = (apidata, parentCtx) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -240,7 +240,7 @@ export const getGraphData = (apidata, parentCtx) => {
           lineHeight: 20,
           family: "Helvetica Neue",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#cacbcc" : "#4f4f4f",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
