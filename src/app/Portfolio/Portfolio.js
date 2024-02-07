@@ -4124,9 +4124,9 @@ class Portfolio extends BaseReactComponent {
           isLoadingNet={this.state.isLoadingNet}
           history={this.props.history}
           tableDataCostBasis={tableDataCostBasis}
-          AvgCostLoading={this.state.AvgCostLoading}
           location={this.props.location}
           apiResponse={(e) => this.CheckApiResponse(e)}
+          CostBasisColumnData={CostBasisColumnData}
           //States
           gasFeesGraphLoading={this.state.gasFeesGraphLoading}
           counterGraphLoading={this.state.counterGraphLoading}
@@ -4136,6 +4136,7 @@ class Portfolio extends BaseReactComponent {
           counterGraphDigit={this.state.counterGraphDigit}
           blockTwoSelectedItem={this.state.blockTwoSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
+          AvgCostLoading={this.state.AvgCostLoading}
           //Changes states
           changeBlockTwoItem={this.changeBlockTwoItem}
           //Go to pages
