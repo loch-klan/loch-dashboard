@@ -149,7 +149,7 @@ function CustomOverlay({
             i !== 0 ? (
               <li
                 style={{
-                  border: "0.1rem solid var(--secondaryLightColor) !important",
+                  border: "none !important",
                 }}
                 key={i}
               >
@@ -169,6 +169,7 @@ function CustomOverlay({
                   style={{
                     width: "100%",
                     backgroundColor: "var(--primaryFilter)",
+                    border: "none",
                   }}
                 >
                   {e.coinName}
