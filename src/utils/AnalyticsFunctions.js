@@ -2343,6 +2343,16 @@ export const WatchlistPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+export const NFTPage = ({ session_id, email_address, isMobile }) => {
+  const event_name = "Page View: NFT";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
 
 // Page View: Onboarding
 export const OnboardingMobilePage = () => {
@@ -3934,6 +3944,37 @@ export const YieldOpportunitiesPageBack = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const NftPageNext = ({
+  session_id,
+  email_address,
+  page_no,
+  isMobile = false,
+}) => {
+  const event_name = "NFT: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const NftPageBack = ({
+  session_id,
+  email_address,
+  page_no,
+  isMobile = false,
+}) => {
+  const event_name = "NFT: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryPageNext = ({
   session_id,
   email_address,
@@ -5062,6 +5103,21 @@ export const TimeSpentWatchlist = ({
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TimeSpentNFT = ({
+  session_id,
+  email_address,
+  time_spent,
+  isMobile,
+}) => {
+  const event_name = "NFT: time spent on nft page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

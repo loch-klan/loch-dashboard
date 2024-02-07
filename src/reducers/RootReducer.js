@@ -35,6 +35,7 @@ import {
 import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
 import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
 import DarkModeReducer from "../app/intelligence/darkMode";
+import { NFTReducer } from "../app/nft/NftReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -62,6 +63,7 @@ export default combineReducers({
   AddLocalAddWalletState: AddLocalAddWalletReducer,
 
   WatchListState: WatchListReducer,
+  NFTState: NFTReducer,
   TopAccountsInWatchListState: TopAccountsInWatchListReducer,
   WatchListLoadingState: WatchListLoadingReducer,
 });
