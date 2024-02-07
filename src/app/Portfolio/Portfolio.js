@@ -4270,7 +4270,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4304,7 +4304,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4418,7 +4418,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4450,7 +4450,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4484,7 +4484,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4690,7 +4690,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4724,7 +4724,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4835,7 +4835,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4869,7 +4869,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4902,7 +4902,7 @@ class Portfolio extends BaseReactComponent {
                                 className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>

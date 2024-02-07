@@ -30,7 +30,7 @@
   --hoverBrightness: brightness(50%);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
-  --infoBrightnessPortfolio: brightness(4.15);
+  --infoBrightnessPortfolio: brightness(1);
   --updatedAgoFilter: brightness(1);
 
   // Secondary
@@ -167,7 +167,7 @@
   --hoverBrightness: brightness(200%);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
-  --infoBrightnessPortfolio: none;
+  --infoBrightnessPortfolio: invert(1);
   --updatedAgoFilter: brightness(0.5);
 
   // Secondary
@@ -296,7 +296,7 @@
   --hoverBrightness: brightness(200%);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
-  --infoBrightnessPortfolio: brightness(0.8);
+  --infoBrightnessPortfolio: none;
 
   // Secondary
   --secondaryTextColor: #7c7d81;
