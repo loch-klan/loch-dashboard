@@ -846,11 +846,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                             </NavLink>
                           </CustomOverlay>
@@ -1080,11 +1076,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
-                                  activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
-                                }
+                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
                               />
                               NFTs
                             </NavLink>

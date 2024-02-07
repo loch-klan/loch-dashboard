@@ -3251,6 +3251,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "asset") {
             return (
               <CoinChip
+                hideNameWithouthImage
                 coin_img_src={rowData?.asset?.symbol}
                 coin_code={rowData?.asset?.code}
                 chain={rowData?.chain}
@@ -4293,7 +4294,14 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.AvgCostLoading ||
+                              tableDataCostBasis?.length < 1
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               noSubtitleBottomPadding
                               message="No assets found"
@@ -4706,7 +4714,14 @@ class Portfolio extends BaseReactComponent {
                       </div>
                       {this.state.blockThreeSelectedItem === 1 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.yieldOpportunitiesTableLoading ||
+                              yieldOpportunitiesListTemp?.length < 1
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
@@ -4890,7 +4905,13 @@ class Portfolio extends BaseReactComponent {
                         />
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
-                          <div className="newHomeTableContainer tableWatermarkOverlay">
+                          <div
+                            className={`newHomeTableContainer ${
+                              this.state.tableLoading || tableData?.length < 1
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            }`}
+                          >
                             <TransactionTable
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
