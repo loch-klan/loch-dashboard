@@ -4140,12 +4140,16 @@ class Portfolio extends BaseReactComponent {
           homeCounterpartyVolumeData={this.state.homeCounterpartyVolumeData}
           GraphDigit={this.state.GraphDigit}
           counterGraphDigit={this.state.counterGraphDigit}
-          blockOneSelectedItem={this.state.blockOneSelectedItem}
+          updatedInsightList={this.state.updatedInsightList}
+          insightsBlockLoading={this.state.insightsBlockLoading}
           blockTwoSelectedItem={this.state.blockTwoSelectedItem}
+          blockFourSelectedItem={this.state.blockFourSelectedItem}
+          blockOneSelectedItem={this.state.blockOneSelectedItem}
           blockThreeSelectedItem={this.state.blockThreeSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
           AvgCostLoading={this.state.AvgCostLoading}
           //Changes states
+          changeBlockFourItem={this.changeBlockFourItem}
           changeBlockOneItem={this.changeBlockOneItem}
           changeBlockTwoItem={this.changeBlockTwoItem}
           changeBlockThreeItem={this.changeBlockThreeItem}
