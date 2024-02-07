@@ -3653,86 +3653,16 @@ class PortfolioMobile extends BaseReactComponent {
                   </div>
                 </div>
                 <div className="mobile-portfolio-blocks-content">
-                  {this.props.blockFourSelectedItem === 1 ? (
-                    <div>
-                      <div
-                        className={`newHomeTableContainer ${
-                          this.props.AvgCostLoading ||
-                          this.props.tableDataCostBasis?.length < 1
-                            ? ""
-                            : "tableWatermarkOverlay"
-                        } ${
-                          this.props.intelligenceState.Average_cost_basis
-                            .length <= 10
-                            ? "newHomeTableContainerNoShowMore"
-                            : "newHomeTableContainerNoShowMore"
-                        }`}
-                      >
-                        <TransactionTable
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          message="No assets found"
-                          tableData={
-                            this.props.tableDataCostBasis
-                              ? this.props.tableDataCostBasis.slice(0, 10)
-                              : []
-                          }
-                          columnList={this.props.CostBasisColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.props.AvgCostLoading}
-                          isAnalytics="average cost basis"
-                          fakeWatermark
-                          xAxisScrollable
-                          yAxisScrollable
-                        />
-                      </div>
-                    </div>
-                  ) : this.props.blockFourSelectedItem === 1 ? (
-                    <div>
-                      <div
-                        className={`newHomeTableContainer ${
-                          this.props.AvgCostLoading ||
-                          this.props.tableDataCostBasis?.length < 1
-                            ? ""
-                            : "tableWatermarkOverlay"
-                        } ${
-                          this.props.intelligenceState.Average_cost_basis
-                            .length <= 10
-                            ? "newHomeTableContainerNoShowMore"
-                            : "newHomeTableContainerNoShowMore"
-                        }`}
-                      >
-                        <TransactionTable
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          message="No assets found"
-                          tableData={
-                            this.props.tableDataCostBasis
-                              ? this.props.tableDataCostBasis.slice(0, 10)
-                              : []
-                          }
-                          columnList={this.props.CostBasisColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.props.AvgCostLoading}
-                          isAnalytics="average cost basis"
-                          fakeWatermark
-                          xAxisScrollable
-                          yAxisScrollable
-                        />
-                      </div>
-                    </div>
-                  ) : (
+                  {this.props.blockFourSelectedItem === 1 ? null : this.props
+                      .blockFourSelectedItem === 2 ? null : this.props
+                      .blockFourSelectedItem === 3 ? (
                     <PortfolioHomeInsightsBlock
                       history={this.props.history}
                       updatedInsightList={this.props.updatedInsightList}
                       insightsBlockLoading={this.props.insightsBlockLoading}
                       isMobile
                     />
-                  )}
+                  ) : null}
                 </div>
               </div>
               {/* <div

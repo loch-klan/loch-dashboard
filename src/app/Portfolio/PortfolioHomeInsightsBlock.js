@@ -24,7 +24,7 @@ class PortfolioHomeInsightsBlock extends Component {
       return (
         <div
           style={{
-            height: "32rem",
+            height: this.props.isMobile ? "44rem" : "32rem",
           }}
         >
           <div
