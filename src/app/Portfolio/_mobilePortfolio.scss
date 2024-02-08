@@ -1,8 +1,8 @@
 @import "../../../src/assets/scss/common/_variables.scss";
 .mobilePortfolioContainer {
-  height: 100vh;
+  max-height: calc(100vh - 149px);
+  overflow:auto;
   width: 100vw;
-  position: absolute;
   left: 0;
   top: 0;
   display: flex;
