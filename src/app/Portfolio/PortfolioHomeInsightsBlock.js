@@ -58,7 +58,9 @@ class PortfolioHomeInsightsBlock extends Component {
                 textOverflow: "ellipsis",
                 position: "relative",
                 height: this.props?.isMobile ? "43rem" : "30rem",
-                padding: this.props?.isMobile ? "0rem" : "0rem 0.5rem",
+                padding: this.props?.isMobile
+                  ? "0rem 0.5rem 0rem 0rem"
+                  : "0rem 0.5rem",
                 marginTop: this.props?.isMobile ? "1rem" : "0rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"
@@ -174,8 +176,9 @@ class PortfolioHomeInsightsBlock extends Component {
                           marginTop: key === 0 ? "" : "1rem",
                           marginBottom: "0rem",
                           boxShadow: "none",
-                          border: "0.1rem solid #E5E5E6",
+                          border: "0.1rem solid var(--borderwhiteDarkLight)",
                           alignItems: "flex-start",
+                          background: "var(--cardBackgroud)",
                         }}
                         className="insights-card"
                         key={key}

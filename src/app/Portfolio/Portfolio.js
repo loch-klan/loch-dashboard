@@ -219,7 +219,7 @@ class Portfolio extends BaseReactComponent {
       yieldOpportunitiesTableLoading: true,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
-      blockThreeSelectedItem: 1,
+      blockThreeSelectedItem: mobileCheck() ? 4 : 1,
       blockFourSelectedItem: 1,
       isAddressFollowedCount: 0,
       followSignInModalAnimation: true,
@@ -4129,10 +4129,15 @@ class Portfolio extends BaseReactComponent {
           CostBasisColumnData={CostBasisColumnData}
           yieldOpportunitiesListTemp={yieldOpportunitiesListTemp}
           YieldOppColumnData={YieldOppColumnData}
+          columnList={columnList}
+          totalCount={totalCount}
+          tableData={tableData}
           //States
           yieldOpportunitiesTableLoading={
             this.state.yieldOpportunitiesTableLoading
           }
+          lochToken={this.state.lochToken}
+          callChildPriceGaugeApi={this.state.callChildPriceGaugeApi}
           yieldOpportunitiesTotalCount={this.state.yieldOpportunitiesTotalCount}
           gasFeesGraphLoading={this.state.gasFeesGraphLoading}
           counterGraphLoading={this.state.counterGraphLoading}
@@ -4148,6 +4153,7 @@ class Portfolio extends BaseReactComponent {
           blockThreeSelectedItem={this.state.blockThreeSelectedItem}
           netFlowLoading={this.state.netFlowLoading}
           AvgCostLoading={this.state.AvgCostLoading}
+          tableLoading={this.state.tableLoading}
           //Changes states
           changeBlockFourItem={this.changeBlockFourItem}
           changeBlockOneItem={this.changeBlockOneItem}
