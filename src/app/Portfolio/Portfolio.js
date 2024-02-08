@@ -4107,7 +4107,7 @@ class Portfolio extends BaseReactComponent {
     };
     if (this.state.isMobileDevice) {
       return (
-        <MobileLayout>
+        <MobileLayout history={this.props.history}>
           <PortfolioMobile
             chainLoader={this.state.chainLoader}
             loader={this.state.loader}

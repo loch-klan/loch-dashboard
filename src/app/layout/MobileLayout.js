@@ -5,13 +5,28 @@ import NewHomeInputBlock from "../home/NewHomeInputBlock";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import {
   InactiveSmartMoneySidebarIcon,
+  ActiveSmartMoneySidebarIcon,
   MacIcon,
   SharePortfolioIconWhite,
   TwoPeopleIcon,
+  MobileNavHomeActive,
+  MobileNavHome,
+  MobileNavFollowActive,
+  MobileNavFollow,
+  MobileNavLeaderboardActive,
+  MobileNavLeaderboard,
+  MobileNavProfileActive,
+  MobileNavProfile,
+  MobileNavNFT,
 } from "../../assets/images/icons";
 import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
+import ActiveHomeIcon from "../../image/HomeIcon.svg";
 import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
+import {
+  default as ActiveProfileIcon,
+  default as SignInIcon,
+} from "../../assets/images/icons/ActiveProfileIcon.svg";
 import { Image } from "react-bootstrap";
 import {
   Mobile_Home_Share,
@@ -23,7 +38,7 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { detectCoin } from "../onboarding/Api";
 import { setHeaderReducer } from "../header/HeaderAction";
 import { addUserCredits } from "../profile/Api";
-import { updateUserWalletApi } from "../common/Api";
+import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -47,6 +62,38 @@ class MobileLayout extends BaseReactComponent {
       showSearchIcon: false,
       showShareIcon: false,
       disableAddBtn: false,
+      navItems: [
+        {
+          activeIcon: MobileNavHomeActive,
+          inactiveIcon: MobileNavHome,
+          text: "Home",
+          path: "/home",
+        },
+        {
+          activeIcon: MobileNavFollowActive,
+          inactiveIcon: MobileNavFollow,
+          text: "Following",
+          path: "/following",
+        },
+        {
+          activeIcon: MobileNavLeaderboardActive,
+          inactiveIcon: MobileNavLeaderboard,
+          text: "Leaderboard",
+          path: "/leaderboard",
+        },
+        {
+          activeIcon: NFTIcon,
+          inactiveIcon: MobileNavNFT,
+          text: "NFT",
+          path: "/nft",
+        },
+        {
+          activeIcon: MobileNavProfileActive,
+          inactiveIcon: MobileNavProfile,
+          text: "Profile",
+          path: "/profile",
+        },
+      ],
     };
   }
 
@@ -265,6 +312,30 @@ class MobileLayout extends BaseReactComponent {
     }
   };
 
+  CheckApiResponseMobileLayout = (value) => {
+    this.props.setPageFlagDefault();
+  };
+
+  hideTheTopBarHistoryItems = () => {
+    this.setState({
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: false,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+    });
+  };
+
   handleOnChange = (e) => {
     let { name, value } = e.target;
 
@@ -375,6 +446,9 @@ class MobileLayout extends BaseReactComponent {
     }
   };
 
+  cancelAddingWallet = () => {};
+  resetCreditPoints = () => {};
+
   render() {
     return (
       <div className="portfolio-mobile-layout">
@@ -426,7 +500,29 @@ class MobileLayout extends BaseReactComponent {
         </div>
         <div className="portfolio-mobile-layout-nav-footer">
           <div className="portfolio-mobile-layout-nav-footer-inner">
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
+            {this.state.navItems.map((item, index) => (
+              <div
+                key={index}
+                className={`portfolio-mobile-layout-nav-footer-inner-item ${
+                  item.path == this.props.history.location.pathname
+                    ? "portfolio-mobile-layout-nav-footer-inner-item-active"
+                    : ""
+                }`}
+              >
+                <Image
+                  className="portfolio-mobile-layout-nav-footer-inner-item-image"
+                  src={
+                    item.path === this.props.history.location.pathname
+                      ? item.activeIcon
+                      : item.inactiveIcon
+                  }
+                />
+                <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
+                  {item.text}
+                </span>
+              </div>
+            ))}
+            {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
               <Image
                 className="portfolio-mobile-layout-nav-footer-inner-item-image"
                 src={InActiveHomeIcon}
@@ -470,7 +566,7 @@ class MobileLayout extends BaseReactComponent {
               <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
                 Profile
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -487,6 +583,7 @@ const mapDispatchToProps = {
   setHeaderReducer,
   addUserCredits,
   updateUserWalletApi,
+  setPageFlagDefault,
 };
 
 MobileLayout.propTypes = {};
