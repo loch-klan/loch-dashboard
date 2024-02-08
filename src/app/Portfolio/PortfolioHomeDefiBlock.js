@@ -749,7 +749,7 @@ class PortfolioHomeDefiBlock extends Component {
                     {this.state.totalDefiPositions - 3 > 1 ? "s" : ""}
                   </div>
                 </div>
-              ) : (
+              ) : this.state.totalDefiPositions == 0 ? null : (
                 <div className="inter-display-medium bottomExtraInfo">
                   <div
                     className="bottomExtraInfoText"

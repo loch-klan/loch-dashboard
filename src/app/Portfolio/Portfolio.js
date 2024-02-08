@@ -4345,6 +4345,9 @@ class Portfolio extends BaseReactComponent {
                                         ? "s"
                                         : ""
                                     }`
+                                  : this.props?.intelligenceState
+                                      ?.Average_cost_basis?.length === 0
+                                  ? null
                                   : "Click here to see more"}
                               </div>
                             </div>
@@ -4759,6 +4762,9 @@ class Portfolio extends BaseReactComponent {
                                         ? "opportunities"
                                         : "opportunity"
                                     }`
+                                  : this.state?.yieldOpportunitiesTotalCount ===
+                                    0
+                                  ? null
                                   : "Click here to see more"}
                               </div>
                             </div>
@@ -4941,6 +4947,8 @@ class Portfolio extends BaseReactComponent {
                                     ).toLocaleString("en-US")}+ transaction${
                                       totalCount - 10 > 1 ? "s" : ""
                                     }`
+                                  : totalCount === 0
+                                  ? null
                                   : "Click here to see more"}
                               </div>
                             </div>

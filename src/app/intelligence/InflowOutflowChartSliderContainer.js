@@ -482,31 +482,36 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           }}
                           className="ioPrice inter-display-medium"
                         >
-                          <div
-                            style={{
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {this.props.showEth ? "Ethereum " : null}
-                            {this.props.hideTimeFilter &&
-                            this.state.activeAssetTabName
-                              ? ``
-                              : ""}
-                            Price
-                          </div>
-                          <div
-                            style={{
-                              marginLeft: "0.5rem",
-                              marginRight: "0.5rem",
-                            }}
-                          >
-                            {CurrencyType(false)}
-                            {this.state.currentPriceValue
-                              ? numToCurrency(this.state.currentPriceValue)
-                              : "0.00"}
-                          </div>
+                          {this.props?.inflowOutflowData?.length !== 0 ? (
+                            <>
+                              <div
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                }}
+                              >
+                                {this.props.showEth ? "Ethereum " : null}
+                                {this.props.hideTimeFilter &&
+                                this.state.activeAssetTabName
+                                  ? ``
+                                  : ""}
+                                Price
+                              </div>
+                              <div
+                                style={{
+                                  marginLeft: "0.5rem",
+                                  marginRight: "0.5rem",
+                                }}
+                              >
+                                {CurrencyType(false)}
+                                {this.state.currentPriceValue
+                                  ? numToCurrency(this.state.currentPriceValue)
+                                  : "0.00"}
+                              </div>
+                            </>
+                          ) : null}
+
                           {!this.props.hideTimeFilter ||
                           this.props.hideExplainer ? null : (
                             <div
@@ -549,7 +554,8 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         </div>
                       </div>
                     </div>
-                    {this.props.openChartPage ? (
+                    {this.props.openChartPage &&
+                    this.props?.inflowOutflowData?.length !== 0 ? (
                       <div
                         className="d-flex"
                         style={{ alignItems: "center", gap: "8px" }}

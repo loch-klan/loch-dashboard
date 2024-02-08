@@ -614,7 +614,7 @@ class BarGraphSection extends Component {
                         </div>
                       </div>
 
-                      {this.props.openChartPage ? (
+                      {this.props.openChartPage && this.props?.data ? (
                         <p
                           onClick={this.props.openChartPage}
                           className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
