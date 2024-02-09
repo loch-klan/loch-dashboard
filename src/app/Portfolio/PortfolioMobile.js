@@ -2862,48 +2862,6 @@ class PortfolioMobile extends BaseReactComponent {
     ];
     return (
       <div className="mobilePortfolioContainer">
-        <div
-          style={{
-            display: "flex",
-            position: "fixed",
-            justifyContent: "center",
-            alignItems: "center",
-            bottom: "10px",
-            left: "10px",
-            zIndex: "9999",
-            background: "var(--cardBackgroud)",
-            padding: "10px",
-            borderRadius: "50%",
-            border: "1px solid var(--sidebarSectionalBOrderNoOpacity)",
-          }}
-        >
-          {this.state.isDarkMode ? (
-            <span
-              onClick={() => this.handleDarkMode()}
-              style={{
-                zIndex: "9",
-                cursor: "pointer",
-                right: "10px",
-              }}
-              className="navbar-button-container-mode"
-            >
-              <Image src={lightModeIcon} />
-            </span>
-          ) : (
-            <span
-              onClick={() => this.handleDarkMode()}
-              style={{
-                zIndex: "9",
-                cursor: "pointer",
-                right: "10px",
-              }}
-              className="navbar-button-container-mode"
-            >
-              <Image src={darkModeIcon} />
-              <span />
-            </span>
-          )}
-        </div>
         {this.props.loader ? (
           <div className="mpLoadingContainer">
             <Loading />
