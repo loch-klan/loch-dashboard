@@ -127,6 +127,7 @@ import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 import { addUserCredits } from "../profile/Api.js";
 import { getNFT } from "../nft/NftApi.js";
+import MobileDarkModeIconWrapper from "./MobileDarkModeWrapper.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -2974,47 +2975,49 @@ class PortfolioMobile extends BaseReactComponent {
               ) : null}
             </div>
             <div className="mpcHomePage">
-              <WelcomeCard
-                handleShare={this.handleShare}
-                isSidebarClosed={this.props.isSidebarClosed}
-                changeWalletList={this.props.handleChangeList}
-                apiResponse={(e) => this.props.CheckApiResponse(e)}
-                showNetworth={true}
-                // yesterday balance
-                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
-                // toggleAddWallet={this.state.toggleAddWallet}
-                // handleToggleAddWallet={this.handleToggleAddWallet}
+              <MobileDarkModeIconWrapper>
+                <WelcomeCard
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
+                  changeWalletList={this.props.handleChangeList}
+                  apiResponse={(e) => this.props.CheckApiResponse(e)}
+                  showNetworth={true}
+                  // yesterday balance
+                  yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                  // toggleAddWallet={this.state.toggleAddWallet}
+                  // handleToggleAddWallet={this.handleToggleAddWallet}
 
-                // decrement={true}
+                  // decrement={true}
 
-                // total network and percentage calculate
-                assetTotal={this.props.getTotalAssetValue()}
-                // assetTotal={
-                //   this.props.portfolioState &&
-                //   this.props.portfolioState.walletTotal
-                //     ? this.props.portfolioState.walletTotal +
-                //       this.props.defiState.totalYield -
-                //       this.props.defiState.totalDebt
-                //     : 0 +
-                //       this.props.defiState.totalYield -
-                //       this.props.defiState.totalDebt
-                // }
-                // history
-                history={this.props.history}
-                // add wallet address modal
-                handleAddModal={this.props.handleAddModal}
-                // net worth total
-                isLoading={this.props.isLoadingNet}
-                // walletTotal={
-                //   this.props.portfolioState.walletTotal +
-                //   this.state.totalYield -
-                //   this.state.totalDebt
-                // }
+                  // total network and percentage calculate
+                  assetTotal={this.props.getTotalAssetValue()}
+                  // assetTotal={
+                  //   this.props.portfolioState &&
+                  //   this.props.portfolioState.walletTotal
+                  //     ? this.props.portfolioState.walletTotal +
+                  //       this.props.defiState.totalYield -
+                  //       this.props.defiState.totalDebt
+                  //     : 0 +
+                  //       this.props.defiState.totalYield -
+                  //       this.props.defiState.totalDebt
+                  // }
+                  // history
+                  history={this.props.history}
+                  // add wallet address modal
+                  handleAddModal={this.props.handleAddModal}
+                  // net worth total
+                  isLoading={this.props.isLoadingNet}
+                  // walletTotal={
+                  //   this.props.portfolioState.walletTotal +
+                  //   this.state.totalYield -
+                  //   this.state.totalDebt
+                  // }
 
-                // manage wallet
-                handleManage={() => {}}
-                isMobileRender
-              />
+                  // manage wallet
+                  handleManage={() => {}}
+                  isMobileRender
+                />
+              </MobileDarkModeIconWrapper>
               <PieChart2
                 setLoader={this.props.setLoader}
                 chainLoader={this.props.chainLoader}

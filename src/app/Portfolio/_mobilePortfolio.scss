@@ -275,6 +275,15 @@
       background-color: var(--primaryBackgroud);
       display: flex;
       flex-direction: column;
+      .mobile-dark-mode-toggle-button{
+        height: 50px;
+          width: 50px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+         border-radius: 8px;
+         background-color: var(--mobileModeToggleBg);
+      }
       .mobileFooterContainer {
         flex: 1;
         display: flex;
@@ -282,7 +291,7 @@
         justify-content: flex-end;
       }
       .accountsAmountContainer {
-        background-color: var(--headerSelectEyeBg);
+        background-color: var(--mobileWalletHeaderBg);
         padding: 1.6rem 2rem;
         border-radius: 12px;
         margin-bottom: 1.8rem;
