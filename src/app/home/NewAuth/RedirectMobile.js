@@ -74,7 +74,8 @@ const RedirectMobile = ({ show, toggleModal }) => {
                 className="new-auth-content-subtitle"
                 style={{ textAlign: "center", maxWidth: "280px" }}
               >
-                Your account has been verified. You can now close this tab.
+                You’ll receive a verification link in your mailbox. You can now
+                close this tab.
               </p>
             </div>
           </div>

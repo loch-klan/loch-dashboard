@@ -70,8 +70,9 @@ const Redirect = ({ show, toggleModal }) => {
                 className="new-auth-content-subtitle"
                 style={{ textAlign: "center" }}
               >
-                Your account has been verified. You can now <br /> close this
-                tab.
+                You’ll receive a verification link in your mailbox.
+                <br />
+                You can now close this tab.
               </p>
             </div>
             {/* <div className="new-auth-content-input-holder ">
