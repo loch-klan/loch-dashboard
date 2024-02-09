@@ -356,7 +356,7 @@ class PieChart2Mobile extends BaseReactComponent {
                 style={
                   this.state.isChainToggle
                     ? {
-                        filter: "opacity(1)",
+                        filter: "var(--invertColor)",
                         height: "1.25rem",
                         width: "1.25rem",
                         opacity: this.state.showArrowIcon ? 1 : 0,
@@ -512,7 +512,7 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isYeildToggle
                       ? {
-                          filter: "opacity(1)",
+                          ffilter: "var(--invertColor)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
                       : {
@@ -563,7 +563,7 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isDebtToggle
                       ? {
-                          filter: "opacity(1)",
+                          filter: "var(--invertColor)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
                       : {

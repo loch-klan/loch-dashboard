@@ -194,7 +194,10 @@ class CustomTable extends BaseReactComponent {
                                 this.props.xAxisScrollable
                                   ? width *
                                     item.coumnWidth *
-                                    (columnList.length / 3.5)
+                                    (columnList.length /
+                                      (this.props.xAxisScrollableColumnWidth
+                                        ? this.props.xAxisScrollableColumnWidth
+                                        : 3.5))
                                   : width * item.coumnWidth
                               }
                               className={item.className}
@@ -273,6 +276,7 @@ class CustomTable extends BaseReactComponent {
                                 className={item.className}
                                 label={item.labelName}
                                 dataKey={item.dataKey}
+                                style={item.style}
                                 cellRenderer={({ rowData, rowIndex }) => {
                                   return item.cell(
                                     rowData,
@@ -328,7 +332,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.05",
+                    flex: "0.066",
                   }}
                 ></div>
                 <div
@@ -336,7 +340,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.1",
+                    flex: "0.066",
                   }}
                 >
                   <div className="inter-display-medium bottomCombinedItemBlock">
@@ -348,7 +352,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.12",
+                    flex: "0.1",
                   }}
                 ></div>
                 <div
@@ -372,7 +376,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div className="cost-common-container">
@@ -417,7 +421,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div className="cost-common-container">
@@ -462,7 +466,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -524,7 +528,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -586,7 +590,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="inter-display-medium bottomCombinedItemBlock"
                   style={{
-                    flex: "0.11",
+                    flex: "0.1",
                   }}
                 >
                   <div
@@ -613,6 +617,14 @@ class CustomTable extends BaseReactComponent {
                       </div>
                     </CustomOverlay>
                   </div>
+                  <div
+                    aria-colindex="1"
+                    role="gridcell"
+                    className="bottomCombinedItemBlock"
+                    style={{
+                      flex: "0.066",
+                    }}
+                  ></div>
                 </div>
               </div>
             ) : null}
@@ -622,7 +634,7 @@ class CustomTable extends BaseReactComponent {
         {this.props.isSmartMoney ||
         this.props.paginationNew ||
         this.props.minimalPagination ? (
-          tableData && tableData.length >= 1 && totalPage >= 1 ? (
+          tableData && tableData.length >= 1 && totalPage >= 1 && !isLoading ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
               smartMoneyBlur={this.props.smartMoneyBlur}
