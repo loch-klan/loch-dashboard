@@ -58,7 +58,9 @@ class PortfolioHomeInsightsBlock extends Component {
                 textOverflow: "ellipsis",
                 position: "relative",
                 height: this.props?.isMobile ? "43rem" : "30rem",
-                padding: this.props?.isMobile ? "0rem" : "0rem 0.5rem",
+                padding: this.props?.isMobile
+                  ? "0rem 0.5rem 0rem 0rem"
+                  : "0rem 0.5rem",
                 marginTop: this.props?.isMobile ? "1rem" : "0rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"

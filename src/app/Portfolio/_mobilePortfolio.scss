@@ -1,9 +1,8 @@
 @import "../../../src/assets/scss/common/_variables.scss";
 .mobilePortfolioContainer {
-  // height: 100vh;
-  background-color: var(--primaryBackground);
+  max-height: calc(100vh - 140px);
+  overflow: auto;
   width: 100vw;
-  position: absolute;
   left: 0;
   top: 0;
   display: flex;
@@ -105,7 +104,7 @@
       }
     }
 
-    &:hover{
+    &:hover {
       border-color: var(--primaryTextColor);
     }
   }
@@ -492,7 +491,7 @@
             }
           }
         }
-        .inter-display-semi-bold{
+        .inter-display-semi-bold {
           color: var(--primaryTextColor);
         }
         .accountsAmountRemaining {
@@ -537,7 +536,7 @@
               .defiMenu {
                 filter: var(--invertColor);
               }
-              
+
               .balance-sheet-card-credit-title {
                 color: var(--black191);
               }
@@ -552,7 +551,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
-              
+
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -574,7 +573,7 @@
               .defiMenu {
                 filter: var(--invertColor);
               }
-              
+
               .balance-sheet-card-credit-title {
                 color: var(--black191);
               }
@@ -589,7 +588,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
-              
+
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -598,7 +597,7 @@
               }
             }
           }
-          
+
           .balance-sheet-card-credit-title {
             margin-right: 0.8rem;
             color: var(--secondaryDarkTextColor);
@@ -607,7 +606,7 @@
             margin-right: 0.8rem;
             color: #b0b1b3;
           }
-          
+
           .balance-sheet-card-credit-title-selected {
             color: var(--black191);
           }

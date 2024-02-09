@@ -326,10 +326,18 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             className="line-chart-section"
             style={{
               padding: `0rem ${
-                this.props.hideTimeFilter ? "3.2rem" : "4.8rem"
+                this.props.hideTimeFilter
+                  ? this.props.isMobileGraph
+                    ? ""
+                    : "3.2rem"
+                  : "4.8rem"
               }`,
               width: this.props.hideTimeFilter ? "100%" : "",
-              paddingTop: `${this.props.hideTimeFilter ? "2.8rem" : ""}`,
+              paddingTop: `${
+                this.props.hideTimeFilter && !this.props.graphLoading
+                  ? "2.8rem"
+                  : ""
+              }`,
             }}
           >
             {!this.props.isPage && (
@@ -345,12 +353,16 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             {this.props.graphLoading ? (
               <div
                 className={
-                  this.props.hideTimeFilter
+                  this.props.hideTimeFilter && !this.props.isMobileGraph
                     ? "portfolioHomepricegaugeloader"
                     : ""
                 }
                 style={{
-                  height: this.props.hideTimeFilter ? "28.5rem" : "50rem",
+                  height: this.props.hideTimeFilter
+                    ? this.props.isMobileGraph
+                      ? "44rem"
+                      : "28.5rem"
+                    : "50rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -644,6 +656,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   assetList={this.props.assetList}
                   hideTimeFilter={this.props.hideTimeFilter}
                   showDropdown={this.props.showDropdown}
+                  isMobileGraph={this.props.isMobileGraph}
                 />
               </>
             )}

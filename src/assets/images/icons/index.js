@@ -88,6 +88,17 @@ export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg"
 // export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
 // export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
 export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
+
+// Mobile navigation icons
+export { default as MobileNavHome } from "./mobile-nav-home.svg";
+export { default as MobileNavHomeActive } from "./mobile-nav-home-active.svg";
+export { default as MobileNavFollow } from "./mobile-nav-following.svg";
+export { default as MobileNavFollowActive } from "./mobile-nav-follow-active.svg";
+export { default as MobileNavLeaderboard } from "./mobile-nav-leaderboard.svg";
+export { default as MobileNavLeaderboardActive } from "./mobile-nav-leaderboard-active.svg";
+export { default as MobileNavProfile } from "./mobile-nav-profile.svg";
+export { default as MobileNavProfileActive } from "./mobile-nav-profile-active.svg";
+export { default as MobileNavNFT } from "./mobile-nav-nft.svg";
 export { default as RemarksDownArrowIcon } from "./remarksDownArrow.svg";
 export { default as darkModeIcon } from "./DarkmodeIcon.svg";
 export { default as lightModeIcon } from "./lightMode.svg";

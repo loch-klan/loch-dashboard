@@ -195,6 +195,9 @@ export const updateUserWalletApi = (
 
             ctx.props.apiResponse(true);
           }
+          if (ctx.CheckApiResponseMobileLayout) {
+            ctx.CheckApiResponseMobileLayout();
+          }
 
           if (ctx.props.handleUpdateWallet) {
             ctx.props.handleUpdateWallet();

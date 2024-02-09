@@ -162,6 +162,7 @@ import PortfolioHomeDefiBlock from "./PortfolioHomeDefiBlock.js";
 import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
+import MobileLayout from "../layout/MobileLayout.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -219,7 +220,7 @@ class Portfolio extends BaseReactComponent {
       yieldOpportunitiesTableLoading: true,
       blockOneSelectedItem: 1,
       blockTwoSelectedItem: 1,
-      blockThreeSelectedItem: 1,
+      blockThreeSelectedItem: mobileCheck() ? 4 : 1,
       blockFourSelectedItem: 1,
       isAddressFollowedCount: 0,
       followSignInModalAnimation: true,
@@ -4118,57 +4119,67 @@ class Portfolio extends BaseReactComponent {
     };
     if (this.state.isMobileDevice) {
       return (
-        <PortfolioMobile
-          chainLoader={this.state.chainLoader}
-          loader={this.state.loader}
-          totalChainDetechted={this.state.totalChainDetechted}
-          setLoader={this.setLoader}
-          getTotalAssetValue={getTotalAssetValue}
-          isLoading={this.state.isLoading}
-          isUpdate={this.state.isUpdate}
-          getProtocolTotal={this.getProtocolTotal}
-          updateTimer={this.updateTimer}
-          undetectedWallet={this.undetectedWallet}
-          userWalletList={this.state.userWalletList}
-          handleChangeList={this.handleChangeList}
-          CheckApiResponse={this.CheckApiResponse}
-          handleAddModal={this.handleAddModal}
-          isLoadingNet={this.state.isLoadingNet}
-          history={this.props.history}
-          tableDataCostBasis={tableDataCostBasis}
-          location={this.props.location}
-          apiResponse={(e) => this.CheckApiResponse(e)}
-          CostBasisColumnData={CostBasisColumnData}
-          yieldOpportunitiesListTemp={yieldOpportunitiesListTemp}
-          YieldOppColumnData={YieldOppColumnData}
-          //States
-          yieldOpportunitiesTableLoading={
-            this.state.yieldOpportunitiesTableLoading
-          }
-          yieldOpportunitiesTotalCount={this.state.yieldOpportunitiesTotalCount}
-          gasFeesGraphLoading={this.state.gasFeesGraphLoading}
-          counterGraphLoading={this.state.counterGraphLoading}
-          homeGraphFeesData={this.state.homeGraphFeesData}
-          homeCounterpartyVolumeData={this.state.homeCounterpartyVolumeData}
-          GraphDigit={this.state.GraphDigit}
-          counterGraphDigit={this.state.counterGraphDigit}
-          updatedInsightList={this.state.updatedInsightList}
-          insightsBlockLoading={this.state.insightsBlockLoading}
-          blockTwoSelectedItem={this.state.blockTwoSelectedItem}
-          blockFourSelectedItem={this.state.blockFourSelectedItem}
-          blockOneSelectedItem={this.state.blockOneSelectedItem}
-          blockThreeSelectedItem={this.state.blockThreeSelectedItem}
-          netFlowLoading={this.state.netFlowLoading}
-          AvgCostLoading={this.state.AvgCostLoading}
-          //Changes states
-          changeBlockFourItem={this.changeBlockFourItem}
-          changeBlockOneItem={this.changeBlockOneItem}
-          changeBlockTwoItem={this.changeBlockTwoItem}
-          changeBlockThreeItem={this.changeBlockThreeItem}
-          //Go to pages
-          goToGasFeesSpentPage={this.goToGasFeesSpentPage}
-          goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
-        />
+        <MobileLayout history={this.props.history}>
+          <PortfolioMobile
+            chainLoader={this.state.chainLoader}
+            loader={this.state.loader}
+            totalChainDetechted={this.state.totalChainDetechted}
+            setLoader={this.setLoader}
+            getTotalAssetValue={getTotalAssetValue}
+            isLoading={this.state.isLoading}
+            isUpdate={this.state.isUpdate}
+            getProtocolTotal={this.getProtocolTotal}
+            updateTimer={this.updateTimer}
+            undetectedWallet={this.undetectedWallet}
+            userWalletList={this.state.userWalletList}
+            handleChangeList={this.handleChangeList}
+            CheckApiResponse={this.CheckApiResponse}
+            handleAddModal={this.handleAddModal}
+            isLoadingNet={this.state.isLoadingNet}
+            history={this.props.history}
+            tableDataCostBasis={tableDataCostBasis}
+            location={this.props.location}
+            apiResponse={(e) => this.CheckApiResponse(e)}
+            CostBasisColumnData={CostBasisColumnData}
+            yieldOpportunitiesListTemp={yieldOpportunitiesListTemp}
+            YieldOppColumnData={YieldOppColumnData}
+            columnList={columnList}
+            totalCount={totalCount}
+            tableData={tableData}
+            //States
+            yieldOpportunitiesTableLoading={
+              this.state.yieldOpportunitiesTableLoading
+            }
+            lochToken={this.state.lochToken}
+            callChildPriceGaugeApi={this.state.callChildPriceGaugeApi}
+            yieldOpportunitiesTotalCount={
+              this.state.yieldOpportunitiesTotalCount
+            }
+            gasFeesGraphLoading={this.state.gasFeesGraphLoading}
+            counterGraphLoading={this.state.counterGraphLoading}
+            homeGraphFeesData={this.state.homeGraphFeesData}
+            homeCounterpartyVolumeData={this.state.homeCounterpartyVolumeData}
+            GraphDigit={this.state.GraphDigit}
+            counterGraphDigit={this.state.counterGraphDigit}
+            updatedInsightList={this.state.updatedInsightList}
+            insightsBlockLoading={this.state.insightsBlockLoading}
+            blockTwoSelectedItem={this.state.blockTwoSelectedItem}
+            blockFourSelectedItem={this.state.blockFourSelectedItem}
+            blockOneSelectedItem={this.state.blockOneSelectedItem}
+            blockThreeSelectedItem={this.state.blockThreeSelectedItem}
+            netFlowLoading={this.state.netFlowLoading}
+            AvgCostLoading={this.state.AvgCostLoading}
+            tableLoading={this.state.tableLoading}
+            //Changes states
+            changeBlockFourItem={this.changeBlockFourItem}
+            changeBlockOneItem={this.changeBlockOneItem}
+            changeBlockTwoItem={this.changeBlockTwoItem}
+            changeBlockThreeItem={this.changeBlockThreeItem}
+            //Go to pages
+            goToGasFeesSpentPage={this.goToGasFeesSpentPage}
+            goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
+          />
+        </MobileLayout>
       );
     }
     return (
