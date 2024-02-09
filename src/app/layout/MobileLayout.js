@@ -452,77 +452,78 @@ class MobileLayout extends BaseReactComponent {
   render() {
     return (
       <div className="portfolio-mobile-layout">
-        {/* Search Bar */}
-        <div className="mpcMobileSearch input-noshadow-dark">
-          <div className="mpcMobileSearchInput">
-            <Image
-              style={{
-                opacity: this.state.showSearchIcon ? 1 : 0,
-              }}
-              onLoad={this.searchIconLoaded}
-              className="mpcMobileSearchImage"
-              src={SearchIcon}
-            />
-
-            {this.state.walletInput?.map((c, index) => (
-              <div className="topSearchBarMobileContainer">
-                <NewHomeInputBlock
-                  noAutofocus
-                  onGoBtnClick={this.handleAddWallet}
-                  hideMore
-                  isMobile
-                  c={c}
-                  index={index}
-                  walletInput={this.state.walletInput}
-                  handleOnChange={this.handleOnChange}
-                  onKeyDown={this.onKeyPressInput}
-                  goBtnDisabled={this.state.disableAddBtn}
-                  removeFocusOnEnter
-                />
-              </div>
-            ))}
-          </div>
-          {!(this.state.walletInput && this.state.walletInput[0].address) ? (
-            <div className="mpcMobileShare" onClick={this.handleShare}>
+        <div className="portfolio-mobile-layout-wrapper">
+          {/* Search Bar */}
+          <div className="mpcMobileSearch input-noshadow-dark">
+            <div className="mpcMobileSearchInput">
               <Image
                 style={{
-                  opacity: this.state.showShareIcon ? 1 : 0,
+                  opacity: this.state.showSearchIcon ? 1 : 0,
                 }}
-                onLoad={this.shareIconLoaded}
+                onLoad={this.searchIconLoaded}
                 className="mpcMobileSearchImage"
-                src={SharePortfolioIconWhite}
+                src={SearchIcon}
               />
+
+              {this.state.walletInput?.map((c, index) => (
+                <div className="topSearchBarMobileContainer">
+                  <NewHomeInputBlock
+                    noAutofocus
+                    onGoBtnClick={this.handleAddWallet}
+                    hideMore
+                    isMobile
+                    c={c}
+                    index={index}
+                    walletInput={this.state.walletInput}
+                    handleOnChange={this.handleOnChange}
+                    onKeyDown={this.onKeyPressInput}
+                    goBtnDisabled={this.state.disableAddBtn}
+                    removeFocusOnEnter
+                  />
+                </div>
+              ))}
             </div>
-          ) : null}
-        </div>
-        <div className="portfolio-mobile-layout-children">
-          {this.props.children}
-        </div>
-        <div className="portfolio-mobile-layout-nav-footer">
-          <div className="portfolio-mobile-layout-nav-footer-inner">
-            {this.state.navItems.map((item, index) => (
-              <div
-                key={index}
-                className={`portfolio-mobile-layout-nav-footer-inner-item ${
-                  item.path == this.props.history.location.pathname
-                    ? "portfolio-mobile-layout-nav-footer-inner-item-active"
-                    : ""
-                }`}
-              >
+            {!(this.state.walletInput && this.state.walletInput[0].address) ? (
+              <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
-                  className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                  src={
-                    item.path === this.props.history.location.pathname
-                      ? item.activeIcon
-                      : item.inactiveIcon
-                  }
+                  style={{
+                    opacity: this.state.showShareIcon ? 1 : 0,
+                  }}
+                  onLoad={this.shareIconLoaded}
+                  className="mpcMobileSearchImage"
+                  src={SharePortfolioIconWhite}
                 />
-                <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                  {item.text}
-                </span>
               </div>
-            ))}
-            {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
+            ) : null}
+          </div>
+          <div className="portfolio-mobile-layout-children">
+            {this.props.children}
+          </div>
+          <div className="portfolio-mobile-layout-nav-footer">
+            <div className="portfolio-mobile-layout-nav-footer-inner">
+              {this.state.navItems.map((item, index) => (
+                <div
+                  key={index}
+                  className={`portfolio-mobile-layout-nav-footer-inner-item ${
+                    item.path == this.props.history.location.pathname
+                      ? "portfolio-mobile-layout-nav-footer-inner-item-active"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    className="portfolio-mobile-layout-nav-footer-inner-item-image"
+                    src={
+                      item.path === this.props.history.location.pathname
+                        ? item.activeIcon
+                        : item.inactiveIcon
+                    }
+                  />
+                  <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
+                    {item.text}
+                  </span>
+                </div>
+              ))}
+              {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
               <Image
                 className="portfolio-mobile-layout-nav-footer-inner-item-image"
                 src={InActiveHomeIcon}
@@ -567,6 +568,7 @@ class MobileLayout extends BaseReactComponent {
                 Profile
               </span>
             </div> */}
+            </div>
           </div>
         </div>
       </div>
