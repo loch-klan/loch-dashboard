@@ -497,7 +497,7 @@ class MobileLayout extends BaseReactComponent {
             ) : null}
           </div>
           <div className="portfolio-mobile-layout-children">
-            {this.props.children}
+            <div style={{ paddingBottom: "84px" }}>{this.props.children}</div>
           </div>
           <div className="portfolio-mobile-layout-nav-footer">
             <div className="portfolio-mobile-layout-nav-footer-inner">
