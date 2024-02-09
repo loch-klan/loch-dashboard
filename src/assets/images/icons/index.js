@@ -85,3 +85,14 @@ export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
 export { default as NewWelcomeLoginCrossIcon } from "./newWelcomeLoginCross.svg";
 export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
 export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
+
+// Mobile navigation icons
+export { default as MobileNavHome } from "./mobile-nav-home.svg";
+export { default as MobileNavHomeActive } from "./mobile-nav-home-active.svg";
+export { default as MobileNavFollow } from "./mobile-nav-following.svg";
+export { default as MobileNavFollowActive } from "./mobile-nav-follow-active.svg";
+export { default as MobileNavLeaderboard } from "./mobile-nav-leaderboard.svg";
+export { default as MobileNavLeaderboardActive } from "./mobile-nav-leaderboard-active.svg";
+export { default as MobileNavProfile } from "./mobile-nav-profile.svg";
+export { default as MobileNavProfileActive } from "./mobile-nav-profile-active.svg";
+export { default as MobileNavNFT } from "./mobile-nav-nft.svg";

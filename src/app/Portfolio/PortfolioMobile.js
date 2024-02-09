@@ -672,7 +672,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
             ) : null}
-            <div className="mpcMobileSearch input-noshadow-dark">
+            {/* <div className="mpcMobileSearch input-noshadow-dark">
               <div className="mpcMobileSearchInput">
                 <Image
                   style={{
@@ -715,7 +715,7 @@ class PortfolioMobile extends BaseReactComponent {
                   />
                 </div>
               ) : null}
-            </div>
+            </div> */}
             <div className="mpcHomePage">
               <WelcomeCard
                 handleShare={this.handleShare}
