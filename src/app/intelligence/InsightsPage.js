@@ -40,6 +40,9 @@ import DropDown from "../common/DropDown";
 import Footer from "../common/footer";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
+// Dark theme scss
+import "./intelligenceScss/_darkInsightPage.scss";
+
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
@@ -444,7 +447,7 @@ class InsightsPage extends Component {
   };
   render() {
     return (
-      <>
+      <div className="insightsPageContainer">
         {/* topbar */}
         <div className="portfolio-page-section">
           <div
@@ -543,7 +546,7 @@ class InsightsPage extends Component {
                   marginBottom: "0.8rem",
                 }}
               >
-                <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                <h2 className="inter-display-medium f-s-25 l-h-30">
                   This week
                 </h2>
 
@@ -551,6 +554,7 @@ class InsightsPage extends Component {
                   style={{ display: "flex", alignItems: "center" }}
                   onClick={this.onClickDropdown}
                   onMouseEnter={this.onHoverDropdown}
+                  className="insights-dropdown-wrapper"
                 >
                   <DropDown
                     class="cohort-dropdown"
@@ -646,24 +650,14 @@ class InsightsPage extends Component {
                           marginTop: "5rem",
                         }}
                       >
-                        <div
-                          style={{
-                            position: "absolute",
-                            width: "16rem",
-                            height: "16rem",
-                            background:
-                              "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                            filter: "blur(50px)",
-                            borderRadius: "10rem",
-                            zIndex: 0,
-                          }}
-                        ></div>
+                        <div className="insight-blank-card"></div>
                         <Image
                           src={InsightImg}
                           style={{ position: "relative" }}
+                          className="invertFilter"
                         />
                         <h5
-                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center primaryText"
                           style={{
                             marginBottom: "1rem",
                             width: "90%",
@@ -745,7 +739,7 @@ class InsightsPage extends Component {
             <Footer />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

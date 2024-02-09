@@ -25,7 +25,7 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import {
-  deleteToken,
+  deleteAddWallet,
   getCurrentUser,
   getToken,
   setLocalStoraage,
@@ -44,6 +44,7 @@ import CheckboxCustomTable from "../common/customCheckboxTable";
 import TransactionTable from "../intelligence/TransactionTable";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   AddTextbox,
   ClickTrendingAddress,
@@ -53,6 +54,7 @@ import {
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  EmailAddressAddedSignUp,
   LPC_Go,
   LPConnectExchange,
   OnboardingMobilePage,
@@ -70,6 +72,7 @@ import {
   updateWalletListFlag,
 } from "../common/Api";
 import ConnectModal from "../common/ConnectModal.js";
+import Loading from "../common/Loading.js";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
@@ -81,30 +84,31 @@ import {
   getAllCoins,
   getAllParentChains,
   signIn,
+  signUpWelcome,
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
 import Login from "./NewAuth/Login.js";
+import Redirect from "./NewAuth/Redirect.js";
+import SignUp from "./NewAuth/SignUp.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
-import MobileHome from "./MobileHome.js";
-import Loading from "../common/Loading.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
-import OutsideClickHandler from "react-outside-click-handler";
 
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       currentMetamaskWallet: {},
+      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       startTime: "",
       onboardingWalletAddress: [
         {
@@ -653,6 +657,7 @@ class NewWelcome extends BaseReactComponent {
       leaderboardSignIn: false,
       email: "",
       otp: "",
+      emailSignup: "",
       walletInput: [
         {
           id: `wallet1`,
@@ -1332,6 +1337,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    deleteAddWallet();
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -1361,7 +1367,7 @@ class NewWelcome extends BaseReactComponent {
         this.props.setPageFlagDefault();
 
         // if (!mobileCheck()) {
-        deleteToken();
+        // deleteToken();
         // }
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
@@ -1370,14 +1376,14 @@ class NewWelcome extends BaseReactComponent {
           : false;
         if (user) {
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // } else {
           // this.props.history.push("/home");
           // }
         } else {
           this.props.setPageFlagDefault();
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // }
           //  window.sessionStorage.setItem("defi_access", true);
           //  window.sessionStorage.setItem("isPopup", true);
@@ -1405,7 +1411,7 @@ class NewWelcome extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
       // if (!mobileCheck()) {
-      deleteToken();
+      // deleteToken();
       // }
       // window.sessionStorage.setItem("defi_access", true);
       // window.sessionStorage.setItem("isPopup", true);
@@ -1525,7 +1531,6 @@ class NewWelcome extends BaseReactComponent {
   checkUser = () => {
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
-    console.log(token, lochUser);
     if (token && lochUser && lochUser?.email) {
       return true;
     } else {
@@ -1540,6 +1545,20 @@ class NewWelcome extends BaseReactComponent {
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
+    }
+  };
+
+  handleSubmitEmailSignup = () => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append("signed_up_from", "welcome");
+      EmailAddressAddedSignUp({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+
+      this.props.signUpWelcome(this, data, this.toggleAuthModal);
     }
   };
 
@@ -1916,7 +1935,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Rank
             </span>
             {/* <Image
@@ -1948,7 +1967,7 @@ class NewWelcome extends BaseReactComponent {
                   className="inter-display-medium f-s-13"
                   style={{
                     fontWeight: "700",
-                    color: "#313233",
+                    color: "var(--grey313)",
                   }}
                 >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
@@ -1965,7 +1984,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Wallet
             </span>
             {/* <Image
@@ -2026,7 +2045,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             {/* <Image
@@ -2077,7 +2096,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Net worth
             </span>
             {/* <Image
@@ -2137,7 +2156,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Flows (1 year)
             </span>
           </div>
@@ -2223,7 +2242,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized PnL
             </span>
             {/* <Image
@@ -2309,7 +2328,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Follow
             </span>
           </div>
@@ -2393,6 +2412,23 @@ class NewWelcome extends BaseReactComponent {
             }}
             handleSubmitOTP={this.handleSubmitOTP}
           />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUp
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "signup"}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <Redirect
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
+          />
         ) : null}
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
@@ -2413,7 +2449,27 @@ class NewWelcome extends BaseReactComponent {
                   Connect Exchange
                 </button>
               </div>
-              {this.checkUser() ? null : (
+              {this.state.lochUser &&
+              (this.state.lochUser.email ||
+                this.state.lochUser.first_name ||
+                this.state.lochUser.last_name) ? (
+                <button
+                  className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
+                  style={{ padding: "8px 12px" }}
+                >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
+                    <img src={personRounded} alt="" />
+                  </div>
+                  {this.state.lochUser.first_name ||
+                  this.state.lochUser.last_name
+                    ? `${this.state.lochUser.first_name} ${
+                        this.state.lochUser.last_name
+                          ? this.state.lochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed In"}
+                </button>
+              ) : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}
@@ -2428,7 +2484,7 @@ class NewWelcome extends BaseReactComponent {
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
-                  Sign in
+                  Sign in / up
                 </button>
               )}
             </div>
@@ -2467,7 +2523,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body">
-          <form className="new-homepage__body-container">
+          <div className="new-homepage__body-container">
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({
@@ -2547,10 +2603,13 @@ class NewWelcome extends BaseReactComponent {
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      className="new-homepage__body-trending-address-icon"
+                      alt=""
+                    />
                     <div
                       style={{
-                        color: "#19191A",
                         fontSize: "16px",
                       }}
                       className="inter-display-medium"
@@ -2623,7 +2682,7 @@ class NewWelcome extends BaseReactComponent {
                 {this.state.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",
@@ -2639,7 +2698,7 @@ class NewWelcome extends BaseReactComponent {
                   <div
                     className="smartMoneyTable"
                     style={{
-                      marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                      marginBottom: "5rem",
                     }}
                   >
                     <TransactionTable
@@ -2660,9 +2719,7 @@ class NewWelcome extends BaseReactComponent {
                         this.onPageChange(false);
                       }}
                       pageLimit={this.state.pageLimit}
-                      changePageLimit={() => {
-                        this.changePageLimit(false);
-                      }}
+                      changePageLimit={this.changePageLimit}
                       addWatermark
                       className={this.state.blurTable ? "noScroll" : ""}
                       onBlurSignInClick={this.showSignInModal}
@@ -2766,7 +2823,7 @@ class NewWelcome extends BaseReactComponent {
                 </div>
               </div>
             )}
-          </form>
+          </div>
         </div>
       </div>
     );
@@ -2797,6 +2854,7 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  signUpWelcome,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

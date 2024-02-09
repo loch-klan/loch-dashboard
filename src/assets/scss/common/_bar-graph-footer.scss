@@ -123,7 +123,7 @@
       background-color: transparent;
       border-radius: 0.8rem;
       border: 0.1rem solid #b0b1b3;
-      color: #19191a;
+      color: var(--black191);
       transition-duration: 300ms;
       cursor: pointer;
       text-align: center;
@@ -189,9 +189,9 @@
               }
             }
             .react-calendar__tile--active {
-              background-color: $black-191;
+              background-color: var(--black191);
               border-radius: 0.4rem;
-              color: $secondary !important;
+              color: var(--secondaryTextColor) !important;
             }
             .react-calendar__tile {
               color: $grey-B0B;
@@ -201,7 +201,7 @@
               width: 2.8rem;
               height: 2.8rem;
               &:disabled {
-                background-color: $white-F0F !important;
+                background-color: var(--primaryFilter) !important;
                 color: $grey-B0B !important;
                 &:hover {
                   color: $grey-B0B !important;
@@ -213,7 +213,7 @@
               &:hover {
                 background-color: $drop-button-hover;
                 border-radius: 0.4rem;
-                color: $black-191 !important;
+                color: var(--sameModeColor) !important;
               }
               &:active {
                 background-color: $black-191;
@@ -246,7 +246,7 @@
         }
       }
       &:hover {
-        border: 1px solid #19191a;
+        border: 1px solid var(--black191);
         background-color: transparent;
       }
     }
@@ -272,17 +272,17 @@
     background-color: transparent;
     border-radius: 0.8rem;
     border: 0.1rem solid transparent;
-    color: #19191a;
+    color: var(--black191);
     cursor: pointer;
     text-align: center;
 
     &.lineChartTimeBadge {
       padding: 0.8rem 1rem;
       width: 100%;
-      background-color: #f2f2f2;
+      background-color: var(--primaryFilter);
       border-radius: 0.8rem;
-      border: 0.1rem solid #f2f2f2;
-      color: #19191a;
+      border: 0.1rem solid  var(--primaryFilter);
+      color: var(--black191);
       cursor: pointer;
       text-align: center;
 
@@ -292,7 +292,7 @@
         box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
         border-radius: 8px;
-        background: #ffffff;
+        background: var(--primaryFilterActive);
       }
     }
   }
@@ -303,7 +303,7 @@
     box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
       0px 14px 64px -4px rgba(24, 39, 75, 0.12);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--cardBackgroud);
   }
 
   .timeBadge:hover {
@@ -311,7 +311,7 @@
     box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
       0px 14px 64px -4px rgba(24, 39, 75, 0.12);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--cardBackgroud);
   }
 
   .timeBadgeWrapper {

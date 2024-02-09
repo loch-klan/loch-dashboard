@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { Image, Modal } from "react-bootstrap";
-import "./_newAuth.scss";
-import logo from "./../../../image/Loch.svg";
+import { CloseIconBlack } from "../../../assets/images/icons";
 import { validateEmail } from "../../../utils/validators";
-import {
-  CloseIconBlack,
-  CrossSmartMoneyIcon,
-  NewWelcomeLoginCrossIcon,
-} from "../../../assets/images/icons";
+import logo from "./../../../image/Loch.svg";
+import "./_newAuth.scss";
 
 const Login = ({
   show,
@@ -46,7 +42,6 @@ const Login = ({
       backdropClassName="exitoverlaymodalNewWelcome"
       contentClassName="new-welcome-modal-content"
       animation={false}
-      
     >
       <Modal.Body style={{ position: "relative" }}>
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
@@ -63,7 +58,7 @@ const Login = ({
             />
           </div>
         </div>
-        <div className="new-auth" style={{ paddingBottom: "106px" }}>
+        <div className="new-auth">
           <div className="new-auth-content">
             <img className="new-auth-content-logo " src={logo} alt="" />
             <div className="new-auth-content-title-holder">
@@ -88,18 +83,23 @@ const Login = ({
                   if (validateEmail(email)) handleSubmitEmail();
                 }}
                 ref={submitRef}
-                className={`new-auth-content-button ${
+                className={`new-auth-content-button  ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""
                 }`}
               >
                 Sign in
               </button>
             </div>
-            {/* <div className='new-auth-content-bottom-cta-holder'>
-                        <p className='new-auth-content-bottom-cta'>
-                        Don’t have an account yet?
-                        </p>
-                    </div> */}
+            <div className="new-auth-content-bottom-cta-holder">
+              <p
+                onClick={() => {
+                  toggleModal("signup");
+                }}
+                className="new-auth-content-bottom-cta"
+              >
+                Don’t have an account yet?
+              </p>
+            </div>
           </div>
         </div>
       </Modal.Body>

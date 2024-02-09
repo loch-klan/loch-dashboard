@@ -768,7 +768,7 @@ class CustomDropdown extends Component {
           {!this.props.singleSelect ? (
             <div className="dropdown-footer">
               <span
-                className="secondary-btn dropdown-btn"
+                className="secondary-btn dropdown-btn btn-bg-white-outline-black hover-bg-black"
                 onClick={this.ClearAll}
                 onMouseEnter={() => {
                   this.setState({
@@ -793,7 +793,7 @@ class CustomDropdown extends Component {
                 )}
               </span>
               <span
-                className="primary-btn dropdown-btn"
+                className="primary-btn dropdown-btn btn-bg-black hover-bg-white-outline-black"
                 onClick={this.Apply}
                 onMouseEnter={() => {
                   this.setState({

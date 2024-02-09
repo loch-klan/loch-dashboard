@@ -8,6 +8,11 @@
   }
 }
 
+.watchListSearchInput{
+  box-shadow: var(--inputShadow) !important;
+  -webkit-box-shadow: var(--inputShadow) inset !important;
+}
+
 .watchListTableContainer {
   .no-hover {
     cursor: default;
@@ -34,9 +39,9 @@
       cursor: pointer;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      &:hover {
-        .watchListDelete {
-          filter: brightness(0.5);
+      .watchListDelete {
+        &:hover {
+          filter: var(--hoverBrightnessValue);
         }
       }
     }
@@ -74,7 +79,7 @@
         padding: 1rem;
         width: 100%;
         &:hover {
-          border-color: #19191a;
+          border-color: var(--black191);
         }
         .awLable {
           color: #b0b1b3;
@@ -144,7 +149,7 @@
         }
       }
       .isAwInputWrapperValid {
-        border-color: #19191a;
+        border-color: var(--black191);
       }
     }
   }
@@ -153,6 +158,13 @@
     align-items: center;
     justify-content: space-between;
     padding: 3rem 5rem;
+    .go-btn{
+      &:disabled{
+        background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    border: 1px solid var(--black191) !important;
+      }
+    }
   }
 }
 .addWatchListWrapperAdded {
@@ -162,7 +174,7 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--cardBackgroud);
   border-radius: 1.2rem;
   .addWatchListAddedHeader {
     width: 100%;
@@ -181,6 +193,7 @@
       justify-content: space-between;
       .addWatchListAddedBodyIcon {
         height: 5rem;
+        filter: var(--invertColor);
       }
     }
   }
