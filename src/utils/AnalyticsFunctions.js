@@ -72,9 +72,9 @@ export const signUpProperties = ({
   });
 };
 
-export const resetUser = () => {
+export const resetUser = (notCurrencyRates) => {
   Mixpanel.reset();
-  deleteToken();
+  deleteToken(notCurrencyRates);
   // console.log("reset");
 };
 
@@ -5865,6 +5865,7 @@ export const SmartMoneyWalletClicked = ({
   email_address,
   wallet,
   isMobile,
+  isWelcome = false,
 }) => {
   const event_name = "Smart money: wallet open";
   const eventProperties = {
@@ -5872,6 +5873,7 @@ export const SmartMoneyWalletClicked = ({
     "email address": email_address,
     wallet: wallet,
     isMobile: isMobile,
+    isWelcome: isWelcome,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

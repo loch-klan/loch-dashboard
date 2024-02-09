@@ -60,6 +60,7 @@ import {
   OnboardingMobilePage,
   OnboardingPage,
   SignInOnClickWelcomeLeaderboard,
+  SmartMoneyWalletClicked,
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
 } from "../../utils/AnalyticsFunctions.js";
@@ -102,11 +103,12 @@ import SignUp from "./NewAuth/SignUp.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
-
+import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      confirmLeave: false,
       currentMetamaskWallet: {},
       lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       startTime: "",
@@ -1900,7 +1902,28 @@ class NewWelcome extends BaseReactComponent {
       }
     }
   }
-
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  handleSignOutWelcome = () => {
+    this.setState({
+      confirmLeave: false,
+      lochUser: undefined,
+      blurTable: true,
+    });
+  };
+  blurTables = () => {
+    this.setState({
+      blurTable: true,
+    });
+  };
   render() {
     if (this.state.isMobileDevice) {
       return (
@@ -1921,6 +1944,7 @@ class NewWelcome extends BaseReactComponent {
           totalPage={this.state.totalPage}
           onPageChange={this.onPageChange}
           changePageLimit={this.changePageLimit}
+          blurTables={this.blurTables}
           blurTable={this.state.blurTable}
         />
       );
@@ -2005,26 +2029,17 @@ class NewWelcome extends BaseReactComponent {
               <span
                 onClick={() => {
                   if (!this.state.blurTable) {
-                    let lochUser = getCurrentUser().id;
-
                     let slink = rowData.account;
                     let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                    if (lochUser) {
-                      const alreadyPassed =
-                        window.sessionStorage.getItem("PassedRefrenceId");
-                      if (alreadyPassed) {
-                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                      } else {
-                        shareLink = shareLink + "&refrenceId=" + lochUser;
-                      }
-                    }
-                    // SmartMoneyWalletClicked({
-                    //   session_id: getCurrentUser().id,
-                    //   email_address: getCurrentUser().email,
-                    //   wallet: slink,
-                    //   isMobile: false,
-                    // });
+                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+                    SmartMoneyWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                      isMobile: false,
+                      isWelcome: true,
+                    });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {
                     this.opneLoginModalForSmartMoney();
@@ -2369,6 +2384,15 @@ class NewWelcome extends BaseReactComponent {
 
     return (
       <div className="new-homepage">
+        {this.state.confirmLeave ? (
+          <ConfirmLeaveModal
+            show={this.state.confirmLeave}
+            history={this.props.history}
+            handleClose={this.closeConfirmLeaveModal}
+            handleSignOutWelcome={this.handleSignOutWelcome}
+            customMessage="Are you sure you want to Sign out?"
+          />
+        ) : null}
         {this.state.onboardingConnectExchangeModal ? (
           <ConnectModal
             show={this.state.onboardingConnectExchangeModal}
@@ -2454,7 +2478,8 @@ class NewWelcome extends BaseReactComponent {
                 this.state.lochUser.first_name ||
                 this.state.lochUser.last_name) ? (
                 <button
-                  className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
+                  onClick={this.openConfirmLeaveModal}
+                  className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}
                 >
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">

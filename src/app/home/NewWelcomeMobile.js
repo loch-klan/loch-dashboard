@@ -101,11 +101,14 @@ import OutsideClickHandler from "react-outside-click-handler";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import RedirectMobile from "./NewAuth/RedirectMobile.js";
+import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
+import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      confirmLeave: false,
       currentMetamaskWallet: {},
       lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       onboardingWalletAddress: [
@@ -1314,12 +1317,42 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     }
   }
-
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  handleSignOutWelcome = () => {
+    this.setState({
+      confirmLeave: false,
+      lochUser: undefined,
+    });
+    if (this.props.blurTables) {
+      this.props.blurTables();
+    }
+  };
   render() {
     const tableData = this.state.accountList;
 
     return (
       <div className="new-homepage new-homepage-mobile">
+        {/* <ConfirmLeaveModal
+          show
+          history={this.props.history}
+          handleClose={this.closeConfirmLeaveModal}
+          handleSignOutWelcome={this.handleSignOutWelcome}
+        /> */}
+        {this.state.confirmLeave ? (
+          <SmartMoneyMobileSignOutModal
+            onSignOut={this.handleSignOutWelcome}
+            onHide={this.closeConfirmLeaveModal}
+          />
+        ) : null}
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -1380,6 +1413,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 this.state.lochUser.first_name ||
                 this.state.lochUser.last_name) ? (
                 <button
+                  onClick={this.openConfirmLeaveModal}
                   className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
                   style={{ padding: "8px 12px" }}
                 >

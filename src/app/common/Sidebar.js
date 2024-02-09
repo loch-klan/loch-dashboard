@@ -308,18 +308,11 @@ function Sidebar(props) {
     handleLeave();
   };
   const handleLeave = () => {
-    const isDummy = window.sessionStorage.getItem("lochDummyUser");
-    // console.log("isDummy user", isDummy)
     MenuLeave({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (isDummy) {
-      setLeave(!leave);
-    } else {
-      setConfirmLeave(!confirmLeave);
-      // props.history.push('/welcome');
-    }
+    setConfirmLeave(!confirmLeave);
   };
   const handleGoToProfile = () => {
     let tempToken = getToken();
