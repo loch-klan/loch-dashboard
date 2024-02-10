@@ -116,20 +116,9 @@ class MobileLayout extends BaseReactComponent {
     this.setState({ showSearchIcon: true });
   };
 
+  componentDidUpdate() {}
   componentDidMount() {
     // for chain detect
-    setTimeout(() => {
-      // this.props.getAllCoins();
-      // this.props.getAllParentChains();
-      // this.props.getDetectedChainsApi(this);
-
-      let tempData = new URLSearchParams();
-      tempData.append("start", 0);
-      tempData.append("conditions", JSON.stringify([]));
-      tempData.append("limit", 50);
-      tempData.append("sorts", JSON.stringify([]));
-      this.props.getAllWalletListApi(tempData, this);
-    }, 1000);
   }
   handleShare = () => {
     Mobile_Home_Share({
@@ -339,11 +328,7 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
-    if (this.props.location.state?.noLoad === undefined) {
-      this.setState({
-        apiResponse: value,
-      });
-    }
+    console.log("Coming here");
 
     this.props.setPageFlagDefault();
   };
@@ -576,7 +561,10 @@ class MobileLayout extends BaseReactComponent {
           </div>
 
           {/* Children Holder */}
-          <div className="portfolio-mobile-layout-children">
+          <div
+            id="portfolio-mobile-layout-children-id"
+            className="portfolio-mobile-layout-children"
+          >
             <div style={{ paddingBottom: "84px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
@@ -610,11 +598,13 @@ class MobileLayout extends BaseReactComponent {
                     {/* Children */}
                     {this.props.children}
 
-                    <div className="mobileFooterContainer">
-                      <div>
-                        <Footer isMobile />
+                    {this.props.hideFooter ? null : (
+                      <div className="mobileFooterContainer">
+                        <div>
+                          <Footer isMobile />
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

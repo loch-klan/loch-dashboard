@@ -27,6 +27,7 @@ import NftMobile from "./NftMobile";
 import "./_nft.scss";
 import HandleBrokenImages from "../common/HandleBrokenImages";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
+import MobileLayout from "../layout/MobileLayout";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -92,7 +93,6 @@ class NFT extends BaseReactComponent {
 
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
       this.setState({
         isMobileDevice: true,
       });
@@ -190,6 +190,7 @@ class NFT extends BaseReactComponent {
     }
   }
   callApi = (page = START_INDEX) => {
+    console.log("No update?????????");
     this.props.updateWalletListFlag("nftPage", true);
     this.setState({
       isLoading: true,
@@ -273,7 +274,9 @@ class NFT extends BaseReactComponent {
         isLoading: false,
       });
     }
+    console.log("Count ", this.props.commonState.nftPage);
     if (!this.props.commonState.nftPage) {
+      console.log("helo?");
       this.getOtherData();
       this.callApi(this.state.currentPage || START_INDEX);
     }
@@ -474,15 +477,17 @@ class NFT extends BaseReactComponent {
     ];
     if (this.state.isMobileDevice) {
       return (
-        <NftMobile
-          isLoading={this.state.isLoading}
-          tableData={this.state.tableData}
-          currentPage={this.state.currentPage}
-          pageCount={this.props.NFTState?.total_count}
-          pageLimit={10}
-          location={this.props.location}
-          history={this.props.history}
-        />
+        <MobileLayout hideFooter history={this.props.history}>
+          <NftMobile
+            isLoading={this.state.isLoading}
+            tableData={this.state.tableData}
+            currentPage={this.state.currentPage}
+            pageCount={this.props.NFTState?.total_count}
+            pageLimit={10}
+            location={this.props.location}
+            history={this.props.history}
+          />
+        </MobileLayout>
       );
     }
     return (

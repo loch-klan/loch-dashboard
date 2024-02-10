@@ -55,7 +55,6 @@ class NFTMobile extends BaseReactComponent {
   render() {
     return (
       <div className="nft-page-mobile">
-        <NftMobileHeader />
         {this.props.isLoading ? (
           <div
             style={{
@@ -69,11 +68,7 @@ class NFTMobile extends BaseReactComponent {
             <Loading />
           </div>
         ) : (
-          <div
-            style={{
-              marginTop: "11rem",
-            }}
-          >
+          <div>
             {this.props.tableData && this.props.tableData.length > 0 ? (
               <div className="mobileSmartMoneyListContainer">
                 {this.props.tableData.map((mapData) => {

@@ -95,7 +95,6 @@ export const updateUserWalletApi = (
   setToSearchHistory
 ) => {
   return function (dispatch, getState) {
-    console.log("data is hrere", data);
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {

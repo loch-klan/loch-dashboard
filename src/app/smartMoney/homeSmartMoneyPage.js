@@ -1208,11 +1208,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout
-          isSidebarClosed={this.props.isSidebarClosed}
-          history={this.props.history}
-          yesterdayBalance={this.props.portfolioState.yesterdayBalance}
-        >
+        <MobileLayout hideFooter history={this.props.history}>
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}

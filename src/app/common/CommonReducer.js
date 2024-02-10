@@ -8,6 +8,8 @@ import {
 } from "./ActionTypes";
 
 const INITIAL_STATE = {
+  nftPage: false,
+  mobileLayout: false,
   profilePage: false,
   creditPointsBlock: false,
   isSidebarOpen: false,
@@ -73,6 +75,8 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         assetsPage: false,
         realizedGainsPage: false,
         mobilePortfolioPage: false,
+        mobileLayout: false,
+        nftPage: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {
