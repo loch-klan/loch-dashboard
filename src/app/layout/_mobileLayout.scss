@@ -2,18 +2,27 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-  width: 100vw;
-  position: absolute;
-  overflow: hidden;
-  left: 0;
-  top: 0;
+    width: 100vw;
+    position: absolute;
+    // overflow: hidden;
+    left: 0;
+    top: 0;
+
+    .portfolio-mobile-layout-wrapper{
+      position: relative;
+    }
   .mpcMobileSearch {
+    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
       0px 1px 1px rgba(0, 0, 0, 0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 
     .mpcMobileShare {
       padding-left: 1rem;
@@ -125,9 +134,14 @@
     }
   }
     .portfolio-mobile-layout-children{
-        flex-grow: 1;
+        height: 100vh;
+        padding-top: 55px;
+        padding-bottom: 84px;
     }
     .portfolio-mobile-layout-nav-footer{
+      position: fixed;
+      bottom: 0;
+      left: 0;
         height: 84px;
         width: 100%;
         background-color: white;
