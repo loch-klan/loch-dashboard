@@ -180,7 +180,37 @@ export const detectNameTag = (
   };
 };
 
-export const signIn = (ctx, data, v2 = false, resend = false) => {
+export const signUpWelcome = (ctx, data, toggleAuthModal) => {
+  return async function (dispatch, getState) {
+    preLoginInstance
+      .post("organisation/user/signup", data)
+      .then((res) => {
+        if (res.data.error) {
+          toast.error(res.data.message || "Something Went Wrong");
+        } else if (res.data.error === false) {
+          if (res?.data?.data?.is_new_user) {
+            if (toggleAuthModal) {
+              toggleAuthModal("redirect");
+            }
+          } else {
+            toast.error(
+              "User with email already exists. Please sign in using this email"
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error("Something Went Wrong");
+      });
+  };
+};
+export const signIn = (
+  ctx,
+  data,
+  v2 = false,
+  resend = false,
+  isSignup = false
+) => {
   preLoginInstance
     .post("organisation/user/send-otp", data)
     .then((res) => {
@@ -203,7 +233,11 @@ export const signIn = (ctx, data, v2 = false, resend = false) => {
         //email Valid
         EmailAddressVerified({ email_address: ctx.state.email });
         if (v2) {
-          ctx.toggleAuthModal("verify");
+          if (isSignup) {
+            ctx.toggleAuthModal("redirect");
+          } else {
+            ctx.toggleAuthModal("verify");
+          }
           if (resend) {
             toast.success("OTP sent successfully");
           }
@@ -628,9 +662,7 @@ export const createAnonymousUserApi = (
               });
             postLoginInstance
               .post("wallet/user-wallet/add-nfts", yieldData)
-              .then(() => {
-                
-              })
+              .then(() => {})
               .catch(() => {
                 console.log("Issue here");
               });

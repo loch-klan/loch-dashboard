@@ -79,6 +79,9 @@ class EditWalletExchange extends BaseReactComponent {
     //   ENS: this.state.walletAddress,
     //   blockchains_detected: blockchains,
     // });
+    if (this.props.onHide) {
+      this.props.onHide(true);
+    }
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);

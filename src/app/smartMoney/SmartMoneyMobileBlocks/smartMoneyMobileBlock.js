@@ -149,8 +149,9 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className={`inter-display-medium msmbBIAmount`}>
               <CheckboxCustomTable
                 handleOnClick={this.handleOnClick}
-                welcomePage={this.props.welcomePage}
-                isChecked={this.props.mapData.following}
+                isChecked={
+                  this.props.mapData.following && !this.props.smartMoneyBlur
+                }
                 noMargin
                 dontSelectIt={this.props.smartMoneyBlur}
               />
