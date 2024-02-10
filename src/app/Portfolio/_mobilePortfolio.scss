@@ -1,20 +1,20 @@
 @import "../../../src/assets/scss/common/_variables.scss";
 .mobilePortfolioContainer {
   // height: 100vh;
-  overflow:auto;
+  overflow: auto;
   width: 100vw;
   left: 0;
   top: 0;
   display: flex;
   flex-direction: column;
-  .mobile-header-container{
-    h4{
+  .mobile-header-container {
+    h4 {
       color: #000;
       font-size: 20px;
       font-weight: 500;
     }
-    p{
-      color: #ADADAD;
+    p {
+      color: #adadad;
       font-size: 13px;
       font-weight: 500;
     }
@@ -180,6 +180,9 @@
           .bar-graph-section {
             height: 44rem;
             min-height: 44rem;
+            .portfolio-profit-and-loss {
+              height: 88%;
+            }
           }
         }
       }
