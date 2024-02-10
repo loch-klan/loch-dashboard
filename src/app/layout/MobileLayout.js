@@ -39,6 +39,11 @@ import { detectCoin } from "../onboarding/Api";
 import { setHeaderReducer } from "../header/HeaderAction";
 import { addUserCredits } from "../profile/Api";
 import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import Footer from "../common/footer";
+import { toast } from "react-toastify";
+import TopWalletAddressList from "../header/TopWalletAddressList";
+import { getAllWalletListApi } from "../wallet/Api";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -79,7 +84,7 @@ class MobileLayout extends BaseReactComponent {
           activeIcon: MobileNavLeaderboardActive,
           inactiveIcon: MobileNavLeaderboard,
           text: "Leaderboard",
-          path: "/leaderboard",
+          path: "/home-leaderboard",
         },
         {
           activeIcon: NFTIcon,
@@ -94,6 +99,12 @@ class MobileLayout extends BaseReactComponent {
           path: "/profile",
         },
       ],
+      userWalletList: [],
+      isUpdate: 0,
+      isLoadingInsight: true,
+      isLoading: true,
+      isLoadingNet: true,
+      chainLoader: true,
     };
   }
 
@@ -105,6 +116,21 @@ class MobileLayout extends BaseReactComponent {
     this.setState({ showSearchIcon: true });
   };
 
+  componentDidMount() {
+    // for chain detect
+    setTimeout(() => {
+      // this.props.getAllCoins();
+      // this.props.getAllParentChains();
+      // this.props.getDetectedChainsApi(this);
+
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
+    }, 1000);
+  }
   handleShare = () => {
     Mobile_Home_Share({
       session_id: getCurrentUser().id,
@@ -313,6 +339,12 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
+    if (this.props.location.state?.noLoad === undefined) {
+      this.setState({
+        apiResponse: value,
+      });
+    }
+
     this.props.setPageFlagDefault();
   };
 
@@ -449,7 +481,53 @@ class MobileLayout extends BaseReactComponent {
   cancelAddingWallet = () => {};
   resetCreditPoints = () => {};
 
+  // when press go this function run
+  handleChangeList = (value) => {
+    this.setState({
+      userWalletList: value,
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0,
+      isLoadingInsight: true,
+
+      isLoading: true,
+      isLoadingNet: true,
+
+      chainLoader: true,
+    });
+  };
+
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+      toggleAddWallet: false,
+    });
+  };
+
+  async copyTextToClipboard(text) {
+    if ("clipboard" in navigator) {
+      toast.success("Link copied");
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand("copy", true, text);
+    }
+  }
+
   render() {
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <div className="portfolio-mobile-layout">
         <div className="portfolio-mobile-layout-wrapper">
@@ -496,14 +574,62 @@ class MobileLayout extends BaseReactComponent {
               </div>
             ) : null}
           </div>
+
+          {/* Children Holder */}
           <div className="portfolio-mobile-layout-children">
-            <div style={{ paddingBottom: "84px" }}>{this.props.children}</div>
+            <div style={{ paddingBottom: "84px" }}>
+              <div className="mobilePortfolioContainer">
+                <div className="mpcHomeContainer">
+                  <div className="mpcHomePage">
+                    <WelcomeCard
+                      handleShare={this.handleShare} //Done
+                      isSidebarClosed={this.props.isSidebarClosed} // done
+                      changeWalletList={this.props.handleChangeList} // done
+                      apiResponse={(e) => this.CheckApiResponseMobileLayout(e)} // done
+                      showNetworth={true}
+                      // yesterday balance
+                      yesterdayBalance={
+                        this.props?.portfolioState?.yesterdayBalance // done
+                      }
+                      assetTotal={getTotalAssetValue()} // done
+                      history={this.props.history} // done
+                      handleAddModal={this.props.handleAddModal} // done
+                      isLoading={false}
+                      handleManage={() => {}}
+                      isMobileRender
+                    />
+                    {/* <TopWalletAddressList
+                      apiResponse={(e) => this.CheckApiResponseMobileLayout(e)}
+                      handleShare={this.handleShare}
+                      // passedFollowSigninModal={this.state.followSigninModal}
+                      showUpdatesJustNowBtn
+                      // getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
+                      isMobile
+                    /> */}
+
+                    {/* Children */}
+                    {this.props.children}
+
+                    <div className="mobileFooterContainer">
+                      <div>
+                        <Footer isMobile />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Navigation Panel */}
           <div className="portfolio-mobile-layout-nav-footer">
             <div className="portfolio-mobile-layout-nav-footer-inner">
               {this.state.navItems.map((item, index) => (
                 <div
                   key={index}
+                  onClick={() => {
+                    this.props.history.push(item.path);
+                  }}
                   className={`portfolio-mobile-layout-nav-footer-inner-item ${
                     item.path == this.props.history.location.pathname
                       ? "portfolio-mobile-layout-nav-footer-inner-item-active"
@@ -578,6 +704,7 @@ class MobileLayout extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  portfolioState: state.portfolioState,
 });
 
 const mapDispatchToProps = {
@@ -586,6 +713,7 @@ const mapDispatchToProps = {
   addUserCredits,
   updateUserWalletApi,
   setPageFlagDefault,
+  getAllWalletListApi,
 };
 
 MobileLayout.propTypes = {};

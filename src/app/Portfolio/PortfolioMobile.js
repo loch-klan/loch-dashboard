@@ -647,13 +647,13 @@ class PortfolioMobile extends BaseReactComponent {
 
   render() {
     return (
-      <div className="mobilePortfolioContainer">
+      <div>
         {this.props.loader ? (
           <div className="mpLoadingContainer">
             <Loading />
           </div>
         ) : (
-          <div className="mpcHomeContainer">
+          <>
             {this.state.showPopupModal ? (
               <div className="mpcHomeFloatingContainer">
                 <div className="mpcHomeFloatingElement">
@@ -672,528 +672,408 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
               </div>
             ) : null}
-            {/* <div className="mpcMobileSearch input-noshadow-dark">
-              <div className="mpcMobileSearchInput">
-                <Image
-                  style={{
-                    opacity: this.state.showSearchIcon ? 1 : 0,
-                  }}
-                  onLoad={this.searchIconLoaded}
-                  className="mpcMobileSearchImage"
-                  src={SearchIcon}
-                />
+            <PieChart2
+              setLoader={this.props.setLoader}
+              chainLoader={this.props.chainLoader}
+              totalChainDetechted={this.state.totalChainDetechted}
+              userWalletData={
+                this.props.portfolioState &&
+                this.props.portfolioState.chainWallet &&
+                Object.keys(this.props.portfolioState.chainWallet).length > 0
+                  ? Object.values(this.props.portfolioState.chainWallet)
+                  : null
+              }
+              chainPortfolio={
+                this.props.portfolioState &&
+                this.props.portfolioState.chainPortfolio &&
+                Object.keys(this.props.portfolioState.chainPortfolio).length > 0
+                  ? Object.values(this.props.portfolioState.chainPortfolio)
+                  : null
+              }
+              allCoinList={
+                this.props.OnboardingState &&
+                this.props.OnboardingState.coinsList &&
+                Object.keys(this.props.OnboardingState.coinsList).length > 0
+                  ? Object.values(this.props.OnboardingState.coinsList)
+                  : null
+              }
+              assetTotal={this.props.getTotalAssetValue()}
+              assetPrice={
+                this.props.portfolioState.assetPrice &&
+                Object.keys(this.props.portfolioState.assetPrice).length > 0
+                  ? Object.values(this.props.portfolioState.assetPrice)
+                  : null
+              }
+              isLoading={this.props.isLoading}
+              isUpdate={this.props.isUpdate}
+              walletTotal={this.props.portfolioState.walletTotal}
+              undetectedWallet={(e) => this.props.undetectedWallet(e)}
+              getProtocolTotal={this.props.getProtocolTotal}
+              updateTimer={this.props.updateTimer}
+            />
 
-                {this.state.walletInput?.map((c, index) => (
-                  <div className="topSearchBarMobileContainer">
-                    <NewHomeInputBlock
-                      noAutofocus
-                      onGoBtnClick={this.handleAddWallet}
-                      hideMore
-                      isMobile
-                      c={c}
-                      index={index}
-                      walletInput={this.state.walletInput}
-                      handleOnChange={this.handleOnChange}
-                      onKeyDown={this.onKeyPressInput}
-                      goBtnDisabled={this.state.disableAddBtn}
-                      removeFocusOnEnter
-                    />
-                  </div>
-                ))}
-              </div>
-              {!(
-                this.state.walletInput && this.state.walletInput[0].address
-              ) ? (
-                <div className="mpcMobileShare" onClick={this.handleShare}>
-                  <Image
-                    style={{
-                      opacity: this.state.showShareIcon ? 1 : 0,
-                    }}
-                    onLoad={this.shareIconLoaded}
-                    className="mpcMobileSearchImage"
-                    src={SharePortfolioIconWhite}
-                  />
-                </div>
-              ) : null}
-            </div> */}
-            <div className="mpcHomePage">
-              <WelcomeCard
-                handleShare={this.handleShare}
-                isSidebarClosed={this.props.isSidebarClosed}
-                changeWalletList={this.props.handleChangeList}
-                apiResponse={(e) => this.props.CheckApiResponse(e)}
-                showNetworth={true}
-                // yesterday balance
-                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
-                assetTotal={this.props.getTotalAssetValue()}
-                history={this.props.history}
-                handleAddModal={this.props.handleAddModal}
-                isLoading={this.props.isLoadingNet}
-                handleManage={() => {}}
-                isMobileRender
-              />
-              <PieChart2
-                setLoader={this.props.setLoader}
-                chainLoader={this.props.chainLoader}
-                totalChainDetechted={this.state.totalChainDetechted}
-                userWalletData={
-                  this.props.portfolioState &&
-                  this.props.portfolioState.chainWallet &&
-                  Object.keys(this.props.portfolioState.chainWallet).length > 0
-                    ? Object.values(this.props.portfolioState.chainWallet)
-                    : null
-                }
-                chainPortfolio={
-                  this.props.portfolioState &&
-                  this.props.portfolioState.chainPortfolio &&
-                  Object.keys(this.props.portfolioState.chainPortfolio).length >
-                    0
-                    ? Object.values(this.props.portfolioState.chainPortfolio)
-                    : null
-                }
-                allCoinList={
-                  this.props.OnboardingState &&
-                  this.props.OnboardingState.coinsList &&
-                  Object.keys(this.props.OnboardingState.coinsList).length > 0
-                    ? Object.values(this.props.OnboardingState.coinsList)
-                    : null
-                }
-                assetTotal={this.props.getTotalAssetValue()}
-                assetPrice={
-                  this.props.portfolioState.assetPrice &&
-                  Object.keys(this.props.portfolioState.assetPrice).length > 0
-                    ? Object.values(this.props.portfolioState.assetPrice)
-                    : null
-                }
-                isLoading={this.props.isLoading}
-                isUpdate={this.props.isUpdate}
-                walletTotal={this.props.portfolioState.walletTotal}
-                undetectedWallet={(e) => this.props.undetectedWallet(e)}
-                getProtocolTotal={this.props.getProtocolTotal}
-                updateTimer={this.props.updateTimer}
-              />
-
-              <div className="mobile-portfolio-blocks">
-                <div className="section-table-toggle-mobile">
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockOneSelectedItem === 1
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockOneItem(1);
-                    }}
-                  >
-                    Assets
-                  </div>
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockThreeSelectedItem === 1 &&
-                      this.props.blockOneSelectedItem !== 1
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockOneItem(4);
-                      this.props.changeBlockThreeItem(1);
-                    }}
-                  >
-                    Yield opportunities
-                  </div>
-                </div>
-                <div className="mobile-portfolio-blocks-content">
-                  {this.props.blockOneSelectedItem === 1 ? (
-                    <div>
-                      <div
-                        className={`newHomeTableContainer newHomeTableContainerMobile ${
-                          this.props.AvgCostLoading ||
-                          this.props.tableDataCostBasis?.length < 1
-                            ? ""
-                            : "tableWatermarkOverlay"
-                        } ${
-                          this.props.intelligenceState.Average_cost_basis
-                            .length <= 10
-                            ? "newHomeTableContainerNoShowMore"
-                            : "newHomeTableContainerNoShowMore"
-                        }`}
-                      >
-                        <TransactionTable
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          message="No assets found"
-                          tableData={
-                            this.props.tableDataCostBasis
-                              ? this.props.tableDataCostBasis.slice(0, 10)
-                              : []
-                          }
-                          columnList={this.props.CostBasisColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.props.AvgCostLoading}
-                          isAnalytics="average cost basis"
-                          fakeWatermark
-                          xAxisScrollable
-                          yAxisScrollable
-                          xAxisScrollableColumnWidth={3}
-                        />
-                      </div>
-                    </div>
-                  ) : this.props.blockThreeSelectedItem === 1 ? (
-                    <div>
-                      <div
-                        className={`newHomeTableContainer newHomeTableContainerMobile ${
-                          this.props.yieldOpportunitiesTableLoading ||
-                          this.props.yieldOpportunitiesListTemp?.length < 1
-                            ? ""
-                            : "tableWatermarkOverlay"
-                        } ${
-                          this.props.yieldOpportunitiesTotalCount?.length <= 10
-                            ? "newHomeTableContainerNoShowMore"
-                            : "newHomeTableContainerNoShowMore"
-                        }`}
-                      >
-                        <TransactionTable
-                          message={"No yield opportunities found"}
-                          xAxisScrollable
-                          xAxisScrollableColumnWidth={3}
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          tableData={this.props.yieldOpportunitiesListTemp}
-                          showDataAtBottom
-                          columnList={this.props.YieldOppColumnData}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.props.yieldOpportunitiesTableLoading}
-                          fakeWatermark
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              <div className="mobile-portfolio-blocks">
-                <div className="section-table-toggle-mobile">
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockTwoSelectedItem === 1
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockTwoItem(1);
-                    }}
-                  >
-                    Flows
-                  </div>
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockTwoSelectedItem === 2
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockTwoItem(2);
-                    }}
-                  >
-                    Gas fees
-                  </div>
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockTwoSelectedItem === 3
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockTwoItem(3);
-                    }}
-                  >
-                    Counterparties
-                  </div>
-                </div>
-                <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
-                  <div
-                    className="section-table section-table-mobile"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      boxShadow: "none",
-                    }}
-                  >
-                    <div className="profit-chart profit-chart-mobile">
-                      {this.props.blockTwoSelectedItem === 1 ? (
-                        <BarGraphSection
-                          // openChartPage={() => {}}
-                          newHomeSetup
-                          disableOnLoading
-                          noSubtitleBottomPadding
-                          noSubtitleTopPadding
-                          loaderHeight={15.5}
-                          isScrollVisible={false}
-                          data={
-                            this.props.intelligenceState?.graphValue &&
-                            this.props.intelligenceState?.graphValue[0]
-                          }
-                          options={
-                            this.props.intelligenceState?.graphValue &&
-                            this.props.intelligenceState?.graphValue[1]
-                          }
-                          coinsList={this.props.OnboardingState.coinsList}
-                          showFooter={false}
-                          showBadges={false}
-                          showSwitch={false}
-                          isLoading={this.props.netFlowLoading}
-                          className={"portfolio-profit-and-loss"}
-                          isMinichart={true}
-                          ProfitLossAsset={
-                            this.props.intelligenceState.ProfitLossAsset
-                          }
-                          isSwitch
-                          isMobileGraph
-                        />
-                      ) : this.props.blockTwoSelectedItem === 2 ? (
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                          className="tableWatermarkOverlay"
-                        >
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <BarGraphSection
-                            digit={this.props.GraphDigit}
-                            isFromHome
-                            // openChartPage={() => {}}
-                            data={
-                              this.props.homeGraphFeesData &&
-                              this.props.homeGraphFeesData[0]
-                            }
-                            options={
-                              this.props.homeGraphFeesData &&
-                              this.props.homeGraphFeesData[1]
-                            }
-                            options2={
-                              this.props.homeGraphFeesData &&
-                              this.props.homeGraphFeesData[2]
-                            }
-                            isScrollVisible={false}
-                            isScroll={true}
-                            isLoading={this.props.gasFeesGraphLoading}
-                            oldBar
-                            noSubtitleBottomPadding
-                            newHomeSetup
-                            noSubtitleTopPadding
-                            floatingWatermark
-                            isMobileGraph
-                          />
-                        </div>
-                      ) : this.props.blockTwoSelectedItem === 3 ? (
-                        <>
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <BarGraphSection
-                            digit={this.props.counterGraphDigit}
-                            isFromHome
-                            // openChartPage={() => {}}
-                            data={
-                              this.props.homeCounterpartyVolumeData &&
-                              this.props.homeCounterpartyVolumeData[0]
-                            }
-                            options={
-                              this.props.homeCounterpartyVolumeData &&
-                              this.props.homeCounterpartyVolumeData[1]
-                            }
-                            options2={
-                              this.props.homeCounterpartyVolumeData &&
-                              this.props.homeCounterpartyVolumeData[2]
-                            }
-                            isScrollVisible={false}
-                            isScroll={true}
-                            isLoading={this.props.counterGraphLoading}
-                            oldBar
-                            noSubtitleBottomPadding
-                            newHomeSetup
-                            noSubtitleTopPadding
-                            floatingWatermark
-                            isMobileGraph
-                          />
-                        </>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Transactions, gas fees and insights */}
-              <div className="mobile-portfolio-blocks">
-                <div className="section-table-toggle-mobile">
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockFourSelectedItem === 1
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockFourItem(1);
-                    }}
-                  >
-                    Price Guage
-                  </div>
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockFourSelectedItem === 2
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockFourItem(2);
-                    }}
-                  >
-                    Transactions
-                  </div>
-                  <div
-                    className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                      this.props.blockFourSelectedItem === 3
-                        ? "section-table-toggle-element-selected"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      this.props.changeBlockFourItem(3);
-                    }}
-                  >
-                    Insights
-                  </div>
-                </div>
-                <div className="mobile-portfolio-blocks-content">
-                  {this.props.blockFourSelectedItem === 1 ? (
-                    <div className="mobile-portfolio-blocks-content-price-gauge">
-                      <InflowOutflowPortfolioHome
-                        hideExplainer
-                        showEth
-                        userWalletList={this.props.userWalletList}
-                        lochToken={this.props.lochToken}
-                        callChildPriceGaugeApi={
-                          this.props.callChildPriceGaugeApi
-                        }
-                        isMobileGraph
-                      />
-                    </div>
-                  ) : this.props.blockFourSelectedItem === 2 ? (
-                    <div>
-                      <div
-                        className={`newHomeTableContainer newHomeTableContainerMobile ${
-                          this.props.tableLoading ||
-                          this.props.tableData?.length < 1
-                            ? ""
-                            : "tableWatermarkOverlay"
-                        } ${
-                          this.props.totalCount <= 10
-                            ? "newHomeTableContainerNoShowMore"
-                            : "newHomeTableContainerNoShowMore"
-                        }`}
-                      >
-                        <TransactionTable
-                          xAxisScrollable
-                          xAxisScrollableColumnWidth={3}
-                          noSubtitleBottomPadding
-                          disableOnLoading
-                          isMiniversion
-                          tableData={this.props.tableData}
-                          columnList={this.props.columnList}
-                          headerHeight={60}
-                          isArrow={true}
-                          isLoading={this.props.tableLoading}
-                          addWatermark
-                        />
-                      </div>
-                    </div>
-                  ) : this.props.blockFourSelectedItem === 3 ? (
-                    <PortfolioHomeInsightsBlock
-                      history={this.props.history}
-                      updatedInsightList={this.props.updatedInsightList}
-                      insightsBlockLoading={this.props.insightsBlockLoading}
-                      isMobile
-                    />
-                  ) : null}
-                </div>
-              </div>
-              {/* <div
-                className="d-flex justify-content-between"
-                style={{
-                  marginTop: "4.8rem",
-                  alignItems: "center",
-                }}
-              >
-                <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                  NFTs
-                </h2>
+            <div className="mobile-portfolio-blocks">
+              <div className="section-table-toggle-mobile">
                 <div
-                  className="homepage-mobile-view-more"
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockOneSelectedItem === 1
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
                   onClick={() => {
-                    this.props.history.push("/nft");
+                    this.props.changeBlockOneItem(1);
                   }}
                 >
-                  View more
-                  <img src={chevronRight} alt="" />
+                  Assets
                 </div>
-              </div>{" "}
-              <div style={{ marginTop: "16px" }}>
-                {this.state.isLoadingNft ? (
-                  <div
-                    style={{
-                      height: "45vh",
-                    }}
-                  >
-                    <div className="mpLoadingContainer">
-                      <Loading />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="nft-page-mobile">
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockThreeSelectedItem === 1 &&
+                    this.props.blockOneSelectedItem !== 1
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockOneItem(4);
+                    this.props.changeBlockThreeItem(1);
+                  }}
+                >
+                  Yield opportunities
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks-content">
+                {this.props.blockOneSelectedItem === 1 ? (
+                  <div>
                     <div
-                      className="mobileSmartMoneyListContainer"
-                      style={{ padding: "0px" }}
+                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                        this.props.AvgCostLoading ||
+                        this.props.tableDataCostBasis?.length < 1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${
+                        this.props.intelligenceState.Average_cost_basis
+                          .length <= 10
+                          ? "newHomeTableContainerNoShowMore"
+                          : "newHomeTableContainerNoShowMore"
+                      }`}
                     >
-                      {this.state.nftTableData
-                        .slice(0, 3)
-                        .map((mapData, index) => {
-                          return (
-                            <NftMobileBlock
-                              data={mapData}
-                              style={{
-                                marginBottom:
-                                  index === this.state.nftTableData.length - 1
-                                    ? "0px"
-                                    : "1.5rem",
-                              }}
-                            />
-                          );
-                        })}
+                      <TransactionTable
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        message="No assets found"
+                        tableData={
+                          this.props.tableDataCostBasis
+                            ? this.props.tableDataCostBasis.slice(0, 10)
+                            : []
+                        }
+                        columnList={this.props.CostBasisColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.props.AvgCostLoading}
+                        isAnalytics="average cost basis"
+                        fakeWatermark
+                        xAxisScrollable
+                        yAxisScrollable
+                        xAxisScrollableColumnWidth={3}
+                      />
                     </div>
                   </div>
-                )}
-              </div> */}
-              <div className="mobileFooterContainer">
-                <div>
-                  <Footer isMobile />
+                ) : this.props.blockThreeSelectedItem === 1 ? (
+                  <div>
+                    <div
+                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                        this.props.yieldOpportunitiesTableLoading ||
+                        this.props.yieldOpportunitiesListTemp?.length < 1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${
+                        this.props.yieldOpportunitiesTotalCount?.length <= 10
+                          ? "newHomeTableContainerNoShowMore"
+                          : "newHomeTableContainerNoShowMore"
+                      }`}
+                    >
+                      <TransactionTable
+                        message={"No yield opportunities found"}
+                        xAxisScrollable
+                        xAxisScrollableColumnWidth={3}
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        tableData={this.props.yieldOpportunitiesListTemp}
+                        showDataAtBottom
+                        columnList={this.props.YieldOppColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.props.yieldOpportunitiesTableLoading}
+                        fakeWatermark
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+            <div className="mobile-portfolio-blocks">
+              <div className="section-table-toggle-mobile">
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockTwoSelectedItem === 1
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockTwoItem(1);
+                  }}
+                >
+                  Flows
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockTwoSelectedItem === 2
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockTwoItem(2);
+                  }}
+                >
+                  Gas fees
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockTwoSelectedItem === 3
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockTwoItem(3);
+                  }}
+                >
+                  Counterparties
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+                <div
+                  className="section-table section-table-mobile"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    boxShadow: "none",
+                  }}
+                >
+                  <div className="profit-chart profit-chart-mobile">
+                    {this.props.blockTwoSelectedItem === 1 ? (
+                      <BarGraphSection
+                        // openChartPage={() => {}}
+                        newHomeSetup
+                        disableOnLoading
+                        noSubtitleBottomPadding
+                        noSubtitleTopPadding
+                        loaderHeight={15.5}
+                        isScrollVisible={false}
+                        data={
+                          this.props.intelligenceState?.graphValue &&
+                          this.props.intelligenceState?.graphValue[0]
+                        }
+                        options={
+                          this.props.intelligenceState?.graphValue &&
+                          this.props.intelligenceState?.graphValue[1]
+                        }
+                        coinsList={this.props.OnboardingState.coinsList}
+                        showFooter={false}
+                        showBadges={false}
+                        showSwitch={false}
+                        isLoading={this.props.netFlowLoading}
+                        className={"portfolio-profit-and-loss"}
+                        isMinichart={true}
+                        ProfitLossAsset={
+                          this.props.intelligenceState.ProfitLossAsset
+                        }
+                        isSwitch
+                        isMobileGraph
+                      />
+                    ) : this.props.blockTwoSelectedItem === 2 ? (
+                      <div
+                        style={{
+                          position: "relative",
+                        }}
+                        className="tableWatermarkOverlay"
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <BarGraphSection
+                          digit={this.props.GraphDigit}
+                          isFromHome
+                          // openChartPage={() => {}}
+                          data={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[0]
+                          }
+                          options={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[1]
+                          }
+                          options2={
+                            this.props.homeGraphFeesData &&
+                            this.props.homeGraphFeesData[2]
+                          }
+                          isScrollVisible={false}
+                          isScroll={true}
+                          isLoading={this.props.gasFeesGraphLoading}
+                          oldBar
+                          noSubtitleBottomPadding
+                          newHomeSetup
+                          noSubtitleTopPadding
+                          floatingWatermark
+                          isMobileGraph
+                        />
+                      </div>
+                    ) : this.props.blockTwoSelectedItem === 3 ? (
+                      <>
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <BarGraphSection
+                          digit={this.props.counterGraphDigit}
+                          isFromHome
+                          // openChartPage={() => {}}
+                          data={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[0]
+                          }
+                          options={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[1]
+                          }
+                          options2={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[2]
+                          }
+                          isScrollVisible={false}
+                          isScroll={true}
+                          isLoading={this.props.counterGraphLoading}
+                          oldBar
+                          noSubtitleBottomPadding
+                          newHomeSetup
+                          noSubtitleTopPadding
+                          floatingWatermark
+                          isMobileGraph
+                        />
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+
+            {/* Transactions, gas fees and insights */}
+            <div className="mobile-portfolio-blocks">
+              <div className="section-table-toggle-mobile">
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockFourSelectedItem === 1
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockFourItem(1);
+                  }}
+                >
+                  Price Guage
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockFourSelectedItem === 2
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockFourItem(2);
+                  }}
+                >
+                  Transactions
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                    this.props.blockFourSelectedItem === 3
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockFourItem(3);
+                  }}
+                >
+                  Insights
+                </div>
+              </div>
+              <div className="mobile-portfolio-blocks-content">
+                {this.props.blockFourSelectedItem === 1 ? (
+                  <div className="mobile-portfolio-blocks-content-price-gauge">
+                    <InflowOutflowPortfolioHome
+                      hideExplainer
+                      showEth
+                      userWalletList={this.props.userWalletList}
+                      lochToken={this.props.lochToken}
+                      callChildPriceGaugeApi={this.props.callChildPriceGaugeApi}
+                      isMobileGraph
+                    />
+                  </div>
+                ) : this.props.blockFourSelectedItem === 2 ? (
+                  <div>
+                    <div
+                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                        this.props.tableLoading ||
+                        this.props.tableData?.length < 1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${
+                        this.props.totalCount <= 10
+                          ? "newHomeTableContainerNoShowMore"
+                          : "newHomeTableContainerNoShowMore"
+                      }`}
+                    >
+                      <TransactionTable
+                        xAxisScrollable
+                        xAxisScrollableColumnWidth={3}
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        tableData={this.props.tableData}
+                        columnList={this.props.columnList}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.props.tableLoading}
+                        addWatermark
+                      />
+                    </div>
+                  </div>
+                ) : this.props.blockFourSelectedItem === 3 ? (
+                  <PortfolioHomeInsightsBlock
+                    history={this.props.history}
+                    updatedInsightList={this.props.updatedInsightList}
+                    insightsBlockLoading={this.props.insightsBlockLoading}
+                    isMobile
+                  />
+                ) : null}
+              </div>
+            </div>
+            {/* <div className="mobileFooterContainer">
+              <div>
+                <Footer isMobile />
+              </div>
+            </div> */}
+          </>
         )}
       </div>
     );
