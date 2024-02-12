@@ -202,7 +202,7 @@ class WatchListPageMobile extends BaseReactComponent {
 
               this.props.removeAddressFromWatchList(
                 data,
-                this,
+                this.props.parentCtx,
                 rowData.address,
                 rowData.nameTag
               );
@@ -224,7 +224,7 @@ class WatchListPageMobile extends BaseReactComponent {
       },
     ];
     return (
-      <div>
+      <div className=" watchlist-mobile">
         <div className="mobile-header-container">
           <h4>Following</h4>
           <p>Addresses you follow</p>
@@ -301,7 +301,7 @@ class WatchListPageMobile extends BaseReactComponent {
         ) : (
           <div
             style={{
-              backgroundColor: "white",
+              // backgroundColor: "white",
               marginTop: "2rem",
               borderRadius: "1.2rem",
             }}
@@ -315,6 +315,15 @@ class WatchListPageMobile extends BaseReactComponent {
               isMiniVersion
               message="Follow wallet addresses or ENS names effortlessly."
               headerHeight={60}
+              paginationNew
+              totalPage={this.props.totalPage}
+              history={this.props.history}
+              location={this.props.location}
+              page={this.props.currentPage}
+              onPageChange={this.props.onPageChange}
+              minimalPagination
+              hidePaginationRecords
+              currentPage={this.props.page}
             />
           </div>
         )}

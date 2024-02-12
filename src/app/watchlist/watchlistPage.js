@@ -786,6 +786,12 @@ class WatchListPage extends BaseReactComponent {
             onValidSubmit={this.onValidSubmit}
             removeAddressFromWatchList={this.props.removeAddressFromWatchList}
             parentCtx={this}
+            totalPage={this.state.totalPage}
+            history={this.props.history}
+            location={this.props.location}
+            page={this.state.currentPage}
+            onPageChange={this.onPageChange}
+            currentPage={this.state.currentPage}
           />
         </MobileLayout>
       );
