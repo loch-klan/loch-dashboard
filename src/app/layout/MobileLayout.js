@@ -639,51 +639,6 @@ class MobileLayout extends BaseReactComponent {
                   </span>
                 </div>
               ))}
-              {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={InActiveHomeIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Home
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={TwoPeopleIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Following
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={InactiveSmartMoneySidebarIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Leaderboard
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={NFTIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                NFT
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={ProfileIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Profile
-              </span>
-            </div> */}
             </div>
           </div>
         </div>

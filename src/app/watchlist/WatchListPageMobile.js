@@ -290,9 +290,10 @@ class WatchListPageMobile extends BaseReactComponent {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              height: "69rem",
+              height: "70rem",
               background: "white",
               borderRadius: "1.2rem",
+              marginTop: "2rem",
             }}
           >
             <Loading />
@@ -312,7 +313,7 @@ class WatchListPageMobile extends BaseReactComponent {
               tableSortOpt={this.props.tableSortOpt}
               handleSort={this.props.handleSort}
               isMiniVersion
-              message="Follow wallet addresses or ENS names."
+              message="Follow wallet addresses or ENS names effortlessly."
               headerHeight={60}
             />
           </div>
