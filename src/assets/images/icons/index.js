@@ -96,3 +96,7 @@ export { default as MobileNavLeaderboardActive } from "./mobile-nav-leaderboard-
 export { default as MobileNavProfile } from "./mobile-nav-profile.svg";
 export { default as MobileNavProfileActive } from "./mobile-nav-profile-active.svg";
 export { default as MobileNavNFT } from "./mobile-nav-nft.svg";
+export { default as FollowingSidebarIcon } from "./FollowingSidebar.svg";
+export { default as ProfileSidebarIcon } from "./ProfileSidebar.svg";
+export { default as LeaderboardSidebarIcon } from "./LeaderboardSidebar.svg";
+export { default as HomeSidebarIcon } from "./HomeSidebar.svg";
