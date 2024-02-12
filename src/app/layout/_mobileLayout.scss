@@ -1,16 +1,16 @@
-.portfolio-mobile-layout{
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-    position: absolute;
-    // overflow: hidden;
-    left: 0;
-    top: 0;
+.portfolio-mobile-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  // overflow: hidden;
+  left: 0;
+  top: 0;
 
-    .portfolio-mobile-layout-wrapper{
-      position: relative;
-    }
+  .portfolio-mobile-layout-wrapper {
+    position: relative;
+  }
   .mpcMobileSearch {
     z-index: 999;
     display: flex;
@@ -133,53 +133,55 @@
       margin-right: 0.5rem;
     }
   }
-    .portfolio-mobile-layout-children{
-        height: 100vh;
-        padding-top: 55px;
-        padding-bottom: 84px;
-    }
-    .portfolio-mobile-layout-nav-footer{
-      position: fixed;
-      bottom: 0;
-      left: 0;
-        height: 84px;
-        width: 100%;
-        background-color: white;
-        box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.04), 0px -4px 10px 0px rgba(0, 0, 0, 0.04);
-        border-top: 1px solid var( rgba(229, 229, 230, 0.50));
+  .portfolio-mobile-layout-children {
+    height: 100vh;
+    padding-top: 55px;
+    padding-bottom: 84px;
+  }
+  .portfolio-mobile-layout-nav-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 84px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.04),
+      0px -4px 10px 0px rgba(0, 0, 0, 0.04);
+    border-top: 1px solid var(rgba(229, 229, 230, 0.5));
 
-        .portfolio-mobile-layout-nav-footer-inner{
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 24px;
-            align-items: start;
-            height: 100%;
-            .portfolio-mobile-layout-nav-footer-inner-item{
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-                align-items: center;
-                justify-content: center;
-                .portfolio-mobile-layout-nav-footer-inner-item-image{
-                    height: 24px;
-                    width: 24px;
-                }
-                .portfolio-mobile-layout-nav-footer-inner-item-icon-active{
-                    filter: brightness(0);
-                }
-                .portfolio-mobile-layout-nav-footer-inner-item-text{
-                    font-size: 10px;
-                    font-weight: 600;
-                    line-height: 120%;
-                    color: #B0B1B3;
-                }
-                &.portfolio-mobile-layout-nav-footer-inner-item-active{
-                    .portfolio-mobile-layout-nav-footer-inner-item-text{
-                        color: #19191a;
-                    }
-                }
-            }
+    .portfolio-mobile-layout-nav-footer-inner {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      align-items: center;
+      height: 100%;
+      .portfolio-mobile-layout-nav-footer-inner-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+
+        .portfolio-mobile-layout-nav-footer-inner-item-image {
+          height: 24px;
+          width: 24px;
         }
+        .portfolio-mobile-layout-nav-footer-inner-item-icon-active {
+          filter: brightness(0);
+        }
+        .portfolio-mobile-layout-nav-footer-inner-item-text {
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 120%;
+          color: #b0b1b3;
+        }
+        &.portfolio-mobile-layout-nav-footer-inner-item-active {
+          .portfolio-mobile-layout-nav-footer-inner-item-text {
+            color: #19191a;
+          }
+        }
+      }
     }
+  }
 }

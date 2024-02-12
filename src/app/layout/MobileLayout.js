@@ -24,7 +24,11 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
+import {
+  setPageFlagDefault,
+  updateUserWalletApi,
+  updateWalletListFlag,
+} from "../common/Api";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
@@ -109,7 +113,14 @@ class MobileLayout extends BaseReactComponent {
     this.setState({ showSearchIcon: true });
   };
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    if (!this.props.commonState?.mobileLayout) {
+      this.props.updateWalletListFlag("mobileLayout", true);
+      this.setState({
+        lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      });
+    }
+  }
   componentDidMount() {
     // for chain detect
   }
@@ -660,51 +671,6 @@ class MobileLayout extends BaseReactComponent {
                   </div>
                 );
               })}
-              {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={InActiveHomeIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Home
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={TwoPeopleIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Following
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={InactiveSmartMoneySidebarIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Leaderboard
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={NFTIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                NFT
-              </span>
-            </div>
-            <div className="portfolio-mobile-layout-nav-footer-inner-item">
-              <Image
-                className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                src={ProfileIcon}
-              />
-              <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                Profile
-              </span>
-            </div> */}
             </div>
           </div>
         </div>
@@ -716,6 +682,7 @@ class MobileLayout extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.portfolioState,
+  commonState: state.CommonState,
 });
 
 const mapDispatchToProps = {
@@ -725,6 +692,7 @@ const mapDispatchToProps = {
   updateUserWalletApi,
   setPageFlagDefault,
   getAllWalletListApi,
+  updateWalletListFlag,
 };
 
 MobileLayout.propTypes = {};

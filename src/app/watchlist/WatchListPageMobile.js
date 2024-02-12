@@ -293,7 +293,7 @@ class WatchListPageMobile extends BaseReactComponent {
               height: "70rem",
               background: "white",
               borderRadius: "1.2rem",
-              marginTop: "2rem",
+              margin: "2rem 0rem",
             }}
           >
             <Loading />
@@ -301,7 +301,7 @@ class WatchListPageMobile extends BaseReactComponent {
         ) : (
           <div
             style={{
-              // backgroundColor: "white",
+              backgroundColor: this.props?.tableData.length > 0 ? "" : "white",
               marginTop: "2rem",
               borderRadius: "1.2rem",
             }}

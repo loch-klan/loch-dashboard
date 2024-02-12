@@ -190,7 +190,6 @@ class NFT extends BaseReactComponent {
     }
   }
   callApi = (page = START_INDEX) => {
-    console.log("No update?????????");
     this.props.updateWalletListFlag("nftPage", true);
     this.setState({
       isLoading: true,
@@ -274,9 +273,7 @@ class NFT extends BaseReactComponent {
         isLoading: false,
       });
     }
-    console.log("Count ", this.props.commonState.nftPage);
     if (!this.props.commonState.nftPage) {
-      console.log("helo?");
       this.getOtherData();
       this.callApi(this.state.currentPage || START_INDEX);
     }
