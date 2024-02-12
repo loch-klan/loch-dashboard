@@ -305,22 +305,20 @@ class WatchListPage extends BaseReactComponent {
     }
   }
 
-  onValidSubmit = () => {
+  onValidSubmit = (val = this.state.search) => {
     if (
       (this.state.tableData && this.state.tableData.length > 0) ||
-      this.state.search === ""
+      val === ""
     ) {
       // Search Here
       WatchlistSearch({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        search: this.state.search,
+        search: val,
       });
       this.updateTimer();
       this.setState({
-        condition: [
-          { key: "SEARCH_BY_WALLET_ADDRESS", value: this.state.search },
-        ],
+        condition: [{ key: "SEARCH_BY_WALLET_ADDRESS", value: val }],
       });
     }
   };
@@ -868,7 +866,7 @@ class WatchListPage extends BaseReactComponent {
             />
 
             <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
+              <Form onValidSubmit={() => this.onValidSubmit(this.state.search)}>
                 <div
                   style={{
                     display: "flex",

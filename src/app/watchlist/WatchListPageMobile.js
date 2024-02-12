@@ -23,8 +23,12 @@ import Loading from "../common/Loading";
 class WatchListPageMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      search: "",
+    };
   }
+
+  onChangeMethod = () => {};
 
   render() {
     const columnList = [
@@ -184,9 +188,7 @@ class WatchListPageMobile extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Delete
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4"></span>
           </div>
         ),
         dataKey: "deleteCol",
@@ -231,7 +233,9 @@ class WatchListPageMobile extends BaseReactComponent {
           className="combine-search-prefix-icon"
           style={{ marginTop: "1.2rem" }}
         >
-          <Form onValidSubmit={this.props.onValidSubmit}>
+          <Form
+            onValidSubmit={() => this.props.onValidSubmit(this.state.search)}
+          >
             <div
               style={{
                 display: "flex",
@@ -257,10 +261,10 @@ class WatchListPageMobile extends BaseReactComponent {
                   <Image src={searchIcon} className="search-icon" />
                   <div className="form-groupContainer">
                     <FormElement
-                      valueLink={this.props.parentCtx.linkState(
-                        this.props.parentCtx,
+                      valueLink={this.linkState(
+                        this,
                         "search",
-                        this.props.onChangeMethod
+                        this.onChangeMethod
                       )}
                       control={{
                         type: CustomTextControl,
