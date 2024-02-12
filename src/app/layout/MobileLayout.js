@@ -1,54 +1,47 @@
-import { connect } from "react-redux";
-import { BaseReactComponent } from "../../utils/form";
-import "./_mobileLayout.scss";
-import NewHomeInputBlock from "../home/NewHomeInputBlock";
-import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
-import {
-  InactiveSmartMoneySidebarIcon,
-  ActiveSmartMoneySidebarIcon,
-  MacIcon,
-  SharePortfolioIconWhite,
-  TwoPeopleIcon,
-  MobileNavHomeActive,
-  MobileNavHome,
-  MobileNavFollowActive,
-  MobileNavFollow,
-  MobileNavLeaderboardActive,
-  MobileNavLeaderboard,
-  MobileNavProfileActive,
-  MobileNavProfile,
-  MobileNavNFT,
-} from "../../assets/images/icons";
-import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
-import ActiveHomeIcon from "../../image/HomeIcon.svg";
-import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
-import {
-  default as ActiveProfileIcon,
-  default as SignInIcon,
-} from "../../assets/images/icons/ActiveProfileIcon.svg";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import {
+  MobileNavFollow,
+  MobileNavFollowActive,
+  MobileNavHome,
+  MobileNavHomeActive,
+  MobileNavLeaderboard,
+  MobileNavLeaderboardActive,
+  MobileNavNFT,
+  MobileNavProfile,
+  MobileNavProfileActive,
+  SharePortfolioIconWhite,
+} from "../../assets/images/icons";
+import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { detectCoin } from "../onboarding/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
-import { addUserCredits } from "../profile/Api";
-import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
 import Footer from "../common/footer";
-import { toast } from "react-toastify";
-import TopWalletAddressList from "../header/TopWalletAddressList";
+import { setHeaderReducer } from "../header/HeaderAction";
+import NewHomeInputBlock from "../home/NewHomeInputBlock";
+import { detectCoin } from "../onboarding/Api";
+import { addUserCredits } from "../profile/Api";
+import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
+import "./_mobileLayout.scss";
+import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      confirmLeave: false,
+
       walletInput: [
         {
           id: `wallet1`,
@@ -93,10 +86,10 @@ class MobileLayout extends BaseReactComponent {
           path: "/nft",
         },
         {
-          activeIcon: MobileNavProfileActive,
+          activeIcon: MobileNavProfile,
           inactiveIcon: MobileNavProfile,
-          text: "Profile",
-          path: "/profile",
+          text: "Sign Out",
+          path: "/",
         },
       ],
       userWalletList: [],
@@ -328,8 +321,6 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
-    console.log("Coming here");
-
     this.props.setPageFlagDefault();
   };
 
@@ -495,7 +486,22 @@ class MobileLayout extends BaseReactComponent {
       return document.execCommand("copy", true, text);
     }
   }
-
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  signOutFun = () => {
+    deleteToken(true);
+    this.props.setPageFlagDefault();
+    this.closeConfirmLeaveModal();
+    this.props.history.push("/");
+  };
   render() {
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
@@ -514,7 +520,13 @@ class MobileLayout extends BaseReactComponent {
       return 0;
     };
     return (
-      <div className="portfolio-mobile-layout">
+      <div className="portfolio-mobile-layout mobileSmartMoneyPage">
+        {this.state.confirmLeave ? (
+          <SmartMoneyMobileSignOutModal
+            onSignOut={this.signOutFun}
+            onHide={this.closeConfirmLeaveModal}
+          />
+        ) : null}
         <div className="portfolio-mobile-layout-wrapper">
           {/* Search Bar */}
           <div className="mpcMobileSearch input-noshadow-dark">
@@ -614,31 +626,40 @@ class MobileLayout extends BaseReactComponent {
           {/* Navigation Panel */}
           <div className="portfolio-mobile-layout-nav-footer">
             <div className="portfolio-mobile-layout-nav-footer-inner">
-              {this.state.navItems.map((item, index) => (
-                <div
-                  key={index}
-                  onClick={() => {
-                    this.props.history.push(item.path);
-                  }}
-                  className={`portfolio-mobile-layout-nav-footer-inner-item ${
-                    item.path == this.props.history.location.pathname
-                      ? "portfolio-mobile-layout-nav-footer-inner-item-active"
-                      : ""
-                  }`}
-                >
-                  <Image
-                    className="portfolio-mobile-layout-nav-footer-inner-item-image"
-                    src={
+              {this.state.navItems.map((item, index) => {
+                if (item.text === "Sign Out" && !this.state.lochUserLocal) {
+                  return null;
+                }
+                return (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      if (item.text === "Sign Out") {
+                        this.openConfirmLeaveModal();
+                      } else {
+                        this.props.history.push(item.path);
+                      }
+                    }}
+                    className={`portfolio-mobile-layout-nav-footer-inner-item ${
                       item.path === this.props.history.location.pathname
-                        ? item.activeIcon
-                        : item.inactiveIcon
-                    }
-                  />
-                  <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
-                    {item.text}
-                  </span>
-                </div>
-              ))}
+                        ? "portfolio-mobile-layout-nav-footer-inner-item-active"
+                        : ""
+                    }`}
+                  >
+                    <Image
+                      className="portfolio-mobile-layout-nav-footer-inner-item-image"
+                      src={
+                        item.path === this.props.history.location.pathname
+                          ? item.activeIcon
+                          : item.inactiveIcon
+                      }
+                    />
+                    <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
+                      {item.text}
+                    </span>
+                  </div>
+                );
+              })}
               {/* <div className="portfolio-mobile-layout-nav-footer-inner-item">
               <Image
                 className="portfolio-mobile-layout-nav-footer-inner-item-image"

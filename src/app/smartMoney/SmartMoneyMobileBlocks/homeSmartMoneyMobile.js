@@ -157,10 +157,9 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70vh",
-              paddingTop: "9rem",
               backgroundColor: "white",
               borderRadius: "1rem",
-              marginTop: "1.5rem",
+              margin: "1.5rem 0rem",
             }}
           >
             <Loading />
