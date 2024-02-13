@@ -32,7 +32,7 @@ export default function CoinChip(props) {
                 }
           }
         />
-      ) : (
+      ) : props.hideNameWithouthImage ? null : (
         <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
           {props.coin_code ? props.coin_code : "-"}
         </div>
