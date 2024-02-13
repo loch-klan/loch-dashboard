@@ -18,7 +18,12 @@ import { mobileCheck } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { GetAllPlan, getUser, updateWalletListFlag } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
 import TransactionTable from "../intelligence/TransactionTable";
@@ -352,6 +357,7 @@ class NFT extends BaseReactComponent {
         apiResponse: value,
       });
     }
+
     this.props.setPageFlagDefault();
   };
   handleShare = () => {
@@ -583,6 +589,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   getAllWalletListApi,
+  setPageFlagDefault,
 };
 
 NFT.propTypes = {};
