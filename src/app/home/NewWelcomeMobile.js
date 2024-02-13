@@ -1336,6 +1336,22 @@ class NewWelcomeMobile extends BaseReactComponent {
       this.props.blurTables();
     }
   };
+  onLeaderboardWalletClick = (passedAccount) => {
+    this.setState(
+      {
+        initialInput: true,
+      },
+      () => {
+        const fakeOnChange = {
+          target: {
+            name: "wallet1",
+            value: passedAccount,
+          },
+        };
+        this.handleOnChange(fakeOnChange);
+      }
+    );
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1690,6 +1706,9 @@ class NewWelcomeMobile extends BaseReactComponent {
                               }
                               smartMoneyBlur={this.props.blurTable}
                               welcomePage
+                              onLeaderboardWalletClick={
+                                this.onLeaderboardWalletClick
+                              }
                             />
                           );
                         })}

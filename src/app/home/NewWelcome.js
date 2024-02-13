@@ -2029,18 +2029,25 @@ class NewWelcome extends BaseReactComponent {
               <span
                 onClick={() => {
                   if (!this.state.blurTable) {
-                    let slink = rowData.account;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
-
                     SmartMoneyWalletClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
-                      wallet: slink,
+                      wallet: rowData.account,
                       isMobile: false,
                       isWelcome: true,
                     });
-                    window.open(shareLink, "_blank", "noreferrer");
+                    this.setState({
+                      initialInput: true,
+                    },() => { 
+                      const fakeOnChange = {
+                        target: {
+                          name: "wallet1",
+                          value: rowData.account,
+                        },
+                      };
+                      this.handleOnChange(fakeOnChange);
+                     });
+                    
                   } else {
                     this.opneLoginModalForSmartMoney();
                   }
