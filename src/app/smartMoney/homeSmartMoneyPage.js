@@ -78,6 +78,8 @@ import SmartMoneyFaqModal from "./smartMoneyFaqModal.js";
 import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 
 import "./_smartMoney.scss";
+import MobileLayout from "../layout/MobileLayout.js";
+import HomeSmartMoneyMobile from "./SmartMoneyMobileBlocks/homeSmartMoneyMobile.js";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -250,9 +252,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -741,6 +743,18 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       return document.execCommand("copy", true, text);
     }
   };
+  hideAllModals = () => {
+    this.setState({
+      mobilePopupModal: false,
+      signInModal: false,
+      signUpModal: false,
+      faqModal: false,
+      howItWorksModal: false,
+      showSignOutModal: false,
+      showWithLogin: false,
+      addSmartMoneyAddressModal: false,
+    });
+  };
   handleShare = () => {
     SmartMoneyShare({
       session_id: getCurrentUser().id,
@@ -1192,200 +1206,233 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       },
     ];
 
-    return (
-      <>
-        {/* topbar */}
-        <div className="portfolio-page-section">
-          <div
-            className="portfolio-container page"
-            style={{ overflow: "visible" }}
-          >
-            <div className="portfolio-section">
-              <WelcomeCard
-                handleShare={this.handleShare}
-                isSidebarClosed={this.props.isSidebarClosed}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                // history
-                history={this.props.history}
-                // add wallet address modal
-                updateTimer={this.updateTimer}
-                handleAddModal={this.handleAddModal}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="history-table-section m-t-80">
-          <div className="history-table homeSmartMoneyPage page">
-            {this.state.showSignOutModal ? (
-              <ConformSmartMoneyLeaveModal
-                show={this.state.showSignOutModal}
-                history={this.props.history}
-                handleClose={this.closeSignOutModal}
-                handleYes={this.signOutFun}
-              />
-            ) : null}
-            {this.state.faqModal ? (
-              <SmartMoneyFaqModal
-                show={this.state.faqModal}
-                onHide={this.hideFaqModal}
-                history={this.props.history}
-              />
-            ) : null}
-            {this.state.signInModal ? (
-              <AuthSmartMoneyModal
-                hideOnblur
-                showHiddenError
-                modalAnimation={this.state.signInModalAnimation}
-                show={this.state.signInModal}
-                onHide={this.hideSignInSignUpModal}
-                history={this.props.history}
-                modalType={"create_account"}
-                iconImage={SignInIcon}
-                hideSkip={true}
-                title="Sign in"
-                description={
-                  this.state.showClickSignInText
-                    ? "Sign in to access the smartest money on-chain"
-                    : "Get right back into your account"
-                }
-                stopUpdate={true}
-                tracking="Sign in button"
-                goToSignUp={this.openSignUpModal}
-                showClickSignInText
-              />
-            ) : null}
-            {this.state.signUpModal ? (
-              <ExitSmartMoneyOverlay
-                hideOnblur
-                showHiddenError
-                modalAnimation={false}
-                show={this.state.signUpModal}
-                onHide={this.hideSignInSignUpModal}
-                history={this.props.history}
-                modalType={"exitOverlay"}
-                handleRedirection={this.handleSignUpRedirection}
-                signup={true}
-                goToSignIn={this.showSignInModal}
-                fromInsideHome
-              />
-            ) : null}
-            {this.state.howItWorksModal ? (
-              <SmartMoneyHowItWorksModal
-                show={this.state.howItWorksModal}
-                onHide={this.hideHowItWorksModal}
-                history={this.props.history}
-              />
-            ) : null}
-            {this.state.addSmartMoneyAddressModal ? (
-              <AddSmartMoneyAddressesModal
-                show={this.state.addSmartMoneyAddressModal}
-                onHide={this.hideAddSmartMoneyAddresses}
-                history={this.props.history}
-                signInVar={this.state.showWithLogin}
-                blurTable={this.state.blurTable}
-                fromInsideHome
-              />
-            ) : null}
-            {/* <Button onClick={this.loginFunction}>Login</Button>
-            <Button onClick={this.signUpFunction}>Sign up</Button> */}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                from="transaction history"
-              />
-            )}
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
-                history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="treansaction history"
-              />
-            )}
+    if (mobileCheck()) {
+      return (
+        <MobileLayout hideAddresses hideFooter history={this.props.history}>
+          <HomeSmartMoneyMobile
+            accountList={this.state.accountList}
+            currency={this.state.currency}
+            handleFollowUnfollow={this.handleFollowUnfollow}
+            openSignInOnclickModal={this.openSignInOnclickModal}
+            blurTable={this.state.blurTable}
+            history={this.props.history}
+            location={this.props.location}
+            currentPage={this.state.currentPage}
+            pageLimit={this.state.pageLimit}
+            totalPage={this.state.totalPage}
+            changePageLimit={this.changePageLimit}
+            onPageChange={this.onPageChange}
+            smartMoneyBlur={this.state.blurTable}
+            signInModal={this.state.signInModal}
+            hideAllModals={this.hideAllModals} //Not present
+            showClickSignInText={this.state.showClickSignInText}
+            addAddressModal={this.state.addSmartMoneyAddressModal}
+            howItWorksModal={this.state.howItWorksModal}
+            faqModal={this.state.faqModal}
+            signOutModal={this.state.showSignOutModal}
+            signOutFun={this.openSignOutModal} //not present]
+            showFaqModal={this.showFaqModal}
+            showHowItWorksModal={this.showHowItWorksModal}
+            showAddAddressModal={this.showAddSmartMoneyAddresses}
+            isLoading={this.state.tableLoading}
+          />
+        </MobileLayout>
+      );
+    } else
+      return (
+        <>
+          {/* topbar */}
+          <div className="portfolio-page-section">
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                minWidth: "85rem",
-              }}
+              className="portfolio-container page"
+              style={{ overflow: "visible" }}
             >
-              <div
-                style={{
-                  minWidth: "0",
-                }}
-              >
-                <PageHeader
-                  title="Loch’s Leaderboard"
-                  subTitle="Sorted by net worth, pnl, and flows"
-                  currentPage={"home-leaderboard"}
+              <div className="portfolio-section">
+                <WelcomeCard
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  // history
+                  history={this.props.history}
+                  // add wallet address modal
                   updateTimer={this.updateTimer}
+                  handleAddModal={this.handleAddModal}
                 />
               </div>
-              <HomeSmartMoneyHeader
-                openAddAddressModal={this.showAddSmartMoneyAddresses}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                // history
-                history={this.props.history}
-                // add wallet address modal
-                handleAddModal={this.handleAddModal}
-                hideButton={true}
-                onSignInClick={this.showSignInModal}
-                blurTable={this.state.blurTable}
-                signOutFun={this.openSignOutModal}
-                showFaqModal={this.showFaqModal}
-                showHowItWorksModal={this.showHowItWorksModal}
-              />
             </div>
-            <div style={{ paddingBottom: "2rem" }}>
-              <div className="transaction-history-table">
-                {this.state.tableLoading ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "69rem",
-                    }}
-                  >
-                    <Loading />
-                  </div>
-                ) : (
-                  <div className="smartMoneyTable">
-                    <TransactionTable
-                      openSignInOnclickModal={this.openSignInOnclickModal}
-                      smartMoneyBlur={this.state.blurTable}
-                      blurButtonClick={this.showAddSmartMoneyAddresses}
-                      minimalPagination
-                      noSubtitleBottomPadding
-                      tableData={tableData}
-                      columnList={columnList}
-                      message={"No accounts found"}
-                      totalPage={this.state.totalPage}
-                      history={this.props.history}
-                      location={this.props.location}
-                      page={this.state.currentPage}
-                      tableLoading={this.state.tableLoading}
-                      onPageChange={this.onPageChange}
-                      pageLimit={this.state.pageLimit}
-                      changePageLimit={this.changePageLimit}
-                      addWatermark
-                      className={this.state.blurTable ? "noScroll" : ""}
-                      onBlurSignInClick={this.showSignInModal}
-                    />
-                    {/* <div className="ShowDust">
+          </div>
+          <div className="history-table-section m-t-80">
+            <div className="history-table homeSmartMoneyPage page">
+              {this.state.showSignOutModal ? (
+                <ConformSmartMoneyLeaveModal
+                  show={this.state.showSignOutModal}
+                  history={this.props.history}
+                  handleClose={this.closeSignOutModal}
+                  handleYes={this.signOutFun}
+                />
+              ) : null}
+              {this.state.faqModal ? (
+                <SmartMoneyFaqModal
+                  show={this.state.faqModal}
+                  onHide={this.hideFaqModal}
+                  history={this.props.history}
+                />
+              ) : null}
+              {this.state.signInModal ? (
+                <AuthSmartMoneyModal
+                  hideOnblur
+                  showHiddenError
+                  modalAnimation={this.state.signInModalAnimation}
+                  show={this.state.signInModal}
+                  onHide={this.hideSignInSignUpModal}
+                  history={this.props.history}
+                  modalType={"create_account"}
+                  iconImage={SignInIcon}
+                  hideSkip={true}
+                  title="Sign in"
+                  description={
+                    this.state.showClickSignInText
+                      ? "Sign in to access the smartest money on-chain"
+                      : "Get right back into your account"
+                  }
+                  stopUpdate={true}
+                  tracking="Sign in button"
+                  goToSignUp={this.openSignUpModal}
+                  showClickSignInText
+                />
+              ) : null}
+              {this.state.signUpModal ? (
+                <ExitSmartMoneyOverlay
+                  hideOnblur
+                  showHiddenError
+                  modalAnimation={false}
+                  show={this.state.signUpModal}
+                  onHide={this.hideSignInSignUpModal}
+                  history={this.props.history}
+                  modalType={"exitOverlay"}
+                  handleRedirection={this.handleSignUpRedirection}
+                  signup={true}
+                  goToSignIn={this.showSignInModal}
+                  fromInsideHome
+                />
+              ) : null}
+              {this.state.howItWorksModal ? (
+                <SmartMoneyHowItWorksModal
+                  show={this.state.howItWorksModal}
+                  onHide={this.hideHowItWorksModal}
+                  history={this.props.history}
+                />
+              ) : null}
+              {this.state.addSmartMoneyAddressModal ? (
+                <AddSmartMoneyAddressesModal
+                  show={this.state.addSmartMoneyAddressModal}
+                  onHide={this.hideAddSmartMoneyAddresses}
+                  history={this.props.history}
+                  signInVar={this.state.showWithLogin}
+                  blurTable={this.state.blurTable}
+                  fromInsideHome
+                />
+              ) : null}
+              {/* <Button onClick={this.loginFunction}>Login</Button>
+            <Button onClick={this.signUpFunction}>Sign up</Button> */}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="transaction history"
+                />
+              )}
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.sessionStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="treansaction history"
+                />
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  minWidth: "85rem",
+                }}
+              >
+                <div
+                  style={{
+                    minWidth: "0",
+                  }}
+                >
+                  <PageHeader
+                    title="Loch’s Leaderboard"
+                    subTitle="Sorted by net worth, pnl, and flows"
+                    currentPage={"home-leaderboard"}
+                    updateTimer={this.updateTimer}
+                  />
+                </div>
+                <HomeSmartMoneyHeader
+                  openAddAddressModal={this.showAddSmartMoneyAddresses}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  // history
+                  history={this.props.history}
+                  // add wallet address modal
+                  handleAddModal={this.handleAddModal}
+                  hideButton={true}
+                  onSignInClick={this.showSignInModal}
+                  blurTable={this.state.blurTable}
+                  signOutFun={this.openSignOutModal}
+                  showFaqModal={this.showFaqModal}
+                  showHowItWorksModal={this.showHowItWorksModal}
+                />
+              </div>
+              <div style={{ paddingBottom: "2rem" }}>
+                <div className="transaction-history-table">
+                  {this.state.tableLoading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "69rem",
+                      }}
+                    >
+                      <Loading />
+                    </div>
+                  ) : (
+                    <div className="smartMoneyTable">
+                      <TransactionTable
+                        openSignInOnclickModal={this.openSignInOnclickModal}
+                        smartMoneyBlur={this.state.blurTable}
+                        blurButtonClick={this.showAddSmartMoneyAddresses}
+                        minimalPagination
+                        noSubtitleBottomPadding
+                        tableData={tableData}
+                        columnList={columnList}
+                        message={"No accounts found"}
+                        totalPage={this.state.totalPage}
+                        history={this.props.history}
+                        location={this.props.location}
+                        page={this.state.currentPage}
+                        tableLoading={this.state.tableLoading}
+                        onPageChange={this.onPageChange}
+                        pageLimit={this.state.pageLimit}
+                        changePageLimit={this.changePageLimit}
+                        addWatermark
+                        className={this.state.blurTable ? "noScroll" : ""}
+                        onBlurSignInClick={this.showSignInModal}
+                      />
+                      {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
                     className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -1395,20 +1442,20 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                       : "Hide dust (less than $1)"}
                   </p>
                 </div> */}
-                  </div>
-                )}
+                    </div>
+                  )}
+                </div>
               </div>
+              {/* <FeedbackForm page={"Transaction History Page"} /> */}
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
-        </div>
-      </>
-    );
+        </>
+      );
   }
 }
 
 const mapStateToProps = (state) => ({
-  // portfolioState: state.PortfolioState,
+  portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
   TopAccountsInWatchListState: state.TopAccountsInWatchListState,

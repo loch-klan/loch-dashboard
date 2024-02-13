@@ -1,6 +1,7 @@
 import React from "react";
 import "./_nft.scss";
 import HandleBrokenImages from "../common/HandleBrokenImages";
+import { DefaultNftTableIconIcon } from "../../assets/images/icons";
 
 const NftMobileBlock = ({ data, style }) => {
   return (
@@ -41,8 +42,8 @@ const NftMobileBlock = ({ data, style }) => {
                     src={item}
                     key={index}
                     className="nftImageIcon"
+                    imageOnError={DefaultNftTableIconIcon}
                   />
-                  // <img src={item} alt="" key={index} className="nftImageIcon" />
                 );
               })
             : null}

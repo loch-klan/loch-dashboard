@@ -29,7 +29,11 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
-import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser } from "../Portfolio/Api";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
@@ -51,6 +55,7 @@ class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showAmountsAtTop: false,
       topBarHistoryItems: [],
       showTopBarHistoryItems: false,
       walletInput: [
@@ -260,6 +265,15 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    if (window.location.pathname === "/home") {
+      this.setState({
+        showAmountsAtTop: true,
+      });
+    } else {
+      this.setState({
+        showAmountsAtTop: false,
+      });
+    }
     const tempTopBarHistoryItems = window.localStorage.getItem(
       "topBarHistoryLocalItems"
     );
@@ -1294,6 +1308,28 @@ class TopWalletExchangeBar extends Component {
       followSignupModal: false,
     });
   };
+  getTotalAssetValue = () => {
+    if (this.props.portfolioState) {
+      const tempWallet = this.props.portfolioState.walletTotal
+        ? this.props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = this.props.defiState.totalYield
+        ? this.props.defiState.totalYield
+        : 0;
+      const tempDebt = this.props.defiState.totalDebt
+        ? this.props.defiState.totalDebt
+        : 0;
+
+      let tempAns = tempWallet + tempCredit - tempDebt;
+      if (tempAns) {
+        tempAns = tempAns.toFixed(2);
+      } else {
+        tempAns = 0;
+      }
+      return tempAns;
+    }
+    return 0;
+  };
   render() {
     if (this.props.isMobileRender) {
       if (this.state.walletList && this.state.walletList.length > 0) {
@@ -1327,11 +1363,15 @@ class TopWalletExchangeBar extends Component {
                   </>
                 ) : null}
               </div>
-              <div className="inter-display-semi-bold f-s-16 lh-19">
-                {this.props.assetTotal ? (
-                  <span>${numToCurrency(this.props.assetTotal)}</span>
-                ) : null}
-              </div>
+              {this.state.showAmountsAtTop ? (
+                <div className="inter-display-semi-bold f-s-16 lh-19">
+                  <span className="dotDotText">
+                    {CurrencyType(false)}
+                    {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                    {numToCurrency(this.getTotalAssetValue())}{" "}
+                  </span>
+                </div>
+              ) : null}
             </div>
             {this.state.walletList && this.state.isMobileWalletListExpanded ? (
               <div>
@@ -1717,6 +1757,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   IsWalletConnectedState: state.IsWalletConnectedState,
   MetamaskConnectedState: state.MetamaskConnectedState,
+  defiState: state.DefiState,
 });
 
 const mapDispatchToProps = {

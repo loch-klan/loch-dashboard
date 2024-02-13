@@ -188,25 +188,6 @@ class SmartMoneyMobilePage extends BaseReactComponent {
   render() {
     return (
       <div className="mobileSmartMoneyPage">
-        {this.props.mobilePopupModal ? (
-          <div className="mpcHomeFloatingContainer">
-            <div className="mpcHomeFloatingElement">
-              <div className="mpcHFMacIconContainer">
-                <Image src={MacIcon} className="mpcHFMacIcon" />
-              </div>
-              <div className="mpcHFText inter-display-medium f-s-13">
-                Visit app.loch.one from your desktop to view all the addresses
-                you are following
-              </div>
-              <div
-                onClick={this.props.hideThePopupModal}
-                className="mpcHFGoBtn inter-display-medium f-s-13"
-              >
-                Ok
-              </div>
-            </div>
-          </div>
-        ) : null}
         {this.state.signInModal ? (
           <SmartMoneyMobileModalContainer onHide={this.hideAllModals}>
             <SmartMoneyMobileSignInUp

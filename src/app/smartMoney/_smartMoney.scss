@@ -101,7 +101,7 @@
     min-width: 100vw;
     max-height: 100vh;
     max-width: 100vw;
-    z-index: 100;
+    z-index: 9999;
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.9);
@@ -467,8 +467,6 @@
     }
   }
   .mobileSmartMoneyBtnsContainer {
-    margin-top: 11rem;
-    padding: 0rem 2rem;
     .mobileSmartMoneyBtnSignInContainer {
       color: #313233;
       padding: 0.8rem 1.2rem;
@@ -540,7 +538,7 @@
     }
   }
   .mobileSmartMoneyListContainer {
-    padding: 2rem;
+    padding: 2rem 0rem;
     .mobileSmartMoneyListBlurContainer {
       position: relative;
       min-height: 50vh;
