@@ -333,11 +333,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   : "4.8rem"
               }`,
               width: this.props.hideTimeFilter ? "100%" : "",
-              paddingTop: `${
-                this.props.hideTimeFilter && !this.props.graphLoading
-                  ? "2.8rem"
-                  : ""
-              }`,
+              paddingTop: `${this.props.hideTimeFilter ? "2.8rem" : ""}`,
             }}
           >
             {!this.props.isPage && (
@@ -360,7 +356,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                 style={{
                   height: this.props.hideTimeFilter
                     ? this.props.isMobileGraph
-                      ? "44rem"
+                      ? "38rem"
                       : "28.5rem"
                     : "50rem",
                   display: "flex",
