@@ -60,7 +60,6 @@ class smartMoneyMobileBlock extends BaseReactComponent {
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         wallet: this.props.mapData.account,
-                        isMobile: true,
                       });
                       if (this.props.onLeaderboardWalletClick) {
                         this.props.onLeaderboardWalletClick(
@@ -87,7 +86,6 @@ class smartMoneyMobileBlock extends BaseReactComponent {
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         wallet: slink,
-                        isMobile: true,
                       });
                       window.open(shareLink, "_blank", "noreferrer");
                     }

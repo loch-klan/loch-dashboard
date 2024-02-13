@@ -15,10 +15,14 @@ import {
   BlackManIcon,
   GreyManIcon,
   InactiveSmartMoneySidebarIcon,
+  FollowingSidebarIcon,
   PersonRoundedSigninIcon,
   SidebarLeftArrowIcon,
   TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
+  ProfileSidebarIcon,
+  LeaderboardSidebarIcon,
+  HomeSidebarIcon,
 } from "../../assets/images/icons";
 import {
   default as ActiveProfileIcon,
@@ -724,10 +728,13 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={HomeSidebarIcon}
+                                style={
                                   activeTab === "/home"
-                                    ? ActiveHomeIcon
-                                    : InActiveHomeIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                             </NavLink>
@@ -763,7 +770,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={TwoPeopleIcon}
+                                src={FollowingSidebarIcon}
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
@@ -815,7 +822,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        {/* <li>
+                        <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -839,15 +846,18 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={NFTIcon}
+                                style={
                                   activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li> */}
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -877,7 +887,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={ProfileIcon}
+                                src={ProfileSidebarIcon}
                                 style={
                                   activeTab === "/profile"
                                     ? {
@@ -973,10 +983,13 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={HomeSidebarIcon}
+                                style={
                                   activeTab === "/home"
-                                    ? ActiveHomeIcon
-                                    : InActiveHomeIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                               Home
@@ -1005,7 +1018,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={TwoPeopleIcon}
+                                src={FollowingSidebarIcon}
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
@@ -1041,16 +1054,19 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={LeaderboardSidebarIcon}
+                                style={
                                   activeTab === "/home-leaderboard"
-                                    ? ActiveSmartMoneySidebarIcon
-                                    : InactiveSmartMoneySidebarIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                               Leaderboard
                             </NavLink>
                           </li>
-                          {/* <li>
+                          <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1073,15 +1089,18 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={NFTIcon}
+                                style={
                                   activeTab === "/nft"
-                                    ? NFTIcon
-                                    : NFTIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                               NFTs
                             </NavLink>
-                          </li> */}
+                          </li>
                           <li>
                             <NavLink
                               exact={true}
@@ -1100,11 +1119,15 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={ProfileSidebarIcon}
+                                style={
                                   activeTab === "/profile"
-                                    ? ActiveProfileIcon
-                                    : ProfileIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
+                                className="followingImg"
                               />
                               Profile
                             </NavLink>

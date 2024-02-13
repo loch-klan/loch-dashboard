@@ -66,6 +66,8 @@ import {
   removeAddressFromWatchList,
   updateAddToWatchList,
 } from "./redux/WatchListApi";
+import MobileLayout from "../layout/MobileLayout";
+import WalletListPageMobile from "./WatchListPageMobile";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -150,9 +152,9 @@ class WatchListPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -303,22 +305,20 @@ class WatchListPage extends BaseReactComponent {
     }
   }
 
-  onValidSubmit = () => {
+  onValidSubmit = (val = this.state.search) => {
     if (
       (this.state.tableData && this.state.tableData.length > 0) ||
-      this.state.search === ""
+      val === ""
     ) {
       // Search Here
       WatchlistSearch({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        search: this.state.search,
+        search: val,
       });
       this.updateTimer();
       this.setState({
-        condition: [
-          { key: "SEARCH_BY_WALLET_ADDRESS", value: this.state.search },
-        ],
+        condition: [{ key: "SEARCH_BY_WALLET_ADDRESS", value: val }],
       });
     }
   };
@@ -769,6 +769,34 @@ class WatchListPage extends BaseReactComponent {
         },
       },
     ];
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+          hideFooter
+          hideAddresses
+        >
+          <WalletListPageMobile
+            tableLoading={this.state.tableLoading}
+            linkState={this.linkState}
+            onChangeMethod={this.onChangeMethod}
+            tableData={this.state.tableData}
+            tableSortOpt={this.state.tableSortOpt}
+            handleSort={this.handleSort}
+            onValidSubmit={this.onValidSubmit}
+            removeAddressFromWatchList={this.props.removeAddressFromWatchList}
+            parentCtx={this}
+            totalPage={this.state.totalPage}
+            history={this.props.history}
+            location={this.props.location}
+            page={this.state.currentPage}
+            onPageChange={this.onPageChange}
+            currentPage={this.state.currentPage}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}
@@ -846,7 +874,7 @@ class WatchListPage extends BaseReactComponent {
             />
 
             <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
+              <Form onValidSubmit={() => this.onValidSubmit(this.state.search)}>
                 <div
                   style={{
                     display: "flex",

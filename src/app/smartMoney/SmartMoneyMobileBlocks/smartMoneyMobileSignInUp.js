@@ -9,6 +9,7 @@ import {
   SendOtp,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  updateWalletListFlag,
 } from "../../common/Api.js";
 import {
   VerifySmartMoneyEmailOtp,
@@ -376,7 +377,7 @@ const mapDispatchToProps = {
 
   removeFromWatchList,
   updateAddToWatchList,
-
+  updateWalletListFlag,
   GetAllPlan,
   VerifySmartMoneyEmailOtp,
   smartMoneySignUpApi,

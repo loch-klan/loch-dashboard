@@ -1,6 +1,7 @@
 import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
+import { mobileCheck } from "./ReusableFunctions";
 
 //Api Config
 export const initAmplitude = () => {
@@ -26,6 +27,7 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
+    isMobile: mobileCheck(),
   };
   Mixpanel.track(eventType, newEventProperties);
 };
@@ -322,14 +324,12 @@ export const SearchBarAddressAdded = ({
   session_id,
   email_address,
   address,
-  isMobile = false,
 }) => {
   const event_name = "Search Bar: address added";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
     address: address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -501,7 +501,6 @@ export const QuickAddWalletAddress = ({
   recognized_addresses,
   blockchains_detected,
   nicknames,
-  isMobile = false,
 }) => {
   const event_name = "Search bar:add wallet_address";
   const eventProperties = {
@@ -522,7 +521,6 @@ export const QuickAddWalletAddress = ({
     "recognized addresses": recognized_addresses,
     "blockchains detected": blockchains_detected,
     nicknames: nicknames,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Home:add wallet_address");
@@ -766,14 +764,12 @@ export const TransactionHistoryHashCopied = ({
   session_id,
   email_address,
   hash_copied,
-  isMobile = false,
 }) => {
   const event_name = "Transaction :transaction history Hash Copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     hash_copied: hash_copied,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -783,14 +779,12 @@ export const TransactionHistoryAddressCopied = ({
   session_id,
   email_address,
   address_copied,
-  isMobile = false,
 }) => {
   const event_name = "Transaction :transaction Address Copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     address_copied: address_copied,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -1768,52 +1762,42 @@ export const ClickTrendingAddress = ({ session_id, address }) => {
 };
 
 // To check if the user clicks follow button from welcome page
-export const ClickedFollowLeaderboard = ({ session_id, address, isMobile }) => {
+export const ClickedFollowLeaderboard = ({ session_id, address }) => {
   const event_name = "Landing Page Conversion: Leaderboard follow clicked";
   const eventProperties = {
     "session id": session_id,
     address: address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
 };
 
 // To check if the user clicks follow button from welcome page
-export const ClickedPageChangeWelcomeLeaderboard = ({
-  session_id,
-  isMobile,
-}) => {
+export const ClickedPageChangeWelcomeLeaderboard = ({ session_id }) => {
   const event_name = "Landing Page Conversion: Leaderboard page change";
   const eventProperties = {
     "session id": session_id,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
 };
 
 // To check if the user clicks follow button from welcome page
-export const ClickedPageLimitWelcomeLeaderboard = ({
-  session_id,
-  isMobile,
-}) => {
+export const ClickedPageLimitWelcomeLeaderboard = ({ session_id }) => {
   const event_name = "Landing Page Conversion: Leaderboard page limit change";
   const eventProperties = {
     "session id": session_id,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
 };
 
 // To check if the user try to access leaderboard without logging in
-export const SignInOnClickWelcomeLeaderboard = ({ session_id, isMobile }) => {
+export const SignInOnClickWelcomeLeaderboard = ({ session_id }) => {
   const event_name =
     "Landing Page Conversion: Leaderboard featuer access attempt";
   const eventProperties = {
     "session id": session_id,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:add textbox");
@@ -2354,12 +2338,11 @@ export const WatchlistPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
-export const NFTPage = ({ session_id, email_address, isMobile }) => {
+export const NFTPage = ({ session_id, email_address }) => {
   const event_name = "Page View: NFT";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
@@ -3779,80 +3762,55 @@ export const YieldOpportunitiesNetworkFilter = ({
   //console.log("Menu:intelligence menu");
 };
 
-export const TransactionHistorySortDate = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortDate = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort date";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort from - done
-export const TransactionHistorySortFrom = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortFrom = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort from";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort to - done
-export const TransactionHistorySortTo = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortTo = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort to";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort asset - done
-export const TransactionHistorySortAsset = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortAsset = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort asset";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
 // Transaction History: sort amount - done
-export const TransactionHistorySortAmount = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortAmount = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort amount";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3863,13 +3821,11 @@ export const TransactionHistorySortAmount = ({
 export const TransactionHistorySortUSDAmount = ({
   session_id,
   email_address,
-  isMobile = false,
 }) => {
   const event_name = "Transaction History: sort usd amount";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3877,16 +3833,11 @@ export const TransactionHistorySortUSDAmount = ({
 
 // Transaction History: sort usd fee - done
 
-export const TransactionHistorySortUSDFee = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortUSDFee = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort usd fee";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3894,16 +3845,11 @@ export const TransactionHistorySortUSDFee = ({
 
 // Transaction History: sort method - done
 
-export const TransactionHistorySortMethod = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistorySortMethod = ({ session_id, email_address }) => {
   const event_name = "Transaction History: sort method";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3911,16 +3857,11 @@ export const TransactionHistorySortMethod = ({
 
 // Transaction History: hide dust - done
 
-export const TransactionHistoryHideDust = ({
-  session_id,
-  email_address,
-  isMobile = false,
-}) => {
+export const TransactionHistoryHideDust = ({ session_id, email_address }) => {
   const event_name = "Transaction History: hide dust";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3955,18 +3896,35 @@ export const YieldOpportunitiesPageBack = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const NftPageNext = ({ session_id, email_address, page_no }) => {
+  const event_name = "NFT: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const NftPageBack = ({ session_id, email_address, page_no }) => {
+  const event_name = "NFT: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TransactionHistoryPageNext = ({
   session_id,
   email_address,
   page_no,
-  isMobile = false,
 }) => {
   const event_name = "Transaction History: page next";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3978,14 +3936,12 @@ export const TransactionHistoryPageBack = ({
   session_id,
   email_address,
   page_no,
-  isMobile = false,
 }) => {
   const event_name = "Transaction History: page back";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page number": page_no,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3996,14 +3952,12 @@ export const TransactionHistoryPageSearch = ({
   session_id,
   email_address,
   page_search,
-  isMobile = false,
 }) => {
   const event_name = "Transaction History: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page search": page_search,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -4990,14 +4944,12 @@ export const TransactionHistoryWalletClicked = ({
   session_id,
   email_address,
   wallet,
-  isMobile = false,
 }) => {
   const event_name = "Transaction history: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5086,18 +5038,20 @@ export const TimeSpentWatchlist = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const TimeSpentNFT = ({
-  session_id,
-  email_address,
-  time_spent,
-  isMobile,
-}) => {
+export const TimeSpentNFT = ({ session_id, email_address, time_spent }) => {
   const event_name = "NFT: time spent on nft page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
-    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const NFTShare = ({ session_id, email_address }) => {
+  const event_name = "NFT: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5352,7 +5306,6 @@ export const WhaleExpandEdit = ({ session_id, email_address, pod_name }) => {
   //console.log("Whale: Expanded Pod page: Edit button clicked");
 };
 
-// Costs: share - done
 export const CostShare = ({ session_id, email_address }) => {
   const event_name = "Costs: share";
   const eventProperties = {
@@ -5436,7 +5389,6 @@ export const CostHideDustMobile = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: true,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5620,12 +5572,11 @@ export const TopbarSignin = ({ session_id, email_address }) => {
   ////console.log("Topbar: sign up");
 };
 
-export const SmartMoneyPageView = ({ session_id, email_address, isMobile }) => {
+export const SmartMoneyPageView = ({ session_id, email_address }) => {
   const event_name = "Page View: Smart money";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5634,23 +5585,20 @@ export const SmartMoneyTimeSpent = ({
   session_id,
   email_address,
   time_spent,
-  isMobile,
 }) => {
   const event_name = "Smart money: time spent on smart money page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyShare = ({ session_id, email_address, isMobile }) => {
+export const SmartMoneyShare = ({ session_id, email_address }) => {
   const event_name = "Smart money: share";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:go");
@@ -5795,21 +5743,19 @@ export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneySignUp = ({ session_id, email_address, isMobile }) => {
+export const SmartMoneySignUp = ({ session_id, email_address }) => {
   const event_name = "Smart money: sign up";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneySignIn = ({ session_id, email_address, isMobile }) => {
+export const SmartMoneySignIn = ({ session_id, email_address }) => {
   const event_name = "Smart money: sign in";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5818,7 +5764,6 @@ export const SmartMoneyAddressAddedAttempted = ({
   email_address,
   address,
   nameTag,
-  isMobile,
 }) => {
   const event_name = "Smart money: address adding attempt";
   const eventProperties = {
@@ -5826,7 +5771,6 @@ export const SmartMoneyAddressAddedAttempted = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5835,7 +5779,6 @@ export const SmartMoneyAddressAdded = ({
   email_address,
   address,
   nameTag,
-  isMobile,
 }) => {
   const event_name = "Smart money: address added";
   const eventProperties = {
@@ -5843,7 +5786,6 @@ export const SmartMoneyAddressAdded = ({
     "email address": email_address,
     address: address,
     nameTag: nameTag,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5864,7 +5806,6 @@ export const SmartMoneyWalletClicked = ({
   session_id,
   email_address,
   wallet,
-  isMobile,
   isWelcome = false,
 }) => {
   const event_name = "Smart money: wallet open";
@@ -5872,34 +5813,23 @@ export const SmartMoneyWalletClicked = ({
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
-    isMobile: isMobile,
     isWelcome: isWelcome,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyFAQClicked = ({
-  session_id,
-  email_address,
-  isMobile,
-}) => {
+export const SmartMoneyFAQClicked = ({ session_id, email_address }) => {
   const event_name = "Smart money: faq clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const SmartMoneyHowItWorksClicked = ({
-  session_id,
-  email_address,
-  isMobile,
-}) => {
+export const SmartMoneyHowItWorksClicked = ({ session_id, email_address }) => {
   const event_name = "Smart money: how it works clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -5965,50 +5895,32 @@ export const SmartMoneyReturnHover = ({ session_id, email_address, hover }) => {
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneyPageNext = ({
-  session_id,
-  email_address,
-  page,
-  isMobile,
-}) => {
+export const SmartMoneyPageNext = ({ session_id, email_address, page }) => {
   const event_name = "Smart money: next page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     page: page,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneyPagePrev = ({
-  session_id,
-  email_address,
-  page,
-  isMobile,
-}) => {
+export const SmartMoneyPagePrev = ({ session_id, email_address, page }) => {
   const event_name = "Smart money: previous page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     page: page,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const SmartMoneyPageSearch = ({
-  session_id,
-  email_address,
-  page,
-  isMobile,
-}) => {
+export const SmartMoneyPageSearch = ({ session_id, email_address, page }) => {
   const event_name = "Smart money: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "page searched": page,
-    isMobile: isMobile,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

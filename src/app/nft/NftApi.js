@@ -1,4 +1,5 @@
 import { postLoginInstance } from "../../utils";
+import { API_LIMIT } from "../../utils/Constant";
 import { GET_NFT_DATA } from "./NftActionTypes";
 
 export const getNFT = (data, ctx, isDefault) => {
@@ -9,8 +10,10 @@ export const getNFT = (data, ctx, isDefault) => {
         if (!res.data.error) {
           if (res.data.data) {
             let tempNftHolder = [];
-            let tempVar = res?.data?.data?.data;
-
+            let tempVar = res?.data?.data?.nfts;
+            let tempTotalCount = res.data?.data?.total_count
+              ? Math.ceil(res.data.data.total_count / API_LIMIT)
+              : 0;
             tempVar.forEach((resRes) => {
               tempNftHolder.push({
                 holding: resRes.amount ? resRes.amount : "",
@@ -23,7 +26,7 @@ export const getNFT = (data, ctx, isDefault) => {
               });
             });
             const allNftData = {
-              total_count: res.data.total,
+              total_count: tempTotalCount,
               nfts: tempNftHolder,
             };
             if (isDefault) {

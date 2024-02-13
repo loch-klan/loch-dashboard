@@ -194,7 +194,10 @@ class CustomTable extends BaseReactComponent {
                                 this.props.xAxisScrollable
                                   ? width *
                                     item.coumnWidth *
-                                    (columnList.length / 3.5)
+                                    (columnList.length /
+                                      (this.props.xAxisScrollableColumnWidth
+                                        ? this.props.xAxisScrollableColumnWidth
+                                        : 3.5))
                                   : width * item.coumnWidth
                               }
                               className={item.className}
@@ -622,7 +625,7 @@ class CustomTable extends BaseReactComponent {
         {this.props.isSmartMoney ||
         this.props.paginationNew ||
         this.props.minimalPagination ? (
-          tableData && tableData.length >= 1 && totalPage >= 1 ? (
+          tableData && tableData.length >= 1 && totalPage >= 1 && !isLoading ? (
             <SmartMoneyPagination
               openSignInOnclickModal={this.props.openSignInOnclickModal}
               smartMoneyBlur={this.props.smartMoneyBlur}

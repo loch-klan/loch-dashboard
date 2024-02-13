@@ -2033,7 +2033,7 @@ class NewWelcome extends BaseReactComponent {
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: rowData.account,
-                      isMobile: false,
+
                       isWelcome: true,
                     });
                     this.setState({

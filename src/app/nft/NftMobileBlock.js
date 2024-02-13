@@ -1,5 +1,7 @@
 import React from "react";
 import "./_nft.scss";
+import HandleBrokenImages from "../common/HandleBrokenImages";
+import { DefaultNftTableIconIcon } from "../../assets/images/icons";
 
 const NftMobileBlock = ({ data, style }) => {
   return (
@@ -8,7 +10,6 @@ const NftMobileBlock = ({ data, style }) => {
         <div className="msmbHeaderLeft">
           <div
             style={{
-              textDecoration: "underline",
               marginRight: "6px",
             }}
             className="inter-display-medium msmbHeaderNickName"
@@ -37,7 +38,12 @@ const NftMobileBlock = ({ data, style }) => {
           {data.imgs && data.imgs.length > 0
             ? data.imgs?.slice(0, 3).map((item, index) => {
                 return (
-                  <img src={item} alt="" key={index} className="nftImageIcon" />
+                  <HandleBrokenImages
+                    src={item}
+                    key={index}
+                    className="nftImageIcon"
+                    imageOnError={DefaultNftTableIconIcon}
+                  />
                 );
               })
             : null}
@@ -55,7 +61,7 @@ const NftMobileBlock = ({ data, style }) => {
           ) : null}
         </div>
       </div>
-      <div className="msmbBody">
+      {/* <div className="msmbBody">
         <div className="msmbBodyItem">
           <div className="inter-display-medium msmbBITitle">
             Total Spent (ETH)
@@ -86,7 +92,7 @@ const NftMobileBlock = ({ data, style }) => {
             <span>{data?.volume}</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
