@@ -2,12 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   NFTPage,
+  NFTShare,
   NftPageBack,
   NftPageNext,
   TimeSpentNFT,
 } from "../../utils/AnalyticsFunctions";
 import {
   API_LIMIT,
+  BASE_URL_S3,
   SEARCH_BY_WALLET_ADDRESS,
   START_INDEX,
 } from "../../utils/Constant";
@@ -28,6 +30,9 @@ import "./_nft.scss";
 import HandleBrokenImages from "../common/HandleBrokenImages";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import MobileLayout from "../layout/MobileLayout";
+import { DefaultNftTableIconIcon } from "../../assets/images/icons";
+import TopWalletAddressList from "../header/TopWalletAddressList";
+import { toast } from "react-toastify";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -349,6 +354,23 @@ class NFT extends BaseReactComponent {
     }
     this.props.setPageFlagDefault();
   };
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=nft";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    NFTShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  };
   render() {
     const columnList = [
       {
@@ -447,7 +469,7 @@ class NFT extends BaseReactComponent {
                             src={item}
                             key={index}
                             className="nftImageIcon"
-                            imageOnError={NFTIcon}
+                            imageOnError={DefaultNftTableIconIcon}
                           />
                         );
                       }
@@ -506,6 +528,10 @@ class NFT extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              handleShare={this.handleShare}
+            />
             <PageHeader
               title={"NFT Collection"}
               subTitle={"Browse the NFTs held by this wallet"}

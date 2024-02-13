@@ -302,6 +302,7 @@ class WatchListPageMobile extends BaseReactComponent {
           <div
             style={{
               backgroundColor: this.props?.tableData.length > 0 ? "" : "white",
+              marginBottom: this.props?.tableData.length > 0 ? "" : "2rem",
               marginTop: "2rem",
               borderRadius: "1.2rem",
             }}

@@ -592,23 +592,27 @@ class MobileLayout extends BaseReactComponent {
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div className="mpcHomePage">
-                    <WelcomeCard
-                      handleShare={this.handleShare} //Done
-                      isSidebarClosed={this.props.isSidebarClosed} // done
-                      changeWalletList={this.props.handleChangeList} // done
-                      apiResponse={(e) => this.CheckApiResponseMobileLayout(e)} // done
-                      showNetworth={true}
-                      // yesterday balance
-                      yesterdayBalance={
-                        this.props?.portfolioState?.yesterdayBalance // done
-                      }
-                      assetTotal={getTotalAssetValue()} // done
-                      history={this.props.history} // done
-                      handleAddModal={this.props.handleAddModal} // done
-                      isLoading={false}
-                      handleManage={() => {}}
-                      isMobileRender
-                    />
+                    {this.props.hideAddresses ? null : (
+                      <WelcomeCard
+                        handleShare={this.handleShare} //Done
+                        isSidebarClosed={this.props.isSidebarClosed} // done
+                        changeWalletList={this.props.handleChangeList} // done
+                        apiResponse={(e) =>
+                          this.CheckApiResponseMobileLayout(e)
+                        } // done
+                        showNetworth={true}
+                        // yesterday balance
+                        yesterdayBalance={
+                          this.props?.portfolioState?.yesterdayBalance // done
+                        }
+                        assetTotal={getTotalAssetValue()} // done
+                        history={this.props.history} // done
+                        handleAddModal={this.props.handleAddModal} // done
+                        isLoading={false}
+                        handleManage={() => {}}
+                        isMobileRender
+                      />
+                    )}
                     {/* <TopWalletAddressList
                       apiResponse={(e) => this.CheckApiResponseMobileLayout(e)}
                       handleShare={this.handleShare}

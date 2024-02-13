@@ -1,9 +1,6 @@
 import React from "react";
-import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { MacIcon, SharePortfolioIconWhite } from "../../assets/images/icons";
-import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import {
   MobileHomePageView,
   Mobile_Home_Share,
@@ -22,9 +19,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { updateUserWalletApi, updateWalletListFlag } from "../common/Api";
 import BarGraphSection from "../common/BarGraphSection.js";
 import Loading from "../common/Loading";
-import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction.js";
-import NewHomeInputBlock from "../home/NewHomeInputBlock.js";
 
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getNFT } from "../nft/NftApi.js";
@@ -34,7 +29,6 @@ import { addUserCredits } from "../profile/Api.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import PieChart2 from "./PieChart2";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
-import WelcomeCard from "./WelcomeCard";
 import "./_mobilePortfolio.scss";
 
 class PortfolioMobile extends BaseReactComponent {
@@ -654,24 +648,6 @@ class PortfolioMobile extends BaseReactComponent {
           </div>
         ) : (
           <>
-            {this.state.showPopupModal ? (
-              <div className="mpcHomeFloatingContainer">
-                <div className="mpcHomeFloatingElement">
-                  <div className="mpcHFMacIconContainer">
-                    <Image src={MacIcon} className="mpcHFMacIcon" />
-                  </div>
-                  <div className="mpcHFText inter-display-medium f-s-13">
-                    Visit app.loch.one from your desktop for all the details
-                  </div>
-                  <div
-                    onClick={this.hideThePopupModal}
-                    className="mpcHFGoBtn inter-display-medium f-s-13 btn-bg-black"
-                  >
-                    Ok
-                  </div>
-                </div>
-              </div>
-            ) : null}
             <PieChart2
               setLoader={this.props.setLoader}
               chainLoader={this.props.chainLoader}

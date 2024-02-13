@@ -176,7 +176,7 @@ class PortfolioHomeInsightsBlock extends Component {
                           marginTop: key === 0 ? "" : "1rem",
                           marginBottom: "0rem",
                           boxShadow: "none",
-                          border: "0.1rem solid var(--borderwhiteDarkLight)",
+                          border: "0.1rem solid #E5E5E6",
                           alignItems: "flex-start",
                           background: "var(--cardBackgroud)",
                         }}
@@ -247,7 +247,7 @@ class PortfolioHomeInsightsBlock extends Component {
                           >
                             <p
                               style={{
-                                whiteSpace: "wrap",
+                                whiteSpace: "normal",
                                 marginTop: "0rem",
                               }}
                               className="inter-display-medium f-s-12 lh-16 grey-969"
@@ -257,7 +257,7 @@ class PortfolioHomeInsightsBlock extends Component {
                             ></p>
                             <h4
                               style={{
-                                whiteSpace: "wrap",
+                                whiteSpace: "normal",
                               }}
                               className="inter-display-medium f-s-13 lh-19 grey-313"
                               dangerouslySetInnerHTML={{
