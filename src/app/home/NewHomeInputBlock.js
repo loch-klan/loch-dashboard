@@ -11,14 +11,12 @@ class NewHomeInputBlock extends BaseReactComponent {
   }
 
   focusInputfield = () => {
-    console.log(this.props.index);
     const inputField = document.getElementById(
       `newWelcomeWallet-${this?.props?.index + 1}`
     );
     if (!this.props.c.coinFound && !this.props.c.nickname) {
       inputField.focus();
     }
-    console.log(inputField);
   };
   onKeyPressInputPass = (event) => {
     if (this.props.onKeyDown) {
