@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
   NFTPage,
   NftPageBack,
@@ -12,11 +13,16 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { mobileCheck } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import {
+  CurrencyType,
+  convertNtoNumber,
+  mobileCheck,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { GetAllPlan, getUser, updateWalletListFlag } from "../common/Api";
+import HandleBrokenImages from "../common/HandleBrokenImages";
 import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
 import TransactionTable from "../intelligence/TransactionTable";
@@ -25,8 +31,7 @@ import { getAllWalletListApi } from "../wallet/Api";
 import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
-import HandleBrokenImages from "../common/HandleBrokenImages";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -38,25 +43,7 @@ class NFT extends BaseReactComponent {
       goToBottom: false,
       apiResponse: false,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
-      tableData: [
-        // {
-        //   holding: "3",
-        //   collection: "Bored Apes",
-        //   imgs: [
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //   ],
-        //   total_spent: 10,
-        //   max_price: 12,
-        //   avg_price: 10,
-        //   volume: 100,
-        // },
-      ],
+      tableData: [],
       tableSortOpt: [
         {
           title: "holdings",
@@ -370,7 +357,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "holding",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "holding") {
@@ -399,7 +386,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "collection",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "collection") {
@@ -426,7 +413,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "imgs",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "imgs") {
@@ -467,6 +454,46 @@ class NFT extends BaseReactComponent {
                   </span>
                 ) : null}
               </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Floor Price
+            </span>
+          </div>
+        ),
+        dataKey: "floorPrice",
+
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "floorPrice") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.floor_price
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.floor_price)
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.floor_price
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.floor_price.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
             );
           }
         },

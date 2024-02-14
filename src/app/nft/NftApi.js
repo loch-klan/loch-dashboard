@@ -14,14 +14,26 @@ export const getNFT = (data, ctx, isDefault) => {
             let tempTotalCount = res.data?.data?.total_count
               ? Math.ceil(res.data.data.total_count / API_LIMIT)
               : 0;
+            let currency = JSON.parse(
+              window.sessionStorage.getItem("currency")
+            );
             tempVar.forEach((resRes) => {
               tempNftHolder.push({
                 holding: resRes.amount ? resRes.amount : "",
                 collection: resRes.name ? resRes.name : "",
                 imgs: resRes.logo ? resRes.logo : "",
-                total_spent: resRes.total_spent ? resRes.total_spent : "",
-                max_price: resRes.max_price ? resRes.max_price : "",
-                avg_price: resRes.avg_price ? resRes.avg_price : "",
+                total_spent: resRes.total_spent
+                  ? resRes.total_spent * (currency?.rate || 1)
+                  : "",
+                max_price: resRes.max_price
+                  ? resRes.max_price * (currency?.rate || 1)
+                  : "",
+                avg_price: resRes.avg_price
+                  ? resRes.avg_price * (currency?.rate || 1)
+                  : "",
+                floor_price: resRes.price
+                  ? resRes.price * (currency?.rate || 1)
+                  : 0,
                 volume: resRes.volume ? resRes.volume : "",
               });
             });
