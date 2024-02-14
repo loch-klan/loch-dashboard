@@ -39,15 +39,23 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             }
           />
         </div>
-        <div>
+        <div
+          style={{
+            backgroundColor: "white",
+            borderRadius: "1.2rem",
+            padding: "0 1rem",
+          }}
+        >
           <div
             style={{
               overflowX: "scroll",
-              backgroundColor: "white",
-              borderRadius: "1.2rem",
               marginTop: "1.5rem",
             }}
-            className="newHomeTableContainer"
+            className={`newHomeTableContainer  ${
+              this.props.AvgCostLoading || this.props.tableData < 1
+                ? ""
+                : "tableWatermarkOverlay"
+            }`}
           >
             <TransactionTable
               noSubtitleBottomPadding
