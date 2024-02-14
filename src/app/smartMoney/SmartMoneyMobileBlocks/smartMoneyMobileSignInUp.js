@@ -155,7 +155,10 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       isOptInValid: false,
     });
     let data = new URLSearchParams();
-    data.append("email", this.state.signInEmail);
+    data.append(
+      "email",
+      this.state.signInEmail ? this.state.signInEmail.toLowerCase() : ""
+    );
     data.append("otp_token", this.state.signInOtp);
     data.append(
       "signed_up_from",
