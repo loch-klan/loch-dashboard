@@ -18,13 +18,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       <div className="yield-opp-page-mobile">
         <div className="mobile-header-container">
           <h4>Yield opportunities</h4>
-          <p
-            style={{
-              lineHeight: "1.5rem",
-            }}
-          >
-            Yield bearing opportunties personalized for your portfolio
-          </p>
+          <p>Yield bearing opportunties personalized for your portfolio</p>
         </div>
         {this.props.isLoading ? (
           <div
