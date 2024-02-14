@@ -22,18 +22,10 @@ export const getNFT = (data, ctx, isDefault) => {
                 holding: resRes.amount ? resRes.amount : "",
                 collection: resRes.name ? resRes.name : "",
                 imgs: resRes.logo ? resRes.logo : "",
-                total_spent: resRes.total_spent
-                  ? resRes.total_spent * (currency?.rate || 1)
-                  : "",
-                max_price: resRes.max_price
-                  ? resRes.max_price * (currency?.rate || 1)
-                  : "",
-                avg_price: resRes.avg_price
-                  ? resRes.avg_price * (currency?.rate || 1)
-                  : "",
-                floor_price: resRes.price
-                  ? resRes.price * (currency?.rate || 1)
-                  : 0,
+                total_spent: resRes.total_spent ? resRes.total_spent : "",
+                max_price: resRes.max_price ? resRes.max_price : "",
+                avg_price: resRes.avg_price ? resRes.avg_price : "",
+                floor_price: resRes.price ? resRes.price : 0,
                 volume: resRes.volume ? resRes.volume : "",
               });
             });
