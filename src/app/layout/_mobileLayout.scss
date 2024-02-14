@@ -1,0 +1,187 @@
+.portfolio-mobile-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  // overflow: hidden;
+  left: 0;
+  top: 0;
+
+  .portfolio-mobile-layout-wrapper {
+    position: relative;
+  }
+  .mpcMobileSearch {
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+      0px 1px 1px rgba(0, 0, 0, 0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .mpcMobileShare {
+      padding-left: 1rem;
+      margin-right: 2rem;
+    }
+    .mpcMobileSearchInput {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      .mpcMobileSearchImage {
+        height: 1.5rem;
+        margin: 2rem;
+        margin-right: 0.5rem;
+      }
+      .topSearchBarMobileContainer {
+        // transform: translateY(-31px);
+        flex: 1;
+        padding: 0rem;
+        background-color: white;
+        padding-left: 0.5rem;
+        padding-right: 2rem;
+        font-size: 16px;
+        border: none;
+
+        .new-homepage__body-search_input_body {
+          .addWalletWrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            // flex-direction: column;
+
+            .awInputWrapper {
+              border: none;
+              width: 100%;
+              .awLable {
+                color: #b0b1b3;
+                font-size: 14px;
+              }
+              .awInputContainer {
+                flex: 1;
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                padding-right: 0.5rem;
+
+                .awInputTopBar {
+                  border: none;
+                  width: 100%;
+                  padding: 0;
+                  font-size: 16px;
+                  outline: none;
+
+                  &:focus {
+                    outline: none;
+                  }
+                  &::placeholder {
+                    color: #b0b1b3;
+                  }
+                }
+              }
+              .addToAddressListMobileBtnContainer {
+                display: flex;
+                align-items: center;
+
+                .replaceAddressListMobileBtn {
+                  background-color: #19191a;
+                  color: #fff;
+                  padding: 0.6rem 1.2rem;
+                  border-radius: 0.8rem;
+                }
+                .addToAddressListMobileBtn {
+                  background-color: #f2f2f2;
+                  color: #19191a;
+                  padding: 0.6rem 1.2rem;
+                  border-radius: 0.8rem;
+                  margin-right: 1rem;
+                }
+                .disableAddToAddressListMobileBtn {
+                  opacity: 0.7;
+                }
+              }
+              .awTopInputWrapper {
+                display: flex;
+                align-items: center;
+              }
+              .awBottomInputWrapper {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+              }
+            }
+
+            .wInputWrapper-mobile {
+              flex-direction: column-reverse;
+            }
+            .isAwInputWrapperValid {
+              border-color: #19191a;
+            }
+          }
+        }
+      }
+      .mpcMobileSearchPlaceholder {
+        color: #b0b1b3;
+      }
+    }
+    .mpcMobileSearchImage {
+      height: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+  .portfolio-mobile-layout-children {
+    height: 100vh;
+    padding-top: 55px;
+    padding-bottom: 84px;
+  }
+  .portfolio-mobile-layout-nav-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 84px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.04),
+      0px -4px 10px 0px rgba(0, 0, 0, 0.04);
+    border-top: 1px solid var(rgba(229, 229, 230, 0.5));
+
+    .portfolio-mobile-layout-nav-footer-inner {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      align-items: center;
+      height: 100%;
+      .portfolio-mobile-layout-nav-footer-inner-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+
+        .portfolio-mobile-layout-nav-footer-inner-item-image {
+          height: 24px;
+          width: 24px;
+        }
+        .portfolio-mobile-layout-nav-footer-inner-item-icon-active {
+          filter: brightness(0);
+        }
+        .portfolio-mobile-layout-nav-footer-inner-item-text {
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 120%;
+          color: #b0b1b3;
+        }
+        &.portfolio-mobile-layout-nav-footer-inner-item-active {
+          .portfolio-mobile-layout-nav-footer-inner-item-text {
+            color: #19191a;
+          }
+        }
+      }
+    }
+  }
+}

@@ -33,6 +33,7 @@ import UpgradeModal from "../common/upgradeModal";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class Profile extends Component {
   constructor(props) {
@@ -150,6 +151,9 @@ class Profile extends Component {
     }, 900000);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/home");
+    }
     this.props.GetAllPlan();
     this.props.getUser();
     ManageLink(this);

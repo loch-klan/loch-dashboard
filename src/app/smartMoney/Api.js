@@ -288,6 +288,9 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
             ctx.handleError();
           }
         }
+        if (ctx.props.updateWalletListFlag) {
+          ctx.props.updateWalletListFlag("mobileLayout", false);
+        }
       })
       .catch((err) => {
         toast.error("Something Went Wrong");

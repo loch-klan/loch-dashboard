@@ -1053,67 +1053,69 @@ class TopWalletAddressList extends Component {
         ) : (
           <div />
         )}
-        <div className="topWalletAddressListFollowShareContainer inter-display-medium">
-          {this.props.showUpdatesJustNowBtn ? (
-            <h2
-              className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
-              onClick={this.RefreshButton}
-              style={{
-                whiteSpace: "nowrap",
-              }}
-            >
-              <Image src={refreshIcon} />
-              Updated{" "}
-              <span
-                style={{ marginLeft: "3px" }}
-                className="inter-display-bold f-s-13 lh-15 grey-B0B"
+        {this.props.isMobile ? null : (
+          <div className="topWalletAddressListFollowShareContainer inter-display-medium">
+            {this.props.showUpdatesJustNowBtn ? (
+              <h2
+                className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                onClick={this.RefreshButton}
+                style={{
+                  whiteSpace: "nowrap",
+                }}
               >
-                {this.state.timeNumber === null
-                  ? "3"
-                  : this.state.timeNumber === 0
-                  ? " just now"
-                  : this.state.timeNumber}
-              </span>
-              <span>
-                {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                  ? this.state.timeUnit
-                  : this.state.timeNumber === 0
-                  ? ""
-                  : "h ago"}
-              </span>
-            </h2>
-          ) : null}
-          {this.state.showFollowingAddress ? (
-            <div
-              ref={this.props.buttonRef}
-              className="ml-3 topWalletAddressListFollowShareBtn"
-              id="address-button"
-              onClick={this.addAddressToWatchListFun}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={FollowTopBarIcon}
-              />
-              <span className="dotDotText">
-                {this.state.isFollowingAddress ? "Following" : "Follow"}
-              </span>
-            </div>
-          ) : null}
-          {!this.props.hideShare ? (
-            <div
-              ref={this.props.buttonRef}
-              className="topWalletAddressListFollowShareBtn ml-2"
-              id="address-button"
-              onClick={this.handleSharePassFun}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={ShareTopBarIcon}
-              />
-              <span className="dotDotText">Share</span>
-            </div>
-          ) : null}
-        </div>
+                <Image src={refreshIcon} />
+                Updated{" "}
+                <span
+                  style={{ marginLeft: "3px" }}
+                  className="inter-display-bold f-s-13 lh-15 grey-B0B"
+                >
+                  {this.state.timeNumber === null
+                    ? "3"
+                    : this.state.timeNumber === 0
+                    ? " just now"
+                    : this.state.timeNumber}
+                </span>
+                <span>
+                  {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                    ? this.state.timeUnit
+                    : this.state.timeNumber === 0
+                    ? ""
+                    : "h ago"}
+                </span>
+              </h2>
+            ) : null}
+            {this.state.showFollowingAddress ? (
+              <div
+                ref={this.props.buttonRef}
+                className="ml-3 topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={FollowTopBarIcon}
+                />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            {!this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn ml-2"
+                id="address-button"
+                onClick={this.handleSharePassFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={ShareTopBarIcon}
+                />
+                <span className="dotDotText">Share</span>
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
     );
   }

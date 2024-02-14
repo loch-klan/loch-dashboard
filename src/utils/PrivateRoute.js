@@ -46,6 +46,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         // console.log('props',props);
         const searchParams = new URLSearchParams(props.location.search);
         const redirectPath = searchParams.get("redirect");
+        const noPopupFlag = searchParams.get("noPopup");
         const passedRefrenceId = searchParams.get("refrenceId");
         const transHistoryPageNumber = searchParams.get(
           "transHistoryPageNumber"
@@ -55,7 +56,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         );
         const transHistorySorts = searchParams.get("transHistorySorts");
         const followThisAddressInLink = searchParams.get("followThisAddress");
-
+        if (noPopupFlag === "true") {
+          window.sessionStorage.setItem("noPopupFlag", true);
+        }
         let linkAddress = "";
 
         if (props.location?.pathname) {
@@ -73,8 +76,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             linkAddress = justAddress;
             if (!wasWalletBefore) {
               if (!window.sessionStorage.getItem("followThisAddress")) {
-                console.log("linkAddress ? ", linkAddress);
-                window.sessionStorage.setItem("followThisAddress", linkAddress);
+                const noPopupFlagLastTime =
+                  window.sessionStorage.getItem("noPopupFlag");
+                if (noPopupFlag !== "true" && noPopupFlagLastTime !== "true") {
+                  window.sessionStorage.setItem(
+                    "followThisAddress",
+                    linkAddress
+                  );
+                }
               }
             }
           }
@@ -92,7 +101,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 hash: props?.location?.hash,
               })
             );
-            if (followThisAddressInLink === "true" && linkAddress) {
+            const noPopupFlagLastTime =
+              window.sessionStorage.getItem("noPopupFlag");
+            if (
+              followThisAddressInLink === "true" &&
+              linkAddress &&
+              noPopupFlag !== "true" &&
+              noPopupFlagLastTime !== "true"
+            ) {
+              console.log("Two here");
               window.sessionStorage.setItem("followThisAddress", linkAddress);
             }
             if (passedRefrenceId) {
@@ -160,14 +177,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             ) : null}
             <div
               className={`main-section-right ${
-                (props.location.pathname === "/nft" && isMobile)
-                ?
-                ""
-                :
-              
-                props.location.pathname !== "/welcome" &&
-                !props.match.params.podName
-                  ? isSidebarClosed 
+                props.location.pathname === "/nft" && isMobile
+                  ? ""
+                  : props.location.pathname !== "/welcome" &&
+                    !props.match.params.podName
+                  ? isSidebarClosed
                     ? "main-section-right-margin-handler-closed"
                     : "main-section-right-margin-handler"
                   : ""
