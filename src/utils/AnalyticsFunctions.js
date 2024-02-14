@@ -74,9 +74,9 @@ export const signUpProperties = ({
   });
 };
 
-export const resetUser = () => {
+export const resetUser = (notCurrencyRates) => {
   Mixpanel.reset();
-  deleteToken();
+  deleteToken(notCurrencyRates);
   // console.log("reset");
 };
 
@@ -332,7 +332,6 @@ export const SearchBarAddressAdded = ({
     address: address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
 };
 export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
@@ -341,7 +340,19 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
     "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:email address added");
+};
+export const EmailAddressAddedSignUp = ({
+  session_id,
+  email_address,
+  isMobile = false,
+}) => {
+  const event_name = "Landing Page Conversion:sign up email address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //5. Landing Page Conversion:email address verified
@@ -5795,12 +5806,14 @@ export const SmartMoneyWalletClicked = ({
   session_id,
   email_address,
   wallet,
+  isWelcome = false,
 }) => {
   const event_name = "Smart money: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
+    isWelcome: isWelcome,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

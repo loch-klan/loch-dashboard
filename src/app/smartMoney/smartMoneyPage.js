@@ -641,7 +641,6 @@ class SmartMoneyPage extends BaseReactComponent {
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
-                      isMobile: false,
                     });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {
