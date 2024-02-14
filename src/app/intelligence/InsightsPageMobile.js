@@ -134,36 +134,36 @@ class InsightsPageMobile extends Component {
                                 </h5>
                               )}
                             </div>
+                            <div
+                              style={{
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                marginTop: "1rem",
+                              }}
+                              className="insights-content"
+                            >
+                              <p
+                                style={{
+                                  whiteSpace: "wrap",
+                                  marginTop: "0rem",
+                                }}
+                                className="inter-display-medium f-s-12 lh-16 grey-969"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.sub_title,
+                                }}
+                              ></p>
+                              <h4
+                                style={{
+                                  whiteSpace: "wrap",
+                                }}
+                                className="inter-display-medium f-s-13 lh-19 grey-313"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.title,
+                                }}
+                              ></h4>
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          style={{
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            marginTop: "1rem",
-                          }}
-                          className="insights-content"
-                        >
-                          <p
-                            style={{
-                              whiteSpace: "wrap",
-                              marginTop: "0rem",
-                            }}
-                            className="inter-display-medium f-s-12 lh-16 grey-969"
-                            dangerouslySetInnerHTML={{
-                              __html: insight.sub_title,
-                            }}
-                          ></p>
-                          <h4
-                            style={{
-                              whiteSpace: "wrap",
-                            }}
-                            className="inter-display-medium f-s-13 lh-19 grey-313"
-                            dangerouslySetInnerHTML={{
-                              __html: insight.title,
-                            }}
-                          ></h4>
                         </div>
                       </div>
                     </div>

@@ -4170,6 +4170,8 @@ class Portfolio extends BaseReactComponent {
             //Go to pages
             goToGasFeesSpentPage={this.goToGasFeesSpentPage}
             goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
+            goToYieldOppPage={this.goToYieldOppPage}
+            goToAssetsPage={this.goToAssetsPage}
           />
         </MobileLayout>
       );

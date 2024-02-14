@@ -57,7 +57,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: this.props?.isMobile ? "43rem" : "30rem",
+                height: this.props?.isMobile ? "41rem" : "30rem",
                 padding: this.props?.isMobile
                   ? "0rem 0.5rem 0rem 0rem"
                   : "0rem 0.5rem",
@@ -272,16 +272,14 @@ class PortfolioHomeInsightsBlock extends Component {
                 })}
             </div>
 
-            {this.props?.isMobile ? null : (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.goToInsightsPage}
-                >
-                  Click here to see more
-                </div>
+            <div className="inter-display-medium bottomExtraInfo">
+              <div
+                className="bottomExtraInfoText"
+                onClick={this.goToInsightsPage}
+              >
+                Click here to see more
               </div>
-            )}
+            </div>
           </>
         ) : (
           <div

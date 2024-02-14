@@ -30,6 +30,7 @@ import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHo
 import PieChart2 from "./PieChart2";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import "./_mobilePortfolio.scss";
+import { numToCurrency } from "../../utils/ReusableFunctions.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -730,7 +731,7 @@ class PortfolioMobile extends BaseReactComponent {
                         this.props.intelligenceState.Average_cost_basis
                           .length <= 10
                           ? "newHomeTableContainerNoShowMore"
-                          : "newHomeTableContainerNoShowMore"
+                          : ""
                       }`}
                     >
                       <TransactionTable
@@ -754,6 +755,31 @@ class PortfolioMobile extends BaseReactComponent {
                         xAxisScrollableColumnWidth={3}
                       />
                     </div>
+                    {!this.props.AvgCostLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.props.goToAssetsPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.props.intelligenceState?.Average_cost_basis &&
+                          this.props.intelligenceState.Average_cost_basis
+                            .length > 10
+                            ? `Click here to see ${numToCurrency(
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length - 10,
+                                true
+                              ).toLocaleString("en-US")}+ asset${
+                                this.props.intelligenceState.Average_cost_basis
+                                  .length -
+                                  10 >
+                                1
+                                  ? "s"
+                                  : ""
+                              }`
+                            : "Click here to see more"}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : this.props.blockThreeSelectedItem === 1 ? (
                   <div>
@@ -766,7 +792,7 @@ class PortfolioMobile extends BaseReactComponent {
                       } ${
                         this.props.yieldOpportunitiesTotalCount?.length <= 10
                           ? "newHomeTableContainerNoShowMore"
-                          : "newHomeTableContainerNoShowMore"
+                          : ""
                       }`}
                     >
                       <TransactionTable
@@ -785,6 +811,26 @@ class PortfolioMobile extends BaseReactComponent {
                         fakeWatermark
                       />
                     </div>
+                    {!this.props.yieldOpportunitiesTableLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.props.goToYieldOppPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.props.yieldOpportunitiesTotalCount &&
+                          this.props.yieldOpportunitiesTotalCount > 10
+                            ? `Click here to see ${numToCurrency(
+                                this.props.yieldOpportunitiesTotalCount - 10,
+                                true
+                              ).toLocaleString("en-US")}+ yield ${
+                                this.props.yieldOpportunitiesTotalCount - 10 > 1
+                                  ? "opportunities"
+                                  : "opportunity"
+                              }`
+                            : "Click here to see more"}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

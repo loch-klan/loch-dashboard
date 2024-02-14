@@ -202,10 +202,10 @@
         font-weight: 500;
         color: #4f4f4f;
         .bottomExtraInfoText {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          height: fit-content;
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
           padding: 0rem 1rem;
           cursor: pointer;
           &:hover {
@@ -225,8 +225,8 @@
             .ReactVirtualized__Table__Grid {
               overflow-y: auto !important;
               overflow-x: hidden !important;
-              max-height: 35rem !important;
-              min-height: 35rem !important;
+              max-height: 36rem !important;
+              min-height: 36rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
