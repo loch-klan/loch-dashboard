@@ -1709,6 +1709,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                               onLeaderboardWalletClick={
                                 this.onLeaderboardWalletClick
                               }
+                              hideFollow
                             />
                           );
                         })}

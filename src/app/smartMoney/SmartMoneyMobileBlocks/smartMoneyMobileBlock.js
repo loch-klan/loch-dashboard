@@ -157,19 +157,21 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               </span>
             </div>
           </div>
-          <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Follow</div>
-            <div className={`inter-display-medium msmbBIAmount`}>
-              <CheckboxCustomTable
-                handleOnClick={this.handleOnClick}
-                isChecked={
-                  this.props.mapData.following && !this.props.smartMoneyBlur
-                }
-                noMargin
-                dontSelectIt={this.props.smartMoneyBlur}
-              />
+          {this.props.hideFollow ? null : (
+            <div className="msmbBodyItem">
+              <div className="inter-display-medium msmbBITitle">Follow</div>
+              <div className={`inter-display-medium msmbBIAmount`}>
+                <CheckboxCustomTable
+                  handleOnClick={this.handleOnClick}
+                  isChecked={
+                    this.props.mapData.following && !this.props.smartMoneyBlur
+                  }
+                  noMargin
+                  dontSelectIt={this.props.smartMoneyBlur}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );

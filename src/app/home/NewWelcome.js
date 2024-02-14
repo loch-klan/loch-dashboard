@@ -1971,7 +1971,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.09,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -2021,7 +2021,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.125,
+        coumnWidth: 0.145,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -2036,18 +2036,20 @@ class NewWelcome extends BaseReactComponent {
 
                       isWelcome: true,
                     });
-                    this.setState({
-                      initialInput: true,
-                    },() => { 
-                      const fakeOnChange = {
-                        target: {
-                          name: "wallet1",
-                          value: rowData.account,
-                        },
-                      };
-                      this.handleOnChange(fakeOnChange);
-                     });
-                    
+                    this.setState(
+                      {
+                        initialInput: true,
+                      },
+                      () => {
+                        const fakeOnChange = {
+                          target: {
+                            name: "wallet1",
+                            value: rowData.account,
+                          },
+                        };
+                        this.handleOnChange(fakeOnChange);
+                      }
+                    );
                   } else {
                     this.opneLoginModalForSmartMoney();
                   }
@@ -2080,7 +2082,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.222,
+        coumnWidth: 0.242,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -2131,7 +2133,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -2185,7 +2187,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -2277,7 +2279,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -2343,46 +2345,6 @@ class NewWelcome extends BaseReactComponent {
                   </div>
                 </div>
               </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Follow
-            </span>
-          </div>
-        ),
-        dataKey: "following",
-
-        coumnWidth: 0.125,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
-            const handleOnClick = (addItem) => {
-              if (!this.state.blurTable) {
-                this.handleFollowUnfollow(
-                  rowData.account,
-                  addItem,
-                  rowData.tagName
-                );
-              } else {
-                this.opneLoginModalForSmartMoney();
-                ClickedFollowLeaderboard({
-                  session_id: getCurrentUser().id,
-                  address: rowData.account,
-                  isMobile: false,
-                });
-              }
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={handleOnClick}
-                isChecked={rowData.following}
-                dontSelectIt={this.state.blurTable}
-              />
             );
           }
         },
