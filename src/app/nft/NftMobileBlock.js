@@ -41,8 +41,9 @@ const NftMobileBlock = ({ data, style }) => {
             justifyContent: "center",
           }}
         >
-          {data.imgs && data.imgs.length > 0
-            ? data.imgs?.slice(0, 3).map((item, index) => {
+          {data.imgs && data.imgs.length > 0 ? (
+            data.imgs?.slice(0, 3).map((item, index) => {
+              if (item) {
                 return (
                   <HandleBrokenImages
                     src={item}
@@ -51,8 +52,20 @@ const NftMobileBlock = ({ data, style }) => {
                     imageOnError={DefaultNftTableIconIcon}
                   />
                 );
-              })
-            : null}
+              }
+              return (
+                <HandleBrokenImages
+                  className="nftImageIcon"
+                  imageOnError={DefaultNftTableIconIcon}
+                />
+              );
+            })
+          ) : (
+            <HandleBrokenImages
+              className="nftImageIcon"
+              imageOnError={DefaultNftTableIconIcon}
+            />
+          )}
           {data.imgs && data.imgs.length > 3 ? (
             <span
               style={{
@@ -78,17 +91,16 @@ const NftMobileBlock = ({ data, style }) => {
               isText={true}
               text={
                 data?.floor_price
-                  ? CurrencyType(false) + convertNtoNumber(data?.floor_price)
-                  : CurrencyType(false) + "0.00"
+                  ? convertNtoNumber(data?.floor_price) + " ETH"
+                  : "0.00 ETH"
               }
             >
               <span className="inter-display-medium f-s-13 lh-16 grey-313">
                 {data?.floor_price
-                  ? CurrencyType(false) +
-                    numToCurrency(data?.floor_price.toFixed(2)).toLocaleString(
+                  ? numToCurrency(data?.floor_price.toFixed(2)).toLocaleString(
                       "en-US"
-                    )
-                  : CurrencyType(false) + "0.00"}
+                    ) + " ETH"
+                  : "0.00 ETH"}
               </span>
             </CustomOverlay>
           </div>

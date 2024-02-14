@@ -453,21 +453,31 @@ class NFT extends BaseReactComponent {
                   justifyContent: "center",
                 }}
               >
-                {rowData.imgs && rowData.imgs.length > 0
-                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
-                      if (item) {
-                        return (
-                          <HandleBrokenImages
-                            src={item}
-                            key={index}
-                            className="nftImageIcon"
-                            imageOnError={DefaultNftTableIconIcon}
-                          />
-                        );
-                      }
-                      return null;
-                    })
-                  : null}
+                {rowData.imgs && rowData.imgs.length > 0 ? (
+                  rowData.imgs?.slice(0, 4).map((item, index) => {
+                    if (item) {
+                      return (
+                        <HandleBrokenImages
+                          src={item}
+                          key={index}
+                          className="nftImageIcon"
+                          imageOnError={DefaultNftTableIconIcon}
+                        />
+                      );
+                    }
+                    return (
+                      <HandleBrokenImages
+                        className="nftImageIcon"
+                        imageOnError={DefaultNftTableIconIcon}
+                      />
+                    );
+                  })
+                ) : (
+                  <HandleBrokenImages
+                    className="nftImageIcon"
+                    imageOnError={DefaultNftTableIconIcon}
+                  />
+                )}
                 {rowData.imgs && rowData.imgs.length > 4 ? (
                   <span
                     style={{
@@ -507,18 +517,16 @@ class NFT extends BaseReactComponent {
                 isText={true}
                 text={
                   rowData.floor_price
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.floor_price)
-                    : CurrencyType(false) + "0.00"
+                    ? convertNtoNumber(rowData.floor_price) + " ETH"
+                    : "0.00 ETH"
                 }
               >
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
                   {rowData.floor_price
-                    ? CurrencyType(false) +
-                      numToCurrency(
+                    ? numToCurrency(
                         rowData.floor_price.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
+                      ).toLocaleString("en-US") + " ETH"
+                    : "0.00 ETH"}
                 </span>
               </CustomOverlay>
             );
