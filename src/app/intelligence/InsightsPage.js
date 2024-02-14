@@ -39,6 +39,8 @@ import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import DropDown from "../common/DropDown";
 import Footer from "../common/footer";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import InsightsPageMobile from "./InsightsPageMobile.js";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -146,9 +148,9 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -311,7 +313,7 @@ class InsightsPage extends Component {
     // console.log("api respinse", value);
   };
   handleSelect = (value) => {
-    // console.log("value",value)
+    console.log("value", value);
     let insightList = this.props.intelligenceState?.updatedInsightList
       ? this.props.intelligenceState?.updatedInsightList
       : [];
@@ -428,6 +430,30 @@ class InsightsPage extends Component {
       }
     );
   };
+  handleMobileInsightSelect = (e) => {
+    let title = e.split(" ")[1];
+    console.log(e.split(" "));
+    if (e.split(" ")[2] !== "undefined") {
+      title = title + " " + e.split(" ")[2];
+    }
+    if (e.split(" ")[3] !== "undefined") {
+      title = title + " " + e.split(" ")[3];
+    }
+    // this.setState({
+    //   selectedFilter:
+    //     title == "All Insights" ? 1 : title == "Cost Reduction" ? 2 : 3,
+    // });
+    // console.log(title.replace("  ", " "));
+    // title = title.replace("  ", " ");
+
+    this.handleSelect(
+      title == "All Insights" ? 1 : title == "Cost Reduction" ? 10 : 20
+    );
+
+    console.log(
+      title == "All Insights" ? 1 : title == "Cost Reduction" ? 10 : 20
+    );
+  };
   onClickDropdown = () => {
     RiskTypeDropdownClicked({
       session_id: getCurrentUser().id,
@@ -443,272 +469,290 @@ class InsightsPage extends Component {
     this.updateTimer();
   };
   render() {
-    return (
-      <>
-        {/* topbar */}
-        <div className="portfolio-page-section">
-          <div
-            className="portfolio-container page"
-            style={{ overflow: "visible" }}
-          >
-            <div className="portfolio-section">
-              {/* welcome card */}
-              <WelcomeCard
-                handleShare={this.handleShare}
-                isSidebarClosed={this.props.isSidebarClosed}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                // history
-                history={this.props.history}
-                // add wallet address modal
-                handleAddModal={this.handleAddModal}
-                updateTimer={this.updateTimer}
-              />
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          history={this.props.history}
+          isSidebarClosed={this.props.isSidebarClosed}
+        >
+          <InsightsPageMobile
+            updatedInsightList={this.state.updatedInsightList}
+            handleMobileInsightSelect={this.handleMobileInsightSelect}
+            selectedFilter={this.state.selectedFilter}
+            isLoading={this.state.isLoading}
+          />
+        </MobileLayout>
+      );
+    } else
+      return (
+        <>
+          {/* topbar */}
+          <div className="portfolio-page-section">
+            <div
+              className="portfolio-container page"
+              style={{ overflow: "visible" }}
+            >
+              <div className="portfolio-section">
+                {/* welcome card */}
+                <WelcomeCard
+                  handleShare={this.handleShare}
+                  isSidebarClosed={this.props.isSidebarClosed}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  // history
+                  history={this.props.history}
+                  // add wallet address modal
+                  handleAddModal={this.handleAddModal}
+                  updateTimer={this.updateTimer}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="insights-section m-t-80">
-          <div className="insights-page page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-            />
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="insights-section m-t-80">
+            <div className="insights-page page">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                from="insights"
-                updateTimer={this.updateTimer}
+                handleShare={this.handleShare}
               />
-            )}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="insights"
+                  updateTimer={this.updateTimer}
+                />
+              )}
 
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
-                history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="insight-page"
-                updateTimer={this.updateTimer}
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.sessionStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="insight-page"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+
+              <PageHeader
+                title={"Insights"}
+                subTitle={"Valuable insights based on your assets"}
+                currentPage={"insights"}
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                ShareBtn={true}
+                handleShare={this.handleShare}
+                // history={this.props.history}updateTimer={this.updateTimer}
               />
-            )}
-
-            <PageHeader
-              title={"Insights"}
-              subTitle={"Valuable insights based on your assets"}
-              currentPage={"insights"}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              ShareBtn={true}
-              handleShare={this.handleShare}
-              // history={this.props.history}updateTimer={this.updateTimer}
-            />
-            <div style={{ position: "relative", minWidth: "85rem" }}>
-              {
-                // this.state.insightList && this.state.insightList.length > 0 &&
-                <div className="insights-filter">
-                  {this.state.insightFilter?.map((filter, key) => {
-                    return (
-                      <div
-                        key={key}
-                        id={key}
-                        className={`filter ${
-                          filter.value === this.state.selectedFilter
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={() => this.handleSelect(filter.value)}
-                      >
-                        {filter.name}
-                      </div>
-                    );
-                  })}
-                </div>
-              }
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "0.8rem",
-                }}
-              >
-                <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
-                  This week
-                </h2>
-
-                <div
-                  style={{ display: "flex", alignItems: "center" }}
-                  onClick={this.onClickDropdown}
-                  onMouseEnter={this.onHoverDropdown}
-                >
-                  <DropDown
-                    class="cohort-dropdown"
-                    list={[
-                      "All risks",
-                      "Token Float Risk",
-                      "Borrower Risk",
-                      "Unlock Risk",
-                      "Lender Risk",
-                      "Market Cap Risk",
-                      "Staking Risk",
-                      "Discoverability Risk",
-                      "Concentration Risk",
-                    ]}
-                    onSelect={this.handleInsights}
-                    title={this.state.riskType}
-                    activetab={this.state.riskType}
-                  />
-                </div>
-              </div>
-              <div className="insights-wrapper">
-                {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                {this.state.isLoading ? (
-                  <Loading />
-                ) : this.state.updatedInsightList &&
-                  this.state.updatedInsightList.length > 0 ? (
-                  this.state.updatedInsightList?.map((insight, key) => {
-                    return (
-                      <div
-                        style={{
-                          marginBottom:
-                            key === this.state.updatedInsightList.length - 1
-                              ? "3rem"
-                              : "",
-                        }}
-                        className="insights-card"
-                        key={key}
-                      >
-                        <Image
-                          src={
-                            insight.insight_type === InsightType.COST_REDUCTION
-                              ? reduceCost
-                              : insight.insight_type ===
-                                InsightType.RISK_REDUCTION
-                              ? reduceRisk
-                              : increaseYield
-                          }
-                          className="insight-icon"
-                        />
-                        <div className="insights-content">
-                          <div className="chips-wrapper">
-                            <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                              {InsightType.getText(insight.insight_type)}
-                            </h5>
-                            {insight?.sub_type && (
-                              <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                {InsightType.getRiskType(insight.sub_type)}
-                              </h5>
-                            )}
-                          </div>
-                          <p
-                            className="inter-display-medium f-s-13 lh-16 grey-969"
-                            dangerouslySetInnerHTML={{
-                              __html: insight.sub_title,
-                            }}
-                          ></p>
-                          <h4
-                            className="inter-display-medium f-s-16 lh-19 grey-313"
-                            dangerouslySetInnerHTML={{ __html: insight.title }}
-                          ></h4>
+              <div style={{ position: "relative", minWidth: "85rem" }}>
+                {
+                  // this.state.insightList && this.state.insightList.length > 0 &&
+                  <div className="insights-filter">
+                    {this.state.insightFilter?.map((filter, key) => {
+                      return (
+                        <div
+                          key={key}
+                          id={key}
+                          className={`filter ${
+                            filter.value === this.state.selectedFilter
+                              ? "active"
+                              : ""
+                          }`}
+                          onClick={() => this.handleSelect(filter.value)}
+                        >
+                          {filter.name}
                         </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  this.state.userPlan.name !== "Free" && (
-                    <>
-                      <div
-                        style={{
-                          // height:
-                          //   this.props.intelligenceState.updatedInsightList
-                          //     ?.length === 0
-                          //     ? "35rem"
-                          //     : this.props.intelligenceState.updatedInsightList
-                          //         ?.length === 1
-                          //     ? "25rem"
-                          //     : "16rem",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                          position: "relative",
-                          marginTop: "5rem",
-                        }}
-                      >
+                      );
+                    })}
+                  </div>
+                }
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "0.8rem",
+                  }}
+                >
+                  <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                    This week
+                  </h2>
+
+                  <div
+                    style={{ display: "flex", alignItems: "center" }}
+                    onClick={this.onClickDropdown}
+                    onMouseEnter={this.onHoverDropdown}
+                  >
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        "All risks",
+                        "Token Float Risk",
+                        "Borrower Risk",
+                        "Unlock Risk",
+                        "Lender Risk",
+                        "Market Cap Risk",
+                        "Staking Risk",
+                        "Discoverability Risk",
+                        "Concentration Risk",
+                      ]}
+                      onSelect={this.handleInsights}
+                      title={this.state.riskType}
+                      activetab={this.state.riskType}
+                    />
+                  </div>
+                </div>
+                <div className="insights-wrapper">
+                  {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                  {this.state.isLoading ? (
+                    <Loading />
+                  ) : this.state.updatedInsightList &&
+                    this.state.updatedInsightList.length > 0 ? (
+                    this.state.updatedInsightList?.map((insight, key) => {
+                      return (
                         <div
                           style={{
-                            position: "absolute",
-                            width: "16rem",
-                            height: "16rem",
-                            background:
-                              "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                            filter: "blur(50px)",
-                            borderRadius: "10rem",
-                            zIndex: 0,
+                            marginBottom:
+                              key === this.state.updatedInsightList.length - 1
+                                ? "3rem"
+                                : "",
                           }}
-                        ></div>
-                        <Image
-                          src={InsightImg}
-                          style={{ position: "relative" }}
-                        />
-                        <h5
-                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                          className="insights-card"
+                          key={key}
+                        >
+                          <Image
+                            src={
+                              insight.insight_type ===
+                              InsightType.COST_REDUCTION
+                                ? reduceCost
+                                : insight.insight_type ===
+                                  InsightType.RISK_REDUCTION
+                                ? reduceRisk
+                                : increaseYield
+                            }
+                            className="insight-icon"
+                          />
+                          <div className="insights-content">
+                            <div className="chips-wrapper">
+                              <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                {InsightType.getText(insight.insight_type)}
+                              </h5>
+                              {insight?.sub_type && (
+                                <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                  {InsightType.getRiskType(insight.sub_type)}
+                                </h5>
+                              )}
+                            </div>
+                            <p
+                              className="inter-display-medium f-s-13 lh-16 grey-969"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.sub_title,
+                              }}
+                            ></p>
+                            <h4
+                              className="inter-display-medium f-s-16 lh-19 grey-313"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.title,
+                              }}
+                            ></h4>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    this.state.userPlan.name !== "Free" && (
+                      <>
+                        <div
                           style={{
-                            marginBottom: "1rem",
-                            width: "90%",
-                            marginTop: "1.2rem",
+                            // height:
+                            //   this.props.intelligenceState.updatedInsightList
+                            //     ?.length === 0
+                            //     ? "35rem"
+                            //     : this.props.intelligenceState.updatedInsightList
+                            //         ?.length === 1
+                            //     ? "25rem"
+                            //     : "16rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
                             position: "relative",
+                            marginTop: "5rem",
                           }}
                         >
-                          Add all your wallets and exchanges to gain more
-                          insights
-                        </h5>
-                        <p
-                          className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
-                          style={{ position: "relative" }}
-                        >
-                          Insights increase with your usage
-                        </p>
-                      </div>
-                    </>
-                  )
-                )}
-              </div>
-            </div>
-            {/* Upgrade Insight section */}
-            {this.state.userPlan.name === "Free" && (
-              <div className="Insight-upgrade-wrapper m-t-16">
-                <div className="Insight-upgrade">
-                  <Image src={GradientImg} />
-                  <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
-                    More insights with Loch
-                  </h3>
-                  <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
-                    Upgrade your plan
-                  </h5>
-                  <Button
-                    className="secondary-btn text-center"
-                    onClick={this.upgradeModal}
-                  >
-                    Upgrade
-                  </Button>
+                          <div
+                            style={{
+                              position: "absolute",
+                              width: "16rem",
+                              height: "16rem",
+                              background:
+                                "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
+                              filter: "blur(50px)",
+                              borderRadius: "10rem",
+                              zIndex: 0,
+                            }}
+                          ></div>
+                          <Image
+                            src={InsightImg}
+                            style={{ position: "relative" }}
+                          />
+                          <h5
+                            className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                            style={{
+                              marginBottom: "1rem",
+                              width: "90%",
+                              marginTop: "1.2rem",
+                              position: "relative",
+                            }}
+                          >
+                            Add all your wallets and exchanges to gain more
+                            insights
+                          </h5>
+                          <p
+                            className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
+                            style={{ position: "relative" }}
+                          >
+                            Insights increase with your usage
+                          </p>
+                        </div>
+                      </>
+                    )
+                  )}
                 </div>
-                <div className="inner-box"></div>
-                <div className="inner-box2"></div>
               </div>
-            )}
-            {/* <div>
+              {/* Upgrade Insight section */}
+              {this.state.userPlan.name === "Free" && (
+                <div className="Insight-upgrade-wrapper m-t-16">
+                  <div className="Insight-upgrade">
+                    <Image src={GradientImg} />
+                    <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
+                      More insights with Loch
+                    </h3>
+                    <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
+                      Upgrade your plan
+                    </h5>
+                    <Button
+                      className="secondary-btn text-center"
+                      onClick={this.upgradeModal}
+                    >
+                      Upgrade
+                    </Button>
+                  </div>
+                  <div className="inner-box"></div>
+                  <div className="inner-box2"></div>
+                </div>
+              )}
+              {/* <div>
               <input
                 value={this.state.sendAdd}
                 onChange={(changed) => {
@@ -741,12 +785,12 @@ class InsightsPage extends Component {
               />
               <button onClick={this.sendAmountFun}>Send</button>
             </div> */}
-            {/* footer */}
-            <Footer />
+              {/* footer */}
+              <Footer />
+            </div>
           </div>
-        </div>
-      </>
-    );
+        </>
+      );
   }
 }
 const mapStateToProps = (state) => ({
