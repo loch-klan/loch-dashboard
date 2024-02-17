@@ -1,0 +1,128 @@
+.defi-mobile-expanded{
+    .balance-dropdown{
+        position: static !important;
+        border-radius: 12px !important;
+        padding-bottom: 0px !important;
+    }
+    .defi-card-wrapper-mobile{
+        background-color: transparent;
+        margin-bottom: 40px;
+
+        .top-title-wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .heading-image{
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                img{
+                    width: 45px;
+                    height: 45px;
+                }
+                span{
+                    padding: 8px;
+                    background-color: #19191a;
+                    border-radius: 8px;
+                    color: white;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+                h3{
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+
+            }
+        }
+
+        .defi-card-divider-main{
+            height: 1px;
+            width: 100%;
+            background-color: #e5e5e6;
+            margin-top: 24px;
+        }
+
+        .defi-card-component{
+            margin-top: 24px;
+            padding-top: 20px;
+            padding-bottom: 12px;
+            background-color: white;
+            border-radius: 12px;
+
+            .defi-card-component-header{
+                display: flex;
+                justify-content: space-between;
+                padding: 0px 20px;
+
+                .defi-card-component-header-left{
+                    border-radius: 6px;
+                    border: 1px solid  #CACBCC;
+                    background:  rgba(229, 229, 230, 0.50);
+                    display: flex;
+                    align-items: center;
+                    .defi-card-component-header-left-left{
+                        img{
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+                    .defi-card-component-header-left-right{
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: #313233;
+                        padding: 0 8px;
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+                .defi-card-component-header-right{
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #313233;
+                }
+            }
+            .defi-card-component-divider{
+                height: 1px;
+                width: 100%;
+                background-color: #e5e5e6;
+                margin-top: 20px;
+            }
+
+            .defi-card-component-body{
+                .defi-card-component-body-header{
+                    height: 45px;
+                    padding: 8px 12px;
+                    display: flex;
+                    align-items: center;
+                    span{
+                        color:#96979A;
+                        font-size: 13px;
+                        font-weight: 500;
+                        text-align: center;
+                        flex: 1;
+                    }
+                    .defi-card-component-body-header-divider{
+                        width: 1px;
+                        height: 100%;
+                        background-color: #e5e5e6;
+                    }
+                }
+                .defi-card-component-body-content{
+                    height: 45px;
+                    padding: 6px;
+                    display: flex;
+                    align-items: center;
+
+                    span{
+                        color: #313233;
+                        flex: 1;
+                        font-size: 13px;
+                        font-weight: 500;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
