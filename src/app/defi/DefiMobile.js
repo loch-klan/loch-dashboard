@@ -47,7 +47,12 @@ class DefiMobile extends Component {
                     : ""
                 }`}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <span
                     className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
                             ${
@@ -83,8 +88,12 @@ class DefiMobile extends Component {
                       this.props.isYeildToggle
                         ? {
                             filter: "opacity(1)",
+                            marginBottom: "0px",
                           }
-                        : { transform: "rotate(180deg)" }
+                        : {
+                            transform: "rotate(180deg)",
+                            marginBottom: "0px",
+                          }
                     }
                   />
                 </div>
@@ -101,7 +110,12 @@ class DefiMobile extends Component {
                   this.props.defiLoader ? "balance-sheet-card-debt-loading" : ""
                 }`}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <span
                     className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
                              ${
@@ -137,8 +151,9 @@ class DefiMobile extends Component {
                       this.props.isDebtToggle
                         ? {
                             filter: "opacity(1)",
+                            marginBottom: "0px",
                           }
-                        : { transform: "rotate(180deg)" }
+                        : { transform: "rotate(180deg)", marginBottom: "0px" }
                     }
                   />
                 </div>
