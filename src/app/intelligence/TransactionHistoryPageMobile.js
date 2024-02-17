@@ -20,9 +20,6 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
   }
 
   render() {
-    const { currentPage } = this.props;
-
-    console.log("this.props", this.props);
     return (
       <div className="assets-expanded-mobile expanded-mobile">
         <div className="mobile-header-container">
@@ -181,19 +178,18 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
             />
           </div>
         </div>
-        <div className="mt-4">
-          <SmartMoneyPagination
-            isMobile
-            pageCount={this.props.totalPage}
-            history={this.props.history}
-            location={this.props.location}
-            page={currentPage + 1}
-            // totalPage={this.props.totalPage}
-            // onPageChange={this.props.onPageChange}
-            minimalPagination
-            hidePaginationRecords
-          />
-        </div>
+        {this.props.tableData && this.props.tableData.length > 0 ? (
+          <div className="mt-4">
+            <SmartMoneyPagination
+              isMobile
+              pageCount={this.props.totalPage}
+              history={this.props.history}
+              location={this.props.location}
+              page={this.props.currentPage + 1}
+              onPageChange={this.props.onPageChange}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }

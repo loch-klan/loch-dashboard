@@ -6,6 +6,7 @@ import {
   TruncateText,
   amountFormat,
   convertNtoNumber,
+  loadingAnimation,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
@@ -28,133 +29,156 @@ class DefiMobile extends Component {
           <p>Decipher all your DeFi data from one place</p>
         </div>
         <div>
-          <div
-            style={{
-              minWidth: "",
-            }}
-            className="balance-sheet-card"
-          >
-            <div className="balance-dropdown">
-              <div className="balance-list-content">
-                {/* For yeild */}
-                <Row>
-                  <Col md={6}>
-                    <div
-                      className="balance-sheet-title"
-                      onClick={() => {
-                        if (this.props.isDebtToggle) {
-                          this.props.toggleDebt();
-                        }
-                        this.props.toggleYield();
-                      }}
-                    >
+          <div style={{}} className="balance-sheet-card ">
+            <div className="balance-card-header cp">
+              <div
+                onClick={() => {
+                  if (this.props.isDebtToggle) {
+                    this.props.toggleDebt();
+                  }
+                  this.props.toggleYield();
+                }}
+                // style={
+                //   this.props.isYeildToggle ? {  } : {}
+                // }
+                className={`balance-sheet-card-credit ${
+                  this.props.defiLoader
+                    ? "balance-sheet-card-credit-loading"
+                    : ""
+                }`}
+              >
+                <div>
+                  <span
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                            ${
+                              this.props.isYeildToggle
+                                ? "balance-sheet-card-credit-title-selected"
+                                : ""
+                            }
+                            `}
+                  >
+                    Credit
+                  </span>
+                  <span
+                    className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                            ${
+                              this.props.isYeildToggle
+                                ? "balance-sheet-card-credit-amount-selected"
+                                : ""
+                            }
+                            `}
+                  >
+                    {CurrencyType(false)}
+                    {this.props.defiStateLocally.totalYield &&
+                      numToCurrency(
+                        this.props.defiStateLocally.totalYield *
+                          (this.props.currency?.rate || 1)
+                      )}
+                  </span>
+
+                  <Image
+                    className="defiMenu"
+                    src={arrowUp}
+                    style={
+                      this.props.isYeildToggle
+                        ? {
+                            filter: "opacity(1)",
+                          }
+                        : { transform: "rotate(180deg)" }
+                    }
+                  />
+                </div>
+              </div>
+
+              <div
+                onClick={() => {
+                  if (this.props.isYeildToggle) {
+                    this.props.toggleYield();
+                  }
+                  this.props.toggleDebt();
+                }}
+                className={`balance-sheet-card-debt ${
+                  this.props.defiLoader ? "balance-sheet-card-debt-loading" : ""
+                }`}
+              >
+                <div>
+                  <span
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-16 lh-19
+                             ${
+                               this.props.isDebtToggle
+                                 ? "balance-sheet-card-credit-title-selected"
+                                 : ""
+                             }
+                             `}
+                  >
+                    Debt
+                  </span>
+                  <span
+                    className={`balance-sheet-card-credit-amount inter-display-regular f-s-16 lh-19
+                            ${
+                              this.props.isDebtToggle
+                                ? "balance-sheet-card-credit-amount-selected"
+                                : ""
+                            }
+                            `}
+                  >
+                    {CurrencyType(false)}
+                    {this.props.defiStateLocally.totalDebt &&
+                      numToCurrency(
+                        this.props.defiStateLocally.totalDebt *
+                          (this.props.currency?.rate || 1)
+                      )}
+                  </span>
+
+                  <Image
+                    className="defiMenu"
+                    src={arrowUp}
+                    style={
+                      this.props.isDebtToggle
+                        ? {
+                            filter: "opacity(1)",
+                          }
+                        : { transform: "rotate(180deg)" }
+                    }
+                  />
+                </div>
+                {this.props.defiLoader && (
+                  <div style={{ marginTop: "-6px" }}>{loadingAnimation()}</div>
+                )}
+              </div>
+            </div>
+            {(this.props.isYeildToggle || this.props.isDebtToggle) && (
+              <div className="balance-dropdown">
+                <div className="balance-dropdown-top-fake">
+                  <div
+                    onClick={this.props.toggleYield}
+                    className="balance-dropdown-top-fake-left"
+                  />
+                  <div
+                    onClick={this.toggleDebt}
+                    className="balance-dropdown-top-fake-right"
+                  />
+                </div>
+                <div className="balance-list-content-parent">
+                  <div className="balance-list-content">
+                    {/* For yeild */}
+                    {this.props.isYeildToggle && (
                       <div>
-                        <span
-                          className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
-                            this.props.isYeildToggle
-                              ? "balance-sheet-title-text-selected"
-                              : ""
-                          }`}
-                        >
-                          Credit
-                        </span>
-                        <span
-                          className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
-                            this.props.isYeildToggle
-                              ? "balance-sheet-title-text-selected"
-                              : ""
-                          }`}
-                        >
-                          {CurrencyType(false)}
-                          {this.props.defiStateLocally?.totalYield &&
-                            numToCurrency(
-                              this.props.defiStateLocally?.totalYield *
-                                (this.props.currency?.rate || 1)
-                            )}
-                        </span>
-                      </div>
-                      <Image
-                        className="defiMenu"
-                        src={arrowUp}
-                        style={
-                          this.props.isYeildToggle
-                            ? {
-                                filter: "opacity(1)",
-                              }
-                            : { transform: "rotate(180deg)" }
-                        }
-                      />
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div
-                      className="balance-sheet-title"
-                      onClick={() => {
-                        if (this.props.isYeildToggle) {
-                          this.props.toggleYield();
-                        }
-                        this.props.toggleDebt();
-                      }}
-                    >
-                      <div>
-                        <span
-                          className={`balance-sheet-title-text inter-display-semi-bold f-s-16 lh-19 ${
-                            this.props.isDebtToggle
-                              ? "balance-sheet-title-text-selected"
-                              : ""
-                          }`}
-                        >
-                          Debt
-                        </span>
-                        <span
-                          className={`balance-sheet-title-amount inter-display-medium f-s-16 lh-19 ${
-                            this.props.isDebtToggle
-                              ? "balance-sheet-title-text-selected"
-                              : ""
-                          }`}
-                        >
-                          {CurrencyType(false)}
-                          {this.props.defiStateLocally?.totalDebt &&
-                            numToCurrency(
-                              this.props.defiStateLocally.totalDebt *
-                                (this.props.currency?.rate || 1)
-                            )}
-                        </span>
-                      </div>
-                      <Image
-                        className="defiMenu"
-                        src={arrowUp}
-                        style={
-                          this.props.isDebtToggle
-                            ? {
-                                filter: "opacity(1)",
-                              }
-                            : { transform: "rotate(180deg)" }
-                        }
-                      />
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    {this.props.isYeildToggle ? (
-                      <div className="balance-sheet-list-container">
-                        {this.props.defiStateLocally?.YieldValues?.length !==
-                          0 &&
-                          this.props.defiStateLocally?.YieldValues?.map(
+                        {this.props.defiStateLocally.YieldValues &&
+                          this.props.defiStateLocally.YieldValues.map(
                             (item, i) => {
                               return (
                                 <div
+                                  key={`defiState-${i}`}
                                   className="balance-sheet-list"
                                   style={
                                     i ===
                                     this.props.defiStateLocally.YieldValues
-                                      ?.length -
+                                      .length -
                                       1
                                       ? { paddingBottom: "0.3rem" }
                                       : {}
                                   }
-                                  key={`defiYEildValue-${i}`}
                                 >
                                   <span className="inter-display-medium f-s-16 lh-19">
                                     {item.name}
@@ -168,7 +192,7 @@ class DefiMobile extends Component {
                                       CurrencyType(false) +
                                       amountFormat(
                                         item.totalPrice.toFixed(2) *
-                                          (this.props.currency?.rate || 1),
+                                          (this.state.currency?.rate || 1),
                                         "en-US",
                                         "USD"
                                       )
@@ -177,8 +201,7 @@ class DefiMobile extends Component {
                                     <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
                                       {CurrencyType(false)}
                                       {numToCurrency(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.props.currency?.rate || 1),
+                                        item.totalPrice.toFixed(2),
                                         "en-US",
                                         "USD"
                                       )}
@@ -189,24 +212,26 @@ class DefiMobile extends Component {
                             }
                           )}
                       </div>
-                    ) : null}
-                    {this.props.isDebtToggle ? (
-                      <div className="balance-sheet-list-container">
-                        {this.props.defiStateLocally.DebtValues?.length !== 0 &&
-                          this.props.defiStateLocally.DebtValues?.map(
+                    )}
+
+                    {/* For debt */}
+                    {this.props.isDebtToggle && (
+                      <div>
+                        {this.props.defiStateLocally.DebtValues &&
+                          this.props.defiStateLocally.DebtValues.map(
                             (item, i) => {
                               return (
                                 <div
+                                  key={`debtDefiState-${i}`}
                                   className="balance-sheet-list"
                                   style={
                                     i ===
                                     this.props.defiStateLocally.DebtValues
-                                      ?.length -
+                                      .length -
                                       1
                                       ? { paddingBottom: "0.3rem" }
                                       : {}
                                   }
-                                  key={`defiDebtValue-${i}`}
                                 >
                                   <span className="inter-display-medium f-s-16 lh-19">
                                     {item.name}
@@ -220,7 +245,7 @@ class DefiMobile extends Component {
                                       CurrencyType(false) +
                                       amountFormat(
                                         item.totalPrice.toFixed(2) *
-                                          (this.props.currency?.rate || 1),
+                                          (this.state.currency?.rate || 1),
                                         "en-US",
                                         "USD"
                                       )
@@ -229,8 +254,7 @@ class DefiMobile extends Component {
                                     <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
                                       {CurrencyType(false)}
                                       {numToCurrency(
-                                        item.totalPrice.toFixed(2) *
-                                          (this.props.currency?.rate || 1),
+                                        item.totalPrice.toFixed(2),
                                         "en-US",
                                         "USD"
                                       )}
@@ -241,13 +265,11 @@ class DefiMobile extends Component {
                             }
                           )}
                       </div>
-                    ) : null}
-                  </Col>
-                </Row>
-
-                {/* For debt */}
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
