@@ -998,6 +998,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             onPageChange={this.onPageChange}
             history={this.props.history}
             location={this.props.location}
+            handleFunction={this.handleFunction}
+            OnboardingState={this.props.OnboardingState}
+            networkSearchIsUsed={this.networkSearchIsUsed}
+            intelligenceState={this.props.intelligenceState}
+            addCondition={this.addCondition}
+            assetSearchIsUsed={this.assetSearchIsUsed}
+            onChangeMethod={this.onChangeMethod}
+            parentCtx={this}
+            onValidSubmit={this.onValidSubmit}
           />
         </MobileLayout>
       );

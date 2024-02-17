@@ -2084,9 +2084,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             totalPage={totalPage}
             history={this.props.history}
             location={this.props.location}
-            currentPage={this.state.currentPage}
+            currentPage={currentPage}
             onPageChange={this.onPageChange}
-            page={this.state.currentPage}
+            page={currentPage}
             onValidSubmit={this.onValidSubmit}
             intelligenceState={this.props.intelligenceState}
             OnboardingState={this.props.OnboardingState}

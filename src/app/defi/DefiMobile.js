@@ -323,18 +323,51 @@ class DefiMobile extends Component {
                 <div className="top-title-wrapper">
                   <div className="heading-image">
                     <Image src={card?.logoUrl} />
-                    <h3 className="inter-display-medium">{card?.name}</h3>
-                    <span>{card?.tag}</span>
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={card?.name}
+                    >
+                      <h3 className="inter-display-medium dotDotText">
+                        {card?.name}
+                      </h3>
+                    </CustomOverlay>
+                    <CustomOverlay
+                      position="top"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={card?.tag}
+                    >
+                      <span className="dotDotText">{card?.tag}</span>
+                    </CustomOverlay>
                   </div>
-                  <h3 className="inter-display-medium f-s-16 lh-19">
-                    {CurrencyType(false)}
-                    {numToCurrency(
-                      card?.netBalance * (this.state.currency?.rate || 1)
-                    )}{" "}
-                    <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
-                      {CurrencyType(true)}
-                    </span>
-                  </h3>
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      CurrencyType(false) +
+                      numToCurrency(
+                        card?.netBalance * (this.state.currency?.rate || 1)
+                      ) +
+                      " " +
+                      CurrencyType(true)
+                    }
+                  >
+                    <h3 className="inter-display-medium f-s-16 lh-19 dotDotText">
+                      {CurrencyType(false)}
+                      {numToCurrency(
+                        card?.netBalance * (this.state.currency?.rate || 1)
+                      )}{" "}
+                      <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
+                        {CurrencyType(true)}
+                      </span>
+                    </h3>
+                  </CustomOverlay>
                 </div>
                 <div className="defi-card-divider-main"></div>
                 {card.items
