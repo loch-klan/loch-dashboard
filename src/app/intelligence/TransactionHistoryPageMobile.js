@@ -20,6 +20,9 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
   }
 
   render() {
+    const { currentPage } = this.props;
+
+    console.log("this.props", this.props);
     return (
       <div className="assets-expanded-mobile expanded-mobile">
         <div className="mobile-header-container">
@@ -143,7 +146,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
               marginTop: "1.5rem",
             }}
             className={`newHomeTableContainer  ${
-              this.props.loading || this.props.tableData < 1
+              this.props.tableLoading || this.props.tableData < 1
                 ? ""
                 : "tableWatermarkOverlay"
             }`}
@@ -157,7 +160,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
               columnList={this.props.columnData}
               headerHeight={60}
               isArrow={true}
-              isLoading={this.props.loading}
+              isLoading={this.props.tableLoading}
               isAnalytics="average cost basis"
               fakeWatermark
               xAxisScrollable
@@ -184,12 +187,11 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
             pageCount={this.props.totalPage}
             history={this.props.history}
             location={this.props.location}
-            page={this.props.currentPage}
-            totalPage={this.props.totalPage}
-            onPageChange={this.props.onPageChange}
+            page={currentPage + 1}
+            // totalPage={this.props.totalPage}
+            // onPageChange={this.props.onPageChange}
             minimalPagination
             hidePaginationRecords
-            currentPage={this.props.currentPage}
           />
         </div>
       </div>

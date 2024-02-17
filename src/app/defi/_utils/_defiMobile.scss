@@ -1,8 +1,20 @@
 .defi-mobile-expanded{
+
+    .balance-sheet-card .balance-sheet-title img{
+        margin: 0px !important;
+    }
     .balance-dropdown{
         position: static !important;
         border-radius: 12px !important;
-        padding-bottom: 0px !important;
+        padding-bottom: 16px !important;
+        box-shadow: none !important;
+
+        .balance-sheet-list-container{
+            padding: 0px !important;
+
+            max-height: 15rem;
+            overflow-y: scroll;
+        }
     }
     .defi-card-wrapper-mobile{
         background-color: transparent;

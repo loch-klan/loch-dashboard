@@ -2075,7 +2075,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           <TransactionHistoryPageMobile
             showHideDustFun={this.showDust}
             showHideDustVal={this.state.showDust}
-            loading={this.state.loading}
+            tableLoading={this.state.tableLoading}
             tableData={tableData}
             columnData={columnList}
             tableSortOpt={this.state.tableSortOpt}

@@ -302,7 +302,7 @@ class DefiMobile extends Component {
                   <div className="heading-image">
                     <Image src={card?.logoUrl} />
                     <h3 className="inter-display-medium">{card?.name}</h3>
-                    <span>Lending</span>
+                    <span>{card?.tag}</span>
                   </div>
                   <h3 className="inter-display-medium f-s-16 lh-19">
                     {CurrencyType(false)}
@@ -317,100 +317,104 @@ class DefiMobile extends Component {
                 <div className="defi-card-divider-main"></div>
                 {card.items
                   ? card.items.map((groupComp, i) => (
-                      <div className="defi-card-component">
-                        <div className="defi-card-component-header">
-                          <div className="defi-card-component-header-left">
-                            <div className="defi-card-component-header-left-left">
-                              <Image src={card?.logoUrl} />
-                            </div>
-                            <div className="defi-card-component-header-left-right">
-                              Ethereum
-                            </div>
-                          </div>
-                          <div className="defi-card-component-header-right">
-                            {groupComp.type}
-                          </div>
-                        </div>
-                        <div className="defi-card-component-divider"></div>
-                        <div className="defi-card-component-body">
-                          <div className="defi-card-component-body-header">
-                            <span>Balance</span>
-                            <div className="defi-card-component-body-header-divider"></div>
-                            <span>USD Value</span>
-                          </div>
-                          {groupComp?.walletItems &&
-                          groupComp.walletItems.length > 0
-                            ? groupComp.walletItems.map((rowData, indexTwo) => (
-                                <div className="defi-card-component-body-content">
-                                  {rowData?.balance
-                                    ? rowData.balance.map((e, indexFour) => (
-                                        <CustomOverlay
-                                          position="top"
-                                          isIcon={false}
-                                          isInfo={true}
-                                          isText={true}
-                                          text={
-                                            e ? convertNtoNumber(e) : "0.00"
-                                          }
-                                        >
-                                          <span
-                                            className={`${
-                                              indexFour > 0 ? "mt-3" : ""
-                                            }`}
-                                          >
-                                            {e
-                                              ? isNaN(e)
-                                                ? e
-                                                : numToCurrency(
-                                                    convertNtoNumber(e),
-                                                    "en-US",
-                                                    "USD"
-                                                  )
-                                              : "0.00"}
-                                          </span>
-                                        </CustomOverlay>
-                                      ))
-                                    : null}
-                                  {rowData.usdValue ? (
-                                    <CustomOverlay
-                                      position="top"
-                                      isIcon={false}
-                                      isInfo={true}
-                                      isText={true}
-                                      text={
-                                        CurrencyType(false) +
-                                        amountFormat(
-                                          rowData.usdValue.toFixed(2),
-                                          "en-US",
-                                          "USD"
-                                        )
-                                      }
-                                    >
-                                      <span>
-                                        {CurrencyType(false)}
-                                        {numToCurrency(
-                                          rowData.usdValue.toFixed(2),
-                                          "en-US",
-                                          "USD"
-                                        )}
-                                      </span>
-                                    </CustomOverlay>
-                                  ) : (
-                                    <CustomOverlay
-                                      position="top"
-                                      isIcon={false}
-                                      isInfo={true}
-                                      isText={true}
-                                      text={"$0.00"}
-                                    >
-                                      <span>$0.00</span>
-                                    </CustomOverlay>
-                                  )}
+                      <>
+                        {groupComp?.walletItems &&
+                        groupComp.walletItems.length > 0
+                          ? groupComp.walletItems.map((rowData, indexTwo) => (
+                              <div className="defi-card-component">
+                                <div className="defi-card-component-header">
+                                  <div className="defi-card-component-header-left">
+                                    {rowData?.logos[0] ? (
+                                      <div className="defi-card-component-header-left-left">
+                                        <Image src={rowData?.logos[0]} />
+                                      </div>
+                                    ) : null}
+                                    <div className="defi-card-component-header-left-right">
+                                      {rowData?.asset}
+                                    </div>
+                                  </div>
+                                  <div className="defi-card-component-header-right">
+                                    {groupComp.type}
+                                  </div>
                                 </div>
-                              ))
-                            : null}
-                        </div>
-                      </div>
+                                <div className="defi-card-component-divider"></div>
+                                <div className="defi-card-component-body">
+                                  <div className="defi-card-component-body-header">
+                                    <span>Balance</span>
+                                    <div className="defi-card-component-body-header-divider"></div>
+                                    <span>USD Value</span>
+                                  </div>
+                                  <div className="defi-card-component-body-content">
+                                    {rowData?.balance
+                                      ? rowData.balance.map((e, indexFour) => (
+                                          <CustomOverlay
+                                            position="top"
+                                            isIcon={false}
+                                            isInfo={true}
+                                            isText={true}
+                                            text={
+                                              e ? convertNtoNumber(e) : "0.00"
+                                            }
+                                          >
+                                            <span
+                                              className={`${
+                                                indexFour > 0 ? "mt-3" : ""
+                                              }`}
+                                            >
+                                              {e
+                                                ? isNaN(e)
+                                                  ? e
+                                                  : numToCurrency(
+                                                      convertNtoNumber(e),
+                                                      "en-US",
+                                                      "USD"
+                                                    )
+                                                : "0.00"}
+                                            </span>
+                                          </CustomOverlay>
+                                        ))
+                                      : null}
+                                    {rowData.usdValue ? (
+                                      <CustomOverlay
+                                        position="top"
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={
+                                          CurrencyType(false) +
+                                          amountFormat(
+                                            rowData.usdValue.toFixed(2),
+                                            "en-US",
+                                            "USD"
+                                          )
+                                        }
+                                      >
+                                        <span>
+                                          {CurrencyType(false)}
+                                          {numToCurrency(
+                                            rowData.usdValue.toFixed(2),
+                                            "en-US",
+                                            "USD"
+                                          )}
+                                        </span>
+                                      </CustomOverlay>
+                                    ) : (
+                                      <CustomOverlay
+                                        position="top"
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={"$0.00"}
+                                      >
+                                        <span>$0.00</span>
+                                      </CustomOverlay>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </>
                     ))
                   : null}
               </div>
