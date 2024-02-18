@@ -25,68 +25,74 @@ class CounterPartyVolume extends Component {
   };
   render() {
     return (
-      <div
-        className="mobile-portfolio-blocks"
-        style={{
-          marginTop: "0rem",
+      <>
+        <div className="mobile-header-container">
+          <h4>Counterparty volume over time</h4>
+          <p>Understand where you’ve exchanged the most value</p>
+        </div>
+        <div
+          className="mobile-portfolio-blocks"
+          style={{
+            marginTop: "2rem",
 
-          maxHeight: "60rem",
-        }}
-      >
-        <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
-          <div
-            className="section-table section-table-mobile"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              boxShadow: "none",
-            }}
-          >
-            <div className="profit-chart profit-chart-mobile-expanded">
-              {this.props.counterGraphLoading ? null : (
-                <div
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  <BarGraphFooter
-                    divideInTwo
-                    handleFooterClick={this.handleFooter}
-                    active={this.state.activeFooter}
-                  />
-                </div>
-              )}
-              <BarGraphSection
-                digit={this.props.counterGraphDigit}
-                isFromHome
-                data={
-                  this.props.counterPartyValueLocal &&
-                  this.props.counterPartyValueLocal[0]
-                }
-                options={
-                  this.props.counterPartyValueLocal &&
-                  this.props.counterPartyValueLocal[1]
-                }
-                options2={
-                  this.props.counterPartyValueLocal &&
-                  this.props.counterPartyValueLocal[2]
-                }
-                isScrollVisible={false}
-                isScroll={true}
-                isLoading={this.props.counterGraphLoading}
-                oldBar
-                noSubtitleBottomPadding
-                newHomeSetup
-                noSubtitleTopPadding
-                floatingWatermark
-                isMobileGraph
-                customGraphHeight="44rem"
-                customGraphLoadingHeight="100%"
-              />
+            maxHeight: "60rem",
+          }}
+        >
+          <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+            <div
+              className="section-table section-table-mobile"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                boxShadow: "none",
+              }}
+            >
+              <div className="profit-chart profit-chart-mobile-expanded">
+                {this.props.counterGraphLoading ? null : (
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <BarGraphFooter
+                      divideInTwo
+                      handleFooterClick={this.handleFooter}
+                      active={this.state.activeFooter}
+                    />
+                  </div>
+                )}
+                <BarGraphSection
+                  digit={this.props.counterGraphDigit}
+                  isFromHome
+                  data={
+                    this.props.counterPartyValueLocal &&
+                    this.props.counterPartyValueLocal[0]
+                  }
+                  options={
+                    this.props.counterPartyValueLocal &&
+                    this.props.counterPartyValueLocal[1]
+                  }
+                  options2={
+                    this.props.counterPartyValueLocal &&
+                    this.props.counterPartyValueLocal[2]
+                  }
+                  isScrollVisible={false}
+                  isScroll={true}
+                  isLoading={this.props.counterGraphLoading}
+                  oldBar
+                  noSubtitleBottomPadding
+                  newHomeSetup
+                  noSubtitleTopPadding
+                  floatingWatermark
+                  isMobileGraph
+                  customGraphHeight="44rem"
+                  customGraphLoadingHeight="100%"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
