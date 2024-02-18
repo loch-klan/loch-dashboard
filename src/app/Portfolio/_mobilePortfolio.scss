@@ -255,6 +255,17 @@
           }
         }
       }
+
+      .newHomeTableContainer-transaction-history{
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              max-height: 36rem !important;
+              min-height: 36rem !important;
+            }
+          }
+        }
+      }
       .newHomeTableContainerMobile {
         .transaction-table-loading-wrapper {
           height: 44rem;

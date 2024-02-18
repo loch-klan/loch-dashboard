@@ -1054,7 +1054,7 @@ class PortfolioMobile extends BaseReactComponent {
                 ) : this.props.blockFourSelectedItem === 2 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
                         this.props.tableLoading ||
                         this.props.tableData?.length < 1
                           ? ""
@@ -1067,6 +1067,7 @@ class PortfolioMobile extends BaseReactComponent {
                     >
                       <TransactionTable
                         xAxisScrollable
+                        yAxisScrollable
                         xAxisScrollableColumnWidth={3}
                         noSubtitleBottomPadding
                         disableOnLoading
@@ -1079,6 +1080,23 @@ class PortfolioMobile extends BaseReactComponent {
                         addWatermark
                       />
                     </div>
+                    {!this.props.tableLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.props.goToTransactionHistoryPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.props.totalCount && this.props.totalCount > 10
+                            ? `Click here to see ${numToCurrency(
+                                this.props.totalCount - 10,
+                                true
+                              ).toLocaleString("en-US")}+ transaction${
+                                this.props.totalCount - 10 > 1 ? "s" : ""
+                              }`
+                            : "Click here to see more"}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : this.props.blockFourSelectedItem === 3 ? (
                   <PortfolioHomeInsightsBlock
