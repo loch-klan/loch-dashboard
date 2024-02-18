@@ -375,6 +375,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         !this.props.intelligenceState.table
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        this.props.getAllWalletListApi(tempData, this);
         this.props.history.replace({
           search: `?p=${this.state.currentPage}`,
         });
