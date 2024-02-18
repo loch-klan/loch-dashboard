@@ -969,7 +969,7 @@ class PortfolioMobile extends BaseReactComponent {
                         <BarGraphSection
                           digit={this.props.counterGraphDigit}
                           isFromHome
-                          // openChartPage={() => {}}
+                          openChartPage={this.props.goToCounterPartyVolumePage}
                           data={
                             this.props.homeCounterpartyVolumeData &&
                             this.props.homeCounterpartyVolumeData[0]

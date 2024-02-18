@@ -9,11 +9,11 @@ export const BarGraphFooter = (props) => {
     const className =
       index == props.active || badge == props.active
         ? `inter-display-medium f-s-13 lh-16 timeBadge ${
-            props.lineChart ? "lineChartTimeBadge" : ""
-          } active`
+            props.divideInTwo ? "timeBadeMobile" : ""
+          } ${props.lineChart ? "lineChartTimeBadge" : ""} active`
         : `inter-display-medium f-s-13 lh-16 timeBadge ${
-            props.lineChart ? "lineChartTimeBadge" : ""
-          }`;
+            props.divideInTwo ? "timeBadeMobile" : ""
+          } ${props.lineChart ? "lineChartTimeBadge" : ""}`;
     return (
       // <Col md={4} sm={6} lg={2} key={index}>
       //   <div  id={index} className={className} onClick={props.handleFooterClick}>{badge}</div>
@@ -38,9 +38,32 @@ export const BarGraphFooter = (props) => {
       {/* <Row>
         {timeBadge}
       </Row> */}
-      <div className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}>
-        {timeBadge}
-      </div>
+      {props.divideInTwo ? (
+        <>
+          <div
+            className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+            style={{
+              columnGap: "0.5rem",
+            }}
+          >
+            {timeBadge.slice(0, timeBadge.length / 2)}
+          </div>
+          <div
+            style={{
+              columnGap: "0.5rem",
+            }}
+            className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+          >
+            {timeBadge.slice(timeBadge.length / 2, timeBadge.length)}
+          </div>
+        </>
+      ) : (
+        <div
+          className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+        >
+          {timeBadge}
+        </div>
+      )}
     </div>
   );
 };
