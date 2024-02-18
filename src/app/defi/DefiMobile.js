@@ -437,7 +437,7 @@ class DefiMobile extends Component {
                                                   : numToCurrency(
                                                       convertNtoNumber(e),
                                                       "en-US",
-                                                      "USD"
+                                                      true
                                                     )
                                                 : "0.00"}
                                             </span>
