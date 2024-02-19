@@ -4172,6 +4172,7 @@ class Portfolio extends BaseReactComponent {
             goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
+            goToTransactionHistoryPage={this.goToTransactionHistoryPage}
           />
         </MobileLayout>
       );

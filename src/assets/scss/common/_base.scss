@@ -2685,3 +2685,26 @@ input {
     margin-top: 1.5rem;
   }
 }
+
+// .expanded-mobile{
+//   .newHomeTableContainer{
+//     .ReactVirtualized__Table__headerRow{
+//       background-color: white;
+//       border-top-left-radius: 12px !important;
+//     border-top-right-radius: 12px !important;
+//     }
+//   }
+//   .ReactVirtualized__Table__Grid{
+//     border-top-left-radius: 0px !important;
+//     border-top-right-radius: 0px !important;
+//   }
+//   .smartMoneyPaginationContainer{
+//     margin-top: 1.5rem;
+//   }
+// }
+
+.defi-mobile-expanded{
+  .row{
+    flex-wrap: nowrap;
+  }
+}
