@@ -79,6 +79,7 @@ import {
   CostSortByCostPrice,
   CostSortByCurrentPrice,
   CostSortByPortfolio,
+  DefiBlockExpandediew,
   GasFeesEV,
   HomeCostSortByAsset,
   HomePage,
@@ -2074,6 +2075,15 @@ class Portfolio extends BaseReactComponent {
         this.props.history.push("/intelligence/transaction-history");
       }
       TransactionHistoryEView({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  goToDefiPage = () => {
+    if (this.state.lochToken && this.props.history) {
+      this.props.history.push("/decentralized-finance");
+      DefiBlockExpandediew({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
@@ -4173,6 +4183,7 @@ class Portfolio extends BaseReactComponent {
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
             goToTransactionHistoryPage={this.goToTransactionHistoryPage}
+            openDefiPage={this.goToDefiPage}
           />
         </MobileLayout>
       );

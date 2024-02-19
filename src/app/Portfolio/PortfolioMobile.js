@@ -687,6 +687,7 @@ class PortfolioMobile extends BaseReactComponent {
               undetectedWallet={(e) => this.props.undetectedWallet(e)}
               getProtocolTotal={this.props.getProtocolTotal}
               updateTimer={this.props.updateTimer}
+              openDefiPage={this.props.openDefiPage}
             />
 
             <div className="mobile-portfolio-blocks">
