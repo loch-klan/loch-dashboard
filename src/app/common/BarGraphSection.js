@@ -248,14 +248,30 @@ class BarGraphSection extends Component {
     const ScrollStyle = {
       width: `${100}%`,
       minWidth: `${100}rem`,
-      height: this.props.isMobileGraph ? "40rem" : "",
-      minHeight: this.props.isMobileGraph ? "40rem" : "",
+      height: this.props.customGraphHeight
+        ? this.props.customGraphHeight
+        : this.props.isMobileGraph
+        ? "40rem"
+        : "",
+      minHeight: this.props.customGraphHeight
+        ? this.props.customGraphHeight
+        : this.props.isMobileGraph
+        ? "40rem"
+        : "",
     };
     const NormalStyle = {
       width: "100%",
       minWidth: "100%",
-      height: this.props.isMobileGraph ? "40rem" : "",
-      minHeight: this.props.isMobileGraph ? "40rem" : "",
+      height: this.props.customGraphHeight
+        ? this.props.customGraphHeight
+        : this.props.isMobileGraph
+        ? "40rem"
+        : "",
+      minHeight: this.props.customGraphHeight
+        ? this.props.customGraphHeight
+        : this.props.isMobileGraph
+        ? "40rem"
+        : "",
     };
     // console.log("options ", options);
     // console.log("data ", data);
@@ -932,7 +948,11 @@ class BarGraphSection extends Component {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: this.props.isMobileGraph ? "44rem" : "32rem",
+                    height: this.props.customGraphLoadingHeight
+                      ? this.props.customGraphLoadingHeight
+                      : this.props.isMobileGraph
+                      ? "44rem"
+                      : "32rem",
                   }
                 : {
                     flex: 1,

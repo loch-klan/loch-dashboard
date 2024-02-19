@@ -99,6 +99,8 @@ import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { isEqual } from "lodash";
+import MobileLayout from "../layout/MobileLayout.js";
+import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -252,9 +254,9 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -373,6 +375,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         !this.props.intelligenceState.table
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        this.props.getAllWalletListApi(tempData, this);
         this.props.history.replace({
           search: `?p=${this.state.currentPage}`,
         });
@@ -548,6 +556,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
+      console.log("page", page, "prevPage", prevPage);
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
@@ -2064,6 +2073,44 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <TransactionHistoryPageMobile
+            showHideDustFun={this.showDust}
+            showHideDustVal={this.state.showDust}
+            tableLoading={this.state.tableLoading}
+            tableData={tableData}
+            columnData={columnList}
+            tableSortOpt={this.state.tableSortOpt}
+            handleSort={this.handleTableSort}
+            totalPage={totalPage}
+            history={this.props.history}
+            location={this.props.location}
+            currentPage={currentPage}
+            onPageChange={this.onPageChange}
+            page={currentPage}
+            onValidSubmit={this.onValidSubmit}
+            intelligenceState={this.props.intelligenceState}
+            OnboardingState={this.props.OnboardingState}
+            handleAmount={this.handleAmount}
+            minAmount={this.state.minAmount}
+            maxAmount={this.state.maxAmount}
+            addCondition={this.addCondition}
+            timeSearchIsUsed={this.timeSearchIsUsed}
+            selectedTimes={this.state.selectedTimes}
+            assetSearchIsUsed={this.assetSearchIsUsed}
+            selectedAssets={this.state.selectedAssets}
+            handleFunction={this.handleFunction}
+            networkSearchIsUsed={this.networkSearchIsUsed}
+            selectedNetworks={this.state.selectedNetworks}
+          />
+        </MobileLayout>
+      );
+    }
 
     return (
       <>

@@ -191,6 +191,15 @@
             }
           }
         }
+        .profit-chart-mobile-expanded {
+          .bar-graph-section {
+            height: 48rem;
+            min-height: 48rem;
+            .portfolio-profit-and-loss {
+              height: 88%;
+            }
+          }
+        }
       }
 
       .bottomExtraInfo {
@@ -251,6 +260,17 @@
             .ReactVirtualized__Table__Grid {
               max-height: 38.5rem !important;
               min-height: 38.5rem !important;
+            }
+          }
+        }
+      }
+
+      .newHomeTableContainer-transaction-history{
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              max-height: 36rem !important;
+              min-height: 36rem !important;
             }
           }
         }

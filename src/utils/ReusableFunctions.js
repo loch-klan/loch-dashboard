@@ -140,8 +140,15 @@ export const compareDate = (dateTimeA, dateTimeB) => {
   else return true;
 };
 
-export const numToCurrency = (num, noDefaultDecimals) => {
+export const numToCurrency = (
+  num,
+  noDefaultDecimals,
+  toFixedSmallerNumber = false
+) => {
   if (num < 1000 && noDefaultDecimals) {
+    if (toFixedSmallerNumber) {
+      return parseFloat(num).toFixed(2);
+    }
     return num;
   }
   if (num === undefined || num === null) {

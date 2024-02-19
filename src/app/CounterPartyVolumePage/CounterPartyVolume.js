@@ -44,11 +44,14 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import CounterPartyVolumeMobile from "./CounterPartyVolumeMobile.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isMobileDevice: false,
       counterPartyDataLocal: [],
       counterPartyValueLocal: [],
       firstTimeUnrealizedPNL: true,
@@ -219,7 +222,9 @@ class CounterPartyVolume extends Component {
   };
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
     setTimeout(() => {
       window.scrollTo(0, 0);
@@ -504,6 +509,18 @@ class CounterPartyVolume extends Component {
   };
 
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout history={this.props.history}>
+          <CounterPartyVolumeMobile
+            counterGraphDigit={this.state.counterGraphDigit}
+            counterPartyValueLocal={this.state.counterPartyValueLocal}
+            counterGraphLoading={this.state.counterGraphLoading}
+            timeFunction={(e) => this.getCounterPartyFee(e)}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}
