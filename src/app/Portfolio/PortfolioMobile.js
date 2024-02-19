@@ -933,6 +933,7 @@ class PortfolioMobile extends BaseReactComponent {
                           digit={this.props.GraphDigit}
                           isFromHome
                           // openChartPage={() => {}}
+                          openChartPage={this.props.goToGasFeesSpentPage}
                           data={
                             this.props.homeGraphFeesData &&
                             this.props.homeGraphFeesData[0]

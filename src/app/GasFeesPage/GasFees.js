@@ -528,6 +528,12 @@ class GasFeesPage extends Component {
             counterPartyValueLocal={this.state.graphfeeValueLocal}
             counterGraphLoading={this.state.gasFeesGraphLoading}
             timeFunction={(e) => this.getBlockchainFee(e)}
+            feesChainSearchIsUsed={this.feesChainSearchIsUsed}
+            coinsList={this.props.OnboardingState.coinsList}
+            selectedActiveBadgeLocal={this.state.selectedActiveBadgeLocal}
+            handleBadge={(activeBadgeList) =>
+              this.handleBadge(activeBadgeList, 1)
+            }
           />
         </MobileLayout>
       );

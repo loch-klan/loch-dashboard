@@ -796,3 +796,12 @@
     }
   }
 }
+
+.mobile-portfolio-blocks-gas-fees-expanded{
+  min-height: 61rem !important;
+  .gas-fees-chart-mobile-expanded{
+    .bar-graph-section{
+      min-height: 52rem !important;
+    }
+  }
+}

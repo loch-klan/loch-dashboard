@@ -31,7 +31,7 @@ class GasFeesMobile extends Component {
           <p>Understand your gas costs</p>
         </div>
         <div
-          className="mobile-portfolio-blocks"
+          className="mobile-portfolio-blocks mobile-portfolio-blocks-gas-fees-expanded"
           style={{
             marginTop: "2rem",
 
@@ -47,7 +47,7 @@ class GasFeesMobile extends Component {
                 boxShadow: "none",
               }}
             >
-              <div className="profit-chart profit-chart-mobile-expanded">
+              <div className="profit-chart profit-chart-mobile-expanded gas-fees-chart-mobile-expanded">
                 {this.props.counterGraphLoading ? null : (
                   <div
                     style={{
@@ -79,6 +79,10 @@ class GasFeesMobile extends Component {
                   isScrollVisible={false}
                   isScroll={true}
                   isLoading={this.props.counterGraphLoading}
+                  chainSearchIsUsed={this.props.feesChainSearchIsUsed}
+                  selectedActiveBadge={this.props.selectedActiveBadgeLocal}
+                  coinsList={this.props.coinsList}
+                  handleBadge={this.props.handleBadge}
                   oldBar
                   noSubtitleBottomPadding
                   newHomeSetup
@@ -86,7 +90,9 @@ class GasFeesMobile extends Component {
                   floatingWatermark
                   isMobileGraph
                   customGraphHeight="44rem"
+                  showBadges
                   customGraphLoadingHeight="100%"
+                  isGasFeesMobileExpanded
                 />
               </div>
             </div>
