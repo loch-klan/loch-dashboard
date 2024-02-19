@@ -245,7 +245,7 @@ export const updateUserWalletApi = (
   };
 };
 
-export const verifyEmailApi = (ctx, data) => {
+export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
   preLoginInstance
     .post("organisation/user/verify-email", data)
     .then((res) => {
@@ -332,7 +332,7 @@ export const verifyEmailApi = (ctx, data) => {
         //     },
         //   });
         // }, 3000);
-        getUserAddresses(ctx);
+        getUserAddresses(ctx, stayOnWelcomePage);
       } else {
         ctx.setState({ error: true });
       }
@@ -344,7 +344,7 @@ export const verifyEmailApi = (ctx, data) => {
 
 // get user detail for chain
 
-export const getUserAddresses = (ctx) => {
+export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
@@ -415,12 +415,21 @@ export const getUserAddresses = (ctx) => {
       window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
-        ctx.props.history.push({
-          pathname: "/home",
-          state: {
-            isVerified: !apiResponse?.wallets ? true : false,
-          },
-        });
+        if (stayOnWelcomePage) {
+          ctx.props.history.push({
+            pathname: "/",
+            state: {
+              isVerified: !apiResponse?.wallets ? true : false,
+            },
+          });
+        } else {
+          ctx.props.history.push({
+            pathname: "/home",
+            state: {
+              isVerified: !apiResponse?.wallets ? true : false,
+            },
+          });
+        }
       }, 3000);
     } else {
       toast.error(res.data.message || "Something Went Wrong");

@@ -54,28 +54,41 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             {this.props.mapData.account ? (
               <div
                 onClick={() => {
-                  if (!this.props.smartMoneyBlur && !this.props.welcomePage) {
-                    let lochUser = getCurrentUser().id;
-
-                    let slink = this.props.mapData.account;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                    if (lochUser) {
-                      const alreadyPassed =
-                        window.sessionStorage.getItem("PassedRefrenceId");
-                      if (alreadyPassed) {
-                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                      } else {
-                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                  if (!this.props.smartMoneyBlur) {
+                    if (this.props.welcomePage) {
+                      SmartMoneyWalletClicked({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        wallet: this.props.mapData.account,
+                      });
+                      if (this.props.onLeaderboardWalletClick) {
+                        this.props.onLeaderboardWalletClick(
+                          this.props.mapData.account
+                        );
                       }
+                    } else {
+                      let lochUser = getCurrentUser().id;
+
+                      let slink = this.props.mapData.account;
+                      let shareLink =
+                        BASE_URL_S3 + "home/" + slink + "?redirect=home";
+                      if (lochUser) {
+                        const alreadyPassed =
+                          window.sessionStorage.getItem("PassedRefrenceId");
+                        if (alreadyPassed) {
+                          shareLink =
+                            shareLink + "&refrenceId=" + alreadyPassed;
+                        } else {
+                          shareLink = shareLink + "&refrenceId=" + lochUser;
+                        }
+                      }
+                      SmartMoneyWalletClicked({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        wallet: slink,
+                      });
+                      window.open(shareLink, "_blank", "noreferrer");
                     }
-                    SmartMoneyWalletClicked({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      wallet: slink,
-                      isMobile: true,
-                    });
-                    window.open(shareLink, "_blank", "noreferrer");
                   } else {
                     if (this.props.openSignInOnclickModal) {
                       this.props.openSignInOnclickModal();
@@ -144,18 +157,21 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               </span>
             </div>
           </div>
-          <div className="msmbBodyItem">
-            <div className="inter-display-medium msmbBITitle">Follow</div>
-            <div className={`inter-display-medium msmbBIAmount`}>
-              <CheckboxCustomTable
-                handleOnClick={this.handleOnClick}
-                welcomePage={this.props.welcomePage}
-                isChecked={this.props.mapData.following}
-                noMargin
-                dontSelectIt={this.props.smartMoneyBlur}
-              />
+          {this.props.hideFollow ? null : (
+            <div className="msmbBodyItem">
+              <div className="inter-display-medium msmbBITitle">Follow</div>
+              <div className={`inter-display-medium msmbBIAmount`}>
+                <CheckboxCustomTable
+                  handleOnClick={this.handleOnClick}
+                  isChecked={
+                    this.props.mapData.following && !this.props.smartMoneyBlur
+                  }
+                  noMargin
+                  dontSelectIt={this.props.smartMoneyBlur}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );

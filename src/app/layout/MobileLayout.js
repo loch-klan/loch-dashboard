@@ -19,6 +19,7 @@ import {
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
@@ -508,10 +509,11 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   signOutFun = () => {
-    deleteToken(true);
+    window.sessionStorage.setItem("refresh", false);
+    resetUser();
     this.props.setPageFlagDefault();
     this.closeConfirmLeaveModal();
-    this.props.history.push("/");
+    this.props.history.push("/welcome");
   };
   render() {
     const getTotalAssetValue = () => {
