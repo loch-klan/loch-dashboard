@@ -5,7 +5,7 @@ import {
   LP_CE_ApiSyncCompleted,
   Wallet_CE_ApiSyncCompleted,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   AVERAGE_COST_BASIS,
   AVERAGE_COST_RESET,
@@ -93,10 +93,7 @@ export const getAllCounterFeeApi = (
               },
             });
           }
-          console.log(
-            "res.data.data.counter_party_volume_traded ",
-            res.data.data.counter_party_volume_traded
-          );
+
           if (ctx.setLocalCounterParty) {
             ctx.setLocalCounterParty(g_data, getCounterGraphData(g_data, ctx));
           }
@@ -251,11 +248,39 @@ export const getUserAccount = (data, ctx) => {
 export const getAvgCostBasis = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
-
+    console.log("getAvgCostBasis response ");
     postLoginInstance
       .post("wallet/user-wallet/get-average-cost-basis", data)
       .then((res) => {
         if (!res.data.error) {
+          setTimeout(() => {
+            const shouldCallAllApiAgain = window.sessionStorage.getItem(
+              "callTheUpdateAPIForHomePage"
+            );
+
+            console.log("Calling updated api ", shouldCallAllApiAgain);
+            if (!shouldCallAllApiAgain || Number(shouldCallAllApiAgain) < 2) {
+              let countForShouldCallAllApiAgain = 1;
+              if (shouldCallAllApiAgain) {
+                countForShouldCallAllApiAgain =
+                  Number(shouldCallAllApiAgain) + 1;
+              }
+
+              window.sessionStorage.setItem(
+                "callTheUpdateAPIForHomePage",
+                countForShouldCallAllApiAgain
+              );
+              let tempToken = getToken();
+              if (!tempToken || tempToken === "jsk") {
+                return null;
+              }
+              window.sessionStorage.setItem("callTheUpdateAPI", true);
+              ctx.props.setPageFlagDefault();
+            }
+            if (shouldCallAllApiAgain && Number(shouldCallAllApiAgain) >= 2) {
+              window.sessionStorage.removeItem("callTheUpdateAPIForHomePage");
+            }
+          }, 3000);
           let ApiResponse = res?.data.data?.assets;
           let netReturn = res?.data.data?.net_return
             ? res?.data.data?.net_return

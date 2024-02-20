@@ -733,8 +733,12 @@ class Portfolio extends BaseReactComponent {
     tempUserWalletList.map((wallet) => addressList.push(wallet.address));
 
     let listOfAddresses = JSON.stringify(addressList);
-
-    this.setState({ yieldOpportunitiesTableLoading: true });
+    const shouldCallAllApiAgain = window.sessionStorage.getItem(
+      "callTheUpdateAPIForHomePage"
+    );
+    if (!shouldCallAllApiAgain) {
+      this.setState({ yieldOpportunitiesTableLoading: true });
+    }
     let data = new URLSearchParams();
     data.append("start", 0);
     data.append("conditions", JSON.stringify([]));
@@ -1294,10 +1298,14 @@ class Portfolio extends BaseReactComponent {
           !this.props.commonState.assetsPage)
       ) {
         this.props.updateWalletListFlag("assetsPage", true);
-        this.setState({
-          shouldCallAssetsAvgCostBasisApi: false,
-          AvgCostLoading: true,
-        });
+        const shouldCallAllApiAgain = window.sessionStorage.getItem(
+          "callTheUpdateAPIForHomePage"
+        );
+        if (!shouldCallAllApiAgain) {
+          this.setState({
+            AvgCostLoading: true,
+          });
+        }
         this.props.getAvgCostBasis(this);
       }
 
@@ -1341,10 +1349,14 @@ class Portfolio extends BaseReactComponent {
           ))
       ) {
         this.props.updateWalletListFlag("realizedGainsPage", true);
-        this.setState({
-          netFlowLoading: true,
-          shouldCallProfitAndLossApi: false,
-        });
+        const shouldCallAllApiAgain = window.sessionStorage.getItem(
+          "callTheUpdateAPIForHomePage"
+        );
+        if (!shouldCallAllApiAgain) {
+          this.setState({
+            netFlowLoading: true,
+          });
+        }
         // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
         this.props.getAssetProfitLoss(this, false, false, false);

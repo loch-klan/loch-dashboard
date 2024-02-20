@@ -72,13 +72,26 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
       const tempAdd = JSON.stringify(addressList);
       let data = new URLSearchParams();
       data.append("wallet_addresses", tempAdd);
-      this.setState({ graphLoading: true, selectedAsset: "" }, () => {
-        this.props.setSelectedInflowOutflowsAssetBlank();
-        this.props.getInflowsAndOutflowsAssetsApi(data, this);
-        this.setState({
-          callApi: true,
+      const shouldCallAllApiAgain = window.sessionStorage.getItem(
+        "callTheUpdateAPIForHomePage"
+      );
+      if (!shouldCallAllApiAgain) {
+        this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+          this.props.setSelectedInflowOutflowsAssetBlank();
+          this.props.getInflowsAndOutflowsAssetsApi(data, this);
+          this.setState({
+            callApi: true,
+          });
         });
-      });
+      } else {
+        this.setState({ selectedAsset: "" }, () => {
+          this.props.setSelectedInflowOutflowsAssetBlank();
+          this.props.getInflowsAndOutflowsAssetsApi(data, this);
+          this.setState({
+            callApi: true,
+          });
+        });
+      }
     }
     if (
       prevProps.InflowOutflowSelectedAssetState !==
@@ -166,7 +179,12 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
   }
 
   makeApiCall = () => {
-    this.setState({ graphLoading: true });
+    const shouldCallAllApiAgain = window.sessionStorage.getItem(
+      "callTheUpdateAPIForHomePage"
+    );
+    if (!shouldCallAllApiAgain) {
+      this.setState({ graphLoading: true });
+    }
 
     // const timeFilter = TimeFilterInflowOutflowType.getText(this.state.timeTab);
     const assetFilter = this.state.selectedAsset;
