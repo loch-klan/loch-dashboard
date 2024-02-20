@@ -4183,6 +4183,7 @@ class Portfolio extends BaseReactComponent {
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
             goToTransactionHistoryPage={this.goToTransactionHistoryPage}
+            goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
           />
         </MobileLayout>
