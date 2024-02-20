@@ -549,9 +549,15 @@ class BarGraphSection extends Component {
                     <div
                       style={{
                         width: "100%",
-                        minWidth: "18rem",
-                        maxWidth: "20rem",
-                        marginLeft: "1rem",
+                        minWidth: this.props?.isGasFeesMobileExpanded
+                          ? ""
+                          : "18rem",
+                        maxWidth: this.props?.isGasFeesMobileExpanded
+                          ? ""
+                          : "20rem",
+                        marginLeft: this.props?.isGasFeesMobileExpanded
+                          ? ""
+                          : "1rem",
                         zIndex: 4,
                       }}
                     >

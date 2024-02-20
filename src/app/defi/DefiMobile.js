@@ -349,7 +349,7 @@ class DefiMobile extends Component {
                         {card?.name}
                       </h3>
                     </CustomOverlay>
-                    <CustomOverlay
+                    {/* <CustomOverlay
                       position="top"
                       isIcon={false}
                       isInfo={true}
@@ -357,7 +357,7 @@ class DefiMobile extends Component {
                       text={card?.tag}
                     >
                       <span className="dotDotText">{card?.tag}</span>
-                    </CustomOverlay>
+                    </CustomOverlay> */}
                   </div>
                   <CustomOverlay
                     position="top"
