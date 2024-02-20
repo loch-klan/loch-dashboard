@@ -1045,6 +1045,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.props.blockFourSelectedItem === 1 ? (
                   <div className="mobile-portfolio-blocks-content-price-gauge">
                     <InflowOutflowPortfolioHome
+                      openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
                       showEth
                       userWalletList={this.props.userWalletList}

@@ -4185,6 +4185,7 @@ class Portfolio extends BaseReactComponent {
             goToTransactionHistoryPage={this.goToTransactionHistoryPage}
             goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
+            goToPriceGaugePage={this.goToPriceGaugePage}
           />
         </MobileLayout>
       );

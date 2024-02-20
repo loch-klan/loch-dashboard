@@ -560,7 +560,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     {this.props.openChartPage ? (
                       <div
                         className="d-flex"
-                        style={{ alignItems: "center", gap: "8px" }}
+                        style={{
+                          alignItems: "center",
+                          gap: "8px",
+                          marginTop: this.props.isMobileGraph ? "2px" : "",
+                        }}
                       >
                         <p
                           onClick={this.props.openChartPage}
