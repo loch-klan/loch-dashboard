@@ -102,6 +102,28 @@
     display: flex;
     flex-direction: column;
 
+    .seeMoreBtn {
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #4f4f4f;
+      font-weight: 500;
+      // transition-duration: 300ms;
+      .seeMoreBtnIcon {
+        // transition-duration: 300ms;
+        filter: brightness(0.5);
+        height: 9px;
+        margin-left: 0.5rem;
+      }
+      &:hover {
+        color: #0d0d0d;
+        .seeMoreBtnIcon {
+          filter: brightness(0);
+        }
+      }
+    }
+
     .mpcHomeFloatingContainer {
       position: fixed;
       left: 0;
@@ -795,4 +817,16 @@
       height: 14px;
     }
   }
+}
+
+.mobile-portfolio-blocks-gas-fees-expanded{
+  min-height: 61rem !important;
+  .gas-fees-chart-mobile-expanded{
+    .bar-graph-section{
+      min-height: 52rem !important;
+    }
+  }
+  .custom-dropdown.lineChart {
+    border: 0.1rem solid #19191a;
+}
 }

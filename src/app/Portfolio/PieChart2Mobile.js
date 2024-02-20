@@ -30,6 +30,7 @@ import {
   addAddressToWatchList,
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
+import { ChartSeeMoreArrowIcon } from "../../assets/images/icons";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {
@@ -451,14 +452,36 @@ class PieChart2Mobile extends BaseReactComponent {
             </div>
           </div>
         </div>
-        <h2
+
+        <div
           style={{
             marginTop: "3rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
-          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
         >
-          DeFi Balance Sheet
-        </h2>
+          <h2
+            style={{}}
+            className="inter-display-semi-bold f-s-16 lh-19 grey-313"
+          >
+            DeFi Balance Sheet
+          </h2>
+          <p
+            onClick={this.props.openDefiPage}
+            className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+          >
+            <div
+              style={{
+                marginLeft: "0rem",
+              }}
+              className="seeMoreBtn cp"
+            >
+              <div>Click here to see more</div>
+              <Image src={ChartSeeMoreArrowIcon} className="seeMoreBtnIcon" />
+            </div>
+          </p>
+        </div>
         <div
           style={{
             marginBottom: this.state.isYeildToggle

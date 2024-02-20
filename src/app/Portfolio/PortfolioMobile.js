@@ -687,6 +687,7 @@ class PortfolioMobile extends BaseReactComponent {
               undetectedWallet={(e) => this.props.undetectedWallet(e)}
               getProtocolTotal={this.props.getProtocolTotal}
               updateTimer={this.props.updateTimer}
+              openDefiPage={this.props.openDefiPage}
             />
 
             <div className="mobile-portfolio-blocks">
@@ -933,6 +934,7 @@ class PortfolioMobile extends BaseReactComponent {
                           digit={this.props.GraphDigit}
                           isFromHome
                           // openChartPage={() => {}}
+                          openChartPage={this.props.goToGasFeesSpentPage}
                           data={
                             this.props.homeGraphFeesData &&
                             this.props.homeGraphFeesData[0]
