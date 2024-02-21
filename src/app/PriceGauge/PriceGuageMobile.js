@@ -14,8 +14,8 @@ class PriceGuageMobile extends Component {
     return (
       <div className="realized-profit-and-loss-expanded-mobile">
         <div className="mobile-header-container">
-          <h4>Counterparty volume over time</h4>
-          <p>Understand where you’ve exchanged the most value</p>
+          <h4>Price gauge</h4>
+          <p>Understand when this token was bought and sold</p>
         </div>
 
         <div
