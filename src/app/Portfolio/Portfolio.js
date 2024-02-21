@@ -29,6 +29,7 @@ import {
   getProtocolBalanceApi,
   getUserWallet,
   getYesterdaysBalanceApi,
+  isNewAddress,
   settingDefaultValues,
 } from "./Api";
 
@@ -2112,6 +2113,29 @@ class Portfolio extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+    }
+  };
+  isNewAddressFun = () => {
+    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const data = new URLSearchParams();
+        data.append("wallet_address", tempWalletAddress);
+
+        this.props.isNewAddress(data, this);
+      }
     }
   };
   render() {
@@ -4255,6 +4279,7 @@ class Portfolio extends BaseReactComponent {
                   marginTop: "11rem",
                 }}
               ></div>
+              <div onClick={this.isNewAddressFun}>Test call api</div>
 
               <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -5116,6 +5141,7 @@ const mapDispatchToProps = {
   getProtocolBalanceApi,
   updateFeeGraph,
   updateCounterParty,
+  isNewAddress,
 };
 Portfolio.propTypes = {};
 

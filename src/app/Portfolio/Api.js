@@ -12,6 +12,18 @@ import {
   YESTERDAY_BALANCE,
 } from "./ActionTypes";
 
+export const isNewAddress = (data, ctx) => {
+  return async function () {
+    preLoginInstance
+      .post("wallet/user-wallet/new-address", data)
+      .then((res) => {
+        console.log("The response is ", res.data);
+        if (!res.data?.error) {
+        }
+      })
+      .catch((err) => {});
+  };
+};
 export const isFollowedByUser = (data, ctx) => {
   return async function () {
     postLoginInstance
