@@ -511,7 +511,10 @@ class CounterPartyVolume extends Component {
   render() {
     if (this.state.isMobileDevice) {
       return (
-        <MobileLayout history={this.props.history}>
+        <MobileLayout
+          history={this.props.history}
+          CheckApiResponse={(e) => this.CheckApiResponse(e)}
+        >
           <CounterPartyVolumeMobile
             counterGraphDigit={this.state.counterGraphDigit}
             counterPartyValueLocal={this.state.counterPartyValueLocal}

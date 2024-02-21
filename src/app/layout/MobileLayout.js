@@ -332,7 +332,12 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
-    this.props.setPageFlagDefault();
+    if (this.props.CheckApiResponse) {
+      this.props.CheckApiResponse(value);
+    } else {
+      this.props.setPageFlagDefault();
+    }
+    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {

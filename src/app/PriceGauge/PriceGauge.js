@@ -590,6 +590,7 @@ class PriceGauge extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          CheckApiResponse={(e) => this.CheckApiResponse(e)}
         >
           <PriceGuageMobile
             userWalletList={this.state.userWalletList}
