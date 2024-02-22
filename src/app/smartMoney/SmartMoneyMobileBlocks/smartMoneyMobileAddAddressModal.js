@@ -319,7 +319,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
                   onKeyDown={this.handleKeyPress}
                   onFocus={this.scrollToTop}
                   onBlur={this.hideBorder}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
               </div>
             )}
@@ -337,7 +337,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
                   onKeyDown={this.handleKeyPress}
                   onFocus={this.scrollToTop}
                   onBlur={this.hideBorder}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
               </div>
             ) : null}

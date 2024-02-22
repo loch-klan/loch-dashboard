@@ -19,6 +19,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
       graphLoading: true,
       timeTab: "Max",
       selectedAsset: "",
+      selectedAssetName: "",
       inflowsOutflowsList: [],
       assetList: [],
       isDust: 1,
@@ -61,6 +62,19 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.selectedAsset !== this.state.selectedAsset) {
+      let tempAssetName = this.state.selectedAssetName;
+      this.state.assetList.forEach((asset) => {
+        if (asset._id && asset._id === this.state.selectedAsset) {
+          if (asset.asset.name) {
+            tempAssetName = asset.asset.name;
+          }
+        }
+      });
+      this.setState({
+        selectedAssetName: tempAssetName,
+      });
+    }
     if (
       prevProps.callChildPriceGaugeApi !== this.props.callChildPriceGaugeApi &&
       this.props.lochToken
@@ -240,6 +254,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
           <InflowOutflowChartSliderContainer
             isHomepage={this.props.isHomepage}
             hideExplainer={this.props.hideExplainer}
+            showSelectedItem={this.state.selectedAssetName}
             showEth={this.props.showEth}
             inflowOutflowData={
               this.state.inflowsOutflowsList

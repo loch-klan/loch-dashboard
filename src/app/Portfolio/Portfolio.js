@@ -755,9 +755,7 @@ class Portfolio extends BaseReactComponent {
       const shouldRecallApis =
         window.sessionStorage.getItem("shouldRecallApis");
 
-      console.log("step one ", shouldRecallApis);
       if (shouldRecallApis === "true") {
-        console.log("recalling apis ", shouldRecallApis);
         let tempToken = getToken();
         if (!(!tempToken || tempToken === "jsk")) {
           window.sessionStorage.setItem("callTheUpdateAPI", true);

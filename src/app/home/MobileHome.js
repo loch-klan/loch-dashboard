@@ -563,7 +563,7 @@ class MobileHome extends BaseReactComponent {
                     onKeyDown={this.handleTabPress}
                     onFocus={this.showBorder}
                     onBlur={this.hideBorder}
-                    autocomplete="off"
+                    autoComplete="off"
                     onSubmit={this.onValidSubmit}
                   />
                 </form>
