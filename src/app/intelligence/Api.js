@@ -43,19 +43,27 @@ export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
                 timestamp: resData.timestamp ? resData.timestamp : 0,
               };
             });
-            ctx.setState({
-              graphLoading: false,
-              // inflowsOutflowsList: tempConvertedValue,
-            });
+            const shouldRecallApis =
+              window.sessionStorage.getItem("shouldRecallApis");
+            if (!shouldRecallApis || shouldRecallApis === "false") {
+              ctx.setState({
+                graphLoading: false,
+                // inflowsOutflowsList: tempConvertedValue,
+              });
+            }
             dispatch({
               type: INFLOW_OUTFLOW_CHART_DATA,
               payload: tempConvertedValue,
             });
           } else {
-            ctx.setState({
-              graphLoading: false,
-              // inflowsOutflowsList: [],
-            });
+            const shouldRecallApis =
+              window.sessionStorage.getItem("shouldRecallApis");
+            if (!shouldRecallApis || shouldRecallApis === "false") {
+              ctx.setState({
+                graphLoading: false,
+                // inflowsOutflowsList: [],
+              });
+            }
             dispatch({
               type: INFLOW_OUTFLOW_CHART_DATA,
               payload: [],
@@ -415,12 +423,22 @@ export const getAssetProfitLoss = (
               getProfitLossAsset(res.data.data?.profit_loss)
             );
           }
-          if (ctx) {
-            ctx.setState({
-              //  GraphData: res.data.data.profit_loss,
-              netFlowLoading: false,
-              //  graphValue: getProfitAndLossData(res.data.data.profit_loss),
-            });
+          const shouldRecallApis =
+            window.sessionStorage.getItem("shouldRecallApis");
+          if (!shouldRecallApis || shouldRecallApis === "false") {
+            if (ctx) {
+              ctx.setState({
+                //  GraphData: res.data.data.profit_loss,
+                netFlowLoading: false,
+                //  graphValue: getProfitAndLossData(res.data.data.profit_loss),
+              });
+            }
+          } else {
+            if (ctx) {
+              ctx.setState({
+                shouldNetFlowLoading: false,
+              });
+            }
           }
           //  ctx.setState({
           //    ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),

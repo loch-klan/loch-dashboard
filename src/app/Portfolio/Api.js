@@ -12,6 +12,25 @@ import {
   YESTERDAY_BALANCE,
 } from "./ActionTypes";
 
+export const isNewAddress = (data) => {
+  return async function () {
+    preLoginInstance
+      .post("wallet/user-wallet/new-address", data)
+      .then((res) => {
+        if (!res.data?.error) {
+          window.sessionStorage.setItem(
+            "shouldRecallApis",
+            res.data.data.result
+          );
+        } else {
+          window.sessionStorage.setItem("shouldRecallApis", false);
+        }
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem("shouldRecallApis", false);
+      });
+  };
+};
 export const isFollowedByUser = (data, ctx) => {
   return async function () {
     postLoginInstance

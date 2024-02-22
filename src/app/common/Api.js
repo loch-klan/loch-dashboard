@@ -1642,8 +1642,11 @@ export const updateWalletListFlag = (page, status) => {
 
 // set page flags to false
 
-export const setPageFlagDefault = () => {
+export const setPageFlagDefault = (deleteRecall = false) => {
   return async function (dispatch, getState) {
+    if (deleteRecall) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+    }
     dispatch({
       type: SET_DEFAULT_VALUE,
     });
