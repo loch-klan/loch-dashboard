@@ -66,7 +66,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
       let tempAssetName = this.state.selectedAssetName;
       this.state.assetList.forEach((asset) => {
         if (asset._id && asset._id === this.state.selectedAsset) {
-          if (asset.asset.name) {
+          if (asset?.asset?.name) {
             tempAssetName = asset.asset.name;
           }
         }

@@ -82,7 +82,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               tempTotalAmt;
             let tempAmtHolder = 0;
             for (const element in chainPortfolio) {
-              if (chainPortfolio[element].total) {
+              if (chainPortfolio[element] && chainPortfolio[element].total) {
                 tempAmtHolder = chainPortfolio[element].total + tempAmtHolder;
               }
             }
