@@ -972,12 +972,6 @@ class NewWelcome extends BaseReactComponent {
         return false;
       });
       if (filteredAddWalletTemp) {
-        const tempWalletAddress = filteredAddWalletTemp.map(
-          (e) => e.apiAddress
-        );
-        const data = new URLSearchParams();
-        data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
-        this.props.isNewAddress(data);
         setTimeout(() => {
           this.props.setHeaderReducer(filteredAddWalletTemp);
         }, 500);
@@ -1094,6 +1088,22 @@ class NewWelcome extends BaseReactComponent {
           ""
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1655,6 +1665,22 @@ class NewWelcome extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {

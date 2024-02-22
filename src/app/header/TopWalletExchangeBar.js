@@ -412,6 +412,11 @@ class TopWalletExchangeBar extends Component {
           false
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -756,10 +761,6 @@ class TopWalletExchangeBar extends Component {
         w.id = `wallet${i + 1}`;
       }
     });
-    const tempWalletAddress = addWallet.map((e) => e.apiAddress);
-    const secondData = new URLSearchParams();
-    secondData.append("wallet_addresses", JSON.stringify(tempWalletAddress));
-    this.props.isNewAddress(secondData);
     sessionStorage.setItem("replacedOrAddedAddress", true);
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
@@ -1164,6 +1165,11 @@ class TopWalletExchangeBar extends Component {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1372,7 +1378,10 @@ class TopWalletExchangeBar extends Component {
                   <span className="dotDotText">
                     {CurrencyType(false)}
                     {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                    {numToCurrency(this.getTotalAssetValue())}{" "}
+                    {window.sessionStorage.getItem("shouldRecallApis") ===
+                    "true"
+                      ? "0.00"
+                      : numToCurrency(this.getTotalAssetValue())}
                   </span>
                 </div>
               ) : null}

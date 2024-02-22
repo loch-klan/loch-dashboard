@@ -12,32 +12,23 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
-  BlackManIcon,
-  GreyManIcon,
-  InactiveSmartMoneySidebarIcon,
   FollowingSidebarIcon,
-  PersonRoundedSigninIcon,
-  SidebarLeftArrowIcon,
-  TwoPeopleIcon,
-  XFormallyTwitterLogoIcon,
-  ProfileSidebarIcon,
-  LeaderboardSidebarIcon,
   HomeSidebarIcon,
+  InactiveSmartMoneySidebarIcon,
+  LeaderboardSidebarIcon,
+  PersonRoundedSigninIcon,
+  ProfileSidebarIcon,
+  SidebarLeftArrowIcon,
+  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons";
-import {
-  default as ActiveProfileIcon,
-  default as SignInIcon,
-} from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
-import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
-import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
-import ActiveHomeIcon from "../../image/HomeIcon.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
   ExportMenu,
@@ -79,15 +70,15 @@ import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
+import { toast } from "react-toastify";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
   numToCurrency,
 } from "../../utils/ReusableFunctions.js";
-import ExitOverlay from "./ExitOverlay";
 import ConnectModal from "./ConnectModal.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
+import ExitOverlay from "./ExitOverlay";
 
 function Sidebar(props) {
   // console.log('props',props);

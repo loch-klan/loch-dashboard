@@ -751,17 +751,13 @@ class Portfolio extends BaseReactComponent {
     }
   };
   callAllApisTwice = () => {
-    console.log("Step one ", window.sessionStorage.getItem("shouldRecallApis"));
     setTimeout(() => {
       const shouldRecallApis =
         window.sessionStorage.getItem("shouldRecallApis");
-      console.log("5 sec ", shouldRecallApis);
 
       if (shouldRecallApis === "true") {
-        console.log("Second round of api calls ");
         let tempToken = getToken();
         if (!(!tempToken || tempToken === "jsk")) {
-          console.log("Called");
           window.sessionStorage.setItem("callTheUpdateAPI", true);
 
           this.props.portfolioState.walletTotal = 0;
@@ -772,7 +768,8 @@ class Portfolio extends BaseReactComponent {
           this.props.setPageFlagDefault(true);
         }
       } else if (shouldRecallApis === "false") {
-        console.log("remove loaders");
+        window.sessionStorage.removeItem("shouldRecallApis");
+
         this.setState({
           AvgCostLoading: this.state.shouldAvgCostLoading
             ? false
