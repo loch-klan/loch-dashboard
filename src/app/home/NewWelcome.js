@@ -104,6 +104,7 @@ import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
+import { isNewAddress } from "../Portfolio/Api.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -971,6 +972,12 @@ class NewWelcome extends BaseReactComponent {
         return false;
       });
       if (filteredAddWalletTemp) {
+        const tempWalletAddress = filteredAddWalletTemp.map(
+          (e) => e.apiAddress
+        );
+        const data = new URLSearchParams();
+        data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+        this.props.isNewAddress(data);
         setTimeout(() => {
           this.props.setHeaderReducer(filteredAddWalletTemp);
         }, 500);
@@ -1567,7 +1574,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email?this.state.email.toLowerCase():"");
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("otp_token", this.state.otp);
       this.props.verifyUser(this, data, true, this.state.smartMoneyLogin);
     }
@@ -2846,6 +2856,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   removeFromWatchList,
   signUpWelcome,
+  isNewAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

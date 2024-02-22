@@ -15,6 +15,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      shouldGraphLoading: true,
       graphLoading: true,
       timeTab: "Max",
       selectedAsset: "",
@@ -89,11 +90,30 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
       });
     }
     if (
-      prevProps.InflowOutflowChartState !== this.props.InflowOutflowChartState
+      prevProps.switchPriceGaugeLoader !== this.props.switchPriceGaugeLoader
     ) {
       this.setState({
+        graphLoading: this.state.shouldGraphLoading
+          ? false
+          : this.state.graphLoading,
+      });
+    }
+    if (
+      prevProps.InflowOutflowChartState !== this.props.InflowOutflowChartState
+    ) {
+      const shouldRecallApis =
+        window.sessionStorage.getItem("shouldRecallApis");
+      if (!shouldRecallApis || shouldRecallApis === "false") {
+        this.setState({
+          graphLoading: false,
+        });
+      } else {
+        this.setState({
+          shouldGraphLoading: true,
+        });
+      }
+      this.setState({
         inflowsOutflowsList: this.props.InflowOutflowChartState,
-        graphLoading: false,
       });
     }
     if (

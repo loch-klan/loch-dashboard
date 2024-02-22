@@ -938,8 +938,15 @@ function Sidebar(props) {
                           isText={true}
                           text={
                             CurrencyType(false) +
-                            amountFormat(getTotalAssetValue(), "en-US", "USD") +
-                            " " +
+                            (window.sessionStorage.getItem(
+                              "shouldRecallApis"
+                            ) === "true"
+                              ? "0.00"
+                              : amountFormat(
+                                  getTotalAssetValue(),
+                                  "en-US",
+                                  "USD"
+                                ) + " ") +
                             CurrencyType(true)
                           }
                           className="tool-tip-container-bottom-arrow"
@@ -950,7 +957,11 @@ function Sidebar(props) {
                           >
                             {CurrencyType(false)}
                             {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                            {numToCurrency(getTotalAssetValue())}{" "}
+                            {window.sessionStorage.getItem(
+                              "shouldRecallApis"
+                            ) === "true"
+                              ? "0.00"
+                              : numToCurrency(getTotalAssetValue())}
                           </h3>
                         </CustomOverlay>
                       </div>

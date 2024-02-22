@@ -35,7 +35,7 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
-import { isFollowedByUser } from "../Portfolio/Api";
+import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import { detectNameTag, updateUserWalletApi } from "../common/Api";
@@ -756,7 +756,11 @@ class TopWalletExchangeBar extends Component {
         w.id = `wallet${i + 1}`;
       }
     });
-
+    const tempWalletAddress = addWallet.map((e) => e.apiAddress);
+    const secondData = new URLSearchParams();
+    secondData.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+    this.props.isNewAddress(secondData);
+    sessionStorage.setItem("replacedOrAddedAddress", true);
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
@@ -1773,6 +1777,7 @@ const mapDispatchToProps = {
   addAddressToWatchList,
   addUserCredits,
   detectNameTag,
+  isNewAddress,
 };
 
 export default connect(
