@@ -198,7 +198,11 @@ class GasFeesPage extends Component {
     }
     this.props.updateFeeGraph(
       this.props.intelligenceState.GraphfeeData,
-      getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+      getGraphData(
+        this.props.intelligenceState.GraphfeeData,
+        this,
+        mobileCheck()
+      ),
       this
     );
     if (this.props.intelligenceState.GraphfeeData) {
@@ -416,6 +420,7 @@ class GasFeesPage extends Component {
           if (
             activeBadgeList &&
             (activeBadgeList.includes(tempGraphData?.chain?._id) ||
+              activeBadgeList.includes(tempGraphData?.chain?.id) ||
               activeBadgeList.length === 0)
           ) {
             graphDataMaster.push(tempGraphData);
@@ -429,7 +434,7 @@ class GasFeesPage extends Component {
       // });
       this.props.updateFeeGraph(
         GraphfeeData,
-        getGraphData(graphDataObj, this),
+        getGraphData(graphDataObj, this, mobileCheck()),
         this,
         false
       );

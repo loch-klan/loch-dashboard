@@ -36,6 +36,7 @@ class PriceGuageMobile extends Component {
               lochToken={this.props.lochToken}
               callChildPriceGaugeApi={this.props.callChildPriceGaugeApi}
               isMobileGraph
+              apiResponse={this.props.apiResponse}
             />
           </div>
         </div>

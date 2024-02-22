@@ -595,6 +595,7 @@ class PriceGauge extends Component {
           <PriceGuageMobile
             userWalletList={this.state.userWalletList}
             lochToken={this.state.lochToken}
+            apiResponse={this.state.apiResponse}
           />
         </MobileLayout>
       );
@@ -656,7 +657,10 @@ class PriceGauge extends Component {
               id="price"
               style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
             >
-              <InflowOutflowChart userWalletList={this.state.userWalletList} />
+              <InflowOutflowChart
+                userWalletList={this.state.userWalletList}
+                apiResponse={this.state.apiResponse}
+              />
             </div>
 
             <Footer />
