@@ -1,3 +1,6 @@
+const deleteAddWallet = () => {
+  window.sessionStorage.removeItem("addWallet");
+};
 const deleteToken = (notCurrencyRates) => {
   window.sessionStorage.removeItem("setMetamaskConnectedSessionStorage");
   window.sessionStorage.removeItem("lochToken");
@@ -91,4 +94,5 @@ export {
   getCurrentUser,
   setLocalStoraage,
   resetPreviewAddress,
+  deleteAddWallet,
 };
