@@ -693,7 +693,7 @@ class PortfolioMobile extends BaseReactComponent {
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element mr-1 ${
                     this.props.blockOneSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -705,7 +705,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Assets
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockThreeSelectedItem === 1 &&
                     this.props.blockOneSelectedItem !== 1
                       ? "section-table-toggle-element-selected"
@@ -839,7 +839,7 @@ class PortfolioMobile extends BaseReactComponent {
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockTwoSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -863,7 +863,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Gas fees
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockTwoSelectedItem === 3
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -875,7 +875,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Counterparties
                 </div>
               </div>
-              <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+              <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
                 <div
                   className="section-table section-table-mobile"
                   style={{
@@ -1005,7 +1005,7 @@ class PortfolioMobile extends BaseReactComponent {
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockFourSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -1029,7 +1029,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Transactions
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockFourSelectedItem === 3
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -1043,7 +1043,7 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
               <div className="mobile-portfolio-blocks-content">
                 {this.props.blockFourSelectedItem === 1 ? (
-                  <div className="mobile-portfolio-blocks-content-price-gauge">
+                  <div className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding">
                     <InflowOutflowPortfolioHome
                       hideExplainer
                       showEth
@@ -1101,12 +1101,14 @@ class PortfolioMobile extends BaseReactComponent {
                     ) : null}
                   </div>
                 ) : this.props.blockFourSelectedItem === 3 ? (
-                  <PortfolioHomeInsightsBlock
-                    history={this.props.history}
-                    updatedInsightList={this.props.updatedInsightList}
-                    insightsBlockLoading={this.props.insightsBlockLoading}
-                    isMobile
-                  />
+                  <div className="mobile-portfolio-blocks-content-with-padding">
+                    <PortfolioHomeInsightsBlock
+                      history={this.props.history}
+                      updatedInsightList={this.props.updatedInsightList}
+                      insightsBlockLoading={this.props.insightsBlockLoading}
+                      isMobile
+                    />
+                  </div>
                 ) : null}
               </div>
             </div>

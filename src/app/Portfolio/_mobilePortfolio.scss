@@ -184,7 +184,7 @@
     .mobile-portfolio-blocks {
       margin-top: 3rem;
       background-color: white;
-      padding: 1rem;
+      // padding: 1rem;
       border-radius: 1.2rem;
       min-height: 50rem;
       max-height: 50rem;
@@ -199,6 +199,10 @@
             height: 0rem;
           }
         }
+      }
+
+      .mobile-portfolio-blocks-content-with-padding {
+        padding: 0rem 1rem;
       }
 
       .section-table-mobile {
@@ -287,7 +291,7 @@
         }
       }
 
-      .newHomeTableContainer-transaction-history{
+      .newHomeTableContainer-transaction-history {
         .table-wrapper {
           .custom-table {
             .ReactVirtualized__Table__Grid {
@@ -304,10 +308,12 @@
       }
       .section-table-toggle-mobile {
         background-color: #e5e5e680;
-        border-radius: 0.5rem;
-        padding: 0.4rem;
+        border-radius: 0.7rem;
+        padding: 0.6rem;
         display: flex;
         align-items: center;
+        margin: 1rem;
+        margin-bottom: 0rem;
         .section-table-toggle-element {
           font-size: 13px;
           flex: 1;
@@ -819,14 +825,14 @@
   }
 }
 
-.mobile-portfolio-blocks-gas-fees-expanded{
+.mobile-portfolio-blocks-gas-fees-expanded {
   min-height: 61rem !important;
-  .gas-fees-chart-mobile-expanded{
-    .bar-graph-section{
+  .gas-fees-chart-mobile-expanded {
+    .bar-graph-section {
       min-height: 52rem !important;
     }
   }
   .custom-dropdown.lineChart {
     border: 0.1rem solid #19191a;
-}
+  }
 }

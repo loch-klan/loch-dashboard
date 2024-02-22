@@ -556,7 +556,7 @@ class NFT extends BaseReactComponent {
                 noSubtitleBottomPadding
                 tableData={this.state.tableData}
                 columnList={columnList}
-                message={"No NFTs found"}
+                message={"No NFT found"}
                 totalPage={this.props.NFTState?.total_count}
                 history={this.props.history}
                 location={this.props.location}
