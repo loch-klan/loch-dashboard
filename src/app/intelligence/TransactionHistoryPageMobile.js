@@ -11,6 +11,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown";
 import TransactionTable from "./TransactionTable";
 import "./intelligenceScss/_inflowOutflowChart.scss";
+import Loading from "../common/Loading";
 
 class TransactionHistoryPageMobile extends BaseReactComponent {
   constructor(props) {
@@ -21,7 +22,12 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
   render() {
     return (
       <div className="assets-expanded-mobile expanded-mobile">
-        <div className="mobile-header-container">
+        <div
+          style={{
+            marginBottom: "0rem",
+          }}
+          className="mobile-header-container"
+        >
           <h4>Transactions</h4>
           <p>Sort, filter, and dissect all your transactions from one place</p>
         </div>
@@ -129,67 +135,87 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
             </Form>
           </div>
         </div>
-        <div
-          style={{
-            backgroundColor: "white",
-            borderRadius: "1.2rem",
-            padding: "0rem",
-          }}
-        >
+        {this.props.tableLoading ? (
           <div
             style={{
-              overflowX: "scroll",
-              marginTop: "1.5rem",
-              paddingTop: "0.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "70vh",
+              backgroundColor: "white",
+              borderRadius: "1rem",
+              margin: "2rem 0rem",
             }}
-            className={`newHomeTableContainer  ${
-              this.props.tableLoading || this.props.tableData < 1
-                ? ""
-                : "tableWatermarkOverlay"
-            }`}
           >
-            <TransactionTable
-              noSubtitleBottomPadding
-              disableOnLoading
-              isMiniversion
-              message="No transactions found"
-              tableData={this.props.tableData}
-              columnList={this.props.columnData}
-              headerHeight={60}
-              isArrow={true}
-              isLoading={this.props.tableLoading}
-              isAnalytics="average cost basis"
-              fakeWatermark
-              xAxisScrollable
-              yAxisScrollable
-              xAxisScrollableColumnWidth={3}
-              tableSortOpt={this.props.tableSortOpt}
-              handleSort={this.props.handleSort}
-              isMiniVersion
-              // paginationNew
-              // totalPage={this.props.totalPage}
-              // history={this.props.history}
-              // location={this.props.location}
-              // page={this.props.currentPage}
-              // onPageChange={this.props.onPageChange}
-              // minimalPagination
-              // hidePaginationRecords
-              // currentPage={this.props.currentPage}
-            />
+            <Loading />
           </div>
-        </div>
-        {this.props.tableData && this.props.tableData.length > 0 ? (
-          <div className="mt-4">
-            <SmartMoneyPagination
-              isMobile
-              pageCount={this.props.totalPage}
-              history={this.props.history}
-              location={this.props.location}
-              page={this.props.currentPage + 1}
-              onPageChange={this.props.onPageChange}
-            />
+        ) : (
+          <div>
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "1.2rem",
+                padding: "0rem",
+              }}
+            >
+              <div
+                style={{
+                  overflowX: "scroll",
+                  marginTop: "2rem",
+                  paddingTop: "0.5rem",
+                }}
+                className={`newHomeTableContainer  ${
+                  this.props.tableLoading || this.props.tableData < 1
+                    ? ""
+                    : "tableWatermarkOverlay"
+                }`}
+              >
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  message="No transactions found"
+                  tableData={this.props.tableData}
+                  columnList={this.props.columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  isLoading={this.props.tableLoading}
+                  isAnalytics="average cost basis"
+                  fakeWatermark
+                  xAxisScrollable
+                  yAxisScrollable
+                  xAxisScrollableColumnWidth={3}
+                  tableSortOpt={this.props.tableSortOpt}
+                  handleSort={this.props.handleSort}
+                  isMiniVersion
+                  // paginationNew
+                  // totalPage={this.props.totalPage}
+                  // history={this.props.history}
+                  // location={this.props.location}
+                  // page={this.props.currentPage}
+                  // onPageChange={this.props.onPageChange}
+                  // minimalPagination
+                  // hidePaginationRecords
+                  // currentPage={this.props.currentPage}
+                />
+              </div>
+            </div>
+            {this.props.tableData &&
+            this.props.tableData.length > 0 &&
+            !this.props.tableLoading ? (
+              <div className="mt-4">
+                <SmartMoneyPagination
+                  isMobile
+                  pageCount={this.props.totalPage}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={this.props.currentPage + 1}
+                  onPageChange={this.props.onPageChange}
+                />
+              </div>
+            ) : null}
           </div>
-        ) : null}
+        )}
       </div>
     );
   }

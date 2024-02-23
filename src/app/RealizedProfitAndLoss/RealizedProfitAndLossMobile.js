@@ -32,13 +32,13 @@ class RealizedProfitAndLossMobile extends Component {
           {this.props.netFlowLoading ? (
             <div
               style={{
-                height: "400px",
+                height: "70vh",
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: "10px",
-                backgroundColor: "rgba(255, 255, 255)",
+                backgroundColor: "white",
               }}
             >
               <Loading />

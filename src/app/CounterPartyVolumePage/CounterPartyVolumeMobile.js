@@ -33,9 +33,8 @@ class CounterPartyVolume extends Component {
         <div
           className="mobile-portfolio-blocks"
           style={{
-            marginTop: "2rem",
-
-            maxHeight: "60rem",
+            marginTop: "0rem",
+            maxHeight: "none",
           }}
         >
           <div

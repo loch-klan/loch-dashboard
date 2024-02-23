@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import BarGraphSection from "../common/BarGraphSection.js";
 import { BarGraphFooter } from "../common/BarGraphFooter.js";
+import Loading from "../common/Loading.js";
 
 class GasFeesMobile extends Component {
   constructor(props) {
@@ -30,79 +31,94 @@ class GasFeesMobile extends Component {
           <h4>Gas fees over time</h4>
           <p>Understand your gas costs</p>
         </div>
-        <div
-          className="mobile-portfolio-blocks mobile-portfolio-blocks-gas-fees-expanded"
-          style={{
-            marginTop: "2rem",
-
-            maxHeight: "60rem",
-          }}
-        >
+        {this.props.netFlowLoading ? (
           <div
             style={{
-              padding: "1.5rem 1rem",
+              height: "70vh",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "10px",
+              backgroundColor: "white",
             }}
-            className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile"
+          >
+            <Loading />
+          </div>
+        ) : (
+          <div
+            className="mobile-portfolio-blocks mobile-portfolio-blocks-gas-fees-expanded"
+            style={{
+              marginTop: "0rem",
+              maxHeight: "none",
+            }}
           >
             <div
-              className="section-table section-table-mobile"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                boxShadow: "none",
+                padding: "1.5rem 1rem",
               }}
+              className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile"
             >
-              <div className="profit-chart profit-chart-mobile-expanded gas-fees-chart-mobile-expanded">
-                {this.props.counterGraphLoading ? null : (
-                  <div
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <BarGraphFooter
-                      divideInTwo
-                      handleFooterClick={this.handleFooter}
-                      active={this.state.activeFooter}
-                    />
-                  </div>
-                )}
-                <BarGraphSection
-                  digit={this.props.counterGraphDigit}
-                  isFromHome
-                  data={
-                    this.props.counterPartyValueLocal &&
-                    this.props.counterPartyValueLocal[0]
-                  }
-                  options={
-                    this.props.counterPartyValueLocal &&
-                    this.props.counterPartyValueLocal[1]
-                  }
-                  options2={
-                    this.props.counterPartyValueLocal &&
-                    this.props.counterPartyValueLocal[2]
-                  }
-                  isScrollVisible={false}
-                  isScroll={true}
-                  isLoading={this.props.counterGraphLoading}
-                  chainSearchIsUsed={this.props.feesChainSearchIsUsed}
-                  selectedActiveBadge={this.props.selectedActiveBadgeLocal}
-                  coinsList={this.props.coinsList}
-                  handleBadge={this.props.handleBadge}
-                  oldBar
-                  noSubtitleBottomPadding
-                  newHomeSetup
-                  noSubtitleTopPadding
-                  floatingWatermark
-                  isMobileGraph
-                  customGraphHeight="44rem"
-                  showBadges
-                  customGraphLoadingHeight="100%"
-                  isGasFeesMobileExpanded
-                />
+              <div
+                className="section-table section-table-mobile"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  boxShadow: "none",
+                }}
+              >
+                <div className="profit-chart profit-chart-mobile-expanded gas-fees-chart-mobile-expanded">
+                  {this.props.counterGraphLoading ? null : (
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <BarGraphFooter
+                        divideInTwo
+                        handleFooterClick={this.handleFooter}
+                        active={this.state.activeFooter}
+                      />
+                    </div>
+                  )}
+                  <BarGraphSection
+                    digit={this.props.counterGraphDigit}
+                    isFromHome
+                    data={
+                      this.props.counterPartyValueLocal &&
+                      this.props.counterPartyValueLocal[0]
+                    }
+                    options={
+                      this.props.counterPartyValueLocal &&
+                      this.props.counterPartyValueLocal[1]
+                    }
+                    options2={
+                      this.props.counterPartyValueLocal &&
+                      this.props.counterPartyValueLocal[2]
+                    }
+                    isScrollVisible={false}
+                    isScroll={true}
+                    isLoading={this.props.counterGraphLoading}
+                    chainSearchIsUsed={this.props.feesChainSearchIsUsed}
+                    selectedActiveBadge={this.props.selectedActiveBadgeLocal}
+                    coinsList={this.props.coinsList}
+                    handleBadge={this.props.handleBadge}
+                    oldBar
+                    noSubtitleBottomPadding
+                    newHomeSetup
+                    noSubtitleTopPadding
+                    floatingWatermark
+                    isMobileGraph
+                    customGraphHeight="44rem"
+                    showBadges
+                    customGraphLoadingHeight="100%"
+                    isGasFeesMobileExpanded
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     );
   }

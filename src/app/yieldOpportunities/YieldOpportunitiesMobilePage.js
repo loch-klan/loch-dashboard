@@ -32,14 +32,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   render() {
     return (
       <div className="yield-opp-page-mobile">
-        <div className="mobile-header-container">
+        <div
+          style={{
+            marginBottom: "0rem",
+          }}
+          className="mobile-header-container"
+        >
           <h4>Yield opportunities</h4>
           <p>Yield bearing opportunties personalized for your portfolio</p>
         </div>
 
         <div
           className="combine-search-prefix-icon"
-          style={{ marginTop: "2rem" }}
+          style={{ marginTop: "1.5rem" }}
         >
           <Form onValidSubmit={this.props.onValidSubmit}>
             <Row
@@ -83,7 +88,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 />
               </Col>
             </Row>
-            <div className="searchBar" style={{ marginTop: "2rem" }}>
+            <div className="searchBar" style={{ marginTop: "1.5rem" }}>
               <Image src={searchIcon} className="search-icon" />
               <FormElement
                 valueLink={this.props.parentCtx.linkState(
@@ -115,7 +120,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               height: "70vh",
               backgroundColor: "white",
               borderRadius: "1rem",
-              margin: "1.5rem 0rem",
+              margin: "2rem 0rem",
             }}
           >
             <Loading />

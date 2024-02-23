@@ -287,12 +287,7 @@ class PieChart2Mobile extends BaseReactComponent {
     ];
     return (
       <div>
-        <h2
-          style={{
-            marginTop: "2rem",
-          }}
-          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
-        >
+        <h2 className="inter-display-semi-bold f-s-17 lh-19 grey-313">
           Balance by network
         </h2>
         <div
@@ -483,10 +478,7 @@ class PieChart2Mobile extends BaseReactComponent {
             justifyContent: "space-between",
           }}
         >
-          <h2
-            style={{}}
-            className="inter-display-semi-bold f-s-16 lh-19 grey-313"
-          >
+          <h2 className="inter-display-semi-bold f-s-17 lh-19 grey-313">
             DeFi Balance Sheet
           </h2>
           <p
