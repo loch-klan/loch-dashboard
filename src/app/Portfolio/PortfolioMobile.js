@@ -887,7 +887,7 @@ class PortfolioMobile extends BaseReactComponent {
                   <div className="profit-chart profit-chart-mobile">
                     {this.props.blockTwoSelectedItem === 1 ? (
                       <BarGraphSection
-                        // openChartPage={() => {}}
+                        openChartPage={this.props.goToRealizedGainsPage}
                         newHomeSetup
                         disableOnLoading
                         noSubtitleBottomPadding
@@ -1045,6 +1045,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.props.blockFourSelectedItem === 1 ? (
                   <div className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding">
                     <InflowOutflowPortfolioHome
+                      openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
                       showEth
                       userWalletList={this.props.userWalletList}

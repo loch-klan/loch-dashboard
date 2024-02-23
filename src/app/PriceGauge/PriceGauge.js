@@ -45,6 +45,8 @@ import UpgradeModal from "../common/upgradeModal.js";
 import InflowOutflowChart from "../intelligence/InflowOutflowChart";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import PriceGuageMobile from "./PriceGuageMobile.js";
 
 class PriceGauge extends Component {
   constructor(props) {
@@ -97,6 +99,7 @@ class PriceGauge extends Component {
       waitForMixpannelCall: false,
       isFromCalendar: false,
       isToCalendar: false,
+      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
     };
   }
   showFromCalendar = () => {
@@ -173,9 +176,9 @@ class PriceGauge extends Component {
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -582,6 +585,21 @@ class PriceGauge extends Component {
     this.updateTimer();
   };
   render() {
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+          CheckApiResponse={(e) => this.CheckApiResponse(e)}
+        >
+          <PriceGuageMobile
+            userWalletList={this.state.userWalletList}
+            lochToken={this.state.lochToken}
+            apiResponse={this.state.apiResponse}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}
@@ -639,7 +657,10 @@ class PriceGauge extends Component {
               id="price"
               style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
             >
-              <InflowOutflowChart userWalletList={this.state.userWalletList} />
+              <InflowOutflowChart
+                userWalletList={this.state.userWalletList}
+                apiResponse={this.state.apiResponse}
+              />
             </div>
 
             <Footer />

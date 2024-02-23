@@ -47,6 +47,8 @@ import Footer from "../common/footer.js";
 import UpgradeModal from "../common/upgradeModal.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import RealizedProfitAndLossMobile from "./RealizedProfitAndLossMobile.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {
@@ -183,9 +185,9 @@ class RealizedProfitAndLoss extends Component {
     });
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -644,6 +646,45 @@ class RealizedProfitAndLoss extends Component {
     this.updateTimer();
   };
   render() {
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <RealizedProfitAndLossMobile
+            showToCalendar={this.showToCalendar}
+            hideToCalendar={this.hideToCalendar}
+            hideFromCalendar={this.hideFromCalendar}
+            showFromCalendar={this.showFromCalendar}
+            changeToDate={this.changeToDate}
+            changeFromDate={this.changeFromDate}
+            isFromCalendar={this.state.isFromCalendar}
+            toDate={this.state.toDate}
+            isToCalendar={this.state.isToCalendar}
+            fromDate={this.state.fromDate}
+            maxDate={this.state.maxDate}
+            minDate={this.state.minDate}
+            OnboardingState={this.props.OnboardingState}
+            selectedActiveBadge={this.state.selectedActiveBadge}
+            isSwitch={this.state.isSwitch}
+            setSwitch={this.setSwitch}
+            title={this.state.title}
+            AssetList={this.state.AssetList}
+            selectedAssets={this.state.selectedAssets}
+            handleBadge={(activeBadgeList, activeFooter) =>
+              this.handleBadge(activeBadgeList, activeFooter)
+            }
+            ProfitLossAssetLocal={this.state.ProfitLossAssetLocal}
+            handleAssetSelected={this.handleAssetSelected}
+            netFlowLoading={this.state.netFlowLoading}
+            chainSearchIsUsed={this.chainSearchIsUsed}
+            assetSearchIsUsed={this.assetSearchIsUsed}
+            intelligenceState={this.props.intelligenceState}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}

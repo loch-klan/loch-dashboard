@@ -450,4 +450,12 @@
       border-left: 0.35em solid transparent;
     }
   }
+
+  .dropdown-menu{
+    z-index: 900;
+    &.show{
+      inset: 0px auto auto 0px !important;
+      transform: translate3d(0px, 43.3333px, 0px) !important;
+    }
+  }
 }

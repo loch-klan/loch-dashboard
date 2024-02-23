@@ -601,7 +601,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         condition: cond ? cond : [],
         apiResponse: false,
       });
-
       this.callApi(this.state.currentPage || START_INDEX);
       this.props.getFilters(this);
     }
@@ -2078,6 +2077,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          CheckApiResponse={this.CheckApiResponse}
         >
           <TransactionHistoryPageMobile
             showHideDustFun={this.showDust}
