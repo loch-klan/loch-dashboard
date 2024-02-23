@@ -33,29 +33,13 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     const tempAdd = JSON.stringify(addressList);
     let data = new URLSearchParams();
     data.append("wallet_addresses", tempAdd);
-
-    if (
-      this.props.InflowOutflowSelectedAssetState === null ||
-      this.props.InflowOutflowChartState.length === 0 ||
-      this.props.InflowOutflowAssetListState.length === 0 ||
-      this.props.InflowOutflowWalletState !== tempAdd
-    ) {
-      if (this.props.lochToken) {
-        this.setState({ graphLoading: true, selectedAsset: "" }, () => {
-          this.props.setSelectedInflowOutflowsAssetBlank();
-          this.props.getInflowsAndOutflowsAssetsApi(data, this);
-          this.setState({
-            callApi: true,
-          });
+    if (this.props.lochToken) {
+      this.setState({ graphLoading: true, selectedAsset: "" }, () => {
+        this.props.setSelectedInflowOutflowsAssetBlank();
+        this.props.getInflowsAndOutflowsAssetsApi(data, this);
+        this.setState({
+          callApi: true,
         });
-      }
-    } else {
-      this.setState({
-        selectedAsset: this.props.InflowOutflowSelectedAssetState,
-        inflowsOutflowsList: this.props.InflowOutflowChartState,
-        assetList: this.props.InflowOutflowAssetListState,
-        timeTab: this.props.InflowOutflowTimeTabState,
-        graphLoading: false,
       });
     }
   }
@@ -176,8 +160,10 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
 
     let data = new URLSearchParams();
 
-    if (timeFilter) {
+    if (timeFilter && this.props.isFullPage) {
       data.append("days", timeFilter);
+    } else {
+      data.append("days", 30);
     }
 
     if (assetFilter) {

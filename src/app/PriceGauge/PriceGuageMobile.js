@@ -40,6 +40,8 @@ class PriceGuageMobile extends Component {
               apiResponse={this.props.apiResponse}
               priceGuageExpandedMobile={true}
               showDropdown
+              isFullPage
+              callTheApi
             />
           </div>
         </div>

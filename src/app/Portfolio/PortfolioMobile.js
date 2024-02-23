@@ -1015,7 +1015,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockFourItem(1);
                   }}
                 >
-                  Price Guage
+                  Price gauge
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
