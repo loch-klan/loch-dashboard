@@ -11,6 +11,7 @@ import {
 } from "./Api";
 import InflowOutflowChartSliderContainer from "./InflowOutflowChartSliderContainer";
 import "./intelligenceScss/_inflowOutflowChart.scss";
+import Loading from "../common/Loading";
 class InflowOutflowPortfolioHome extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -160,7 +161,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
 
     let data = new URLSearchParams();
 
-    if (timeFilter && this.props.isFullPage) {
+    if (timeFilter && this.props.priceGuageExpandedMobile) {
       data.append("days", timeFilter);
     } else {
       data.append("days", 30);
@@ -200,6 +201,23 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     }
   };
   render() {
+    if (this.state.graphLoading && this.props.priceGuageExpandedMobile) {
+      return (
+        <div
+          style={{
+            height: "70vh",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "10px",
+            backgroundColor: "white",
+          }}
+        >
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div
         style={{

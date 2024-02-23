@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import BarGraphSection from "../common/BarGraphSection.js";
-import { BarGraphFooter } from "../common/BarGraphFooter.js";
-import Loading from "../common/Loading.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 
 class PriceGuageMobile extends Component {
@@ -40,7 +37,6 @@ class PriceGuageMobile extends Component {
               apiResponse={this.props.apiResponse}
               priceGuageExpandedMobile={true}
               showDropdown
-              isFullPage
               callTheApi
             />
           </div>

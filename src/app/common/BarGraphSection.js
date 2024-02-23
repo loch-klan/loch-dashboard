@@ -360,16 +360,15 @@ class BarGraphSection extends Component {
                     </div>
                   )}
                   {showFromAndTo && (
-                    <div className="intelligenceRealisedLeftContainer">
+                    <div
+                      style={{
+                        marginBottom: isMobile ? "1rem" : "",
+                      }}
+                      className="intelligenceRealisedLeftContainer"
+                    >
                       <div class="bar-graph-footer ">
                         {isMobile ? (
-                          <div class="timeCalendarBadgeWrapper ">
-                            <div
-                              id="0"
-                              class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
-                            >
-                              From
-                            </div>
+                          <div class="timeCalendarBadgeWrapper timeCalendarBadgeWrapperMobile ">
                             <div
                               id="1"
                               class="inter-display-medium f-s-13 lh-16 timeCalBadge"
@@ -382,6 +381,7 @@ class BarGraphSection extends Component {
                                     className="timeBadgeCalendarText"
                                     onClick={this.props.showFromCalendar}
                                   >
+                                    {"From "}
                                     {this.props.fromDate
                                       ? moment(this.props.fromDate).format(
                                           "D MMM YYYY"
@@ -405,15 +405,7 @@ class BarGraphSection extends Component {
                                 </div>
                               </OutsideClickHandler>
                             </div>
-                            <div
-                              id="2"
-                              class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
-                              style={{
-                                marginLeft: "auto",
-                              }}
-                            >
-                              To
-                            </div>
+
                             <div
                               id="3"
                               class="inter-display-medium f-s-13 lh-16 timeCalBadge"
@@ -426,6 +418,7 @@ class BarGraphSection extends Component {
                                     className="timeBadgeCalendarText"
                                     onClick={this.props.showToCalendar}
                                   >
+                                    {"To "}
                                     {this.props.toDate
                                       ? moment(this.props.toDate).format(
                                           "D MMM YYYY"
@@ -546,54 +539,60 @@ class BarGraphSection extends Component {
                     </div>
                   )}
                   {showFromAndTo ? (
-                    <div className="intelligenceRealisedRightContainer">
-                      <div
-                        className="intelligenceRealisedRightItems"
-                        // style={{
-                        //   width: "100%",
-                        //   minWidth: "18rem",
-                        //   maxWidth: "20rem",
-                        //   marginLeft: "1rem",
-                        //   zIndex: 4,
-                        // }}
-                      >
-                        <CustomDropdown
-                          filtername="All chains"
-                          options={coinsList}
-                          selectedTokens={this.props.selectedActiveBadge}
-                          action={null}
-                          handleClick={this.handleFunction}
-                          isChain={true}
-                          searchIsUsed={this.props.chainSearchIsUsed}
-                        />
-                      </div>
-                      <div
-                        className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
-                        // style={{
-                        //   width: "100%",
-                        //   minWidth: "15rem",
-                        //   maxWidth: "18rem",
-                        //   zIndex: "2",
-                        // }}
-                      >
-                        <CustomDropdown
-                          filtername="All assets"
-                          options={this.props.assetList}
-                          selectedTokens={this.props.selectedAssets}
-                          action={null}
-                          handleClick={this.props.handleAssetSelected}
-                          // isChain={true}
-                          LightTheme={true}
-                          placeholderName={"asset"}
-                          getObj={this.props?.getObj}
-                          searchIsUsed={this.props.assetSearchIsUsed}
+                    isMobile ? (
+                      <div className="intelligenceRealisedRightContainer intelligenceRealisedRightContainerMobile">
+                        <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
+                          <CustomDropdown
+                            filtername="All chains"
+                            options={coinsList}
+                            selectedTokens={this.props.selectedActiveBadge}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            searchIsUsed={this.props.chainSearchIsUsed}
+                          />
+                        </div>
+                        <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
+                          <CustomDropdown
+                            filtername="All assets"
+                            options={this.props.assetList}
+                            selectedTokens={this.props.selectedAssets}
+                            action={null}
+                            handleClick={this.props.handleAssetSelected}
+                            // isChain={true}
+                            LightTheme={true}
+                            placeholderName={"asset"}
+                            getObj={this.props?.getObj}
+                            searchIsUsed={this.props.assetSearchIsUsed}
 
-                          // selectedTokens={this.state.activeBadge}
-                        />
+                            // selectedTokens={this.state.activeBadge}
+                          />
+                        </div>
                       </div>
-                      {this.props.showSwitch ? (
+                    ) : (
+                      <div className="intelligenceRealisedRightContainer">
                         <div
                           className="intelligenceRealisedRightItems"
+                          // style={{
+                          //   width: "100%",
+                          //   minWidth: "18rem",
+                          //   maxWidth: "20rem",
+                          //   marginLeft: "1rem",
+                          //   zIndex: 4,
+                          // }}
+                        >
+                          <CustomDropdown
+                            filtername="All chains"
+                            options={coinsList}
+                            selectedTokens={this.props.selectedActiveBadge}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            searchIsUsed={this.props.chainSearchIsUsed}
+                          />
+                        </div>
+                        <div
+                          className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
                           // style={{
                           //   width: "100%",
                           //   minWidth: "15rem",
@@ -601,43 +600,69 @@ class BarGraphSection extends Component {
                           //   zIndex: "2",
                           // }}
                         >
+                          <CustomDropdown
+                            filtername="All assets"
+                            options={this.props.assetList}
+                            selectedTokens={this.props.selectedAssets}
+                            action={null}
+                            handleClick={this.props.handleAssetSelected}
+                            // isChain={true}
+                            LightTheme={true}
+                            placeholderName={"asset"}
+                            getObj={this.props?.getObj}
+                            searchIsUsed={this.props.assetSearchIsUsed}
+
+                            // selectedTokens={this.state.activeBadge}
+                          />
+                        </div>
+                        {this.props.showSwitch ? (
                           <div
-                            onClick={this.toggleBreakdownSelected}
-                            className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
-                              this.state.switchselected
-                                ? "IRRIbreakdownContainerSelected"
-                                : ""
-                            }`}
+                            className="intelligenceRealisedRightItems"
+                            // style={{
+                            //   width: "100%",
+                            //   minWidth: "15rem",
+                            //   maxWidth: "18rem",
+                            //   zIndex: "2",
+                            // }}
                           >
-                            <div>Breakdown</div>
-                            <div className="IRRIbreakdownImageContainer">
-                              <Image
-                                className="IRRIbreakdownImage"
-                                src={ThickCheckMarkIcon}
-                              />
+                            <div
+                              onClick={this.toggleBreakdownSelected}
+                              className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                                this.state.switchselected
+                                  ? "IRRIbreakdownContainerSelected"
+                                  : ""
+                              }`}
+                            >
+                              <div>Breakdown</div>
+                              <div className="IRRIbreakdownImageContainer">
+                                <Image
+                                  className="IRRIbreakdownImage"
+                                  src={ThickCheckMarkIcon}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                      {isMobile ? null : (
-                        <div className="intelligenceRealisedInfoIcon">
-                          <CustomOverlay
-                            position="bottom"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                            subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
-                            className={
-                              "fix-width tool-tip-container-bottom-arrow"
-                            }
-                            isLeftText
-                          >
-                            <Image src={InfoIcon} className="infoIcon" />
-                          </CustomOverlay>
-                        </div>
-                      )}
-                    </div>
+                        ) : null}
+                        {isMobile ? null : (
+                          <div className="intelligenceRealisedInfoIcon">
+                            <CustomOverlay
+                              position="bottom"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                              subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                              className={
+                                "fix-width tool-tip-container-bottom-arrow"
+                              }
+                              isLeftText
+                            >
+                              <Image src={InfoIcon} className="infoIcon" />
+                            </CustomOverlay>
+                          </div>
+                        )}
+                      </div>
+                    )
                   ) : null}
                   {showBadges && (
                     <div
@@ -654,6 +679,11 @@ class BarGraphSection extends Component {
                           : "1rem",
                         zIndex: 4,
                       }}
+                      className={
+                        this.props.isGasFeesMobileExpanded
+                          ? "mobileGasFeesExpandedViewDropdownContainer"
+                          : ""
+                      }
                     >
                       <CustomDropdown
                         filtername="All chains selected"
