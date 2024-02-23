@@ -12,7 +12,7 @@ class PriceGuageMobile extends Component {
   }
   render() {
     return (
-      <div className="realized-profit-and-loss-expanded-mobile">
+      <div className="realized-profit-and-loss-expanded-mobile price-gauge-expanded-mobile">
         <div className="mobile-header-container">
           <h4>Price gauge</h4>
           <p>Understand when this token was bought and sold</p>
@@ -36,7 +36,10 @@ class PriceGuageMobile extends Component {
               lochToken={this.props.lochToken}
               callChildPriceGaugeApi={this.props.callChildPriceGaugeApi}
               isMobileGraph
+              isHomePage
               apiResponse={this.props.apiResponse}
+              priceGuageExpandedMobile={true}
+              showDropdown
             />
           </div>
         </div>
