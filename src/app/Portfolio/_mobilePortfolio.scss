@@ -837,8 +837,26 @@
   }
 }
 
-.price-gauge-expanded-mobile{
-  .placeholderPriceDropdown{
+.price-gauge-expanded-mobile {
+  .placeholderPriceDropdown {
     min-width: 110px !important;
+  }
+}
+
+.mobileSeeMoreBtn {
+  display: flex;
+  align-items: center;
+
+  .mobileSeeMoreBtnTxt {
+    font-size: 13px;
+    color: #4f4f4f;
+    font-weight: 500;
+  }
+  .mobileSeeMoreBtnIcon {
+    margin-left: 0.5rem;
+    margin-right: 0.3rem;
+    filter: brightness(0.5);
+    height: 8px;
+    transform: translateY(1px);
   }
 }

@@ -493,14 +493,12 @@ class PieChart2Mobile extends BaseReactComponent {
             onClick={this.props.openDefiPage}
             className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
           >
-            <div
-              style={{
-                marginLeft: "0rem",
-              }}
-              className="seeMoreBtn cp"
-            >
-              <div>See more</div>
-              <Image src={ChartSeeMoreArrowIcon} className="seeMoreBtnIcon" />
+            <div className="mobileSeeMoreBtn">
+              <div className="mobileSeeMoreBtnTxt">See more</div>
+              <Image
+                src={ChartSeeMoreArrowIcon}
+                className="mobileSeeMoreBtnIcon"
+              />
             </div>
           </p>
         </div>
