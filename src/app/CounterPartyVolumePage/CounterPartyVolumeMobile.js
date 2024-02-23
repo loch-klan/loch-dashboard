@@ -62,6 +62,7 @@ class CounterPartyVolume extends Component {
                       divideInTwo
                       handleFooterClick={this.handleFooter}
                       active={this.state.activeFooter}
+                      isMobileGraph
                     />
                   </div>
                 )}

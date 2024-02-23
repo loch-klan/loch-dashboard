@@ -57,7 +57,10 @@ export const BarGraphFooter = (props) => {
           <div
             style={{
               columnGap: "0.5rem",
-              marginTop: props.priceGuageExpandedMobile ? "1rem" : "",
+              marginTop:
+                props.priceGuageExpandedMobile || props.isMobileGraph
+                  ? "1rem"
+                  : "",
             }}
             className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
           >

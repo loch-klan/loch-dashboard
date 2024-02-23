@@ -17,7 +17,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     super(props);
     this.state = {
       graphLoading: true,
-      timeTab: "Max",
+      timeTab: props.priceGuageExpandedMobile ? "1 Month" : "Max",
       selectedAsset: "",
       inflowsOutflowsList: [],
       assetList: [],
@@ -181,7 +181,10 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);
   };
   handleGroupBy = (value) => {
-    this.props.setInflowsAndOutflowsTimeTab(value);
+    // this.props.setInflowsAndOutflowsTimeTab(value);
+    this.setState({
+      timeTab: value,
+    });
   };
   onAssetSelect = (selectedItem) => {
     this.setState({

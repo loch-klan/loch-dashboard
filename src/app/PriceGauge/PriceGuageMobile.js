@@ -38,6 +38,7 @@ class PriceGuageMobile extends Component {
               priceGuageExpandedMobile={true}
               showDropdown
               callTheApi
+              mobileExpandedPage
             />
           </div>
         </div>

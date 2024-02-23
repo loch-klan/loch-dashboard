@@ -78,6 +78,7 @@ class GasFeesMobile extends Component {
                         divideInTwo
                         handleFooterClick={this.handleFooter}
                         active={this.state.activeFooter}
+                        isMobileGraph
                       />
                     </div>
                   )}
@@ -108,7 +109,7 @@ class GasFeesMobile extends Component {
                     newHomeSetup
                     noSubtitleTopPadding
                     floatingWatermark
-                    isMobileGraph
+                    isMobileGraph={true}
                     customGraphHeight="44rem"
                     showBadges
                     customGraphLoadingHeight="100%"

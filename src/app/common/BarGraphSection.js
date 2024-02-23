@@ -356,6 +356,7 @@ class BarGraphSection extends Component {
                         handleFooterClick={this.handleFooter}
                         active={this.state.activeFooter}
                         footerLabels={footerLabels}
+                        isMobileGraph={this.props.isMobileGraph}
                       />
                     </div>
                   )}
