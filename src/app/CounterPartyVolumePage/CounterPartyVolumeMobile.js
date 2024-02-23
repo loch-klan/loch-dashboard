@@ -38,7 +38,12 @@ class CounterPartyVolume extends Component {
             maxHeight: "60rem",
           }}
         >
-          <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+          <div
+            style={{
+              padding: "1.5rem 1rem",
+            }}
+            className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile"
+          >
             <div
               className="section-table section-table-mobile"
               style={{

@@ -134,13 +134,14 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
           style={{
             backgroundColor: "white",
             borderRadius: "1.2rem",
-            padding: "0 1rem",
+            padding: "0rem",
           }}
         >
           <div
             style={{
               overflowX: "scroll",
               marginTop: "1.5rem",
+              paddingTop: "0.5rem",
             }}
             className={`newHomeTableContainer  ${
               this.props.tableLoading || this.props.tableData < 1
