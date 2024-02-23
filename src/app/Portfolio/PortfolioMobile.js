@@ -688,6 +688,7 @@ class PortfolioMobile extends BaseReactComponent {
               getProtocolTotal={this.props.getProtocolTotal}
               updateTimer={this.props.updateTimer}
               openDefiPage={this.props.openDefiPage}
+              isMobile={true}
             />
 
             <div className="mobile-portfolio-blocks">
@@ -731,7 +732,7 @@ class PortfolioMobile extends BaseReactComponent {
                       } ${
                         this.props.intelligenceState.Average_cost_basis
                           .length <= 10
-                          ? "newHomeTableContainerNoShowMore"
+                          ? ""
                           : ""
                       }`}
                     >
@@ -792,7 +793,7 @@ class PortfolioMobile extends BaseReactComponent {
                           : "tableWatermarkOverlay"
                       } ${
                         this.props.yieldOpportunitiesTotalCount?.length <= 10
-                          ? "newHomeTableContainerNoShowMore"
+                          ? ""
                           : ""
                       }`}
                     >
@@ -1062,11 +1063,7 @@ class PortfolioMobile extends BaseReactComponent {
                         this.props.tableData?.length < 1
                           ? ""
                           : "tableWatermarkOverlay"
-                      } ${
-                        this.props.totalCount <= 10
-                          ? "newHomeTableContainerNoShowMore"
-                          : "newHomeTableContainerNoShowMore"
-                      }`}
+                      } ${this.props.totalCount <= 10 ? "" : ""}`}
                     >
                       <TransactionTable
                         xAxisScrollable

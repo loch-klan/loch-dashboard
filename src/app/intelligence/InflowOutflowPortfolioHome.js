@@ -171,12 +171,14 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
   makeApiCall = () => {
     this.setState({ graphLoading: true });
 
-    // const timeFilter = TimeFilterInflowOutflowType.getText(this.state.timeTab);
+    const timeFilter = TimeFilterInflowOutflowType.getText(this.state.timeTab);
     const assetFilter = this.state.selectedAsset;
 
     let data = new URLSearchParams();
 
-    data.append("days", 30);
+    if (timeFilter) {
+      data.append("days", timeFilter);
+    }
 
     if (assetFilter) {
       data.append("asset", assetFilter);
@@ -241,8 +243,9 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
             onAssetSelect={this.onAssetSelect}
             hideTimeFilter
             openChartPage={this.props.openChartPage}
-            // showDropdown
+            showDropdown={this.props.showDropdown}
             isMobileGraph={this.props.isMobileGraph}
+            priceGuageExpandedMobile={this.props.priceGuageExpandedMobile}
           />
         </div>
       </div>

@@ -368,7 +368,8 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
               </div>
             ) : (
               <>
-                {!this.props.hideTimeFilter && (
+                {(!this.props.hideTimeFilter ||
+                  this.props.priceGuageExpandedMobile) && (
                   <>
                     <div
                       style={{
@@ -384,6 +385,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           justifyContent: "space-between",
                           alignItems: "center",
                           width: "100%",
+                          padding: this.props.priceGuageExpandedMobile
+                            ? "0rem 1rem"
+                            : "",
                         }}
                       >
                         <BarGraphFooter
@@ -391,6 +395,10 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           active={this.state.title}
                           footerLabels={["Max", "1 Year", "1 Month", "1 Week"]}
                           lineChart={true}
+                          divideInTwo={this.props.priceGuageExpandedMobile}
+                          priceGuageExpandedMobile={
+                            this.props.priceGuageExpandedMobile
+                          }
                         />
                       </div>
                     </div>
@@ -407,7 +415,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   <div
                     style={{
                       whiteSpace: "nowrap",
-                      overflow: this.props.isHomepage ? "visible" : "hidden",
+                      overflow:
+                        this.props.isHomepage ||
+                        this.props.priceGuageExpandedMobile
+                          ? "visible"
+                          : "hidden",
                       textOverflow: "ellipsis",
                       alignItems:
                         this.props.hideTimeFilter && this.props.showDropdown
@@ -426,8 +438,14 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       style={{
                         display: "flex",
                         whiteSpace: "nowrap",
-                        overflow: this.props.isHomepage ? "visible" : "hidden",
+                        overflow:
+                          this.props.isHomepage ||
+                          this.props.priceGuageExpandedMobile
+                            ? "visible"
+                            : "hidden",
                         textOverflow: "ellipsis",
+                        justifyContent: "space-between",
+                        width: "100%",
                         alignItems:
                           this.props.hideTimeFilter && this.props.showDropdown
                             ? "center"
@@ -436,26 +454,6 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             : "centre",
                       }}
                     >
-                      {this.props.showDropdown ? (
-                        <div
-                          style={{
-                            zIndex: 4,
-                          }}
-                        >
-                          <CustomDropdownPrice
-                            isHomepage={this.props.isHomepage}
-                            filtername="All chains selected"
-                            options={this.state.assetList}
-                            action={null}
-                            handleClick={this.handleAssetSelect}
-                            isChain={true}
-                            selectedTokens={[this.state.activeAssetTab]}
-                            selectedTokenName={this.state.activeAssetTabName}
-                            singleSelect
-                            searchIsUsed={this.chainSearchIsUsed}
-                          />
-                        </div>
-                      ) : null}
                       {/* <div
                         style={{
                           display: "flex",
@@ -556,6 +554,27 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             : 0}
                         </div>
                       </div>
+                      {this.props.showDropdown ? (
+                        <div
+                          style={{
+                            zIndex: 4,
+                            paddingRight: "15px",
+                          }}
+                        >
+                          <CustomDropdownPrice
+                            isHomepage={this.props.isHomepage}
+                            filtername="All chains selected"
+                            options={this.state.assetList}
+                            action={null}
+                            handleClick={this.handleAssetSelect}
+                            isChain={true}
+                            selectedTokens={[this.state.activeAssetTab]}
+                            selectedTokenName={this.state.activeAssetTabName}
+                            singleSelect
+                            searchIsUsed={this.chainSearchIsUsed}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                     {this.props.openChartPage ? (
                       <div

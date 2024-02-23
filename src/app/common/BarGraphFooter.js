@@ -33,7 +33,13 @@ export const BarGraphFooter = (props) => {
   return (
     <div
       className={`bar-graph-footer ${props.lineChart ? "linechartFooter" : ""}`}
-      style={props.cohort ? { marginBottom: "0px" } : {}}
+      style={
+        props.cohort
+          ? {
+              marginBottom: "0px",
+            }
+          : {}
+      }
     >
       {/* <Row>
         {timeBadge}
@@ -51,6 +57,7 @@ export const BarGraphFooter = (props) => {
           <div
             style={{
               columnGap: "0.5rem",
+              marginTop: props.priceGuageExpandedMobile ? "1rem" : "",
             }}
             className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
           >

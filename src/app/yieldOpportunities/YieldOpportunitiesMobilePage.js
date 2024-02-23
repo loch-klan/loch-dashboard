@@ -83,7 +83,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 />
               </Col>
             </Row>
-            <div className="searchBar" style={{ marginTop: "10px" }}>
+            <div className="searchBar" style={{ marginTop: "2rem" }}>
               <Image src={searchIcon} className="search-icon" />
               <FormElement
                 valueLink={this.props.parentCtx.linkState(

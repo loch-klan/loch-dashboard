@@ -836,3 +836,9 @@
     border: 0.1rem solid #19191a;
   }
 }
+
+.price-gauge-expanded-mobile{
+  .placeholderPriceDropdown{
+    min-width: 110px !important;
+  }
+}

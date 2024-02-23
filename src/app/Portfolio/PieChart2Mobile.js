@@ -31,6 +31,7 @@ import {
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
 import { ChartSeeMoreArrowIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {
@@ -410,9 +411,30 @@ class PieChart2Mobile extends BaseReactComponent {
                         />
                         {chain?.name}
                       </span>
-                      <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                        ${amountFormat(chain?.total.toFixed(2), "en-US", "USD")}
-                      </span>
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          "$" +
+                          amountFormat(chain?.total.toFixed(2), "en-US", "USD")
+                        }
+                      >
+                        <span
+                          className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt dotDotText"
+                          style={{
+                            maxWidth: "50%",
+                          }}
+                        >
+                          $
+                          {amountFormat(
+                            chain?.total.toFixed(2),
+                            "en-US",
+                            "USD"
+                          )}
+                        </span>
+                      </CustomOverlay>
                     </div>
                   );
                 })}
@@ -477,7 +499,7 @@ class PieChart2Mobile extends BaseReactComponent {
               }}
               className="seeMoreBtn cp"
             >
-              <div>Click here to see more</div>
+              <div>See more</div>
               <Image src={ChartSeeMoreArrowIcon} className="seeMoreBtnIcon" />
             </div>
           </p>
