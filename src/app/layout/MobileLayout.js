@@ -593,7 +593,7 @@ class MobileLayout extends BaseReactComponent {
             id="portfolio-mobile-layout-children-id"
             className="portfolio-mobile-layout-children"
           >
-            <div style={{ paddingBottom: "84px" }}>
+            <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div className="mpcHomePage">
