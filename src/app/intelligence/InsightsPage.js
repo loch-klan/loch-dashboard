@@ -33,7 +33,7 @@ import { getAllCoins } from "../onboarding/Api.js";
 
 import { toast } from "react-toastify";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import DropDown from "../common/DropDown";
@@ -148,18 +148,7 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (
       !this.props.commonState.insight ||
       !this.props.intelligenceState.updatedInsightList

@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -179,18 +179,7 @@ class GasFeesPage extends Component {
     }, 900000);
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.intelligenceState.graphfeeValue) {
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,

@@ -14,7 +14,7 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -107,16 +107,7 @@ class NFT extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
-
+    scrollToTop();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });

@@ -1,7 +1,23 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT, BASE_URL_S3 } from "./Constant";
+import { API_LIMIT } from "./Constant";
 import moment from "moment";
+
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 100);
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 200);
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 300);
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 500);
+};
 export const mobileCheck = () => {
   // if (
   //   BASE_URL_S3 ===

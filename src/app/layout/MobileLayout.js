@@ -10,7 +10,6 @@ import {
   MobileNavLeaderboardActive,
   MobileNavNFT,
   MobileNavProfile,
-  MobileNavProfileActive,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
@@ -37,7 +36,6 @@ import { addUserCredits } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {

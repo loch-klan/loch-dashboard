@@ -72,6 +72,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -254,18 +255,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     const transHistoryPageNumber = window.sessionStorage.getItem(
       "transHistoryPageNumber"
     );

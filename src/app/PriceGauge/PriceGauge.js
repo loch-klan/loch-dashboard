@@ -36,6 +36,7 @@ import {
 import { toast } from "react-toastify";
 import {
   mobileCheck,
+  scrollToTop,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions.js";
 import { GetAllPlan, getUser } from "../common/Api.js";
@@ -176,18 +177,7 @@ class PriceGauge extends Component {
   };
 
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(

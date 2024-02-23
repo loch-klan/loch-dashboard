@@ -25,7 +25,7 @@ import {
   TimeSpentOnboardingMobile,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { numToCurrency, scrollToTop } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { CustomButton } from "../../utils/form";
 import {
@@ -87,10 +87,7 @@ class MobileHome extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
+    scrollToTop();
     const search = this.props?.location?.search;
     const params = new URLSearchParams(search);
     const IsFromMobileHome = params.get("FromMobileHome");

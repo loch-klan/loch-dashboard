@@ -124,6 +124,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
@@ -748,16 +749,7 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidMount() {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.GraphfeeData

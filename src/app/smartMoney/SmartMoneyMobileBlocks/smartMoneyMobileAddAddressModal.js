@@ -16,6 +16,7 @@ import {
 import { addSmartMoney } from "../Api.js";
 import SmartMoneyAddressAddedBlock from "./smartMoneyAddressAddedBlock.js";
 import { toast } from "react-toastify";
+import { scrollToTop } from "../../../utils/ReusableFunctions.js";
 
 class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -262,21 +263,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
       loadAddBtn: false,
     });
   };
-  scrollToTop = () => {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
-  };
+
   handleKeyPress = (event) => {
     if (
       event.key === "Enter" &&
@@ -317,7 +304,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
                   onChange={(e) => this.handleOnchange(e)}
                   id={elem.id}
                   onKeyDown={this.handleKeyPress}
-                  onFocus={this.scrollToTop}
+                  onFocus={scrollToTop}
                   onBlur={this.hideBorder}
                   autocomplete="off"
                 />
@@ -335,7 +322,7 @@ class SmartMoneyMobileAddAddressModal extends BaseReactComponent {
                   onChange={(e) => this.nicknameOnChain(e)}
                   id={elem.id}
                   onKeyDown={this.handleKeyPress}
-                  onFocus={this.scrollToTop}
+                  onFocus={scrollToTop}
                   onBlur={this.hideBorder}
                   autocomplete="off"
                 />

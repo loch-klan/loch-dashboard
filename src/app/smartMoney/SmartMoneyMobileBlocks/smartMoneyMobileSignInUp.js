@@ -25,6 +25,7 @@ import SignInIcon from "../../../assets/images/icons/ActiveProfileIcon.svg";
 import validator from "validator";
 import { toast } from "react-toastify";
 import { CrossSmartMoneyIcon } from "../../../assets/images/icons/index.js";
+import { scrollToTop } from "../../../utils/ReusableFunctions.js";
 
 class SmartMoneyMobileSignInUp extends BaseReactComponent {
   constructor(props) {
@@ -80,7 +81,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
   };
 
   showBorder = () => {
-    this.scrollToTop();
+    scrollToTop();
     this.setState({
       showBorder: true,
     });
@@ -222,21 +223,6 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
   emailIsVerified = () => {
     toast.success(`Email verified`);
     this.props.onHide();
-  };
-  scrollToTop = () => {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
   };
 
   render() {

@@ -37,6 +37,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
@@ -1337,16 +1338,7 @@ class NewWelcome extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop()
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(

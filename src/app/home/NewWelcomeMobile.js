@@ -806,16 +806,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
