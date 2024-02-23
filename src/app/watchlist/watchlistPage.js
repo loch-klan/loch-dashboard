@@ -58,6 +58,7 @@ import {
 import {
   TruncateText,
   mobileCheck,
+  scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -238,7 +239,7 @@ class WatchListPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

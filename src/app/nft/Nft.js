@@ -14,7 +14,11 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
+import {
+  mobileCheck,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -264,7 +268,7 @@ class NFT extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

@@ -53,6 +53,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
@@ -374,7 +375,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

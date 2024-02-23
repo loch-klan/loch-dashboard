@@ -158,7 +158,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 page={this.props.currentPage + 1}
                 pageCount={this.props.totalPage}
                 isMobile
-                onPageChange={this.onPageChange}
+                onPageChange={this.props.onPageChange}
               />
             ) : null}
           </div>

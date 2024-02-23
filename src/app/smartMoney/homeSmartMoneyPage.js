@@ -19,6 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { BaseReactComponent } from "../../utils/form/index.js";
@@ -400,7 +401,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

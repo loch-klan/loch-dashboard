@@ -3,6 +3,17 @@ import { Image } from "react-bootstrap";
 import { API_LIMIT } from "./Constant";
 import moment from "moment";
 
+export const scrollToBottomAfterPageChange = () => {
+  if (mobileCheck()) {
+    const itemItem = document.getElementById("mobileLayoutScrollContainer");
+
+    if (itemItem.clientHeight) {
+      window.scroll(0, itemItem.clientHeight);
+    }
+  } else {
+    window.scroll(0, document.body.scrollHeight);
+  }
+};
 export const scrollToTop = () => {
   window.scrollTo(0, 0);
   setTimeout(() => {

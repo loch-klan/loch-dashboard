@@ -594,7 +594,7 @@ class MobileLayout extends BaseReactComponent {
             <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
-                  <div className="mpcHomePage">
+                  <div id="mobileLayoutScrollContainer" className="mpcHomePage">
                     {this.props.hideAddresses ? null : (
                       <WelcomeCard
                         handleShare={this.handleShare} //Done

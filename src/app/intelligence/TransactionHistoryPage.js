@@ -72,6 +72,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
@@ -522,7 +523,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -546,7 +547,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-      console.log("page", page, "prevPage", prevPage);
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
