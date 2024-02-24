@@ -819,7 +819,7 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"NFTs"}
+                            text={"NFT"}
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
@@ -1100,7 +1100,7 @@ function Sidebar(props) {
                                     : {}
                                 }
                               />
-                              NFTs
+                              NFT
                             </NavLink>
                           </li>
                           <li>

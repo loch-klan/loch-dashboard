@@ -12,6 +12,7 @@ import {
   CostAvgCostBasisExport,
   CostBlockchainFeesExport,
   CostShare,
+  CounterpartyFeesTimeFilter,
   FeesTimePeriodFilter,
   GasFeesPageTimeSpentMP,
   GasFeesPageViewMP,
@@ -29,7 +30,7 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -40,6 +41,8 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import GasFeesMobile from "./GasFeesMobile.js";
 
 class GasFeesPage extends Component {
   constructor(props) {
@@ -176,18 +179,7 @@ class GasFeesPage extends Component {
     }, 900000);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.intelligenceState.graphfeeValue) {
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
@@ -195,7 +187,11 @@ class GasFeesPage extends Component {
     }
     this.props.updateFeeGraph(
       this.props.intelligenceState.GraphfeeData,
-      getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+      getGraphData(
+        this.props.intelligenceState.GraphfeeData,
+        this,
+        mobileCheck()
+      ),
       this
     );
     if (this.props.intelligenceState.GraphfeeData) {
@@ -413,6 +409,7 @@ class GasFeesPage extends Component {
           if (
             activeBadgeList &&
             (activeBadgeList.includes(tempGraphData?.chain?._id) ||
+              activeBadgeList.includes(tempGraphData?.chain?.id) ||
               activeBadgeList.length === 0)
           ) {
             graphDataMaster.push(tempGraphData);
@@ -426,7 +423,7 @@ class GasFeesPage extends Component {
       // });
       this.props.updateFeeGraph(
         GraphfeeData,
-        getGraphData(graphDataObj, this),
+        getGraphData(graphDataObj, this, mobileCheck()),
         this,
         false
       );
@@ -441,6 +438,55 @@ class GasFeesPage extends Component {
       this.setState({ isFeesChainSearchUsed: false });
     }
   };
+
+  getCounterPartyFee(option, first) {
+    this.setState({
+      gasFeesGraphLoading: true,
+    });
+    const today = moment().unix();
+    let handleSelected = "";
+    // console.log("headle click");
+    if (option == 0) {
+      this.props.getAllFeeApi(this, false, false);
+      // console.log(option, "All");
+      handleSelected = "All";
+    } else if (option == 1) {
+      const fiveyear = moment().subtract(5, "years").unix();
+
+      this.props.getAllFeeApi(this, fiveyear, today, false);
+      handleSelected = "5 Years";
+    } else if (option == 2) {
+      const year = moment().subtract(1, "years").unix();
+      this.props.getAllFeeApi(this, year, today, false);
+      handleSelected = "1 Year";
+    } else if (option == 3) {
+      const sixmonth = moment().subtract(6, "months").unix();
+
+      this.props.getAllFeeApi(this, sixmonth, today, false);
+      handleSelected = "6 Months";
+    } else if (option == 4) {
+      const month = moment().subtract(1, "month").unix();
+      this.props.getAllFeeApi(this, month, today, false);
+      handleSelected = "1 Month";
+    } else if (option == 5) {
+      const week = moment().subtract(1, "week").unix();
+      this.props.getAllFeeApi(this, week, today, false);
+      handleSelected = "Week";
+    } else {
+      this.setState({
+        counterGraphLoading: false,
+      });
+    }
+    if (!first) {
+      CounterpartyFeesTimeFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_period_selected: handleSelected,
+      });
+      this.updateTimer();
+    }
+  }
+
   handleConnectModal = () => {
     this.setState({ connectModal: !this.state.connectModal });
   };
@@ -465,6 +511,27 @@ class GasFeesPage extends Component {
   };
 
   render() {
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <GasFeesMobile
+            counterGraphDigit={this.state.GraphDigit}
+            counterPartyValueLocal={this.state.graphfeeValueLocal}
+            counterGraphLoading={this.state.gasFeesGraphLoading}
+            timeFunction={(e) => this.getBlockchainFee(e)}
+            feesChainSearchIsUsed={this.feesChainSearchIsUsed}
+            coinsList={this.props.OnboardingState.coinsList}
+            selectedActiveBadgeLocal={this.state.selectedActiveBadgeLocal}
+            handleBadge={(activeBadgeList) =>
+              this.handleBadge(activeBadgeList, 1)
+            }
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}

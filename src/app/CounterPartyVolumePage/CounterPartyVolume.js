@@ -33,7 +33,7 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck } from "../../utils/ReusableFunctions.js";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -44,11 +44,14 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import CounterPartyVolumeMobile from "./CounterPartyVolumeMobile.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isMobileDevice: false,
       counterPartyDataLocal: [],
       counterPartyValueLocal: [],
       firstTimeUnrealizedPNL: true,
@@ -219,17 +222,11 @@ class CounterPartyVolume extends Component {
   };
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (
       !this.props.commonState.counterpartyVolumePage ||
       !(
@@ -504,6 +501,21 @@ class CounterPartyVolume extends Component {
   };
 
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout
+          history={this.props.history}
+          CheckApiResponse={(e) => this.CheckApiResponse(e)}
+        >
+          <CounterPartyVolumeMobile
+            counterGraphDigit={this.state.counterGraphDigit}
+            counterPartyValueLocal={this.state.counterPartyValueLocal}
+            counterGraphLoading={this.state.counterGraphLoading}
+            timeFunction={(e) => this.getCounterPartyFee(e)}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}

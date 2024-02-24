@@ -139,6 +139,10 @@ class InflowOutflowChart extends BaseReactComponent {
         });
       }
     }
+
+    if (prevProps.apiResponse !== this.props.apiResponse) {
+      this.makeApiCall();
+    }
   }
 
   makeApiCall = () => {

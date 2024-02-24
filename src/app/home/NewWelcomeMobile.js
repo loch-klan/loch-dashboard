@@ -20,7 +20,16 @@ import {
   getToken,
   setLocalStoraage,
 } from "../../utils/ManageToken";
-import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  amountFormat,
+  mobileCheck,
+  noExponents,
+  numToCurrency,
+  scrollToBottomAfterPageChange,
+} from "../../utils/ReusableFunctions";
+
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 
@@ -819,16 +828,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
@@ -1285,7 +1285,7 @@ class NewWelcomeMobile extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

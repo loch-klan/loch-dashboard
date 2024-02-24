@@ -333,7 +333,12 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
-    this.props.setPageFlagDefault();
+    if (this.props.CheckApiResponse) {
+      this.props.CheckApiResponse(value);
+    } else {
+      this.props.setPageFlagDefault();
+    }
+    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {
@@ -598,10 +603,10 @@ class MobileLayout extends BaseReactComponent {
             id="portfolio-mobile-layout-children-id"
             className="portfolio-mobile-layout-children"
           >
-            <div style={{ paddingBottom: "84px" }}>
+            <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
-                  <div className="mpcHomePage">
+                  <div id="mobileLayoutScrollContainer" className="mpcHomePage">
                     {this.props.hideAddresses ? null : (
                       <WelcomeCard
                         handleShare={this.handleShare} //Done

@@ -12,6 +12,27 @@
       .inflowOutflowChartTopInfoLeft {
         display: flex;
         align-items: center;
+        .priceGaugeMobileExpandedPriceDropdownContainer {
+          padding: 0rem;
+          width: 100%;
+          .custom-dropdown {
+            background-color: #f2f2f2;
+            border-color: #f2f2f2;
+            .placeholderPriceDropdown {
+              white-space: nowrap !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+            }
+            .dropdown-content-price {
+              margin-left: 0;
+            }
+
+            &:hover {
+              background-color: white;
+              border-color: #e1e1e1;
+            }
+          }
+        }
         .seeMoreBtn {
           margin-left: 1rem;
           display: flex;
@@ -128,6 +149,20 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+.transaction-history-page-filters {
+  &.fillter_tabs_section {
+    .transaction-history-page-filters-row {
+      max-width: 100%;
+      margin-left: 0px;
+      margin-right: 0px;
+      gap: 1rem;
+      .transactionHistoryCol {
+        padding: 0px;
       }
     }
   }
