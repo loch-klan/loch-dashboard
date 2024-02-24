@@ -18,10 +18,12 @@ import {
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
+import { isNewAddress } from "../Portfolio/Api.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   setPageFlagDefault,
@@ -144,6 +146,7 @@ class MobileLayout extends BaseReactComponent {
   };
 
   handleAddWallet = (replaceAddresses) => {
+    sessionStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
     }
@@ -376,19 +379,23 @@ class MobileLayout extends BaseReactComponent {
       }
       // walletCopy[foundIndex].trucatedAddress = value
     }
-    this.setState({
-      addButtonVisible: this.state.walletInput.some((wallet) =>
-        wallet.address ? true : false
-      ),
-      walletInput: walletCopy,
-    });
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+    this.setState(
+      {
+        addButtonVisible: this.state.walletInput.some((wallet) =>
+          wallet.address ? true : false
+        ),
+        walletInput: walletCopy,
+      },
+      () => {
+        this.timeout = setTimeout(() => {
+          this.getCoinBasedOnWalletAddress(name, value);
+        }, 1000);
+      }
+    );
     // timeout;
-    this.timeout = setTimeout(() => {
-      this.getCoinBasedOnWalletAddress(name, value);
-    }, 1000);
   };
 
   onKeyPressInput = (event) => {
@@ -445,8 +452,12 @@ class MobileLayout extends BaseReactComponent {
 
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
-    console.log(parentCoinList);
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -511,10 +522,11 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   signOutFun = () => {
-    deleteToken(true);
+    window.sessionStorage.setItem("refresh", false);
+    resetUser();
     this.props.setPageFlagDefault();
     this.closeConfirmLeaveModal();
-    this.props.history.push("/");
+    this.props.history.push("/welcome");
   };
   render() {
     const getTotalAssetValue = () => {
@@ -700,6 +712,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  isNewAddress,
 };
 
 MobileLayout.propTypes = {};

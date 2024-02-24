@@ -47,11 +47,17 @@ class SignIn extends BaseReactComponent {
       (this.state.email && !this.state.isVerificationRequired) ||
       this.props.activemodal === "signIn"
     ) {
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data);
     } else if (this.state.text && this.state.isVerificationRequired) {
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("otp_token", this.state.text);
 
       this.props.verifyUser(this, data);

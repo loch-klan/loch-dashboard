@@ -188,6 +188,10 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      shouldAvgCostLoading: false,
+      shouldNetFlowLoading: false,
+      switchPriceGaugeLoader: false,
+      shouldYieldOpportunitiesTableLoading: false,
       counterGraphDigit: 3,
       GraphDigit: 3,
       walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
@@ -748,7 +752,44 @@ class Portfolio extends BaseReactComponent {
       this.props.getYieldOpportunities(data, 0);
     }
   };
+  callAllApisTwice = () => {
+    setTimeout(() => {
+      const shouldRecallApis =
+        window.sessionStorage.getItem("shouldRecallApis");
+
+      if (shouldRecallApis === "true") {
+        let tempToken = getToken();
+        if (!(!tempToken || tempToken === "jsk")) {
+          window.sessionStorage.setItem("callTheUpdateAPI", true);
+
+          this.props.portfolioState.walletTotal = 0;
+          this.props.portfolioState.chainPortfolio = {};
+          this.props.portfolioState.assetPrice = {};
+          this.props.portfolioState.chainWallet = [];
+          this.props.portfolioState.yesterdayBalance = 0;
+          this.props.setPageFlagDefault(true);
+        }
+      } else if (shouldRecallApis === "false") {
+        window.sessionStorage.removeItem("shouldRecallApis");
+
+        this.setState({
+          AvgCostLoading: this.state.shouldAvgCostLoading
+            ? false
+            : this.state.AvgCostLoading,
+          netFlowLoading: this.state.shouldNetFlowLoading
+            ? false
+            : this.state.netFlowLoading,
+          yieldOpportunitiesTableLoading: this.state
+            .shouldYieldOpportunitiesTableLoading
+            ? false
+            : this.state.yieldOpportunitiesTableLoading,
+          switchPriceGaugeLoader: !this.state.switchPriceGaugeLoader,
+        });
+      }
+    }, 5000);
+  };
   componentDidMount() {
+    this.callAllApisTwice();
     scrollToTop();
     if (
       this.props.intelligenceState &&
@@ -1014,6 +1055,12 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidUpdate(prevProps, prevState) {
     // Block One
+    if (this.props.commonState !== prevProps.commonState) {
+      if (sessionStorage.getItem("replacedOrAddedAddress")) {
+        this.callAllApisTwice();
+        sessionStorage.removeItem("replacedOrAddedAddress");
+      }
+    }
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
       // Asssets avg cost basis
 
@@ -1181,13 +1228,23 @@ class Portfolio extends BaseReactComponent {
     if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
+      const shouldRecallApis =
+        window.sessionStorage.getItem("shouldRecallApis");
+      if (!shouldRecallApis || shouldRecallApis === "false") {
+        this.setState({
+          yieldOpportunitiesTableLoading: false,
+        });
+      } else {
+        this.setState({
+          shouldYieldOpportunitiesTableLoading: false,
+        });
+      }
       this.setState({
         yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
           ? this.props.yieldOpportunitiesState.yield_pools
           : [],
         yieldOpportunitiesTotalCount:
           this.props.yieldOpportunitiesState.total_count,
-        yieldOpportunitiesTableLoading: false,
       });
     }
     if (
@@ -4960,6 +5017,9 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
+                          switchPriceGaugeLoader={
+                            this.state.switchPriceGaugeLoader
+                          }
                           openChartPage={this.goToPriceGaugePage}
                           hideExplainer
                           // isHomepage

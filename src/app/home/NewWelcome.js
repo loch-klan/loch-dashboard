@@ -25,7 +25,7 @@ import {
   START_INDEX,
 } from "../../utils/Constant";
 import {
-  deleteToken,
+  deleteAddWallet,
   getCurrentUser,
   getToken,
   setLocalStoraage,
@@ -46,6 +46,7 @@ import CheckboxCustomTable from "../common/customCheckboxTable";
 import TransactionTable from "../intelligence/TransactionTable";
 import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   AddTextbox,
   ClickTrendingAddress,
@@ -55,11 +56,13 @@ import {
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  EmailAddressAddedSignUp,
   LPC_Go,
   LPConnectExchange,
   OnboardingMobilePage,
   OnboardingPage,
   SignInOnClickWelcomeLeaderboard,
+  SmartMoneyWalletClicked,
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
 } from "../../utils/AnalyticsFunctions.js";
@@ -72,6 +75,7 @@ import {
   updateWalletListFlag,
 } from "../common/Api";
 import ConnectModal from "../common/ConnectModal.js";
+import Loading from "../common/Loading.js";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
@@ -83,30 +87,35 @@ import {
   getAllCoins,
   getAllParentChains,
   signIn,
+  signUpWelcome,
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
 import Login from "./NewAuth/Login.js";
+import Redirect from "./NewAuth/Redirect.js";
+import SignUp from "./NewAuth/SignUp.js";
 import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
-import MobileHome from "./MobileHome.js";
-import Loading from "../common/Loading.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
-import OutsideClickHandler from "react-outside-click-handler";
-
+import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
+import { isNewAddress } from "../Portfolio/Api.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      areNewAddresses: false,
+      isPrevAddressNew: true,
+      confirmLeave: false,
       currentMetamaskWallet: {},
+      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       startTime: "",
       onboardingWalletAddress: [
         {
@@ -655,6 +664,7 @@ class NewWelcome extends BaseReactComponent {
       leaderboardSignIn: false,
       email: "",
       otp: "",
+      emailSignup: "",
       walletInput: [
         {
           id: `wallet1`,
@@ -945,6 +955,11 @@ class NewWelcome extends BaseReactComponent {
     this.props.createAnonymousUserApi(data, this, finalArr, null);
   };
   addAdressesGo = () => {
+    if (this.state.areNewAddresses) {
+      window.sessionStorage.setItem("shouldRecallApis", true);
+    } else {
+      window.sessionStorage.setItem("shouldRecallApis", false);
+    }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let addWalletTemp = this.state.walletInput;
@@ -1082,6 +1097,29 @@ class NewWelcome extends BaseReactComponent {
           ""
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data, (resFromApi) => {
+        if (this.state.walletInput.length === 1) {
+          this.setState({
+            areNewAddresses: resFromApi,
+          });
+        } else {
+          if (resFromApi && this.state.isPrevAddressNew) {
+            this.setState({
+              areNewAddresses: true,
+            });
+          } else {
+            this.setState({
+              areNewAddresses: false,
+              isPrevAddressNew: false,
+            });
+          }
+        }
+      });
+
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1334,6 +1372,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    deleteAddWallet();
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -1354,7 +1393,7 @@ class NewWelcome extends BaseReactComponent {
         this.props.setPageFlagDefault();
 
         // if (!mobileCheck()) {
-        deleteToken();
+        // deleteToken();
         // }
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
@@ -1363,14 +1402,14 @@ class NewWelcome extends BaseReactComponent {
           : false;
         if (user) {
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // } else {
           // this.props.history.push("/home");
           // }
         } else {
           this.props.setPageFlagDefault();
           // if (!mobileCheck()) {
-          deleteToken();
+          // deleteToken();
           // }
           //  window.sessionStorage.setItem("defi_access", true);
           //  window.sessionStorage.setItem("isPopup", true);
@@ -1398,7 +1437,7 @@ class NewWelcome extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
       // if (!mobileCheck()) {
-      deleteToken();
+      // deleteToken();
       // }
       // window.sessionStorage.setItem("defi_access", true);
       // window.sessionStorage.setItem("isPopup", true);
@@ -1518,7 +1557,6 @@ class NewWelcome extends BaseReactComponent {
   checkUser = () => {
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
-    console.log(token, lochUser);
     if (token && lochUser && lochUser?.email) {
       return true;
     } else {
@@ -1536,10 +1574,27 @@ class NewWelcome extends BaseReactComponent {
     }
   };
 
+  handleSubmitEmailSignup = () => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append("signed_up_from", "welcome");
+      EmailAddressAddedSignUp({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+
+      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+    }
+  };
+
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("otp_token", this.state.otp);
       this.props.verifyUser(this, data, true, this.state.smartMoneyLogin);
     }
@@ -1617,6 +1672,22 @@ class NewWelcome extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1874,7 +1945,28 @@ class NewWelcome extends BaseReactComponent {
       }
     }
   }
-
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  handleSignOutWelcome = () => {
+    this.setState({
+      confirmLeave: false,
+      lochUser: undefined,
+      blurTable: true,
+    });
+  };
+  blurTables = () => {
+    this.setState({
+      blurTable: true,
+    });
+  };
   render() {
     if (this.state.isMobileDevice) {
       return (
@@ -1895,6 +1987,7 @@ class NewWelcome extends BaseReactComponent {
           totalPage={this.state.totalPage}
           onPageChange={this.onPageChange}
           changePageLimit={this.changePageLimit}
+          blurTables={this.blurTables}
           blurTable={this.state.blurTable}
         />
       );
@@ -1921,7 +2014,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.09,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -1971,7 +2064,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.125,
+        coumnWidth: 0.145,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -1979,27 +2072,27 @@ class NewWelcome extends BaseReactComponent {
               <span
                 onClick={() => {
                   if (!this.state.blurTable) {
-                    let lochUser = getCurrentUser().id;
+                    SmartMoneyWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: rowData.account,
 
-                    let slink = rowData.account;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                    if (lochUser) {
-                      const alreadyPassed =
-                        window.sessionStorage.getItem("PassedRefrenceId");
-                      if (alreadyPassed) {
-                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                      } else {
-                        shareLink = shareLink + "&refrenceId=" + lochUser;
+                      isWelcome: true,
+                    });
+                    this.setState(
+                      {
+                        initialInput: true,
+                      },
+                      () => {
+                        const fakeOnChange = {
+                          target: {
+                            name: "wallet1",
+                            value: rowData.account,
+                          },
+                        };
+                        this.handleOnChange(fakeOnChange);
                       }
-                    }
-                    // SmartMoneyWalletClicked({
-                    //   session_id: getCurrentUser().id,
-                    //   email_address: getCurrentUser().email,
-                    //   wallet: slink,
-                    //   isMobile: false,
-                    // });
-                    window.open(shareLink, "_blank", "noreferrer");
+                    );
                   } else {
                     this.opneLoginModalForSmartMoney();
                   }
@@ -2032,7 +2125,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.222,
+        coumnWidth: 0.242,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -2083,7 +2176,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -2137,7 +2230,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -2229,7 +2322,7 @@ class NewWelcome extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.192,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -2299,50 +2392,19 @@ class NewWelcome extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Follow
-            </span>
-          </div>
-        ),
-        dataKey: "following",
-
-        coumnWidth: 0.125,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
-            const handleOnClick = (addItem) => {
-              if (!this.state.blurTable) {
-                this.handleFollowUnfollow(
-                  rowData.account,
-                  addItem,
-                  rowData.tagName
-                );
-              } else {
-                this.opneLoginModalForSmartMoney();
-                ClickedFollowLeaderboard({
-                  session_id: getCurrentUser().id,
-                  address: rowData.account,
-                  isMobile: false,
-                });
-              }
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={handleOnClick}
-                isChecked={rowData.following}
-                dontSelectIt={this.state.blurTable}
-              />
-            );
-          }
-        },
-      },
     ];
 
     return (
       <div className="new-homepage">
+        {this.state.confirmLeave ? (
+          <ConfirmLeaveModal
+            show={this.state.confirmLeave}
+            history={this.props.history}
+            handleClose={this.closeConfirmLeaveModal}
+            handleSignOutWelcome={this.handleSignOutWelcome}
+            customMessage="Are you sure you want to Sign out?"
+          />
+        ) : null}
         {this.state.onboardingConnectExchangeModal ? (
           <ConnectModal
             show={this.state.onboardingConnectExchangeModal}
@@ -2386,6 +2448,23 @@ class NewWelcome extends BaseReactComponent {
             }}
             handleSubmitOTP={this.handleSubmitOTP}
           />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUp
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "signup"}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <Redirect
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
+          />
         ) : null}
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
@@ -2406,7 +2485,28 @@ class NewWelcome extends BaseReactComponent {
                   Connect Exchange
                 </button>
               </div>
-              {this.checkUser() ? null : (
+              {this.state.lochUser &&
+              (this.state.lochUser.email ||
+                this.state.lochUser.first_name ||
+                this.state.lochUser.last_name) ? (
+                <button
+                  onClick={this.openConfirmLeaveModal}
+                  className="new-homepage-btn new-homepage-btn--white"
+                  style={{ padding: "8px 12px" }}
+                >
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
+                    <img src={personRounded} alt="" />
+                  </div>
+                  {this.state.lochUser.first_name ||
+                  this.state.lochUser.last_name
+                    ? `${this.state.lochUser.first_name} ${
+                        this.state.lochUser.last_name
+                          ? this.state.lochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed In"}
+                </button>
+              ) : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}
@@ -2421,7 +2521,7 @@ class NewWelcome extends BaseReactComponent {
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
-                  Sign in
+                  Sign in / up
                 </button>
               )}
             </div>
@@ -2460,7 +2560,7 @@ class NewWelcome extends BaseReactComponent {
           </div>
         </div>
         <div className="new-homepage__body">
-          <form className="new-homepage__body-container">
+          <div className="new-homepage__body-container">
             <OutsideClickHandler
               onOutsideClick={() => {
                 this.setState({
@@ -2632,7 +2732,7 @@ class NewWelcome extends BaseReactComponent {
                   <div
                     className="smartMoneyTable"
                     style={{
-                      marginBottom: this.state.totalPage > 1 ? "5rem" : "0px",
+                      marginBottom: "5rem",
                     }}
                   >
                     <TransactionTable
@@ -2653,9 +2753,7 @@ class NewWelcome extends BaseReactComponent {
                         this.onPageChange(false);
                       }}
                       pageLimit={this.state.pageLimit}
-                      changePageLimit={() => {
-                        this.changePageLimit(false);
-                      }}
+                      changePageLimit={this.changePageLimit}
                       addWatermark
                       className={this.state.blurTable ? "noScroll" : ""}
                       onBlurSignInClick={this.showSignInModal}
@@ -2759,7 +2857,7 @@ class NewWelcome extends BaseReactComponent {
                 </div>
               </div>
             )}
-          </form>
+          </div>
         </div>
       </div>
     );
@@ -2790,6 +2888,8 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  signUpWelcome,
+  isNewAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

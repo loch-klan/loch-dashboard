@@ -840,25 +840,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               <span
                 onClick={() => {
                   if (!this.state.blurTable) {
-                    let lochUser = getCurrentUser().id;
-
                     let slink = rowData.account;
                     let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?redirect=home";
-                    if (lochUser) {
-                      const alreadyPassed =
-                        window.sessionStorage.getItem("PassedRefrenceId");
-                      if (alreadyPassed) {
-                        shareLink = shareLink + "&refrenceId=" + alreadyPassed;
-                      } else {
-                        shareLink = shareLink + "&refrenceId=" + lochUser;
-                      }
-                    }
+                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
                     SmartMoneyWalletClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
-                      isMobile: false,
                     });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {
