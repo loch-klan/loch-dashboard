@@ -9,6 +9,7 @@ import NftMobileBlock from "./NftMobileBlock";
 import NftMobileHeader from "./NftMobileHeader";
 import "./_nft.scss";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
+import { scrollToBottomAfterPageChange } from "../../utils/ReusableFunctions";
 
 class NFTMobile extends BaseReactComponent {
   constructor(props) {
@@ -29,21 +30,7 @@ class NFTMobile extends BaseReactComponent {
       this.setState({
         shouldScrollToBottom: false,
       });
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 100);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 300);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 500);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 700);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 1000);
+      scrollToBottomAfterPageChange();
     }
   }
   onPageChange = () => {

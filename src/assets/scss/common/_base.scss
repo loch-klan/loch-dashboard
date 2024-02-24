@@ -1205,7 +1205,7 @@ form {
   }
 }
 .section-table-mobile-scroll {
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   position: relative;
   .section-table-mobile-scroll-top-cover {
     position: absolute;
@@ -2995,19 +2995,45 @@ input {
   }
 }
 
-.watchlist-mobile{
-  .transaction-table-section{
-    .ReactVirtualized__Table__headerRow{
+.watchlist-mobile {
+  .transaction-table-section {
+    .ReactVirtualized__Table__headerRow {
       background-color: white;
       border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
+      border-top-right-radius: 12px !important;
     }
   }
-  .ReactVirtualized__Table__Grid{
+  .ReactVirtualized__Table__Grid {
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
   }
-  .smartMoneyPaginationContainer{
+  .smartMoneyPaginationContainer {
     margin-top: 1.5rem;
   }
+}
+
+// .expanded-mobile{
+//   .newHomeTableContainer{
+//     .ReactVirtualized__Table__headerRow{
+//       background-color: white;
+//       border-top-left-radius: 12px !important;
+//     border-top-right-radius: 12px !important;
+//     }
+//   }
+//   .ReactVirtualized__Table__Grid{
+//     border-top-left-radius: 0px !important;
+//     border-top-right-radius: 0px !important;
+//   }
+//   .smartMoneyPaginationContainer{
+//     margin-top: 1.5rem;
+//   }
+// }
+
+.defi-mobile-expanded {
+  .row {
+    flex-wrap: nowrap;
+  }
+}
+.react-calendar_tile {
+  margin: 0 !important;
 }

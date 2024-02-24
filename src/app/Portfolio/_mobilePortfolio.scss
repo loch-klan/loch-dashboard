@@ -8,10 +8,12 @@
   display: flex;
   flex-direction: column;
   .mobile-header-container {
+    margin-bottom: 2.3rem;
     h4 {
       color: #000;
       font-size: 20px;
       font-weight: 500;
+      margin-bottom: 0.2rem;
     }
     p {
       color: #adadad;
@@ -102,6 +104,28 @@
     display: flex;
     flex-direction: column;
 
+    .seeMoreBtn {
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #4f4f4f;
+      font-weight: 500;
+      // transition-duration: 300ms;
+      .seeMoreBtnIcon {
+        // transition-duration: 300ms;
+        filter: brightness(0.5);
+        height: 9px;
+        margin-left: 0.5rem;
+      }
+      &:hover {
+        color: #0d0d0d;
+        .seeMoreBtnIcon {
+          filter: brightness(0);
+        }
+      }
+    }
+
     .mpcHomeFloatingContainer {
       position: fixed;
       left: 0;
@@ -162,7 +186,7 @@
     .mobile-portfolio-blocks {
       margin-top: 3rem;
       background-color: white;
-      padding: 1rem;
+      // padding: 1rem;
       border-radius: 1.2rem;
       min-height: 50rem;
       max-height: 50rem;
@@ -179,6 +203,10 @@
         }
       }
 
+      .mobile-portfolio-blocks-content-with-padding {
+        padding: 0rem 1rem;
+      }
+
       .section-table-mobile {
         padding: 0rem !important;
         margin: 0rem !important;
@@ -186,6 +214,15 @@
           .bar-graph-section {
             height: 44rem;
             min-height: 44rem;
+            .portfolio-profit-and-loss {
+              height: 88%;
+            }
+          }
+        }
+        .profit-chart-mobile-expanded {
+          .bar-graph-section {
+            height: 48rem;
+            min-height: 48rem;
             .portfolio-profit-and-loss {
               height: 88%;
             }
@@ -202,10 +239,10 @@
         font-weight: 500;
         color: #4f4f4f;
         .bottomExtraInfoText {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          height: fit-content;
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
           padding: 0rem 1rem;
           cursor: pointer;
           &:hover {
@@ -225,8 +262,8 @@
             .ReactVirtualized__Table__Grid {
               overflow-y: auto !important;
               overflow-x: hidden !important;
-              max-height: 35rem !important;
-              min-height: 35rem !important;
+              max-height: 36rem !important;
+              min-height: 36rem !important;
               &::-webkit-scrollbar {
                 width: 0.4rem;
                 height: 0rem;
@@ -255,6 +292,17 @@
           }
         }
       }
+
+      .newHomeTableContainer-transaction-history {
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              max-height: 36rem !important;
+              min-height: 36rem !important;
+            }
+          }
+        }
+      }
       .newHomeTableContainerMobile {
         .transaction-table-loading-wrapper {
           height: 44rem;
@@ -262,10 +310,12 @@
       }
       .section-table-toggle-mobile {
         background-color: #e5e5e680;
-        border-radius: 0.5rem;
-        padding: 0.4rem;
+        border-radius: 0.7rem;
+        padding: 0.6rem;
         display: flex;
         align-items: center;
+        margin: 1rem;
+        margin-bottom: 0rem;
         .section-table-toggle-element {
           font-size: 13px;
           flex: 1;
@@ -424,7 +474,7 @@
         background-color: #e5e5e6;
         padding: 1.6rem 2rem;
         border-radius: 12px;
-        margin-bottom: 1.8rem;
+        margin-bottom: 2.3rem;
         max-height: 28rem;
         overflow: scroll;
         .accountsAmount {
@@ -774,5 +824,40 @@
       width: 7px;
       height: 14px;
     }
+  }
+}
+
+.mobile-portfolio-blocks-gas-fees-expanded {
+  min-height: 61rem !important;
+  .gas-fees-chart-mobile-expanded {
+    .bar-graph-section {
+      min-height: 52rem !important;
+    }
+  }
+  .custom-dropdown.lineChart {
+    border: 0.1rem solid #19191a;
+  }
+}
+
+.price-gauge-expanded-mobile {
+  .placeholderPriceDropdown {
+    min-width: 110px !important;
+  }
+}
+
+.mobileSeeMoreBtn {
+  display: flex;
+  align-items: center;
+
+  .mobileSeeMoreBtnTxt {
+    font-size: 13px;
+    color: #4f4f4f;
+    font-weight: 500;
+  }
+  .mobileSeeMoreBtnIcon {
+    margin-left: 0.5rem;
+    margin-right: 0.3rem;
+    filter: brightness(0.5);
+    height: 8px;
   }
 }
