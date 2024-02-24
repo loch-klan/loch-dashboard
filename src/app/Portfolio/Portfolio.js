@@ -2212,17 +2212,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="time">
-            <CustomOverlay
-              position="top"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={
-                this.state.isShowingAge
-                  ? "Click to view Timestamp"
-                  : "Click to view Age"
-              }
-            >
+            {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
                   this.toggleAgeTimestamp();
@@ -2234,7 +2224,32 @@ class Portfolio extends BaseReactComponent {
               >
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
               </span>
-            </CustomOverlay>
+            ) : (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
+              >
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
+            )}
+
             <Image
               onClick={() => this.handleTableSort("time")}
               src={sortByIcon}
@@ -2246,7 +2261,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "time",
 
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2864,7 +2879,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "asset",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2913,7 +2928,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "amount",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2959,7 +2974,7 @@ class Portfolio extends BaseReactComponent {
         dataKey: "usdValueThen",
 
         className: "usd-value",
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.235 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3051,7 +3066,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "method",
 
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3097,7 +3112,7 @@ class Portfolio extends BaseReactComponent {
         dataKey: "network",
 
         className: "usd-value",
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3142,7 +3157,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "hash",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {

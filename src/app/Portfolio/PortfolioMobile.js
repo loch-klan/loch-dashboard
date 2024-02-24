@@ -1040,7 +1040,12 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
               <div className="mobile-portfolio-blocks-content">
                 {this.props.blockFourSelectedItem === 1 ? (
-                  <div className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding">
+                  <div
+                    style={{
+                      padding: "0rem 1.4rem",
+                    }}
+                    className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding"
+                  >
                     <InflowOutflowPortfolioHome
                       openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
@@ -1073,7 +1078,7 @@ class PortfolioMobile extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.props.tableLoading}
-                        addWatermark
+                        fakeWatermark
                       />
                     </div>
                     {!this.props.tableLoading ? (

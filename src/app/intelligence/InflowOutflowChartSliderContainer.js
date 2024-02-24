@@ -515,6 +515,16 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               : "0.00"}
                           </div>
                         </div>
+                        <div
+                          style={{
+                            opacity: this.state.currentPriceDate ? 1 : 0,
+                          }}
+                          className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                        >
+                          {this.state.currentPriceDate
+                            ? this.state.currentPriceDate
+                            : 0}
+                        </div>
                       </div>
                     ) : (
                       <div
