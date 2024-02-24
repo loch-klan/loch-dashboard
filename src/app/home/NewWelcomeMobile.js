@@ -4,45 +4,27 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   ActiveSmartMoneySidebarIcon,
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
   NewWelcomeAddAnotherPlusIcon,
   NewWelcomeCopyIcon,
   NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
 } from "../../assets/images/icons";
-import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
-import LinkIcon from "../../assets/images/icons/link.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
 import logo from "../../assets/images/logo-white.svg";
-import {
-  API_LIMIT,
-  BASE_URL_S3,
-  SORT_BY_AMOUNT,
-  START_INDEX,
-} from "../../utils/Constant";
+import { API_LIMIT, SORT_BY_AMOUNT, START_INDEX } from "../../utils/Constant";
 import {
   getCurrentUser,
   getToken,
   setLocalStoraage,
 } from "../../utils/ManageToken";
-import {
-  CurrencyType,
-  TruncateText,
-  amountFormat,
-  mobileCheck,
-  noExponents,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
+import { mobileCheck, numToCurrency } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import TransactionTable from "../intelligence/TransactionTable";
-import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   AddTextbox,
   ClickTrendingAddress,
@@ -56,6 +38,8 @@ import {
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
 } from "../../utils/AnalyticsFunctions.js";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import { isNewAddress } from "../Portfolio/Api.js";
 import {
   GetAllPlan,
   detectNameTag,
@@ -64,7 +48,7 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
-import ConnectModal from "../common/ConnectModal.js";
+import Loading from "../common/Loading.js";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
@@ -80,34 +64,28 @@ import {
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
+import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock.js";
+import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
-import Login from "./NewAuth/Login.js";
-import Verify from "./NewAuth/Verify.js";
-import NewHomeInputBlock from "./NewHomeInputBlock.js";
-import MobileHome from "./MobileHome.js";
-import Loading from "../common/Loading.js";
-import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock.js";
 import LoginMobile from "./NewAuth/LoginMobile.js";
-import SmartMoneyMobileModalContainer from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileModalContainer.js";
-import VerifyMobile from "./NewAuth/VerifyMobile.js";
-import OutsideClickHandler from "react-outside-click-handler";
-import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
-import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import RedirectMobile from "./NewAuth/RedirectMobile.js";
-import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
-import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
+import SignUpMobile from "./NewAuth/SignUpMobile.js";
+import VerifyMobile from "./NewAuth/VerifyMobile.js";
+import NewHomeInputBlock from "./NewHomeInputBlock.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      areNewAddresses: false,
+      isPrevAddressNew: true,
       confirmLeave: false,
       currentMetamaskWallet: {},
       lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
@@ -438,6 +416,11 @@ class NewWelcomeMobile extends BaseReactComponent {
     this.props.createAnonymousUserApi(data, this, finalArr, null);
   };
   addAdressesGo = () => {
+    if (this.state.areNewAddresses) {
+      window.sessionStorage.setItem("shouldRecallApis", true);
+    } else {
+      window.sessionStorage.setItem("shouldRecallApis", false);
+    }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let addWalletTemp = this.state.walletInput;
@@ -575,6 +558,28 @@ class NewWelcomeMobile extends BaseReactComponent {
           ""
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data, (resFromApi) => {
+        if (this.state.walletInput.length === 1) {
+          this.setState({
+            areNewAddresses: resFromApi,
+          });
+        } else {
+          if (resFromApi && this.state.isPrevAddressNew) {
+            this.setState({
+              areNewAddresses: true,
+            });
+          } else {
+            this.setState({
+              areNewAddresses: false,
+              isPrevAddressNew: false,
+            });
+          }
+        }
+      });
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1063,6 +1068,22 @@ class NewWelcomeMobile extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1873,6 +1894,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   removeFromWatchList,
   signUpWelcome,
+  isNewAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);

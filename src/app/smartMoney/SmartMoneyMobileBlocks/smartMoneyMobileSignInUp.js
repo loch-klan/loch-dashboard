@@ -332,7 +332,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             onKeyDown={this.handleKeyPress}
             onFocus={this.showBorder}
             onBlur={this.hideBorder}
-            autocomplete="off"
+            autoComplete="off"
           />
         </div>
         <div className="msmModalBtnContainer">
