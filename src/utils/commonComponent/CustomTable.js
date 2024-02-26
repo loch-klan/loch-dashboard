@@ -1,37 +1,19 @@
 import React from "react";
-import {
-  AutoSizer,
-  Table,
-  Column,
-  ScrollSync,
-  MultiGrid,
-} from "react-virtualized";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Button, Image } from "react-bootstrap";
+import { AutoSizer, Column, MultiGrid, Table } from "react-virtualized";
 // import notFoundDefault from "../../assets/images/empty-table.png";
-import Pagination from "./Pagination";
-import {
-  Form,
-  SelectControl,
-  FormValidator,
-  BaseReactComponent,
-  FormElement,
-} from "../form";
 import Loading from "../../app/common/Loading";
+import {
+  BaseReactComponent,
+  Form,
+  FormElement,
+  FormValidator,
+  SelectControl,
+} from "../form";
+import Pagination from "./Pagination";
 import SmartMoneyPagination from "./SmartMoneyPagination";
-import { ContributeTrophyIcon } from "../../assets/images/icons";
-import CustomOverlay from "./CustomOverlay";
-import {
-  CurrencyType,
-  amountFormat,
-  noExponents,
-  numToCurrency,
-} from "../ReusableFunctions";
 
-import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-} from "../../assets/images/icons";
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -85,7 +67,7 @@ class CustomTable extends BaseReactComponent {
         <div
           key={key}
           style={style}
-          className={`${
+          className={`multigridHeaderColumnBottomBorder multigridHeaderColumnPadding ${
             rowIndex === 0 ? "multigridHeaderColumn" : "multigridBodyColumn"
           } ${passedHeaderClassName ? passedHeaderClassName : ""}`}
         >
@@ -102,8 +84,9 @@ class CustomTable extends BaseReactComponent {
           } ${passedClassName ? passedClassName : ""}`}
         >
           {tempDataColList[columnIndex].cell(
-            tempData[rowIndex],
-            tempDataColList[columnIndex].dataKey
+            tempData[rowIndex - 1],
+            tempDataColList[columnIndex].dataKey,
+            rowIndex - 1
           )}
           {/* {tempData[rowIndex].AssetCode} */}
         </div>
@@ -214,18 +197,30 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-              <div className={this.props.tableParentClass}>
+              <div
+                className={`this.props.tableParentClass ${
+                  this.props.addWatermark
+                    ? "tableWatermark"
+                    : this.props.fakeWatermark
+                    ? "tableWatermarkFake"
+                    : ""
+                } ${
+                  this.props.addWatermarkMoveUp ? "tableWatermarkMoveUp" : ""
+                }`}
+              >
                 <AutoSizer disableHeight>
                   {({ width }) => {
                     return (
                       <MultiGrid
                         cellRenderer={this.cellRenderer}
-                        classNameTopLeftGrid="top-left-grid"
-                        classNameTopRightGrid="top-right-grid"
-                        classNameBottomLeftGrid="bottom-left-grid"
-                        classNameBottomRightGrid="bottom-right-grid"
-                        fixedColumnCount={this.props.freezeFirstColumn ? 1 : 0}
-                        fixedRowCount={1}
+                        fixedColumnCount={
+                          this.props.freezeColumns
+                            ? this.props.freezeColumns
+                            : 0
+                        }
+                        fixedRowCount={
+                          this.props.freezeRows ? this.props.freezeRows : 1
+                        }
                         height={
                           (this.props.rowHeight
                             ? this.props.rowHeight
@@ -236,7 +231,7 @@ class CustomTable extends BaseReactComponent {
                             ? this.props.showHowHamyRowsAtOnce <
                               this.props.tableData?.length
                               ? this.props.showHowHamyRowsAtOnce
-                              : this.props.tableData?.length
+                              : this.props.tableData?.length + 1
                             : 5)
                         }
                         width={width}
@@ -251,7 +246,7 @@ class CustomTable extends BaseReactComponent {
                                   : 3.5))
                             : width * this.props.columnList[index].coumnWidth
                         }
-                        rowCount={tableData.length}
+                        rowCount={tableData.length + 1}
                         rowHeight={
                           this.props.rowHeight
                             ? this.props.rowHeight
@@ -259,68 +254,10 @@ class CustomTable extends BaseReactComponent {
                             ? 58
                             : 60
                         }
-                      >
-                        {/* {columnList &&
-                        columnList.length > 0 &&
-                        columnList.map((item, key) => {
-                          return (
-                            <Column
-                              key={key}
-                              // width={item.coumnWidth}
-                              width={
-                                this.props.xAxisScrollable
-                                  ? width *
-                                    item.coumnWidth *
-                                    (columnList.length /
-                                      (this.props.xAxisScrollableColumnWidth
-                                        ? this.props.xAxisScrollableColumnWidth
-                                        : 3.5))
-                                  : width * item.coumnWidth
-                              }
-                              className={item.className}
-                              label={item.labelName}
-                              dataKey={item.dataKey}
-                              cellRenderer={({ rowData, rowIndex }) => {
-                                return item.cell(
-                                  rowData,
-                                  item.dataKey,
-                                  rowIndex
-                                );
-                              }}
-                              headerClassName={item.headerClassName}
-                            />
-                          );
-                        })} */}
-                      </MultiGrid>
+                      ></MultiGrid>
                     );
                   }}
                 </AutoSizer>
-                {/* {this.props.smartMoneyBlur ? (
-                  <div className="smartMoneyBlurContainer">
-                    <div className="smartMoneyBlurContainerTwo">
-                      <div className="smartMoneyBlur">
-                        <Image
-                          className="smartMoneyBlurLogo"
-                          src={ContributeTrophyIcon}
-                        />
-                        <div className="exit-overlay-body">
-                          <h6 className="inter-display-medium f-s-24">
-                            Sign in to view the Leaderboard
-                          </h6>
-                          <p className="inter-display-medium f-s-14 grey-969 mt-2">
-                            View the smartest money on-chain
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        className="secondary-btn"
-                        onClick={this.props.onBlurSignInClick}
-                      >
-                        Sign in / up now
-                      </Button>
-                    </div>
-                  </div>
-                ) : null} */}
               </div>
             ) : (
               <>
@@ -392,311 +329,6 @@ class CustomTable extends BaseReactComponent {
                 </div>
               </>
             )}
-            {this.props.showDataAtBottom && this.props.moreData ? (
-              <div className="inter-display-medium bottomExtraInfo">
-                <div
-                  className="bottomExtraInfoText"
-                  onClick={this.props.moreDataHandleClick}
-                >
-                  {this.props.moreData}
-                </div>
-              </div>
-            ) : null}
-            {this.props.bottomCombiedValues ? (
-              <div className="bottomCombinedItem">
-                <div
-                  aria-colindex="1"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.05",
-                  }}
-                ></div>
-                <div
-                  aria-colindex="2"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.1",
-                  }}
-                >
-                  <div className="inter-display-medium bottomCombinedItemBlock">
-                    Total:
-                  </div>
-                </div>
-                <div
-                  aria-colindex="3"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.12",
-                  }}
-                ></div>
-                <div
-                  aria-colindex="4"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.1",
-                  }}
-                ></div>
-                <div
-                  aria-colindex="5"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.1",
-                  }}
-                ></div>
-                <div
-                  aria-colindex="6"
-                  role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.11",
-                  }}
-                >
-                  <div className="cost-common-container">
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedCostBasis
-                          ? CurrencyType(false) +
-                            amountFormat(
-                              this.props.combinedCostBasis,
-                              "en-US",
-                              "USD"
-                            )
-                          : CurrencyType(false) + "0.00"
-                      }
-                    >
-                      <div className="cost-common">
-                        <span
-                          onMouseEnter={() => {
-                            // CostCostBasisHover({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // });
-                          }}
-                        >
-                          {this.props.combinedCostBasis
-                            ? CurrencyType(false) +
-                              numToCurrency(
-                                this.props.combinedCostBasis.toFixed(2)
-                              ).toLocaleString("en-US")
-                            : CurrencyType(false) + "0.00"}
-                        </span>
-                      </div>
-                    </CustomOverlay>
-                  </div>
-                </div>
-                <div
-                  aria-colindex="7"
-                  role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.11",
-                  }}
-                >
-                  <div className="cost-common-container">
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedCurrentValue
-                          ? CurrencyType(false) +
-                            amountFormat(
-                              this.props.combinedCurrentValue,
-                              "en-US",
-                              "USD"
-                            )
-                          : CurrencyType(false) + "0.00"
-                      }
-                    >
-                      <div className="cost-common">
-                        <span
-                          onMouseEnter={() => {
-                            // CostCostBasisHover({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // });
-                          }}
-                        >
-                          {this.props.combinedCurrentValue
-                            ? CurrencyType(false) +
-                              numToCurrency(
-                                this.props.combinedCurrentValue.toFixed(2)
-                              ).toLocaleString("en-US")
-                            : CurrencyType(false) + "0.00"}
-                        </span>
-                      </div>
-                    </CustomOverlay>
-                  </div>
-                </div>
-                <div
-                  aria-colindex="8"
-                  role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.11",
-                  }}
-                >
-                  <div
-                    onMouseEnter={() => {
-                      // CostGainHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }}
-                    className="gainLossContainer"
-                  >
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedUnrealizedGains
-                          ? CurrencyType(false) +
-                            amountFormat(
-                              Math.abs(this.props.combinedUnrealizedGains),
-                              "en-US",
-                              "USD"
-                            )
-                          : CurrencyType(false) + "0.00"
-                      }
-                      colorCode="#000"
-                    >
-                      <div className={`gainLoss`}>
-                        {this.props.combinedUnrealizedGains &&
-                        this.props.combinedUnrealizedGains !== 0 ? (
-                          <Image
-                            className="mr-2"
-                            style={{
-                              height: "1.5rem",
-                              width: "1.5rem",
-                            }}
-                            src={
-                              this.props.combinedUnrealizedGains < 0
-                                ? ArrowDownLeftSmallIcon
-                                : ArrowUpRightSmallIcon
-                            }
-                          />
-                        ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                          {this.props.combinedUnrealizedGains
-                            ? CurrencyType(false) +
-                              numToCurrency(
-                                this.props.combinedUnrealizedGains
-                              ).toLocaleString("en-US")
-                            : CurrencyType(false) + "0.00"}
-                        </span>
-                      </div>
-                    </CustomOverlay>
-                  </div>
-                </div>
-                <div
-                  aria-colindex="9"
-                  role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.11",
-                  }}
-                >
-                  <div
-                    onMouseEnter={() => {
-                      // CostGainLossHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }}
-                    className="gainLossContainer"
-                  >
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedReturn &&
-                        this.props.combinedReturn !== 0
-                          ? Math.abs(this.props.combinedReturn).toLocaleString(
-                              "en-US"
-                            ) + "%"
-                          : "0.00%"
-                      }
-                      colorCode="#000"
-                    >
-                      <div className={`gainLoss`}>
-                        {this.props.combinedReturn &&
-                        this.props.combinedReturn !== 0 ? (
-                          <Image
-                            className="mr-2"
-                            style={{
-                              height: "1.5rem",
-                              width: "1.5rem",
-                            }}
-                            src={
-                              this.props.combinedReturn < 0
-                                ? ArrowDownLeftSmallIcon
-                                : ArrowUpRightSmallIcon
-                            }
-                          />
-                        ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                          {this.props.combinedReturn &&
-                          this.props.combinedReturn !== 0
-                            ? Math.abs(
-                                noExponents(
-                                  this.props.combinedReturn.toFixed(2)
-                                )
-                              ).toLocaleString("en-US") + "%"
-                            : "0.00%"}
-                        </span>
-                      </div>
-                    </CustomOverlay>
-                  </div>
-                </div>
-                <div
-                  aria-colindex="9"
-                  role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.11",
-                  }}
-                >
-                  <div
-                    onMouseEnter={() => {
-                      // CostGainLossHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
-                    }}
-                    className="gainLossContainer"
-                  >
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={"100%"}
-                      colorCode="#000"
-                    >
-                      <div className={`gainLoss`}>
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                          100%
-                        </span>
-                      </div>
-                    </CustomOverlay>
-                  </div>
-                </div>
-              </div>
-            ) : null}
           </>
         )}
 

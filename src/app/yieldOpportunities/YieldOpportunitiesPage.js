@@ -53,6 +53,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -77,6 +79,8 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import CoinChip from "../wallet/CoinChip";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import YieldOpportunitiesMobilePage from "./YieldOpportunitiesMobilePage.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -90,6 +94,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
     const cond = [];
     this.state = {
+      isMobileDevice: false,
       //YO
       yieldOpportunitiesList: [],
       totalPage: 0,
@@ -193,17 +198,11 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   };
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -376,7 +375,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -742,10 +741,14 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.16,
+        coumnWidth: 0.15,
         isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
+        className: this.state.isMobileDevice
+          ? ""
+          : "yeildOppYourPortfolioContainer",
+        headerClassName: this.state.isMobileDevice
+          ? ""
+          : "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
             return (
@@ -778,10 +781,14 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValue",
-        coumnWidth: 0.16,
+        coumnWidth: 0.15,
         isCell: true,
-        className: "yeildOppYourPortfolioContainer",
-        headerClassName: "yeildOppYourPortfolioContainer",
+        className: this.state.isMobileDevice
+          ? ""
+          : "yeildOppYourPortfolioContainer",
+        headerClassName: this.state.isMobileDevice
+          ? ""
+          : "yeildOppYourPortfolioContainer",
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValue") {
             return (
@@ -833,7 +840,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "project",
-        coumnWidth: 0.16,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "project") {
@@ -864,7 +871,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "pool",
-        coumnWidth: 0.16,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "pool") {
@@ -896,7 +903,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         ),
         dataKey: "tvl",
         className: "usd-value",
-        coumnWidth: 0.16,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tvl") {
@@ -948,7 +955,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         ),
         dataKey: "apy",
         className: "usd-value",
-        coumnWidth: 0.16,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "apy") {
@@ -972,6 +979,32 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
       },
     ];
+
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout history={this.props.history}>
+          <YieldOpportunitiesMobilePage
+            tableData={tableData}
+            columnList={columnList}
+            totalPage={this.state.totalPage}
+            currentPage={this.state.currentPage ? this.state.currentPage : 0}
+            isLoading={this.state.tableLoading}
+            onPageChange={this.onPageChange}
+            history={this.props.history}
+            location={this.props.location}
+            handleFunction={this.handleFunction}
+            OnboardingState={this.props.OnboardingState}
+            networkSearchIsUsed={this.networkSearchIsUsed}
+            intelligenceState={this.props.intelligenceState}
+            addCondition={this.addCondition}
+            assetSearchIsUsed={this.assetSearchIsUsed}
+            onChangeMethod={this.onChangeMethod}
+            parentCtx={this}
+            onValidSubmit={this.onValidSubmit}
+          />
+        </MobileLayout>
+      );
+    }
 
     return (
       <>

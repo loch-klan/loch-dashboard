@@ -19,6 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { BaseReactComponent } from "../../utils/form/index.js";
@@ -400,7 +401,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -787,7 +788,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           </div>
         ),
         dataKey: "Numbering",
-        coumnWidth: 0.125,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey, index) => {
           if (dataKey === "Numbering" && index > -1) {
@@ -831,7 +832,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "account",
 
-        coumnWidth: 0.125,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -881,7 +882,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
 
-        coumnWidth: 0.222,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -932,7 +933,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "networth",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -986,7 +987,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "netflows",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
@@ -1078,7 +1079,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "profits",
 
-        coumnWidth: 0.172,
+        coumnWidth: 0.175,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "profits") {
@@ -1168,7 +1169,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         ),
         dataKey: "following",
 
-        coumnWidth: 0.125,
+        coumnWidth: 0.1,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "following") {

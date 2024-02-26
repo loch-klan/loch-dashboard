@@ -70,6 +70,22 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
         assetList: this.props.assetList,
       });
     }
+    if (this.props.assetList && this.props.activeAssetTab) {
+      const tempIndex = this.props.assetList.findIndex(
+        (resData) => resData._id === this.props.activeAssetTab
+      );
+
+      if (tempIndex !== -1) {
+        if (this.props.assetList[tempIndex]?.asset?.name) {
+          this.setState({
+            activeAssetTabName: this.props.assetList[tempIndex].asset.name,
+          });
+        }
+      }
+      this.setState({
+        activeAssetTab: this.props.activeAssetTab,
+      });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -316,7 +332,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
           boxShadow: this.props.hideTimeFilter ? "none" : "",
           paddingTop: this.props.hideTimeFilter ? "1rem" : "",
           margin: this.props.hideTimeFilter ? "0rem" : "",
-          padding: this.props.hideTimeFilter ? "0rem" : "",
+          padding: this.props.priceGuageExpandedMobile
+            ? "1.5rem"
+            : this.props.hideTimeFilter
+            ? "0rem"
+            : "",
           minWidth: this.props.hideTimeFilter ? "100%" : "",
           // height: "30rem",
         }}
@@ -333,7 +353,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   : "4.8rem"
               }`,
               width: this.props.hideTimeFilter ? "100%" : "",
-              paddingTop: `${this.props.hideTimeFilter ? "2.8rem" : ""}`,
+              paddingTop: `${
+                this.props.priceGuageExpandedMobile
+                  ? "0rem"
+                  : this.props.hideTimeFilter
+                  ? "2.8rem"
+                  : ""
+              }`,
             }}
           >
             {!this.props.isPage && (
@@ -368,14 +394,17 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
               </div>
             ) : (
               <>
-                {!this.props.hideTimeFilter && (
+                {(!this.props.hideTimeFilter ||
+                  this.props.priceGuageExpandedMobile) && (
                   <>
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: "2rem",
+                        marginBottom: this.props.priceGuageExpandedMobile
+                          ? "1rem"
+                          : "2rem",
                       }}
                     >
                       <div
@@ -384,6 +413,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           justifyContent: "space-between",
                           alignItems: "center",
                           width: "100%",
+                          padding: this.props.priceGuageExpandedMobile
+                            ? "0rem"
+                            : "",
                         }}
                       >
                         <BarGraphFooter
@@ -391,6 +423,10 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           active={this.state.title}
                           footerLabels={["Max", "1 Year", "1 Month", "1 Week"]}
                           lineChart={true}
+                          divideInTwo={this.props.priceGuageExpandedMobile}
+                          priceGuageExpandedMobile={
+                            this.props.priceGuageExpandedMobile
+                          }
                         />
                       </div>
                     </div>
@@ -407,7 +443,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   <div
                     style={{
                       whiteSpace: "nowrap",
-                      overflow: this.props.isHomepage ? "visible" : "hidden",
+                      overflow:
+                        this.props.isHomepage ||
+                        this.props.priceGuageExpandedMobile
+                          ? "visible"
+                          : "hidden",
                       textOverflow: "ellipsis",
                       alignItems:
                         this.props.hideTimeFilter && this.props.showDropdown
@@ -422,71 +462,31 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     }}
                     className="inflowOutflowChartTopInfoLeft"
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        whiteSpace: "nowrap",
-                        overflow: this.props.isHomepage ? "visible" : "hidden",
-                        textOverflow: "ellipsis",
-                        alignItems:
-                          this.props.hideTimeFilter && this.props.showDropdown
-                            ? "center"
-                            : this.props.hideTimeFilter
-                            ? "flex-start"
-                            : "centre",
-                      }}
-                    >
-                      {this.props.showDropdown ? (
-                        <div
-                          style={{
-                            zIndex: 4,
-                          }}
-                        >
-                          <CustomDropdownPrice
-                            isHomepage={this.props.isHomepage}
-                            filtername="All chains selected"
-                            options={this.state.assetList}
-                            action={null}
-                            handleClick={this.handleAssetSelect}
-                            isChain={true}
-                            selectedTokens={[this.state.activeAssetTab]}
-                            selectedTokenName={this.state.activeAssetTabName}
-                            singleSelect
-                            searchIsUsed={this.chainSearchIsUsed}
-                          />
-                        </div>
-                      ) : null}
-                      {/* <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                        className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
-                      >
-                        <div>{CurrencyType()}</div>
-                      </div> */}
-                      <div
-                        onClick={this.changeThePriceTodefault}
-                        className="ioPriceContainer"
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          paddingLeft: this.props.hideTimeFilter
-                            ? "1.5rem"
-                            : "",
-                        }}
-                      >
+                    {this.props.priceGuageExpandedMobile ? (
+                      <div className="priceGaugeMobileExpandedPriceDropdownContainer">
+                        <CustomDropdownPrice
+                          isHomepage={this.props.isHomepage}
+                          filtername="All chains selected"
+                          options={this.state.assetList}
+                          action={null}
+                          handleClick={this.handleAssetSelect}
+                          isChain={true}
+                          selectedTokens={[this.state.activeAssetTab]}
+                          selectedTokenName={this.state.activeAssetTabName}
+                          singleSelect
+                          searchIsUsed={this.chainSearchIsUsed}
+                        />
                         <div
                           style={{
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            fontSize: this.props.hideTimeFilter ? "14px" : "",
+                            fontSize: "18px",
                             fontWeight: this.props.hideTimeFilter ? "500" : "",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "flex-start",
+                            marginTop: "2rem",
                           }}
                           className="ioPrice inter-display-medium"
                         >
@@ -497,7 +497,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               textOverflow: "ellipsis",
                             }}
                           >
-                            {this.props.showEth ? "Ethereum " : null}
+                            {this.props.showSelectedItem
+                              ? this.props.showSelectedItem + " "
+                              : this.props.showEth
+                              ? "Ethereum "
+                              : null}
                             {this.props.hideTimeFilter &&
                             this.state.activeAssetTabName
                               ? ``
@@ -515,36 +519,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               ? numToCurrency(this.state.currentPriceValue)
                               : "0.00"}
                           </div>
-                          {!this.props.hideTimeFilter ||
-                          this.props.hideExplainer ? null : (
-                            <div
-                              style={{
-                                display: "flex",
-                              }}
-                            >
-                              <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                className={"fix-width"}
-                                text={
-                                  "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
-                                }
-                              >
-                                <Image
-                                  src={InfoIcon}
-                                  className="infoIcon"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: "14px",
-                                  }}
-                                />
-                              </CustomOverlay>
-                            </div>
-                          )}
                         </div>
-
                         <div
                           style={{
                             opacity: this.state.currentPriceDate ? 1 : 0,
@@ -556,11 +531,164 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             : 0}
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          whiteSpace: "nowrap",
+                          overflow:
+                            this.props.isHomepage ||
+                            this.props.priceGuageExpandedMobile
+                              ? "visible"
+                              : "hidden",
+                          textOverflow: "ellipsis",
+                          justifyContent: "space-between",
+                          width: "100%",
+                          alignItems:
+                            this.props.hideTimeFilter && this.props.showDropdown
+                              ? "center"
+                              : this.props.hideTimeFilter
+                              ? "flex-start"
+                              : "centre",
+                        }}
+                      >
+                        {/* <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
+                      >
+                        <div>{CurrencyType()}</div>
+                      </div> */}
+                        <div
+                          onClick={this.changeThePriceTodefault}
+                          className="ioPriceContainer"
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            paddingLeft: this.props.hideTimeFilter
+                              ? "1.5rem"
+                              : "",
+                          }}
+                        >
+                          <div
+                            style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              fontSize: this.props.hideTimeFilter ? "14px" : "",
+                              fontWeight: this.props.hideTimeFilter
+                                ? "500"
+                                : "",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "flex-start",
+                            }}
+                            className="ioPrice inter-display-medium"
+                          >
+                            <div
+                              style={{
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {this.props.showSelectedItem
+                                ? this.props.showSelectedItem + " "
+                                : this.props.showEth
+                                ? "Ethereum "
+                                : null}
+                              {this.props.hideTimeFilter &&
+                              this.state.activeAssetTabName
+                                ? ``
+                                : ""}
+                              Price
+                            </div>
+                            <div
+                              style={{
+                                marginLeft: "0.5rem",
+                                marginRight: "0.5rem",
+                              }}
+                            >
+                              {CurrencyType(false)}
+                              {this.state.currentPriceValue
+                                ? numToCurrency(this.state.currentPriceValue)
+                                : "0.00"}
+                            </div>
+                            {!this.props.hideTimeFilter ||
+                            this.props.hideExplainer ? null : (
+                              <div
+                                style={{
+                                  display: "flex",
+                                }}
+                              >
+                                <CustomOverlay
+                                  position="top"
+                                  isIcon={false}
+                                  isInfo={true}
+                                  isText={true}
+                                  className={"fix-width"}
+                                  text={
+                                    "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
+                                  }
+                                >
+                                  <Image
+                                    src={InfoIcon}
+                                    className="infoIcon"
+                                    style={{
+                                      cursor: "pointer",
+                                      height: "14px",
+                                    }}
+                                  />
+                                </CustomOverlay>
+                              </div>
+                            )}
+                          </div>
+
+                          <div
+                            style={{
+                              opacity: this.state.currentPriceDate ? 1 : 0,
+                            }}
+                            className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                          >
+                            {this.state.currentPriceDate
+                              ? this.state.currentPriceDate
+                              : 0}
+                          </div>
+                        </div>
+                        {this.props.showDropdown ? (
+                          <div
+                            style={{
+                              zIndex: 4,
+                              paddingRight: "15px",
+                            }}
+                          >
+                            <CustomDropdownPrice
+                              isHomepage={this.props.isHomepage}
+                              filtername="All chains selected"
+                              options={this.state.assetList}
+                              action={null}
+                              handleClick={this.handleAssetSelect}
+                              isChain={true}
+                              selectedTokens={[this.state.activeAssetTab]}
+                              selectedTokenName={this.state.activeAssetTabName}
+                              singleSelect
+                              searchIsUsed={this.chainSearchIsUsed}
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
                     {this.props.openChartPage ? (
                       <div
                         className="d-flex"
-                        style={{ alignItems: "center", gap: "8px" }}
+                        style={{
+                          alignItems: "center",
+                          gap: "8px",
+                          marginTop: this.props.isMobileGraph ? "2px" : "",
+                        }}
                       >
                         <p
                           onClick={this.props.openChartPage}

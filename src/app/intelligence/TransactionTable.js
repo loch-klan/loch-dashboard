@@ -36,7 +36,8 @@ function TransactionTable(props) {
       )}
       <CustomTable
         rowHeight={props.rowHeight}
-        freezeFirstColumn={props.freezeFirstColumn}
+        freezeColumns={props.freezeColumns}
+        freezeRows={props.freezeRows}
         showHowHamyRowsAtOnce={props.showHowHamyRowsAtOnce}
         tableParentClass={props.tableParentClass}
         isSmartMoney={props.isSmartMoney}

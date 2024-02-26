@@ -77,16 +77,39 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               ? action.payload.userWalletList?.total_amount
               : 0;
             tempTotalAmt = tempTotalAmt * currencyRate;
-            let tempHolder = 0;
-            if (
-              chainPortfolio[action.payload.userWalletList?.chain?.id]?.total
-            ) {
-              tempHolder =
-                chainPortfolio[action.payload.userWalletList?.chain?.id].total;
+            if (action.payload.userWalletList?.chain?.id) {
+              if (
+                chainPortfolio[action.payload.userWalletList?.chain?.id]
+                  .allAmounts
+              ) {
+                chainPortfolio[
+                  action.payload.userWalletList?.chain?.id
+                ].allAmounts = [
+                  ...chainPortfolio[action.payload.userWalletList?.chain?.id]
+                    .allAmounts,
+                  tempTotalAmt,
+                ];
+              } else {
+                chainPortfolio[
+                  action.payload.userWalletList?.chain?.id
+                ].allAmounts = [tempTotalAmt];
+              }
             }
+            let tempTotal = 0;
+            chainPortfolio[
+              action.payload.userWalletList?.chain?.id
+            ].allAmounts.forEach((resResRes) => {
+              tempTotal = resResRes + tempTotal;
+            });
             chainPortfolio[action.payload.userWalletList?.chain?.id].total =
-              tempHolder + tempTotalAmt;
-            updateWalletTotal = updateWalletTotal + tempTotalAmt;
+              tempTotal;
+            let tempAmtHolder = 0;
+            for (const element in chainPortfolio) {
+              if (chainPortfolio[element] && chainPortfolio[element].total) {
+                tempAmtHolder = chainPortfolio[element].total + tempAmtHolder;
+              }
+            }
+            updateWalletTotal = tempAmtHolder;
           } else {
             let tempHolder = 0;
             if (

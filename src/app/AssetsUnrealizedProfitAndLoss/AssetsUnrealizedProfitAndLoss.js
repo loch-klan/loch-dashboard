@@ -62,6 +62,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -74,6 +75,8 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
@@ -172,10 +175,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }, 900000);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
-
+    scrollToTop();
     if (
       !this.props.commonState.assetsPage ||
       !(
@@ -536,29 +536,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   render() {
     const columnData = [
       {
-        labelName: "",
-        dataKey: "Numbering",
-        coumnWidth: 0.05,
-        isCell: true,
-        cell: (rowData, dataKey, index) => {
-          if (dataKey === "Numbering" && index > -1) {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
-              >
-                <span className="inter-display-medium f-s-13">
-                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -578,8 +555,15 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.1,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "Asset") {
+            if (currentIndex === 0) {
+              return (
+                <div className="inter-display-medium bottomCombinedItemBlock">
+                  Total:
+                </div>
+              );
+            }
             return (
               <div
                 onMouseEnter={() => {
@@ -640,8 +624,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.12,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "AverageCostPrice") {
+            if (currentIndex === 0) {
+              return null;
+            }
             return (
               <div
                 onMouseEnter={() => {
@@ -695,10 +682,13 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.12,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "CurrentPrice") {
+            if (currentIndex === 0) {
+              return null;
+            }
             return (
               <div
                 onMouseEnter={() => {
@@ -754,8 +744,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.1,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "Amount") {
+            if (currentIndex === 0) {
+              return null;
+            }
             return (
               <span
                 onMouseEnter={() => {
@@ -807,8 +800,48 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.11,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "CostBasis") {
+            if (currentIndex === 0) {
+              return (
+                <div className="cost-common-container">
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.state.combinedCostBasis
+                        ? CurrencyType(false) +
+                          amountFormat(
+                            this.state.combinedCostBasis,
+                            "en-US",
+                            "USD"
+                          )
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <div className="cost-common">
+                      <span
+                        onMouseEnter={() => {
+                          // CostCostBasisHover({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          // });
+                        }}
+                      >
+                        {this.state.combinedCostBasis
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              this.state.combinedCostBasis.toFixed(2)
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                </div>
+              );
+            }
             return (
               <div className="cost-common-container">
                 <CustomOverlay
@@ -864,10 +897,50 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.11,
+        coumnWidth: 0.12,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "CurrentValue") {
+            if (currentIndex === 0) {
+              return (
+                <div className="cost-common-container">
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.state.combinedCurrentValue
+                        ? CurrencyType(false) +
+                          amountFormat(
+                            this.state.combinedCurrentValue,
+                            "en-US",
+                            "USD"
+                          )
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <div className="cost-common">
+                      <span
+                        onMouseEnter={() => {
+                          // CostCostBasisHover({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          // });
+                        }}
+                      >
+                        {this.state.combinedCurrentValue
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              this.state.combinedCurrentValue.toFixed(2)
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                </div>
+              );
+            }
             return (
               <div className="cost-common-container">
                 <CustomOverlay
@@ -925,8 +998,57 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.11,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "GainAmount") {
+            if (currentIndex === 0) {
+              return (
+                <div className="gainLossContainer">
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.state.combinedUnrealizedGains
+                        ? CurrencyType(false) +
+                          amountFormat(
+                            Math.abs(this.state.combinedUnrealizedGains),
+                            "en-US",
+                            "USD"
+                          )
+                        : CurrencyType(false) + "0.00"
+                    }
+                    colorCode="#000"
+                  >
+                    <div className={`gainLoss`}>
+                      {this.state.combinedUnrealizedGains &&
+                      this.state.combinedUnrealizedGains !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            this.state.combinedUnrealizedGains < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {this.state.combinedUnrealizedGains
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              this.state.combinedUnrealizedGains
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                </div>
+              );
+            }
             const tempDataHolder = numToCurrency(rowData.GainAmount);
             return (
               <div
@@ -1003,8 +1125,55 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.11,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "GainLoss") {
+            if (currentIndex === 0) {
+              return (
+                <div onMouseEnter={() => {}} className="gainLossContainer">
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      this.state.combinedReturn &&
+                      this.state.combinedReturn !== 0
+                        ? Math.abs(this.state.combinedReturn).toLocaleString(
+                            "en-US"
+                          ) + "%"
+                        : "0.00%"
+                    }
+                    colorCode="#000"
+                  >
+                    <div className={`gainLoss`}>
+                      {this.state.combinedReturn &&
+                      this.state.combinedReturn !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            this.state.combinedReturn < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        {this.state.combinedReturn &&
+                        this.state.combinedReturn !== 0
+                          ? Math.abs(
+                              noExponents(this.state.combinedReturn.toFixed(2))
+                            ).toLocaleString("en-US") + "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                </div>
+              );
+            }
             const tempDataHolder = Number(
               noExponents(rowData.GainLoss.toFixed(2))
             );
@@ -1077,8 +1246,26 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
         coumnWidth: 0.11,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, currentIndex) => {
           if (dataKey === "PortfolioPercentage") {
+            if (currentIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={"100%"}
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      100%
+                    </span>
+                  </div>
+                </CustomOverlay>
+              );
+            }
             const tempDataHolder = Number(
               noExponents(rowData.weight.toFixed(2))
             );
@@ -1118,6 +1305,24 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         },
       },
     ];
+
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <AssetUnrealizedProfitAndLossMobile
+            columnData={columnData}
+            handleShare={this.handleShare}
+            tableData={[{}, ...this.state.Average_cost_basis_local]}
+            AvgCostLoading={this.state.AvgCostLoading}
+            showHideDustFun={this.handleDust}
+            showHideDustVal={this.state.showDust}
+          />
+        </MobileLayout>
+      );
+    }
 
     return (
       <>
@@ -1215,18 +1420,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 <TransactionTable
                   rowHeight={70}
                   showHowHamyRowsAtOnce={10}
+                  freezeRows={2}
                   message="No assets found"
-                  bottomCombiedValues={
-                    this.state.Average_cost_basis_local.length > 0
-                      ? true
-                      : false
-                  }
                   combinedCostBasis={this.state.combinedCostBasis}
                   combinedCurrentValue={this.state.combinedCurrentValue}
                   combinedUnrealizedGains={this.state.combinedUnrealizedGains}
                   combinedReturn={this.state.combinedReturn}
                   noSubtitleBottomPadding
-                  tableData={this.state.Average_cost_basis_local}
+                  tableData={[{}, ...this.state.Average_cost_basis_local]}
                   columnList={columnData}
                   headerHeight={64}
                   comingSoon={false}

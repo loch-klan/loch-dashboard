@@ -37,6 +37,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
@@ -104,10 +106,13 @@ import Verify from "./NewAuth/Verify.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
+import { isNewAddress } from "../Portfolio/Api.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      areNewAddresses: false,
+      isPrevAddressNew: true,
       confirmLeave: false,
       currentMetamaskWallet: {},
       lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
@@ -950,6 +955,11 @@ class NewWelcome extends BaseReactComponent {
     this.props.createAnonymousUserApi(data, this, finalArr, null);
   };
   addAdressesGo = () => {
+    if (this.state.areNewAddresses) {
+      window.sessionStorage.setItem("shouldRecallApis", true);
+    } else {
+      window.sessionStorage.setItem("shouldRecallApis", false);
+    }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let addWalletTemp = this.state.walletInput;
@@ -1087,6 +1097,29 @@ class NewWelcome extends BaseReactComponent {
           ""
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data, (resFromApi) => {
+        if (this.state.walletInput.length === 1) {
+          this.setState({
+            areNewAddresses: resFromApi,
+          });
+        } else {
+          if (resFromApi && this.state.isPrevAddressNew) {
+            this.setState({
+              areNewAddresses: true,
+            });
+          } else {
+            this.setState({
+              areNewAddresses: false,
+              isPrevAddressNew: false,
+            });
+          }
+        }
+      });
+
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1345,16 +1378,7 @@ class NewWelcome extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop()
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
@@ -1648,6 +1672,22 @@ class NewWelcome extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1849,7 +1889,7 @@ class NewWelcome extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange()
         }
       );
     }
@@ -2851,6 +2891,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   removeFromWatchList,
   signUpWelcome,
+  isNewAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

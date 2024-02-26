@@ -1205,7 +1205,7 @@ form {
   }
 }
 .section-table-mobile-scroll {
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   position: relative;
   .section-table-mobile-scroll-top-cover {
     position: absolute;
@@ -1886,11 +1886,11 @@ form {
 }
 
 .transaction-table-section {
-  .top-left-grid {
+  .multigridHeaderColumnBottomBorder {
     border-bottom: 0.1rem solid #e5e5e6;
   }
-  .top-right-grid {
-    border-bottom: 0.1rem solid #e5e5e6;
+  .multigridHeaderColumnPadding {
+    padding: 0rem 1rem;
   }
   .multigridHeaderColumn {
     font-family: Inter-Medium, Arial, Helvetica, sans-serif;
@@ -1909,6 +1909,7 @@ form {
     .history-table-header-col {
       display: flex;
       user-select: none;
+      text-align: center;
       .rotateUp {
         transform: rotate(180deg);
         margin-left: 1rem;
@@ -1940,6 +1941,7 @@ form {
     }
   }
   .multigridBodyColumn {
+    font-weight: 500;
     color: #313233;
     font-size: 1.3rem;
     line-height: 1.6rem;
@@ -1949,6 +1951,7 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .top-account-address {
       text-decoration: underline;
       cursor: pointer;
@@ -3151,4 +3154,30 @@ input {
     height: 0rem;
     width: 0rem;
   }
+}
+
+// .expanded-mobile{
+//   .newHomeTableContainer{
+//     .ReactVirtualized__Table__headerRow{
+//       background-color: white;
+//       border-top-left-radius: 12px !important;
+//     border-top-right-radius: 12px !important;
+//     }
+//   }
+//   .ReactVirtualized__Table__Grid{
+//     border-top-left-radius: 0px !important;
+//     border-top-right-radius: 0px !important;
+//   }
+//   .smartMoneyPaginationContainer{
+//     margin-top: 1.5rem;
+//   }
+// }
+
+.defi-mobile-expanded {
+  .row {
+    flex-wrap: nowrap;
+  }
+}
+.react-calendar_tile {
+  margin: 0 !important;
 }

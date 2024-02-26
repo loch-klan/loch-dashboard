@@ -55,7 +55,12 @@ import {
   WatchlistSortByNameTag,
   WatchlistSortByRemarks,
 } from "../../utils/AnalyticsFunctions";
-import { TruncateText, mobileCheck } from "../../utils/ReusableFunctions";
+import {
+  TruncateText,
+  mobileCheck,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import RemarkInput from "../discover/remarkInput";
@@ -152,18 +157,7 @@ class WatchListPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
@@ -245,7 +239,7 @@ class WatchListPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
