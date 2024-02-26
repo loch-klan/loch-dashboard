@@ -22,39 +22,13 @@ class InsightsPageMobile extends Component {
           <h4>Insights</h4>
           <p>Valuable insights based on your assets</p>
         </div>
-        <div
-          style={{
-            marginTop: "2rem",
-          }}
-        >
-          <DropDown
-            class="cohort-dropdown"
-            list={["All Insights", "Cost Reduction", "Risk Reduction"]}
-            onSelect={this.props.handleMobileInsightSelect}
-            title={
-              this.props.selectedFilter == 1
-                ? "All Insights"
-                : this.props.selectedFilter == 10
-                ? "Cost Reduction"
-                : "Risk Reduction"
-            }
-            activetab={
-              this.props.selectedFilter == 1
-                ? "All Insights"
-                : this.props.selectedFilter == 10
-                ? "Cost Reduction"
-                : "Risk Reduction"
-            }
-          />
-        </div>
+
         <div className="insights-wrapper">
           {this.props.isLoading ? (
             <div
               style={{
-                background: "white",
                 borderRadius: "1.2rem",
-                height: "500px",
-                marginTop: "2rem",
+                height: "70vh",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -64,6 +38,31 @@ class InsightsPageMobile extends Component {
             </div>
           ) : (
             <>
+              <div
+                style={{
+                  marginBottom: "2.5rem",
+                }}
+              >
+                <DropDown
+                  class="cohort-dropdown"
+                  list={["All Insights", "Cost Reduction", "Risk Reduction"]}
+                  onSelect={this.props.handleMobileInsightSelect}
+                  title={
+                    this.props.selectedFilter === 1
+                      ? "All Insights"
+                      : this.props.selectedFilter === 10
+                      ? "Cost Reduction"
+                      : "Risk Reduction"
+                  }
+                  activetab={
+                    this.props.selectedFilter === 1
+                      ? "All Insights"
+                      : this.props.selectedFilter === 10
+                      ? "Cost Reduction"
+                      : "Risk Reduction"
+                  }
+                />
+              </div>
               {this.props.updatedInsightList?.length > 0 ? (
                 this.props.updatedInsightList.map((insight, index) => {
                   return (
@@ -73,7 +72,7 @@ class InsightsPageMobile extends Component {
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
                         position: "relative",
-                        marginTop: "2rem",
+                        marginTop: index === 0 ? "0rem" : "2rem",
                         marginBottom: "0rem",
                         boxShadow: "none",
                         border: "0.1rem solid var(--borderwhiteDarkLight)",

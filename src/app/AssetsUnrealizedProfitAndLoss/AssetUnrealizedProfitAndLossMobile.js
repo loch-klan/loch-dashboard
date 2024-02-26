@@ -13,13 +13,21 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
   render() {
     return (
       <div className="assets-expanded-mobile">
-        <div className="mobile-header-container">
+        <div
+          style={{
+            marginBottom: "0rem",
+          }}
+          className="mobile-header-container"
+        >
           <h4>Assets</h4>
           <p>Understand your unrealized profit and loss per token</p>
         </div>
         <div
           onClick={this.props.showHideDustFun}
           className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
+          style={{
+            marginBottom: "2.8rem",
+          }}
         >
           <Form.Check
             type="switch"
@@ -43,13 +51,14 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
           style={{
             backgroundColor: "white",
             borderRadius: "1.2rem",
-            padding: "0 1rem",
+            padding: "0rem",
+            paddingBottom: "0.5rem",
           }}
         >
           <div
             style={{
               overflowX: "scroll",
-              marginTop: "1.5rem",
+              paddingTop: "0.5rem",
             }}
             className={`newHomeTableContainer  ${
               this.props.AvgCostLoading || this.props.tableData < 1

@@ -1205,7 +1205,7 @@ form {
   }
 }
 .section-table-mobile-scroll {
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   position: relative;
   .section-table-mobile-scroll-top-cover {
     position: absolute;
@@ -3033,4 +3033,7 @@ input {
   .row {
     flex-wrap: nowrap;
   }
+}
+.react-calendar_tile {
+  margin: 0 !important;
 }

@@ -72,6 +72,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -120,6 +122,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      isMobileDevice: false,
       intelligenceStateLocal: {},
       minAmount: "1",
       maxAmount: "1000000000",
@@ -254,18 +257,12 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
+    scrollToTop();
     const transHistoryPageNumber = window.sessionStorage.getItem(
       "transHistoryPageNumber"
     );
@@ -532,7 +529,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -556,7 +553,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-      console.log("page", page, "prevPage", prevPage);
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
@@ -601,7 +597,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         condition: cond ? cond : [],
         apiResponse: false,
       });
-
       this.callApi(this.state.currentPage || START_INDEX);
       this.props.getFilters(this);
     }
@@ -1075,17 +1070,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="time">
-            <CustomOverlay
-              position="top"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={
-                this.state.isShowingAge
-                  ? "Click to view Timestamp"
-                  : "Click to view Age"
-              }
-            >
+            {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
                   this.toggleAgeTimestamp();
@@ -1097,7 +1082,31 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
               </span>
-            </CustomOverlay>
+            ) : (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
+              >
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
+            )}
             <Image
               onClick={() => this.handleTableSort("time")}
               src={sortByIcon}
@@ -1109,7 +1118,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "time",
 
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
@@ -1759,7 +1768,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "asset",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1805,7 +1814,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "amount",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
@@ -1848,7 +1857,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         dataKey: "usdValueThen",
 
         className: "usd-value",
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.235 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValueThen") {
@@ -1936,7 +1945,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "method",
 
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
@@ -1983,7 +1992,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         dataKey: "network",
 
         className: "usd-value",
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "network") {
@@ -2025,7 +2034,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "hash",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "hash") {
@@ -2078,6 +2087,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          CheckApiResponse={this.CheckApiResponse}
         >
           <TransactionHistoryPageMobile
             showHideDustFun={this.showDust}

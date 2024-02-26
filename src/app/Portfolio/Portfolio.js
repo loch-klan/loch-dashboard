@@ -124,6 +124,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser } from "../common/Api";
 import Loading from "../common/Loading";
@@ -187,6 +188,10 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      shouldAvgCostLoading: false,
+      shouldNetFlowLoading: false,
+      switchPriceGaugeLoader: false,
+      shouldYieldOpportunitiesTableLoading: false,
       counterGraphDigit: 3,
       GraphDigit: 3,
       walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
@@ -747,17 +752,45 @@ class Portfolio extends BaseReactComponent {
       this.props.getYieldOpportunities(data, 0);
     }
   };
+  callAllApisTwice = () => {
+    setTimeout(() => {
+      const shouldRecallApis =
+        window.sessionStorage.getItem("shouldRecallApis");
+
+      if (shouldRecallApis === "true") {
+        let tempToken = getToken();
+        if (!(!tempToken || tempToken === "jsk")) {
+          window.sessionStorage.setItem("callTheUpdateAPI", true);
+
+          this.props.portfolioState.walletTotal = 0;
+          this.props.portfolioState.chainPortfolio = {};
+          this.props.portfolioState.assetPrice = {};
+          this.props.portfolioState.chainWallet = [];
+          this.props.portfolioState.yesterdayBalance = 0;
+          this.props.setPageFlagDefault(true);
+        }
+      } else if (shouldRecallApis === "false") {
+        window.sessionStorage.removeItem("shouldRecallApis");
+
+        this.setState({
+          AvgCostLoading: this.state.shouldAvgCostLoading
+            ? false
+            : this.state.AvgCostLoading,
+          netFlowLoading: this.state.shouldNetFlowLoading
+            ? false
+            : this.state.netFlowLoading,
+          yieldOpportunitiesTableLoading: this.state
+            .shouldYieldOpportunitiesTableLoading
+            ? false
+            : this.state.yieldOpportunitiesTableLoading,
+          switchPriceGaugeLoader: !this.state.switchPriceGaugeLoader,
+        });
+      }
+    }, 5000);
+  };
   componentDidMount() {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    this.callAllApisTwice();
+    scrollToTop();
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.GraphfeeData
@@ -1022,6 +1055,12 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidUpdate(prevProps, prevState) {
     // Block One
+    if (this.props.commonState !== prevProps.commonState) {
+      if (sessionStorage.getItem("replacedOrAddedAddress")) {
+        this.callAllApisTwice();
+        sessionStorage.removeItem("replacedOrAddedAddress");
+      }
+    }
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
       // Asssets avg cost basis
 
@@ -1189,13 +1228,23 @@ class Portfolio extends BaseReactComponent {
     if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
+      const shouldRecallApis =
+        window.sessionStorage.getItem("shouldRecallApis");
+      if (!shouldRecallApis || shouldRecallApis === "false") {
+        this.setState({
+          yieldOpportunitiesTableLoading: false,
+        });
+      } else {
+        this.setState({
+          shouldYieldOpportunitiesTableLoading: false,
+        });
+      }
       this.setState({
         yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
           ? this.props.yieldOpportunitiesState.yield_pools
           : [],
         yieldOpportunitiesTotalCount:
           this.props.yieldOpportunitiesState.total_count,
-        yieldOpportunitiesTableLoading: false,
       });
     }
     if (
@@ -2220,17 +2269,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="time">
-            <CustomOverlay
-              position="top"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={
-                this.state.isShowingAge
-                  ? "Click to view Timestamp"
-                  : "Click to view Age"
-              }
-            >
+            {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
                   this.toggleAgeTimestamp();
@@ -2242,7 +2281,32 @@ class Portfolio extends BaseReactComponent {
               >
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
               </span>
-            </CustomOverlay>
+            ) : (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
+              >
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
+            )}
+
             <Image
               onClick={() => this.handleTableSort("time")}
               src={sortByIcon}
@@ -2254,7 +2318,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "time",
 
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2872,7 +2936,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "asset",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2921,7 +2985,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "amount",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -2967,7 +3031,7 @@ class Portfolio extends BaseReactComponent {
         dataKey: "usdValueThen",
 
         className: "usd-value",
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.235 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3059,7 +3123,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "method",
 
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3105,7 +3169,7 @@ class Portfolio extends BaseReactComponent {
         dataKey: "network",
 
         className: "usd-value",
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -3150,7 +3214,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "hash",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (rowData === "EMPTY") {
@@ -4183,7 +4247,9 @@ class Portfolio extends BaseReactComponent {
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
             goToTransactionHistoryPage={this.goToTransactionHistoryPage}
+            goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
+            goToPriceGaugePage={this.goToPriceGaugePage}
           />
         </MobileLayout>
       );
@@ -4951,6 +5017,9 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
+                          switchPriceGaugeLoader={
+                            this.state.switchPriceGaugeLoader
+                          }
                           openChartPage={this.goToPriceGaugePage}
                           hideExplainer
                           // isHomepage

@@ -10,7 +10,6 @@ import {
   MobileNavLeaderboardActive,
   MobileNavNFT,
   MobileNavProfile,
-  MobileNavProfileActive,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
@@ -22,8 +21,9 @@ import {
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
+import { isNewAddress } from "../Portfolio/Api.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   setPageFlagDefault,
@@ -38,7 +38,6 @@ import { addUserCredits } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -147,6 +146,7 @@ class MobileLayout extends BaseReactComponent {
   };
 
   handleAddWallet = (replaceAddresses) => {
+    sessionStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
     }
@@ -333,7 +333,12 @@ class MobileLayout extends BaseReactComponent {
   };
 
   CheckApiResponseMobileLayout = (value) => {
-    this.props.setPageFlagDefault();
+    if (this.props.CheckApiResponse) {
+      this.props.CheckApiResponse(value);
+    } else {
+      this.props.setPageFlagDefault();
+    }
+    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {
@@ -374,19 +379,23 @@ class MobileLayout extends BaseReactComponent {
       }
       // walletCopy[foundIndex].trucatedAddress = value
     }
-    this.setState({
-      addButtonVisible: this.state.walletInput.some((wallet) =>
-        wallet.address ? true : false
-      ),
-      walletInput: walletCopy,
-    });
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+    this.setState(
+      {
+        addButtonVisible: this.state.walletInput.some((wallet) =>
+          wallet.address ? true : false
+        ),
+        walletInput: walletCopy,
+      },
+      () => {
+        this.timeout = setTimeout(() => {
+          this.getCoinBasedOnWalletAddress(name, value);
+        }, 1000);
+      }
+    );
     // timeout;
-    this.timeout = setTimeout(() => {
-      this.getCoinBasedOnWalletAddress(name, value);
-    }, 1000);
   };
 
   onKeyPressInput = (event) => {
@@ -443,8 +452,12 @@ class MobileLayout extends BaseReactComponent {
 
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
-    console.log(parentCoinList);
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -590,10 +603,10 @@ class MobileLayout extends BaseReactComponent {
             id="portfolio-mobile-layout-children-id"
             className="portfolio-mobile-layout-children"
           >
-            <div style={{ paddingBottom: "84px" }}>
+            <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
-                  <div className="mpcHomePage">
+                  <div id="mobileLayoutScrollContainer" className="mpcHomePage">
                     {this.props.hideAddresses ? null : (
                       <WelcomeCard
                         handleShare={this.handleShare} //Done
@@ -699,6 +712,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   getAllWalletListApi,
   updateWalletListFlag,
+  isNewAddress,
 };
 
 MobileLayout.propTypes = {};

@@ -53,6 +53,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -200,15 +202,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -381,7 +375,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }

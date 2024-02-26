@@ -12,7 +12,7 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (apidata, parentCtx) => {
+export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
@@ -135,7 +135,12 @@ export const getGraphData = (apidata, parentCtx) => {
         //   position: 'bottom',
         // },
         ticks: {
-          display: labels.length > 8 ? false : true,
+          display:
+            isGasFeesMobile && labels.length > 3
+              ? false
+              : labels.length > 8
+              ? false
+              : true,
           // display: false,
           // stepSize: 1500,
           padding: 8,

@@ -31,6 +31,7 @@ import {
   removeAddressFromWatchList,
 } from "../watchlist/redux/WatchListApi";
 import { ChartSeeMoreArrowIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class PieChart2Mobile extends BaseReactComponent {
   constructor(props) {
@@ -286,12 +287,7 @@ class PieChart2Mobile extends BaseReactComponent {
     ];
     return (
       <div>
-        <h2
-          style={{
-            marginTop: "2rem",
-          }}
-          className="inter-display-semi-bold f-s-16 lh-19 grey-313"
-        >
+        <h2 className="inter-display-semi-bold f-s-17 lh-19 grey-313">
           Balance by network
         </h2>
         <div
@@ -410,9 +406,30 @@ class PieChart2Mobile extends BaseReactComponent {
                         />
                         {chain?.name}
                       </span>
-                      <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                        ${amountFormat(chain?.total.toFixed(2), "en-US", "USD")}
-                      </span>
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          "$" +
+                          amountFormat(chain?.total.toFixed(2), "en-US", "USD")
+                        }
+                      >
+                        <span
+                          className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt dotDotText"
+                          style={{
+                            maxWidth: "50%",
+                          }}
+                        >
+                          $
+                          {amountFormat(
+                            chain?.total.toFixed(2),
+                            "en-US",
+                            "USD"
+                          )}
+                        </span>
+                      </CustomOverlay>
                     </div>
                   );
                 })}
@@ -461,24 +478,19 @@ class PieChart2Mobile extends BaseReactComponent {
             justifyContent: "space-between",
           }}
         >
-          <h2
-            style={{}}
-            className="inter-display-semi-bold f-s-16 lh-19 grey-313"
-          >
+          <h2 className="inter-display-semi-bold f-s-17 lh-19 grey-313">
             DeFi Balance Sheet
           </h2>
           <p
             onClick={this.props.openDefiPage}
             className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
           >
-            <div
-              style={{
-                marginLeft: "0rem",
-              }}
-              className="seeMoreBtn cp"
-            >
-              <div>Click here to see more</div>
-              <Image src={ChartSeeMoreArrowIcon} className="seeMoreBtnIcon" />
+            <div className="mobileSeeMoreBtn">
+              <div className="mobileSeeMoreBtnTxt">See more</div>
+              <Image
+                src={ChartSeeMoreArrowIcon}
+                className="mobileSeeMoreBtnIcon"
+              />
             </div>
           </p>
         </div>

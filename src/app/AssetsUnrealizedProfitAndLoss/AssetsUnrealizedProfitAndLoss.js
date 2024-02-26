@@ -62,6 +62,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -174,10 +175,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }, 900000);
   };
   componentDidMount() {
-    // if (mobileCheck()) {
-    //   this.props.history.push("/home");
-    // }
-
+    scrollToTop();
     if (
       !this.props.commonState.assetsPage ||
       !(

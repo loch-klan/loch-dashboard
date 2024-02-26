@@ -33,12 +33,16 @@ class CounterPartyVolume extends Component {
         <div
           className="mobile-portfolio-blocks"
           style={{
-            marginTop: "2rem",
-
-            maxHeight: "60rem",
+            marginTop: "0rem",
+            maxHeight: "none",
           }}
         >
-          <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+          <div
+            style={{
+              padding: "1.5rem 1rem",
+            }}
+            className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile"
+          >
             <div
               className="section-table section-table-mobile"
               style={{
@@ -58,6 +62,7 @@ class CounterPartyVolume extends Component {
                       divideInTwo
                       handleFooterClick={this.handleFooter}
                       active={this.state.activeFooter}
+                      isMobileGraph
                     />
                   </div>
                 )}

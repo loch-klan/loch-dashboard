@@ -28,6 +28,7 @@ import {
   CurrencyType,
   mobileCheck,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import FixAddModal from "../common/FixAddModal";
@@ -147,15 +148,7 @@ class Defi extends Component {
     this.startPageView();
     this.updateTimer(true);
 
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.defiState && this.props.commonState.defi) {
       this.setState({
         defiStateLocally: this.props.defiState,

@@ -190,10 +190,6 @@ class PortfolioMobile extends BaseReactComponent {
         showPopupModal: false,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
 
     this.startPageView();
     this.updateTimer(true);
@@ -688,12 +684,13 @@ class PortfolioMobile extends BaseReactComponent {
               getProtocolTotal={this.props.getProtocolTotal}
               updateTimer={this.props.updateTimer}
               openDefiPage={this.props.openDefiPage}
+              isMobile={true}
             />
 
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element mr-1 ${
                     this.props.blockOneSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -705,7 +702,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Assets
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockThreeSelectedItem === 1 &&
                     this.props.blockOneSelectedItem !== 1
                       ? "section-table-toggle-element-selected"
@@ -731,7 +728,7 @@ class PortfolioMobile extends BaseReactComponent {
                       } ${
                         this.props.intelligenceState.Average_cost_basis
                           .length <= 10
-                          ? "newHomeTableContainerNoShowMore"
+                          ? ""
                           : ""
                       }`}
                     >
@@ -792,7 +789,7 @@ class PortfolioMobile extends BaseReactComponent {
                           : "tableWatermarkOverlay"
                       } ${
                         this.props.yieldOpportunitiesTotalCount?.length <= 10
-                          ? "newHomeTableContainerNoShowMore"
+                          ? ""
                           : ""
                       }`}
                     >
@@ -839,7 +836,7 @@ class PortfolioMobile extends BaseReactComponent {
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockTwoSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -863,7 +860,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Gas fees
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockTwoSelectedItem === 3
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -875,7 +872,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Counterparties
                 </div>
               </div>
-              <div className="mobile-portfolio-blocks-content portfolio-page-section portfolio-page-section-mobile">
+              <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
                 <div
                   className="section-table section-table-mobile"
                   style={{
@@ -887,7 +884,7 @@ class PortfolioMobile extends BaseReactComponent {
                   <div className="profit-chart profit-chart-mobile">
                     {this.props.blockTwoSelectedItem === 1 ? (
                       <BarGraphSection
-                        // openChartPage={() => {}}
+                        openChartPage={this.props.goToRealizedGainsPage}
                         newHomeSetup
                         disableOnLoading
                         noSubtitleBottomPadding
@@ -1005,7 +1002,7 @@ class PortfolioMobile extends BaseReactComponent {
             <div className="mobile-portfolio-blocks">
               <div className="section-table-toggle-mobile">
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockFourSelectedItem === 1
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -1014,7 +1011,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockFourItem(1);
                   }}
                 >
-                  Price Guage
+                  Price gauge
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -1029,7 +1026,7 @@ class PortfolioMobile extends BaseReactComponent {
                   Transactions
                 </div>
                 <div
-                  className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                  className={`inter-display-medium section-table-toggle-element ${
                     this.props.blockFourSelectedItem === 3
                       ? "section-table-toggle-element-selected"
                       : ""
@@ -1043,8 +1040,14 @@ class PortfolioMobile extends BaseReactComponent {
               </div>
               <div className="mobile-portfolio-blocks-content">
                 {this.props.blockFourSelectedItem === 1 ? (
-                  <div className="mobile-portfolio-blocks-content-price-gauge">
+                  <div
+                    style={{
+                      padding: "0rem 1.4rem",
+                    }}
+                    className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding"
+                  >
                     <InflowOutflowPortfolioHome
+                      openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
                       showEth
                       userWalletList={this.props.userWalletList}
@@ -1061,11 +1064,7 @@ class PortfolioMobile extends BaseReactComponent {
                         this.props.tableData?.length < 1
                           ? ""
                           : "tableWatermarkOverlay"
-                      } ${
-                        this.props.totalCount <= 10
-                          ? "newHomeTableContainerNoShowMore"
-                          : "newHomeTableContainerNoShowMore"
-                      }`}
+                      } ${this.props.totalCount <= 10 ? "" : ""}`}
                     >
                       <TransactionTable
                         xAxisScrollable
@@ -1079,7 +1078,7 @@ class PortfolioMobile extends BaseReactComponent {
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.props.tableLoading}
-                        addWatermark
+                        fakeWatermark
                       />
                     </div>
                     {!this.props.tableLoading ? (
@@ -1101,12 +1100,14 @@ class PortfolioMobile extends BaseReactComponent {
                     ) : null}
                   </div>
                 ) : this.props.blockFourSelectedItem === 3 ? (
-                  <PortfolioHomeInsightsBlock
-                    history={this.props.history}
-                    updatedInsightList={this.props.updatedInsightList}
-                    insightsBlockLoading={this.props.insightsBlockLoading}
-                    isMobile
-                  />
+                  <div className="mobile-portfolio-blocks-content-with-padding">
+                    <PortfolioHomeInsightsBlock
+                      history={this.props.history}
+                      updatedInsightList={this.props.updatedInsightList}
+                      insightsBlockLoading={this.props.insightsBlockLoading}
+                      isMobile
+                    />
+                  </div>
                 ) : null}
               </div>
             </div>

@@ -57,7 +57,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: this.props?.isMobile ? "41rem" : "30rem",
+                height: this.props?.isMobile ? "40.5rem" : "30rem",
                 padding: this.props?.isMobile
                   ? "0rem 0.5rem 0rem 0rem"
                   : "0rem 0.5rem",

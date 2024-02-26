@@ -239,6 +239,7 @@ class BarGraphSection extends Component {
       showSwitch,
       showToken,
       isMinichart,
+      isMobile,
     } = this.props;
     //  console.log("bar gr state digit", digit);
     // const digit =
@@ -342,6 +343,7 @@ class BarGraphSection extends Component {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "start",
+                    flexDirection: isMobile ? "column" : "row",
                   }}
                 >
                   {showFooter && (
@@ -354,96 +356,180 @@ class BarGraphSection extends Component {
                         handleFooterClick={this.handleFooter}
                         active={this.state.activeFooter}
                         footerLabels={footerLabels}
+                        isMobileGraph={this.props.isMobileGraph}
                       />
                     </div>
                   )}
                   {showFromAndTo && (
-                    <div className="intelligenceRealisedLeftContainer">
+                    <div
+                      style={{
+                        marginBottom: isMobile ? "1rem" : "",
+                      }}
+                      className="intelligenceRealisedLeftContainer"
+                    >
                       <div class="bar-graph-footer ">
-                        <div class="timeCalendarBadgeWrapper ">
-                          <div
-                            id="0"
-                            class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
-                          >
-                            From
-                          </div>
-                          <div
-                            id="1"
-                            class="inter-display-medium f-s-13 lh-16 timeCalBadge"
-                          >
-                            <OutsideClickHandler
-                              onOutsideClick={this.props.hideFromCalendar}
+                        {isMobile ? (
+                          <div class="timeCalendarBadgeWrapper timeCalendarBadgeWrapperMobile ">
+                            <div
+                              id="1"
+                              class="inter-display-medium f-s-13 lh-16 timeCalBadge"
                             >
-                              <div className="timeBadgeCalendarContainer">
-                                <div
-                                  className="timeBadgeCalendarText"
-                                  onClick={this.props.showFromCalendar}
-                                >
-                                  {this.props.fromDate
-                                    ? moment(this.props.fromDate).format(
-                                        "D MMM YYYY"
-                                      )
-                                    : ""}
-                                </div>
-                                {this.props.isFromCalendar ? (
-                                  <div className="intelligenceCalendar">
-                                    <Calendar
-                                      date={this.props.fromDate}
-                                      className={
-                                        "calendar-select inter-display-medium f-s-13 lh-16"
-                                      }
-                                      onChange={this.props.changeFromDate}
-                                      maxDate={this.props.maxDate}
-                                      minDate={this.props.minDate}
-                                      defaultValue={this.props.fromDate}
-                                    />
+                              <OutsideClickHandler
+                                onOutsideClick={this.props.hideFromCalendar}
+                              >
+                                <div className="timeBadgeCalendarContainer timeBadgeCalendarContainer-left">
+                                  <div
+                                    className="timeBadgeCalendarText"
+                                    onClick={this.props.showFromCalendar}
+                                  >
+                                    {"From "}
+                                    {this.props.fromDate
+                                      ? moment(this.props.fromDate).format(
+                                          "D MMM YYYY"
+                                        )
+                                      : ""}
                                   </div>
-                                ) : null}
-                              </div>
-                            </OutsideClickHandler>
-                          </div>
-                          <div
-                            id="2"
-                            class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
-                          >
-                            To
-                          </div>
-                          <div
-                            id="3"
-                            class="inter-display-medium f-s-13 lh-16 timeCalBadge"
-                          >
-                            <OutsideClickHandler
-                              onOutsideClick={this.props.hideToCalendar}
+                                  {this.props.isFromCalendar ? (
+                                    <div className="intelligenceCalendar">
+                                      <Calendar
+                                        date={this.props.fromDate}
+                                        className={
+                                          "calendar-select inter-display-medium f-s-13 lh-16"
+                                        }
+                                        onChange={this.props.changeFromDate}
+                                        maxDate={this.props.maxDate}
+                                        minDate={this.props.minDate}
+                                        defaultValue={this.props.fromDate}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </OutsideClickHandler>
+                            </div>
+
+                            <div
+                              id="3"
+                              class="inter-display-medium f-s-13 lh-16 timeCalBadge"
                             >
-                              <div className="timeBadgeCalendarContainer">
-                                <div
-                                  className="timeBadgeCalendarText"
-                                  onClick={this.props.showToCalendar}
-                                >
-                                  {this.props.toDate
-                                    ? moment(this.props.toDate).format(
-                                        "D MMM YYYY"
-                                      )
-                                    : ""}
-                                </div>
-                                {this.props.isToCalendar ? (
-                                  <div className="intelligenceCalendar">
-                                    <Calendar
-                                      date={this.props.toDate}
-                                      className={
-                                        "calendar-select inter-display-medium f-s-13 lh-16"
-                                      }
-                                      onChange={this.props.changeToDate}
-                                      maxDate={this.props.maxDate}
-                                      minDate={this.props.minDate}
-                                      defaultValue={this.props.toDate}
-                                    />
+                              <OutsideClickHandler
+                                onOutsideClick={this.props.hideToCalendar}
+                              >
+                                <div className="timeBadgeCalendarContainer timeBadgeCalendarContainer-right">
+                                  <div
+                                    className="timeBadgeCalendarText"
+                                    onClick={this.props.showToCalendar}
+                                  >
+                                    {"To "}
+                                    {this.props.toDate
+                                      ? moment(this.props.toDate).format(
+                                          "D MMM YYYY"
+                                        )
+                                      : ""}
                                   </div>
-                                ) : null}
-                              </div>
-                            </OutsideClickHandler>
+                                  {this.props.isToCalendar ? (
+                                    <div className="intelligenceCalendar">
+                                      <Calendar
+                                        date={this.props.toDate}
+                                        className={
+                                          "calendar-select inter-display-medium f-s-13 lh-16"
+                                        }
+                                        onChange={this.props.changeToDate}
+                                        maxDate={this.props.maxDate}
+                                        minDate={this.props.minDate}
+                                        defaultValue={this.props.toDate}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </OutsideClickHandler>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div class="timeCalendarBadgeWrapper ">
+                            <div
+                              id="0"
+                              class="inter-display-medium f-s-13 lh-16 timeNoCalBadge timeNoCalBadgeNoLeft"
+                            >
+                              From
+                            </div>
+                            <div
+                              id="1"
+                              class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                            >
+                              <OutsideClickHandler
+                                onOutsideClick={this.props.hideFromCalendar}
+                              >
+                                <div className="timeBadgeCalendarContainer">
+                                  <div
+                                    className="timeBadgeCalendarText"
+                                    onClick={this.props.showFromCalendar}
+                                  >
+                                    {this.props.fromDate
+                                      ? moment(this.props.fromDate).format(
+                                          "D MMM YYYY"
+                                        )
+                                      : ""}
+                                  </div>
+                                  {this.props.isFromCalendar ? (
+                                    <div className="intelligenceCalendar">
+                                      <Calendar
+                                        date={this.props.fromDate}
+                                        className={
+                                          "calendar-select inter-display-medium f-s-13 lh-16"
+                                        }
+                                        onChange={this.props.changeFromDate}
+                                        maxDate={this.props.maxDate}
+                                        minDate={this.props.minDate}
+                                        defaultValue={this.props.fromDate}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </OutsideClickHandler>
+                            </div>
+                            <div
+                              id="2"
+                              class="inter-display-medium f-s-13 lh-16 timeNoCalBadge"
+                            >
+                              To
+                            </div>
+                            <div
+                              id="3"
+                              class="inter-display-medium f-s-13 lh-16 timeCalBadge"
+                            >
+                              <OutsideClickHandler
+                                onOutsideClick={this.props.hideToCalendar}
+                              >
+                                <div className="timeBadgeCalendarContainer">
+                                  <div
+                                    className="timeBadgeCalendarText"
+                                    onClick={this.props.showToCalendar}
+                                  >
+                                    {this.props.toDate
+                                      ? moment(this.props.toDate).format(
+                                          "D MMM YYYY"
+                                        )
+                                      : ""}
+                                  </div>
+                                  {this.props.isToCalendar ? (
+                                    <div className="intelligenceCalendar">
+                                      <Calendar
+                                        date={this.props.toDate}
+                                        className={
+                                          "calendar-select inter-display-medium f-s-13 lh-16"
+                                        }
+                                        onChange={this.props.changeToDate}
+                                        maxDate={this.props.maxDate}
+                                        minDate={this.props.minDate}
+                                        defaultValue={this.props.toDate}
+                                      />
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </OutsideClickHandler>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* <BarGraphFooter
@@ -454,54 +540,60 @@ class BarGraphSection extends Component {
                     </div>
                   )}
                   {showFromAndTo ? (
-                    <div className="intelligenceRealisedRightContainer">
-                      <div
-                        className="intelligenceRealisedRightItems"
-                        // style={{
-                        //   width: "100%",
-                        //   minWidth: "18rem",
-                        //   maxWidth: "20rem",
-                        //   marginLeft: "1rem",
-                        //   zIndex: 4,
-                        // }}
-                      >
-                        <CustomDropdown
-                          filtername="All chains"
-                          options={coinsList}
-                          selectedTokens={this.props.selectedActiveBadge}
-                          action={null}
-                          handleClick={this.handleFunction}
-                          isChain={true}
-                          searchIsUsed={this.props.chainSearchIsUsed}
-                        />
-                      </div>
-                      <div
-                        className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
-                        // style={{
-                        //   width: "100%",
-                        //   minWidth: "15rem",
-                        //   maxWidth: "18rem",
-                        //   zIndex: "2",
-                        // }}
-                      >
-                        <CustomDropdown
-                          filtername="All assets"
-                          options={this.props.assetList}
-                          selectedTokens={this.props.selectedAssets}
-                          action={null}
-                          handleClick={this.props.handleAssetSelected}
-                          // isChain={true}
-                          LightTheme={true}
-                          placeholderName={"asset"}
-                          getObj={this.props?.getObj}
-                          searchIsUsed={this.props.assetSearchIsUsed}
+                    isMobile ? (
+                      <div className="intelligenceRealisedRightContainer intelligenceRealisedRightContainerMobile">
+                        <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
+                          <CustomDropdown
+                            filtername="All chains"
+                            options={coinsList}
+                            selectedTokens={this.props.selectedActiveBadge}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            searchIsUsed={this.props.chainSearchIsUsed}
+                          />
+                        </div>
+                        <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
+                          <CustomDropdown
+                            filtername="All assets"
+                            options={this.props.assetList}
+                            selectedTokens={this.props.selectedAssets}
+                            action={null}
+                            handleClick={this.props.handleAssetSelected}
+                            // isChain={true}
+                            LightTheme={true}
+                            placeholderName={"asset"}
+                            getObj={this.props?.getObj}
+                            searchIsUsed={this.props.assetSearchIsUsed}
 
-                          // selectedTokens={this.state.activeBadge}
-                        />
+                            // selectedTokens={this.state.activeBadge}
+                          />
+                        </div>
                       </div>
-                      {this.props.showSwitch ? (
+                    ) : (
+                      <div className="intelligenceRealisedRightContainer">
                         <div
                           className="intelligenceRealisedRightItems"
+                          // style={{
+                          //   width: "100%",
+                          //   minWidth: "18rem",
+                          //   maxWidth: "20rem",
+                          //   marginLeft: "1rem",
+                          //   zIndex: 4,
+                          // }}
+                        >
+                          <CustomDropdown
+                            filtername="All chains"
+                            options={coinsList}
+                            selectedTokens={this.props.selectedActiveBadge}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            searchIsUsed={this.props.chainSearchIsUsed}
+                          />
+                        </div>
+                        <div
+                          className="intelligenceRealisedRightItems intelligenceRealisedRightMiddleItem"
                           // style={{
                           //   width: "100%",
                           //   minWidth: "15rem",
@@ -509,41 +601,69 @@ class BarGraphSection extends Component {
                           //   zIndex: "2",
                           // }}
                         >
+                          <CustomDropdown
+                            filtername="All assets"
+                            options={this.props.assetList}
+                            selectedTokens={this.props.selectedAssets}
+                            action={null}
+                            handleClick={this.props.handleAssetSelected}
+                            // isChain={true}
+                            LightTheme={true}
+                            placeholderName={"asset"}
+                            getObj={this.props?.getObj}
+                            searchIsUsed={this.props.assetSearchIsUsed}
+
+                            // selectedTokens={this.state.activeBadge}
+                          />
+                        </div>
+                        {this.props.showSwitch ? (
                           <div
-                            onClick={this.toggleBreakdownSelected}
-                            className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
-                              this.state.switchselected
-                                ? "IRRIbreakdownContainerSelected"
-                                : ""
-                            }`}
+                            className="intelligenceRealisedRightItems"
+                            // style={{
+                            //   width: "100%",
+                            //   minWidth: "15rem",
+                            //   maxWidth: "18rem",
+                            //   zIndex: "2",
+                            // }}
                           >
-                            <div>Breakdown</div>
-                            <div className="IRRIbreakdownImageContainer">
-                              <Image
-                                className="IRRIbreakdownImage"
-                                src={ThickCheckMarkIcon}
-                              />
+                            <div
+                              onClick={this.toggleBreakdownSelected}
+                              className={`inter-display-medium f-s-13 lh-16 IRRIbreakdownContainer ${
+                                this.state.switchselected
+                                  ? "IRRIbreakdownContainerSelected"
+                                  : ""
+                              }`}
+                            >
+                              <div>Breakdown</div>
+                              <div className="IRRIbreakdownImageContainer">
+                                <Image
+                                  className="IRRIbreakdownImage"
+                                  src={ThickCheckMarkIcon}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                      <div className="intelligenceRealisedInfoIcon">
-                        <CustomOverlay
-                          position="bottom"
-                          isIcon={false}
-                          isInfo={true}
-                          isText={true}
-                          heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                          subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
-                          className={
-                            "fix-width tool-tip-container-bottom-arrow"
-                          }
-                          isLeftText
-                        >
-                          <Image src={InfoIcon} className="infoIcon" />
-                        </CustomOverlay>
+                        ) : null}
+                        {isMobile ? null : (
+                          <div className="intelligenceRealisedInfoIcon">
+                            <CustomOverlay
+                              position="bottom"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
+                              subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                              className={
+                                "fix-width tool-tip-container-bottom-arrow"
+                              }
+                              isLeftText
+                            >
+                              <Image src={InfoIcon} className="infoIcon" />
+                            </CustomOverlay>
+                          </div>
+                        )}
                       </div>
-                    </div>
+                    )
                   ) : null}
                   {showBadges && (
                     <div
@@ -560,6 +680,11 @@ class BarGraphSection extends Component {
                           : "1rem",
                         zIndex: 4,
                       }}
+                      className={
+                        this.props.isGasFeesMobileExpanded
+                          ? "mobileGasFeesExpandedViewDropdownContainer"
+                          : ""
+                      }
                     >
                       <CustomDropdown
                         filtername="All chains selected"
