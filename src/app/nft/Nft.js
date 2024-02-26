@@ -553,6 +553,8 @@ class NFT extends BaseReactComponent {
               className="transaction-history-table"
             >
               <TransactionTable
+                rowHeight={70}
+                showHowHamyRowsAtOnce={11}
                 noSubtitleBottomPadding
                 tableData={this.state.tableData}
                 columnList={columnList}

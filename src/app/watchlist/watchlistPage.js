@@ -939,6 +939,8 @@ class WatchListPage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    rowHeight={70}
+                    showHowHamyRowsAtOnce={11}
                     noSubtitleBottomPadding
                     showHeaderOnEmpty
                     tableData={this.state.tableData}

@@ -4347,6 +4347,9 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
+                              tableParentClass="portfolionBlockTableContainer"
+                              showHowHamyRowsAtOnce={5}
+                              freezeFirstColumn
                               noSubtitleBottomPadding
                               message="No assets found"
                               disableOnLoading
@@ -4957,6 +4960,7 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
+                              // freezeFirstColumn
                               xAxisScrollable
                               xAxisScrollableColumnWidth={4.8}
                               noSubtitleBottomPadding

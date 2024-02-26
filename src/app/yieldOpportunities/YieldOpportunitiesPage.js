@@ -1113,6 +1113,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               ) : (
                 <>
                   <TransactionTable
+                    rowHeight={70}
+                    showHowHamyRowsAtOnce={11}
                     noSubtitleBottomPadding
                     tableData={tableData}
                     columnList={columnList}

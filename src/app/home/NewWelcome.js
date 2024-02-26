@@ -1567,7 +1567,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email?this.state.email.toLowerCase():"");
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("otp_token", this.state.otp);
       this.props.verifyUser(this, data, true, this.state.smartMoneyLogin);
     }
@@ -2693,6 +2696,8 @@ class NewWelcome extends BaseReactComponent {
                     }}
                   >
                     <TransactionTable
+                      rowHeight={70}
+                      showHowHamyRowsAtOnce={this.state.pageLimit + 1}
                       openSignInOnclickModal={this.opneLoginModalForSmartMoney}
                       smartMoneyBlur={this.state.blurTable}
                       // blurButtonClick={this.showAddSmartMoneyAddresses}

@@ -1296,6 +1296,10 @@
       }
       .newHomeTableContainer {
         overflow-x: scroll;
+        .portfolionBlockTableContainer {
+          max-height: 30rem;
+          min-height: 30rem;
+        }
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;

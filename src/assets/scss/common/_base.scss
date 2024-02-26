@@ -1886,6 +1886,141 @@ form {
 }
 
 .transaction-table-section {
+  .top-left-grid {
+    border-bottom: 0.1rem solid #e5e5e6;
+  }
+  .top-right-grid {
+    border-bottom: 0.1rem solid #e5e5e6;
+  }
+  .multigridHeaderColumn {
+    font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-transform: none;
+    white-space: normal;
+    overflow: visible;
+
+    line-height: 1.6rem;
+    color: $grey-4F4;
+    margin: 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .history-table-header-col {
+      display: flex;
+      user-select: none;
+      .rotateUp {
+        transform: rotate(180deg);
+        margin-left: 1rem;
+      }
+      &:hover {
+        span {
+          color: $primary;
+        }
+        img {
+          filter: brightness(0.5);
+        }
+      }
+
+      &.no-hover {
+        &:hover {
+          span {
+            color: $grey-4F4;
+          }
+          img {
+            filter: none;
+          }
+        }
+      }
+
+      .rotateDown {
+        transform: rotate(0deg);
+        margin-left: 1rem;
+      }
+    }
+  }
+  .multigridBodyColumn {
+    color: #313233;
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    margin: 0;
+    padding: 0 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .top-account-address {
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        font-weight: 600;
+      }
+    }
+    .nowrap-div {
+      white-space: nowrap;
+    }
+    .ellipsis-div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-table-icon {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 0.8rem;
+      box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+        0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+    }
+
+    .history-table-coin-icon {
+      padding: 0.4rem 0.8rem;
+      background-color: rgba(229, 229, 230, 0.5);
+      border: 0.1rem solid $grey-CAC;
+      border-radius: 0.4rem;
+      width: max-content;
+      margin: 0 auto;
+
+      img {
+        margin-right: 0.6rem;
+      }
+    }
+    .asset-symbol {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 0.8rem;
+    }
+    .coin-chip {
+      margin: 0 auto;
+      border: 0;
+      background-color: transparent;
+
+      img {
+        border: 0 !important;
+        border-radius: 0.8rem;
+      }
+
+      .chain-img {
+        border: 1px solid #fff !important;
+      }
+    }
+    .cost-common-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .cost-common {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+        border-radius: 0.4rem;
+        padding: 0.6rem;
+        width: fit-content;
+        background: rgba(229, 229, 230, 0.5);
+      }
+    }
+  }
   .graph-header {
     padding: 3.2rem 3.2rem 0rem 3.2rem;
 
@@ -2995,19 +3130,25 @@ input {
   }
 }
 
-.watchlist-mobile{
-  .transaction-table-section{
-    .ReactVirtualized__Table__headerRow{
+.watchlist-mobile {
+  .transaction-table-section {
+    .ReactVirtualized__Table__headerRow {
       background-color: white;
       border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
+      border-top-right-radius: 12px !important;
     }
   }
-  .ReactVirtualized__Table__Grid{
+  .ReactVirtualized__Table__Grid {
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
   }
-  .smartMoneyPaginationContainer{
+  .smartMoneyPaginationContainer {
     margin-top: 1.5rem;
+  }
+}
+.ReactVirtualized__Grid {
+  &::-webkit-scrollbar {
+    height: 0rem;
+    width: 0rem;
   }
 }

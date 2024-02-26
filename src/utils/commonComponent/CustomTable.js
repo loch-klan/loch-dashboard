@@ -1,5 +1,11 @@
 import React from "react";
-import { AutoSizer, Table, Column, ScrollSync } from "react-virtualized";
+import {
+  AutoSizer,
+  Table,
+  Column,
+  ScrollSync,
+  MultiGrid,
+} from "react-virtualized";
 import { Link } from "react-router-dom";
 import { Button, Image } from "react-bootstrap";
 // import notFoundDefault from "../../assets/images/empty-table.png";
@@ -34,6 +40,76 @@ class CustomTable extends BaseReactComponent {
     };
   }
   onValidSubmit = () => {};
+  headercolumns = [
+    { name: "product", displayName: "商品", width: 120 },
+    { name: "Price", displayName: "成交價", width: 80 },
+    { name: "UpDown", displayName: "漲跌", width: 120 },
+    { name: "TotVol", displayName: "成交量", width: 80 },
+    { name: "UpDownRate", displayName: "漲跌幅(%)", width: 80 },
+    { name: "Open", displayName: "開盤", width: 80 },
+    { name: "high", displayName: "最高", width: 80 },
+    { name: "low", displayName: "最低", width: 80 },
+    { name: "PrePrice", displayName: "昨收", width: 70 },
+    { name: "BPrice", displayName: "買進價", width: 80 },
+    { name: "APrice", displayName: "賣出價", width: 80 },
+  ];
+
+  widthcount = 50;
+  // heightcount = one.length;
+  heightcount = 1000;
+  data = this.generateData();
+
+  generateData() {
+    const rows = [];
+
+    for (let i = 0; i < this.heightcount; i++) {
+      rows[i] = [];
+
+      for (let j = 0; j < this.widthcount; j++) {
+        // if (j === 0) rows[i].push(one[i].displayName);
+        if (j === 0) rows[i].push(`期貨${i}, ${j}`);
+        else rows[i].push(`${i}, ${j}`);
+      }
+    }
+
+    return rows;
+  }
+
+  cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
+    const tempData = this.props.tableData;
+    const tempDataColList = this.props.columnList;
+    const passedClassName = tempDataColList[columnIndex].className;
+    const passedHeaderClassName = tempDataColList[columnIndex].headerClassName;
+    if (rowIndex === 0) {
+      return (
+        <div
+          key={key}
+          style={style}
+          className={`${
+            rowIndex === 0 ? "multigridHeaderColumn" : "multigridBodyColumn"
+          } ${passedHeaderClassName ? passedHeaderClassName : ""}`}
+        >
+          {tempDataColList[columnIndex].labelName}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          key={key}
+          style={style}
+          className={` ReactVirtualized__Table__rowColumn ${
+            rowIndex === 0 ? "multigridHeaderColumn" : "multigridBodyColumn"
+          } ${passedClassName ? passedClassName : ""}`}
+        >
+          {tempDataColList[columnIndex].cell(
+            tempData[rowIndex],
+            tempDataColList[columnIndex].dataKey
+          )}
+          {/* {tempData[rowIndex].AssetCode} */}
+        </div>
+      );
+    }
+  };
 
   render() {
     const {
@@ -138,52 +214,53 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-              <>
+              <div className={this.props.tableParentClass}>
                 <AutoSizer disableHeight>
-                  {({ width }) => (
-                    <Table
-                      width={
-                        this.props.xAxisScrollable
-                          ? width *
-                            (columnList.length /
-                              (this.props.xAxisScrollableColumnWidth
-                                ? this.props.xAxisScrollableColumnWidth
-                                : 3.5))
-                          : width
-                      }
-                      height={
-                        (this.props.showDataAtBottom && this.props.moreData
-                          ? 58
-                          : 60) *
-                          (tableData.length + 1) -
-                        10
-                      }
-                      headerHeight={headerHeight ? headerHeight : 80}
-                      rowHeight={
-                        this.props.showDataAtBottom && this.props.moreData
-                          ? 58
-                          : 60
-                      }
-                      rowCount={tableData.length}
-                      rowGetter={({ index }) => tableData[index]}
-                      className={`custom-table ${className}`}
-                      gridClassName={`${
-                        this.props.addWatermark
-                          ? "tableWatermark"
-                          : this.props.fakeWatermark
-                          ? "tableWatermarkFake"
-                          : ""
-                      } ${
-                        this.props.bottomCombiedValues
-                          ? "topMarginForCombiedValues"
-                          : ""
-                      } ${
-                        this.props.addWatermarkMoveUp
-                          ? "tableWatermarkMoveUp"
-                          : ""
-                      }`}
-                    >
-                      {columnList &&
+                  {({ width }) => {
+                    return (
+                      <MultiGrid
+                        cellRenderer={this.cellRenderer}
+                        classNameTopLeftGrid="top-left-grid"
+                        classNameTopRightGrid="top-right-grid"
+                        classNameBottomLeftGrid="bottom-left-grid"
+                        classNameBottomRightGrid="bottom-right-grid"
+                        fixedColumnCount={this.props.freezeFirstColumn ? 1 : 0}
+                        fixedRowCount={1}
+                        height={
+                          (this.props.rowHeight
+                            ? this.props.rowHeight
+                            : this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60) *
+                          (this.props.showHowHamyRowsAtOnce
+                            ? this.props.showHowHamyRowsAtOnce <
+                              this.props.tableData?.length
+                              ? this.props.showHowHamyRowsAtOnce
+                              : this.props.tableData?.length
+                            : 5)
+                        }
+                        width={width}
+                        columnCount={this.props.columnList?.length}
+                        columnWidth={({ index }) =>
+                          this.props.xAxisScrollable
+                            ? width *
+                              this.props.columnList[index].coumnWidth *
+                              (columnList.length /
+                                (this.props.xAxisScrollableColumnWidth
+                                  ? this.props.xAxisScrollableColumnWidth
+                                  : 3.5))
+                            : width * this.props.columnList[index].coumnWidth
+                        }
+                        rowCount={tableData.length}
+                        rowHeight={
+                          this.props.rowHeight
+                            ? this.props.rowHeight
+                            : this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60
+                        }
+                      >
+                        {/* {columnList &&
                         columnList.length > 0 &&
                         columnList.map((item, key) => {
                           return (
@@ -213,9 +290,10 @@ class CustomTable extends BaseReactComponent {
                               headerClassName={item.headerClassName}
                             />
                           );
-                        })}
-                    </Table>
-                  )}
+                        })} */}
+                      </MultiGrid>
+                    );
+                  }}
                 </AutoSizer>
                 {/* {this.props.smartMoneyBlur ? (
                   <div className="smartMoneyBlurContainer">
@@ -243,7 +321,7 @@ class CustomTable extends BaseReactComponent {
                     </div>
                   </div>
                 ) : null} */}
-              </>
+              </div>
             ) : (
               <>
                 {this.props.showHeaderOnEmpty ? (

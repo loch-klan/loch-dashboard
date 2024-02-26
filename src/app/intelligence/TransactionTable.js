@@ -35,6 +35,10 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        rowHeight={props.rowHeight}
+        freezeFirstColumn={props.freezeFirstColumn}
+        showHowHamyRowsAtOnce={props.showHowHamyRowsAtOnce}
+        tableParentClass={props.tableParentClass}
         isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}

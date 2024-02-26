@@ -1213,6 +1213,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
+                  rowHeight={70}
+                  showHowHamyRowsAtOnce={10}
                   message="No assets found"
                   bottomCombiedValues={
                     this.state.Average_cost_basis_local.length > 0

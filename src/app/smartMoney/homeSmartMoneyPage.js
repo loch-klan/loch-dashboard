@@ -1401,6 +1401,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   ) : (
                     <div className="smartMoneyTable">
                       <TransactionTable
+                        rowHeight={70}
+                        showHowHamyRowsAtOnce={this.state.pageLimit + 1}
                         openSignInOnclickModal={this.openSignInOnclickModal}
                         smartMoneyBlur={this.state.blurTable}
                         blurButtonClick={this.showAddSmartMoneyAddresses}
