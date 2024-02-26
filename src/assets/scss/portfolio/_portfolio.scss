@@ -1035,9 +1035,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        font-size: 13px;
-        font-weight: 500;
-        color: #4f4f4f;
+        font-size: 10px;
+        font-weight: 600;
+        color: #7C7D81;
         .bottomExtraInfoText {
           height: 100%;
           display: flex;
@@ -1273,7 +1273,8 @@
           display: flex;
           align-items: center;
           .section-table-toggle-element {
-            font-size: 13px;
+            font-size: 10px;
+            font-weight: 600;
             flex: 1;
             padding: 0.5rem;
             white-space: nowrap;
@@ -1416,9 +1417,9 @@
         margin-left: 1rem;
         display: flex;
         align-items: center;
-        font-size: 13px;
-        color: var(--secondaryDarkTextColorNew);
-        font-weight: 500;
+        color: #7C7D81;
+          font-size: 10px;
+          font-weight: 600;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {
           // transition-duration: 300ms;
@@ -1602,6 +1603,15 @@
         &:hover {
           opacity: 0.6;
         }
+      }
+    }
+  }
+}
+.portfolio-page-section-mobile {
+  .section-table {
+    .profit-chart {
+      .bar-graph-section {
+        padding: 3.2rem 0.4rem 5rem 0.4rem;
       }
     }
   }

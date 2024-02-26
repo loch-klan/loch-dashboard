@@ -26,7 +26,7 @@ import FixAddModal from "../common/FixAddModal";
 import { getAllWalletListApi } from "../wallet/Api";
 
 import { toast } from "react-toastify";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
 import {
   ASSET_VALUE_GRAPH_DAY,
   ASSET_VALUE_GRAPH_MONTH,
@@ -86,15 +86,7 @@ class AssetValueGraph extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.portfolioState?.assetValueDataLoaded) {
       this.setState({
         assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,

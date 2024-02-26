@@ -12,30 +12,25 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
-  BlackManIcon,
-  GreyManIcon,
+  FollowingSidebarIcon,
+  HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
+  LeaderboardSidebarIcon,
   PersonRoundedSigninIcon,
+  ProfileSidebarIcon,
   SidebarLeftArrowIcon,
-  TwoPeopleIcon,
   XFormallyTwitterLogoIcon,
   darkModeIcon,
   lightModeIcon,
 } from "../../assets/images/icons";
-import {
-  default as ActiveProfileIcon,
-  default as SignInIcon,
-} from "../../assets/images/icons/ActiveProfileIcon.svg";
+import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
 import ExportIconWhite from "../../assets/images/icons/ExportBlackIcon.svg";
-import InActiveHomeIcon from "../../assets/images/icons/InactiveHomeIcon.svg";
-import ProfileIcon from "../../assets/images/icons/InactiveProfileIcon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
 import LeaveIcon from "../../assets/images/icons/LeaveIcon.svg";
 import SharePortfolioIcon from "../../assets/images/icons/SharePortfolioIcon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
-import ActiveHomeIcon from "../../image/HomeIcon.svg";
+import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
   ExportMenu,
@@ -78,6 +73,8 @@ import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
+import { toast } from "react-toastify";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
@@ -85,10 +82,8 @@ import {
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
-import ExitOverlay from "./ExitOverlay";
 import ConnectModal from "./ConnectModal.js";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { toast } from "react-toastify";
+import ExitOverlay from "./ExitOverlay";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -327,18 +322,11 @@ function Sidebar(props) {
     handleLeave();
   };
   const handleLeave = () => {
-    const isDummy = window.sessionStorage.getItem("lochDummyUser");
-    // console.log("isDummy user", isDummy)
     MenuLeave({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (isDummy) {
-      setLeave(!leave);
-    } else {
-      setConfirmLeave(!confirmLeave);
-      // props.history.push('/welcome');
-    }
+    setConfirmLeave(!confirmLeave);
   };
   const handleGoToProfile = () => {
     let tempToken = getToken();
@@ -840,10 +828,13 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={HomeSidebarIcon}
+                                style={
                                   activeTab === "/home"
-                                    ? ActiveHomeIcon
-                                    : InActiveHomeIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                             </NavLink>
@@ -879,7 +870,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={TwoPeopleIcon}
+                                src={FollowingSidebarIcon}
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
@@ -937,7 +928,7 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"NFTs"}
+                            text={"NFT"}
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
@@ -955,7 +946,14 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
+                                src={NFTIcon}
+                                style={
+                                  activeTab === "/nft"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
                               />
                             </NavLink>
                           </CustomOverlay>
@@ -989,7 +987,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={ProfileIcon}
+                                src={ProfileSidebarIcon}
                                 style={
                                   activeTab === "/profile"
                                     ? {
@@ -1040,8 +1038,15 @@ function Sidebar(props) {
                           isText={true}
                           text={
                             CurrencyType(false) +
-                            amountFormat(getTotalAssetValue(), "en-US", "USD") +
-                            " " +
+                            (window.sessionStorage.getItem(
+                              "shouldRecallApis"
+                            ) === "true"
+                              ? "0.00"
+                              : amountFormat(
+                                  getTotalAssetValue(),
+                                  "en-US",
+                                  "USD"
+                                ) + " ") +
                             CurrencyType(true)
                           }
                           className="tool-tip-container-bottom-arrow"
@@ -1052,7 +1057,11 @@ function Sidebar(props) {
                           >
                             {CurrencyType(false)}
                             {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                            {numToCurrency(getTotalAssetValue())}{" "}
+                            {window.sessionStorage.getItem(
+                              "shouldRecallApis"
+                            ) === "true"
+                              ? "0.00"
+                              : numToCurrency(getTotalAssetValue())}
                           </h3>
                         </CustomOverlay>
                       </div>
@@ -1085,10 +1094,13 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={HomeSidebarIcon}
+                                style={
                                   activeTab === "/home"
-                                    ? ActiveHomeIcon
-                                    : InActiveHomeIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                               Home
@@ -1117,7 +1129,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={TwoPeopleIcon}
+                                src={FollowingSidebarIcon}
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
@@ -1153,10 +1165,13 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={LeaderboardSidebarIcon}
+                                style={
                                   activeTab === "/home-leaderboard"
-                                    ? ActiveSmartMoneySidebarIcon
-                                    : InactiveSmartMoneySidebarIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
                               />
                               Leaderboard
@@ -1185,9 +1200,16 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={activeTab === "/nft" ? NFTIcon : NFTIcon}
+                                src={NFTIcon}
+                                style={
+                                  activeTab === "/nft"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
                               />
-                              NFTs
+                              NFT
                             </NavLink>
                           </li>
                           <li>
@@ -1208,11 +1230,15 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={
+                                src={ProfileSidebarIcon}
+                                style={
                                   activeTab === "/profile"
-                                    ? ActiveProfileIcon
-                                    : ProfileIcon
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
                                 }
+                                className="followingImg"
                               />
                               Profile
                             </NavLink>

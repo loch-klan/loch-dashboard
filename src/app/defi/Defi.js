@@ -28,6 +28,7 @@ import {
   CurrencyType,
   mobileCheck,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import FixAddModal from "../common/FixAddModal";
@@ -38,6 +39,8 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import { getAllWalletListApi } from "../wallet/Api";
 import { updateDefiData } from "./Api";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import DefiMobile from "./DefiMobile.js";
 
 class Defi extends Component {
   constructor(props) {
@@ -128,9 +131,9 @@ class Defi extends Component {
     });
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
+    // if (mobileCheck()) {
+    //   this.props.history.push("/home");
+    // }
     // if (this.state.userPlan?.defi_enabled) {
     //   this.props.getAllCoins();
     //   // getAllProtocol(this);
@@ -145,15 +148,7 @@ class Defi extends Component {
     this.startPageView();
     this.updateTimer(true);
 
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     if (this.props.defiState && this.props.commonState.defi) {
       this.setState({
         defiStateLocally: this.props.defiState,
@@ -496,6 +491,25 @@ class Defi extends Component {
         },
       },
     ];
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <DefiMobile
+            defiStateLocally={this.state.defiStateLocally}
+            toggleYield={this.toggleYield}
+            isYeildToggle={this.state.isYeildToggle}
+            sortBy={this.state.sortBy}
+            handleSort={this.handleSort}
+            currency={this.state.currency}
+            isDebtToggle={this.state.isDebtToggle}
+            toggleDebt={this.toggleDebt}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}

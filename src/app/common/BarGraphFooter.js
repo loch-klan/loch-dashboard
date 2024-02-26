@@ -9,11 +9,11 @@ export const BarGraphFooter = (props) => {
     const className =
       index == props.active || badge == props.active
         ? `inter-display-medium f-s-13 lh-16 timeBadge ${
-            props.lineChart ? "lineChartTimeBadge" : ""
-          } active`
+            props.divideInTwo ? "timeBadeMobile" : ""
+          } ${props.lineChart ? "lineChartTimeBadge" : ""} active`
         : `inter-display-medium f-s-13 lh-16 timeBadge ${
-            props.lineChart ? "lineChartTimeBadge" : ""
-          }`;
+            props.divideInTwo ? "timeBadeMobile" : ""
+          } ${props.lineChart ? "lineChartTimeBadge" : ""}`;
     return (
       // <Col md={4} sm={6} lg={2} key={index}>
       //   <div  id={index} className={className} onClick={props.handleFooterClick}>{badge}</div>
@@ -33,14 +33,47 @@ export const BarGraphFooter = (props) => {
   return (
     <div
       className={`bar-graph-footer ${props.lineChart ? "linechartFooter" : ""}`}
-      style={props.cohort ? { marginBottom: "0px" } : {}}
+      style={
+        props.cohort
+          ? {
+              marginBottom: "0px",
+            }
+          : {}
+      }
     >
       {/* <Row>
         {timeBadge}
       </Row> */}
-      <div className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}>
-        {timeBadge}
-      </div>
+      {props.divideInTwo ? (
+        <>
+          <div
+            className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+            style={{
+              columnGap: "0.5rem",
+            }}
+          >
+            {timeBadge.slice(0, timeBadge.length / 2)}
+          </div>
+          <div
+            style={{
+              columnGap: "0.5rem",
+              marginTop:
+                props.priceGuageExpandedMobile || props.isMobileGraph
+                  ? "1rem"
+                  : "",
+            }}
+            className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+          >
+            {timeBadge.slice(timeBadge.length / 2, timeBadge.length)}
+          </div>
+        </>
+      ) : (
+        <div
+          className={`timeBadgeWrapper ${props.lineChart ? "lineChart" : ""}`}
+        >
+          {timeBadge}
+        </div>
+      )}
     </div>
   );
 };

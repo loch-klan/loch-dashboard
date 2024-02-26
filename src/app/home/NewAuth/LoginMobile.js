@@ -99,11 +99,16 @@ const LoginMobile = ({
                 Sign in
               </button>
             </div>
-            {/* <div className='new-auth-content-bottom-cta-holder'>
-                          <p className='new-auth-content-bottom-cta'>
-                          Don’t have an account yet?
-                          </p>
-                      </div> */}
+            <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
+              <p
+                onClick={() => {
+                  toggleModal("signup");
+                }}
+                className="new-auth-content-bottom-cta "
+              >
+                Don’t have an account yet?
+              </p>
+            </div>
           </div>
         </div>
         {/* </div> */}

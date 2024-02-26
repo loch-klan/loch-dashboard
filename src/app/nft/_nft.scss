@@ -123,7 +123,7 @@
     }
   }
   .mobileSmartMoneyListContainer {
-    padding: 2rem;
+    padding-bottom: 2rem;
     .mobileSmartMoneyListBlurContainer {
       position: relative;
       min-height: 50vh;
@@ -179,7 +179,7 @@
       }
     }
     .mobileSmartMoneyBlock {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       margin-bottom: 1.5rem;
       border-radius: 1.2rem;
       box-shadow: 0 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -189,7 +189,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 0.1rem solid #e5e5e6;
+        border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
         .msmbHeaderLeft {
           display: flex;
           align-items: center;
@@ -202,7 +202,7 @@
             margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
-            color: #313233;
+            color: var(--grey313);
             margin-right: 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
@@ -317,7 +317,7 @@
     }
   }
   .mobileSmartMoneyBlock {
-    background-color: white;
+    background-color: var(--cardBackgroud);
     margin-bottom: 1.5rem;
     border-radius: 1.2rem;
     box-shadow: 0 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),

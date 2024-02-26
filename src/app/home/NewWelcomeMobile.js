@@ -4,8 +4,6 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   ActiveSmartMoneySidebarIcon,
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
   NewWelcomeAddAnotherPlusIcon,
   NewWelcomeCopyIcon,
   NewWelcomeTrashIcon,
@@ -14,20 +12,12 @@ import {
   darkModeIcon,
   lightModeIcon,
 } from "../../assets/images/icons";
-import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
-import LinkIcon from "../../assets/images/icons/link.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
 import logo from "../../assets/images/logo-white.svg";
+import { API_LIMIT, SORT_BY_AMOUNT, START_INDEX } from "../../utils/Constant";
 import {
-  API_LIMIT,
-  BASE_URL_S3,
-  SORT_BY_AMOUNT,
-  START_INDEX,
-} from "../../utils/Constant";
-import {
-  deleteToken,
   getCurrentUser,
   getToken,
   setLocalStoraage,
@@ -39,13 +29,13 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions";
+
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import TransactionTable from "../intelligence/TransactionTable";
-import walletIconsWhite from "./../../assets/images/icons/wallet_icon_white.svg";
 
+import OutsideClickHandler from "react-outside-click-handler";
 import {
   AddTextbox,
   ClickTrendingAddress,
@@ -54,10 +44,13 @@ import {
   ConnectWalletButtonClickedWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
+  EmailAddressAddedSignUp,
   LPC_Go,
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
 } from "../../utils/AnalyticsFunctions.js";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import { isNewAddress } from "../Portfolio/Api.js";
 import {
   GetAllPlan,
   detectNameTag,
@@ -66,7 +59,7 @@ import {
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
-import ConnectModal from "../common/ConnectModal.js";
+import Loading from "../common/Loading.js";
 import {
   setHeaderReducer,
   setMetamaskConnectedReducer,
@@ -78,34 +71,35 @@ import {
   getAllCoins,
   getAllParentChains,
   signIn,
+  signUpWelcome,
   verifyUser,
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api.js";
+import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock.js";
+import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import {
-  updateAddToWatchList,
   removeFromWatchList,
+  updateAddToWatchList,
 } from "../watchlist/redux/WatchListApi";
 import {
   createAnonymousUserSmartMoneyApi,
   getSmartMoney,
 } from "./../smartMoney/Api";
-import Login from "./NewAuth/Login.js";
-import Verify from "./NewAuth/Verify.js";
-import NewHomeInputBlock from "./NewHomeInputBlock.js";
-import MobileHome from "./MobileHome.js";
-import Loading from "../common/Loading.js";
-import SmartMoneyMobileBlock from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileBlock.js";
 import LoginMobile from "./NewAuth/LoginMobile.js";
-import SmartMoneyMobileModalContainer from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileModalContainer.js";
+import RedirectMobile from "./NewAuth/RedirectMobile.js";
+import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
-import OutsideClickHandler from "react-outside-click-handler";
-import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
+import NewHomeInputBlock from "./NewHomeInputBlock.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      areNewAddresses: false,
+      isPrevAddressNew: true,
+      confirmLeave: false,
       currentMetamaskWallet: {},
+      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -141,6 +135,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       isAddAnotherButtonsDisabled: false,
       authmodal: "",
       email: "",
+      emailSignup: "",
       otp: "",
       walletInput: [
         {
@@ -432,6 +427,11 @@ class NewWelcomeMobile extends BaseReactComponent {
     this.props.createAnonymousUserApi(data, this, finalArr, null);
   };
   addAdressesGo = () => {
+    if (this.state.areNewAddresses) {
+      window.sessionStorage.setItem("shouldRecallApis", true);
+    } else {
+      window.sessionStorage.setItem("shouldRecallApis", false);
+    }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let addWalletTemp = this.state.walletInput;
@@ -569,6 +569,28 @@ class NewWelcomeMobile extends BaseReactComponent {
           ""
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data, (resFromApi) => {
+        if (this.state.walletInput.length === 1) {
+          this.setState({
+            areNewAddresses: resFromApi,
+          });
+        } else {
+          if (resFromApi && this.state.isPrevAddressNew) {
+            this.setState({
+              areNewAddresses: true,
+            });
+          } else {
+            this.setState({
+              areNewAddresses: false,
+              isPrevAddressNew: false,
+            });
+          }
+        }
+      });
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -808,16 +830,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
@@ -829,26 +842,15 @@ class NewWelcomeMobile extends BaseReactComponent {
         JSON.parse(window.sessionStorage.getItem("stop_redirect"));
       if (isStopRedirect) {
         this.props.setPageFlagDefault();
-
-        if (!mobileCheck()) {
-          deleteToken();
-        }
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
         let user = window.sessionStorage.getItem("lochUser")
           ? JSON.parse(window.sessionStorage.getItem("lochUser"))
           : false;
         if (user) {
-          if (!mobileCheck()) {
-            deleteToken();
-          } else {
-            this.props.history.push("/home");
-          }
         } else {
           this.props.setPageFlagDefault();
-          if (!mobileCheck()) {
-            deleteToken();
-          }
+
           //  window.sessionStorage.setItem("defi_access", true);
           //  window.sessionStorage.setItem("isPopup", true);
           //  // window.sessionStorage.setItem("whalepodview", true);
@@ -874,9 +876,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     } else {
       this.props.setPageFlagDefault();
-      if (!mobileCheck()) {
-        deleteToken();
-      }
+
       // window.sessionStorage.setItem("defi_access", true);
       // window.sessionStorage.setItem("isPopup", true);
       // // window.sessionStorage.setItem("whalepodview", true);
@@ -971,10 +971,27 @@ class NewWelcomeMobile extends BaseReactComponent {
     }
   };
 
+  handleSubmitEmailSignup = (val = false) => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append("signed_up_from", "welcome");
+      EmailAddressAddedSignUp({
+        email_address: this.state.emailSignup,
+        session_id: "",
+        isMobile: true,
+      });
+      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+    }
+  };
+
   handleSubmitOTP = () => {
     if (this.state.otp && this.state.otp.length > 5) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("otp_token", this.state.otp);
       this.props.verifyUser(this, data, true, this.state.smartMoneyLogin);
     }
@@ -1053,6 +1070,22 @@ class NewWelcomeMobile extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [];
+      this.state.walletInput.forEach((e) => {
+        if (e.id === name) {
+          tempWalletAddress.push(value);
+        } else {
+          if (e.apiAddress) {
+            tempWalletAddress.push(e.apiAddress);
+          } else if (e.address) {
+            tempWalletAddress.push(e.address);
+          }
+        }
+      });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1254,7 +1287,7 @@ class NewWelcomeMobile extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -1310,12 +1343,58 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     }
   }
-
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  handleSignOutWelcome = () => {
+    this.setState({
+      confirmLeave: false,
+      lochUser: undefined,
+    });
+    if (this.props.blurTables) {
+      this.props.blurTables();
+    }
+  };
+  onLeaderboardWalletClick = (passedAccount) => {
+    this.setState(
+      {
+        initialInput: true,
+      },
+      () => {
+        const fakeOnChange = {
+          target: {
+            name: "wallet1",
+            value: passedAccount,
+          },
+        };
+        this.handleOnChange(fakeOnChange);
+      }
+    );
+  };
   render() {
     const tableData = this.state.accountList;
 
     return (
       <div className="new-homepage new-homepage-mobile">
+        {/* <ConfirmLeaveModal
+          show
+          history={this.props.history}
+          handleClose={this.closeConfirmLeaveModal}
+          handleSignOutWelcome={this.handleSignOutWelcome}
+        /> */}
+        {this.state.confirmLeave ? (
+          <SmartMoneyMobileSignOutModal
+            onSignOut={this.handleSignOutWelcome}
+            onHide={this.closeConfirmLeaveModal}
+          />
+        ) : null}
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -1348,36 +1427,51 @@ class NewWelcomeMobile extends BaseReactComponent {
             }}
             handleSubmitOTP={this.handleSubmitOTP}
           />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUpMobile
+            toggleModal={this.toggleAuthModal}
+            smartMoneyLogin={this.state.smartMoneyLogin}
+            isMobile
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            show={this.state.authmodal == "signup"}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <RedirectMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
+          />
         ) : null}
         <div className="new-homepage__header new-homepage__header-mobile">
           <div className="new-homepage__header-container new-homepage__header-container-mobile">
-            <div className="d-flex justify-content-between">
-              {this.props.isDarkMode ? (
+            <div className="d-flex justify-content-end">
+              {this.state.lochUser &&
+              (this.state.lochUser.email ||
+                this.state.lochUser.first_name ||
+                this.state.lochUser.last_name) ? (
                 <button
-                  onClick={() => this.props.handleDarkMode("light")}
-                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode  new-homepage-btn--blur--nover"
+                  onClick={this.openConfirmLeaveModal}
+                  className="new-homepage-btn new-homepage-btn--white new-homepage-btn--white-non-click"
+                  style={{ padding: "8px 12px" }}
                 >
-                  <img
-                    style={{ height: "14px", width: "14px" }}
-                    src={lightModeIcon}
-                    alt=""
-                  />
-                  Light Mode
+                  <div className="new-homepage-btn new-homepage-btn-singin-icon">
+                    <img src={personRounded} alt="" />
+                  </div>
+                  {this.state.lochUser.first_name ||
+                  this.state.lochUser.last_name
+                    ? `${this.state.lochUser.first_name} ${
+                        this.state.lochUser.last_name
+                          ? this.state.lochUser.last_name.slice(0, 1) + "."
+                          : ""
+                      }`
+                    : "Signed In"}
                 </button>
               ) : (
-                <button
-                  onClick={() => this.props.handleDarkMode("dark")}
-                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode  new-homepage-btn--blur--nover"
-                >
-                  <img
-                    style={{ height: "14px", width: "14px" }}
-                    src={darkModeIcon}
-                    alt=""
-                  />
-                  Dark Mode
-                </button>
-              )}
-              {this.checkUser() ? null : (
                 <button
                   className="new-homepage-btn new-homepage-btn--white"
                   style={{ padding: "8px 12px" }}
@@ -1391,7 +1485,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                   <div className="new-homepage-btn new-homepage-btn-singin-icon">
                     <img src={personRounded} alt="" />
                   </div>
-                  Sign in
+                  Sign in / up
                 </button>
               )}
             </div>
@@ -1642,6 +1736,10 @@ class NewWelcomeMobile extends BaseReactComponent {
                               }
                               smartMoneyBlur={this.props.blurTable}
                               welcomePage
+                              onLeaderboardWalletClick={
+                                this.onLeaderboardWalletClick
+                              }
+                              hideFollow
                             />
                           );
                         })}
@@ -1801,6 +1899,8 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  signUpWelcome,
+  isNewAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);

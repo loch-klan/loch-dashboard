@@ -19,6 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
@@ -389,7 +390,7 @@ class SmartMoneyPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -641,7 +642,6 @@ class SmartMoneyPage extends BaseReactComponent {
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
-                      isMobile: false,
                     });
                     window.open(shareLink, "_blank", "noreferrer");
                   } else {

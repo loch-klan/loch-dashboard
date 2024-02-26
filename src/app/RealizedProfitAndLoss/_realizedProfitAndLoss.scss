@@ -1,0 +1,67 @@
+.realized-profit-and-loss-expanded-mobile {
+  .bar-graph-section {
+    padding: 1.5rem;
+    // width: 44.3rem;
+    box-shadow: none;
+    width: 100%;
+    // height: 500px;
+    .graph-header {
+      padding-left: 1.6rem;
+      .header {
+        .inter-display-semi-bold {
+          cursor: pointer;
+        }
+      }
+    }
+    .custom-label {
+      padding-top: 0;
+      padding-bottom: 1.5rem;
+    }
+    .chartArea {
+      height: 36.3rem;
+    }
+  }
+
+  .intelligenceRealisedLeftContainer {
+    width: 100%;
+    .timeCalendarBadgeWrapper {
+      width: 100%;
+      border-color: var(--greyCardBackgroud);
+      .timeCalBadge {
+        border-color: var(--greyCardBackgroud);
+      }
+    }
+
+    .timeBadgeCalendarContainer-right {
+      .intelligenceCalendar {
+        transform: translate(-57%, 100%) !important;
+      }
+    }
+    .timeBadgeCalendarContainer-left {
+      .intelligenceCalendar {
+        transform: translate(-6.5%, 100%) !important;
+      }
+    }
+  }
+  .intelligenceRealisedRightContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .intelligenceRealisedRightItems {
+      width: 100%;
+      .custom-dropdown .show {
+        margin-left: 0px;
+      }
+      .custom-dropdown {
+        border-color: #19191a;
+      }
+    }
+    .intelligenceRealisedRightMiddleItem {
+      margin-top: 2rem;
+
+      .custom-dropdown.lineChart {
+        z-index: 1;
+      }
+    }
+  }
+}

@@ -72,6 +72,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToBottomAfterPageChange,
+  scrollToTop,
 } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
@@ -99,6 +101,8 @@ import UpgradeModal from "../common/upgradeModal";
 import { getAllCoins } from "../onboarding/Api.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { isEqual } from "lodash";
+import MobileLayout from "../layout/MobileLayout.js";
+import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -118,6 +122,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      isMobileDevice: false,
       intelligenceStateLocal: {},
       minAmount: "1",
       maxAmount: "1000000000",
@@ -253,17 +258,11 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
+    scrollToTop();
     const transHistoryPageNumber = window.sessionStorage.getItem(
       "transHistoryPageNumber"
     );
@@ -373,6 +372,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         !this.props.intelligenceState.table
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        this.props.getAllWalletListApi(tempData, this);
         this.props.history.replace({
           search: `?p=${this.state.currentPage}`,
         });
@@ -524,7 +529,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          window.scroll(0, document.body.scrollHeight);
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -592,7 +597,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         condition: cond ? cond : [],
         apiResponse: false,
       });
-
       this.callApi(this.state.currentPage || START_INDEX);
       this.props.getFilters(this);
     }
@@ -1065,18 +1069,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col " id="time">
-            <CustomOverlay
-              position="top"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={
-                this.state.isShowingAge
-                  ? "Click to view Timestamp"
-                  : "Click to view Age"
-              }
-            >
+          <div className="cp history-table-header-col" id="time">
+            {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
                   this.toggleAgeTimestamp();
@@ -1088,7 +1082,31 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
               </span>
-            </CustomOverlay>
+            ) : (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
+              >
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
+            )}
             <Image
               onClick={() => this.handleTableSort("time")}
               src={sortByIcon}
@@ -1100,7 +1118,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "time",
 
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
@@ -1750,7 +1768,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "asset",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -1796,7 +1814,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "amount",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
@@ -1839,7 +1857,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         dataKey: "usdValueThen",
 
         className: "usd-value",
-        coumnWidth: 0.225,
+        coumnWidth: this.state.isShowingAge ? 0.235 : 0.225,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValueThen") {
@@ -1928,7 +1946,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "method",
 
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
@@ -1978,7 +1996,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         dataKey: "network",
 
         className: "usd-value",
-        coumnWidth: 0.15,
+        coumnWidth: this.state.isShowingAge ? 0.16 : 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "network") {
@@ -2020,7 +2038,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         ),
         dataKey: "hash",
 
-        coumnWidth: 0.125,
+        coumnWidth: this.state.isShowingAge ? 0.135 : 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "hash") {
@@ -2068,6 +2086,45 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
       },
     ];
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+          CheckApiResponse={this.CheckApiResponse}
+        >
+          <TransactionHistoryPageMobile
+            showHideDustFun={this.showDust}
+            showHideDustVal={this.state.showDust}
+            tableLoading={this.state.tableLoading}
+            tableData={tableData}
+            columnData={columnList}
+            tableSortOpt={this.state.tableSortOpt}
+            handleSort={this.handleTableSort}
+            totalPage={totalPage}
+            history={this.props.history}
+            location={this.props.location}
+            currentPage={currentPage}
+            onPageChange={this.onPageChange}
+            page={currentPage}
+            onValidSubmit={this.onValidSubmit}
+            intelligenceState={this.props.intelligenceState}
+            OnboardingState={this.props.OnboardingState}
+            handleAmount={this.handleAmount}
+            minAmount={this.state.minAmount}
+            maxAmount={this.state.maxAmount}
+            addCondition={this.addCondition}
+            timeSearchIsUsed={this.timeSearchIsUsed}
+            selectedTimes={this.state.selectedTimes}
+            assetSearchIsUsed={this.assetSearchIsUsed}
+            selectedAssets={this.state.selectedAssets}
+            handleFunction={this.handleFunction}
+            networkSearchIsUsed={this.networkSearchIsUsed}
+            selectedNetworks={this.state.selectedNetworks}
+          />
+        </MobileLayout>
+      );
+    }
 
     return (
       <>

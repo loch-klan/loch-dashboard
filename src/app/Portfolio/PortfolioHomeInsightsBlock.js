@@ -24,7 +24,7 @@ class PortfolioHomeInsightsBlock extends Component {
       return (
         <div
           style={{
-            height: "32rem",
+            height: this.props.isMobile ? "44rem" : "32rem",
           }}
         >
           <div
@@ -43,8 +43,8 @@ class PortfolioHomeInsightsBlock extends Component {
     return (
       <div
         style={{
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
+          paddingLeft: this.props?.isMobile ? "0rem" : "1rem",
+          paddingRight: this.props?.isMobile ? "0rem" : "1rem",
         }}
         className="insights-wrapper-container"
       >
@@ -57,14 +57,114 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: "30rem",
-                padding: "0rem 0.5rem",
+                height: this.props?.isMobile ? "40.5rem" : "30rem",
+                padding: this.props?.isMobile
+                  ? "0rem 0.5rem 0rem 0rem"
+                  : "0rem 0.5rem",
+                marginTop: this.props?.isMobile ? "1rem" : "0rem",
               }}
               className="insights-wrapper insights-wrapper-portfolio-home"
             >
               {this.props.updatedInsightList
                 .slice(0, 10)
                 .map((insight, key) => {
+                  if (!this.props?.isMobile)
+                    return (
+                      <>
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            position: "relative",
+                            marginTop: "1rem",
+                            marginBottom: "0rem",
+                            boxShadow: "none",
+                            border: "0.1rem solid #E5E5E6",
+                            alignItems: "flex-start",
+                          }}
+                          className="insights-card"
+                          key={key}
+                        >
+                          <div className="insights-cards-home-left">
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                            <h5
+                              style={{
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                marginTop: "0.5rem",
+                              }}
+                              className="inter-display-medium f-s-13 lh-12"
+                            >
+                              {InsightType.getText(insight.insight_type)}
+                            </h5>
+                            <div
+                              style={{
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                marginTop: "0.5rem",
+                              }}
+                              className="chips-wrapper"
+                            >
+                              {insight?.sub_type && (
+                                <h5
+                                  style={{
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                  className="inter-display-bold f-s-10 lh-12 risk-chip"
+                                >
+                                  {InsightType.getRiskType(insight.sub_type)}
+                                </h5>
+                              )}
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              marginLeft: "1rem",
+                            }}
+                            className="insights-content"
+                          >
+                            <p
+                              style={{
+                                whiteSpace: "wrap",
+                                marginTop: "0rem",
+                              }}
+                              className="inter-display-medium f-s-12 lh-16 grey-969"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.sub_title,
+                              }}
+                            ></p>
+                            <h4
+                              style={{
+                                whiteSpace: "wrap",
+                              }}
+                              className="inter-display-medium f-s-13 lh-19 grey-313"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.title,
+                              }}
+                            ></h4>
+                          </div>
+                        </div>
+                      </>
+                    );
                   return (
                     <>
                       <div
@@ -73,7 +173,7 @@ class PortfolioHomeInsightsBlock extends Component {
                           whiteSpace: "nowrap",
                           textOverflow: "ellipsis",
                           position: "relative",
-                          marginTop: "1rem",
+                          marginTop: key === 0 ? "" : "1rem",
                           marginBottom: "0rem",
                           boxShadow: "none",
                           border: "0.1rem solid var(--borderwhiteDarkLight)",
@@ -83,81 +183,88 @@ class PortfolioHomeInsightsBlock extends Component {
                         className="insights-card"
                         key={key}
                       >
-                        <div className="insights-cards-home-left">
-                          <Image
-                            src={
-                              insight.insight_type ===
-                              InsightType.COST_REDUCTION
-                                ? reduceCost
-                                : insight.insight_type ===
-                                  InsightType.RISK_REDUCTION
-                                ? reduceRisk
-                                : increaseYield
-                            }
-                            className="insight-icon"
-                          />
-                          <h5
-                            style={{
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              textOverflow: "ellipsis",
-                              marginTop: "0.5rem",
-                            }}
-                            className="inter-display-medium f-s-13 lh-12"
-                          >
-                            {InsightType.getText(insight.insight_type)}
-                          </h5>
+                        <div>
                           <div
-                            style={{
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              textOverflow: "ellipsis",
-                              marginTop: "0.5rem",
-                            }}
-                            className="chips-wrapper"
+                            className="insights-cards-home-left"
+                            style={{ display: "flex" }}
                           >
-                            {insight?.sub_type && (
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                            <div>
                               <h5
                                 style={{
                                   overflow: "hidden",
                                   whiteSpace: "nowrap",
                                   textOverflow: "ellipsis",
+                                  marginTop: "0.5rem",
                                 }}
-                                className="inter-display-bold f-s-10 lh-12 risk-chip"
+                                className="inter-display-medium f-s-13 lh-12"
                               >
-                                {InsightType.getRiskType(insight.sub_type)}
+                                {InsightType.getText(insight.insight_type)}
                               </h5>
-                            )}
+                              <div
+                                style={{
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                  marginTop: "0.5rem",
+                                }}
+                                className="chips-wrapper"
+                              >
+                                {insight?.sub_type && (
+                                  <h5
+                                    style={{
+                                      overflow: "hidden",
+                                      whiteSpace: "nowrap",
+                                      textOverflow: "ellipsis",
+                                    }}
+                                    className="inter-display-bold f-s-10 lh-12 risk-chip"
+                                  >
+                                    {InsightType.getRiskType(insight.sub_type)}
+                                  </h5>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          style={{
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            marginLeft: "1rem",
-                          }}
-                          className="insights-content"
-                        >
-                          <p
+                          <div
                             style={{
-                              whiteSpace: "wrap",
-                              marginTop: "0rem",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              marginTop: "1rem",
                             }}
-                            className="inter-display-medium f-s-12 lh-16 grey-969"
-                            dangerouslySetInnerHTML={{
-                              __html: insight.sub_title,
-                            }}
-                          ></p>
-                          <h4
-                            style={{
-                              whiteSpace: "wrap",
-                            }}
-                            className="inter-display-medium f-s-13 lh-19 grey-313"
-                            dangerouslySetInnerHTML={{
-                              __html: insight.title,
-                            }}
-                          ></h4>
+                            className="insights-content"
+                          >
+                            <p
+                              style={{
+                                whiteSpace: "normal",
+                                marginTop: "0rem",
+                              }}
+                              className="inter-display-medium f-s-12 lh-16 grey-969"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.sub_title,
+                              }}
+                            ></p>
+                            <h4
+                              style={{
+                                whiteSpace: "normal",
+                              }}
+                              className="inter-display-medium f-s-13 lh-19 grey-313"
+                              dangerouslySetInnerHTML={{
+                                __html: insight.title,
+                              }}
+                            ></h4>
+                          </div>
                         </div>
                       </div>
                     </>

@@ -9,6 +9,7 @@ import {
   SendOtp,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  updateWalletListFlag,
 } from "../../common/Api.js";
 import {
   VerifySmartMoneyEmailOtp,
@@ -24,6 +25,7 @@ import SignInIcon from "../../../assets/images/icons/ActiveProfileIcon.svg";
 import validator from "validator";
 import { toast } from "react-toastify";
 import { CrossSmartMoneyIcon } from "../../../assets/images/icons/index.js";
+import { scrollToTop } from "../../../utils/ReusableFunctions.js";
 
 class SmartMoneyMobileSignInUp extends BaseReactComponent {
   constructor(props) {
@@ -79,7 +81,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
   };
 
   showBorder = () => {
-    this.scrollToTop();
+    scrollToTop();
     this.setState({
       showBorder: true,
     });
@@ -154,7 +156,10 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
       isOptInValid: false,
     });
     let data = new URLSearchParams();
-    data.append("email", this.state.signInEmail);
+    data.append(
+      "email",
+      this.state.signInEmail ? this.state.signInEmail.toLowerCase() : ""
+    );
     data.append("otp_token", this.state.signInOtp);
     data.append(
       "signed_up_from",
@@ -222,21 +227,6 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
     toast.success(`Email verified`);
     this.props.onHide();
   };
-  scrollToTop = () => {
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 300);
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 500);
-  };
 
   render() {
     return (
@@ -276,7 +266,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             />
           </div>
         </div>
-        <div className="msmpModalMainIconWhiteContainer">
+        <div className="msmpModalMainIconWhiteContainer popup-main-icon-with-border-mobile">
           <Image
             src={SignInIcon}
             onLoad={() => {
@@ -306,7 +296,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
           ) : null}
         </div>
         <div
-          className={`msmModalInputWrapper m-b-48 ${
+          className={`msmModalInputWrapper m-b-48 input-noshadow-dark ${
             this.state.showBorder ? "msmModalInputWrapperSelected" : ""
           }`}
         >
@@ -328,7 +318,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             onKeyDown={this.handleKeyPress}
             onFocus={this.showBorder}
             onBlur={this.hideBorder}
-            autocomplete="off"
+            autoComplete="off"
           />
         </div>
         <div className="msmModalBtnContainer">
@@ -376,7 +366,7 @@ const mapDispatchToProps = {
 
   removeFromWatchList,
   updateAddToWatchList,
-
+  updateWalletListFlag,
   GetAllPlan,
   VerifySmartMoneyEmailOtp,
   smartMoneySignUpApi,

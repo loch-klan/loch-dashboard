@@ -29,9 +29,13 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
-import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  TruncateText,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
-import { isFollowedByUser } from "../Portfolio/Api";
+import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
 import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import { detectNameTag, updateUserWalletApi } from "../common/Api";
@@ -51,6 +55,7 @@ class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showAmountsAtTop: false,
       topBarHistoryItems: [],
       showTopBarHistoryItems: false,
       walletInput: [
@@ -260,6 +265,15 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    if (window.location.pathname === "/home") {
+      this.setState({
+        showAmountsAtTop: true,
+      });
+    } else {
+      this.setState({
+        showAmountsAtTop: false,
+      });
+    }
     const tempTopBarHistoryItems = window.localStorage.getItem(
       "topBarHistoryLocalItems"
     );
@@ -398,6 +412,11 @@ class TopWalletExchangeBar extends Component {
           false
         );
       }
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -742,7 +761,7 @@ class TopWalletExchangeBar extends Component {
         w.id = `wallet${i + 1}`;
       }
     });
-
+    sessionStorage.setItem("replacedOrAddedAddress", true);
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
@@ -1146,6 +1165,11 @@ class TopWalletExchangeBar extends Component {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+      this.props.isNewAddress(data);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {
@@ -1294,6 +1318,28 @@ class TopWalletExchangeBar extends Component {
       followSignupModal: false,
     });
   };
+  getTotalAssetValue = () => {
+    if (this.props.portfolioState) {
+      const tempWallet = this.props.portfolioState.walletTotal
+        ? this.props.portfolioState.walletTotal
+        : 0;
+      const tempCredit = this.props.defiState.totalYield
+        ? this.props.defiState.totalYield
+        : 0;
+      const tempDebt = this.props.defiState.totalDebt
+        ? this.props.defiState.totalDebt
+        : 0;
+
+      let tempAns = tempWallet + tempCredit - tempDebt;
+      if (tempAns) {
+        tempAns = tempAns.toFixed(2);
+      } else {
+        tempAns = 0;
+      }
+      return tempAns;
+    }
+    return 0;
+  };
   render() {
     if (this.props.isMobileRender) {
       if (this.state.walletList && this.state.walletList.length > 0) {
@@ -1327,11 +1373,18 @@ class TopWalletExchangeBar extends Component {
                   </>
                 ) : null}
               </div>
-              <div className="inter-display-semi-bold f-s-16 lh-19">
-                {this.props.assetTotal ? (
-                  <span>${numToCurrency(this.props.assetTotal)}</span>
-                ) : null}
-              </div>
+              {this.state.showAmountsAtTop ? (
+                <div className="inter-display-semi-bold f-s-16 lh-19">
+                  <span className="dotDotText">
+                    {CurrencyType(false)}
+                    {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                    {window.sessionStorage.getItem("shouldRecallApis") ===
+                    "true"
+                      ? "0.00"
+                      : numToCurrency(this.getTotalAssetValue())}
+                  </span>
+                </div>
+              ) : null}
             </div>
             {this.state.walletList && this.state.isMobileWalletListExpanded ? (
               <div>
@@ -1542,7 +1595,7 @@ class TopWalletExchangeBar extends Component {
                 )}
               </div>
               <input
-                autocomplete="off"
+                autoComplete="off"
                 name={`wallet${1}`}
                 placeholder="Paste any wallet address or ENS here"
                 className="topBarContainerInputBlockInput"
@@ -1717,6 +1770,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   IsWalletConnectedState: state.IsWalletConnectedState,
   MetamaskConnectedState: state.MetamaskConnectedState,
+  defiState: state.DefiState,
 });
 
 const mapDispatchToProps = {
@@ -1732,6 +1786,7 @@ const mapDispatchToProps = {
   addAddressToWatchList,
   addUserCredits,
   detectNameTag,
+  isNewAddress,
 };
 
 export default connect(

@@ -156,7 +156,10 @@ class AuthModal extends BaseReactComponent {
     });
     // console.log("enter otp", this.state.otp, typeof this.state.otp);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     data.append("otp_token", this.state.otp);
     data.append(
       "signed_up_from",

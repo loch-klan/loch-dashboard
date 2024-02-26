@@ -9,6 +9,7 @@ import NftMobileBlock from "./NftMobileBlock";
 import NftMobileHeader from "./NftMobileHeader";
 import "./_nft.scss";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination";
+import { scrollToBottomAfterPageChange } from "../../utils/ReusableFunctions";
 
 class NFTMobile extends BaseReactComponent {
   constructor(props) {
@@ -29,21 +30,7 @@ class NFTMobile extends BaseReactComponent {
       this.setState({
         shouldScrollToBottom: false,
       });
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 100);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 300);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 500);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 700);
-      setTimeout(() => {
-        window.scroll(0, document.body.scrollHeight);
-      }, 1000);
+      scrollToBottomAfterPageChange();
     }
   }
   onPageChange = () => {
@@ -55,25 +42,26 @@ class NFTMobile extends BaseReactComponent {
   render() {
     return (
       <div className="nft-page-mobile">
-        <NftMobileHeader />
+        <div className="mobile-header-container">
+          <h4>NFT Collection</h4>
+          <p>Browse the NFTs held by this wallet</p>
+        </div>
         {this.props.isLoading ? (
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              height: "100vh",
-              paddingTop: "9rem",
+              height: "70vh",
+              backgroundColor: "var(--cardBackgroud)",
+              borderRadius: "1rem",
+              margin: "1.5rem 0rem",
             }}
           >
             <Loading />
           </div>
         ) : (
-          <div
-            style={{
-              marginTop: "11rem",
-            }}
-          >
+          <div>
             {this.props.tableData && this.props.tableData.length > 0 ? (
               <div className="mobileSmartMoneyListContainer">
                 {this.props.tableData.map((mapData) => {

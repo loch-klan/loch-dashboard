@@ -12,13 +12,34 @@
       .inflowOutflowChartTopInfoLeft {
         display: flex;
         align-items: center;
+        .priceGaugeMobileExpandedPriceDropdownContainer {
+          padding: 0rem;
+          width: 100%;
+          .custom-dropdown {
+            background-color: var(--cardBackgroud) !important;
+            border-color: var(--borderwhiteDarkLight) !important;
+            .placeholderPriceDropdown {
+              white-space: nowrap !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+            }
+            .dropdown-content-price {
+              margin-left: 0;
+            }
+
+            &:hover {
+              background-color: var(--cardBackgroud) !important;
+              border-color: var(--black191);
+            }
+          }
+        }
         .seeMoreBtn {
           margin-left: 1rem;
           display: flex;
           align-items: center;
-          color: var(--secondaryDarkTextColorNew);
-          font-size: 13px;
-          font-weight: 500;
+          color: #7C7D81;
+          font-size: 10px;
+          font-weight: 600;
           // transition-duration: 300ms;
           .seeMoreBtnIcon {
             // transition-duration: 300ms;
@@ -128,6 +149,20 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+.transaction-history-page-filters {
+  &.fillter_tabs_section {
+    .transaction-history-page-filters-row {
+      max-width: 100%;
+      margin-left: 0px;
+      margin-right: 0px;
+      gap: 1rem;
+      .transactionHistoryCol {
+        padding: 0px;
       }
     }
   }

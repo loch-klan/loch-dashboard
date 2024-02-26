@@ -93,10 +93,7 @@ export const getAllCounterFeeApi = (
               },
             });
           }
-          console.log(
-            "res.data.data.counter_party_volume_traded ",
-            res.data.data.counter_party_volume_traded
-          );
+
           if (ctx.setLocalCounterParty) {
             ctx.setLocalCounterParty(g_data, getCounterGraphData(g_data, ctx));
           }
@@ -329,19 +326,26 @@ export const getAvgCostBasis = (ctx) => {
               total_gain: totalGain,
             },
           });
-
-          ctx.setState(
-            {
-              AvgCostLoading: false,
-            },
-            () => {
-              setTimeout(() => {
-                if (ctx.sortArray) {
-                  ctx.sortArray("CurrentValue", false);
-                }
-              }, 100);
-            }
-          );
+          const shouldRecallApis =
+            window.sessionStorage.getItem("shouldRecallApis");
+          if (!shouldRecallApis || shouldRecallApis === "false") {
+            ctx.setState(
+              {
+                AvgCostLoading: false,
+              },
+              () => {
+                setTimeout(() => {
+                  if (ctx.sortArray) {
+                    ctx.sortArray("CurrentValue", false);
+                  }
+                }, 100);
+              }
+            );
+          } else {
+            ctx.setState({
+              shouldAvgCostLoading: false,
+            });
+          }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }

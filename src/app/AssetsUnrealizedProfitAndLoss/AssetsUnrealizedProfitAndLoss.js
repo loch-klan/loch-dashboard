@@ -62,6 +62,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -74,6 +75,8 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
@@ -172,10 +175,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }, 900000);
   };
   componentDidMount() {
-    if (mobileCheck()) {
-      this.props.history.push("/home");
-    }
-
+    scrollToTop();
     if (
       !this.props.commonState.assetsPage ||
       !(
@@ -1118,6 +1118,24 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         },
       },
     ];
+
+    if (mobileCheck()) {
+      return (
+        <MobileLayout
+          isSidebarClosed={this.props.isSidebarClosed}
+          history={this.props.history}
+        >
+          <AssetUnrealizedProfitAndLossMobile
+            columnData={columnData}
+            handleShare={this.handleShare}
+            tableData={this.state.Average_cost_basis_local}
+            AvgCostLoading={this.state.AvgCostLoading}
+            showHideDustFun={this.handleDust}
+            showHideDustVal={this.state.showDust}
+          />
+        </MobileLayout>
+      );
+    }
 
     return (
       <>

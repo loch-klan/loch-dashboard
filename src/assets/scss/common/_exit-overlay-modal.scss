@@ -1119,3 +1119,10 @@ justify-content: center;
 .popup-main-icon-with-border{
   border: 1px solid var(--popupCenterIconsBorder);
 }
+
+.popup-main-icon-with-border-mobile{
+  border: 1px solid var(--popupCenterIconsBorder);
+  img{
+    filter: var(--invertColor);
+  }
+}
