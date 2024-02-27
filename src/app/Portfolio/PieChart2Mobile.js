@@ -486,7 +486,7 @@ class PieChart2Mobile extends BaseReactComponent {
             className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
           >
             <div className="mobileSeeMoreBtn">
-              <div className="mobileSeeMoreBtnTxt">See more</div>
+              <div className="mobileSeeMoreBtnTxt seeMoreBtn">See more</div>
               <Image
                 src={ChartSeeMoreArrowIcon}
                 className="mobileSeeMoreBtnIcon"

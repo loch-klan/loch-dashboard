@@ -22,6 +22,7 @@
   --black191:rgb(13, 7, 7);
   --invertMode:black;
   --glassCardBg: rgba(255,255,255,0.8);
+  --white191darke5ee6:#19191a;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -73,7 +74,7 @@
   --sidebarActivePageColor: #e5e5e680;
   --sidebarBottomOptions: #b0b1b3;
   --sidebarWalletAmount:#1d2129;
-  --sidebarHoverLink:'white';
+  --sidebarHoverLink:white;
   --sidebarHoverShadow:0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.12);
   --sidebarSectionalBOrder: #e5e5e680;
   --sidebarSectionalBOrderNoOpacity: #e5e5e6;
@@ -140,6 +141,8 @@
   //Explainer
   --explainerIconsFill:white;
 
+  --topbarInput:#7c7d81;
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -165,6 +168,7 @@
   --black191:#CACBCC;
   --invertMode:rgba(255,255,255,0.85);
   --glassCardBg: rgba(24,24,24,0.8);
+  --white191darke5ee6:#e5e5e6;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -275,6 +279,8 @@
 
   //Explianer
   --explainerIconsFill:#303030;
+
+  --topbarInput:#B0B1B3;
 }
 [data-theme="dark2"] {
   // UPDATED

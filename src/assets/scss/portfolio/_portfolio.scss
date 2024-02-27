@@ -263,8 +263,9 @@
                 border: none;
                 outline: none;
                 height: 100%;
-                font-size: 15px;
-                color: var(--primaryTextColor);
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--topbarInput);
                 &:-webkit-autofill:focus {
                   box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
                   -webkit-box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;

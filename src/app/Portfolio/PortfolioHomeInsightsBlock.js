@@ -274,7 +274,7 @@ class PortfolioHomeInsightsBlock extends Component {
 
             <div className="inter-display-medium bottomExtraInfo">
               <div
-                className="bottomExtraInfoText secondaryDarkText"
+                className="bottomExtraInfoText"
                 onClick={this.goToInsightsPage}
               >
                 Click here to see more

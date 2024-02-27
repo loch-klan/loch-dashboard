@@ -58,7 +58,9 @@
                 padding: 0.6rem;
                 width: fit-content;
                 background: var(--tableCostCommonBg);
-                color: var(--grey313) !important;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--tableDataColor) !important;
               }
             }
             .gainLossContainer {

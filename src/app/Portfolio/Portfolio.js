@@ -2451,7 +2451,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
 
@@ -2594,7 +2597,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {TruncateText(rowData.from.metaData?.displayAddress)}
                     </span>
                     <Image
@@ -2626,7 +2632,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
 
@@ -2736,7 +2745,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
                     <Image
@@ -2877,7 +2889,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {TruncateText(rowData.to.metaData?.displayAddress)}
                     </span>
                     <Image
@@ -2909,7 +2924,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address table-data-font">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
                     <Image
@@ -4472,7 +4490,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToAssetsPage}
-                                className="bottomExtraInfoText secondaryDarkText"
+                                className="bottomExtraInfoText"
                               >
                                 {this.props.intelligenceState
                                   ?.Average_cost_basis &&
@@ -4889,7 +4907,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToYieldOppPage}
-                                className="bottomExtraInfoText secondaryDarkText"
+                                className="bottomExtraInfoText"
                               >
                                 {this.state.yieldOpportunitiesTotalCount &&
                                 this.state.yieldOpportunitiesTotalCount > 10
@@ -5080,7 +5098,7 @@ class Portfolio extends BaseReactComponent {
                             <div className="inter-display-medium bottomExtraInfo">
                               <div
                                 onClick={this.goToTransactionHistoryPage}
-                                className="bottomExtraInfoText secondaryDarkText"
+                                className="bottomExtraInfoText"
                               >
                                 {totalCount && totalCount > 10
                                   ? `Click here to see ${numToCurrency(

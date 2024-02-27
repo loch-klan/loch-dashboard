@@ -240,9 +240,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        font-size: 13px;
-        font-weight: 500;
-        color: #4f4f4f;
+        font-size: 10px;
+        font-weight: 600;
+        color: #7C7D81;
         .bottomExtraInfoText {
           height: fit-content;
           white-space: nowrap !important;
@@ -322,7 +322,8 @@
         margin: 1rem;
         margin-bottom: 0rem;
         .section-table-toggle-element {
-          font-size: 13px;
+          font-size: 10px;
+          font-weight: 600;
           flex: 1;
           padding: 0.5rem;
           white-space: nowrap;
@@ -334,7 +335,7 @@
           justify-content: center;
           gap: 8px;
           cursor: pointer;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
         }
         .section-table-toggle-element-selected {
           background-color: var(--cardBackgroud);
@@ -878,9 +879,9 @@
   align-items: center;
 
   .mobileSeeMoreBtnTxt {
-    font-size: 13px;
-    color: #4f4f4f;
-    font-weight: 500;
+    font-size: 10px;
+        font-weight: 600;
+        color: #7C7D81;
   }
   .mobileSeeMoreBtnIcon {
     margin-left: 0.5rem;

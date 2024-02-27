@@ -530,7 +530,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Account
             </span>
           </div>
@@ -609,7 +609,7 @@ class WatchListPage extends BaseReactComponent {
                   //   this.props.history.push("/top-accounts/home");
                   // }, 200);
                 }}
-                className="top-account-address dotDotText"
+                className="top-account-address dotDotText table-data-font"
               >
                 {addressOrEns()}
               </div>
@@ -630,7 +630,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             <Image
@@ -663,7 +663,7 @@ class WatchListPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="dotDotText text-center"
+                  className="dotDotText text-center table-data-font"
                 >
                   {rowData.nameTag}
                 </span>
@@ -688,7 +688,7 @@ class WatchListPage extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Remarks
             </span>
             <Image
@@ -726,7 +726,7 @@ class WatchListPage extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Delete
             </span>
           </div>

@@ -103,7 +103,7 @@
       cursor: default;
       .topBarWalletAddressNameTagAndAddress {
         .topBarWalletAddressNameTag {
-          color: var(--black191);
+          color: var(--white191darke5ee6);
           font-size: 13px;
           font-weight: 600;
         }
@@ -146,7 +146,7 @@
       .dropdown-menu-list-container {
         .topBarWalletAddressNameTagAndAddress {
           .topBarWalletAddressNameTag {
-            color: var(--black191);
+            color: var(--white191darke5ee6);
             font-size: 13px;
             font-weight: 600;
           }
@@ -263,8 +263,9 @@
       height: 4.5rem;
       width: 10rem;
       border-radius: 1rem;
-      border: 0.1rem solid var(--greyE5e);
+      border: 0.1rem solid var(--topbarBackgroud);
       font-size: 13px;
+      color: var(--white191darke5ee6);
       box-shadow: var(--boxShadowMd);
       .topWalletAddressListFollowShareBtnIcon {
         height: 13px;

@@ -737,7 +737,7 @@ class PortfolioHomeDefiBlock extends Component {
               {this.state.totalDefiPositions > 3 ? (
                 <div className="inter-display-medium bottomExtraInfo">
                   <div
-                    className="bottomExtraInfoText secondaryDarkText"
+                    className="bottomExtraInfoText"
                     onClick={this.goToDefiPage}
                   >
                     Click here to see{" "}

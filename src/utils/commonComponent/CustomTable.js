@@ -298,7 +298,7 @@ class CustomTable extends BaseReactComponent {
                   }`}
                 >
                   {/* <Image src={notFoundImage} /> */}
-                  <p className="inter-display-medium f-s-16 lh-19 grey-313">
+                  <p className="inter-display-medium f-s-16 lh-19 table-data-font">
                     {" "}
                     {moduleName ? "No " + moduleName + " Found" : message}
                   </p>
@@ -343,7 +343,7 @@ class CustomTable extends BaseReactComponent {
                     flex: "0.1",
                   }}
                 >
-                  <div className="inter-display-medium bottomCombinedItemBlock">
+                  <div className="inter-display-medium table-data-font">
                     Total:
                   </div>
                 </div>
@@ -511,7 +511,7 @@ class CustomTable extends BaseReactComponent {
                             }
                           />
                         ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                           {this.props.combinedUnrealizedGains
                             ? CurrencyType(false) +
                               numToCurrency(
@@ -571,7 +571,7 @@ class CustomTable extends BaseReactComponent {
                             }
                           />
                         ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                           {this.props.combinedReturn &&
                           this.props.combinedReturn !== 0
                             ? Math.abs(
@@ -611,7 +611,7 @@ class CustomTable extends BaseReactComponent {
                       colorCode="#000"
                     >
                       <div className={`gainLoss`}>
-                        <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                        <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                           100%
                         </span>
                       </div>

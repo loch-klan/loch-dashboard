@@ -2670,7 +2670,9 @@ textarea {
 .highcharts-xaxis-labels{
 
   text{
-    color: var(--secondaryDarkTextColor) !important;
+    color: #7C7D81 !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
     &:hover{
       color: var(--primaryTextColor) !important;
       
@@ -3211,8 +3213,8 @@ input {
 
 .highcharts-yaxis-labels{
   text{
-    color: var(--primaryTextColor) !important;
-    fill:  var(--primaryTextColor) !important;
+    color: #7C7D81 !important;
+    fill:  #7C7D81 !important;
   }
 }
 .watchlist-mobile {
