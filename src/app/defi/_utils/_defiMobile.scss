@@ -54,7 +54,7 @@
         .defi-card-divider-main{
             height: 1px;
             width: 100%;
-            background-color: #e5e5e6;
+            background-color: var(--currenyConvertorBorder);
             margin-top: 24px;
         }
 
@@ -62,7 +62,7 @@
             margin-top: 24px;
             padding-top: 20px;
             padding-bottom: 12px;
-            background-color: white;
+            background-color: var(--cardBackgroud);
             border-radius: 12px;
 
             .defi-card-component-header{
@@ -86,7 +86,7 @@
                     .defi-card-component-header-left-right{
                         font-size: 16px;
                         font-weight: 600;
-                        color: #313233;
+                        color: var(--grey313);
                         padding: 0 8px;
                         display: flex;
                         align-items: center;
@@ -95,13 +95,13 @@
                 .defi-card-component-header-right{
                     font-size: 16px;
                     font-weight: 600;
-                    color: #313233;
+                    color: var(--grey313);
                 }
             }
             .defi-card-component-divider{
                 height: 1px;
                 width: 100%;
-                background-color: #e5e5e6;
+                background-color: var(--currenyConvertorBorder);
                 margin-top: 20px;
             }
 
@@ -121,7 +121,7 @@
                     .defi-card-component-body-header-divider{
                         width: 1px;
                         height: 100%;
-                        background-color: #e5e5e6;
+                        background-color: var(--currenyConvertorBorder);
                     }
                 }
                 .defi-card-component-body-content{
@@ -131,7 +131,7 @@
                     align-items: center;
 
                     span{
-                        color: #313233;
+                        color: var(--grey313);
                         flex: 1;
                         font-size: 13px;
                         font-weight: 500;

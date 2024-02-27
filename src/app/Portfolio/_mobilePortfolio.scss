@@ -699,7 +699,8 @@
             margin-right: 1.6rem;
 
             .balance-amt {
-              background-color: rgba(229, 229, 230, 0.5);
+              background: var(--tableCostCommonBg);
+              color: var(--tableDataColor) !important;
               border-radius: 4px;
               padding: 6px;
             }
@@ -791,10 +792,10 @@
             }
 
             .chain-list-amt {
-              background-color: rgba(229, 229, 230, 0.5);
+              background: var(--tableCostCommonBg);
+              color: var(--tableDataColor) !important;
               border-radius: 4px;
               padding: 6px;
-              color: var(--tableCostCommonColor) !important;
             }
           }
         }

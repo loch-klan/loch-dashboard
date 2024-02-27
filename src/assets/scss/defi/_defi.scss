@@ -151,10 +151,10 @@
     }
     .sort-by-title:hover {
       span {
-        color: $primary;
+        color: var(--primaryTextColor);
       }
       img {
-        filter: brightness(0.5);
+        filter: var(--hoverBrightnessValue) !important;
       }
     }
     // .dropdown {

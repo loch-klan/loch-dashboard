@@ -2069,7 +2069,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Rank
             </span>
             {/* <Image
@@ -2098,10 +2098,9 @@ class NewWelcome extends BaseReactComponent {
                 text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
                 <span
-                  className="inter-display-medium f-s-13"
+                  className="inter-display-medium f-s-13 table-data-font"
                   style={{
                     fontWeight: "700",
-                    color: "var(--grey313)",
                   }}
                 >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
@@ -2118,7 +2117,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Wallet
             </span>
             {/* <Image
@@ -2166,7 +2165,7 @@ class NewWelcome extends BaseReactComponent {
                     window.open(shareLink, "_blank", "noreferrer");
                   }
                 }}
-                className="top-account-address"
+                className="top-account-address table-data-font"
               >
                 {TruncateText(rowData.account)}
               </span>
@@ -2181,7 +2180,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             {/* <Image
@@ -2207,14 +2206,15 @@ class NewWelcome extends BaseReactComponent {
                 text={rowData.tagName}
               >
                 <span
-                // onMouseEnter={() => {
-                //   SmartMoneyNameTagHover({
-                //     session_id: getCurrentUser().id,
-                //     email_address: getCurrentUser().email,
-                //     hover: rowData.tagName,
-                //   });
-                //   this.updateTimer();
-                // }}
+                  // onMouseEnter={() => {
+                  //   SmartMoneyNameTagHover({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //     hover: rowData.tagName,
+                  //   });
+                  //   this.updateTimer();
+                  // }}
+                  className="table-data-font"
                 >
                   {rowData.tagName}
                 </span>
@@ -2232,7 +2232,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Net worth
             </span>
             {/* <Image
@@ -2279,7 +2279,7 @@ class NewWelcome extends BaseReactComponent {
                   // }}
                   className="cost-common-container"
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {CurrencyType(false) +
                       numToCurrency(tempNetWorth * tempCurrencyRate)}
                   </span>
@@ -2292,7 +2292,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Flows (1 year)
             </span>
           </div>
@@ -2360,7 +2360,7 @@ class NewWelcome extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempNetflows * tempCurrencyRate)}
                     </span>
@@ -2378,7 +2378,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Unrealized PnL
             </span>
             {/* <Image
@@ -2450,7 +2450,7 @@ class NewWelcome extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempProfits * tempCurrencyRate)}
                     </span>
@@ -2464,7 +2464,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Follow
             </span>
           </div>
