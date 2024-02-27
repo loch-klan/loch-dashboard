@@ -2078,20 +2078,26 @@ class NewWelcome extends BaseReactComponent {
 
                     isWelcome: true,
                   });
-                  this.setState(
-                    {
-                      initialInput: true,
-                    },
-                    () => {
-                      const fakeOnChange = {
-                        target: {
-                          name: "wallet1",
-                          value: rowData.account,
-                        },
-                      };
-                      this.handleOnChange(fakeOnChange);
-                    }
-                  );
+                  if (this.state.lochUser && this.state.lochUser.email) {
+                    this.setState(
+                      {
+                        initialInput: true,
+                      },
+                      () => {
+                        const fakeOnChange = {
+                          target: {
+                            name: "wallet1",
+                            value: rowData.account,
+                          },
+                        };
+                        this.handleOnChange(fakeOnChange);
+                      }
+                    );
+                  } else {
+                    let slink = rowData.account;
+                    let shareLink = BASE_URL_S3 + "home/" + slink;
+                    window.open(shareLink, "_blank", "noreferrer");
+                  }
                 }}
                 className="top-account-address"
               >

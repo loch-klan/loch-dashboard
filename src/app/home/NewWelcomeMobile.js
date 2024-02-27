@@ -14,7 +14,12 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
 import questionRoundedIcons from "../../assets/images/icons/question-rounded.svg";
 import logo from "../../assets/images/logo-white.svg";
-import { API_LIMIT, SORT_BY_AMOUNT, START_INDEX } from "../../utils/Constant";
+import {
+  API_LIMIT,
+  BASE_URL_S3,
+  SORT_BY_AMOUNT,
+  START_INDEX,
+} from "../../utils/Constant";
 import {
   getCurrentUser,
   getToken,
@@ -1357,20 +1362,26 @@ class NewWelcomeMobile extends BaseReactComponent {
     }
   };
   onLeaderboardWalletClick = (passedAccount) => {
-    this.setState(
-      {
-        initialInput: true,
-      },
-      () => {
-        const fakeOnChange = {
-          target: {
-            name: "wallet1",
-            value: passedAccount,
-          },
-        };
-        this.handleOnChange(fakeOnChange);
-      }
-    );
+    if (this.state.lochUser && this.state.lochUser.email) {
+      this.setState(
+        {
+          initialInput: true,
+        },
+        () => {
+          const fakeOnChange = {
+            target: {
+              name: "wallet1",
+              value: passedAccount,
+            },
+          };
+          this.handleOnChange(fakeOnChange);
+        }
+      );
+    } else {
+      let slink = passedAccount;
+      let shareLink = BASE_URL_S3 + "home/" + slink;
+      window.open(shareLink, "_blank", "noreferrer");
+    }
   };
   render() {
     const tableData = this.state.accountList;
