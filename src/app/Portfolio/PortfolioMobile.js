@@ -703,14 +703,15 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    this.props.blockThreeSelectedItem === 1 &&
+                    (this.props.blockThreeSelectedItem === 2 ||
+                      this.props.blockThreeSelectedItem === 1) &&
                     this.props.blockOneSelectedItem !== 1
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
                     this.props.changeBlockOneItem(4);
-                    this.props.changeBlockThreeItem(1);
+                    this.props.changeBlockThreeItem(2);
                   }}
                 >
                   Yield opportunities
@@ -779,7 +780,8 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockThreeSelectedItem === 1 ? (
+                ) : this.props.blockThreeSelectedItem === 2 ||
+                  this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
                       className={`newHomeTableContainer newHomeTableContainerMobile ${
@@ -861,12 +863,16 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    this.props.blockTwoSelectedItem === 3
+                    (this.props.blockThreeSelectedItem === 1 ||
+                      this.props.blockThreeSelectedItem === 2) &&
+                    this.props.blockTwoSelectedItem !== 1 &&
+                    this.props.blockTwoSelectedItem !== 2
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(3);
+                    this.props.changeBlockThreeItem(1);
+                    this.props.changeBlockTwoItem(4);
                   }}
                 >
                   Counterparties
@@ -955,7 +961,8 @@ class PortfolioMobile extends BaseReactComponent {
                           isMobileGraph
                         />
                       </div>
-                    ) : this.props.blockTwoSelectedItem === 3 ? (
+                    ) : this.props.blockThreeSelectedItem === 1 ||
+                      this.props.blockThreeSelectedItem === 2 ? (
                       <>
                         <div
                           style={{
