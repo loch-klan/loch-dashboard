@@ -61,6 +61,7 @@ class AuthModal extends BaseReactComponent {
       onHide: props.onHide,
       changeList: props.changeWalletList,
       modalTitle: props.title || null,
+      modalSecondTitle: props.secondTitle || null,
       modalDescription: props.description || null,
 
       // metamask
@@ -300,6 +301,16 @@ class AuthModal extends BaseReactComponent {
                 ? this.state.modalTitle
                 : "Don’t lose your data"}
             </h6>
+            {this.state.modalSecondTitle ? (
+              <h6
+                style={{
+                  marginBottom: "2rem",
+                }}
+                className="inter-display-medium f-s-20 lh-24"
+              >
+                {this.state.modalSecondTitle}
+              </h6>
+            ) : null}
             <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
               {this.state.modalDescription
                 ? this.state.modalDescription
