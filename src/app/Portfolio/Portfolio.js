@@ -148,8 +148,6 @@ import "./_mobilePortfolio.scss";
 
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
-import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
-import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 import {
