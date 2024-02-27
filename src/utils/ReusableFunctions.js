@@ -9,7 +9,7 @@ export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
     const itemItem = document.getElementById("mobileLayoutScrollContainer");
 
-    if (itemItem.clientHeight) {
+    if (itemItem && itemItem.clientHeight) {
       window.scroll(0, itemItem.clientHeight);
     }
   } else {

@@ -38,7 +38,7 @@ class WatchListPageMobile extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Account
             </span>
           </div>
@@ -117,7 +117,7 @@ class WatchListPageMobile extends BaseReactComponent {
                   //   this.props.history.push("/top-accounts/home");
                   // }, 200);
                 }}
-                className="top-account-address dotDotText"
+                className="top-account-address dotDotText table-data-font"
               >
                 {addressOrEns()}
               </div>
@@ -138,7 +138,7 @@ class WatchListPageMobile extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             <Image
@@ -171,7 +171,7 @@ class WatchListPageMobile extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="dotDotText text-center"
+                  className="dotDotText text-center table-data-font"
                 >
                   {rowData.nameTag}
                 </span>

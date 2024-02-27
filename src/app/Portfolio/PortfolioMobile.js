@@ -785,14 +785,15 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    this.props.blockThreeSelectedItem === 1 &&
+                    (this.props.blockThreeSelectedItem === 2 ||
+                      this.props.blockThreeSelectedItem === 1) &&
                     this.props.blockOneSelectedItem !== 1
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
                     this.props.changeBlockOneItem(4);
-                    this.props.changeBlockThreeItem(1);
+                    this.props.changeBlockThreeItem(2);
                   }}
                 >
                   Yield opportunities
@@ -844,7 +845,7 @@ class PortfolioMobile extends BaseReactComponent {
                           {this.props.intelligenceState?.Average_cost_basis &&
                           this.props.intelligenceState.Average_cost_basis
                             .length > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.intelligenceState.Average_cost_basis
                                   .length - 10,
                                 true
@@ -856,12 +857,13 @@ class PortfolioMobile extends BaseReactComponent {
                                   ? "s"
                                   : ""
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockThreeSelectedItem === 1 ? (
+                ) : this.props.blockThreeSelectedItem === 2 ||
+                  this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
                       className={`newHomeTableContainer newHomeTableContainerMobile ${
@@ -899,7 +901,7 @@ class PortfolioMobile extends BaseReactComponent {
                         >
                           {this.props.yieldOpportunitiesTotalCount &&
                           this.props.yieldOpportunitiesTotalCount > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.yieldOpportunitiesTotalCount - 10,
                                 true
                               ).toLocaleString("en-US")}+ yield ${
@@ -907,7 +909,7 @@ class PortfolioMobile extends BaseReactComponent {
                                   ? "opportunities"
                                   : "opportunity"
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}
@@ -943,12 +945,16 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    this.props.blockTwoSelectedItem === 3
+                    (this.props.blockThreeSelectedItem === 1 ||
+                      this.props.blockThreeSelectedItem === 2) &&
+                    this.props.blockTwoSelectedItem !== 1 &&
+                    this.props.blockTwoSelectedItem !== 2
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(3);
+                    this.props.changeBlockThreeItem(1);
+                    this.props.changeBlockTwoItem(4);
                   }}
                 >
                   Counterparties
@@ -1037,7 +1043,8 @@ class PortfolioMobile extends BaseReactComponent {
                           isMobileGraph
                         />
                       </div>
-                    ) : this.props.blockTwoSelectedItem === 3 ? (
+                    ) : this.props.blockThreeSelectedItem === 1 ||
+                      this.props.blockThreeSelectedItem === 2 ? (
                       <>
                         <div
                           style={{
@@ -1170,13 +1177,13 @@ class PortfolioMobile extends BaseReactComponent {
                           className="bottomExtraInfoText"
                         >
                           {this.props.totalCount && this.props.totalCount > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.totalCount - 10,
                                 true
                               ).toLocaleString("en-US")}+ transaction${
                                 this.props.totalCount - 10 > 1 ? "s" : ""
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}

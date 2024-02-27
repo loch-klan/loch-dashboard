@@ -149,8 +149,6 @@ import "./_mobilePortfolio.scss";
 
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
-import FollowAuthModal from "./FollowModals/FollowAuthModal.js";
-import FollowExitOverlay from "./FollowModals/FollowExitOverlay.js";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
 import {
@@ -1122,28 +1120,27 @@ class Portfolio extends BaseReactComponent {
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
       }
-      // Counterparty volume api call
-      else if (
-        this.state.blockTwoSelectedItem === 3 &&
-        (!(
-          this.state.homeCounterpartyVolumeData &&
-          this.state.homeCounterpartyVolumeData[0]
-        ) ||
-          !this.props.commonState.counterpartyVolumePage)
-      ) {
-        this.setState({
-          counterGraphLoading: true,
-          shouldCallCounterPartyVolumeApi: false,
-        });
-        this.props.updateWalletListFlag("counterpartyVolumePage", true);
-        this.props.getAllCounterFeeApi(this, false, false);
-      }
     }
     // Block Three
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
       if (this.state.blockThreeSelectedItem === 1) {
+        if (
+          !(
+            this.state.homeCounterpartyVolumeData &&
+            this.state.homeCounterpartyVolumeData[0]
+          ) ||
+          !this.props.commonState.counterpartyVolumePage
+        ) {
+          this.setState({
+            counterGraphLoading: true,
+            shouldCallCounterPartyVolumeApi: false,
+          });
+          this.props.updateWalletListFlag("counterpartyVolumePage", true);
+          this.props.getAllCounterFeeApi(this, false, false);
+        }
+      } else if (this.state.blockThreeSelectedItem === 2) {
         if (
           !this.state.yieldOpportunitiesList ||
           !this.props.commonState.yieldOpportunities
@@ -1155,8 +1152,7 @@ class Portfolio extends BaseReactComponent {
           });
         }
       }
-
-      if (this.state.blockThreeSelectedItem === 2) {
+      if (this.state.blockThreeSelectedItem === 3) {
         if (
           !this.props.portfolioState?.assetValueDay ||
           !this.props.commonState.asset_value
@@ -1420,32 +1416,34 @@ class Portfolio extends BaseReactComponent {
       }
 
       // Counterparty volume api call
-      if (
-        this.state.blockTwoSelectedItem === 3 &&
-        (!this.props.commonState.counterpartyVolumePage ||
-          !(
-            this.props.intelligenceState.counterPartyValue &&
-            this.props.intelligenceState.counterPartyValue[0]
-          ))
-      ) {
-        this.setState({
-          counterGraphLoading: true,
-          shouldCallCounterPartyVolumeApi: false,
-        });
-        this.props.updateWalletListFlag("counterpartyVolumePage", true);
-        this.props.getAllCounterFeeApi(this, false, false);
+      if (this.state.blockThreeSelectedItem === 2) {
+        if (
+          !this.props.yieldOpportunitiesState.yield_pools ||
+          !this.props.commonState.yieldOpportunities
+        ) {
+          this.callYieldOppApi();
+        }
       }
 
       // BLOCK Three
-      if (
-        this.state.blockThreeSelectedItem === 1 &&
-        (!this.props.yieldOpportunitiesState.yield_pools ||
-          !this.props.commonState.yieldOpportunities)
-      ) {
-        this.callYieldOppApi();
+      if (this.state.blockThreeSelectedItem === 1) {
+        if (
+          !this.props.commonState.counterpartyVolumePage ||
+          !(
+            this.props.intelligenceState.counterPartyValue &&
+            this.props.intelligenceState.counterPartyValue[0]
+          )
+        ) {
+          this.setState({
+            counterGraphLoading: true,
+            shouldCallCounterPartyVolumeApi: false,
+          });
+          this.props.updateWalletListFlag("counterpartyVolumePage", true);
+          this.props.getAllCounterFeeApi(this, false, false);
+        }
       }
       if (
-        this.state.blockThreeSelectedItem === 2 &&
+        this.state.blockThreeSelectedItem === 3 &&
         (!this.props.portfolioState?.assetValueDay ||
           !this.props.commonState.asset_value)
       ) {
@@ -4599,40 +4597,6 @@ class Portfolio extends BaseReactComponent {
                               />
                             </CustomOverlay>
                           </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockTwoSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockTwoItem(3);
-                            }}
-                          >
-                            Counterparties
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand where you’ve exchanged the most value"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                          </div>
                         </div>
                       </div>
                       <div className="profit-chart">
@@ -4727,7 +4691,135 @@ class Portfolio extends BaseReactComponent {
                               floatingWatermark
                             />
                           </div>
-                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                        ) : null}
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+              <div
+                style={{
+                  marginBottom: "-0.8rem",
+                }}
+                className="graph-table-section"
+              >
+                <Row>
+                  <Col md={6}>
+                    <div
+                      className="m-r-16 section-table"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "38rem",
+                        height: "38rem",
+                        marginBottom: 0,
+                      }}
+                    >
+                      <div className="section-table-toggle-container homepage-table-charts">
+                        <div className="section-table-toggle">
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockThreeSelectedItem === 1
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(1);
+                            }}
+                          >
+                            Counterparties
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand where you’ve exchanged the most value"
+                              }
+                            >
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockThreeSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(2);
+                            }}
+                          >
+                            Yield opportunities
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Yield bearing opportunties personalized for your portfolio"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 ${
+                              this.state.blockThreeSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              this.changeBlockThreeItem(3);
+                            }}
+                          >
+                            Networks
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Understand where you’ve exchanged the most value"
+                              }
+                            >
+                              {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                        </div>
+                      </div>
+                      {this.state.blockThreeSelectedItem === 1 ? (
+                        <div className="profit-chart">
                           <div
                             style={{
                               position: "relative",
@@ -4779,103 +4871,8 @@ class Portfolio extends BaseReactComponent {
                               floatingWatermark
                             />
                           </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-              <div
-                style={{
-                  marginBottom: "-0.8rem",
-                }}
-                className="graph-table-section"
-              >
-                <Row>
-                  <Col md={6}>
-                    <div
-                      className="m-r-16 section-table"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "38rem",
-                        height: "38rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <div className="section-table-toggle-container homepage-table-charts">
-                        <div className="section-table-toggle">
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockThreeSelectedItem === 1
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockThreeItem(1);
-                            }}
-                          >
-                            Yield opportunities
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Yield bearing opportunties personalized for your portfolio"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockThreeSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockThreeItem(2);
-                            }}
-                          >
-                            Networks
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand where you’ve exchanged the most value"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                          </div>
                         </div>
-                      </div>
-                      {this.state.blockThreeSelectedItem === 1 ? (
+                      ) : this.state.blockThreeSelectedItem === 2 ? (
                         <div>
                           <div
                             className={`newHomeTableContainer ${
@@ -4927,7 +4924,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
                           ) : null}
                         </div>
-                      ) : this.state.blockThreeSelectedItem === 2 ? (
+                      ) : this.state.blockThreeSelectedItem === 3 ? (
                         <PortfolioHomeNetworksBlock
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}

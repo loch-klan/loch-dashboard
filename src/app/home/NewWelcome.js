@@ -2138,14 +2138,14 @@ class NewWelcome extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  if (!this.state.blurTable) {
-                    SmartMoneyWalletClicked({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      wallet: rowData.account,
+                  SmartMoneyWalletClicked({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    wallet: rowData.account,
 
-                      isWelcome: true,
-                    });
+                    isWelcome: true,
+                  });
+                  if (this.state.lochUser && this.state.lochUser.email) {
                     this.setState(
                       {
                         initialInput: true,
@@ -2161,7 +2161,9 @@ class NewWelcome extends BaseReactComponent {
                       }
                     );
                   } else {
-                    this.opneLoginModalForSmartMoney();
+                    let slink = rowData.account;
+                    let shareLink = BASE_URL_S3 + "home/" + slink;
+                    window.open(shareLink, "_blank", "noreferrer");
                   }
                 }}
                 className="top-account-address"
@@ -2903,7 +2905,6 @@ class NewWelcome extends BaseReactComponent {
                   >
                     <TransactionTable
                       openSignInOnclickModal={this.opneLoginModalForSmartMoney}
-                      smartMoneyBlur={this.state.blurTable}
                       // blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding
