@@ -762,7 +762,7 @@ class PortfolioMobile extends BaseReactComponent {
                           {this.props.intelligenceState?.Average_cost_basis &&
                           this.props.intelligenceState.Average_cost_basis
                             .length > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.intelligenceState.Average_cost_basis
                                   .length - 10,
                                 true
@@ -774,7 +774,7 @@ class PortfolioMobile extends BaseReactComponent {
                                   ? "s"
                                   : ""
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}
@@ -817,7 +817,7 @@ class PortfolioMobile extends BaseReactComponent {
                         >
                           {this.props.yieldOpportunitiesTotalCount &&
                           this.props.yieldOpportunitiesTotalCount > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.yieldOpportunitiesTotalCount - 10,
                                 true
                               ).toLocaleString("en-US")}+ yield ${
@@ -825,7 +825,7 @@ class PortfolioMobile extends BaseReactComponent {
                                   ? "opportunities"
                                   : "opportunity"
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}
@@ -1088,13 +1088,13 @@ class PortfolioMobile extends BaseReactComponent {
                           className="bottomExtraInfoText"
                         >
                           {this.props.totalCount && this.props.totalCount > 10
-                            ? `Click here to see ${numToCurrency(
+                            ? `See ${numToCurrency(
                                 this.props.totalCount - 10,
                                 true
                               ).toLocaleString("en-US")}+ transaction${
                                 this.props.totalCount - 10 > 1 ? "s" : ""
                               }`
-                            : "Click here to see more"}
+                            : "See more"}
                         </div>
                       </div>
                     ) : null}
