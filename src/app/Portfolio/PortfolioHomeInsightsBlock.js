@@ -277,7 +277,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 className="bottomExtraInfoText"
                 onClick={this.goToInsightsPage}
               >
-                Click here to see more
+                {this.props.isMobile ? "See more" : "Click here to see more"}
               </div>
             </div>
           </>
