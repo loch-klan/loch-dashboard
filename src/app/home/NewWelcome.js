@@ -1378,7 +1378,7 @@ class NewWelcome extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    scrollToTop()
+    scrollToTop();
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
@@ -1889,7 +1889,7 @@ class NewWelcome extends BaseReactComponent {
           goToBottom: false,
         },
         () => {
-          scrollToBottomAfterPageChange()
+          scrollToBottomAfterPageChange();
         }
       );
     }
@@ -2071,31 +2071,27 @@ class NewWelcome extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  if (!this.state.blurTable) {
-                    SmartMoneyWalletClicked({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      wallet: rowData.account,
+                  SmartMoneyWalletClicked({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    wallet: rowData.account,
 
-                      isWelcome: true,
-                    });
-                    this.setState(
-                      {
-                        initialInput: true,
-                      },
-                      () => {
-                        const fakeOnChange = {
-                          target: {
-                            name: "wallet1",
-                            value: rowData.account,
-                          },
-                        };
-                        this.handleOnChange(fakeOnChange);
-                      }
-                    );
-                  } else {
-                    this.opneLoginModalForSmartMoney();
-                  }
+                    isWelcome: true,
+                  });
+                  this.setState(
+                    {
+                      initialInput: true,
+                    },
+                    () => {
+                      const fakeOnChange = {
+                        target: {
+                          name: "wallet1",
+                          value: rowData.account,
+                        },
+                      };
+                      this.handleOnChange(fakeOnChange);
+                    }
+                  );
                 }}
                 className="top-account-address"
               >
@@ -2737,7 +2733,6 @@ class NewWelcome extends BaseReactComponent {
                   >
                     <TransactionTable
                       openSignInOnclickModal={this.opneLoginModalForSmartMoney}
-                      smartMoneyBlur={this.state.blurTable}
                       // blurButtonClick={this.showAddSmartMoneyAddresses}
                       isSmartMoney
                       noSubtitleBottomPadding

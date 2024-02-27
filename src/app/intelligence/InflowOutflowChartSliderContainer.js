@@ -695,7 +695,11 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
                         >
                           <div className="seeMoreBtn cp f-s-10 grey-7C7">
-                            <div>Click here to see more</div>
+                            {this.props.isMobileGraph ? (
+                              <div>See more</div>
+                            ) : (
+                              <div>Click here to see more</div>
+                            )}
 
                             <Image
                               src={ChartSeeMoreArrowIcon}

@@ -21,11 +21,7 @@ import {
   setLocalStoraage,
 } from "../../utils/ManageToken";
 import {
-  CurrencyType,
-  TruncateText,
-  amountFormat,
   mobileCheck,
-  noExponents,
   numToCurrency,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions";
@@ -1728,7 +1724,6 @@ class NewWelcomeMobile extends BaseReactComponent {
                               openSignInOnclickModal={
                                 this.opneLoginModalForSmartMoney
                               }
-                              smartMoneyBlur={this.props.blurTable}
                               welcomePage
                               onLeaderboardWalletClick={
                                 this.onLeaderboardWalletClick
@@ -1752,7 +1747,6 @@ class NewWelcomeMobile extends BaseReactComponent {
                         openSignInOnclickModal={
                           this.opneLoginModalForSmartMoney
                         }
-                        smartMoneyBlur={this.props.blurTable}
                         isMobile
                       />
                     ) : null}
