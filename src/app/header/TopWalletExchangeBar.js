@@ -2,11 +2,11 @@ import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
+import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import {
   EyeIcon,
-  PlusCircleIcon,
   SearchHistoryClockIcon,
   SearchHistoryDeleteIcon,
   TopBarSearchIcon,
@@ -14,7 +14,6 @@ import {
   XCircleIcon,
   XCircleRedIcon,
 } from "../../assets/images/icons";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import {
   AddConnectExchangeModalOpen,
@@ -36,7 +35,6 @@ import {
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
-import FollowAuthModal from "../Portfolio/FollowModals/FollowAuthModal";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import { detectNameTag, updateUserWalletApi } from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
@@ -50,7 +48,6 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
-import OutsideClickHandler from "react-outside-click-handler";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
@@ -1502,25 +1499,7 @@ class TopWalletExchangeBar extends Component {
               </div>
             </div>
           ) : null}
-          {this.state.followSigninModal ? (
-            <FollowAuthModal
-              followedAddress={this.state.followedAddress}
-              hideOnblur
-              showHiddenError
-              modalAnimation={this.state.followSignInModalAnimation}
-              show={this.state.followSigninModal}
-              onHide={this.onCloseModal}
-              history={this.props.history}
-              modalType={"create_account"}
-              iconImage={SignInIcon}
-              hideSkip={true}
-              title="You’re now following this wallet"
-              description="Sign in so you’ll be the first to see what they buy and sell"
-              stopUpdate={true}
-              tracking="Follow sign in popup"
-              goToSignUp={this.openSignUpModal}
-            />
-          ) : null}
+
           {this.state.followSignupModal ? (
             <FollowExitOverlay
               followedAddress={this.state.followedAddress}
