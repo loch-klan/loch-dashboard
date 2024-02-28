@@ -145,6 +145,7 @@
 
   --chartXAxis:#666666;
 
+  --nftShadow: 0.1rem solid e5e5e680;
 }
 [data-theme="dark"] {
   // UPDATED
@@ -284,6 +285,8 @@
 
   --topbarInput:#B0B1B3;
   --chartXAxis:#7c7d81;
+
+  --nftShadow: 0.1rem solid none;
 }
 [data-theme="dark2"] {
   // UPDATED

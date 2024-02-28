@@ -584,6 +584,7 @@ class InsightsPage extends Component {
                     style={{ display: "flex", alignItems: "center" }}
                     onClick={this.onClickDropdown}
                     onMouseEnter={this.onHoverDropdown}
+                    className="insights-dropdown-wrapper"
                   >
                     <DropDown
                       class="cohort-dropdown"

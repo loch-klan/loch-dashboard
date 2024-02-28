@@ -44,7 +44,7 @@ class InsightsPageMobile extends Component {
                 }}
               >
                 <DropDown
-                  class="cohort-dropdown"
+                  class="cohort-dropdown mobile-insight-dropdown"
                   list={["All Insights", "Cost Reduction", "Risk Reduction"]}
                   onSelect={this.props.handleMobileInsightSelect}
                   title={

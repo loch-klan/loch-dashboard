@@ -198,8 +198,9 @@
             }
             .react-calendar__navigation__arrow {
               border-radius: 0.8rem;
-              border: 1px solid $grey-E5E !important;
+              border: 1px solid var(--sidebarSectionalBOrder) !important;
               color: #19191a;
+              filter: var(--invertColor);
             }
             .react-calendar__navigation__label {
               pointer-events: none;

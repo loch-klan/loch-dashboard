@@ -66,5 +66,20 @@
             border-left: 0.35em solid transparent;
           }
     }
+
+}
+
+.insights-expanded-mobile{
+      .mobile-insight-dropdown{
+          .btn-primary{
+              background-color: var(--cardBackgroud) !important;
+              color: var(--black191) !important;
+              &:focus{
+                background-color: var(--cardBackgroud) !important;
+                border: 0.1rem solid var(--black191) !important;
+              }
+          }
+      }
+
   }
   
