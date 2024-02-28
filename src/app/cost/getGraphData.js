@@ -245,7 +245,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           lineHeight: 20,
           family: "Helvetica Neue",
           weight: 400,
-          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
@@ -416,7 +416,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           labelTextColor: function (context) {
             return parentCtx?.props?.darkModeState?.flag
               ? "#7c7d81"
-              : "#19191a";
+              : "#b0b1b3";
           },
         },
       },
@@ -462,7 +462,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
@@ -492,7 +492,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#7c7d81",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -554,7 +554,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             // console.log(
