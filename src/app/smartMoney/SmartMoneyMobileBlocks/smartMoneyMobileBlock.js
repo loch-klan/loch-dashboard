@@ -110,7 +110,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
         <div className="msmbBody">
           <div className="msmbBodyItem">
             <div className="inter-display-medium msmbBITitle">
-              Flows (1 year)
+              Net flows (1 year)
             </div>
             <div className={`inter-display-medium msmbBIAmount`}>
               {this.props.netFlows !== 0 ? (
