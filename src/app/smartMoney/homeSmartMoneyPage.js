@@ -839,20 +839,16 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  if (!this.state.blurTable) {
-                    let slink = rowData.account;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+                  let slink = rowData.account;
+                  let shareLink =
+                    BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-                    SmartMoneyWalletClicked({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      wallet: slink,
-                    });
-                    window.open(shareLink, "_blank", "noreferrer");
-                  } else {
-                    this.openSignInOnclickModal();
-                  }
+                  SmartMoneyWalletClicked({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    wallet: slink,
+                  });
+                  window.open(shareLink, "_blank", "noreferrer");
                 }}
                 className="top-account-address"
               >
@@ -981,7 +977,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Flows (1 year)
+              Net flows (1 year)
             </span>
           </div>
         ),
@@ -1174,21 +1170,16 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "following") {
             const handleOnClick = (addItem) => {
-              if (!this.state.blurTable) {
-                this.handleFollowUnfollow(
-                  rowData.account,
-                  addItem,
-                  rowData.tagName
-                );
-              } else {
-                this.openSignInOnclickModal();
-              }
+              this.handleFollowUnfollow(
+                rowData.account,
+                addItem,
+                rowData.tagName
+              );
             };
             return (
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
                 isChecked={rowData.following}
-                dontSelectIt={this.state.blurTable}
               />
             );
           }
@@ -1403,7 +1394,6 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                     <div className="smartMoneyTable">
                       <TransactionTable
                         openSignInOnclickModal={this.openSignInOnclickModal}
-                        smartMoneyBlur={this.state.blurTable}
                         blurButtonClick={this.showAddSmartMoneyAddresses}
                         minimalPagination
                         noSubtitleBottomPadding
