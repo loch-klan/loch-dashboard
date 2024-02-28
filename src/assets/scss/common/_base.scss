@@ -2670,7 +2670,7 @@ textarea {
 .highcharts-xaxis-labels{
 
   text{
-    color: #7C7D81 !important;
+    color: var(--chartXAxis) !important;
     font-size: 10px !important;
     font-weight: 600 !important;
     &:hover{
@@ -3262,7 +3262,7 @@ input {
 
 
 .table-header-font{
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   color: #96979a;
 }
