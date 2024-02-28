@@ -154,7 +154,7 @@
     z-index: 0;
   }
   .insights-card {
-    background-color: $secondary;
+    background-color: var(--cardBackgroud);
     width: 100%;
     padding: 1.6rem 2rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -163,6 +163,7 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 2rem;
+    border: 1px solid var(--borderwhiteDarkLight) !important;
     .insights-cards-home-left {
       .risk-chip {
         width: max-content;
@@ -338,6 +339,7 @@
       background-color: rgba(229, 229, 230, 0.5);
       border-radius: 4px;
       padding: 6px;
+      color: var(--tableCostCommonColor) !important;
     }
   }
   .insights-wrapper {
@@ -345,7 +347,7 @@
       margin-bottom: 2rem;
     }
     .insights-card {
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       width: 100%;
       padding: 1.6rem 2rem;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -354,13 +356,14 @@
       display: flex;
       align-items: flex-start;
       margin-bottom: 2rem;
+      border: 1px solid var(--borderwhiteDarkLight) !important;
       .insights-cards-home-left {
         .risk-chip {
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $black-191;
-          color: #ffffff;
+          background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
           text-transform: uppercase;
         }
       }
@@ -378,15 +381,16 @@
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: $grey-F2F;
+            background-color: var(--greyCardBackgroud);
+          color: var(--primaryTextColor);
           }
           .risk-chip {
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: $black-191;
+            background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
             margin-left: 0.8rem;
-            color: #ffffff;
             text-transform: uppercase;
           }
         }

@@ -477,9 +477,9 @@ class InsightsPage extends Component {
       );
     } else
       return (
-        <>
+        <div className="insightsPageContainer">
           {/* topbar */}
-          <div className="portfolio-page-section">
+          <div className="portfolio-page-section ">
             <div
               className="portfolio-container page"
               style={{ overflow: "visible" }}
@@ -781,7 +781,7 @@ class InsightsPage extends Component {
               <Footer />
             </div>
           </div>
-        </>
+        </div>
       );
   }
 }

@@ -170,7 +170,12 @@ export default function PageHeader(props) {
               ) : null}
             </div>
             {props.subTitle ? (
-              <p className="inter-display-medium f-s-16 lh-19">
+              <p
+                className="inter-display-medium f-s-16 lh-19"
+                style={{
+                  color: "var(--secondaryTextColor)",
+                }}
+              >
                 {props.subTitle}{" "}
                 {props.showNetflowExplainers ? (
                   <CustomOverlay
