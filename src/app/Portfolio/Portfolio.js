@@ -3066,7 +3066,8 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueToday
-                      ? amountFormat(tempValueToday, "en-US", "USD")
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -4417,7 +4418,7 @@ class Portfolio extends BaseReactComponent {
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.AvgCostLoading ||
                               tableDataCostBasis?.length < 1
                                 ? ""
@@ -4443,6 +4444,7 @@ class Portfolio extends BaseReactComponent {
                               isAnalytics="average cost basis"
                               // addWatermark
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4859,6 +4861,7 @@ class Portfolio extends BaseReactComponent {
                                 this.state.yieldOpportunitiesTableLoading
                               }
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
@@ -5050,6 +5053,7 @@ class Portfolio extends BaseReactComponent {
                               watermarkOnTop
                               // addWatermark
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.tableLoading ? (
