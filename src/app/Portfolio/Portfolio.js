@@ -218,7 +218,7 @@ class Portfolio extends BaseReactComponent {
       homeGraphFeesData: undefined,
       homeCounterpartyVolumeData: undefined,
       gasFeesGraphLoading: false,
-      counterGraphLoading: false,
+      counterGraphLoading: true,
       yieldOpportunitiesList: [],
       yieldOpportunitiesTotalCount: 0,
       yieldOpportunitiesTableLoading: true,
