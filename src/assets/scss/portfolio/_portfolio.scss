@@ -1295,43 +1295,42 @@
         }
       }
       .newHomeTableContainer {
-        overflow-x: scroll;
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;
         }
 
-        // &::-webkit-scrollbar-thumb {
-        //   border-radius: 0.8rem;
-        //   background-color: $scrollBar-thumb;
-        // }
+        .table-wrapper-mobile-x-scroll {
+          overflow-y: scroll;
+          position: relative;
+          display: flex;
+          flex-direction: column;
 
-        // &::-webkit-scrollbar-track {
-        //   background-color: rgba(229, 229, 230, 0.5);
-        //   border-radius: 0.8rem;
-        // }
-        .table-wrapper {
-          .custom-table {
-            .ReactVirtualized__Table__Grid {
-              overflow-y: auto !important;
-              overflow-x: hidden !important;
-              max-height: 24rem !important;
-              min-height: 24rem !important;
-              &::-webkit-scrollbar {
-                width: 0.4rem;
-                height: 0rem;
-              }
-
-              &::-webkit-scrollbar-thumb {
-                border-radius: 0.8rem;
-                background-color: $scrollBar-thumb;
-              }
-
-              &::-webkit-scrollbar-track {
-                background-color: rgba(229, 229, 230, 0.5);
-                // background-color: $grey-E5E;
-                border-radius: 0.8rem;
-              }
+          &::-webkit-scrollbar {
+            border-radius: 0.9rem;
+            width: 0rem;
+            height: 0rem;
+            background-color: rgba(229, 229, 230, 0.5);
+            margin-bottom: 0.2rem;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0.8rem;
+            background-color: #cacbcc;
+          }
+        }
+        .table-wrapper-mobile-y-scroll {
+          overflow-x: scroll;
+          max-height: 30.5rem;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          .ReactVirtualized__Table {
+            .ReactVirtualized__Table__headerRow {
+              position: sticky;
+              position: -webkit-sticky; /* Safari */
+              top: 0;
+              background-color: white;
+              z-index: 100;
             }
           }
         }
