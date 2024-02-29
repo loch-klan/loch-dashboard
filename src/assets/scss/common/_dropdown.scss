@@ -69,7 +69,7 @@
     top: 4rem;
     width: 100%;
     min-width: 130px;
-    z-index: 1;
+    z-index: 3;
     background-color: var(--sameModeColor);
     border: 1px solid var(--dropdownContentBorderColor);
     // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
@@ -82,7 +82,13 @@
 
       /* Links inside the dropdown */
       span {
-        @include font(var(--dropdownActiveSelected), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--dropdownActiveSelected),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -107,7 +113,7 @@
       }
       /* Change color of dropdown links on hover */
       span:hover {
-        background-color: var(--dropdownListSelectedBg);;
+        background-color: var(--dropdownListSelectedBg);
       }
 
       .active {
@@ -339,7 +345,7 @@
     transform: translateY(100%);
     width: 100%;
     min-width: 130px;
-    z-index: 1;
+    z-index: 3;
     background-color: var(--sameModeColor);
     border: 1px solid var(--dropdownContentBorderColor);
     // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
@@ -352,7 +358,13 @@
 
       /* Links inside the dropdown */
       span {
-        @include font(var(--dropdownActiveSelected), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--dropdownActiveSelected),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -433,7 +445,13 @@
         padding: 1rem 1rem 1rem 2rem;
         font-size: 1rem;
         &::placeholder {
-          @include font(var(--sameModeColor), "Inter-Medium", 1rem, 500, 1.6rem);
+          @include font(
+            var(--sameModeColor),
+            "Inter-Medium",
+            1rem,
+            500,
+            1.6rem
+          );
         }
       }
       img {
