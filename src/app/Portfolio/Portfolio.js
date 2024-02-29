@@ -1048,6 +1048,7 @@ class Portfolio extends BaseReactComponent {
 
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
+        counterGraphLoading: false,
       });
     }
   };
@@ -1137,6 +1138,10 @@ class Portfolio extends BaseReactComponent {
           });
           this.props.updateWalletListFlag("counterpartyVolumePage", true);
           this.props.getAllCounterFeeApi(this, false, false);
+        } else {
+          this.setState({
+            counterGraphLoading: false,
+          });
         }
       } else if (this.state.blockThreeSelectedItem === 2) {
         if (
@@ -1438,6 +1443,10 @@ class Portfolio extends BaseReactComponent {
           });
           this.props.updateWalletListFlag("counterpartyVolumePage", true);
           this.props.getAllCounterFeeApi(this, false, false);
+        } else {
+          this.setState({
+            counterGraphLoading: false,
+          });
         }
       }
       if (
