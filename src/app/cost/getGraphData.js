@@ -416,7 +416,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           labelTextColor: function (context) {
             return parentCtx?.props?.darkModeState?.flag
               ? "#7c7d81"
-              : "#b0b1b3";
+              : "#19191a";
           },
         },
       },

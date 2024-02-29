@@ -226,10 +226,10 @@
     }
 
     .chain-list-amt {
-      background-color: rgba(229, 229, 230, 0.5);
+      background: var(--tableCostCommonBg);
+          color: var(--tableDataColor) !important;
       border-radius: 4px;
       padding: 6px;
-      color: var(--tableCostCommonColor) !important;
     }
   }
   // &:hover {
@@ -336,10 +336,10 @@
     }
     
     .chain-list-amt {
-      background-color: rgba(229, 229, 230, 0.5);
+      background: var(--tableCostCommonBg);
+      color: var(--tableDataColor) !important;
       border-radius: 4px;
       padding: 6px;
-      color: var(--tableCostCommonColor) !important;
     }
   }
   .insights-wrapper {
