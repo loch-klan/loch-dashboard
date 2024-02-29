@@ -107,11 +107,11 @@
       }
       /* Change color of dropdown links on hover */
       span:hover {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);;
       }
 
       .active {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);
       }
 
       &::-webkit-scrollbar {
@@ -381,7 +381,7 @@
       }
 
       .active {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);
       }
 
       &::-webkit-scrollbar {

@@ -1021,8 +1021,10 @@ form {
 .date-navigator-icons {
   position: relative;
   top: -1px;
+  filter: var(--invertColor);
 }
 .date-navigator-icons-next {
+  filter: var(--invertColor);
   position: relative;
   top: -1px;
 }
@@ -2805,6 +2807,7 @@ input {
 }
 
 .react-calendar__navigation__arrow{
+  
   // color: var(--topbarAdressAddBorder) !important;
   color: var(--black191);
   background-color: transparent;

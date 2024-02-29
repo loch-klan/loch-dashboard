@@ -1038,6 +1038,7 @@ justify-content: center;
         }
       }
       .react-calendar__navigation__arrow {
+        
         border-radius: 0.8rem;
         border: 1px solid $grey-E5E !important;
       }
@@ -1070,7 +1071,7 @@ justify-content: center;
       .react-calendar__tile--active {
         background-color: var(--black191);
         border-radius: 0.4rem;
-        color: $secondary !important;
+        color: var(--sameModeColor) !important;
       }
       .react-calendar__tile {
         color: $grey-B0B;

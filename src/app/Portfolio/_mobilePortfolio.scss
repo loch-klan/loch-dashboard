@@ -124,9 +124,9 @@
         margin-left: 0.5rem;
       }
       &:hover {
-        color: #0d0d0d;
+        color: var(--seeMoreColor);
         .seeMoreBtnIcon {
-          filter: brightness(0);
+          filter: brightness(0.5);
         }
       }
     }
@@ -250,9 +250,9 @@
           text-overflow: ellipsis !important;
           padding: 0rem 1rem;
           cursor: pointer;
-          &:hover {
-            color: #0d0d0d;
-          }
+          // &:hover {
+          //   color: #0d0d0d;
+          // }
         }
       }
       .newHomeTableContainer {
@@ -793,7 +793,7 @@
             justify-content: space-between;
             padding: 1rem 0rem;
             margin-right: 1.6rem;
-            border-top: 1px solid rgba(229, 229, 230, 0.5);
+            border-top: 1px solid var(--borderwhiteDarkLight);
 
             span img {
               position: relative;

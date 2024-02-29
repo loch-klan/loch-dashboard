@@ -168,6 +168,8 @@
   --yeildBottomBorder1:#cacbcc;
   --yeildBottomBorder2:#e5e5e6;
 
+  --dropdownListSelectedBg: rgba(229, 229, 230, 0.5);
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -331,6 +333,7 @@
 
   --yeildBottomBorder1:#606060;
   --yeildBottomBorder2:#303030;
+  --dropdownListSelectedBg: rgba(229, 229, 230, 0.2);
 }
 [data-theme="dark2"] {
   // UPDATED

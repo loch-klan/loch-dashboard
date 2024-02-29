@@ -57,7 +57,7 @@
       padding: 0.4rem;
       height: 16rem;
       overflow-y: scroll;
-      border-color: var(--cardBackgroud);
+      // border-color: var(--cardBackgroud);
 
       .dropdown-item {
         padding: 0.8rem;
@@ -217,7 +217,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--borderwhiteDarkLight);
 
     span img {
       position: relative;
@@ -327,7 +327,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--borderwhiteDarkLight);
     
     span img {
       position: relative;
@@ -423,9 +423,12 @@
       }
     }
 
+    .btn-primary{
+      border: 1px solid transparent;
+    }
     .btn-primary:not(:disabled):not(.disabled):active {
       // background-color: transparent !important;
-      border: 0.1rem solid transparent !important;
+      border: 0.1rem solid var(--cardBackgroud) !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
@@ -439,7 +442,7 @@
       border-radius: 0.8rem;
 
       &:hover {
-        border: 0.1rem solid $primary !important;
+        border: 0.1rem solid var(--borderwhiteDarkLight)!important;
       }
     }
 
