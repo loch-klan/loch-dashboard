@@ -3315,3 +3315,19 @@ input {
     }
   }
 }
+
+
+.scroll-bar-affects-parent {
+  .ScrollArea{
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: var(--yeildBottomBorder2) !important;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: var(--yeildBottomBorder1) !important;
+    }
+}
+}

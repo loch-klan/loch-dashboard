@@ -82,7 +82,7 @@
 
       /* Links inside the dropdown */
       span {
-        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--dropdownActiveSelected), "Inter-Medium", 1.3rem, 500, 1.6rem);
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -352,7 +352,7 @@
 
       /* Links inside the dropdown */
       span {
-        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--dropdownActiveSelected), "Inter-Medium", 1.3rem, 500, 1.6rem);
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;

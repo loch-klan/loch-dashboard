@@ -23,10 +23,10 @@
   }
   .yeildOppTitleLeft {
     width: 32%;
-    border-color: #cacbcc;
+    border-color: var(--yeildBottomBorder1);
   }
   .yeildOppTitleRight {
     width: 68%;
-    border-color: #e5e5e6;
+    border-color:  var(--yeildBottomBorder2);
   }
 }

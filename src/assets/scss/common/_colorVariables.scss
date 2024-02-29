@@ -23,6 +23,7 @@
   --invertMode:black;
   --glassCardBg: rgba(255,255,255,0.8);
   --white191darke5ee6:#19191a;
+  --dropdownActiveSelected: #19191a;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -153,7 +154,8 @@
 
   --signinIconBg: #fff;
   --signinIconBorder: #e5e5e6;
-  --signinIconColor: #313233;
+  --signinIconColor: #E5E5E6;
+  --signinIconContainerBOrder:#606060;
   
   --twitterIconsBg: rgba(229, 229, 230, 0.50);
   --twitterIconsBgHover: rgba(229, 229, 230, 0.80);
@@ -161,6 +163,9 @@
 
   --deifSectionalBOrder: #e5e5e6;
   --pageLimitBOrder:#d4d4d4;
+
+  --yeildBottomBorder1:#cacbcc;
+  --yeildBottomBorder2:#e5e5e6;
 
 }
 [data-theme="dark"] {
@@ -188,6 +193,7 @@
   --invertMode:rgba(255,255,255,0.85);
   --glassCardBg: rgba(24,24,24,0.8);
   --white191darke5ee6:#e5e5e6;
+  --dropdownActiveSelected: #e5e5e6;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -312,6 +318,7 @@
   --signinIconBg: #303030;
   --signinIconBorder: #404040;
   --signinIconColor: #cacbcc;
+  --signinIconContainerBOrder:#606060;
   
   --twitterIconsBg: #202020;
   --twitterIconsBgHover: #303030;
@@ -319,6 +326,9 @@
 
   --deifSectionalBOrder: #303030;
   --pageLimitBOrder:#303030;
+
+  --yeildBottomBorder1:#606060;
+  --yeildBottomBorder2:#303030;
 }
 [data-theme="dark2"] {
   // UPDATED

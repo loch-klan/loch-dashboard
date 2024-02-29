@@ -957,7 +957,7 @@
         .sideBarFooterSignInIconContainer {
           // transition-duration: 300ms;
           margin-right: 0.5rem;
-          border: 0.1rem solid $white-E5E;
+          border: 0.1rem solid var(--signinIconColor);
           min-width: 2.5rem;
           min-height: 2.5rem;
           max-width: 2.5rem;

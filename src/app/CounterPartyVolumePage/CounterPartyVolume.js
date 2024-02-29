@@ -531,7 +531,7 @@ class CounterPartyVolume extends Component {
     return (
       <>
         {/* topbar */}
-        <div className="portfolio-page-section">
+        <div className="portfolio-page-section scroll-bar-affects-parent">
           <div
             className="portfolio-container page"
             style={{ overflow: "visible" }}
