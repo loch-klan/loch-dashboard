@@ -914,13 +914,7 @@ function Sidebar(props) {
                               }}
                               activeclassname="active"
                             >
-                              <Image
-                                src={
-                                  activeTab === "/home-leaderboard"
-                                    ? ActiveSmartMoneySidebarIcon
-                                    : InactiveSmartMoneySidebarIcon
-                                }
-                              />
+                              <Image src={InactiveSmartMoneySidebarIcon} />
                             </NavLink>
                           </CustomOverlay>
                         </li>
