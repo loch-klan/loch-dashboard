@@ -782,6 +782,8 @@ form {
       &:hover {
         border: 1px solid var(--primaryTextColor);
       }
+      transition: none !important;
+      transition-duration: 0s;
     }
 
     .css-4ljt47-MenuList {

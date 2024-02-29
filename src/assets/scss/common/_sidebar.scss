@@ -639,7 +639,7 @@
               font-size: 1.4rem;
               font-weight: 500;
               img{
-                filter: var(--invertColor) !important;
+                filter: var(--sidebarActiveIcon) !important;
               }
               &:hover {
                 cursor: default;

@@ -159,6 +159,9 @@
   --twitterIconsBgHover: rgba(229, 229, 230, 0.80);
   --twitterIconsColor: #636467;
 
+  --deifSectionalBOrder: #e5e5e6;
+  --pageLimitBOrder:#d4d4d4;
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -302,7 +305,7 @@
 
   --seeMoreColor: #7c7d81;
 
-  --sidebarActiveIcon: brightness(2);
+  --sidebarActiveIcon: brightness(2.4);
 
   --nftShadow: 0.1rem solid none;
 
@@ -313,6 +316,9 @@
   --twitterIconsBg: #202020;
   --twitterIconsBgHover: #303030;
   --twitterIconsColor: #CACBCC;
+
+  --deifSectionalBOrder: #303030;
+  --pageLimitBOrder:#303030;
 }
 [data-theme="dark2"] {
   // UPDATED

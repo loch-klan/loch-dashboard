@@ -2461,46 +2461,6 @@ class NewWelcome extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Follow
-            </span>
-          </div>
-        ),
-        dataKey: "following",
-
-        coumnWidth: 0.125,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
-            const handleOnClick = (addItem) => {
-              if (!this.state.blurTable) {
-                this.handleFollowUnfollow(
-                  rowData.account,
-                  addItem,
-                  rowData.tagName
-                );
-              } else {
-                this.opneLoginModalForSmartMoney();
-                ClickedFollowLeaderboard({
-                  session_id: getCurrentUser().id,
-                  address: rowData.account,
-                  isMobile: false,
-                });
-              }
-            };
-            return (
-              <CheckboxCustomTable
-                handleOnClick={handleOnClick}
-                isChecked={rowData.following}
-                dontSelectIt={this.state.blurTable}
-              />
-            );
-          }
-        },
-      },
     ];
 
     return (

@@ -298,7 +298,7 @@ class CustomTable extends BaseReactComponent {
                   }`}
                 >
                   {/* <Image src={notFoundImage} /> */}
-                  <p className="inter-display-medium f-s-16 lh-19 table-data-font">
+                  <p className="inter-display-medium f-s-16 lh-19 ">
                     {" "}
                     {moduleName ? "No " + moduleName + " Found" : message}
                   </p>
