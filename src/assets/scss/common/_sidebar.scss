@@ -957,7 +957,7 @@
         .sideBarFooterSignInIconContainer {
           // transition-duration: 300ms;
           margin-right: 0.5rem;
-          border: 0.1rem solid var(--signinIconColor);
+          border: 0.1rem solid var(--signinIconContainerBOrder);
           min-width: 2.5rem;
           min-height: 2.5rem;
           max-width: 2.5rem;
@@ -966,7 +966,7 @@
           align-items: center;
           justify-content: center;
           border-radius: 0.8rem;
-          background-color: var(--primaryActiveFilter);
+          background-color: var(--signinIconContainerBg);
           .sideBarFooterSignInIcon {
             height: 1.3rem;
             filter: none;
