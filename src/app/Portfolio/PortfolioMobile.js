@@ -803,7 +803,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.props.blockOneSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
                         this.props.AvgCostLoading ||
                         this.props.tableDataCostBasis?.length < 1
                           ? ""
@@ -866,7 +866,7 @@ class PortfolioMobile extends BaseReactComponent {
                   this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
                         this.props.yieldOpportunitiesTableLoading ||
                         this.props.yieldOpportunitiesListTemp?.length < 1
                           ? ""
@@ -879,8 +879,6 @@ class PortfolioMobile extends BaseReactComponent {
                     >
                       <TransactionTable
                         message={"No yield opportunities found"}
-                        xAxisScrollable
-                        xAxisScrollableColumnWidth={3}
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
@@ -891,6 +889,9 @@ class PortfolioMobile extends BaseReactComponent {
                         isArrow={true}
                         isLoading={this.props.yieldOpportunitiesTableLoading}
                         fakeWatermark
+                        xAxisScrollable
+                        yAxisScrollable
+                        xAxisScrollableColumnWidth={3}
                       />
                     </div>
                     {!this.props.yieldOpportunitiesTableLoading ? (
@@ -1148,7 +1149,7 @@ class PortfolioMobile extends BaseReactComponent {
                 ) : this.props.blockFourSelectedItem === 2 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
                         this.props.tableLoading ||
                         this.props.tableData?.length < 1
                           ? ""

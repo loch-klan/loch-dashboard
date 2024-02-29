@@ -1997,7 +1997,6 @@ form {
   }
   .topMarginForCombiedValues {
     margin-top: 60px;
-    background-color: green;
   }
   .tableWatermark {
     background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center;
@@ -3273,4 +3272,46 @@ input {
   font-size: 13px;
   font-weight: 500;
   color: var(--tableDataColor);
+}
+.freezeTheFirstColumn {
+  .transaction-table-section {
+    .table-wrapper {
+      .ReactVirtualized__Table {
+        .ReactVirtualized__Table__headerRow {
+          overflow: unset !important;
+          .ReactVirtualized__Table__headerColumn:first-child {
+            position: sticky;
+            position: -webkit-sticky;
+            left: 0;
+            top: 0;
+            height: calc(100% - 0.5rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            z-index: 2;
+          }
+        }
+        .ReactVirtualized__Table__Grid {
+          .ReactVirtualized__Grid__innerScrollContainer {
+            .ReactVirtualized__Table__row {
+              .ReactVirtualized__Table__rowColumn:first-child {
+                position: sticky;
+                position: -webkit-sticky;
+                left: 0;
+                top: 0;
+                height: calc(100% - 0.5rem);
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                z-index: 2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

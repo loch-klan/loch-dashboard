@@ -219,7 +219,7 @@ class Portfolio extends BaseReactComponent {
       homeGraphFeesData: undefined,
       homeCounterpartyVolumeData: undefined,
       gasFeesGraphLoading: false,
-      counterGraphLoading: false,
+      counterGraphLoading: true,
       yieldOpportunitiesList: [],
       yieldOpportunitiesTotalCount: 0,
       yieldOpportunitiesTableLoading: true,
@@ -1050,6 +1050,7 @@ class Portfolio extends BaseReactComponent {
 
       this.setState({
         homeCounterpartyVolumeData: tempHolder,
+        counterGraphLoading: false,
       });
     }
   };
@@ -1139,6 +1140,10 @@ class Portfolio extends BaseReactComponent {
           });
           this.props.updateWalletListFlag("counterpartyVolumePage", true);
           this.props.getAllCounterFeeApi(this, false, false);
+        } else {
+          this.setState({
+            counterGraphLoading: false,
+          });
         }
       } else if (this.state.blockThreeSelectedItem === 2) {
         if (
@@ -1440,6 +1445,10 @@ class Portfolio extends BaseReactComponent {
           });
           this.props.updateWalletListFlag("counterpartyVolumePage", true);
           this.props.getAllCounterFeeApi(this, false, false);
+        } else {
+          this.setState({
+            counterGraphLoading: false,
+          });
         }
       }
       if (
@@ -3101,7 +3110,8 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={
                     tempValueToday
-                      ? amountFormat(tempValueToday, "en-US", "USD")
+                      ? CurrencyType(false) +
+                        amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
@@ -4456,7 +4466,7 @@ class Portfolio extends BaseReactComponent {
                       {this.state.blockOneSelectedItem === 1 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.AvgCostLoading ||
                               tableDataCostBasis?.length < 1
                                 ? ""
@@ -4482,6 +4492,7 @@ class Portfolio extends BaseReactComponent {
                               isAnalytics="average cost basis"
                               // addWatermark
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4875,7 +4886,7 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockThreeSelectedItem === 2 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.yieldOpportunitiesTableLoading ||
                               yieldOpportunitiesListTemp?.length < 1
                                 ? ""
@@ -4898,6 +4909,7 @@ class Portfolio extends BaseReactComponent {
                                 this.state.yieldOpportunitiesTableLoading
                               }
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
@@ -5069,7 +5081,7 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.tableLoading || tableData?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
@@ -5089,6 +5101,7 @@ class Portfolio extends BaseReactComponent {
                               watermarkOnTop
                               // addWatermark
                               fakeWatermark
+                              yAxisScrollable
                             />
                           </div>
                           {!this.state.tableLoading ? (

@@ -714,7 +714,7 @@ class PortfolioHomeDefiBlock extends Component {
                 }}
               >
                 <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
-                  No data found
+                  No DeFi balances found
                 </h3>
               </div>
             ) : (

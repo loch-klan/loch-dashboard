@@ -536,29 +536,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   render() {
     const columnData = [
       {
-        labelName: "",
-        dataKey: "Numbering",
-        coumnWidth: 0.05,
-        isCell: true,
-        cell: (rowData, dataKey, index) => {
-          if (dataKey === "Numbering" && index > -1) {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(index + 1)).toLocaleString("en-US")}
-              >
-                <span className="inter-display-medium f-s-13 table-data-font">
-                  {Number(noExponents(index + 1)).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
         labelName: (
           <div
             className="cp history-table-header-col"
@@ -576,7 +553,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -695,7 +672,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -752,7 +729,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {

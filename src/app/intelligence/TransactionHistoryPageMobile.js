@@ -164,39 +164,25 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   marginTop: "2rem",
                   paddingTop: "0.5rem",
                 }}
-                className={`newHomeTableContainer  ${
+                className={`freezeTheFirstColumn section-table section-table-mobile-scroll  ${
                   this.props.tableLoading || this.props.tableData < 1
                     ? ""
                     : "tableWatermarkOverlay"
                 }`}
               >
                 <TransactionTable
+                  tableData={this.props.tableData}
+                  columnList={this.props.columnData}
+                  message="No transactions found"
+                  xAxisScrollable
+                  xAxisScrollableColumnWidth={3}
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion
-                  message="No transactions found"
-                  tableData={this.props.tableData}
-                  columnList={this.props.columnData}
                   headerHeight={60}
                   isArrow={true}
-                  isLoading={this.props.tableLoading}
-                  isAnalytics="average cost basis"
                   fakeWatermark
-                  xAxisScrollable
-                  yAxisScrollable
-                  xAxisScrollableColumnWidth={3}
-                  tableSortOpt={this.props.tableSortOpt}
-                  handleSort={this.props.handleSort}
-                  isMiniVersion
-                  // paginationNew
-                  // totalPage={this.props.totalPage}
-                  // history={this.props.history}
-                  // location={this.props.location}
-                  // page={this.props.currentPage}
-                  // onPageChange={this.props.onPageChange}
-                  // minimalPagination
-                  // hidePaginationRecords
-                  // currentPage={this.props.currentPage}
+                  minimalPagination
                 />
               </div>
             </div>
