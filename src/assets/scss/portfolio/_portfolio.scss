@@ -1338,7 +1338,7 @@
               position: sticky;
               position: -webkit-sticky; /* Safari */
               top: 0;
-              background-color: white;
+              background-color: var(--cardBackgroud);
               z-index: 100;
             }
           }

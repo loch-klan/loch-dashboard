@@ -3288,7 +3288,7 @@ input {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: white;
+            background-color: var(--cardBackgroud);
             z-index: 2;
           }
         }
@@ -3305,7 +3305,7 @@ input {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background-color: white;
+                background-color: var(--cardBackgroud);
                 z-index: 2;
               }
             }
