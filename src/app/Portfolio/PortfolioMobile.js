@@ -784,7 +784,7 @@ class PortfolioMobile extends BaseReactComponent {
                   this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
                         this.props.yieldOpportunitiesTableLoading ||
                         this.props.yieldOpportunitiesListTemp?.length < 1
                           ? ""
@@ -1067,7 +1067,7 @@ class PortfolioMobile extends BaseReactComponent {
                 ) : this.props.blockFourSelectedItem === 2 ? (
                   <div>
                     <div
-                      className={`newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
                         this.props.tableLoading ||
                         this.props.tableData?.length < 1
                           ? ""
