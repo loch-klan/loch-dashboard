@@ -36,7 +36,7 @@
   position: relative;
   // display: inline-block;
   margin: 0rem 1.7rem 0rem 0rem;
-  background-color: rgba(229, 229, 230, 0.5);
+  background-color: var(--primaryFilter);
   border-radius: 0.8rem;
   border: 0.1rem solid transparent;
   min-height: 4rem;
@@ -44,15 +44,15 @@
 
   &:hover {
     //  background-color: rgba(229, 229, 230, 0.35);
-    border: 0.1rem solid $black-191;
+    border: 0.1rem solid var(--black191);
   }
 
   &.lineChart {
     position: relative;
     margin: 0;
     padding: 0;
-    background: #ffffff;
-    border: 0.1rem solid #b0b1b3;
+    background: transparent;
+    border: 0.1rem solid var(--borderwhiteDarkLight);
     border-radius: 0.8rem;
     color: #19191a;
     user-select: none;
@@ -60,7 +60,7 @@
   }
 
   &.lineChart:hover {
-    border: 0.1rem solid $black-191;
+    border: 0.1rem solid var(--black191);
   }
 
   .dropdown-content {
@@ -69,9 +69,9 @@
     top: 4rem;
     width: 100%;
     min-width: 130px;
-    z-index: 3;
-    background-color: #ffffff;
-    border: 1px solid #e1e1e1;
+    z-index: 1;
+    background-color: var(--sameModeColor);
+    border: 1px solid var(--dropdownContentBorderColor);
     // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
     border-radius: 4px;
 
@@ -82,7 +82,13 @@
 
       /* Links inside the dropdown */
       span {
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--dropdownActiveSelected),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -107,11 +113,11 @@
       }
       /* Change color of dropdown links on hover */
       span:hover {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);
       }
 
       .active {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);
       }
 
       &::-webkit-scrollbar {
@@ -139,14 +145,14 @@
       }
       .dropdown-search-input {
         flex: 1;
-        background: #ffffff;
+        background: var(--sameModeColor);
         width: 100%;
         border: none;
         box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
         border-radius: 4px;
         padding: 1rem 1rem 1rem 2.5rem;
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
 
         &:focus,
         :active,
@@ -156,20 +162,21 @@
         }
 
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+          @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
         }
       }
       .dropdown-search-input-smaller {
         padding: 1rem 1rem 1rem 2rem;
         font-size: 1rem;
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1rem, 500, 1.6rem);
+          @include font(var(--black191), "Inter-Medium", 1rem, 500, 1.6rem);
         }
       }
       img {
         position: absolute;
         top: 52%;
         transform: translateY(-50%);
+        filter: var(--invertColor);
         left: 1rem;
       }
     }
@@ -192,12 +199,12 @@
         border-radius: 8px;
         padding: 0.8rem;
         border: 0.1rem solid #b0b1b3;
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
 
         &:focus,
         :active,
         :focus-visible {
-          border-color: black;
+          border-color: var(--backColor);
           outline: none;
         }
 
@@ -249,7 +256,7 @@
   }
 
   .placeholder {
-    @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+    @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
     position: absolute;
     top: 50%;
     width: 100%;
@@ -262,7 +269,7 @@
     transform: translateY(-50%);
 
     &.lineChartPlaceholder {
-      @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+      @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
       height: 4rem;
       display: flex;
       align-items: center;
@@ -276,10 +283,11 @@
         right: 1rem;
         // top: -0.1rem;
         top: 1.1rem;
+        // filter: (--hoverBrightnessValueInvert);
       }
 
       svg path {
-        fill: hsl(0, 0%, 0%);
+        fill: var(--black191);
       }
 
       // svg > path:nth-child(1) {
@@ -304,7 +312,7 @@
   .placeholderPriceDropdown {
     min-width: 18rem;
     max-width: 80rem;
-    @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+    @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -312,7 +320,7 @@
     padding: 1rem;
 
     &.lineChartPlaceholder {
-      @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+      @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
       display: flex;
       align-items: center;
 
@@ -321,7 +329,7 @@
       }
 
       svg path {
-        fill: hsl(0, 0%, 0%);
+        fill: var(--black191);
       }
     }
 
@@ -337,9 +345,9 @@
     transform: translateY(100%);
     width: 100%;
     min-width: 130px;
-    z-index: 3;
-    background-color: #ffffff;
-    border: 1px solid #e1e1e1;
+    z-index: 1;
+    background-color: var(--sameModeColor);
+    border: 1px solid var(--dropdownContentBorderColor);
     // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
     border-radius: 4px;
 
@@ -350,7 +358,13 @@
 
       /* Links inside the dropdown */
       span {
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--dropdownActiveSelected),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
         padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
@@ -379,7 +393,7 @@
       }
 
       .active {
-        background-color: rgba(229, 229, 230, 0.5);
+        background-color: var(--dropdownListSelectedBg);
       }
 
       &::-webkit-scrollbar {
@@ -407,14 +421,14 @@
       }
       .dropdown-search-input {
         flex: 1;
-        background: #ffffff;
+        background: var(--sameModeColor);
         width: 100%;
         border: none;
         box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
         border-radius: 4px;
         padding: 1rem 1rem 1rem 2.5rem;
-        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
 
         &:focus,
         :active,
@@ -424,20 +438,27 @@
         }
 
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+          @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
         }
       }
       .dropdown-search-input-smaller {
         padding: 1rem 1rem 1rem 2rem;
         font-size: 1rem;
         &::placeholder {
-          @include font($black-191, "Inter-Medium", 1rem, 500, 1.6rem);
+          @include font(
+            var(--sameModeColor),
+            "Inter-Medium",
+            1rem,
+            500,
+            1.6rem
+          );
         }
       }
       img {
         position: absolute;
         top: 52%;
         transform: translateY(-50%);
+        filter: var(--invertColor);
         left: 1rem;
       }
     }

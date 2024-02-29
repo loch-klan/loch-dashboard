@@ -245,6 +245,7 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    this.props.history.push("/welcome");
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -560,7 +561,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Rank
             </span>
             {/* <Image
@@ -603,7 +604,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Wallet
             </span>
             {/* <Image
@@ -663,7 +664,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Nametag
             </span>
             {/* <Image
@@ -714,7 +715,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Net worth
             </span>
             {/* <Image
@@ -775,7 +776,7 @@ class SmartMoneyPage extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Flows (1 year)
+              Net flows (1 year)
             </span>
           </div>
         ),
@@ -860,7 +861,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Unrealized PnL
             </span>
             {/* <Image
@@ -950,7 +951,7 @@ class SmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 secondaryDarkText">
               Follow
             </span>
             {/* <Image

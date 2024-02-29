@@ -87,7 +87,7 @@ class DefiMobile extends Component {
                     style={
                       this.props.isYeildToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                             marginBottom: "0px",
                           }
                         : {
@@ -150,7 +150,7 @@ class DefiMobile extends Component {
                     style={
                       this.props.isDebtToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                             marginBottom: "0px",
                           }
                         : { transform: "rotate(180deg)", marginBottom: "0px" }

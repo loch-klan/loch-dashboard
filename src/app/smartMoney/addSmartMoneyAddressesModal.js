@@ -543,7 +543,7 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
           />
         ) : null}
         <Modal.Header>
-          <div className="api-modal-header">
+          <div className="api-modal-header popup-main-icon-with-border">
             <Image src={TrophyIcon} />
           </div>
           <div className="closebtn" onClick={this.hideModal}>

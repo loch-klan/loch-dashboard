@@ -360,7 +360,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Holdings
             </span>
             {/* <Image
@@ -381,7 +381,7 @@ class NFT extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "holding") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                 {rowData.holding}
               </div>
             );
@@ -391,7 +391,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Collection
             </span>
 
@@ -411,7 +411,7 @@ class NFT extends BaseReactComponent {
           if (dataKey === "collection") {
             return (
               <div
-                className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div nowrap-div"
+                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div nowrap-div"
                 style={{
                   lineHeight: "120%",
                 }}
@@ -425,7 +425,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Image
             </span>
           </div>
@@ -478,6 +478,7 @@ class NFT extends BaseReactComponent {
                       color: "#96979A",
                       fontWeight: "500",
                     }}
+                    className="table-data-font"
                   >
                     {rowData.imgs.length - 4}+
                   </span>

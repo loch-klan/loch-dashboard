@@ -7,12 +7,14 @@ import {
 
 const labels = ["Inflow", "Outflow", "Net"];
 
-export const getProfitLossAsset = (arr) => {
+export const getProfitLossAsset = (arr, parentCtx) => {
   // console.log(arr);
   //   Find total inflows by calculating inflows.totalvolume
   // Find total outflows by calculating outflows.totalvolume
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
+
+  console.log("m here", parentCtx?.props?.darkModeState);
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   let fees = arr?.fees;
 
@@ -80,6 +82,8 @@ export const getProfitLossAsset = (arr) => {
             .image(GraphLogo, x, y, imageWidth, imageHeight)
             .attr({
               zIndex: 1, // Set the zIndex so it appears above the chart
+              // opacity: parentCtx?.props?.darkModeState?.flag ? 0.1 : 1,
+              class: "watermark-opacity",
             })
             .add();
         },
@@ -94,6 +98,12 @@ export const getProfitLossAsset = (arr) => {
     },
     xAxis: {
       categories: labels,
+      lineColor: parentCtx?.props?.darkModeState?.flag ? "#303030" : "#e5e5e6",
+      labels: {
+        style: {
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
+        },
+      },
     },
     yAxis: {
       showLastLabel: true,
@@ -119,10 +129,13 @@ export const getProfitLossAsset = (arr) => {
           fontSize: 12,
           fontFamily: "Inter-Regular",
           fontWeight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
         },
       },
       gridLineDashStyle: "longdash",
+      gridLineColor: parentCtx?.props?.darkModeState?.flag
+        ? "#404040"
+        : "#e5e5e6",
     },
     tooltip: {
       shared: true,
@@ -190,13 +203,13 @@ export const getProfitLossAsset = (arr) => {
 
         // const tooltip_title = "Week";
         //  console.log("checking date", x_value, this.x, tooltip_title);
-        return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+        return `<div class="top-section py-4" style="background-color:var(--cardBackgroud); border: 1px solid var(--cardBorder); border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
+                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#7c7d81; display:flex; justify-content:space-between"><b>${
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
-          this.x === "Net" ? netColor : "#16182B"
+          this.x === "Net" ? netColor : "#ffffff"
         };">${CurrencyType(false)}${numToCurrency(
           net_amount * currency?.rate
         )}</b></div>${

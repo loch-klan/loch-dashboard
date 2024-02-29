@@ -542,7 +542,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Asset"
             onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Asset
             </span>
             <Image
@@ -604,7 +604,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Average Cost Price"
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Avg cost price
             </span>
             <Image
@@ -640,7 +640,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {rowData.AverageCostPrice
                       ? CurrencyType(false) +
                         numToCurrency(
@@ -661,7 +661,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Price"
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Current price
             </span>
             <Image
@@ -697,7 +697,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {rowData.CurrentPrice
                       ? CurrencyType(false) +
                         numToCurrency(
@@ -718,7 +718,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Amount"
             onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Amount
             </span>
             <Image
@@ -753,7 +753,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                       : "0"
                   }
                 >
-                  <span>
+                  <span className="table-data-font">
                     {rowData.Amount
                       ? numToCurrency(rowData.Amount).toLocaleString("en-US")
                       : "0"}
@@ -771,7 +771,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Cost Basis"
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Cost basis
             </span>
             <Image
@@ -802,6 +802,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 >
                   <div className="cost-common">
                     <span
+                      className="table-data-font"
                       onMouseEnter={() => {
                         CostCostBasisHover({
                           session_id: getCurrentUser().id,
@@ -830,7 +831,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Current Value"
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Current value
             </span>
             <Image
@@ -867,6 +868,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                           email_address: getCurrentUser().email,
                         });
                       }}
+                      className="table-data-font"
                     >
                       {rowData.CurrentValue
                         ? CurrencyType(false) +
@@ -889,7 +891,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Unrealized gain
             </span>
             <Image
@@ -947,7 +949,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         }
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
@@ -967,7 +969,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Return
             </span>
             <Image
@@ -1022,7 +1024,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         }
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                         : "0.00%"}
@@ -1041,7 +1043,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Portfolio perc"
             onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Portfolio (%)
             </span>
             <Image
@@ -1082,7 +1084,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                         : "0.00%"}

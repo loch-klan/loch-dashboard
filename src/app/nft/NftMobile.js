@@ -53,7 +53,7 @@ class NFTMobile extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70vh",
-              backgroundColor: "white",
+              backgroundColor: "var(--cardBackgroud)",
               borderRadius: "1rem",
               margin: "1.5rem 0rem",
             }}

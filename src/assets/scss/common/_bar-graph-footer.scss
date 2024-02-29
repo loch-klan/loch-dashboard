@@ -87,14 +87,14 @@
 }
 .mobileGasFeesExpandedViewDropdownContainer {
   .custom-dropdown {
-    background-color: white !important;
-    border-color: #e1e1e1 !important;
+    background-color: var(--cardBackgroud) !important;
+    border-color: var(--borderwhiteDarkLight) !important;
     .dropdown-content {
       transform: translateX(0.5rem);
     }
     &:hover {
-      background-color: white !important;
-      border-color: #19191a !important;
+      background-color: var(--cardBackgroud) !important;
+      border-color: var(--black191) !important;
     }
   }
 }
@@ -107,11 +107,11 @@
   .intelligenceRealisedRightItemsMobile {
     width: 48% !important;
     .custom-dropdown {
-      background-color: #e5e5e680 !important;
-      border-color: #e5e5e680 !important;
+      background-color: var(--greyCardBackgroud) !important;
+      border-color: var(--greyCardBackgroud) !important;
       transition-duration: 300ms;
       &:hover {
-        background-color: white !important;
+        background-color: var(--cardBackgroud) !important;
         border-color: #e1e1e1 !important;
       }
     }
@@ -160,8 +160,8 @@
       }
       background-color: transparent;
       border-radius: 0.8rem;
-      border: 0.1rem solid #b0b1b3;
-      color: #19191a;
+      border: 0.1rem solid var(--borderwhiteDarkLight);
+      color: var(--black191);
       transition-duration: 300ms;
       cursor: pointer;
       text-align: center;
@@ -197,9 +197,11 @@
               }
             }
             .react-calendar__navigation__arrow {
+              
               border-radius: 0.8rem;
-              border: 1px solid $grey-E5E !important;
+              border: 1px solid var(--sidebarSectionalBOrder) !important;
               color: #19191a;
+              filter: var(--invertColor);
             }
             .react-calendar__navigation__label {
               pointer-events: none;
@@ -229,9 +231,9 @@
               }
             }
             .react-calendar__tile--active {
-              background-color: $black-191;
+              background-color: var(--black191);
               border-radius: 0.4rem;
-              color: $secondary !important;
+              color: var(--secondaryTextColor) !important;
             }
             .react-calendar__tile {
               color: $grey-B0B;
@@ -241,7 +243,7 @@
               width: 2.8rem;
               height: 2.8rem;
               &:disabled {
-                background-color: $white-F0F !important;
+                background-color: var(--primaryFilter) !important;
                 color: $grey-B0B !important;
                 &:hover {
                   color: $grey-B0B !important;
@@ -253,7 +255,7 @@
               &:hover {
                 background-color: $drop-button-hover;
                 border-radius: 0.4rem;
-                color: $black-191 !important;
+                color: var(--sameModeColor) !important;
               }
               &:active {
                 background-color: $black-191;
@@ -286,7 +288,7 @@
         }
       }
       &:hover {
-        border: 1px solid #19191a;
+        border: 1px solid var(--black191);
         background-color: transparent;
       }
     }
@@ -295,7 +297,7 @@
       background-color: transparent;
       border-radius: 0.8rem;
       border: 0.1rem solid transparent;
-      color: $black-191;
+      color: var(--black191);
       cursor: default;
       text-align: center;
       padding: 1.125rem 1rem;
@@ -307,8 +309,8 @@
   .timeCalendarBadgeWrapperMobile {
     justify-content: space-between;
     .timeCalBadge {
-      background-color: #e5e5e680;
-      border-color: #e5e5e680 !important;
+      background-color: var(--greyCardBackgroud);
+      border-color: var(--greyCardBackgroud) !important;
       width: 48%;
     }
   }
@@ -320,17 +322,17 @@
     background-color: transparent;
     border-radius: 0.8rem;
     border: 0.1rem solid transparent;
-    color: #19191a;
+    color: var(--black191);
     cursor: pointer;
     text-align: center;
 
     &.lineChartTimeBadge {
       padding: 0.8rem 1rem;
       width: 100%;
-      background-color: #f2f2f2;
+      background-color: var(--primaryFilter);
       border-radius: 0.8rem;
-      border: 0.1rem solid #f2f2f2;
-      color: #19191a;
+      border: 0.1rem solid  var(--primaryFilter);
+      color: var(--black191);
       cursor: pointer;
       text-align: center;
 
@@ -340,7 +342,7 @@
         box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
         border-radius: 8px;
-        background: #ffffff;
+        background: var(--primaryFilterActive);
       }
     }
   }
@@ -351,7 +353,7 @@
     box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
       0px 14px 64px -4px rgba(24, 39, 75, 0.12);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--cardBackgroud);
   }
 
   .timeBadge:hover {
@@ -359,7 +361,7 @@
     box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
       0px 14px 64px -4px rgba(24, 39, 75, 0.12);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--cardBackgroud);
   }
 
   .timeBadgeWrapper {

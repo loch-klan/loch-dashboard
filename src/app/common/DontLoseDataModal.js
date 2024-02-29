@@ -198,7 +198,7 @@ class DontLoseDataModal extends BaseReactComponent {
                         </div>
                         {/* this.props.isSkip(); */}
                         {!this.state.isEmailVerified ? (
-                          <div className="email-section auth-modal f-s-14">
+                          <div className="email-section auth-modal f-s-14 input-noshadow-dark">
                             {/* For Signin or Signup */}
                             {!this.state.isShowOtp ? (
                               <Form onValidSubmit={this.handleAccountCreate}>

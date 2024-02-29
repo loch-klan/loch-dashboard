@@ -55,6 +55,7 @@ import {
   isFollowedByUser,
 } from "./Api";
 import PieChart2Mobile from "./PieChart2Mobile";
+import { filter } from "lodash";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -1486,7 +1487,7 @@ class PieChart2 extends BaseReactComponent {
                         style={
                           this.state.isChainToggle
                             ? {
-                                filter: "opacity(1)",
+                                filter: "var(--invertColor)",
                                 height: "1.25rem",
                                 width: "1.25rem",
                               }
@@ -1568,6 +1569,7 @@ class PieChart2 extends BaseReactComponent {
                                 "#000000",
                                 -0.15
                               )}`,
+                              filter: "var(--invertColor)",
                             }}
                           />
                           Centralized Exchanges
@@ -1639,7 +1641,7 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isYeildToggle
                                 ? {
-                                    filter: "opacity(1)",
+                                    filter: "var(--invertColor)",
                                   }
                                 : { transform: "rotate(180deg)" }
                             }
@@ -1687,7 +1689,7 @@ class PieChart2 extends BaseReactComponent {
                             style={
                               this.state.isDebtToggle
                                 ? {
-                                    filter: "opacity(1)",
+                                    filter: "var(--invertColor)",
                                   }
                                 : { transform: "rotate(180deg)" }
                             }

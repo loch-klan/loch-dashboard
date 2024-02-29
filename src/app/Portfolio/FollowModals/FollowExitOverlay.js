@@ -32,7 +32,7 @@ import {
   WhalePodAddressDelete,
   WhalePodUploadFile,
   resetUser,
-  signInUser
+  signInUser,
 } from "../../../utils/AnalyticsFunctions.js";
 import { BASE_URL_S3 } from "../../../utils/Constant";
 import { getCurrentUser } from "../../../utils/ManageToken";
@@ -844,7 +844,7 @@ class FollowExitOverlay extends BaseReactComponent {
               this.props.modalType === "exportModal" ||
               this.props.modalType === "create_account" ||
               (this.props.modalType === "cohort" && !this.props.isEdit) ? (
-                <div className="api-modal-header">
+                <div className="api-modal-header popup-main-icon-with-border">
                   <Image src={this.props.iconImage} />
                 </div>
               ) : this.props.isEdit ? (

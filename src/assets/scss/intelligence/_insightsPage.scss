@@ -57,38 +57,43 @@
       padding: 0.4rem;
       height: 16rem;
       overflow-y: scroll;
+      // border-color: var(--cardBackgroud);
 
       .dropdown-item {
         padding: 0.8rem;
-        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
+
+        &:active{
+          color: var(--primaryTextColor) !important;
+        }
       }
     }
 
     .btn-primary:not(:disabled):not(.disabled):active {
       background-color: transparent !important;
       border: 0.1rem solid transparent !important;
-      color: $black-191;
+      color: var(--black191);
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
     }
 
     .btn-primary.dropdown-toggle {
-      background-color: transparent !important;
-      border: 0.1rem solid transparent !important;
-      color: $black-191;
+      // background-color: transparent !important;
+      // border: 0.1rem solid transparent !important;
+      // color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
 
       &:hover {
-        border: 0.1rem solid $primary !important;
+        // border: 0.1rem solid $primary !important;
       }
     }
 
     .btn-primary.dropdown-toggle:focus {
       box-shadow: none;
       background-color: transparent !important;
-      border: 0.1rem solid $primary !important;
-      color: $black-191;
+      // border: 0.1rem solid $primary !important;
+      // color: $black-191;
     }
 
     .dropdown-toggle {
@@ -117,7 +122,7 @@
     align-items: center;
     justify-content: center;
     height: 30px;
-    color: #adadad;
+    color: var(--seeMoreColor);
     font-size: 12px;
     font-weight: 500;
     margin-top: 0.5rem;
@@ -139,8 +144,17 @@
   h2 {
     margin-bottom: 2rem;
   }
+  .insight-blank-card{
+    position: absolute;
+    width: 16rem;
+    height: 16rem;
+    background: radial-gradient(50% 50% at 50% 50%, var(--insightBlurColorOne) 0%, var(--insightBlurColorTwo) 100%);
+    filter: blur(50px);
+    border-radius: 10rem;
+    z-index: 0;
+  }
   .insights-card {
-    background-color: $secondary;
+    background-color: var(--cardBackgroud);
     width: 100%;
     padding: 1.6rem 2rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -149,13 +163,14 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 2rem;
+    border: 1px solid var(--borderwhiteDarkLight) !important;
     .insights-cards-home-left {
       .risk-chip {
         width: max-content;
         padding: 4px 8px;
         border-radius: 8px;
-        background-color: $black-191;
-        color: #ffffff;
+        background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
         text-transform: uppercase;
       }
     }
@@ -173,15 +188,16 @@
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $grey-F2F;
+          background-color: var(--greyCardBackgroud);
+          color: var(--primaryTextColor);
         }
         .risk-chip {
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $black-191;
+          background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
           margin-left: 0.8rem;
-          color: #ffffff;
           text-transform: uppercase;
         }
       }
@@ -201,7 +217,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--borderwhiteDarkLight);
 
     span img {
       position: relative;
@@ -210,7 +226,8 @@
     }
 
     .chain-list-amt {
-      background-color: rgba(229, 229, 230, 0.5);
+      background: var(--tableCostCommonBg);
+          color: var(--tableDataColor) !important;
       border-radius: 4px;
       padding: 6px;
     }
@@ -310,7 +327,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--borderwhiteDarkLight);
     
     span img {
       position: relative;
@@ -319,7 +336,8 @@
     }
     
     .chain-list-amt {
-      background-color: rgba(229, 229, 230, 0.5);
+      background: var(--tableCostCommonBg);
+      color: var(--tableDataColor) !important;
       border-radius: 4px;
       padding: 6px;
     }
@@ -329,7 +347,7 @@
       margin-bottom: 2rem;
     }
     .insights-card {
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       width: 100%;
       padding: 1.6rem 2rem;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -338,13 +356,14 @@
       display: flex;
       align-items: flex-start;
       margin-bottom: 2rem;
+      border: 1px solid var(--borderwhiteDarkLight) !important;
       .insights-cards-home-left {
         .risk-chip {
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
-          background-color: $black-191;
-          color: #ffffff;
+          background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
           text-transform: uppercase;
         }
       }
@@ -362,15 +381,16 @@
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: $grey-F2F;
+            background-color: var(--greyCardBackgroud);
+          color: var(--primaryTextColor);
           }
           .risk-chip {
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: $black-191;
+            background-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
             margin-left: 0.8rem;
-            color: #ffffff;
             text-transform: uppercase;
           }
         }
@@ -389,7 +409,7 @@
     text-align: left !important;
     margin-top: 0rem;
     width: 100%;
-    background-color: #E5E5E6;
+    background-color: var(--cardBackgroud);
 
     .dropdown-menu {
       width: 100%;
@@ -399,34 +419,37 @@
 
       .dropdown-item {
         padding: 0.8rem;
-        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
       }
     }
 
+    .btn-primary{
+      border: 1px solid transparent;
+    }
     .btn-primary:not(:disabled):not(.disabled):active {
-      background-color: transparent !important;
-      border: 0.1rem solid transparent !important;
+      // background-color: transparent !important;
+      border: 0.1rem solid var(--cardBackgroud) !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
     }
 
     .btn-primary.dropdown-toggle {
-      background-color: transparent !important;
-      border: 0.1rem solid transparent !important;
+      // background-color: transparent !important;
+      // border: 0.1rem solid transparent !important;
       color: $black-191;
       padding: 1.2rem 1.6rem;
       border-radius: 0.8rem;
 
       &:hover {
-        border: 0.1rem solid $primary !important;
+        border: 0.1rem solid var(--borderwhiteDarkLight)!important;
       }
     }
 
     .btn-primary.dropdown-toggle:focus {
       box-shadow: none;
-      background-color: transparent !important;
-      border: 0.1rem solid $primary !important;
+      // background-color: transparent !important;
+      // border: 0.1rem solid $primary !important;
       color: $black-191;
     }
 

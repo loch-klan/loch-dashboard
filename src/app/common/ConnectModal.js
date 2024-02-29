@@ -1522,7 +1522,7 @@ class ConnectModal extends BaseReactComponent {
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
-            <div className="api-modal-header">
+            <div className="api-modal-header popup-main-icon-with-border">
               <Image src={this.props.iconImage} />
             </div>
           )}
@@ -1537,7 +1537,7 @@ class ConnectModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           {selection ? (
-            <div className="connect-modal-body">
+            <div className="connect-modal-body input-noshadow-dark">
               <div className="connect-head">
                 <h6 className="inter-display-medium f-s-25 lh-30 m-b-8 black-191">
                   Connecting to {selection.name}
@@ -1692,7 +1692,7 @@ class ConnectModal extends BaseReactComponent {
                         //   Connect
                         // </Button>
                         <CustomButton
-                          className={`primary-btn connect-btn ${
+                          className={`primary-btn connect-btn main-button-invert ${
                             (!this.state.coinBase ||
                               !this.state?.selection.isOAuth) &&
                             (selection.name === "Kucoin" ||
@@ -1720,7 +1720,7 @@ class ConnectModal extends BaseReactComponent {
                           Continue with {selection.name}
                         </Button> */}
                         <CustomButton
-                          className="primary-btn go-btn"
+                          className="primary-btn go-btn main-button-invert"
                           isLoading={this.state.isLoadingbtn}
                           isDisabled={this.state.isLoadingbtn}
                           buttonText={`Continue with ${selection.name}`}
@@ -1733,7 +1733,7 @@ class ConnectModal extends BaseReactComponent {
               </div>
             </div>
           ) : (
-            <div className="connect-modal-body">
+            <div className="connect-modal-body input-noshadow-dark">
               <div className="connect-head">
                 <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
                   {this.props.headerTitle}
@@ -1821,7 +1821,7 @@ class ConnectModal extends BaseReactComponent {
                     ) : null}
                     <div style={{ textAlign: "center" }}>
                       <CustomButton
-                        className="primary-btn go-btn"
+                        className="primary-btn go-btn main-button-invert"
                         type="submit"
                         isLoading={this.state.isLoadingbtn}
                         isDisabled={this.state.isLoadingbtn}

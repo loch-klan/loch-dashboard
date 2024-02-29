@@ -20,6 +20,7 @@ import {
   getAssetProfitLoss,
   // getProfitAndLossApi,
   getTransactionAsset,
+  updateAssetProfitLoss,
 } from "../intelligence/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
@@ -318,6 +319,19 @@ class RealizedProfitAndLoss extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     // used for filter
+    if (this.props.darkModeState !== prevProps.darkModeState) {
+      if (this.props.intelligenceState?.ProfitLossAssetData) {
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this
+        );
+      }
+      // Set all filters to initial
+      this.setState({
+        selectedActiveBadgeLocal: [],
+      });
+      // Set all filters to initial
+    }
     if (
       prevProps.intelligenceState?.ProfitLossAsset !==
       this.props.intelligenceState?.ProfitLossAsset
@@ -839,6 +853,7 @@ const mapStateToProps = (state) => ({
   // add wallet
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -854,6 +869,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   GetAllPlan,
   getUser,
+  updateAssetProfitLoss,
 };
 
 RealizedProfitAndLoss.propTypes = {

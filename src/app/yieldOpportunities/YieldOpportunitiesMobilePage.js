@@ -88,7 +88,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 />
               </Col>
             </Row>
-            <div className="searchBar" style={{ marginTop: "1.5rem" }}>
+            <div
+              className="searchBar input-noshadow-dark"
+              style={{ marginTop: "1.5rem" }}
+            >
               <Image src={searchIcon} className="search-icon" />
               <FormElement
                 valueLink={this.props.parentCtx.linkState(
@@ -118,7 +121,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70vh",
-              backgroundColor: "white",
+              backgroundColor: "var(--cardBackgroud)",
               borderRadius: "1rem",
               margin: "2rem 0rem",
             }}
@@ -130,7 +133,9 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div
               style={{
                 backgroundColor:
-                  this.props?.tableData.length > 0 ? "" : "white",
+                  this.props?.tableData.length > 0
+                    ? ""
+                    : "var(--cardBackgroud)",
                 marginBottom: "2rem",
                 marginTop: "2rem",
                 borderRadius: "1.2rem",

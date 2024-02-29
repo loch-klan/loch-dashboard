@@ -268,7 +268,9 @@ class CounterPartyVolume extends Component {
     // add wallet
     if (
       this.props.intelligenceState.counterPartyData !==
-      prevProps.intelligenceState.counterPartyData
+        prevProps.intelligenceState.counterPartyData ||
+      this.props.intelligenceState.counterPartyValue !==
+        prevProps.intelligenceState.counterPartyValue
     ) {
       this.setState({
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
@@ -292,6 +294,16 @@ class CounterPartyVolume extends Component {
       tempData.append("limit", 50);
       tempData.append("sorts", JSON.stringify([]));
       this.props.getAllWalletListApi(tempData, this);
+    }
+    if (this.props.darkModeState != prevProps.darkModeState) {
+      this.props.updateCounterParty(
+        this.props.intelligenceState.counterPartyData,
+        getCounterGraphData(
+          this.props.intelligenceState.counterPartyData,
+          this
+        ),
+        this
+      );
     }
   }
 
@@ -519,7 +531,7 @@ class CounterPartyVolume extends Component {
     return (
       <>
         {/* topbar */}
-        <div className="portfolio-page-section">
+        <div className="portfolio-page-section scroll-bar-affects-parent">
           <div
             className="portfolio-container page"
             style={{ overflow: "visible" }}
@@ -654,6 +666,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getAllCoins,

@@ -64,7 +64,7 @@ const LoginMobile = ({
           </div>
         </div>
         <div className="new-auth new-auth-mobile">
-          <div className="new-auth-content">
+          <div className="new-auth-content input-noshadow-dark">
             <img
               className="new-auth-content-logo new-auth-content-logo-mobile"
               src={logo}
