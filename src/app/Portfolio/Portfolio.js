@@ -4838,7 +4838,7 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockThreeSelectedItem === 2 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.yieldOpportunitiesTableLoading ||
                               yieldOpportunitiesListTemp?.length < 1
                                 ? ""
@@ -5033,7 +5033,7 @@ class Portfolio extends BaseReactComponent {
                       ) : this.state.blockFourSelectedItem === 2 ? (
                         <div>
                           <div
-                            className={`newHomeTableContainer ${
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
                               this.state.tableLoading || tableData?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
