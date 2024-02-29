@@ -88,14 +88,16 @@
                 align-items: center;
 
                 .replaceAddressListMobileBtn {
-                  background-color: #19191a;
-                  color: #fff;
+                  background: #19191a;
+                  border: 1px solid var(--topbarAdressAddBorder);
+                  color: #ffffff;
                   padding: 0.6rem 1.2rem;
                   border-radius: 0.8rem;
                 }
                 .addToAddressListMobileBtn {
-                  background-color: #f2f2f2;
-                  color: #19191a;
+                  background-color: var(--primaryFilter);
+                  border: 0.1rem solid var(--primaryFilter);
+                  color: var(--primaryTextColor);
                   padding: 0.6rem 1.2rem;
                   border-radius: 0.8rem;
                   margin-right: 1rem;

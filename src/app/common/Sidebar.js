@@ -834,7 +834,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -876,7 +876,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -952,7 +952,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/nft"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -993,7 +993,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/profile"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1100,7 +1100,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1135,7 +1135,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1171,7 +1171,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home-leaderboard"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1206,7 +1206,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/nft"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1236,7 +1236,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/profile"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }

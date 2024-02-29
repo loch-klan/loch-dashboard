@@ -1125,7 +1125,7 @@ form {
     align-items: center;
     justify-content: center;
     height: 30px;
-    color: #adadad;
+    color: var(--seeMoreColor);
     font-size: 12px;
     font-weight: 500;
     .bottomExtraInfoText {
@@ -2671,8 +2671,8 @@ textarea {
 
   text{
     color: var(--chartXAxis) !important;
-    font-size: 10px !important;
-    font-weight: 600 !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
     &:hover{
       color: var(--primaryTextColor) !important;
       
@@ -3213,8 +3213,8 @@ input {
 
 .highcharts-yaxis-labels{
   text{
-    color: #b0b1b3 !important;
-    fill:  #b0b1b3 !important;
+    color: var(--chartYAxis) !important;
+    fill:  var(--chartYAxis) !important;
   }
 }
 .watchlist-mobile {

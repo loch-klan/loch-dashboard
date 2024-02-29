@@ -144,8 +144,21 @@
   --topbarInput:#7c7d81;
 
   --chartXAxis:#666666;
+  --chartYAxis:#b0b1b3;
+  --seeMoreColor: #4f4f4f;
 
-  --nftShadow: 0.1rem solid e5e5e680;
+  --nftShadow: 0.1rem solid #e5e5e680;
+
+  --sidebarActiveIcon: brightness(0.1);
+
+  --signinIconBg: #fff;
+  --signinIconBorder: #e5e5e6;
+  --signinIconColor: #313233;
+  
+  --twitterIconsBg: rgba(229, 229, 230, 0.50);
+  --twitterIconsBgHover: rgba(229, 229, 230, 0.80);
+  --twitterIconsColor: #636467;
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -285,8 +298,21 @@
 
   --topbarInput:#B0B1B3;
   --chartXAxis:#7c7d81;
+  --chartYAxis:#7c7d81;
+
+  --seeMoreColor: #7c7d81;
+
+  --sidebarActiveIcon: brightness(2);
 
   --nftShadow: 0.1rem solid none;
+
+  --signinIconBg: #303030;
+  --signinIconBorder: #404040;
+  --signinIconColor: #cacbcc;
+  
+  --twitterIconsBg: #202020;
+  --twitterIconsBgHover: #303030;
+  --twitterIconsColor: #CACBCC;
 }
 [data-theme="dark2"] {
   // UPDATED

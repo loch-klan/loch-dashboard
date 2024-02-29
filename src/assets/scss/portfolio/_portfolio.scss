@@ -1036,9 +1036,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        font-size: 12px;
-        font-weight: 600;
-        color: #7C7D81;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--seeMoreColor);
         .bottomExtraInfoText {
           height: 100%;
           display: flex;
@@ -1096,7 +1096,7 @@
             top: 5.3rem;
             left: 0;
             border-radius: 0px 0px 12px 12px;
-            border: 0.1rem solid #e5e5e680;
+            border: 0.1rem solid var(--sidebarSectionalBOrder);
             background-color: transparent;
             border-top: none;
             width: 100%;
@@ -1128,14 +1128,14 @@
               align-items: center;
               justify-content: space-between;
               padding: 1.15rem 0rem;
-              border-top: 1px solid rgba(229, 229, 230, 0.5);
+              border-top: 1px solid var(--sidebarSectionalBOrder);
               padding-left: 2rem;
               padding-right: 2rem;
 
               .balance-amt {
-                background-color: rgba(229, 229, 230, 0.5);
+                background: var(--tableCostCommonBg);
+    color: var(--tableDataColor) !important;
                 border-radius: 4px;
-                color: var(--tableCostCommonColor) !important;
                 padding: 6px;
               }
             }
@@ -1274,8 +1274,8 @@
           display: flex;
           align-items: center;
           .section-table-toggle-element {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             flex: 1;
             padding: 0.5rem;
             white-space: nowrap;
@@ -1418,9 +1418,9 @@
         margin-left: 1rem;
         display: flex;
         align-items: center;
-        color: #7C7D81;
-          font-size: 12px;
-          font-weight: 600;
+        color: var(--seeMoreColor);
+          font-size: 13px;
+          font-weight: 500;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {
           // transition-duration: 300ms;

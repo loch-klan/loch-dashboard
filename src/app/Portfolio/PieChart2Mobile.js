@@ -453,6 +453,7 @@ class PieChart2Mobile extends BaseReactComponent {
                         "#000000",
                         -0.15
                       )}`,
+                      filter: "var(--invertColor)",
                     }}
                   />
                   Centralized Exchanges
