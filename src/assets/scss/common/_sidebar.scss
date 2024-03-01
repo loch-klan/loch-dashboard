@@ -650,6 +650,7 @@
             #sidebar-feedback-btn-full{
               img{
                 // filter: none !important;
+                filter:var(--sidebarInactiveIconsFilter) !important;
               }
             }
             .none {

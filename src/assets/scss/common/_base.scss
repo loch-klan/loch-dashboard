@@ -3319,10 +3319,6 @@ input {
   }
 }
 
-
-.scroll-bar-affects-parent {
-  .ScrollArea{
-
     /* Track */
     ::-webkit-scrollbar-track {
       background: var(--yeildBottomBorder2) !important;
@@ -3332,8 +3328,6 @@ input {
     ::-webkit-scrollbar-thumb {
       background: var(--yeildBottomBorder1) !important;
     }
-}
-}
 
 .input-hover-states{
   input{
