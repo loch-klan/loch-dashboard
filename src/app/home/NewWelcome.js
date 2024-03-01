@@ -69,6 +69,7 @@ import {
   SmartMoneyWalletClicked,
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
+  ToggleDarkModeAnalytics,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -783,12 +784,24 @@ class NewWelcome extends BaseReactComponent {
       });
       switchToLightMode();
       this.props.SwitchDarkMode(false);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Landing Page",
+        mode_from: "Dark",
+        mode_to: "Light",
+        isMobile: mobileCheck(),
+      });
     } else {
       switchToDarkMode();
       this.setState({
         isDarkMode: true,
       });
       this.props.SwitchDarkMode(true);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Landing Page",
+        mode_from: "Dark",
+        mode_to: "Light",
+        isMobile: mobileCheck(),
+      });
     }
     // if (darkOrLight === "dark") {
     //   setIsDarkMode('light');
