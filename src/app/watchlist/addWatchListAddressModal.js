@@ -356,7 +356,10 @@ class AddWatchListAddressModal extends BaseReactComponent {
                     Your are now following this address
                   </p>
                 </div>
-                <Button className="primary-btn" onClick={this.hideModal}>
+                <Button
+                  className="primary-btn main-button-invert"
+                  onClick={this.hideModal}
+                >
                   Done
                 </Button>
               </div>
@@ -364,8 +367,8 @@ class AddWatchListAddressModal extends BaseReactComponent {
           </div>
         ) : null}
         <Modal.Header>
-          <div className="api-modal-header">
-            <Image src={EyeIcon} />
+          <div className="api-modal-header popup-main-icon-with-border">
+            <Image src={EyeIcon} className="" />
           </div>
           <div className="closebtn" onClick={this.hideModal}>
             <Image src={CloseIcon} />
@@ -395,7 +398,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                       }`}
                     >
                       {elem.showAddress && (
-                        <div className="awTopInputWrapper">
+                        <div className="awTopInputWrapper input-noshadow-dark">
                           <div className="awInputContainer">
                             <input
                               autoFocus
@@ -411,6 +414,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                                 elem,
                                 this.props.OnboardingState
                               )}
+                              autoComplete="off"
                               onKeyDown={this.handleTabPress}
                               onFocus={(e) => {
                                 // console.log(e);
@@ -583,13 +587,13 @@ class AddWatchListAddressModal extends BaseReactComponent {
             </div>
             <div className="watchListAddressBtnContainer">
               <Button
-                className="secondary-btn white-bg"
+                className="secondary-btn white-bg btn-bg-white-outline-black hover-bg-black"
                 onClick={this.hideModal}
               >
                 Cancel
               </Button>
               <CustomButton
-                className="primary-btn go-btn"
+                className="primary-btn go-btn main-button-invert"
                 type="submit"
                 isLoading={
                   (this.state.addButtonVisible

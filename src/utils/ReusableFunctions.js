@@ -2,6 +2,8 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { API_LIMIT } from "./Constant";
 import moment from "moment";
+import { DARK_MODE } from "../app/intelligence/ActionTypes";
+import { SwitchDarkMode } from "../app/common/Api";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -132,6 +134,17 @@ export const replaceHistory = (history, page = 1, searchValue = "") => {
   history.replace({
     search: `?p=${page}${searchValue && `&&search=${searchValue}`}`,
   });
+};
+
+export const switchToDarkMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "dark");
+  localStorage.setItem("isDarkTheme", true);
+  // SwitchDarkMode(true);
+};
+export const switchToLightMode = () => {
+  document.querySelector("body").setAttribute("data-theme", "light");
+  localStorage.setItem("isDarkTheme", false);
+  // SwitchDarkMode(false);
 };
 
 export const calculateTotalPageCount = (totalCount) => {

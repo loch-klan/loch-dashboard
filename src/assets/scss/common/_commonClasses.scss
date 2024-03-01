@@ -1,0 +1,135 @@
+.interDisplayMediumText {
+  font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplayMediumTextDarkerText {
+  color: #0d0d0d;
+}
+.interDisplaySemiBoldText {
+  font-family: "Inter-SemiBold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplayBoldText {
+  font-family: "Inter-Bold", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.interDisplaySubText {
+  color: var(--primarySubTextColor);
+}
+.spaceGroteskMedium {
+  font-family: "SpaceGrotesk-Medium", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primaryTextColor);
+  line-height: normal;
+}
+.secondaryText {
+  color: var(--secondaryTextColor);
+}
+.primaryText{
+  color: var(--primaryTextColor);
+}
+.primaryTextGrey{
+  color: var(--primaryTextColorGrey);
+}
+.secondaryTextLighter {
+  color: var(--secondaryLightColor);
+}
+.secondaryDarkText {
+  color: var(--secondaryDarkTextColorNew);
+  &:hover{
+    color: var(--primaryTextColor);
+  
+  }
+  &.secondaryDarkText-nohover{
+    color: var(--secondaryDarkTextColorNew);
+  
+  }
+}
+.invertFilter {
+  filter: var(--invertColor);
+}
+.brightnessFilter {
+  &:hover {
+    filter: var(--hoverBrightness);
+  }
+}
+.footerLine{
+  border-top: 1px solid var(--cardBorder);
+}
+
+.no-box-shadow {
+  box-shadow: none !important;
+}
+
+.w-transaparent-b-w{
+  border: 1px solid var(--whiteTransparentBlackE5e5e6) !important;
+}
+.btn-bg-white-outline-black{
+    color: var(--black191);
+    border: 1px solid var(--black191) !important;
+    background-color: transparent !important;
+}
+
+.hover-bg-black{
+  &:hover{
+    background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    border: 1px solid var(--black191) !important;
+  }
+}
+
+.btn-bg-black{
+  background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    border: 1px solid var(--black191) !important;
+}
+
+.hover-bg-white-outline-black{
+  &:hover{
+    background-color: var(--sameModeColor) !important;
+    color: var(--black191) !important;
+    border: 1px solid var(--black191) !important;
+  }
+}
+
+.btn-tirtiarary{
+  background-color: var(--primaryFilter) !important;
+    border: 0.1rem solid var(--primaryFilter);
+    color: var(--primaryTextColor);
+
+    &:hover{
+      border: 0.1rem solid var(--primaryFilter);
+      background-color: var(--backColor) !important;
+    color: var(--sameModeColor);
+    }
+}
+
+.black-191{
+  color: var(--black191);
+}
+.grey-233{
+  color: var(--grey313);
+}
+
+.text-same-mode-color{
+  color: var(--sameModeColor) !important;
+}
+.invertTextColor{
+  color: var(--invertMode);
+}
+.bg-card-main{
+  background-color: var(--cardBackgroud);
+}
+.BorderNew{
+  border-color: var(--topbarBackgroud) !important;
+}

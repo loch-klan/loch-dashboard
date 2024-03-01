@@ -1,5 +1,5 @@
 .balance-sheet-card {
-  background-color: #ffffff;
+  background-color: transparent;
   box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
     0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
   border-radius: 12px;
@@ -10,7 +10,7 @@
   position: relative;
   // border: 1px solid #f2f2f2;
   cursor: pointer;
-  transition-duration: 300ms;
+  // transition-duration: 300ms;
   &:hover {
     // border: 1px solid $grey-E5E;
   }
@@ -46,24 +46,27 @@
       color: #b0b1b3;
     }
     .balance-sheet-title-text-selected {
-      color: #000000;
+      color: var(--black191);
     }
     &:hover {
       .defiMenu {
         filter: opacity(1);
       }
       .balance-sheet-title-text {
-        color: #000000;
+        color: var(--black191);
       }
       .balance-sheet-title-amount {
-        color: #000000;
+        color: var(--black191);
+      }
+      img{
+        filter: var(--invertColor) !important;
       }
     }
   }
   .balance-dropdown {
     //   position: absolute;
     //     top: 4rem;
-    background-color: #ffffff;
+    background-color: var(--cardBackgroud);
     left: 0;
     // box-shadow:0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
     border-radius: 12px;
@@ -106,11 +109,12 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.15rem 0rem;
-      border-top: 1px solid rgba(229, 229, 230, 0.5);
+      border-top: 1px solid var(--sidebarSectionalBOrder);
       // margin-right: 1.6rem;
 
       .balance-amt {
-        background-color: rgba(229, 229, 230, 0.5);
+        background: var(--tableCostCommonBg);
+        color: var(--tableDataColor) !important;
         border-radius: 4px;
         padding: 6px;
       }
@@ -147,10 +151,10 @@
     }
     .sort-by-title:hover {
       span {
-        color: $primary;
+        color: var(--primaryTextColor);
       }
       img {
-        filter: brightness(0.5);
+        filter: var(--hoverBrightnessValue) !important;
       }
     }
     // .dropdown {
@@ -171,13 +175,13 @@
     0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
   margin-bottom: 2rem;
   width: 100%;
-  background-color: #fff;
+  background-color: var(--cardBackgroud);
   padding: 2rem 0rem 4rem;
   border-radius: 1.2rem;
 }
 
 .defi-card-wrapper {
-  background: #ffffff;
+  background: var(--cardBackgroud);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
   border-radius: 16px;
   width: 100%;
@@ -214,7 +218,7 @@
   }
 
   .table-head {
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--sidebarSectionalBOrder);
     padding: 2.2rem 0rem 2.2rem;
     margin: 0;
 
@@ -237,7 +241,7 @@
 
   .table-content-row {
     margin: 0;
-    border-top: 1px solid rgba(229, 229, 230, 0.5);
+    border-top: 1px solid var(--sidebarSectionalBOrder);
     padding: 2.2rem 0rem 2.2rem;
 
     .gray-chip {

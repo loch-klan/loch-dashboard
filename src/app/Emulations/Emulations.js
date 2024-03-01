@@ -614,7 +614,7 @@ class Emulations extends Component {
                       : "0"
                   }
                 >
-                  <span>
+                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
                     {rowData.Amount
                       ? numToCurrency(rowData.Amount).toLocaleString("en-US")
                       : "0"}
@@ -751,6 +751,7 @@ class Emulations extends Component {
               exportBtnTxt="Click to export costs"
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
+              mainThemeBtn
             />
             <div
               style={{ marginBottom: "2.8rem" }}

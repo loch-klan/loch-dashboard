@@ -353,7 +353,7 @@ class PieChart2Mobile extends BaseReactComponent {
                 style={
                   this.state.isChainToggle
                     ? {
-                        filter: "opacity(1)",
+                        filter: "var(--invertColor)",
                         height: "1.25rem",
                         width: "1.25rem",
                         opacity: this.state.showArrowIcon ? 1 : 0,
@@ -453,6 +453,7 @@ class PieChart2Mobile extends BaseReactComponent {
                         "#000000",
                         -0.15
                       )}`,
+                      filter: "var(--invertColor)",
                     }}
                   />
                   Centralized Exchanges
@@ -486,7 +487,7 @@ class PieChart2Mobile extends BaseReactComponent {
             className="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
           >
             <div className="mobileSeeMoreBtn">
-              <div className="mobileSeeMoreBtnTxt">See more</div>
+              <div className="mobileSeeMoreBtnTxt seeMoreBtn">See more</div>
               <Image
                 src={ChartSeeMoreArrowIcon}
                 className="mobileSeeMoreBtnIcon"
@@ -547,7 +548,7 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isYeildToggle
                       ? {
-                          filter: "opacity(1)",
+                          ffilter: "var(--invertColor)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
                       : {
@@ -598,7 +599,7 @@ class PieChart2Mobile extends BaseReactComponent {
                   style={
                     this.state.isDebtToggle
                       ? {
-                          filter: "opacity(1)",
+                          filter: "var(--invertColor)",
                           opacity: this.state.showArrowIcon ? 1 : 0,
                         }
                       : {

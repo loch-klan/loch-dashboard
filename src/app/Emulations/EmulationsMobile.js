@@ -20,7 +20,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
         <div
           style={{
-            backgroundColor: "white",
+            backgroundColor: "var(--cardBackgroud",
             borderRadius: "1.2rem",
             padding: "0rem",
             paddingBottom: "0.5rem",
@@ -42,13 +42,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No assets found"
+              message="No emulations found"
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}
               isArrow={true}
               isLoading={this.props.AvgCostLoading}
-              isAnalytics="average cost basis"
               fakeWatermark
               xAxisScrollable
               yAxisScrollable

@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: #e5e5e640;
+  background-color: var(--yieldOppYourPortfolioContainerBg);
 }
 .yield-opp-page-mobile {
 }
@@ -23,10 +23,10 @@
   }
   .yeildOppTitleLeft {
     width: 32%;
-    border-color: #cacbcc;
+    border-color: var(--yeildBottomBorder1);
   }
   .yeildOppTitleRight {
     width: 68%;
-    border-color: #e5e5e6;
+    border-color:  var(--yeildBottomBorder2);
   }
 }

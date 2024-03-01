@@ -15,7 +15,7 @@
 
     .cost-table-section {
       min-width: 85rem;
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
@@ -42,7 +42,7 @@
             overflow: hidden;
             font-size: 1.3rem;
             line-height: 1.6rem;
-            color: #313233;
+            color: var(--grey313);
             text-align: center;
             .cost-common-container {
               width: 100%;
@@ -57,7 +57,10 @@
                 border-radius: 0.4rem;
                 padding: 0.6rem;
                 width: fit-content;
-                background: rgba(229, 229, 230, 0.5);
+                background: var(--tableCostCommonBg);
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--tableDataColor) !important;
               }
             }
             .gainLossContainer {
@@ -77,11 +80,17 @@
             }
 
             .gain {
-              background: rgba(208, 252, 234, 0.5);
+              background: var(--badgeGreenBg);
+              span{
+                color: var(--badgeGreencolor) !important;
+              }
             }
-
+            
             .loss {
-              background: rgba(250, 217, 217, 0.5);
+              background: var(--badgeRedBg);
+              span{
+                color: var(--badgeRedcolor) !important;
+              }
             }
           }
         }

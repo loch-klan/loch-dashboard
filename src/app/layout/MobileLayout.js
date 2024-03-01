@@ -38,6 +38,7 @@ import { addUserCredits } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
+import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -607,27 +608,31 @@ class MobileLayout extends BaseReactComponent {
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div id="mobileLayoutScrollContainer" className="mpcHomePage">
-                    {this.props.hideAddresses ? null : (
-                      <WelcomeCard
-                        handleShare={this.handleShare} //Done
-                        isSidebarClosed={this.props.isSidebarClosed} // done
-                        changeWalletList={this.props.handleChangeList} // done
-                        apiResponse={(e) =>
-                          this.CheckApiResponseMobileLayout(e)
-                        } // done
-                        showNetworth={true}
-                        // yesterday balance
-                        yesterdayBalance={
-                          this.props?.portfolioState?.yesterdayBalance // done
-                        }
-                        assetTotal={getTotalAssetValue()} // done
-                        history={this.props.history} // done
-                        handleAddModal={this.props.handleAddModal} // done
-                        isLoading={false}
-                        handleManage={() => {}}
-                        isMobileRender
-                      />
-                    )}
+                    <MobileDarkModeWrapper>
+                      {this.props.hideAddresses ? (
+                        <></>
+                      ) : (
+                        <WelcomeCard
+                          handleShare={this.handleShare} //Done
+                          isSidebarClosed={this.props.isSidebarClosed} // done
+                          changeWalletList={this.props.handleChangeList} // done
+                          apiResponse={(e) =>
+                            this.CheckApiResponseMobileLayout(e)
+                          } // done
+                          showNetworth={true}
+                          // yesterday balance
+                          yesterdayBalance={
+                            this.props?.portfolioState?.yesterdayBalance // done
+                          }
+                          assetTotal={getTotalAssetValue()} // done
+                          history={this.props.history} // done
+                          handleAddModal={this.props.handleAddModal} // done
+                          isLoading={false}
+                          handleManage={() => {}}
+                          isMobileRender
+                        />
+                      )}
+                    </MobileDarkModeWrapper>
                     {/* <TopWalletAddressList
                       apiResponse={(e) => this.CheckApiResponseMobileLayout(e)}
                       handleShare={this.handleShare}
@@ -677,7 +682,11 @@ class MobileLayout extends BaseReactComponent {
                     }`}
                   >
                     <Image
-                      className="portfolio-mobile-layout-nav-footer-inner-item-image"
+                      className={`portfolio-mobile-layout-nav-footer-inner-item-image ${
+                        item.path === this.props.history.location.pathname
+                          ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
+                          : ""
+                      }`}
                       src={
                         item.path === this.props.history.location.pathname
                           ? item.activeIcon

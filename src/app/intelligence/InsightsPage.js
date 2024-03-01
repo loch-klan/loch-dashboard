@@ -42,6 +42,9 @@ import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import InsightsPageMobile from "./InsightsPageMobile.js";
 
+// Dark theme scss
+import "./intelligenceScss/_darkInsightPage.scss";
+
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
@@ -474,9 +477,9 @@ class InsightsPage extends Component {
       );
     } else
       return (
-        <>
+        <div className="insightsPageContainer">
           {/* topbar */}
-          <div className="portfolio-page-section">
+          <div className="portfolio-page-section ">
             <div
               className="portfolio-container page"
               style={{ overflow: "visible" }}
@@ -581,6 +584,7 @@ class InsightsPage extends Component {
                     style={{ display: "flex", alignItems: "center" }}
                     onClick={this.onClickDropdown}
                     onMouseEnter={this.onHoverDropdown}
+                    className="insights-dropdown-wrapper"
                   >
                     <DropDown
                       class="cohort-dropdown"
@@ -778,7 +782,7 @@ class InsightsPage extends Component {
               <Footer />
             </div>
           </div>
-        </>
+        </div>
       );
   }
 }

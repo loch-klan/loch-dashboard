@@ -34,21 +34,21 @@ const Verify = ({
 
   return (
     <Modal
-    size="lg"
-    className="exit-overlay-form newWelcomePageTranlucentModal"
-    dialogClassName={
-      "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
-    }
-    show={show}
-    onHide={toggleModal}
-    centered
-    aria-labelledby="contained-modal-title-vcenter"
-    backdropClassName="exitoverlaymodalNewWelcome"
-    contentClassName="new-welcome-modal-content"
-    animation={false}
+      size="lg"
+      className="exit-overlay-form newWelcomePageTranlucentModal"
+      dialogClassName={
+        "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
+      }
+      show={show}
+      onHide={toggleModal}
+      centered
+      aria-labelledby="contained-modal-title-vcenter"
+      backdropClassName="exitoverlaymodalNewWelcome"
+      contentClassName="new-welcome-modal-content"
+      animation={false}
     >
       <Modal.Body style={{ position: "relative" }}>
-      <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
+        <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--desktop">
           <div
             className="new-homepage-auth-content-close "
             onClick={toggleModal}
@@ -63,7 +63,7 @@ const Verify = ({
           </div>
         </div>
         <div className="new-auth verify-otp">
-          <div className="new-auth-content">
+          <div className="new-auth-content input-noshadow-dark">
             <img className="new-auth-content-logo" src={logo} alt="" />
             <div className="new-auth-content-title-holder">
               <h4 className="new-auth-content-title">Enter code</h4>
@@ -81,10 +81,10 @@ const Verify = ({
                   handleChangeOTP(e.target.value);
                 }}
               /> */}
-              <OTPInputs numberOfDigits={6} handleChangeOTP={handleChangeOTP}/>
+              <OTPInputs numberOfDigits={6} handleChangeOTP={handleChangeOTP} />
               <button
                 style={{
-                  opacity: otp?.length>5 ? 1 : 0.5,
+                  opacity: otp?.length > 5 ? 1 : 0.5,
                 }}
                 onClick={handleSubmitOTP}
                 ref={submitRef}

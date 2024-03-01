@@ -21,6 +21,8 @@ import {
   ProfileSidebarIcon,
   SidebarLeftArrowIcon,
   XFormallyTwitterLogoIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -59,6 +61,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { addUserCredits } from "../profile/Api.js";
 import feedbackIcon from "./../../assets/images/icons/feedbackIcons.svg";
 import {
+  SwitchDarkMode,
   getAllCurrencyApi,
   getAllCurrencyRatesApi,
   sendUserFeedbackApi,
@@ -77,6 +80,8 @@ import {
   CurrencyType,
   amountFormat,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
 import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
@@ -135,6 +140,20 @@ function Sidebar(props) {
     JSON.parse(window.sessionStorage.getItem("previewAddress"))
   );
 
+  // Dark mode
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.querySelector("body").getAttribute("data-theme") == "dark"
+      ? true
+      : false
+  );
+
+  useEffect(() => {
+    setIsDarkMode(
+      document.querySelector("body").getAttribute("data-theme") == "dark"
+        ? true
+        : false
+    );
+  }, [document.querySelector("body").getAttribute("data-theme") == "dark"]);
   React.useEffect(() => {
     // console.log("in use effect");
 
@@ -452,6 +471,20 @@ function Sidebar(props) {
     toast.success("Share link has been copied");
   };
 
+  const handleDarkMode = () => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      setIsDarkMode(false);
+      switchToLightMode();
+      props.SwitchDarkMode(false);
+    } else {
+      switchToDarkMode();
+      setIsDarkMode(true);
+      props.SwitchDarkMode(true);
+    }
+  };
   React.useEffect(() => {
     let currency = JSON.parse(window.sessionStorage.getItem("currency"));
 
@@ -632,10 +665,69 @@ function Sidebar(props) {
     <>
       <div
         style={{
-          zIndex: "99",
+          zIndex: "999",
+          // position: "relative",
         }}
-        className="sidebar-section"
+        className={`sidebar-section ${
+          props.isSidebarClosed ? "sidebar-section-closed" : ""
+        }`}
       >
+        {isDarkMode ? (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+              right: "-10px",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={lightModeIcon} />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Light Mode
+            </Button> */}
+          </span>
+        ) : (
+          <span
+            onClick={handleDarkMode}
+            style={{
+              zIndex: "9",
+              right: "-10px",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={darkModeIcon} />
+            <span />
+            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+              Dark Mode
+            </Button> */}
+          </span>
+        )}
+        {/* {isDarkMode == "dark2" ? (
+          <span
+            onClick={() => handleDarkMode("light")}
+            style={{
+              zIndex: "9",
+              right: "-25px",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={lightModeIcon} />
+          </span>
+        ) : (
+          <span
+            onClick={() => handleDarkMode("dark2")}
+            style={{
+              zIndex: "9",
+              right: "-25px",
+              color: "var(--primaryTextColor)",
+            }}
+            className="navbar-button-container-mode"
+          >
+            <Image src={darkModeIcon} /> 1
+            <span />
+            
+          </span>
+        )} */}
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
@@ -647,7 +739,24 @@ function Sidebar(props) {
                 width: "100%",
               }}
             >
-              <div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={(e) => {
+                  let tempToken = getToken();
+                  if (tempToken === "jsk") {
+                    return null;
+                  }
+                  if (!isWallet) {
+                    e.preventDefault();
+                  } else {
+                    HomeMenu({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }
+                  props.history.push("/home");
+                }}
+              >
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
               </div>
@@ -727,7 +836,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -769,7 +878,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -807,13 +916,7 @@ function Sidebar(props) {
                               }}
                               activeclassname="active"
                             >
-                              <Image
-                                src={
-                                  activeTab === "/home-leaderboard"
-                                    ? ActiveSmartMoneySidebarIcon
-                                    : InactiveSmartMoneySidebarIcon
-                                }
-                              />
+                              <Image src={InactiveSmartMoneySidebarIcon} />
                             </NavLink>
                           </CustomOverlay>
                         </li>
@@ -845,7 +948,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/nft"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -886,7 +989,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/profile"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1035,7 +1138,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1070,7 +1173,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/watchlist"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1106,7 +1209,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/home-leaderboard"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1141,7 +1244,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/nft"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1171,7 +1274,7 @@ function Sidebar(props) {
                                 style={
                                   activeTab === "/profile"
                                     ? {
-                                        filter: "brightness(0)",
+                                        filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
@@ -1440,6 +1543,30 @@ function Sidebar(props) {
                       </div>
                       <div>Follow us</div>
                     </div>
+                    {/* <div className="sidebar-footer-button-holder">
+                      {isDarkMode ? (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={lightModeIcon} />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Light Mode
+                          </Button>
+                        </span>
+                      ) : (
+                        <span
+                          onClick={handleDarkMode}
+                          className="navbar-button-container"
+                        >
+                          <Image src={darkModeIcon} />
+                          <span />
+                          <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
+                            Dark Mode
+                          </Button>
+                        </span>
+                      )}
+                    </div> */}
 
                     <div
                       className="m-b-12 footer-divOne"
@@ -1645,6 +1772,7 @@ const mapDispatchToProps = {
   sendUserFeedbackApi,
   addUserCredits,
   updateWalletListFlag,
+  SwitchDarkMode,
 };
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,

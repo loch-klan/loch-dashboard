@@ -16,6 +16,7 @@ import {
   getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
+  updateAssetProfitLoss,
 } from "../intelligence/Api.js";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
@@ -1011,6 +1012,7 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
   }
   trimGasFees = () => {
+    console.log("calling trim gas fees");
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.graphfeeValue &&
@@ -1516,6 +1518,21 @@ class Portfolio extends BaseReactComponent {
         );
         this.setState({ userWalletList: this.props.location.state?.addWallet });
         this.apiCall();
+      }
+    }
+
+    if (this.props.darkModeState?.flag !== prevProps.darkModeState?.flag) {
+      this.props.updateFeeGraph(
+        this.props.intelligenceState.GraphfeeData,
+        getGraphData(this.props.intelligenceState.GraphfeeData, this, true),
+        this
+      );
+      this.trimCounterpartyVolume();
+      if (this.props.intelligenceState?.ProfitLossAssetData) {
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this
+        );
       }
     }
   }
@@ -2281,7 +2298,7 @@ class Portfolio extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                className="inter-display-medium f-s-13 lh-16 table-header-font"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -2304,7 +2321,7 @@ class Portfolio extends BaseReactComponent {
                   onClick={() => {
                     this.toggleAgeTimestamp();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 grey-4F4"
+                  className="inter-display-medium f-s-13 lh-16 table-header-font"
                   style={{
                     textDecoration: "underline",
                   }}
@@ -2349,7 +2366,7 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={tempOpp ? tempOpp : "-"}
               >
-                <span>{tempVal}</span>
+                <span className="table-data-font">{tempVal}</span>
               </CustomOverlay>
             );
           }
@@ -2362,7 +2379,7 @@ class Portfolio extends BaseReactComponent {
             id="from"
             onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               From
             </span>
             <Image
@@ -2441,7 +2458,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
 
@@ -2479,7 +2499,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {showThis}
                       </span>
@@ -2515,7 +2535,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {TruncateText(rowData.from.metaData?.nickname)}
                       </span>
@@ -2550,7 +2570,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {TruncateText(rowData.from.wallet_metaData.text)}
                       </span>
@@ -2584,7 +2604,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {TruncateText(rowData.from.metaData?.displayAddress)}
                     </span>
                     <Image
@@ -2616,7 +2639,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
 
@@ -2648,7 +2674,7 @@ class Portfolio extends BaseReactComponent {
             id="to"
             onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               To
             </span>
             <Image
@@ -2726,7 +2752,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
                     <Image
@@ -2763,7 +2792,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {showThis}
                       </span>
@@ -2798,7 +2827,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {TruncateText(rowData.to.metaData?.nickname)}
                       </span>
@@ -2833,7 +2862,7 @@ class Portfolio extends BaseReactComponent {
                     >
                       <span
                         onClick={goToAddress}
-                        className="top-account-address"
+                        className="top-account-address table-data-font"
                       >
                         {TruncateText(rowData.to.wallet_metaData.text)}
                       </span>
@@ -2867,7 +2896,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {TruncateText(rowData.to.metaData?.displayAddress)}
                     </span>
                     <Image
@@ -2899,7 +2931,10 @@ class Portfolio extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <span onClick={goToAddress} className="top-account-address">
+                    <span
+                      onClick={goToAddress}
+                      className="top-account-address table-data-font"
+                    >
                       {showThis}
                     </span>
                     <Image
@@ -2930,7 +2965,7 @@ class Portfolio extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Asset
             </span>
             <Image
@@ -2961,7 +2996,7 @@ class Portfolio extends BaseReactComponent {
                 {rowData.asset?.symbol ? (
                   <Image src={rowData.asset.symbol} className="asset-symbol" />
                 ) : rowData.asset?.code ? (
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 table-data-font dotDotText">
                     {rowData.asset.code}
                   </div>
                 ) : (
@@ -2979,7 +3014,7 @@ class Portfolio extends BaseReactComponent {
             id="amount"
             onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Amount
             </span>
             <Image
@@ -3009,7 +3044,7 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={tempAmountVal ? tempAmountVal : "0.00"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {numToCurrency(tempAmountVal).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
@@ -3024,7 +3059,7 @@ class Portfolio extends BaseReactComponent {
             id="usdValueThen"
             onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
@@ -3080,7 +3115,7 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                     {CurrencyType(false) +
                       numToCurrency(tempValueToday).toLocaleString("en-US")}
                   </div>
@@ -3098,7 +3133,7 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                     {tempValueThen
                       ? CurrencyType(false) +
                         numToCurrency(tempValueThen).toLocaleString("en-US")
@@ -3118,7 +3153,7 @@ class Portfolio extends BaseReactComponent {
             id="method"
             onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Method
             </span>
             <Image
@@ -3165,7 +3200,9 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="network">
-            Network
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Network
+            </span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -3193,7 +3230,7 @@ class Portfolio extends BaseReactComponent {
                   isText={true}
                   text={rowData.network}
                 >
-                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div dotDotText">
+                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div dotDotText">
                     {rowData.network}
                   </div>
                 </CustomOverlay>
@@ -3209,7 +3246,7 @@ class Portfolio extends BaseReactComponent {
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Hash
             </span>
             {/* <Image
@@ -3248,7 +3285,7 @@ class Portfolio extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div"
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div"
                 >
                   {tempHashVal}
                   <Image
@@ -3311,7 +3348,7 @@ class Portfolio extends BaseReactComponent {
             id="asset"
             onClick={() => this.handleYieldOppTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Asset
             </span>
             <Image
@@ -3350,7 +3387,7 @@ class Portfolio extends BaseReactComponent {
             id="project"
             onClick={() => this.handleYieldOppTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Project
             </span>
             <Image
@@ -3372,7 +3409,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "project") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                 {rowData.project ? rowData.project : "-"}
               </div>
             );
@@ -3386,7 +3423,7 @@ class Portfolio extends BaseReactComponent {
             id="tvl"
             onClick={() => this.handleYieldOppTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               TVL
             </span>
             <Image
@@ -3425,7 +3462,7 @@ class Portfolio extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(
                           rowData.tvlUsd * this.state.currency?.rate
@@ -3445,7 +3482,7 @@ class Portfolio extends BaseReactComponent {
             id="apy"
             onClick={() => this.handleYieldOppTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               APY
             </span>
             <Image
@@ -3475,7 +3512,7 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 text={rowData.apy ? rowData.apy + "%" : "-"}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.apy
                     ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
                       "%"
@@ -3493,7 +3530,7 @@ class Portfolio extends BaseReactComponent {
             id="usdValue"
             onClick={() => this.handleYieldOppTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Value
             </span>
             <Image
@@ -3531,7 +3568,7 @@ class Portfolio extends BaseReactComponent {
               >
                 <div className="cost-common-container">
                   <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(
                           rowData.value * this.state.currency?.rate
@@ -3552,7 +3589,7 @@ class Portfolio extends BaseReactComponent {
             id="pool"
             onClick={() => this.handleYieldOppTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Pool
             </span>
             <Image
@@ -3574,7 +3611,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "pool") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                 {rowData.pool ? rowData.pool : "-"}
               </div>
             );
@@ -3590,7 +3627,7 @@ class Portfolio extends BaseReactComponent {
             id="Asset"
             onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Asset
             </span>
             <Image
@@ -3655,7 +3692,7 @@ class Portfolio extends BaseReactComponent {
             id="Current Value"
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Current value
             </span>
             <Image
@@ -3695,6 +3732,7 @@ class Portfolio extends BaseReactComponent {
                           email_address: getCurrentUser().email,
                         });
                       }}
+                      className=""
                     >
                       {rowData.CurrentValue
                         ? CurrencyType(false) +
@@ -3717,7 +3755,7 @@ class Portfolio extends BaseReactComponent {
             id="Gainamount"
             onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Unrealized gain
             </span>
             <Image
@@ -3778,7 +3816,7 @@ class Portfolio extends BaseReactComponent {
                         }
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {rowData.GainAmount
                         ? CurrencyType(false) +
                           tempDataHolder.toLocaleString("en-US")
@@ -3798,7 +3836,7 @@ class Portfolio extends BaseReactComponent {
             id="Portfolio perc"
             onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Portfolio (%)
             </span>
             <Image
@@ -3842,7 +3880,7 @@ class Portfolio extends BaseReactComponent {
                   colorCode="#000"
                 >
                   <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                         : "0.00%"}
@@ -3861,7 +3899,7 @@ class Portfolio extends BaseReactComponent {
             id="Average Cost Price"
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Avg cost price
             </span>
             <Image
@@ -3900,7 +3938,7 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {rowData.AverageCostPrice
                       ? CurrencyType(false) +
                         numToCurrency(
@@ -3921,7 +3959,7 @@ class Portfolio extends BaseReactComponent {
             id="Current Price"
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Current price
             </span>
             <Image
@@ -3960,7 +3998,7 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {rowData.CurrentPrice
                       ? CurrencyType(false) +
                         numToCurrency(
@@ -3981,7 +4019,7 @@ class Portfolio extends BaseReactComponent {
             id="Amount"
             onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Amount
             </span>
             <Image
@@ -4019,7 +4057,7 @@ class Portfolio extends BaseReactComponent {
                       : "0"
                   }
                 >
-                  <span>
+                  <span className="table-data-font">
                     {rowData.Amount
                       ? numToCurrency(rowData.Amount).toLocaleString("en-US")
                       : "0"}
@@ -4037,7 +4075,7 @@ class Portfolio extends BaseReactComponent {
             id="Cost Basis"
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Cost basis
             </span>
             <Image
@@ -4077,6 +4115,7 @@ class Portfolio extends BaseReactComponent {
                           email_address: getCurrentUser().email,
                         });
                       }}
+                      className="table-data-font"
                     >
                       {rowData.CostBasis
                         ? CurrencyType(false) +
@@ -4100,7 +4139,7 @@ class Portfolio extends BaseReactComponent {
             id="Gain loss"
             onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Return
             </span>
             <Image
@@ -4158,7 +4197,7 @@ class Portfolio extends BaseReactComponent {
                         }
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {tempDataHolder
                         ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
                         : "0.00%"}
@@ -4380,10 +4419,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4414,10 +4453,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4529,10 +4568,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4561,10 +4600,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4712,10 +4751,10 @@ class Portfolio extends BaseReactComponent {
                             >
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4746,10 +4785,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4780,10 +4819,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4946,10 +4985,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -4980,10 +5019,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -5013,10 +5052,10 @@ class Portfolio extends BaseReactComponent {
                                 </div> */}
                               <Image
                                 src={InfoIconI}
-                                className="infoIcon"
+                                className="infoIcon info-icon-home"
                                 style={{
                                   cursor: "pointer",
-                                  height: "14px",
+                                  height: "13px",
                                 }}
                               />
                             </CustomOverlay>
@@ -5162,6 +5201,7 @@ const mapStateToProps = (state) => ({
   yieldOpportunitiesState: state.YieldOpportunitiesState,
   walletState: state.walletState,
   inflowsOutflowsList: state.inflowsOutflowsList,
+  darkModeState: state.darkModeState,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -5197,6 +5237,7 @@ const mapDispatchToProps = {
   getProtocolBalanceApi,
   updateFeeGraph,
   updateCounterParty,
+  updateAssetProfitLoss,
 };
 Portfolio.propTypes = {};
 
