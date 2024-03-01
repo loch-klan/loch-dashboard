@@ -5538,6 +5538,15 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
+export const EmulationsWatchlist = ({ session_id, email_address }) => {
+  const event_name = "Menu: Emulations";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
 
 //Menu:export hide dust - done
 export const MenuExportHideDust = ({ session_id, email_address }) => {

@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
@@ -31,6 +32,7 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
+  EmulationsWatchlist,
   ExportMenu,
   FeedbackMenu,
   FeedbackSidebar,
@@ -899,6 +901,48 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
+                            text={"Emulations"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/emulations"
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  EmulationsWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/emulations"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
                             text={"Feedback"}
                           >
                             <div
@@ -1134,6 +1178,37 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                               Profile
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  EmulationsWatchlist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/emulations"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/emulations"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Emulations
                             </NavLink>
                           </li>
                         </>
