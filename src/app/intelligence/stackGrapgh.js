@@ -195,6 +195,12 @@ export const getProfitLossAsset = (arr, parentCtx) => {
         });
 
         let netColor = "#16182B";
+        let modeCOlor = parentCtx?.props?.darkModeState?.flag
+          ? "#000000"
+          : "#ffffff";
+        let invertModeColor = parentCtx?.props?.darkModeState?.flag
+          ? "#ffffff"
+          : "#000000";
         if (this.x === "Net") {
           netColor = tooltipData.slice(4, 5)[0]?.color;
           tooltipData = [];
@@ -223,12 +229,19 @@ backdrop-filter: blur(15px);">
             .map((item) => {
               return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
-                                      item.color == "#ffffff"
-                                        ? "#16182B"
+                                      item.color == modeCOlor ||
+                                      ((item.color == "#16182B" ||
+                                        item.color == "#101010") &&
+                                        parentCtx?.props?.darkModeState?.flag)
+                                        ? invertModeColor
                                         : item.color
                                     }; display: inline-block; margin-right: 0.6rem'> </span>
                                        ${item.name} <span style="color:${
-                item.color == "#ffffff" ? "#16182B" : item.color
+                item.color == modeCOlor ||
+                ((item.color == "#16182B" || item.color == "#101010") &&
+                  parentCtx?.props?.darkModeState?.flag)
+                  ? invertModeColor
+                  : item.color
               }">${CurrencyType(false)}${numToCurrency(item.y)}</span>
                                     </div>`;
             })

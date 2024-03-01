@@ -261,7 +261,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
                 : "Add your email so you can view, analyze, and follow any or all of the smartest actors on-chain."}
             </p>
             {/* this.props.isSkip(); */}
-            <div className="email-section auth-modal input-noshadow-dark">
+            <div className="email-section auth-modal input-noshadow-dark input-hover-states">
               {/* For Signin or Signup */}
               {!this.state.isShowOtp ? (
                 <Form onValidSubmit={this.handleAccountCreate}>

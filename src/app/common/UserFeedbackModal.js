@@ -249,7 +249,7 @@ class UserFeedbackModal extends BaseReactComponent {
                                   )}
                                 </div>
                               ) : (
-                                <div className="form-group input-noshadow-dark">
+                                <div className="form-group input-noshadow-dark input-hover-states">
                                   <input
                                     className="form-control"
                                     type="text"

@@ -317,7 +317,7 @@ class AuthModal extends BaseReactComponent {
                 : "Don’t let your hard work go to waste. Add your email so you can watch your whales with binoculars"}
             </p>
             {/* this.props.isSkip(); */}
-            <div className="email-section auth-modal input-noshadow-dark">
+            <div className="email-section auth-modal input-noshadow-dark input-hover-states">
               {/* For Signin or Signup */}
               {!this.state.isShowOtp ? (
                 <Form onValidSubmit={this.handleAccountCreate}>

@@ -170,6 +170,12 @@
 
   --dropdownListSelectedBg: rgba(229, 229, 230, 0.5);
 
+  --tableHeading: #4f4f4f;
+  --tableData: #313233;
+
+  --inputBorder:#d4d4d4;
+  --inputBorderHover:#0d0d0d;
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -244,7 +250,7 @@
   --tableCostCommonColor:#141414;
   --tableCostCommonBg:#303030;
   --InActiveToggleBg: #96979a;
-  --tableDataColor:#7c7d81;
+  --tableDataColor:#cacbcc;
 
   //Sidebar
   --currenyConvertorBorder: #7c7d81;
@@ -334,6 +340,12 @@
   --yeildBottomBorder1:#606060;
   --yeildBottomBorder2:#303030;
   --dropdownListSelectedBg: rgba(229, 229, 230, 0.2);
+
+  --tableHeading: #cacbcc;
+  --tableData: #cacbcc;
+
+  --inputBorder:#313233;
+  --inputBorderHover:#cacbcc;
 }
 [data-theme="dark2"] {
   // UPDATED

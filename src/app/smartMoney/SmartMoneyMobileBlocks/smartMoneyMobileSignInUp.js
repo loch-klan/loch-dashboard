@@ -296,7 +296,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
           ) : null}
         </div>
         <div
-          className={`msmModalInputWrapper m-b-48 input-noshadow-dark ${
+          className={`msmModalInputWrapper m-b-48 input-noshadow-dark input-hover-states ${
             this.state.showBorder ? "msmModalInputWrapperSelected" : ""
           }`}
         >

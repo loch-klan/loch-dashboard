@@ -398,7 +398,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                       }`}
                     >
                       {elem.showAddress && (
-                        <div className="awTopInputWrapper input-noshadow-dark">
+                        <div className="awTopInputWrapper input-noshadow-dark input-hover-states">
                           <div className="awInputContainer">
                             <input
                               autoFocus

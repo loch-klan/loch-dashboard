@@ -3268,13 +3268,13 @@ input {
 .table-header-font{
   font-size: 12px;
   font-weight: 500;
-  color: #96979a;
+  color: var(--tableHeading);
 }
 
 .table-data-font{
   font-size: 13px;
   font-weight: 500;
-  color: var(--tableDataColor);
+  color: var(--tableData);
 }
 .freezeTheFirstColumn {
   .transaction-table-section {
@@ -3333,4 +3333,21 @@ input {
       background: var(--yeildBottomBorder1) !important;
     }
 }
+}
+
+.input-hover-states{
+  input{
+    border:1px solid var(--inputBorder) !important;
+    &:hover{
+      border:1px solid var(--inputBorderHover) !important;
+    }
+  }
+}
+
+.slick-arrow{
+  filter: brightness(0.5);
+  &:hover{
+
+    filter:var(--hoverBrightnessValue)
+  }
 }

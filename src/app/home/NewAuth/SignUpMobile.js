@@ -63,7 +63,7 @@ const SignUpMobile = ({
           </div>
         </div>
         <div className="new-auth new-auth-mobile">
-          <div className="new-auth-content input-noshadow-dark">
+          <div className="new-auth-content input-noshadow-dark input-hover-states">
             <img
               className="new-auth-content-logo new-auth-content-logo-mobile"
               src={logo}
