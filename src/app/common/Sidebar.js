@@ -66,7 +66,6 @@ import AuthModal from "./AuthModal";
 import ConfirmLeaveModal from "./ConformLeaveModal";
 import FeedbackModal from "./FeedbackModal";
 import SharePortfolio from "./SharePortfolio";
-import SidebarModal from "./SidebarModal";
 import UserFeedbackModal from "./UserFeedbackModal.js";
 import UpgradeModal from "./upgradeModal";
 
@@ -96,6 +95,7 @@ function Sidebar(props) {
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
   const [shareModal, setShareModal] = React.useState(false);
+  const [isAutoPopUpModal, setIsAutoPopUpModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
   const [signupModal, setSignupModal] = React.useState(false);
   const [confirmLeave, setConfirmLeave] = React.useState(false);
@@ -377,6 +377,7 @@ function Sidebar(props) {
     });
   };
   const onCloseModal = () => {
+    setIsAutoPopUpModal(false);
     setComingDirectly(true);
     setSignUpModalAnimation(true);
     setSignInModalAnimation(true);
@@ -395,7 +396,8 @@ function Sidebar(props) {
     });
   };
   const handleSiginPopup = () => {
-    setSigninPopup(!signinPopup);
+    setIsAutoPopUpModal(true);
+    setSigninModal(!signinModal);
   };
   const handleUserFeedbackModal = () => {
     let tempToken = getToken();
@@ -1514,8 +1516,12 @@ function Sidebar(props) {
           modalType={"create_account"}
           iconImage={SignInIcon}
           hideSkip={true}
-          title="Sign in"
-          description="Get right back into your account"
+          title={isAutoPopUpModal ? "Sign in now" : "Sign in"}
+          description={
+            isAutoPopUpModal
+              ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
+              : "Get right back into your account"
+          }
           stopUpdate={true}
           tracking="Sign in button"
           goToSignUp={openSignUpModal}
@@ -1555,19 +1561,6 @@ function Sidebar(props) {
           history={history}
           popupType="general_popup"
           tracking={history.location.pathname.substring(1)}
-        />
-      ) : null}
-
-      {signinPopup ? (
-        <SidebarModal
-          trackPos={trackPos}
-          dragPosition={dragPosition}
-          show={signinPopup}
-          onHide={handleSiginPopup}
-          history={history}
-          popupType="general_popup"
-          tracking={history.location.pathname.substring(1)}
-          openSignupModalDirect={openSignupModalDirect}
         />
       ) : null}
     </>

@@ -327,19 +327,11 @@ class CustomTable extends BaseReactComponent {
             {this.props.bottomCombiedValues ? (
               <div className="bottomCombinedItem">
                 <div
-                  aria-colindex="1"
-                  role="gridcell"
-                  className="bottomCombinedItemBlock"
-                  style={{
-                    flex: "0.05",
-                  }}
-                ></div>
-                <div
                   aria-colindex="2"
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.1",
+                    flex: "0.11",
                   }}
                 >
                   <div className="inter-display-medium bottomCombinedItemBlock">
@@ -359,7 +351,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.1",
+                    flex: "0.11",
                   }}
                 ></div>
                 <div
@@ -367,7 +359,7 @@ class CustomTable extends BaseReactComponent {
                   role="gridcell"
                   className="bottomCombinedItemBlock"
                   style={{
-                    flex: "0.1",
+                    flex: "0.11",
                   }}
                 ></div>
                 <div

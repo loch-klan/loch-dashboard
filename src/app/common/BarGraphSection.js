@@ -776,7 +776,11 @@ class BarGraphSection extends Component {
                             }}
                             className="seeMoreBtn cp"
                           >
-                            <div>Click here to see more</div>
+                            {this.props.isMobileGraph ? (
+                              <div>See more</div>
+                            ) : (
+                              <div>Click here to see more</div>
+                            )}
                             <Image
                               src={ChartSeeMoreArrowIcon}
                               className="seeMoreBtnIcon"

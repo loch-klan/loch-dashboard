@@ -211,12 +211,12 @@ class SmartMoneyMobilePage extends BaseReactComponent {
             <SmartMoneyMobileFAQModal onHide={this.hideAllModals} />
           </SmartMoneyMobileModalContainer>
         ) : null}
-        {/* {this.state.signOutModal ? ( */}
-        <SmartMoneyMobileSignOutModal
-          onSignOut={this.props.signOutFun}
-          onHide={this.hideAllModals}
-        />
-        {/* ) : null} */}
+        {this.state.signOutModal ? (
+          <SmartMoneyMobileSignOutModal
+            onSignOut={this.props.signOutFun}
+            onHide={this.hideAllModals}
+          />
+        ) : null}
 
         <SmartMoneyMobileHeader />
         {this.props.isLoading ? (

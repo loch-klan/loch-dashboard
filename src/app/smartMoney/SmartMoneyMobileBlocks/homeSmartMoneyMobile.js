@@ -191,7 +191,6 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                       mapData={mapData}
                       handleFollowUnfollow={this.props.handleFollowUnfollow}
                       openSignInOnclickModal={this.props.openSignInOnclickModal}
-                      smartMoneyBlur={this.props.blurTable}
                     />
                   );
                 })}
@@ -207,7 +206,6 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                 changePageLimit={this.props.changePageLimit}
                 onPageChange={this.props.onPageChange}
                 openSignInOnclickModal={this.props.openSignInOnclickModal}
-                smartMoneyBlur={this.props.blurTable}
                 isMobile
               />
             ) : null}

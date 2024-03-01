@@ -245,6 +245,9 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
+    if (mobileCheck()) {
+      this.props.history.push("/welcome");
+    }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -775,7 +778,7 @@ class SmartMoneyPage extends BaseReactComponent {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Flows (1 year)
+              Net flows (1 year)
             </span>
           </div>
         ),
