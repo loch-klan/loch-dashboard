@@ -225,7 +225,7 @@ class EditWalletModal extends BaseReactComponent {
                   : "day"
               } ago`}</p>
               <div className="m-b-32 coinchips">{chips}</div>
-              <div className="edit-form input-noshadow-dark input-hover-states">
+              <div className="edit-form input-noshadow-dark">
                 <FormElement
                   valueLink={this.linkState(this, "displayAddress")}
                   label="Wallet Address"

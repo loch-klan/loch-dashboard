@@ -551,7 +551,7 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content-price input-noshadow-dark input-hover-states ${
+          className={`dropdown-content-price input-noshadow-dark ${
             this.state.showMenu ? "show" : ""
           }`}
           style={{

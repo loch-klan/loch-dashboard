@@ -1105,7 +1105,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
                   {/* {fillter_tabs} */}
                   <Col md={4}>
-                    <div className="searchBar input-noshadow-dark input-hover-states">
+                    <div className="searchBar input-noshadow-dark">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
                         valueLink={this.linkState(

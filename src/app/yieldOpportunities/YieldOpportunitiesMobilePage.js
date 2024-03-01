@@ -89,7 +89,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               </Col>
             </Row>
             <div
-              className="searchBar input-noshadow-dark input-hover-states"
+              className="searchBar input-noshadow-dark"
               style={{ marginTop: "1.5rem" }}
             >
               <Image src={searchIcon} className="search-icon" />

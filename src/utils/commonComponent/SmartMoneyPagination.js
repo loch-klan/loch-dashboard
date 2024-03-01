@@ -128,7 +128,7 @@ const SmartMoneyPagination = (props) => {
   if (mobileCheck()) {
     return (
       <div
-        className="mobileSmartMoneyPagingation input-noshadow-dark input-hover-states"
+        className="mobileSmartMoneyPagingation input-noshadow-dark"
         style={props.style}
       >
         <div className="smartMoneyPaginationContainer ">
