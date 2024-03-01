@@ -911,10 +911,12 @@
     width: 0rem !important;
     height: 0rem !important;
     background-color: transparent !important;
+    display: none !important;
   }
   &::-webkit-scrollbar-thumb {
     height: 0rem !important;
     width: 0rem !important;
     background-color: transparent !important;
+    display: none !important;
   }
 }

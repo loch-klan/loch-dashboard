@@ -380,15 +380,23 @@ backdrop-filter: blur(15px);">
         data: [
           {
             y: otherInflow * currency?.rate,
-            color: "#16182B4D",
-            borderColor: "#16182B",
+            color: parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC4D"
+              : "#16182B4D",
+            borderColor: parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC99"
+              : "#16182B",
             borderWidth: 2,
             name: "Other",
           },
           {
             y: otherOutflow * currency?.rate,
-            color: "#16182B4D",
-            borderColor: "#16182B",
+            color: parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC4D"
+              : "#16182B4D",
+            borderColor: parentCtx?.props?.darkModeState?.flag
+              ? "#CACBCC99"
+              : "#16182B",
             borderWidth: 2,
             name: "Other",
           },
