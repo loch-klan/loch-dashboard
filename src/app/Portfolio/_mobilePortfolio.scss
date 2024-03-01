@@ -271,12 +271,14 @@
             border-radius: 0.9rem;
             width: 0rem;
             height: 0rem;
-            background-color: rgba(229, 229, 230, 0.5);
+            // background-color: rgba(229, 229, 230, 0.5);
+            background-color: transparent;
             margin-bottom: 0.2rem;
           }
           &::-webkit-scrollbar-thumb {
             border-radius: 0.8rem;
-            background-color: #cacbcc;
+            // background-color: #cacbcc;
+            background-color: transparent;
           }
         }
         .table-wrapper-mobile-y-scroll {
@@ -900,5 +902,19 @@
     margin-right: 0.3rem;
     filter: brightness(0.5);
     height: 8px;
+  }
+}
+
+
+.hide-scrollbar{
+  &::-webkit-scrollbar {
+    width: 0rem !important;
+    height: 0rem !important;
+    background-color: transparent !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 0rem !important;
+    width: 0rem !important;
+    background-color: transparent !important;
   }
 }
