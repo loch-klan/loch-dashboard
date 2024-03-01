@@ -5538,6 +5538,15 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
+export const MenuEmulationslist = ({ session_id, email_address }) => {
+  const event_name = "Menu: Emulations";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
 
 //Menu:export hide dust - done
 export const MenuExportHideDust = ({ session_id, email_address }) => {
@@ -5580,7 +5589,28 @@ export const SmartMoneyPageView = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const EmulationsPageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: Emulations";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
+export const EmulationsTimeSpent = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Emulations: time spent on emulations page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyTimeSpent = ({
   session_id,
   email_address,
