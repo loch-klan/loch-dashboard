@@ -1656,8 +1656,7 @@ function Sidebar(props) {
           modalType={"create_account"}
           iconImage={SignInIcon}
           hideSkip={true}
-          title={isAutoPopUpModal ? "Don’t lose your data" : "Sign in"}
-          secondTitle={isAutoPopUpModal ? "Sign in now" : null}
+          title={isAutoPopUpModal ? "Sign in now" : "Sign in"}
           description={
             isAutoPopUpModal
               ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"

@@ -245,7 +245,9 @@ class SmartMoneyPage extends BaseReactComponent {
     this.props.createAnonymousUserSmartMoneyApi(data);
   };
   componentDidMount() {
-    this.props.history.push("/welcome");
+    if (mobileCheck()) {
+      this.props.history.push("/welcome");
+    }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
