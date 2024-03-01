@@ -189,6 +189,7 @@ class RealizedProfitAndLoss extends Component {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
+    this.startPageView();
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -234,7 +235,6 @@ class RealizedProfitAndLoss extends Component {
         this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
       )
     ) {
-      this.startPageView();
       this.props.getAllCoins();
       //here this.timeFilter(0, true);
       this.callTimeFilter();
