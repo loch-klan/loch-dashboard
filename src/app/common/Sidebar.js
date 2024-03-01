@@ -32,7 +32,7 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
-  EmulationsWatchlist,
+  MenuEmulationslist,
   ExportMenu,
   FeedbackMenu,
   FeedbackSidebar,
@@ -915,7 +915,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  EmulationsWatchlist({
+                                  MenuEmulationslist({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1187,7 +1187,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  EmulationsWatchlist({
+                                  MenuEmulationslist({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });

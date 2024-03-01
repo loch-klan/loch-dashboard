@@ -5538,7 +5538,7 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
-export const EmulationsWatchlist = ({ session_id, email_address }) => {
+export const MenuEmulationslist = ({ session_id, email_address }) => {
   const event_name = "Menu: Emulations";
   const eventProperties = {
     "session id": session_id,
@@ -5583,6 +5583,14 @@ export const TopbarSignin = ({ session_id, email_address }) => {
 
 export const SmartMoneyPageView = ({ session_id, email_address }) => {
   const event_name = "Page View: Smart money";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const EmulationsPageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: Emulations";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
