@@ -7,8 +7,6 @@ import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 
 import {
-  AssetsPageTimeSpentMP,
-  AssetsPageViewMP,
   CAverageCostBasisSort,
   CostAvgCostBasisExport,
   CostHideDust,
@@ -19,6 +17,7 @@ import {
   CostSortByCurrentPrice,
   CostSortByPortfolio,
   EmulationsPageView,
+  EmulationsTimeSpent,
   SortByCurrentValue,
   SortByGainAmount,
   SortByGainLoss,
@@ -322,7 +321,7 @@ class Emulations extends Component {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      AssetsPageTimeSpentMP({
+      EmulationsTimeSpent({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
