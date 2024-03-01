@@ -1537,7 +1537,7 @@ class ConnectModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           {selection ? (
-            <div className="connect-modal-body input-noshadow-dark">
+            <div className="connect-modal-body input-noshadow-dark input-hover-states">
               <div className="connect-head">
                 <h6 className="inter-display-medium f-s-25 lh-30 m-b-8 black-191">
                   Connecting to {selection.name}
@@ -1590,7 +1590,7 @@ class ConnectModal extends BaseReactComponent {
                 <Container>
                   <Row>
                     <Col sm={6}>
-                      <div className="exchange-form">
+                      <div className="exchange-form input-hover-states">
                         <Form>
                           <FormElement
                             valueLink={this.linkState(this, "connectionName")}
@@ -1733,7 +1733,7 @@ class ConnectModal extends BaseReactComponent {
               </div>
             </div>
           ) : (
-            <div className="connect-modal-body input-noshadow-dark">
+            <div className="connect-modal-body input-noshadow-dark input-hover-states">
               <div className="connect-head">
                 <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
                   {this.props.headerTitle}

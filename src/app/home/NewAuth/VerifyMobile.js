@@ -65,7 +65,7 @@ const VerifyMobile = ({
           className="new-auth new-auth-mobile verify-otp"
           style={{ paddingBottom: "48px" }}
         >
-          <div className="new-auth-content input-noshadow-dark">
+          <div className="new-auth-content input-noshadow-dark input-hover-states">
             <img
               className="new-auth-content-logo new-auth-content-logo-mobile"
               src={logo}

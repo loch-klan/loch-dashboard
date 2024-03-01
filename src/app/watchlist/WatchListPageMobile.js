@@ -240,7 +240,7 @@ class WatchListPageMobile extends BaseReactComponent {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between input-noshadow-dark",
+                justifyContent: "space-betwee",
               }}
             >
               {/* <div style={{ width: "60%" }}>

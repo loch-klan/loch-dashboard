@@ -50,6 +50,7 @@ import {
   ProfileMenu,
   SigninMenu,
   SignupMenu,
+  ToggleDarkModeAnalytics,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import {
@@ -479,10 +480,22 @@ function Sidebar(props) {
       setIsDarkMode(false);
       switchToLightMode();
       props.SwitchDarkMode(false);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Main",
+        mode_from: "Dark",
+        mode_to: "Light",
+        isMobile: false,
+      });
     } else {
       switchToDarkMode();
       setIsDarkMode(true);
       props.SwitchDarkMode(true);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Main",
+        mode_from: "Light",
+        mode_to: "Dark",
+        isMobile: false,
+      });
     }
   };
   React.useEffect(() => {

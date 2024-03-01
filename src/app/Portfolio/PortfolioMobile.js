@@ -803,7 +803,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.props.blockOneSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
                         this.props.AvgCostLoading ||
                         this.props.tableDataCostBasis?.length < 1
                           ? ""
@@ -866,7 +866,7 @@ class PortfolioMobile extends BaseReactComponent {
                   this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
                         this.props.yieldOpportunitiesTableLoading ||
                         this.props.yieldOpportunitiesListTemp?.length < 1
                           ? ""
@@ -1149,7 +1149,7 @@ class PortfolioMobile extends BaseReactComponent {
                 ) : this.props.blockFourSelectedItem === 2 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile hide-scrollbar ${
                         this.props.tableLoading ||
                         this.props.tableData?.length < 1
                           ? ""

@@ -8,9 +8,14 @@ import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
-import { switchToDarkMode, switchToLightMode } from "./utils/ReusableFunctions";
+import {
+  mobileCheck,
+  switchToDarkMode,
+  switchToLightMode,
+} from "./utils/ReusableFunctions";
 import { connect } from "react-redux";
 import { SwitchDarkMode } from "./app/common/Api";
+import { DarkModeDefaltView } from "./utils/AnalyticsFunctions";
 
 function App(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -49,9 +54,17 @@ function App(props) {
     if (isDarkTheme && isDarkTheme === "true") {
       switchToDarkMode();
       props.SwitchDarkMode(true);
+      DarkModeDefaltView({
+        mode: "Dark",
+        isMobile: mobileCheck(),
+      });
     } else {
       switchToLightMode();
       props.SwitchDarkMode(false);
+      DarkModeDefaltView({
+        mode: "Light",
+        isMobile: mobileCheck(),
+      });
     }
   }, []);
 

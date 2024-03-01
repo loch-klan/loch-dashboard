@@ -149,7 +149,7 @@ const SmartMoneyPagination = (props) => {
               onLoad={leftLogoLoadingComplete}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14 input-noshadow-dark">
+          <h5 className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
             <input
               type="number"
               name="pagenumber"
@@ -234,7 +234,7 @@ const SmartMoneyPagination = (props) => {
               className={"smartMoneyPaginationArrow"}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14 input-noshadow-dark">
+          <h5 className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
             <input
               type="number"
               name="pagenumber"
