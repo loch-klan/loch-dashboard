@@ -47,7 +47,6 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               headerHeight={60}
               isArrow={true}
               isLoading={this.props.emulationsLoading}
-              isAnalytics="average cost basis"
               fakeWatermark
               xAxisScrollable
               yAxisScrollable
