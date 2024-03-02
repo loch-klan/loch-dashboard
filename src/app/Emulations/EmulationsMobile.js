@@ -19,7 +19,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
         <div
           style={{
-            backgroundColor: "white",
+            backgroundColor: "var(--cardBackgroud",
             borderRadius: "1.2rem",
             padding: "0rem",
             paddingBottom: "0.5rem",
