@@ -2580,7 +2580,7 @@ class NewWelcome extends BaseReactComponent {
                       src={lightModeIcon}
                       alt=""
                     />
-                    Light Mode
+                    {/* Light Mode */}
                   </button>
                 ) : (
                   <button
@@ -2592,7 +2592,7 @@ class NewWelcome extends BaseReactComponent {
                       src={darkModeIcon}
                       alt=""
                     />
-                    Dark Mode
+                    {/*Dark Mode*/}
                   </button>
                 )}
                 {/* {this.state.isDarkMode == "dark2" ? (
