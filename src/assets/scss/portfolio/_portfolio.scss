@@ -160,7 +160,7 @@
             padding-right: 1rem;
             // background-color: red;
             border: 1px var(--borderwhiteDarkLight) solid;
-            box-shadow:var(--topBarShadow);
+            box-shadow: var(--topBarShadow);
             height: 100%;
             position: relative;
             .topBarHistory {
@@ -401,8 +401,8 @@
           cursor: default;
           &:hover {
             background: $black-191;
-          border: 1px solid var(--topbarAdressAddBorder);
-          color: $secondary;
+            border: 1px solid var(--topbarAdressAddBorder);
+            color: $secondary;
           }
         }
         .topbar-btn-light-disabled {
@@ -1134,7 +1134,7 @@
 
               .balance-amt {
                 background: var(--tableCostCommonBg);
-    color: var(--tableDataColor) !important;
+                color: var(--tableDataColor) !important;
                 border-radius: 4px;
                 padding: 6px;
               }
@@ -1304,6 +1304,7 @@
         }
       }
       .newHomeTableContainer {
+        min-height: 30rem;
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;
@@ -1418,8 +1419,8 @@
         display: flex;
         align-items: center;
         color: var(--seeMoreColor);
-          font-size: 13px;
-          font-weight: 500;
+        font-size: 13px;
+        font-weight: 500;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {
           // transition-duration: 300ms;
@@ -2210,6 +2211,6 @@
   font-size: 8px;
 }
 
-.info-icon-home{
+.info-icon-home {
   filter: var(--infoBrightnessPortfolio);
 }
