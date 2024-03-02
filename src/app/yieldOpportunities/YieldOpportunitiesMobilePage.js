@@ -140,7 +140,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 marginTop: "2rem",
                 borderRadius: "1.2rem",
               }}
-              className={`freezeTheFirstColumn section-table section-table-mobile-scroll ${
+              className={`freezeTheFirstColumn section-table section-table-mobile-scroll hide-scrollbar ${
                 this.props.tableData && this.props.tableData.length > 0
                   ? "tableWatermarkOverlayCounterParty"
                   : ""

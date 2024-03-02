@@ -18,6 +18,7 @@ import {
   CostSortByPortfolio,
   EmulationsPageView,
   EmulationsTimeSpent,
+  EmulationsWalletClicked,
   SortByCurrentValue,
   SortByGainAmount,
   SortByGainLoss,
@@ -60,13 +61,14 @@ import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
-import AssetUnrealizedProfitAndLossMobile from "./EmulationsMobile.js";
+import EmulationsMobile from "./EmulationsMobile.js";
+import { getEmulations } from "./EmulationsApi.js";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Average_cost_basis_local: [],
+      emulationsLocal: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
       combinedCurrentValue: 0,
@@ -87,7 +89,7 @@ class Emulations extends Component {
       counterGraphLoading: true,
       gasFeesGraphLoading: true,
 
-      AvgCostLoading: true,
+      emulationsLoading: true,
       showDust: true,
 
       // counter party
@@ -122,30 +124,6 @@ class Emulations extends Component {
     };
   }
   history = this.props;
-  handleExportModal = () => {
-    this.setState({
-      exportModal: !this.state.exportModal,
-    });
-  };
-  setAverageCostExportModal = () => {
-    CostAvgCostBasisExport({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.setState(
-      {
-        exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
-        exportSelectExportOption: 4,
-      },
-      () => {
-        this.setState({
-          exportModal: true,
-        });
-      }
-    );
-  };
 
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
@@ -154,101 +132,63 @@ class Emulations extends Component {
       email_address: getCurrentUser().email,
     });
     // Inactivity Check
-    window.checkCostTimer = setInterval(() => {
+    window.checkEmulationsTimer = setInterval(() => {
       this.checkForInactivity();
     }, 900000);
   };
   componentDidMount() {
     scrollToTop();
     if (
-      !this.props.commonState.assetsPage ||
-      !(
-        this.props.intelligenceState?.Average_cost_basis &&
-        this.props.intelligenceState?.Average_cost_basis.length > 0
-      )
+      !this.props.commonState.emulationsPage ||
+      !(this.props.emulationsState && this.props.emulationsState.length > 0)
     ) {
       this.props.getAllCoins();
-
       this.props.getAvgCostBasis(this);
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
-      this.props.updateWalletListFlag("assetsPage", true);
-      if (this.props.intelligenceState?.Average_cost_basis) {
-        this.trimAverageCostBasisLocally(
-          this.props.intelligenceState?.Average_cost_basis
-        );
-      }
-      this.setState({
-        AvgCostLoading: false,
-      });
-      this.combinedResults();
+      this.props.updateWalletListFlag("emulationsPage", true);
+      this.setLocalEmulationList();
     }
-    const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const addAddress = params.get("add-address");
-    if (addAddress) {
-      this.handleAddModal();
-      this.props.history.replace("/intelligence/costs");
-    }
+
     this.startPageView();
     this.updateTimer(true);
 
     return () => {
-      clearInterval(window.checkCostTimer);
+      clearInterval(window.checkEmulationsTimer);
     };
   }
-  trimAverageCostBasisLocally = (sortedList) => {
-    let tempList = [];
-    if (sortedList) {
-      tempList = sortedList;
-    } else {
-      tempList = [...this.state.Average_cost_basis_local];
-    }
 
-    if (tempList.length > 0 && this.state.showDust) {
-      let array = tempList?.filter((e) => e.CurrentValue >= 1);
-      this.updateAverageCostBasisLocally(array);
-    } else {
-      this.updateAverageCostBasisLocally(tempList);
-    }
-  };
-  updateAverageCostBasisLocally = (newArray) => {
+  callEmulationsApi = () => {
     this.setState({
-      Average_cost_basis_local: newArray,
+      emulationsLoading: true,
     });
+    this.props.updateWalletListFlag("emulationsPage", true);
+    this.props.getEmulations();
+  };
+  setLocalEmulationList = () => {
+    if (this.props.emulationsState) {
+      this.setState({
+        emulationsLoading: false,
+        emulationsLocal: this.props.emulationsState,
+      });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.intelligenceState.Average_cost_basis !==
-      this.props.intelligenceState.Average_cost_basis
-    ) {
-      this.props.updateWalletListFlag("assetsPage", true);
-      if (this.state.showDust) {
-        this.trimAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
-        );
-      } else {
-        this.updateAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
-        );
-      }
-      this.combinedResults();
+    if (prevProps.emulationsState !== this.props.emulationsState) {
+      this.setLocalEmulationList();
     }
     // add wallet
     if (prevState.apiResponse !== this.state.apiResponse) {
-      this.props.updateWalletListFlag("assetsPage", true);
-
+      this.callEmulationsApi();
       this.props.getAllCoins();
-
-      this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
       });
     }
-    if (!this.props.commonState.assetsPage) {
-      this.props.updateWalletListFlag("assetsPage", true);
+    if (!this.props.commonState.emulationsPage) {
+      this.callEmulationsApi();
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
@@ -257,48 +197,7 @@ class Emulations extends Component {
       this.props.getAllWalletListApi(tempData, this);
     }
   }
-  combinedResults = (data) => {
-    let tempcombinedCostBasis = 0;
-    let tempcombinedCurrentValue = 0;
-    let tempcombinedUnrealizedGains = 0;
-    let tempcombinedReturn = 0;
-    if (this.props.intelligenceState?.net_return) {
-      tempcombinedReturn = this.props.intelligenceState?.net_return;
-    }
-    if (this.props.intelligenceState?.total_bal) {
-      tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
-    }
-    if (this.props.intelligenceState?.total_cost) {
-      tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
-    }
-    if (this.props.intelligenceState?.total_gain) {
-      tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
-    }
 
-    this.setState({
-      combinedCostBasis: tempcombinedCostBasis,
-      combinedCurrentValue: tempcombinedCurrentValue,
-      combinedUnrealizedGains: tempcombinedUnrealizedGains,
-      combinedReturn: tempcombinedReturn,
-    });
-  };
-  // For add new address
-  handleAddModal = () => {
-    this.setState({
-      addModal: !this.state.addModal,
-    });
-  };
-
-  handleChangeList = (value) => {
-    this.setState({
-      // for add wallet
-      userWalletList: value,
-      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
-      // for page
-      counterGraphLoading: true,
-      gasFeesGraphLoading: true,
-    });
-  };
   CheckApiResponse = (value) => {
     this.setState({
       apiResponse: value,
@@ -307,17 +206,18 @@ class Emulations extends Component {
   };
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime =
-      window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
+      "emulationsPageExpiryTime"
+    );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("emulationsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
-    clearInterval(window.checkCostTimer);
-    window.sessionStorage.removeItem("costPageExpiryTime");
+    clearInterval(window.checkEmulationsTimer);
+    window.sessionStorage.removeItem("emulationsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -329,13 +229,17 @@ class Emulations extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "emulationsPageExpiryTime"
+    );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.sessionStorage.getItem(
+      "emulationsPageExpiryTime"
+    );
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -343,159 +247,6 @@ class Emulations extends Component {
 
   handleConnectModal = () => {
     this.setState({ connectModal: !this.state.connectModal });
-  };
-
-  sortArray = (key, order) => {
-    let array = [...this.state.Average_cost_basis_local]; //all data
-    let sortedList = array.sort((a, b) => {
-      let valueA = a[key];
-      let valueB = b[key];
-      if (key === "AssetCode") {
-        valueA = valueA.toLowerCase();
-        valueB = valueB.toLowerCase();
-        return order
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      } else {
-        valueA = parseFloat(valueA);
-        valueB = parseFloat(valueB);
-      }
-      if (order) {
-        return valueA - valueB;
-      } else {
-        return valueB - valueA;
-      }
-    });
-
-    // this.setState({
-    //   sortedList,
-    // });
-    this.trimAverageCostBasisLocally(sortedList);
-    // this.props.updateAverageCostBasis(sortedList, this);
-  };
-  // sort
-  handleSort = (e) => {
-    // down == true means ascending and down == false means descending
-    let isDown = true;
-    let sort = [...this.state.sortBy];
-    sort.map((el) => {
-      if (el.title === e.title) {
-        el.down = !el.down;
-        isDown = el.down;
-      } else {
-        el.down = true;
-      }
-    });
-
-    if (e.title === "Asset") {
-      this.sortArray("AssetCode", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CostSortByAsset({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Average cost price") {
-      this.sortArray("AverageCostPrice", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CostSortByCostPrice({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Current price") {
-      this.sortArray("CurrentPrice", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CostSortByCurrentPrice({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Amount") {
-      this.sortArray("Amount", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CostSortByAmount({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Cost basis") {
-      this.sortArray("CostBasis", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CAverageCostBasisSort({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Current value") {
-      this.sortArray("CurrentValue", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      SortByCurrentValue({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Gain amount") {
-      this.sortArray("GainAmount", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      SortByGainAmount({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Gain percentage") {
-      this.sortArray("GainLoss", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      SortByGainLoss({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    } else if (e.title === "Portfolio perc") {
-      this.sortArray("weight", isDown);
-      this.setState({
-        sortBy: sort,
-      });
-      CostSortByPortfolio({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-    }
-  };
-
-  handleDust = () => {
-    this.setState(
-      {
-        showDust: !this.state.showDust,
-      },
-      () => {
-        this.trimAverageCostBasisLocally(
-          this.props.intelligenceState?.Average_cost_basis
-        );
-        CostHideDust({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        });
-        this.updateTimer();
-      }
-    );
   };
 
   handleShare = () => {
@@ -506,7 +257,7 @@ class Emulations extends Component {
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
-    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=assets";
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=emulations";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -521,11 +272,7 @@ class Emulations extends Component {
     const columnData = [
       {
         labelName: (
-          <div
-            className="history-table-header-col"
-            id="Average Cost Price"
-            // onClick={() => this.handleSort(this.state.sortBy[1])}
-          >
+          <div className="history-table-header-col" id="Average Cost Price">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Copied wallet
             </span>
@@ -538,8 +285,24 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Copiedwallet") {
             return (
-              <span className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address">
-                {TruncateText("exyzabcd")}
+              <span
+                onClick={() => {
+                  if (rowData.wallet) {
+                    let slink = rowData.wallet;
+                    let shareLink =
+                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+                    EmulationsWalletClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet: slink,
+                    });
+                    window.open(shareLink, "_blank", "noreferrer");
+                  }
+                }}
+                className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
+              >
+                {rowData.wallet ? TruncateText(rowData.wallet) : "-"}
               </span>
             );
           }
@@ -560,29 +323,27 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
             return (
-              <div>
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.CurrentPrice
-                      ? CurrencyType(false) +
-                        convertNtoNumber(rowData.CurrentPrice)
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.CurrentPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlay>
-              </div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.tradeDeposit
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.tradeDeposit)
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.tradeDeposit
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.tradeDeposit.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
             );
           }
         },
@@ -602,36 +363,34 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
             return (
-              <span>
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.Amount && rowData.Amount !== 0
-                      ? convertNtoNumber(rowData.Amount)
-                      : "0"
-                  }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                    {rowData.Amount
-                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
-                      : "0"}
-                  </span>
-                </CustomOverlay>
-              </span>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.currentBalance
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.currentBalance)
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.currentBalance
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.currentBalance.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
             );
           }
         },
       },
       {
         labelName: (
-          <div
-            className="history-table-header-col"
-            id="Transactions"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
-          >
+          <div className="history-table-header-col" id="Transactions">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Transactions
             </span>
@@ -659,11 +418,11 @@ class Emulations extends Component {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
         >
-          <AssetUnrealizedProfitAndLossMobile
+          <EmulationsMobile
             columnData={columnData}
             handleShare={this.handleShare}
-            tableData={this.state.Average_cost_basis_local}
-            AvgCostLoading={this.state.AvgCostLoading}
+            tableData={this.state.emulationsLocal}
+            emulationsLoading={this.state.emulationsLoading}
             showHideDustFun={this.handleDust}
             showHideDustVal={this.state.showDust}
           />
@@ -751,7 +510,6 @@ class Emulations extends Component {
               exportBtnTxt="Click to export costs"
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
-              mainThemeBtn
             />
             <div
               style={{ marginBottom: "2.8rem" }}
@@ -761,12 +519,12 @@ class Emulations extends Component {
                 <TransactionTable
                   message="No emulations found"
                   noSubtitleBottomPadding
-                  tableData={this.state.Average_cost_basis_local}
+                  tableData={this.state.emulationsLocal}
                   columnList={columnData}
                   headerHeight={64}
                   comingSoon={false}
                   isArrow={false}
-                  isLoading={this.state.AvgCostLoading}
+                  isLoading={this.state.emulationsLoading}
                   isGainLoss={true}
                   isStickyHead={true}
                   addWatermark
@@ -785,6 +543,7 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  emulationsState: state.EmulationsState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -806,6 +565,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   getUser,
   GetAllPlan,
+  getEmulations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emulations);
