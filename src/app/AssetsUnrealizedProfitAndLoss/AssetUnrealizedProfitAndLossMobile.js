@@ -61,7 +61,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               padding: "0rem 0.5rem",
               paddingTop: "0.5rem",
             }}
-            className={`freezeTheFirstColumn newHomeTableContainer  ${
+            className={`freezeTheFirstColumn newHomeTableContainer hide-scrollbar  ${
               this.props.AvgCostLoading || this.props.tableData < 1
                 ? ""
                 : "tableWatermarkOverlay"

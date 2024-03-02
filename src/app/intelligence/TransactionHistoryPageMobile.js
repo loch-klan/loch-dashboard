@@ -164,7 +164,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   marginTop: "2rem",
                   paddingTop: "0.5rem",
                 }}
-                className={`freezeTheFirstColumn section-table section-table-mobile-scroll  ${
+                className={`freezeTheFirstColumn section-table section-table-mobile-scroll hide-scrollbar  ${
                   this.props.tableLoading || this.props.tableData < 1
                     ? ""
                     : "tableWatermarkOverlay"
