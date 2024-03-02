@@ -2,6 +2,18 @@ import React from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
+  MacIcon,
+  SharePortfolioIconWhite,
+  darkModeIcon,
+  lightModeIcon,
+} from "../../assets/images/icons";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import { CopyClipboardIcon } from "../../assets/images/index.js";
+import {
+  CostHideDustMobile,
   MobileHomePageView,
   Mobile_Home_Share,
   QuickAddWalletAddress,
@@ -14,23 +26,63 @@ import {
   SORT_BY_TIMESTAMP,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
+import {
+  CurrencyType,
+  TruncateText,
+  amountFormat,
+  convertNtoNumber,
+  noExponents,
+  numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
+} from "../../utils/ReusableFunctions.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { updateUserWalletApi, updateWalletListFlag } from "../common/Api";
+import {
+  GetAllPlan,
+  SwitchDarkMode,
+  getAllCurrencyRatesApi,
+  getDetectedChainsApi,
+  getUser,
+  setPageFlagDefault,
+  updateUserWalletApi,
+  updateWalletListFlag,
+} from "../common/Api";
 import BarGraphSection from "../common/BarGraphSection.js";
 import Loading from "../common/Loading";
 import { setHeaderReducer } from "../header/HeaderAction.js";
 
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getNFT } from "../nft/NftApi.js";
-import { detectCoin } from "../onboarding/Api.js";
+import MobileDarkModeIconWrapper from "./MobileDarkModeWrapper.js";
+import {
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api.js";
 import { addUserCredits } from "../profile/Api.js";
 
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import PieChart2 from "./PieChart2";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import "./_mobilePortfolio.scss";
-import { numToCurrency } from "../../utils/ReusableFunctions.js";
+import {
+  getAssetGraphDataApi,
+  getCoinRate,
+  getDetailsByLinkApi,
+  getExchangeBalances,
+  getExternalEventsApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api.js";
+import {
+  getAllInsightsApi,
+  getProfitAndLossApi,
+  searchTransactionApi,
+} from "../intelligence/Api.js";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {
@@ -70,8 +122,11 @@ class PortfolioMobile extends BaseReactComponent {
       isDarkMode:
         document.querySelector("body").getAttribute("data-theme") &&
         document.querySelector("body").getAttribute("data-theme") === "dark"
-          ? true
-          : false,
+          ? "dark"
+          : document.querySelector("body").getAttribute("data-theme") ===
+            "dark2"
+          ? "dark2"
+          : "light",
       showHideDustValTrans: true,
       isShowingAge: true,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
@@ -343,7 +398,33 @@ class PortfolioMobile extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
-
+  handleDarkMode = (status = "light") => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+      this.props.SwitchDarkMode(false);
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+      this.props.SwitchDarkMode(true);
+    }
+    // if (darkOrLight === "dark") {
+    //   setIsDarkMode('light');
+    //   switchToLightMode();
+    //   props.SwitchDarkMode(false);
+    // } else {
+    //   switchToDarkMode();
+    //   setIsDarkMode(true);
+    //   props.SwitchDarkMode(true);
+    // }
+  };
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
@@ -375,6 +456,7 @@ class PortfolioMobile extends BaseReactComponent {
       }
     }
   };
+
   hideTheTopBarHistoryItems = () => {
     this.setState({
       walletInput: [
@@ -721,7 +803,7 @@ class PortfolioMobile extends BaseReactComponent {
                 {this.props.blockOneSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
                         this.props.AvgCostLoading ||
                         this.props.tableDataCostBasis?.length < 1
                           ? ""
@@ -784,7 +866,7 @@ class PortfolioMobile extends BaseReactComponent {
                   this.props.blockThreeSelectedItem === 1 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
                         this.props.yieldOpportunitiesTableLoading ||
                         this.props.yieldOpportunitiesListTemp?.length < 1
                           ? ""
@@ -1067,7 +1149,7 @@ class PortfolioMobile extends BaseReactComponent {
                 ) : this.props.blockFourSelectedItem === 2 ? (
                   <div>
                     <div
-                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile ${
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile hide-scrollbar ${
                         this.props.tableLoading ||
                         this.props.tableData?.length < 1
                           ? ""
@@ -1141,6 +1223,21 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   detectCoin,
+  getCoinRate,
+  getUserWallet,
+  settingDefaultValues,
+  getAllCoins,
+  SwitchDarkMode,
+  getAllParentChains,
+  searchTransactionApi,
+  getAssetGraphDataApi,
+  getDetailsByLinkApi,
+  getProfitAndLossApi,
+  // getExchangeBalance,
+  getExchangeBalances,
+  getYesterdaysBalanceApi,
+  getExternalEventsApi,
+  getAllInsightsApi,
   updateWalletListFlag,
   setHeaderReducer,
   addUserCredits,

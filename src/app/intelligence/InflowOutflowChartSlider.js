@@ -78,6 +78,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    console.log("updating");
     if (prevState.formattedXAxis !== this.state.formattedXAxis) {
       let diff = Math.round(
         this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5
@@ -375,6 +376,8 @@ class InflowOutflowChartSlider extends BaseReactComponent {
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
                 zIndex: 99,
+                // opacity: parent?.props?.darkModeState?.flag ? 0.1 : 1,
+                class: "watermark-opacity",
               })
               .add();
           },
@@ -465,6 +468,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         opposite: false,
         offset: this.props.hideTimeFilter ? 20 : 40,
         gridLineDashStyle: "longdash",
+        gridLineColor: parent?.props?.darkModeState?.flag
+          ? "#404040"
+          : "#e5e5e6",
         stackLabels: {
           enabled: false,
         },
@@ -565,7 +571,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                   parent.hoverOnOutflow();
                 }
                 return `
-              <div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+              <div class="top-section py-4" style="background-color:var(--cardBackgroud); border: 1px solid var(--cardBorder); border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 backdrop-filter: blur(15px);">
                     ${
                       receivedVal !== 0 &&
@@ -576,14 +582,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                           }">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Net Inflow</div>
+                              <div class="black-191">Net Inflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0" >
                             </div>
                             <div>
-                              <span style="color:${"#16182B"}"> ${CurrencyType(
-                            false
-                          )}${numToCurrency(
+                              <span style="color:var(--grey313)"> ${CurrencyType(
+                                false
+                              )}${numToCurrency(
                             receivedVal - sendVal
                           )} (${numToCurrency(
                             receivedAmount - sendAmount
@@ -599,14 +605,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Net Outflow</div>
+                              <div class="black-191">Net Outflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0">
                             </div>
                             <div>
-                              <span style="color:${"#16182B"}"> ${CurrencyType(
-                            false
-                          )}${numToCurrency(
+                              <span style="color:var(--grey313)"> ${CurrencyType(
+                                false
+                              )}${numToCurrency(
                             sendVal - receivedVal
                           )} (${numToCurrency(
                             sendAmount - receivedAmount
@@ -630,14 +636,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
                               <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                              <div>Outflow</div>
+                              <div class="black-191">Outflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0">
                             </div>
                             <div>
-                              <span style="color:${"#16182B"}"> ${CurrencyType(
-                            false
-                          )}${numToCurrency(sendVal)} (${numToCurrency(
+                              <span style="color:var(--grey313)"> ${CurrencyType(
+                                false
+                              )}${numToCurrency(sendVal)} (${numToCurrency(
                             sendAmount
                           )} ${assetCode})</span>
                             </div>
@@ -659,14 +665,14 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ">
                           <div style="display:flex; align-items:center; justify-content:center;" >
                             <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
-                            <div>Inflow</div>
+                            <div class="black-191">Inflow</div>
                           </div>
                           <div style="width:2rem;height:0.1rem; opacity:0" >
                           </div>
                           <div>
-                            <span style="color:${"#16182B"}"> ${CurrencyType(
-                            false
-                          )}${numToCurrency(receivedVal)} (${numToCurrency(
+                            <span style="color:var(--grey313)"> ${CurrencyType(
+                              false
+                            )}${numToCurrency(receivedVal)} (${numToCurrency(
                             receivedAmount
                           )} ${assetCode}) </span>
                           </div>
@@ -748,7 +754,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
           lineWidth: 2,
           type: "areaspline",
           fillOpacity: 1,
-          lineColor: "#B0B1B3",
+          lineColor: "#red",
           dataGrouping: {
             groupPixelWidth: 0,
           },
@@ -778,5 +784,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  darkModeState: state.darkModeState,
 });
 export default connect(mapStateToProps)(InflowOutflowChartSlider);

@@ -225,7 +225,7 @@ class EditWalletModal extends BaseReactComponent {
                   : "day"
               } ago`}</p>
               <div className="m-b-32 coinchips">{chips}</div>
-              <div className="edit-form">
+              <div className="edit-form input-noshadow-dark">
                 <FormElement
                   valueLink={this.linkState(this, "displayAddress")}
                   label="Wallet Address"
@@ -257,7 +257,10 @@ class EditWalletModal extends BaseReactComponent {
                   >
                     Delete wallet
                   </Button>
-                  <Button className="primary-btn" type="submit">
+                  <Button
+                    className="primary-btn main-button-invert"
+                    type="submit"
+                  >
                     Save changes
                   </Button>
                 </div>

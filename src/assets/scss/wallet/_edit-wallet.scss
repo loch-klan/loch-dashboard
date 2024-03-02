@@ -31,7 +31,7 @@
     }
 
     .closebtn {
-      background-color: rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.5);
       padding: 1.3rem;
       border-radius: 50px;
       position: absolute;
@@ -39,6 +39,10 @@
       right: 2.8rem;
       cursor: pointer;
       transition: all 0.4s ease;
+
+      img{
+        filter: var(--invertColor);
+      }
 
       &:hover {
         top: 2.5rem;
@@ -52,7 +56,7 @@
       height: 0;
       border-left: 2.1rem solid transparent;
       border-right: 2.1rem solid transparent;
-      border-bottom: 3rem solid $secondary;
+      border-bottom: 3rem solid var(--cardBackgroud);
       position: absolute;
       left: 36.9rem;
       bottom: -1.7rem;
@@ -158,7 +162,7 @@
           font-family: Inter-Medium;
           line-height: 1.6rem;
           font-size: 1.3rem;
-          color: $grey-313;
+          color: var(--grey313);
           margin-bottom: 1.2rem;
 
           span {
@@ -180,7 +184,7 @@
           }
         }
         .disabled-input {
-          background-color: $secondary;
+          background-color: var(--sameModeColor);
           // color: $grey-B0B;
         }
         .tag-input {
@@ -189,7 +193,8 @@
         .custom-select__control {
           font-size: 1.3rem;
           line-height: 1.6rem;
-          color: $grey-B0B;
+          color: var(--secondaryTextColor);
+          background-color: transparent;
           font-weight: 400;
           min-height: 4rem;
           &::placeholder {
@@ -199,8 +204,13 @@
           }
         }
         .custom-select__menu {
+          background-color: var(--cardBackgroud);
           .custom-select__menu-list {
             height: 16rem;
+            .custom-select__option{
+              color: var(--black191);
+
+            }
           }
           .custom-select__menu-list::-webkit-scrollbar {
             width: 0.4rem;
@@ -208,13 +218,15 @@
           .custom-select__menu-list::-webkit-scrollbar-thumb {
             border-radius: 0.8rem;
             // background: rgb(90, 90, 90);
-            background-color: $scrollBar-thumb;
+            background-color: var(--scrollBarThumb);
           }
           .custom-select__menu-list::-webkit-scrollbar-track {
             // background: rgba(0, 0, 0, 0.2);
             // background: transparent;
             background-color: $grey-E5E;
             border-radius: 0.8rem;
+
+            
           }
         }
       }

@@ -11,6 +11,8 @@ import {
   NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import ConnectIcons from "../../assets/images/icons/connect-icon-white.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
@@ -37,6 +39,8 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  switchToDarkMode,
+  switchToLightMode,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -65,9 +69,11 @@ import {
   SmartMoneyWalletClicked,
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
+  ToggleDarkModeAnalytics,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
+  SwitchDarkMode,
   detectNameTag,
   getAllCurrencyRatesApi,
   setPageFlagDefault,
@@ -117,6 +123,11 @@ class NewWelcome extends BaseReactComponent {
       currentMetamaskWallet: {},
       lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
       startTime: "",
+      isDarkMode:
+        document.querySelector("body").getAttribute("data-theme") &&
+        document.querySelector("body").getAttribute("data-theme") === "dark"
+          ? true
+          : false,
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -742,6 +753,67 @@ class NewWelcome extends BaseReactComponent {
       this.getCoinBasedOnWalletAddress(name, value);
     }, 1000);
   };
+  // handleDarkMode = () => {
+  //   const darkOrLight = document
+  //     .querySelector("body")
+  //     .getAttribute("data-theme");
+  //   if (darkOrLight === "dark") {
+  //     // setIsDarkMode(false);
+  //     this.setState({
+  //       isDarkMode: false,
+  //     });
+  //     switchToLightMode();
+  //     this.props.SwitchDarkMode(false);
+  //   } else {
+  //     switchToDarkMode();
+  //     this.setState({
+  //       isDarkMode: true,
+  //     });
+  //     // setIsDarkMode(true);
+  //     this.props.SwitchDarkMode(true);
+  //   }
+  // };
+
+  handleDarkMode = (status = "light") => {
+    const darkOrLight = document
+      .querySelector("body")
+      .getAttribute("data-theme");
+    if (darkOrLight === "dark") {
+      this.setState({
+        isDarkMode: false,
+      });
+      switchToLightMode();
+      this.props.SwitchDarkMode(false);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Landing Page",
+        mode_from: "Dark",
+        mode_to: "Light",
+        isMobile: mobileCheck(),
+      });
+    } else {
+      switchToDarkMode();
+      this.setState({
+        isDarkMode: true,
+      });
+      this.props.SwitchDarkMode(true);
+      ToggleDarkModeAnalytics({
+        toggle_button_location: "Landing Page",
+        mode_from: "Dark",
+        mode_to: "Light",
+        isMobile: mobileCheck(),
+      });
+    }
+    // if (darkOrLight === "dark") {
+    //   setIsDarkMode('light');
+    //   switchToLightMode();
+    //   props.SwitchDarkMode(false);
+    // } else {
+    //   switchToDarkMode();
+    //   setIsDarkMode(true);
+    //   props.SwitchDarkMode(true);
+    // }
+  };
+
   isDisabled = () => {
     let isDisableAddFlagCount = 0;
     let isDisableGoFlagCount = 0;
@@ -1852,6 +1924,12 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    let sMode = document.querySelector("body").getAttribute("data-theme");
+    if (this.state.isDarkMode !== (sMode === "dark")) {
+      this.setState({
+        isDarkMode: sMode === "dark",
+      });
+    }
     if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
         this.setState({
@@ -1989,6 +2067,8 @@ class NewWelcome extends BaseReactComponent {
           changePageLimit={this.changePageLimit}
           blurTables={this.blurTables}
           blurTable={this.state.blurTable}
+          isDarkMode={this.state.isDarkMode}
+          handleDarkMode={this.handleDarkMode}
         />
       );
     }
@@ -2002,7 +2082,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Rank
             </span>
             {/* <Image
@@ -2031,10 +2111,9 @@ class NewWelcome extends BaseReactComponent {
                 text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
                 <span
-                  className="inter-display-medium f-s-13"
+                  className="inter-display-medium f-s-13 table-data-font"
                   style={{
                     fontWeight: "700",
-                    color: "#313233",
                   }}
                 >
                   {Number(noExponents(rank)).toLocaleString("en-US")}
@@ -2051,7 +2130,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Wallet
             </span>
             {/* <Image
@@ -2099,7 +2178,7 @@ class NewWelcome extends BaseReactComponent {
                     window.open(shareLink, "_blank", "noreferrer");
                   }
                 }}
-                className="top-account-address"
+                className="top-account-address table-data-font"
               >
                 {TruncateText(rowData.account)}
               </span>
@@ -2114,7 +2193,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             {/* <Image
@@ -2140,14 +2219,15 @@ class NewWelcome extends BaseReactComponent {
                 text={rowData.tagName}
               >
                 <span
-                // onMouseEnter={() => {
-                //   SmartMoneyNameTagHover({
-                //     session_id: getCurrentUser().id,
-                //     email_address: getCurrentUser().email,
-                //     hover: rowData.tagName,
-                //   });
-                //   this.updateTimer();
-                // }}
+                  // onMouseEnter={() => {
+                  //   SmartMoneyNameTagHover({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //     hover: rowData.tagName,
+                  //   });
+                  //   this.updateTimer();
+                  // }}
+                  className="table-data-font"
                 >
                   {rowData.tagName}
                 </span>
@@ -2165,7 +2245,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Net worth
             </span>
             {/* <Image
@@ -2212,7 +2292,7 @@ class NewWelcome extends BaseReactComponent {
                   // }}
                   className="cost-common-container"
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {CurrencyType(false) +
                       numToCurrency(tempNetWorth * tempCurrencyRate)}
                   </span>
@@ -2225,7 +2305,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Net flows (1 year)
             </span>
           </div>
@@ -2293,7 +2373,7 @@ class NewWelcome extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempNetflows * tempCurrencyRate)}
                     </span>
@@ -2311,7 +2391,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Unrealized PnL
             </span>
             {/* <Image
@@ -2383,7 +2463,7 @@ class NewWelcome extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempProfits * tempCurrencyRate)}
                     </span>
@@ -2471,7 +2551,10 @@ class NewWelcome extends BaseReactComponent {
         <div className="new-homepage__header">
           <div className="new-homepage__header-container">
             <div className="d-flex justify-content-between">
-              <div className="d-flex" style={{ gap: "12px" }}>
+              <div
+                className="d-flex"
+                style={{ gap: "12px", alignItems: "center" }}
+              >
                 <button
                   onClick={this.connectWalletEthers}
                   className="new-homepage-btn new-homepage-btn--blur"
@@ -2486,6 +2569,59 @@ class NewWelcome extends BaseReactComponent {
                   <img src={ConnectIcons} alt="" />
                   Connect Exchange
                 </button>
+
+                {this.state.isDarkMode ? (
+                  <button
+                    onClick={() => this.handleDarkMode("light")}
+                    className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode"
+                  >
+                    <img
+                      style={{ height: "14px", width: "14px" }}
+                      src={lightModeIcon}
+                      alt=""
+                    />
+                    {/* Light Mode */}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => this.handleDarkMode("dark")}
+                    className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode"
+                  >
+                    <img
+                      style={{ height: "14px", width: "14px" }}
+                      src={darkModeIcon}
+                      alt=""
+                    />
+                    {/*Dark Mode*/}
+                  </button>
+                )}
+                {/* {this.state.isDarkMode == "dark2" ? (
+                  <span
+                    onClick={() => this.handleDarkMode("light")}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                      right: "-25px",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={lightModeIcon} />
+                  </span>
+                ) : (
+                  <span
+                    onClick={() => this.handleDarkMode("dark2")}
+                    style={{
+                      zIndex: "9",
+                      cursor: "pointer",
+                      right: "-25px",
+                      color: "var(--primaryTextColor)",
+                    }}
+                    className="navbar-button-container-mode"
+                  >
+                    <Image src={darkModeIcon} /> 1
+                    <span />
+                  </span>
+                )} */}
               </div>
               {this.state.lochUser &&
               (this.state.lochUser.email ||
@@ -2642,10 +2778,13 @@ class NewWelcome extends BaseReactComponent {
                     className="d-flex"
                     style={{ alignItems: "center", gap: "8px" }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      className="new-homepage__body-trending-address-icon"
+                      alt=""
+                    />
                     <div
                       style={{
-                        color: "#19191A",
                         fontSize: "16px",
                       }}
                       className="inter-display-medium"
@@ -2718,7 +2857,7 @@ class NewWelcome extends BaseReactComponent {
                 {this.state.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",
@@ -2889,6 +3028,7 @@ const mapDispatchToProps = {
   setMetamaskConnectedReducer,
   setPageFlagDefault,
   removeFromWatchList,
+  SwitchDarkMode,
   signUpWelcome,
   isNewAddress,
 };

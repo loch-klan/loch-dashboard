@@ -1,7 +1,7 @@
 .defiMenu {
-  filter: opacity(0.5);
+  filter: invert(0.4);
   &:hover {
-    filter: opacity(1);
+    filter: var(--invertColor);
   }
 }
 .coming-soon-div {
@@ -69,6 +69,7 @@
         justify-content: space-between;
         height: 100%;
         width: calc(100% - 26rem);
+        background-color: var(--cardBackgroud);
 
         // width: 100%;
         position: relative;
@@ -148,6 +149,7 @@
           align-items: center;
           justify-content: start;
           .topBarContainer {
+            background-color: var(--topbarBackgroud);
             display: flex;
             align-items: stretch;
             justify-content: center;
@@ -157,15 +159,15 @@
             padding-left: 1rem;
             padding-right: 1rem;
             // background-color: red;
-            border: 1px $grey-50 solid;
-            box-shadow: 0 0 10px 4px $grey-50;
+            border: 1px var(--borderwhiteDarkLight) solid;
+            box-shadow:var(--topBarShadow);
             height: 100%;
             position: relative;
             .topBarHistory {
               border-radius: 10px;
-              border: 1px $grey-50 solid;
-              box-shadow: 0 0 10px 4px $grey-50;
-              background-color: $secondary;
+              border: 1px var(--borderwhiteDarkLight) solid;
+              box-shadow: var(--boxShadowMd);
+              background-color: var(--cardBackgroud);
               width: 100%;
               position: absolute;
               transform: translateY(5.5rem) translateX(-0.9rem);
@@ -193,9 +195,9 @@
                   font-size: 13px;
                   font-weight: 500;
                   cursor: pointer;
-                  transition-duration: 300ms;
+                  // transition-duration: 300ms;
                   &:hover {
-                    color: $primary;
+                    color: var(--primaryTextColor);
                   }
                 }
               }
@@ -213,7 +215,7 @@
                   justify-content: space-between;
                   padding: 0rem 1.2rem;
                   height: 4rem;
-                  border: 0.1rem solid #e5e5e6;
+                  border: 0.1rem solid #e5e5e697;
                   margin-right: 0.5rem;
                   border-radius: 1rem;
                   font-size: 14px;
@@ -222,7 +224,7 @@
                   max-width: 13rem;
                   break-inside: avoid;
                   &:hover {
-                    border-color: #19191a;
+                    border-color: var(--black191);
                   }
                   .topBarHistoryItemBlockText {
                     flex: 1;
@@ -235,7 +237,7 @@
                     cursor: pointer;
                     margin-top: 0.8rem;
                     &:hover {
-                      filter: brightness(0);
+                      filter: var(--hoverBrightnessValue);
                     }
                   }
                 }
@@ -261,25 +263,27 @@
                 border: none;
                 outline: none;
                 height: 100%;
-                font-size: 15px;
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--topbarInput);
                 &:-webkit-autofill:focus {
-                  box-shadow: 0 0 0 30px white inset !important;
-                  -webkit-box-shadow: 0 0 0 30px white inset !important;
+                  box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
+                  -webkit-box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
                   transition: background-color 5000s ease-in-out 0s;
                 }
-                box-shadow: 0 0 0 30px white inset !important;
-                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
+                -webkit-box-shadow: 0 0 0 30px var(--topbarBackgroud) inset !important;
                 transition: background-color 5000s ease-in-out 0s;
 
                 &:hover {
                   &::placeholder {
-                    color: black;
+                    color: var(--invertMode);
                     opacity: 1; /* Firefox */
                   }
 
                   &::-ms-input-placeholder {
                     /* Edge 12 -18 */
-                    color: black;
+                    color: var(--invertMode);
                   }
                 }
               }
@@ -303,11 +307,11 @@
         }
 
         .topbar-btn {
-          background: rgba(229, 229, 230, 0.5);
-          border: 1px solid #f2f2f3;
+          background-color: var(--primaryFilter);
+          border: 0.1rem solid var(--primaryFilter);
           border-radius: 8px;
           padding: 1.2rem 2rem;
-          color: $black-191;
+          color: var(--primaryTextColor);
           font-weight: 600;
           font-size: 1.3rem;
           line-height: 1.5rem;
@@ -315,7 +319,7 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
           display: flex;
           align-items: center;
           .dotDotText {
@@ -363,15 +367,16 @@
             margin-bottom: 0px;
           }
           img {
-            transition-duration: 300ms;
+            // transition-duration: 300ms;
+            filter: var(--invertColor);
           }
           &:hover {
             background-color: $black-191;
-            border-color: $black-191;
-            color: $secondary;
+            background-color: var(--backColor);
+            color: var(--sameModeColor);
 
             img {
-              filter: invert(1);
+              filter: var(--invertColor2);
             }
             .noHoverEffect {
               filter: invert(0);
@@ -383,12 +388,12 @@
         }
         .topbar-btn-dark {
           background: $black-191;
-          border: 1px solid $black-191;
+          border: 1px solid var(--topbarAdressAddBorder);
           color: $secondary;
           &:hover {
-            background: rgba(229, 229, 230, 0.5);
+            color: var(--topbarAdressAddColorHover);
+            background-color: var(--topbarAdressAddBg);
             border: 1px solid #f2f2f3;
-            color: $black-191;
           }
         }
         .topbar-btn-dark-disabled {
@@ -396,17 +401,17 @@
           cursor: default;
           &:hover {
             background: $black-191;
-            border: 1px solid $black-191;
-            color: $secondary;
+          border: 1px solid var(--topbarAdressAddBorder);
+          color: $secondary;
           }
         }
         .topbar-btn-light-disabled {
           opacity: 0.5;
           cursor: default;
           &:hover {
-            background: rgba(229, 229, 230, 0.5);
-            border: 1px solid #f2f2f3;
-            color: $black-191;
+            background-color: var(--primaryFilter);
+            border: 0.1rem solid var(--primaryFilter);
+            color: var(--primaryTextColor);
           }
         }
         .topbar-btn-white-with-border {
@@ -513,7 +518,7 @@
         .wallet-amount {
           font-size: 2.4rem;
           line-height: 3rem;
-          color: $black-1D2;
+          color: var(--sidebarWalletAmount);
         }
 
         .growth-div {
@@ -538,6 +543,7 @@
       .welcome-card-topbar-closed {
         padding-left: 6rem;
         padding-right: 13.5rem;
+        background-color: var(--cardBackgroud);
       }
     }
 
@@ -1017,7 +1023,7 @@
     }
     .section-table,
     .section-chart {
-      background-color: $secondary;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
@@ -1032,7 +1038,7 @@
         height: 30px;
         font-size: 13px;
         font-weight: 500;
-        color: #4f4f4f;
+        color: var(--seeMoreColor);
         .bottomExtraInfoText {
           height: 100%;
           display: flex;
@@ -1042,7 +1048,7 @@
           cursor: pointer;
           // transition-duration: 300ms;
           &:hover {
-            color: #0d0d0d;
+            color: var(--primaryTextColor);
           }
         }
       }
@@ -1055,7 +1061,7 @@
             justify-content: center;
             padding: 0rem;
           }
-          border: 0.1rem solid #e5e5e680;
+          border: 0.1rem solid var(--sidebarSectionalBOrder);
 
           box-shadow: none;
           .top-title-wrapper {
@@ -1090,8 +1096,8 @@
             top: 5.3rem;
             left: 0;
             border-radius: 0px 0px 12px 12px;
-            border: 0.1rem solid #e5e5e680;
-            background-color: white;
+            border: 0.1rem solid var(--sidebarSectionalBOrder);
+            background-color: transparent;
             border-top: none;
             width: 100%;
             z-index: 1;
@@ -1122,12 +1128,13 @@
               align-items: center;
               justify-content: space-between;
               padding: 1.15rem 0rem;
-              border-top: 1px solid rgba(229, 229, 230, 0.5);
+              border-top: 1px solid var(--sidebarSectionalBOrder);
               padding-left: 2rem;
               padding-right: 2rem;
 
               .balance-amt {
-                background-color: rgba(229, 229, 230, 0.5);
+                background: var(--tableCostCommonBg);
+    color: var(--tableDataColor) !important;
                 border-radius: 4px;
                 padding: 6px;
               }
@@ -1137,7 +1144,7 @@
             }
           }
           .balance-sheet-card {
-            border: 0.1rem solid #e5e5e680;
+            border: 0.1rem solid var(--sidebarSectionalBOrder);
             box-shadow: none;
             border-radius: 12px;
             margin-top: 1.6rem;
@@ -1174,13 +1181,13 @@
                 }
                 &:hover {
                   .defiMenu {
-                    filter: opacity(1);
+                    filter: var(--invertColor);
                   }
                   .balance-sheet-card-credit-title {
-                    color: #000000;
+                    color: var(--black191);
                   }
                   .balance-sheet-card-credit-amount {
-                    color: #000000;
+                    color: var(--black191);
                   }
                 }
               }
@@ -1213,13 +1220,13 @@
                 justify-content: flex-end;
                 &:hover {
                   .defiMenu {
-                    filter: opacity(1);
+                    filter: var(--invertColor);
                   }
                   .balance-sheet-card-credit-title {
-                    color: #000000;
+                    color: var(--black191);
                   }
                   .balance-sheet-card-credit-amount {
-                    color: #000000;
+                    color: var(--black191);
                   }
                 }
               }
@@ -1239,17 +1246,17 @@
               }
               .balance-sheet-card-credit-title {
                 margin-right: 0.8rem;
-                color: #636467;
+                color: var(--secondaryDarkTextColor);
               }
               .balance-sheet-card-credit-amount {
                 margin-right: 0.8rem;
                 color: #636467;
               }
               .balance-sheet-card-credit-title-selected {
-                color: #000000;
+                color: var(--primaryTextColor);
               }
               .balance-sheet-card-credit-amount-selected {
-                color: #000000;
+                color: var(--primaryTextColor);
               }
             }
           }
@@ -1261,35 +1268,37 @@
         padding: 1rem;
         padding-bottom: 0rem;
         .section-table-toggle {
-          background-color: #e5e5e680;
+          background-color: var(--tableSectionToggleBg);
           border-radius: 0.5rem;
           padding: 0.4rem;
           display: flex;
           align-items: center;
           .section-table-toggle-element {
             font-size: 13px;
+            font-weight: 500;
             flex: 1;
             padding: 0.5rem;
             white-space: nowrap;
             text-align: center;
-            color: #636467;
+            color: var(--InActiveToggleBg);
             border-radius: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            transition-duration: 300ms;
+            // transition-duration: 300ms;
             &:hover {
-              background-color: rgba(225, 225, 225, 0.5);
+              background-color: var(--cardBackgroud);
+              color: var(--black191);
             }
           }
           .section-table-toggle-element-selected {
-            background-color: white;
-            color: #19191a;
+            background-color: var(--cardBackgroud);
+            color: var(--black191);
             cursor: default;
             &:hover {
-              background-color: white;
+              background-color: var(--cardBackgroud);
             }
           }
         }
@@ -1329,7 +1338,7 @@
               position: sticky;
               position: -webkit-sticky; /* Safari */
               top: 0;
-              background-color: white;
+              background-color: var(--cardBackgroud);
               z-index: 10;
             }
           }
@@ -1408,9 +1417,9 @@
         margin-left: 1rem;
         display: flex;
         align-items: center;
-        font-size: 13px;
-        color: #4f4f4f;
-        font-weight: 500;
+        color: var(--seeMoreColor);
+          font-size: 13px;
+          font-weight: 500;
         // transition-duration: 300ms;
         .seeMoreBtnIcon {
           // transition-duration: 300ms;
@@ -1419,9 +1428,9 @@
           margin-left: 0.5rem;
         }
         &:hover {
-          color: #0d0d0d;
+          color: var(--primaryTextColor);
           .seeMoreBtnIcon {
-            filter: brightness(0);
+            filter: var(--hoverBrightnessValue);
           }
         }
       }
@@ -1882,7 +1891,7 @@
         justify-content: space-between;
         padding: 1rem 0rem;
         margin-right: 1.6rem;
-        border-top: 1px solid rgba(229, 229, 230, 0.5);
+        border-top: 1px solid var(--borderwhiteDarkLight);
 
         span img {
           position: relative;
@@ -1891,7 +1900,8 @@
         }
 
         .chain-list-amt {
-          background-color: rgba(229, 229, 230, 0.5);
+          background: var(--tableCostCommonBg);
+          color: var(--tableDataColor) !important;
           border-radius: 4px;
           padding: 6px;
         }
@@ -1960,7 +1970,7 @@
         justify-content: flex-start;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .balance-sheet-card-credit-title {
             color: #000000;
@@ -1995,7 +2005,7 @@
         justify-content: flex-end;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .balance-sheet-card-credit-title {
             color: #000000;
@@ -2091,13 +2101,14 @@
         align-items: center;
         justify-content: space-between;
         padding: 1.15rem 0rem;
-        border-top: 1px solid rgba(229, 229, 230, 0.5);
+        border-top: 1px solid var(--deifSectionalBOrder);
         margin-right: 1.6rem;
 
         .balance-amt {
           background-color: rgba(229, 229, 230, 0.5);
           border-radius: 4px;
           padding: 6px;
+          color: var(--tableCostCommonColor) !important;
         }
       }
     }
@@ -2197,4 +2208,8 @@
   background: #cacbcc;
   color: white;
   font-size: 8px;
+}
+
+.info-icon-home{
+  filter: var(--infoBrightnessPortfolio);
 }

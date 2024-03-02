@@ -479,12 +479,12 @@
                 display: flex;
                 align-items: center;
                 padding: 1rem;
-                border: 0.1rem solid #e5e5e6;
+                border: 0.1rem solid var(--borderwhiteDarkLight);
                 border-radius: 1rem;
                 transition-duration: 300ms;
                 cursor: pointer;
                 &:hover {
-                  border-color: #19191a;
+                  border-color: var(--black191);
                 }
                 .trendingAddressesBlockItemWalletContainer {
                   margin-right: 0.5rem;
@@ -1249,7 +1249,7 @@
       }
     }
     .mobileSmartMoneyBlock {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       margin-bottom: 1.5rem;
       border-radius: 1.2rem;
       box-shadow: 0 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
@@ -1272,7 +1272,7 @@
             margin-right: 0.5rem;
           }
           .msmbHeaderNickName {
-            color: #313233;
+            color: var(--grey313);
             margin-right: 0.5rem;
             font-size: 16px;
             text-overflow: ellipsis;
@@ -1288,13 +1288,13 @@
         .msmbHeaderRight {
           margin-left: 2rem;
           .msmbHeaderNetWorth {
-            background-color: hsla(240, 2%, 90%, 0.5);
+            background-color: var(--greyCardBackgroud);
             border-radius: 0.4rem;
             padding: 0.6rem;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 13px;
-            color: #313233;
+            color: var(--grey313);
           }
         }
       }
@@ -1313,7 +1313,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            color: #96979a;
+            color: var(--sidebarBottomOptions);
             font-size: 13px;
           }
           .msmbBIAmount {
@@ -1436,12 +1436,12 @@
           align-items: center;
           padding: 12px;
           gap: 12px;
-          border: 0.1rem solid #e5e5e6;
+          border: 0.1rem solid var(--borderwhiteDarkLight);
           border-radius: 1rem;
           transition-duration: 300ms;
           cursor: pointer;
           &:hover {
-            border-color: #19191a;
+            border-color: var(--black191);
           }
           .trendingAddressesBlockItemWalletContainer {
             margin-right: 0.5rem;
@@ -1469,7 +1469,7 @@
             gap: 3px;
             align-items: flex-start;
             .inter-display-medium {
-              color: #19191a;
+              color: var(--black191);
             }
             .trendingAddressesBlockItemDataContainerAmount {
               // margin-top: 0.2rem;
@@ -1488,12 +1488,15 @@
         position: absolute;
         top: 50px;
         left: 0;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         width: 100%;
         padding: 24px;
         border-radius: 12px;
-        box-shadow: 0px 14px 64px -4px rgba(24, 39, 75, 0.12),
-          0px 8px 22px -6px rgba(24, 39, 75, 0.12);
+        border: 1px solid var(--borderwhiteDarkLight);
+        box-shadow: var(--trendingAddressShadow);
+          .new-homepage__body-trending-address-icon{
+            filter: var(--invertColor);
+          }
 
         .new-homepage__body-trending-address__address-wrapper {
           margin-top: 30px;
@@ -1530,8 +1533,7 @@
       .new-homepage__body-search_input_body_main_container {
         // transform: translateY(-31px);
         .new-homepage__body-search_input_body_container {
-          box-shadow: 0px 14px 64px -4px rgba(24, 39, 75, 0.12),
-            0px 8px 22px -6px rgba(24, 39, 75, 0.12);
+          box-shadow: var(--welcomeWalletInputShadow);
           // margin-bottom: 10px;
           cursor: text;
         }
@@ -1540,7 +1542,7 @@
         width: 100%;
         padding: 2rem 1.5rem;
         border-radius: 12px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
 
         display: flex;
         align-items: center;
@@ -1701,7 +1703,7 @@
         width: 100%;
         padding: 2rem 1.5rem;
         border-radius: 12px;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
         display: flex;
         align-items: center;
@@ -1712,10 +1714,10 @@
         &:hover {
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
             .new-homepage__body-search-copy-icon {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
           }
         }
@@ -1734,10 +1736,10 @@
           }
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
             .new-homepage__body-search-copy-icon {
-              filter: brightness(0.3);
+              filter: var(--hoverBrightnessValue);
             }
           }
         }
@@ -1745,10 +1747,10 @@
 
       .new-homepage__body-search-mobile {
         .new-homepage__body-search-paste-text {
-          filter: brightness(0.3);
+          filter: var(--hoverBrightnessValue);
         }
         .new-homepage__body-search-copy-icon {
-          filter: brightness(0.3);
+          filter: var(--hoverBrightnessValue);
         }
       }
 
@@ -1757,9 +1759,12 @@
         // height: 500px;
         margin-top: 24px;
         border-radius: 12px;
-        background: #fff;
+        background: var(--cardBackgroud);
         box-shadow: 0px 6.31px 6.31px -3.155px rgba(24, 39, 75, 0.08),
           0px 3.155px 4.732px -3.155px rgba(24, 39, 75, 0.12);
+          .dropdown-menu{
+            background: var(--cardBackgroud);
+          }
         .smartMoneyTable {
           .table-wrapper {
             .custom-table {
@@ -1825,7 +1830,11 @@
         font-weight: 500;
         line-height: 120%;
         gap: 8px;
-        color: #19191a;
+        color: var(--black191);
+        img{
+          filter: var(--invertColor);
+        
+        }
       }
       .new-homepage__body-content-table-header_explainer {
         padding-top: 0px;
@@ -1864,7 +1873,7 @@
           .newWelcomeAddedAddressesBlockDelContainer {
             width: 4.5rem;
             margin-right: 1.5rem;
-            background-color: white;
+            background-color: var(--cardBackgroud);
             border-radius: 12px;
             height: 4.5rem;
             display: flex;
@@ -1929,7 +1938,8 @@
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: #fff;
+          background-color: var(--cardBackgroud);
+          border: 1px solid var(--borderwhiteDarkLight);
           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
             0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
@@ -2039,6 +2049,11 @@
     font-weight: 600;
     line-height: 120%;
   }
+  .new-homepage-btn--mode{
+    img{
+      filter: brightness(3);
+    }
+  }
 
   .new-homepage-btn--white {
     background-color: white !important;
@@ -2079,12 +2094,24 @@
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(229, 229, 230, 0.2);
     color: white;
+
     &:hover {
       border: 1px solid $white-E5E;
       background-color: white;
       color: black;
       img {
         filter: brightness(0);
+      }
+    }
+    &.new-homepage-btn--blur--nover{
+      &:hover {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 1px solid rgba(229, 229, 230, 0.2);
+        img{
+          filter: brightness(4);
+        }
       }
     }
   }

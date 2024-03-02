@@ -266,7 +266,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
             />
           </div>
         </div>
-        <div className="msmpModalMainIconWhiteContainer">
+        <div className="msmpModalMainIconWhiteContainer popup-main-icon-with-border-mobile">
           <Image
             src={SignInIcon}
             onLoad={() => {
@@ -296,7 +296,7 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
           ) : null}
         </div>
         <div
-          className={`msmModalInputWrapper m-b-48 ${
+          className={`msmModalInputWrapper m-b-48 input-noshadow-dark input-hover-states ${
             this.state.showBorder ? "msmModalInputWrapperSelected" : ""
           }`}
         >

@@ -38,7 +38,7 @@ class WatchListPageMobile extends BaseReactComponent {
             className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Account
             </span>
           </div>
@@ -117,7 +117,7 @@ class WatchListPageMobile extends BaseReactComponent {
                   //   this.props.history.push("/top-accounts/home");
                   // }, 200);
                 }}
-                className="top-account-address dotDotText"
+                className="top-account-address dotDotText table-data-font"
               >
                 {addressOrEns()}
               </div>
@@ -138,7 +138,7 @@ class WatchListPageMobile extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             <Image
@@ -171,7 +171,7 @@ class WatchListPageMobile extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
-                  className="dotDotText text-center"
+                  className="dotDotText text-center table-data-font"
                 >
                   {rowData.nameTag}
                 </span>
@@ -240,7 +240,7 @@ class WatchListPageMobile extends BaseReactComponent {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "space-betwee",
               }}
             >
               {/* <div style={{ width: "60%" }}>
@@ -257,7 +257,7 @@ class WatchListPageMobile extends BaseReactComponent {
 
               {/* {fillter_tabs} */}
               <div style={{ width: "100%" }}>
-                <div className="searchBar top-account-search">
+                <div className="searchBar top-account-search input-noshadow-dark">
                   <Image src={searchIcon} className="search-icon" />
                   <div className="form-groupContainer">
                     <FormElement
@@ -291,7 +291,7 @@ class WatchListPageMobile extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70rem",
-              background: "white",
+              background: "var(--cardBackgroud)",
               borderRadius: "1.2rem",
               margin: "2rem 0rem",
             }}
@@ -301,7 +301,8 @@ class WatchListPageMobile extends BaseReactComponent {
         ) : (
           <div
             style={{
-              backgroundColor: this.props?.tableData.length > 0 ? "" : "white",
+              backgroundColor:
+                this.props?.tableData.length > 0 ? "" : "var(--cardBackgroud)",
               marginBottom: this.props?.tableData.length > 0 ? "" : "2rem",
               marginTop: "2rem",
               borderRadius: "1.2rem",
