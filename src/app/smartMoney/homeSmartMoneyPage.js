@@ -776,7 +776,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Rank
             </span>
             {/* <Image
@@ -804,7 +804,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 isText={true}
                 text={Number(noExponents(rank)).toLocaleString("en-US")}
               >
-                <span className="inter-display-medium f-s-13">
+                <span className="inter-display-medium f-s-13 table-data-font">
                   {Number(noExponents(rank)).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
@@ -819,7 +819,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Wallet
             </span>
             {/* <Image
@@ -850,7 +850,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   });
                   window.open(shareLink, "_blank", "noreferrer");
                 }}
-                className="top-account-address"
+                className="top-account-address table-data-font"
               >
                 {TruncateText(rowData.account)}
               </span>
@@ -865,7 +865,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Nametag
             </span>
             {/* <Image
@@ -899,6 +899,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                     });
                     this.updateTimer();
                   }}
+                  className="table-data-font"
                 >
                   {rowData.tagName}
                 </span>
@@ -916,7 +917,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Net worth
             </span>
             {/* <Image
@@ -963,7 +964,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   }}
                   className="cost-common-container"
                 >
-                  <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {CurrencyType(false) +
                       numToCurrency(tempNetWorth * tempCurrencyRate)}
                   </span>
@@ -976,7 +977,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Net flows (1 year)
             </span>
           </div>
@@ -1044,7 +1045,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempNetflows * tempCurrencyRate)}
                     </span>
@@ -1062,7 +1063,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Unrealized PnL
             </span>
             {/* <Image
@@ -1134,7 +1135,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         className="mr-2"
                       />
                     ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
                         numToCurrency(tempProfits * tempCurrencyRate)}
                     </span>
@@ -1152,7 +1153,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Follow
             </span>
             {/* <Image
@@ -1189,7 +1190,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout hideAddresses hideFooter history={this.props.history}>
+        <MobileLayout hideFooter history={this.props.history}>
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}

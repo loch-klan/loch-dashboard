@@ -34,6 +34,7 @@ import {
 } from "../app/watchlist/redux/WatchListReducer";
 import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunitiesReducer";
 import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
+import DarkModeReducer from "../app/intelligence/darkMode";
 import { NFTReducer } from "../app/nft/NftReducer";
 import { EmulationsReducer } from "../app/Emulations/EmulationsReducer";
 
@@ -54,6 +55,7 @@ export default combineReducers({
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
+  darkModeState: DarkModeReducer,
   InflowOutflowSelectedAssetState: InflowOutflowSelectedAssetReducer,
   InflowOutflowAssetListState: InflowOutflowAssetListReducer,
   InflowOutflowChartState: InflowOutflowChartReducer,

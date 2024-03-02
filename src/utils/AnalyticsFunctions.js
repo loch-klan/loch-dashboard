@@ -6350,3 +6350,30 @@ export const TopAssetValueEmailNotifyClicked = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
 };
+
+export const ToggleDarkModeAnalytics = ({
+  toggle_button_location,
+  mode_from,
+  mode_to,
+  isMobile = false,
+}) => {
+  const event_name = "Dark Mode: Toggle";
+  const eventProperties = {
+    toggle_button_location,
+    mode_from,
+    mode_to,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};
+
+export const DarkModeDefaltView = ({ mode, isMobile = false }) => {
+  const event_name = "Dark Mode: Defualt Mode";
+  const eventProperties = {
+    mode,
+    isMobile: isMobile,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};

@@ -16,8 +16,8 @@
           padding: 0rem;
           width: 100%;
           .custom-dropdown {
-            background-color: #f2f2f2;
-            border-color: #f2f2f2;
+            background-color: var(--cardBackgroud) !important;
+            border-color: var(--borderwhiteDarkLight) !important;
             .placeholderPriceDropdown {
               white-space: nowrap !important;
               overflow: hidden !important;
@@ -28,8 +28,8 @@
             }
 
             &:hover {
-              background-color: white;
-              border-color: #e1e1e1;
+              background-color: var(--cardBackgroud) !important;
+              border-color: var(--black191);
             }
           }
         }
@@ -37,7 +37,7 @@
           margin-left: 1rem;
           display: flex;
           align-items: center;
-          color: #4f4f4f;
+          color: var(--seeMoreColor);
           font-size: 13px;
           font-weight: 500;
           // transition-duration: 300ms;
@@ -48,9 +48,9 @@
             margin-left: 0.5rem;
           }
           &:hover {
-            color: #0d0d0d;
+            color: var(--primaryTextColor);
             .seeMoreBtnIcon {
-              filter: brightness(0);
+              filter: var(--hoverBrightnessValue);
             }
           }
         }

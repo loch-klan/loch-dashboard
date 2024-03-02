@@ -42,13 +42,17 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: parentCtx?.props?.darkModeState?.flag
+          ? "#1A1A1A"
+          : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#19191a",
         padding: 12,
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: parentCtx?.props?.darkModeState?.flag
+          ? "#2D2D2D"
+          : "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
@@ -103,7 +107,9 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return parentCtx?.props?.darkModeState?.flag
+              ? "#7c7d81"
+              : "#19191a";
           },
         },
       },
@@ -148,7 +154,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           lineHeight: 20,
           family: "Helvetica Neue",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#4f4f4f",
           callback: function (value, index, ticks) {
             // console.log('value',value);
             // console.log('index',index);
@@ -172,6 +178,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           display: true,
           borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
           drawTicks: false,
+          color: parentCtx?.props?.darkModeState?.flag ? "#404040" : "#e5e5e6",
         },
       },
       x: {
@@ -180,7 +187,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#7c7d81",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -213,7 +220,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#7c7d81",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -238,7 +245,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
           lineHeight: 20,
           family: "Helvetica Neue",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
@@ -347,13 +354,17 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: "#ffffff",
+        backgroundColor: parentCtx?.props?.darkModeState?.flag
+          ? "#1A1A1A"
+          : "white",
         // fontColor: '#000000',
         intersect: false,
-        color: "#000000",
+        color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#19191a",
         padding: 12,
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: parentCtx?.props?.darkModeState?.flag
+          ? "#2D2D2D"
+          : "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
@@ -403,7 +414,9 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
             };
           },
           labelTextColor: function (context) {
-            return "#19191A";
+            return parentCtx?.props?.darkModeState?.flag
+              ? "#7c7d81"
+              : "#19191a";
           },
         },
       },
@@ -449,7 +462,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
@@ -470,6 +483,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           display: true,
           borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
           drawTicks: false,
+          color: parentCtx?.props?.darkModeState?.flag ? "#404040" : "#e5e5e6",
         },
       },
       x: {
@@ -478,7 +492,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -515,7 +529,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           size: 10,
           lineHeight: 12,
           weight: 600,
-          color: "#86909C",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#7c7d81",
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
@@ -540,7 +554,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           lineHeight: 20,
           family: "Inter-Medium",
           weight: 400,
-          color: "#B0B1B3",
+          color: parentCtx?.props?.darkModeState?.flag ? "#7c7d81" : "#b0b1b3",
           callback: function (value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString("en-US"));
             // console.log(

@@ -8,8 +8,16 @@ import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
+import {
+  mobileCheck,
+  switchToDarkMode,
+  switchToLightMode,
+} from "./utils/ReusableFunctions";
+import { connect } from "react-redux";
+import { SwitchDarkMode } from "./app/common/Api";
+import { DarkModeDefaltView } from "./utils/AnalyticsFunctions";
 
-function App() {
+function App(props) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
@@ -39,6 +47,25 @@ function App() {
   }, []);
   useEffect(() => {
     ReactGA.initialize(BASE_GA_KEY);
+  }, []);
+
+  useEffect(() => {
+    let isDarkTheme = localStorage.getItem("isDarkTheme");
+    if (isDarkTheme && isDarkTheme === "true") {
+      switchToDarkMode();
+      props.SwitchDarkMode(true);
+      DarkModeDefaltView({
+        mode: "Dark",
+        isMobile: mobileCheck(),
+      });
+    } else {
+      switchToLightMode();
+      props.SwitchDarkMode(false);
+      DarkModeDefaltView({
+        mode: "Light",
+        isMobile: mobileCheck(),
+      });
+    }
   }, []);
 
   // return isMobile ? (
@@ -81,5 +108,9 @@ function App() {
   );
   // );
 }
+const mapDispatchToProps = {
+  SwitchDarkMode,
+};
 
-export default App;
+const mapStateToProps = (state) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(App);

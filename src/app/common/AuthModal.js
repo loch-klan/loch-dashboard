@@ -265,7 +265,7 @@ class AuthModal extends BaseReactComponent {
         <Modal.Header>
           {this.state.isShowOtp || this.props.signinBack ? (
             <div
-              className="signin-header back-icon"
+              className="signin-header back-icon "
               onClick={
                 this.state.isShowOtp ? this.handleBack : this.props.signinBack
               }
@@ -274,7 +274,7 @@ class AuthModal extends BaseReactComponent {
             </div>
           ) : null}
           {this.props.iconImage ? (
-            <div className="api-modal-header">
+            <div className="api-modal-header popup-main-icon-with-border">
               <Image src={this.props.iconImage} />
             </div>
           ) : (
@@ -317,7 +317,7 @@ class AuthModal extends BaseReactComponent {
                 : "Don’t let your hard work go to waste. Add your email so you can watch your whales with binoculars"}
             </p>
             {/* this.props.isSkip(); */}
-            <div className="email-section auth-modal">
+            <div className="email-section auth-modal input-noshadow-dark input-hover-states">
               {/* For Signin or Signup */}
               {!this.state.isShowOtp ? (
                 <Form onValidSubmit={this.handleAccountCreate}>

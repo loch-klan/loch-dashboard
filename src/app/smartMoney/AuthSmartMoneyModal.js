@@ -228,11 +228,11 @@ class AuthSmartMoneyModal extends BaseReactComponent {
             </div>
           ) : null}
           {this.props.iconImage ? (
-            <div className="api-modal-header">
+            <div className="api-modal-header popup-main-icon-with-border">
               <Image src={this.props.iconImage} />
             </div>
           ) : (
-            <div className="exitOverlayIcon">
+            <div className="exitOverlayIcon popup-main-icon-with-border">
               <Image src={ExitOverlayIcon} />
             </div>
           )}
@@ -261,7 +261,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
                 : "Add your email so you can view, analyze, and follow any or all of the smartest actors on-chain."}
             </p>
             {/* this.props.isSkip(); */}
-            <div className="email-section auth-modal">
+            <div className="email-section auth-modal input-noshadow-dark input-hover-states">
               {/* For Signin or Signup */}
               {!this.state.isShowOtp ? (
                 <Form onValidSubmit={this.handleAccountCreate}>

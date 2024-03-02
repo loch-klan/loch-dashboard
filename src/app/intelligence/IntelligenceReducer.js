@@ -6,6 +6,7 @@ import {
   AVERAGE_COST_RESET,
   AVERAGE_COST_SORT,
   COUNTER_PARTY_VOLUME,
+  DARK_MODE,
   GAS_FEES,
   INSIGHT_DATA,
   NETFLOW_GRAPH,
@@ -80,7 +81,11 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
         graphValue: action.payload.graphValue,
       };
     case PORTFOLIO_ASSET:
-      return { ...state, ProfitLossAsset: action.payload.ProfitLossAsset };
+      return {
+        ...state,
+        ProfitLossAsset: action.payload.ProfitLossAsset,
+        ProfitLossAssetData: action.payload.ProfitLossAssetData,
+      };
     case TRANSACTION_FILTER:
       return {
         ...state,

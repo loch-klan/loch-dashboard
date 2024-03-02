@@ -29,6 +29,7 @@ export { default as FeedbackCreditIcon } from "./feedbackCredit.svg";
 export { default as FollowTopBarIcon } from "./followTopBar.svg";
 export { default as GreyManIcon } from "./greyMan.svg";
 export { default as InfoIconI } from "./icon-info-i.svg";
+export { default as InfoIconIBlack } from "./icons-info-i-black.svg";
 export { default as InflowOutflowIcon } from "./inflowOutflow.svg";
 export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg";
 export { default as LinkVectorWhiteIcon } from "./linkVectorWhite.svg";
@@ -86,6 +87,10 @@ export { default as NewWelcomeCopyIcon } from "./newWelcomeCopy.svg";
 export { default as NewWelcomeLoginCrossIcon } from "./newWelcomeLoginCross.svg";
 export { default as NewWelcomeTrashIcon } from "./newWelcomeTrash.svg";
 export { default as PersonRoundedSigninIcon } from "./person-rounded-sigin-in.svg";
+export { default as darkModeIcon } from "./DarkmodeIcon.svg";
+export { default as lightModeIcon } from "./lightMode.svg";
+export { default as mobileLightIcon } from "./mobile-light-icon.svg";
+export { default as mobileDarkIcon } from "./mobile-dark-icon.svg";
 
 // Mobile navigation icons
 export { default as MobileNavHome } from "./mobile-nav-home.svg";

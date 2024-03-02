@@ -170,7 +170,12 @@ export default function PageHeader(props) {
               ) : null}
             </div>
             {props.subTitle ? (
-              <p className="inter-display-medium f-s-16 lh-19">
+              <p
+                className="inter-display-medium f-s-16 lh-19"
+                style={{
+                  color: "var(--secondaryTextColor)",
+                }}
+              >
                 {props.subTitle}{" "}
                 {props.showNetflowExplainers ? (
                   <CustomOverlay
@@ -315,8 +320,8 @@ export default function PageHeader(props) {
               {props.btnText && (
                 <Button
                   className={`${
-                    props.btnOutline ? "secondary-btn" : "primary-btn"
-                  }`}
+                    props.btnOutline ? "secondary-btn " : "primary-btn"
+                  } ${props.mainThemeBtn ? "main-button-invert" : ""}`}
                   onClick={props.handleBtn}
                 >
                   {props.btnText}

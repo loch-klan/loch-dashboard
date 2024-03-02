@@ -98,7 +98,8 @@ html {
 }
 
 #root {
-  background-color: $grey-F2F;
+  background-color: var(--primaryBackgroud);
+  min-height: 100vh;
 }
 
 h1,
@@ -159,7 +160,7 @@ body {
 }
 
 .inter-display-medium {
-  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
+  @include font(var(--primaryTextColor), "Inter-Medium", 1.2rem, 500, normal);
 }
 
 .inter-display-extra-bold {
@@ -490,7 +491,7 @@ body {
 }
 
 .grey-4F4 {
-  color: $grey-4F4;
+  color: var(--secondaryDarkTextColor);
 }
 
 .primary-color {
@@ -537,7 +538,7 @@ body {
 }
 
 .black-000 {
-  color: $black-000;
+  color: var(--primaryTextColor);
 }
 
 .black-262 {
@@ -557,7 +558,7 @@ body {
 }
 
 .grey-313 {
-  color: $grey-313;
+  color: var(--grey313);
 }
 
 .black-1D2 {
@@ -573,7 +574,7 @@ body {
 }
 
 .grey-B0B {
-  color: $grey-B0B;
+  color: var(--greyb0b);
 }
 
 .grey-969 {
@@ -662,6 +663,9 @@ body {
 }
 
 .Toastify__toast {
+  background-color: var(--cardBackgroud);
+  border: 1px solid var(--borderwhiteDarkLight);
+  color: var(--black191);
   padding: 0.5rem 2rem;
 
   .Toastify__toast-body {
@@ -669,7 +673,7 @@ body {
     gap: 10px;
     margin: 0;
     padding: 0;
-    @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
+    @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
 
     .Toastify__toast-icon {
       margin-right: 0;
@@ -776,8 +780,10 @@ form {
       }
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor);
       }
+      transition: none !important;
+      transition-duration: 0s;
     }
 
     .css-4ljt47-MenuList {
@@ -799,7 +805,7 @@ form {
       .custom-select__menu-list {
         border-radius: 0.4rem;
         padding: 0.4rem;
-        border: 0.1rem solid $grey-CAC;
+        border: 0.1rem solid var(--dropdownContentBorderColor);
         height: 20rem;
         // padding: 1rem;
         // padding: 0.4rem;
@@ -850,8 +856,11 @@ form {
     }
 
     .form-control.is-valid {
-      border: solid 1px $black-191;
+      border: solid 1px #d4d4d4;      ;
       background-image: none;
+      &:hover{
+        border-color: var(--black191);
+      }
     }
 
     // FOR CHANGE PASSWORD
@@ -889,8 +898,8 @@ form {
         padding-left: 0.9rem;
 
         .custom-select__single-value {
-          @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6);
-          color: $grey-313;
+          @include font(var(--grey313), "Inter-Medium", 1.3rem, 500, 1.6);
+          color: var(--grey313);
         }
 
         .custom-select__placeholder {
@@ -1012,8 +1021,10 @@ form {
 .date-navigator-icons {
   position: relative;
   top: -1px;
+  filter: var(--invertColor);
 }
 .date-navigator-icons-next {
+  filter: var(--invertColor);
   position: relative;
   top: -1px;
 }
@@ -1070,9 +1081,11 @@ form {
     width: 24rem;
     // box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.4rem;
-    border: 0.1rem solid $grey-CAC;
+    border: 0.1rem solid var(--dropdownContentBorderColor);
     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
       0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      background-color: var(--sameModeColor);
+      color: var(--primaryTextColor);
     // border: 0;
 
     .dropdown-item {
@@ -1116,7 +1129,7 @@ form {
     align-items: center;
     justify-content: center;
     height: 30px;
-    color: #adadad;
+    color: var(--seeMoreColor);
     font-size: 12px;
     font-weight: 500;
     .bottomExtraInfoText {
@@ -1157,7 +1170,7 @@ form {
   .ReactVirtualized__Table__Grid {
     // z-index: -1;
     height: auto !important;
-    background-color: $secondary;
+    background-color: var(--cardBackgroud);
     overflow: visible !important;
 
     .ReactVirtualized__Grid__innerScrollContainer {
@@ -1253,8 +1266,8 @@ form {
         position: -webkit-sticky; /* Safari */
         position: sticky;
         top: 0;
-        background-color: white;
-        z-index: 100;
+        background-color: var(--cardBackgroud);
+        z-index: 10;
         border-top-left-radius: 1.2rem;
         border-top-right-radius: 1.2rem;
       }
@@ -1345,10 +1358,10 @@ form {
 }
 
 .secondary-btn {
-  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  @include font(var(--sameModeColor), "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
-  background-color: transparent;
-  border: 1px solid $black-191;
+  background-color: var(--backColor);
+  border: 1px solid var(--black191);
   padding: 1.6rem 4rem;
   cursor: pointer;
 
@@ -1357,19 +1370,19 @@ form {
   &:active,
   &:focus,
   &:active:focus {
-    color: $black-191;
+    color: var(--black191);
     outline: none;
     box-shadow: none;
     background-color: transparent;
-    border: 1px solid $black-191;
+    border: 1px solid var(--black191);
   }
 
   &:hover {
     outline: none;
     box-shadow: none;
-    color: white;
-    border: 1px solid $black-191;
-    background-color: $black-191;
+    color: var(--black191);
+    border: 1px solid var(--black191);
+    background-color: transparent !important;
   }
 
   &:not(:disabled),
@@ -1582,7 +1595,7 @@ form {
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
-    border: 0.1rem solid $grey-E5E;
+    border: 0.1rem solid var(--cardBorder);
     border-radius: 0.8rem;
     opacity: 1;
     // max-height: 15rem;
@@ -1719,19 +1732,22 @@ form {
   }
 
   .arrow::before {
-    border-top-color: $grey-E5E;
+    border-top-color: var(--borderwhiteDarkLight);
     position: relative;
     top: -2px;
   }
 
   .button-tooltip {
-    background-color: $secondary;
-    color: $grey-313;
+    background-color: var(--cardBackgroud);
+    color: var(--grey313);
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    img{
+      filter: var(--invertColor);
+    }
 
     // padding: 1.2rem 1.6rem;
     // gap: 1.2rem;
@@ -1739,7 +1755,7 @@ form {
     span {
       display: flex;
       align-items: center;
-      color: $grey-313;
+      color: var(--grey313);
       text-align: left;
       margin-left: 1.2rem;
     }
@@ -1754,7 +1770,7 @@ form {
 }
 .tool-tip-container-bottom-arrow {
   .arrow::before {
-    border-bottom-color: $grey-E5E;
+    border-bottom-color: var(--borderwhiteDarkLight);
     position: relative;
     top: -7px;
   }
@@ -1780,12 +1796,13 @@ form {
   // position: absolute;
   // top: 0.7rem;
   height: 2.6rem;
-  background: rgba(229, 229, 230, 0.5);
-  border: 0.1rem solid $grey-CAC;
+  background: var(--primaryFilter);
+  border: 0.1rem solid var(--secondaryLightColor);
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+  color: var(--primaryTextColor);
 
   .badge {
     // padding: 0.35rem 0.8rem 0.4rem;
@@ -1853,8 +1870,8 @@ form {
 .coin-chip {
   display: flex;
   border-radius: 0.6rem;
-  border: 0.1rem solid $grey-CAC;
-  background-color: rgba(229, 229, 230, 0.5);
+  border: 0.1rem solid var(--cardBorder);
+  background-color: var(--primaryDropdownSelectedItem);
   width: max-content;
   height: 2.6rem;
   align-items: center;
@@ -1864,16 +1881,19 @@ form {
     height: 2.6rem;
     border-top-left-radius: 0.55rem;
     border-bottom-left-radius: 0.55rem;
+    filter: none !important;
+
   }
 
   .coin-percent {
-    color: $grey-313;
+    color: var(--grey313);
     padding: 0.5rem 0.6rem;
   }
 }
 
 .tableWatermarkOverlay {
-  background: url(../../images/graph-logo.svg) no-repeat center center !important;
+  // background: url(../../images/graph-logo.svg) no-repeat center center !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
   background-size: 104px 39px;
   background-position-y: 55%;
 }
@@ -1882,7 +1902,8 @@ form {
   background: transparent;
 }
 .tableWatermarkOverlayCounterParty {
-  background: url(../../images/graph-logo.svg) no-repeat center center, white !important;
+  // background: url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
+  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {
@@ -1928,7 +1949,7 @@ form {
   .ReactVirtualized__Table__headerRow {
     height: auto;
     // padding-left: 2.5rem;
-    border-bottom: 0.1rem solid $grey-E5E;
+    border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
 
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
@@ -1950,17 +1971,17 @@ form {
           }
           &:hover {
             span {
-              color: $primary;
+              color: var(--primaryTextColor);
             }
             img {
-              filter: brightness(0.5);
+              filter: var(--hoverBrightnessValue);
             }
           }
 
           &.no-hover {
             &:hover {
               span {
-                color: $grey-4F4;
+                color: var(--secondaryDarkTextColor);
               }
               img {
                 filter: none;
@@ -1980,7 +2001,7 @@ form {
     margin-top: 60px;
   }
   .tableWatermark {
-    background: url(../../images/graph-logo.svg) no-repeat center center;
+    background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center;
     background-size: 104px 39px;
     background-position-y: 48%;
   }
@@ -2001,12 +2022,13 @@ form {
         border: none;
 
         .ReactVirtualized__Table__rowColumn {
-          font-size: 1.3rem;
+          font-size: 13px;
           line-height: 1.6rem;
-          color: $grey-313;
+          color: var(--tableDataColor);
           text-align: center;
           margin: 0rem;
           padding: 0 1rem;
+          font-weight: 500;
 
           .nowrap-div {
             white-space: nowrap;
@@ -2093,15 +2115,20 @@ form {
               border-radius: 0.4rem;
               padding: 0.6rem;
               width: fit-content;
-              background: rgba(229, 229, 230, 0.5);
+              background: var(--tableCostCommonBg);
+              color: var(--tableDataColor) !important;
+              span{
+                color: var(--tableDataColor) !important;
+              
+              }
             }
           }
 
           .top-account-address {
             text-decoration: underline;
             cursor: pointer;
-
             &:hover {
+              color: var(--primaryTextColor);
               font-weight: 600;
             }
           }
@@ -2133,11 +2160,17 @@ form {
           }
 
           .gain {
-            background: rgba(208, 252, 234, 0.5);
+            background: var(--badgeGreenBg);
+            span{
+              color: var(--badgeGreencolor) !important;
+            }
           }
-
+          
           .loss {
-            background: rgba(250, 217, 217, 0.5);
+            background: var(--badgeRedBg);
+            span{
+              color: var(--badgeRedcolor) !important;
+            }
           }
         }
       }
@@ -2146,7 +2179,7 @@ form {
 }
 
 .loading-wrapper {
-  background-color: $secondary;
+  background-color: var(--cardBackgroud);
   padding: 5rem;
   box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
     0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -2159,6 +2192,9 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .no-data{
+    filter: var(--invertColor);
+  }
 }
 
 // slick slider positioning in loading animation
@@ -2204,7 +2240,7 @@ textarea {
 
 .copy-icon {
   &:hover {
-    filter: brightness(0.5);
+    filter: var(--hoverBrightnessValue);
   }
 }
 .copy-icon-top-bar-container {
@@ -2214,7 +2250,7 @@ textarea {
   .copy-icon-top-bar {
     cursor: pointer;
     &:hover {
-      filter: brightness(0.2);
+      filter: var(--hoverBrightnessValue);
     }
   }
 }
@@ -2423,10 +2459,10 @@ textarea {
           .custom-control-label {
             color: $primary;
             &::after {
-              background-color: $primary;
+              background-color: var(--primaryTextColor);
             }
             &::before {
-              border-color: $primary;
+              background-color: var(--primaryTextColor);
             }
           }
         }
@@ -2459,7 +2495,7 @@ textarea {
   width: fit-content;
   cursor: pointer;
   &:hover {
-    color: $primary;
+    color: var(--primaryTextColor);
   }
 }
 
@@ -2474,7 +2510,7 @@ textarea {
         border: 0.1rem solid #d4d4d4;
       }
       .form-control:hover {
-        border: 0.1rem solid #19191a;
+        border: 0.1rem solid var(--black191);
       }
       .is-valid {
         box-shadow: none;
@@ -2565,13 +2601,13 @@ textarea {
   // right: 2rem;
   cursor: pointer;
   user-select: none;
-  border: 1px solid rgba(29, 29, 31, 0.14);
+  border: 1px solid var(--cardBorder);
   &:hover {
     // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
     // border: 0.1rem solid rgba(229, 229, 230, 1);
     background: rgba(255, 255, 255, 0.001);
     border: 1px solid rgba(0, 113, 227, 0.2);
-    box-shadow: 0px 0px 0px 3px rgba(0, 113, 227, 0.1);
+    box-shadow: var(--custmCheckboxShadow)
     // background-color: #fff !important;
   }
 }
@@ -2590,13 +2626,13 @@ textarea {
     width: 100%;
 
     input {
-      @include font($primary, "Inter-Regular", 1.3rem, normal, 1.5rem);
+      @include font(var(--primaryTextColor), "Inter-Regular", 1.3rem, normal, 1.5rem);
       // padding: 1rem !important;
       min-height: 3rem;
       width: 100%;
       border-radius: 6px;
-      border: 1px solid #d4d4d4;
-
+      border: 1px solid var(--cardBorder);
+      background-color: transparent;
       &::placeholder {
         font-size: 1.3rem;
         line-height: 1.5rem;
@@ -2604,16 +2640,20 @@ textarea {
       }
 
       &:focus {
-        border: 1px solid $primary !important;
+        border: 1px solid var(--primaryTextColor) !important;
+      }
+
+      &:hover {
+        border: 1px solid var(--primaryTextColor);
       }
     }
 
     .form-control.is-valid {
       box-shadow: none;
-      border: 1px solid #d4d4d4;
+      border: 1px solid var(--cardBorder);
 
       &:hover {
-        border: 1px solid $primary;
+        border: 1px solid var(--primaryTextColor) !important;
       }
     }
 
@@ -2629,6 +2669,18 @@ textarea {
 }
 .highcharts-area {
   cursor: pointer;
+}
+.highcharts-xaxis-labels{
+
+  text{
+    color: var(--chartXAxis) !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    &:hover{
+      color: var(--primaryTextColor) !important;
+      
+    }
+  }
 }
 .page-header {
   margin-bottom: 1.5rem;
@@ -2653,20 +2705,164 @@ textarea {
 
 input {
   &:-webkit-autofill:focus {
-    box-shadow: 0 0 0 30px white inset !important;
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+    -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
-  box-shadow: 0 0 0 30px white inset !important;
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--sameModeColor) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 .hoverDarker {
-  transition-duration: 300ms;
+  // transition-duration: 300ms;
   &:hover {
-    filter: brightness(0);
+    filter: var(--hoverBrightnessValue);
   }
 }
+.overlay-tool-tip-container{
+  background-color: var(--cardBackground);
+  color: var(--primaryTextColor);
+}
+
+.main-button{
+  background-color: var(--mainButtonBg) !important;
+  // box-shadow: var(--boxShadowMd) !important;
+  border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
+  color: var(--primaryTextColor) !important;
+  div{
+    color: var(--primaryTextColor) !important;
+  }
+  img{
+    filter: var(--invertColor) !important;
+  }
+  &:hover{
+    background-color: var(--backColor) !important;
+    color: var(--sameModeColor) !important;
+    
+    div{
+      color: var(--sameModeColor) !important;
+    }
+    img{
+      filter: var(--invertColor) !important;
+    }
+  }
+}
+
+.main-button-invert{
+  // border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
+  background-color: var(--backColor) !important;
+  color: var(--sameModeColor) !important;
+  div{
+    color: var(--sameModeColor) !important;
+    
+  }
+  img{
+    filter: var(--invertColor) !important;
+  }
+  &:hover{
+    background-color: var(--mainButtonBg) !important;
+    color: var(--primaryTextColor) !important;
+    
+    div{
+      color: var(--primaryTextColor) !important;
+    }
+    img{
+      filter: var(--invertColor) !important;
+    }
+  }
+}
+
+.input-noshadow-dark{
+  input{
+    box-shadow: var(--inputShadow) !important;
+    -webkit-box-shadow: var(--inputShadow) !important;
+    background: transparent;
+    color: var(--primaryTextColor) !important;
+    &:focus{
+      background-color: transparent;
+    }
+  }
+
+}
+
+.highcharts-background{
+  fill: var(--cardBackgroud);
+}
+
+// Calendar
+.react-calendar{
+  background-color: var(--cardBackgroud);
+}
+.react-calendar__navigation__label__labelText{
+  color: var(--primaryTextColor);
+}
+
+.react-calendar__tile--active {
+  background-color: var(--black191) !important;
+  color: var(--secondaryTextColor) !important;
+}
+
+.react-calendar__tile:disabled{
+  background-color: var(--primaryFilter) !important;
+}
+
+.react-calendar__navigation__arrow{
+  
+  // color: var(--topbarAdressAddBorder) !important;
+  color: var(--black191);
+  background-color: transparent;
+  &:disabled{
+    // background-color: transparent;
+    color: $black-191;
+    // color: var(--sameModeColor) !important;
+  }
+  &:focus{
+    // color: var(--sameModeColor) !important;
+    color: $black-191;
+    background-color: var(--primaryFilter);
+  }
+  &:hover{
+    color: $black-191;
+  }
+}
+
+
+.line-chart-tooltip-section{
+  background-color: var(--cardBackgroud) !important;
+}
+
+.modal-content{
+  background-color: var(--cardBackgroud);
+}
+
+.connect-exchange {
+  .api-modal-header{
+    img{
+      filter: var(--invertColor);
+    }
+  }
+}
+.top-l-r-3{
+  border-top-left-radius: 12px;
+}
+.bottom-l-r-3{
+}
+
+.transaction-history-table-yield-opportunity{
+   .ReactVirtualized__Grid__innerScrollContainer{
+    .ReactVirtualized__Table__row{
+      &:nth-last-child(1){
+        .ReactVirtualized__Table__rowColumn{
+
+          &:nth-child(1){
+            border-bottom-left-radius: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .msmpModalBlockContainer {
   position: fixed;
   min-height: 100vh;
@@ -2994,10 +3190,41 @@ input {
   }
 }
 
+.portfolio-profit-and-loss{
+  .highcharts-root{
+    img{
+      opacity: 0.5 !important;
+    }
+  }
+}
+
+.export-timeline{
+    .date-picker-control{
+      
+        border-color: var(--topbarBackgroud) !important;
+        color: var(--primaryTextColor) !important;
+      
+    }
+}
+
+.watermark-opacity{
+  opacity: var(--watermarkOpacity);
+}
+
+.highcharts-axis-line{
+  stroke: var(--sidebarSectionalBOrderNoOpacity);
+}
+
+.highcharts-yaxis-labels{
+  text{
+    color: var(--chartYAxis) !important;
+    fill:  var(--chartYAxis) !important;
+  }
+}
 .watchlist-mobile {
   .transaction-table-section {
     .ReactVirtualized__Table__headerRow {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       border-top-left-radius: 12px !important;
       border-top-right-radius: 12px !important;
     }
@@ -3036,6 +3263,19 @@ input {
 .react-calendar_tile {
   margin: 0 !important;
 }
+
+
+.table-header-font{
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tableHeading);
+}
+
+.table-data-font{
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tableData);
+}
 .freezeTheFirstColumn {
   .transaction-table-section {
     .table-wrapper {
@@ -3051,7 +3291,7 @@ input {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: white;
+            background-color: var(--cardBackgroud);
             z-index: 2;
           }
         }
@@ -3068,7 +3308,7 @@ input {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background-color: white;
+                background-color: var(--cardBackgroud);
                 z-index: 2;
               }
             }
@@ -3076,5 +3316,32 @@ input {
         }
       }
     }
+  }
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--yeildBottomBorder2) !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--yeildBottomBorder1) !important;
+}
+
+.input-hover-states{
+  input{
+    border:1px solid var(--inputBorder) !important;
+    &:hover{
+      border:1px solid var(--inputBorderHover) !important;
+    }
+  }
+}
+
+.slick-arrow{
+  filter: brightness(0.5);
+  &:hover{
+
+    filter:var(--hoverBrightnessValue)
   }
 }

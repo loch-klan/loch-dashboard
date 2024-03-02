@@ -207,6 +207,7 @@ class PortfolioHomeNetworksBlock extends Component {
                   borderRadius: "6px",
                   objectFit: "cover",
                   border: `1px solid ${lightenDarkenColor("#000000", -0.15)}`,
+                  filter: "var(--invertColor)",
                 }}
               />
               Centralized Exchanges
