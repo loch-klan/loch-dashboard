@@ -5315,6 +5315,7 @@ export const CostShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
 };
+
 export const CostAvgCostBasisExport = ({ session_id, email_address }) => {
   const event_name = "Costs: Average Cost Basis: export";
   const eventProperties = {
@@ -5608,6 +5609,30 @@ export const EmulationsTimeSpent = ({
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const EmulationsShare = ({ session_id, email_address }) => {
+  const event_name = "Emulations: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: share");
+};
+export const EmulationsWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+  isWelcome = false,
+}) => {
+  const event_name = "Emulations: wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+    isWelcome: isWelcome,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

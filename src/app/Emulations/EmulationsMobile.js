@@ -2,7 +2,6 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import TransactionTable from "../intelligence/TransactionTable";
 import "./_assetUnrealizedProfitAndLoss.scss";
-import { Form } from "react-bootstrap";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               paddingTop: "0.5rem",
             }}
             className={`freezeTheFirstColumn newHomeTableContainer  ${
-              this.props.AvgCostLoading || this.props.tableData < 1
+              this.props.emulationsLoading || this.props.tableData < 1
                 ? ""
                 : "tableWatermarkOverlay"
             }`}
@@ -42,12 +41,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No assets found"
+              message="No emulations found"
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}
               isArrow={true}
-              isLoading={this.props.AvgCostLoading}
+              isLoading={this.props.emulationsLoading}
               isAnalytics="average cost basis"
               fakeWatermark
               xAxisScrollable
