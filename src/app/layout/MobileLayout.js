@@ -692,6 +692,12 @@ class MobileLayout extends BaseReactComponent {
                           ? item.activeIcon
                           : item.inactiveIcon
                       }
+                      style={
+                        item.path === this.props.history.location.pathname &&
+                        item.path === "/nft"
+                          ? { filter: "var(--hoverBrightness)" }
+                          : {}
+                      }
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
                       {item.text}
