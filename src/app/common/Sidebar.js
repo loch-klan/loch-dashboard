@@ -96,7 +96,10 @@ function Sidebar(props) {
   // console.log("active", activeTab);
   const history = useHistory();
   const [showAmountsAtTop, setShowAmountsAtTop] = useState(false);
-  const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
+  const [dragPosition, setDragPosition] = React.useState({
+    x: 0,
+    y: -(window.innerHeight / 2),
+  });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -815,7 +818,7 @@ function Sidebar(props) {
                       <ul>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -858,7 +861,7 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -901,7 +904,7 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -933,7 +936,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -969,7 +972,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1011,7 +1014,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
