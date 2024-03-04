@@ -82,7 +82,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       });
     }
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails.email) {
+    if (userDetails && userDetails.email) {
       this.setState({
         notificationEmailAddress: userDetails.email,
       });
