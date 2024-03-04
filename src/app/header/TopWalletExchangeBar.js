@@ -1094,9 +1094,11 @@ class TopWalletExchangeBar extends Component {
           console.log("ArcxAnalyticsSdk error ", error);
         }
         if (tempRes && tempRes.length > 0) {
-          setTimeout(() => {
-            this.props.handleUpdate();
-          }, 1000);
+          if (this.props.handleUpdate) {
+            setTimeout(() => {
+              this.props.handleUpdate();
+            }, 1000);
+          }
           const walletCreditScore = new URLSearchParams();
           walletCreditScore.append("credits", "wallet_connected");
           this.props.addUserCredits(walletCreditScore);

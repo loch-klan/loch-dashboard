@@ -28,3 +28,26 @@ export const getEmulations = () => {
       .catch((err) => {});
   };
 };
+export const addEmulations = (data, hideModal, resetBtn) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/add-copy-trade", data)
+      .then((res) => {
+        if (resetBtn) {
+          resetBtn();
+        }
+        if (!res.data.error) {
+          if (res.data.data) {
+            if (hideModal) {
+              hideModal(true);
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        if (resetBtn) {
+          resetBtn();
+        }
+      });
+  };
+};
