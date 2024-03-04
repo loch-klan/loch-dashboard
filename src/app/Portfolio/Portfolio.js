@@ -4478,7 +4478,7 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
@@ -4895,7 +4895,7 @@ class Portfolio extends BaseReactComponent {
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
@@ -5088,7 +5088,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4.8}
+                              xAxisScrollableColumnWidth={4.9}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion

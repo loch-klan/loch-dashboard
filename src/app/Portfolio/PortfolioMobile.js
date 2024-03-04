@@ -833,7 +833,7 @@ class PortfolioMobile extends BaseReactComponent {
                         fakeWatermark
                         xAxisScrollable
                         yAxisScrollable
-                        xAxisScrollableColumnWidth={3}
+                        xAxisScrollableColumnWidth={3.4}
                       />
                     </div>
                     {!this.props.AvgCostLoading ? (
@@ -891,7 +891,7 @@ class PortfolioMobile extends BaseReactComponent {
                         fakeWatermark
                         xAxisScrollable
                         yAxisScrollable
-                        xAxisScrollableColumnWidth={3}
+                        xAxisScrollableColumnWidth={3.4}
                       />
                     </div>
                     {!this.props.yieldOpportunitiesTableLoading ? (
@@ -1159,7 +1159,7 @@ class PortfolioMobile extends BaseReactComponent {
                       <TransactionTable
                         xAxisScrollable
                         yAxisScrollable
-                        xAxisScrollableColumnWidth={3}
+                        xAxisScrollableColumnWidth={3.1}
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
