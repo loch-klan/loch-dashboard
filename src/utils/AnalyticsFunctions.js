@@ -5539,8 +5539,8 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
-export const MenuEmulationslist = ({ session_id, email_address }) => {
-  const event_name = "Menu: Emulations";
+export const MenuCopyTradelist = ({ session_id, email_address }) => {
+  const event_name = "Menu: CopyTrade";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5590,8 +5590,8 @@ export const SmartMoneyPageView = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const EmulationsPageView = ({ session_id, email_address }) => {
-  const event_name = "Page View: Emulations";
+export const CopyTradePageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: CopyTrade";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5599,12 +5599,12 @@ export const EmulationsPageView = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
 };
 
-export const EmulationsTimeSpent = ({
+export const CopyTradeTimeSpent = ({
   session_id,
   email_address,
   time_spent,
 }) => {
-  const event_name = "Emulations: time spent on emulations page";
+  const event_name = "CopyTrade: time spent on copy trade page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5612,8 +5612,8 @@ export const EmulationsTimeSpent = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const EmulationsShare = ({ session_id, email_address }) => {
-  const event_name = "Emulations: share";
+export const CopyTradeShare = ({ session_id, email_address }) => {
+  const event_name = "CopyTrade: share";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5621,13 +5621,13 @@ export const EmulationsShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
 };
-export const EmulationsWalletClicked = ({
+export const CopyTradeWalletClicked = ({
   session_id,
   email_address,
   wallet,
   isWelcome = false,
 }) => {
-  const event_name = "Emulations: wallet open";
+  const event_name = "CopyTrade: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

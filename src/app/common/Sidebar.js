@@ -34,7 +34,7 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
-  MenuEmulationslist,
+  MenuCopyTradelist,
   ExportMenu,
   FeedbackMenu,
   FeedbackSidebar,
@@ -538,33 +538,37 @@ function Sidebar(props) {
     let isPopup = JSON.parse(window.sessionStorage.getItem("isPopup"));
 
     setTimeout(() => {
-      // if isPopupActive = true then do not open this popup bcoz any other popup still open
-      let isPopupActive = JSON.parse(
-        window.sessionStorage.getItem("isPopupActive")
-      );
-      lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-      if (!isPopupActive) {
-        // console.log("inactive popup", isPopupActive);
-        if (!lochUser) {
-          // GeneralPopup({
-          //   session_id: getCurrentUser().id,
-          //   from: history.location.pathname.substring(1),
-          // });
-          // isPopup && handleSiginPopup();
-          // window.sessionStorage.setItem("isPopup", false);
-          if (isPopup) {
-            handleSiginPopup();
-            window.sessionStorage.setItem("isPopup", false);
-            GeneralPopup({
-              session_id: getCurrentUser().id,
-              from: history.location.pathname.substring(1),
-            });
+      const isCopyTradeModalOpen =
+        window.sessionStorage.getItem("copyTradeModalOpen");
+      if (!isCopyTradeModalOpen) {
+        // if isPopupActive = true then do not open this popup bcoz any other popup still open
+        let isPopupActive = JSON.parse(
+          window.sessionStorage.getItem("isPopupActive")
+        );
+        lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        if (!isPopupActive) {
+          // console.log("inactive popup", isPopupActive);
+          if (!lochUser) {
+            // GeneralPopup({
+            //   session_id: getCurrentUser().id,
+            //   from: history.location.pathname.substring(1),
+            // });
+            // isPopup && handleSiginPopup();
+            // window.sessionStorage.setItem("isPopup", false);
+            if (isPopup) {
+              handleSiginPopup();
+              window.sessionStorage.setItem("isPopup", false);
+              GeneralPopup({
+                session_id: getCurrentUser().id,
+                from: history.location.pathname.substring(1),
+              });
+            }
           }
+        } else {
+          //  if popup active then run same function
+          // console.log("active popup");
+          SiginModal();
         }
-      } else {
-        //  if popup active then run same function
-        // console.log("active popup");
-        SiginModal();
       }
     }, 15000);
   };
@@ -1017,7 +1021,7 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Emulations"}
+                            text={"Copy Trade"}
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
@@ -1031,7 +1035,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuEmulationslist({
+                                  MenuCopyTradelist({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1303,7 +1307,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuEmulationslist({
+                                  MenuCopyTradelist({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1324,7 +1328,7 @@ function Sidebar(props) {
                                 }
                                 className="followingImg"
                               />
-                              Emulations
+                              Copy Trade
                             </NavLink>
                           </li>
                         </>

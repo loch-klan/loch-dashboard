@@ -1,0 +1,17 @@
+@import "../../../src/assets/scss/common/_variables.scss";
+.addCopyTradeWrapperParent {
+  .addWatchListWrapperContainer {
+    display: flex;
+    justify-content: center;
+    padding: 0rem;
+    .addCopyTraderWrapperContainer {
+      width: 35rem !important;
+      .addWalletWrapper {
+        margin-top: 0rem;
+      }
+    }
+  }
+  .copeTraderBtnContainer {
+    justify-content: flex-end;
+  }
+}

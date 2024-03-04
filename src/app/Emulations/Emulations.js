@@ -7,37 +7,17 @@ import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 
 import {
-  CAverageCostBasisSort,
-  CostAvgCostBasisExport,
-  CostHideDust,
-  CostShare,
-  CostSortByAmount,
-  CostSortByAsset,
-  CostSortByCostPrice,
-  CostSortByCurrentPrice,
-  CostSortByPortfolio,
-  EmulationsPageView,
-  EmulationsTimeSpent,
-  EmulationsWalletClicked,
-  SortByCurrentValue,
-  SortByGainAmount,
-  SortByGainLoss,
+  CopyTradePageView,
+  CopyTradeTimeSpent,
+  CopyTradeWalletClicked,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
-import {
-  getAllCounterFeeApi,
-  getAllFeeApi,
-  getAvgCostBasis,
-  updateCounterParty,
-  updateFeeGraph,
-} from "../cost/Api.js";
 
 // add wallet
-import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
@@ -59,75 +39,47 @@ import {
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import Footer from "../common/footer.js";
-import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
-import EmulationsMobile from "./EmulationsMobile.js";
+import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
 import { getEmulations } from "./EmulationsApi.js";
+import EmulationsMobile from "./EmulationsMobile.js";
+import "./_emulations.scss";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAddCopyTradeAddress: false,
       emulationsLocal: [],
-      firstTimeUnrealizedPNL: true,
-      combinedCostBasis: 0,
-      combinedCurrentValue: 0,
-      combinedUnrealizedGains: 0,
-      combinedReturn: 0,
-      exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
-      exportSelectExportOption: 4,
-      exportModal: false,
-      callFeesOverTime: true,
-      callCounterpartyVolumeOverTime: true,
-
       startTime: "",
-      // gas fees
-      // GraphfeeData: [],
-      // graphfeeValue: null,
-
-      counterGraphLoading: true,
-      gasFeesGraphLoading: true,
-
       emulationsLoading: true,
       showDust: true,
-
-      // counter party
-      // counterPartyData: [],
-      // counterPartyValue: null,
-      currentPage: "Cost",
       connectModal: false,
-      counterGraphDigit: 3,
-      GraphDigit: 3,
-
-      // add new wallet
       userWalletList: window.sessionStorage.getItem("addWallet")
         ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      isFeesChainSearchUsed: false,
-      isVolumeChainSearchUsed: false,
-      // sort
-      sortBy: [
-        { title: "Asset", down: true },
-        { title: "Average cost price", down: true },
-        { title: "Current price", down: true },
-        { title: "Amount", down: true },
-        { title: "Cost basis", down: true },
-        { title: "Current value", down: false },
-        { title: "Gain amount", down: true },
-        { title: "Gain percentage", down: true },
-        { title: "Portfolio perc", down: true },
-      ],
     };
   }
   history = this.props;
-
+  showAddCopyTradeAddress = () => {
+    this.setState({
+      isAddCopyTradeAddress: true,
+    });
+  };
+  hideAddCopyTradeAddress = (isRecall) => {
+    this.setState({
+      isAddCopyTradeAddress: false,
+    });
+    if (isRecall) {
+      this.callEmulationsApi();
+    }
+  };
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    EmulationsPageView({
+    CopyTradePageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -143,7 +95,6 @@ class Emulations extends Component {
       !(this.props.emulationsState && this.props.emulationsState.length > 0)
     ) {
       this.props.getAllCoins();
-      this.props.getAvgCostBasis(this);
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
@@ -176,6 +127,15 @@ class Emulations extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isAddCopyTradeAddress !== this.state.isAddCopyTradeAddress) {
+      if (this.state.isAddCopyTradeAddress) {
+        window.sessionStorage.setItem("copyTradeModalOpen", true);
+      } else {
+        if (window.sessionStorage.getItem("copyTradeModalOpen")) {
+          window.sessionStorage.removeItem("copyTradeModalOpen");
+        }
+      }
+    }
     if (prevProps.emulationsState !== this.props.emulationsState) {
       this.setLocalEmulationList();
     }
@@ -221,7 +181,7 @@ class Emulations extends Component {
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      EmulationsTimeSpent({
+      CopyTradeTimeSpent({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         time_spent: TimeSpent,
@@ -249,25 +209,6 @@ class Emulations extends Component {
     this.setState({ connectModal: !this.state.connectModal });
   };
 
-  handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
-    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=emulations";
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
-
-    CostShare({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
-  };
-
   render() {
     const columnData = [
       {
@@ -292,7 +233,7 @@ class Emulations extends Component {
                     let shareLink =
                       BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-                    EmulationsWalletClicked({
+                    CopyTradeWalletClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
@@ -420,7 +361,6 @@ class Emulations extends Component {
         >
           <EmulationsMobile
             columnData={columnData}
-            handleShare={this.handleShare}
             tableData={this.state.emulationsLocal}
             emulationsLoading={this.state.emulationsLoading}
             showHideDustFun={this.handleDust}
@@ -440,7 +380,6 @@ class Emulations extends Component {
           >
             <div className="portfolio-section">
               <WelcomeCard
-                handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
@@ -467,14 +406,9 @@ class Emulations extends Component {
             ""
           )}
           <div className="cost-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
-                onHide={this.handleExportModal}
                 history={this.history}
                 headerTitle={this.state.exportHeaderTitle}
                 headerSubTitle={this.state.exportHeaderSubTitle}
@@ -483,10 +417,18 @@ class Emulations extends Component {
                 selectExportOption={this.state.exportSelectExportOption}
               />
             ) : null}
+            {this.state.isAddCopyTradeAddress ? (
+              <AddEmulationsAddressModal
+                show={this.state.isAddCopyTradeAddress}
+                onHide={this.hideAddCopyTradeAddress}
+                history={this.props.history}
+                location={this.props.location}
+                emulationsLoading={this.state.emulationsLoading}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
-                onHide={this.handleAddModal}
                 modalIcon={AddWalletModalIcon}
                 title="Add wallet address"
                 subtitle="Add more wallet address here"
@@ -500,16 +442,17 @@ class Emulations extends Component {
                 updateTimer={this.updateTimer}
               />
             )}
+
             <PageHeader
-              title="Portfolio Emulation"
-              subTitle="All the trades you have copied"
-              btnText="Add emulation"
-              // handleBtn={this.handleAddModal}
-              currentPage={"costs"}
+              title="Copy Trade"
+              subTitle="All the wallet addresses you have copied"
+              btnText="Add copy trade"
+              mainThemeBtn
+              currentPage={"emulations"}
               ShareBtn={true}
               exportBtnTxt="Click to export costs"
-              handleShare={this.handleShare}
               updateTimer={this.updateTimer}
+              handleBtn={this.showAddCopyTradeAddress}
             />
             <div
               style={{ marginBottom: "2.8rem" }}
@@ -547,16 +490,13 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   getAllCoins,
-  getAllFeeApi,
-  getAllCounterFeeApi,
 
   // avg cost
-  getAvgCostBasis,
 
   // update counter party
-  updateCounterParty,
+
   // update fee
-  updateFeeGraph,
+
   setPageFlagDefault,
 
   // average cost

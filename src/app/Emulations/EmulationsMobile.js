@@ -1,7 +1,6 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import TransactionTable from "../intelligence/TransactionTable";
-import "./_assetUnrealizedProfitAndLoss.scss";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
