@@ -49,6 +49,7 @@ class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      emulationsUpdated: false,
       isAddCopyTradeAddress: false,
       emulationsLocal: [],
       startTime: "",
@@ -110,7 +111,12 @@ class Emulations extends Component {
     };
   }
 
-  callEmulationsApi = () => {
+  callEmulationsApi = (updatedAddress) => {
+    if (updatedAddress) {
+      this.setState({
+        emulationsUpdated: !this.state.emulationsUpdated,
+      });
+    }
     this.setState({
       emulationsLoading: true,
     });
@@ -148,7 +154,7 @@ class Emulations extends Component {
       });
     }
     if (!this.props.commonState.emulationsPage) {
-      this.callEmulationsApi();
+      this.callEmulationsApi(true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
       tempData.append("conditions", JSON.stringify([]));
@@ -423,7 +429,7 @@ class Emulations extends Component {
                 onHide={this.hideAddCopyTradeAddress}
                 history={this.props.history}
                 location={this.props.location}
-                emulationsLoading={this.state.emulationsLoading}
+                emulationsUpdated={this.state.emulationsUpdated}
               />
             ) : null}
             {this.state.addModal && (
@@ -460,7 +466,7 @@ class Emulations extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
-                  message="No emulations found"
+                  message="No copy trades found"
                   noSubtitleBottomPadding
                   tableData={this.state.emulationsLocal}
                   columnList={columnData}

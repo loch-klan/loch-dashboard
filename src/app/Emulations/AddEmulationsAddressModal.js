@@ -18,6 +18,7 @@ import { WatchlistAddAddress } from "../../utils/AnalyticsFunctions";
 import { START_INDEX } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { addEmulations } from "./EmulationsApi";
+import { toast } from "react-toastify";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -56,12 +57,13 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.emulationsLoading !== this.props.emulationsLoading) {
+    if (prevProps.emulationsUpdated !== this.props.emulationsUpdated) {
       const ssItem = window.sessionStorage.getItem(
         "setMetamaskConnectedSessionStorage"
       );
 
       if (ssItem) {
+        toast.success("Wallet connected");
         this.setState({
           metamaskWalletConnected: ssItem,
         });
@@ -316,7 +318,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   hideModal = (callApi) => {
     this.state.onHide(callApi);
   };
-  isDisabled = (isLoading) => {
+  isDisabled = () => {
     if (this.state.loadAddBtn) {
       return true;
     }
@@ -341,9 +343,10 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       return true;
     }
     if (
-      this.state.copyTradeAmount.length === 0 ||
-      isNaN(this.state.copyTradeAmount) ||
-      Number(this.state.copyTradeAmount) < 1
+      (this.state.copyTradeAmount.length === 0 ||
+        isNaN(this.state.copyTradeAmount) ||
+        Number(this.state.copyTradeAmount) < 1) &&
+      this.state.metamaskWalletConnected
     ) {
       return true;
     }
@@ -467,13 +470,13 @@ class AddEmulationsAddressModal extends BaseReactComponent {
             <div className="exit-overlay-body">
               <h6 className="inter-display-medium f-s-25">Copy Trade</h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Easily copy trade with other address
+                Follow the smart-money. Copy trade anyone on-chain.
               </p>
             </div>
             <div className="addWatchListWrapperContainer">
               <div className="addCopyTraderWrapperContainer">
                 <div className="inter-display-medium f-s-13 grey-313 m-b-12">
-                  Which address do you want to copy
+                  Who do you want to copy?
                 </div>
                 {this.state.walletInput?.map((elem, index) => {
                   return (
@@ -618,33 +621,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     </div>
                   );
                 })}
-                <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-16">
-                  How much do you want to copy trade?
-                </div>
-                <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
-                  <div
-                    className={`awInputWrapper awInputWrapperCopyTrader ${
-                      this.state.copyTradeAmount &&
-                      this.state.copyTradeAmount.length > 0
-                        ? "isAwInputWrapperValid"
-                        : ""
-                    }`}
-                  >
-                    <div className="awTopInputWrapper input-noshadow-dark">
-                      <div className="awInputContainer">
-                        <input
-                          value={this.state.copyTradeAmount}
-                          autoFocus
-                          placeholder="$1000.00"
-                          className={`inter-display-regular f-s-16 lh-20 awInput`}
-                          onChange={this.handleOnAmountChange}
-                          autoComplete="off"
-                          onKeyDown={this.handleKeyDown}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-16">
                   Add your email address to get notifications
                 </div>
@@ -672,6 +649,37 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     </div>
                   </div>
                 </div>
+                {this.state.metamaskWalletConnected ? (
+                  <>
+                    <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-16">
+                      How much do you want to copy trade?
+                    </div>
+                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                      <div
+                        className={`awInputWrapper awInputWrapperCopyTrader ${
+                          this.state.copyTradeAmount &&
+                          this.state.copyTradeAmount.length > 0
+                            ? "isAwInputWrapperValid"
+                            : ""
+                        }`}
+                      >
+                        <div className="awTopInputWrapper input-noshadow-dark">
+                          <div className="awInputContainer">
+                            <input
+                              value={this.state.copyTradeAmount}
+                              autoFocus
+                              placeholder="$1000.00"
+                              className={`inter-display-regular f-s-16 lh-20 awInput`}
+                              onChange={this.handleOnAmountChange}
+                              autoComplete="off"
+                              onKeyDown={this.handleKeyDown}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
               </div>
             </div>
             <div className="watchListAddressBtnContainer copeTraderBtnContainer">
