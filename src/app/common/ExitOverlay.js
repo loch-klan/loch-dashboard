@@ -38,6 +38,7 @@ import prev2Icon from "../../assets/images/icons/prev2.svg";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import {
+  CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
   LeaveEmailAdded,
@@ -523,6 +524,13 @@ class ExitOverlay extends BaseReactComponent {
         email_address: this.state.email,
       });
     } else {
+      console.log("This is it right?");
+      if (this.props.tracking === "Copy trade") {
+        CopyTradeSignUpPopupEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.email,
+        });
+      }
       // signUpProperties({
       //   userId: getCurrentUser().id,
       //   email_address: this.state.email,
@@ -1694,8 +1702,9 @@ class ExitOverlay extends BaseReactComponent {
                       className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
                       style={{ textAlign: "center" }}
                     >
-                      Don’t let your hard work go to waste. Add your email so
-                      you can analyze your portfolio with superpowers
+                      {this.props.customDesc
+                        ? this.props.customDesc
+                        : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
                     </p>
                   )}
                   <div className="email-section input-noshadow-dark input-hover-states">

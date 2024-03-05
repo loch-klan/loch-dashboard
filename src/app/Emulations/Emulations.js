@@ -7,6 +7,7 @@ import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 
 import {
+  CopyTradeAddCopyTrade,
   CopyTradePageView,
   CopyTradeTimeSpent,
   CopyTradeWalletClicked,
@@ -66,15 +67,32 @@ class Emulations extends Component {
   }
   history = this.props;
   showAddCopyTradeAddress = () => {
-    this.setState({
-      isAddCopyTradeAddress: true,
+    CopyTradeAddCopyTrade({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
     });
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      this.setState({
+        isAddCopyTradeAddress: true,
+      });
+    } else {
+      if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
+        document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
+      } else if (
+        document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
+      ) {
+        document
+          .getElementById("sidebar-closed-sign-in-btn-copy-trader")
+          .click();
+      }
+    }
   };
   hideAddCopyTradeAddress = (isRecall) => {
     this.setState({
       isAddCopyTradeAddress: false,
     });
-    if (isRecall) {
+    if (isRecall === true) {
       this.callEmulationsApi();
     }
   };

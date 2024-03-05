@@ -31,6 +31,7 @@ import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import {
   ConnectExPopupEmailAdded,
+  CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
@@ -134,6 +135,11 @@ class AuthModal extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: this.state.email,
         from: this.props.tracking,
+      });
+    } else if (this.props.tracking === "Copy trade") {
+      CopyTradePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
       });
     }
 

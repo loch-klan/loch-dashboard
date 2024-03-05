@@ -7,6 +7,7 @@ import {
   CheckIcon,
   CloseIcon,
   EmultionSidebarIcon,
+  UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
@@ -112,6 +113,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   };
   handleOnAmountChange = (e) => {
     let { value } = e.target;
+    value = value.replace("$", "");
     if (!isNaN(value)) {
       this.setState({
         copyTradeAmount: value,
@@ -384,7 +386,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
             this.setState({
               canClickConnectWallet: true,
             });
-          }, 15000);
+          }, 20000);
         }
       }
     }
@@ -666,7 +668,12 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                         <div className="awTopInputWrapper input-noshadow-dark">
                           <div className="awInputContainer">
                             <input
-                              value={this.state.copyTradeAmount}
+                              value={
+                                this.state.copyTradeAmount &&
+                                this.state.copyTradeAmount.length > 0
+                                  ? `$${this.state.copyTradeAmount}`
+                                  : ""
+                              }
                               autoFocus
                               placeholder="$1000.00"
                               className={`inter-display-regular f-s-16 lh-20 awInput`}
@@ -684,14 +691,34 @@ class AddEmulationsAddressModal extends BaseReactComponent {
             </div>
             <div className="watchListAddressBtnContainer copeTraderBtnContainer">
               <CustomButton
-                className="primary-btn go-btn main-button-invert"
+                className={`primary-btn go-btn main-button-invert ${
+                  this.state.metamaskWalletConnected ||
+                  this.state.loadAddBtn ||
+                  (!this.state.canClickConnectWallet &&
+                    !this.state.metamaskWalletConnected)
+                    ? ""
+                    : "transparent-copy-trade-btn"
+                } ${
+                  !this.isDisabled() && !this.state.metamaskWalletConnected
+                    ? "transparent-copy-trade-btn-active"
+                    : ""
+                }`}
                 type="submit"
                 isDisabled={this.isDisabled()}
                 buttonText={
                   this.state.metamaskWalletConnected ? "Add" : "Connect wallet"
                 }
                 handleClick={this.btnClickFunctionPass}
-                isLoading={this.state.loadAddBtn}
+                isLoading={
+                  this.state.loadAddBtn ||
+                  (!this.state.canClickConnectWallet &&
+                    !this.state.metamaskWalletConnected)
+                }
+                buttonAttachedImage={
+                  !this.state.metamaskWalletConnected
+                    ? UserCreditScrollRightArrowIcon
+                    : undefined
+                }
               />
             </div>
           </div>

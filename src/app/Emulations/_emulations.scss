@@ -13,5 +13,22 @@
   }
   .copeTraderBtnContainer {
     justify-content: flex-end;
+    .transparent-copy-trade-btn {
+      background-color: transparent !important;
+      color: var(--black191) !important;
+      &:disabled {
+        background-color: transparent !important;
+        color: var(--black191) !important;
+      }
+    }
+    .transparent-copy-trade-btn-active {
+      &:hover {
+        background-color: var(--black191) !important;
+        color: var(--cardBackgroud) !important;
+        .buttonAttachedImageCutomBtn {
+          filter: invert(1) !important;
+        }
+      }
+    }
   }
 }
