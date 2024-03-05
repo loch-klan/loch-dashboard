@@ -266,6 +266,9 @@ class Emulations extends Component {
                   }
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
+                style={{
+                  textDecoration: !rowData.wallet ? "none" : "",
+                }}
               >
                 {rowData.wallet ? TruncateText(rowData.wallet) : "-"}
               </span>
