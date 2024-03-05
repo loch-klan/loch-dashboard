@@ -1695,8 +1695,7 @@ class TopWalletExchangeBar extends Component {
               {this.state.metamaskWalletConnected ? (
                 <div
                   style={{
-                    marginRight: "0rem",
-                    paddingRight: "0rem",
+                    paddingRight: "1.2rem",
                   }}
                   className="topbar-btn topbar-btn-transparent ml-2 maxWidth50"
                 >

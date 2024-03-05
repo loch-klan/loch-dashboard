@@ -40,7 +40,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No emulations found"
+              message="No copy trades found"
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}

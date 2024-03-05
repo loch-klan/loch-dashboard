@@ -103,6 +103,8 @@ function Sidebar(props) {
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
   const [shareModal, setShareModal] = React.useState(false);
+  const [isCopyTraderPopUpModal, setIsCopyTraderPopUpModal] =
+    React.useState(false);
   const [isAutoPopUpModal, setIsAutoPopUpModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
   const [signupModal, setSignupModal] = React.useState(false);
@@ -384,7 +386,11 @@ function Sidebar(props) {
   const openLochTwitter = () => {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
-  const openSigninModal = () => {
+  const openSigninModal = (isFromCopyTrader) => {
+    if (isFromCopyTrader === true) {
+      setIsCopyTraderPopUpModal(true);
+    }
+
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
       return null;
@@ -399,6 +405,7 @@ function Sidebar(props) {
     });
   };
   const onCloseModal = () => {
+    setIsCopyTraderPopUpModal(false);
     setIsAutoPopUpModal(false);
     setComingDirectly(true);
     setSignUpModalAnimation(true);
@@ -1417,24 +1424,35 @@ function Sidebar(props) {
                             </div>
                           </CustomOverlay>
                         ) : (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Sign in / up"}
-                          >
+                          <>
                             <div
-                              onClick={openSigninModal}
-                              className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
-                              id="sidebar-closed-sign-in-btn"
+                              onClick={() => {
+                                openSigninModal(true);
+                              }}
+                              id="sidebar-closed-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={"Sign in / up"}
                             >
-                              <Image
-                                className="sideBarFooterSignInIcon"
-                                src={PersonRoundedSigninIcon}
-                              />
-                            </div>
-                          </CustomOverlay>
+                              <div
+                                onClick={openSigninModal}
+                                className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                                id="sidebar-closed-sign-in-btn"
+                              >
+                                <Image
+                                  className="sideBarFooterSignInIcon"
+                                  src={PersonRoundedSigninIcon}
+                                />
+                              </div>
+                            </CustomOverlay>
+                          </>
                         )}
                       </ul>
                     )}
@@ -1527,23 +1545,35 @@ function Sidebar(props) {
                             </span>
                           </div>
                         ) : (
-                          <div
-                            onClick={openSigninModal}
-                            className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
-                            id="sidebar-open-sign-in-btn"
-                          >
-                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
-                              <Image
-                                style={{
-                                  height: "12px",
-                                  width: "12px",
-                                }}
-                                className="sideBarFooterSignInIcon"
-                                src={PersonRoundedSigninIcon}
-                              />
+                          <>
+                            <div
+                              onClick={() => {
+                                openSigninModal(true);
+                              }}
+                              id="sidebar-open-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+
+                            <div
+                              onClick={openSigninModal}
+                              className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                              id="sidebar-open-sign-in-btn"
+                            >
+                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
+                                <Image
+                                  style={{
+                                    height: "12px",
+                                    width: "12px",
+                                  }}
+                                  className="sideBarFooterSignInIcon"
+                                  src={PersonRoundedSigninIcon}
+                                />
+                              </div>
+                              <div>Sign in / up</div>
                             </div>
-                            <div>Sign in / up</div>
-                          </div>
+                          </>
                         )}
                       </ul>
                     )}
@@ -1737,12 +1767,14 @@ function Sidebar(props) {
           hideSkip={true}
           title={isAutoPopUpModal ? "Sign in now" : "Sign in"}
           description={
-            isAutoPopUpModal
+            isCopyTraderPopUpModal
+              ? "Easily copy trade with other address"
+              : isAutoPopUpModal
               ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
               : "Get right back into your account"
           }
           stopUpdate={true}
-          tracking="Sign in button"
+          tracking={isCopyTraderPopUpModal ? "Copy trade" : "Sign in button"}
           goToSignUp={openSignUpModal}
         />
       ) : (
@@ -1750,6 +1782,10 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          customDesc={
+            isCopyTraderPopUpModal ? "Easily copy trade with other address" : ""
+          }
+          tracking={isCopyTraderPopUpModal ? "Copy trade" : ""}
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError

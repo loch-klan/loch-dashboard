@@ -5540,7 +5540,7 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   ////console.log("Menu: Watchlist");
 };
 export const MenuCopyTradelist = ({ session_id, email_address }) => {
-  const event_name = "Menu: CopyTrade";
+  const event_name = "Menu: Copy Trade";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5591,7 +5591,7 @@ export const SmartMoneyPageView = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
 };
 export const CopyTradePageView = ({ session_id, email_address }) => {
-  const event_name = "Page View: CopyTrade";
+  const event_name = "Page View: Copy Trade";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5604,7 +5604,7 @@ export const CopyTradeTimeSpent = ({
   email_address,
   time_spent,
 }) => {
-  const event_name = "CopyTrade: time spent on copy trade page";
+  const event_name = "Copy Trade: time spent on copy trade page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5612,8 +5612,9 @@ export const CopyTradeTimeSpent = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const CopyTradeShare = ({ session_id, email_address }) => {
-  const event_name = "CopyTrade: share";
+
+export const CopyTradeAddCopyTrade = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: add copy trade button clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5621,13 +5622,46 @@ export const CopyTradeShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
 };
+export const CopyTradePopupEmailAdded = ({ session_id, email_added }) => {
+  const event_name = "Copy Trade sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const CopyTradeSignInPopupEmailVerified = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade sign in pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const CopyTradeSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const CopyTradeWalletClicked = ({
   session_id,
   email_address,
   wallet,
   isWelcome = false,
 }) => {
-  const event_name = "CopyTrade: wallet open";
+  const event_name = "Copy Trade: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

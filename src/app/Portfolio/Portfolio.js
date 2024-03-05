@@ -1012,7 +1012,6 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
   }
   trimGasFees = () => {
-    console.log("calling trim gas fees");
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.graphfeeValue &&
