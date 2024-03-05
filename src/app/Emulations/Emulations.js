@@ -115,7 +115,7 @@ class Emulations extends Component {
       emulationsLoading: true,
     });
     this.props.updateWalletListFlag("emulationsPage", true);
-    this.props.getEmulations();
+    this.props.getEmulations(this);
   };
   setLocalEmulationList = () => {
     if (this.props.emulationsState) {

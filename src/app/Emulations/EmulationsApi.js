@@ -1,7 +1,7 @@
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
 
-export const getEmulations = () => {
+export const getEmulations = (ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-copy-trade")
@@ -21,11 +21,19 @@ export const getEmulations = () => {
                 type: GET_EMULATION_DATA,
                 payload: tempConvertedArr,
               });
+            } else {
+              ctx.setState({
+                emulationsLoading: false,
+              });
             }
           }
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        ctx.setState({
+          emulationsLoading: false,
+        });
+      });
   };
 };
 export const addEmulations = (data, hideModal, resetBtn) => {
