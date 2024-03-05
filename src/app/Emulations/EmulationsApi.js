@@ -14,7 +14,7 @@ export const getEmulations = (ctx) => {
                 return {
                   currentBalance: individualRes.current_amount,
                   tradeDeposit: individualRes.deposit,
-                  wallet: individualRes.wallet,
+                  wallet: individualRes.copy_wallet,
                 };
               });
               dispatch({
