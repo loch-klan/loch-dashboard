@@ -818,7 +818,7 @@ function Sidebar(props) {
                       <ul>
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -861,7 +861,7 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -904,7 +904,7 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -936,7 +936,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -972,7 +972,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1014,7 +1014,7 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="right"
+                            position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
