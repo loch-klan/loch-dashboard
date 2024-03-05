@@ -364,7 +364,8 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       }
       data.append("deposit", this.state.copyTradeAmount);
       data.append("email", this.state.notificationEmailAddress);
-      data.append("address", tempAdd);
+      data.append("copy_address", tempAdd);
+      data.append("user_address", this.state.metamaskWalletConnected);
       this.setState({
         loadAddBtn: true,
       });
