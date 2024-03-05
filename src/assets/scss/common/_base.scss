@@ -3345,3 +3345,9 @@ input {
     filter:var(--hoverBrightnessValue)
   }
 }
+
+.overflow-table-header-visible{
+  .ReactVirtualized__Table__headerRow{
+    overflow: visible !important;
+  }
+}

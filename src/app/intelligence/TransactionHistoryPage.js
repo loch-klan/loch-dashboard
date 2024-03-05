@@ -86,7 +86,7 @@ import FixAddModal from "../common/FixAddModal";
 import Loading from "../common/Loading";
 
 // add wallet
-import { ExportIconWhite } from "../../assets/images/icons";
+import { ExportIconWhite, FilterIcon } from "../../assets/images/icons";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -1070,6 +1070,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       {
         labelName: (
           <div className="cp history-table-header-col" id="time">
+            <CustomDropdown
+              isIcon
+              filtername={<Image src={FilterIcon} />}
+              options={this.props.intelligenceState.yearFilter}
+              action={SEARCH_BY_TIMESTAMP_IN}
+              handleClick={(key, value) => this.addCondition(key, value)}
+              searchIsUsed={this.timeSearchIsUsed}
+              selectedTokens={this.state.selectedTimes}
+              transactionHistorySavedData
+            />
             {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
@@ -1768,16 +1778,26 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="asset"
-            onClick={() => this.handleTableSort("asset")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+          <div className="cp history-table-header-col" id="asset">
+            <CustomDropdown
+              filtername={<Image src={FilterIcon} />}
+              isIcon
+              options={this.props.intelligenceState.assetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) => this.addCondition(key, value)}
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.selectedAssets}
+              transactionHistorySavedData
+            />
+            <span
+              onClick={() => this.handleTableSort("asset")}
+              className="inter-display-medium f-s-13 lh-16 table-header-font"
+            >
               Asset
             </span>
             <Image
               src={sortByIcon}
+              onClick={() => this.handleTableSort("asset")}
               className={
                 this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
@@ -1814,12 +1834,11 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="amount"
-            onClick={() => this.handleTableSort("amount")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+          <div className="cp history-table-header-col" id="amount">
+            <span
+              className="inter-display-medium f-s-13 lh-16 table-header-font"
+              onClick={() => this.handleTableSort("amount")}
+            >
               Amount
             </span>
             <Image
@@ -1827,6 +1846,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               className={
                 this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
               }
+              onClick={() => this.handleTableSort("amount")}
             />
           </div>
         ),
@@ -1856,15 +1876,20 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="usdValueThen"
-            onClick={() => this.handleTableSort("usdThen")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">{`${CurrencyType(
-              true
-            )} amount (then)`}</span>
+          <div className="cp history-table-header-col" id="usdValueThen">
+            <CustomMinMaxDropdown
+              filtername={<Image src={FilterIcon} />}
+              isIcon
+              handleClick={(min, max) => this.handleAmount(min, max)}
+              minAmount={this.state.minAmount}
+              maxAmount={this.state.maxAmount}
+            />
+            <span
+              onClick={() => this.handleTableSort("usdThen")}
+              className="inter-display-medium f-s-13 lh-16 table-header-font"
+            >{`${CurrencyType(true)} amount (then)`}</span>
             <Image
+              onClick={() => this.handleTableSort("usdThen")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
@@ -1946,15 +1971,26 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="method"
-            onClick={() => this.handleTableSort("method")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+          <div className="cp history-table-header-col" id="method">
+            <CustomDropdown
+              isIcon
+              filtername={<Image src={FilterIcon} />}
+              options={this.props.intelligenceState.methodFilter}
+              action={SEARCH_BY_METHOD_IN}
+              handleClick={(key, value) => this.addCondition(key, value)}
+              searchIsUsed={this.methodSearchIsUsed}
+              isCaptialised
+              selectedTokens={this.state.selectedMethods}
+              transactionHistorySavedData
+            />
+            <span
+              onClick={() => this.handleTableSort("method")}
+              className="inter-display-medium f-s-13 lh-16 table-header-font"
+            >
               Method
             </span>
             <Image
+              onClick={() => this.handleTableSort("method")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
@@ -2002,6 +2038,18 @@ class TransactionHistoryPage extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="network"
           >
+            <CustomDropdown
+              isIcon
+              filtername={<Image src={FilterIcon} />}
+              options={this.props.OnboardingState.coinsList}
+              action={SEARCH_BY_CHAIN_IN}
+              handleClick={this.handleFunction}
+              searchIsUsed={this.networkSearchIsUsed}
+              isCaptialised
+              isGreyChain
+              selectedTokens={this.state.selectedNetworks}
+              transactionHistorySavedData
+            />
             Network
             {/* <Image
               src={sortByIcon}
@@ -2348,7 +2396,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 </Row>
               </Form>
             </div>
-            <div className="transaction-history-table">
+            <div className="transaction-history-table overflow-table-header-visible">
               {this.state.tableLoading ? (
                 <div className="loadingSizeContainer">
                   <Loading />
