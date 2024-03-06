@@ -245,10 +245,18 @@ class Emulations extends Component {
         ),
         dataKey: "Copiedwallet",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Copiedwallet") {
+            const regex = /\.eth$/;
+            let holderValue = "-";
+            if (rowData.wallet) {
+              holderValue = rowData.wallet;
+            }
+            if (!regex.test(holderValue)) {
+              holderValue = TruncateText(rowData.wallet);
+            }
             return (
               <span
                 onClick={() => {
@@ -270,7 +278,7 @@ class Emulations extends Component {
                   textDecoration: !rowData.wallet ? "none" : "",
                 }}
               >
-                {rowData.wallet ? TruncateText(rowData.wallet) : "-"}
+                {holderValue}
               </span>
             );
           }
@@ -286,7 +294,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycopytradedeposit",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
@@ -326,7 +334,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycurrentbalance",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
@@ -358,6 +366,46 @@ class Emulations extends Component {
       },
       {
         labelName: (
+          <div className="history-table-header-col" id="MyunrealizedPnL">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              My unrealized PnL
+            </span>
+          </div>
+        ),
+        dataKey: "MyunrealizedPnL",
+
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "MyunrealizedPnL") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.unrealizedPnL
+                    ? CurrencyType(false) +
+                      convertNtoNumber(rowData.unrealizedPnL)
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.unrealizedPnL
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.unrealizedPnL.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
           <div className="history-table-header-col" id="Transactions">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Transactions
@@ -366,7 +414,7 @@ class Emulations extends Component {
         ),
         dataKey: "Transactions",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Transactions") {
