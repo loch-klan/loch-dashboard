@@ -1984,6 +1984,19 @@ form {
             img {
               filter: var(--hoverBrightnessValue);
             }
+            .filter-image{
+              filter: none;
+            }
+            .custom-dropdown{
+              img{
+                filter: var(--invertColor);
+              }
+            }
+          }
+          .filter-image{
+            &:hover{
+              filter: var(--hoverBrightnessValue);
+            }
           }
 
           &.no-hover {
@@ -3353,6 +3366,49 @@ input {
   &:hover {
     filter: var(--hoverBrightnessValue);
   }
+}
+
+.overflow-table-header-visible{
+  .ReactVirtualized__Table__headerRow{
+    overflow: visible !important;
+  }
+}
+
+.new-dust-button{
+  border-radius: 8px;
+  border: 1px solid transparent;
+  width: 230px;
+  color: var(--black191);
+  background-color: var(--primaryFilter);
+  cursor: pointer;
+  .custom-control{
+    transform: scale(1.45) translateX(0) ;
+  }
+  .custom-control-label{
+    color: var(--black191);
+  }
+  &:hover{
+    border: 1px solid var(--black191);
+  }
+}
+.new-export-button{
+  background-color: var(--primaryFilter);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  .pageHeaderShareBtn{
+    color: var(--black191)!important;
+  }
+  &:hover{
+    border: 1px solid var(--black191);
+    img{
+      filter: var(--hoverBrightnessValue) !important;
+    }
+  }
+  img{
+    filter: var(--hoverBrightnessValue);
+  }
+  
 }
 .buttonAttachedImageCutomBtn {
   margin-left: 1rem;

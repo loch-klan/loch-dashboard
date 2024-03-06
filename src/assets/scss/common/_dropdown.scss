@@ -42,9 +42,17 @@
   min-height: 4rem;
   user-select: none;
 
+  &.custom-dropdown-icon{
+    border: none;
+    min-height: auto;
+  }
+
   &:hover {
     //  background-color: rgba(229, 229, 230, 0.35);
     border: 0.1rem solid var(--black191);
+    &.custom-dropdown-icon{
+      border: none;
+    }
   }
 
   &.lineChart {
@@ -252,6 +260,13 @@
         // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
         font-size: 1.1rem;
       }
+    }
+  }
+
+  &.custom-dropdown-icon{
+    .dropdown-content {
+      top: 3rem;
+      left: -2rem;
     }
   }
 

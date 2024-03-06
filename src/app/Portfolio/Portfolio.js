@@ -2423,26 +2423,27 @@ class Portfolio extends BaseReactComponent {
               }
             };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                // text={rowData.from.address}
-                text={
-                  (rowData.from.metaData?.nickname
-                    ? rowData.from.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.from.wallet_metaData?.text
-                    ? rowData.from.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.from.metaData?.displayAddress &&
-                  rowData.from.metaData?.displayAddress !== rowData.from.address
-                    ? rowData.from.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.from.address
-                }
-              >
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   // text={rowData.from.address}
+              //   text={
+              //     (rowData.from.metaData?.nickname
+              //       ? rowData.from.metaData?.nickname + ": "
+              //       : "") +
+              //     (rowData.from.wallet_metaData?.text
+              //       ? rowData.from.wallet_metaData?.text + ": "
+              //       : "") +
+              //     (rowData.from.metaData?.displayAddress &&
+              //     rowData.from.metaData?.displayAddress !== rowData.from.address
+              //       ? rowData.from.metaData?.displayAddress + ": "
+              //       : "") +
+              //     rowData.from.address
+              //   }
+              // >
+              <>
                 {rowData.from.metaData?.wallet_metaData ? (
                   <span
                     onMouseEnter={() => {
@@ -2661,7 +2662,8 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 )}
-              </CustomOverlay>
+              </>
+              // </CustomOverlay>
             );
           }
         },
@@ -2718,25 +2720,26 @@ class Portfolio extends BaseReactComponent {
               }
             };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  (rowData.to.metaData?.nickname
-                    ? rowData.to.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.to.wallet_metaData?.text
-                    ? rowData.to.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.to.metaData?.displayAddress &&
-                  rowData.to.metaData?.displayAddress !== rowData.to.address
-                    ? rowData.to.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.to.address
-                }
-              >
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     (rowData.to.metaData?.nickname
+              //       ? rowData.to.metaData?.nickname + ": "
+              //       : "") +
+              //     (rowData.to.wallet_metaData?.text
+              //       ? rowData.to.wallet_metaData?.text + ": "
+              //       : "") +
+              //     (rowData.to.metaData?.displayAddress &&
+              //     rowData.to.metaData?.displayAddress !== rowData.to.address
+              //       ? rowData.to.metaData?.displayAddress + ": "
+              //       : "") +
+              //     rowData.to.address
+              //   }
+              // >
+              <>
                 {rowData.to.metaData?.wallet_metaData ? (
                   <span
                     onMouseEnter={() => {
@@ -2952,7 +2955,8 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 )}
-              </CustomOverlay>
+                {/* </CustomOverlay> */}
+              </>
             );
           }
         },
@@ -3036,17 +3040,17 @@ class Portfolio extends BaseReactComponent {
             // return rowData.amount.value?.toFixed(2)
             const tempAmountVal = convertNtoNumber(rowData.amount.value);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={tempAmountVal ? tempAmountVal : "0.00"}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                  {numToCurrency(tempAmountVal).toLocaleString("en-US")}
-                </div>
-              </CustomOverlay>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={tempAmountVal ? tempAmountVal : "0.00"}
+              // >
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {numToCurrency(tempAmountVal).toLocaleString("en-US")}
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3102,7 +3106,7 @@ class Portfolio extends BaseReactComponent {
             const tempValueThen = convertNtoNumber(valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3113,14 +3117,14 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                    {CurrencyType(false) +
-                      numToCurrency(tempValueToday).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {CurrencyType(false) +
+                    numToCurrency(tempValueToday).toLocaleString("en-US")}
+                </div>
+                {/* </CustomOverlay> */}
                 <span style={{ padding: "2px" }}></span>(
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3131,15 +3135,14 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                    {tempValueThen
-                      ? CurrencyType(false) +
-                        numToCurrency(tempValueThen).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </div>
-                </CustomOverlay>
-                )
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {tempValueThen
+                    ? CurrencyType(false) +
+                      numToCurrency(tempValueThen).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </div>
+                {/* </CustomOverlay> */})
               </div>
             );
           }
@@ -3222,17 +3225,17 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "network") {
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
                   isText={true}
                   text={rowData.network}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div dotDotText">
-                    {rowData.network}
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div dotDotText">
+                  {rowData.network}
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3268,41 +3271,41 @@ class Portfolio extends BaseReactComponent {
             // return rowData.hash.value?.toFixed(2)
             const tempHashVal = TruncateText(rowData.hash);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.hash ? rowData.hash : ""}
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={rowData.hash ? rowData.hash : ""}
+              // >
+              <div
+                onMouseEnter={() => {
+                  TransactionHistoryHashHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    hash_hovered: rowData.hash,
+                  });
+                  this.updateTimer();
+                }}
+                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div"
               >
-                <div
-                  onMouseEnter={() => {
-                    TransactionHistoryHashHover({
+                {tempHashVal}
+                <Image
+                  src={CopyClipboardIcon}
+                  onClick={() => {
+                    this.copyContent(rowData.hash);
+                    TransactionHistoryHashCopied({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
-                      hash_hovered: rowData.hash,
+                      hash_copied: rowData.hash,
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div"
-                >
-                  {tempHashVal}
-                  <Image
-                    src={CopyClipboardIcon}
-                    onClick={() => {
-                      this.copyContent(rowData.hash);
-                      TransactionHistoryHashCopied({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hash_copied: rowData.hash,
-                      });
-                      this.updateTimer();
-                    }}
-                    className="m-l-10 cp copy-icon"
-                    style={{ width: "1rem" }}
-                  />
-                </div>
-              </CustomOverlay>
+                  className="m-l-10 cp copy-icon"
+                  style={{ width: "1rem" }}
+                />
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3445,31 +3448,29 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "tvl") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.tvlUsd * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.tvlUsd * this.state.currency?.rate
-                        )}
-                    </span>
-                  </div>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     CurrencyType(false) +
+              //     amountFormat(
+              //       rowData.tvlUsd * this.state.currency?.rate,
+              //       "en-US",
+              //       "USD"
+              //     )
+              //   }
+              // >
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.tvlUsd * this.state.currency?.rate)}
+                  </span>
                 </div>
-              </CustomOverlay>
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3504,20 +3505,20 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "apy") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.apy ? rowData.apy + "%" : "-"}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                  {rowData.apy
-                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
-                      "%"
-                    : "-"}
-                </div>
-              </CustomOverlay>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={rowData.apy ? rowData.apy + "%" : "-"}
+              // >
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {rowData.apy
+                  ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                    "%"
+                  : "-"}
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3551,31 +3552,29 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "usdValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.value * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.value * this.state.currency?.rate
-                        )}
-                    </span>
-                  </div>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     CurrencyType(false) +
+              //     amountFormat(
+              //       rowData.value * this.state.currency?.rate,
+              //       "en-US",
+              //       "USD"
+              //     )
+              //   }
+              // >
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.value * this.state.currency?.rate)}
+                  </span>
                 </div>
-              </CustomOverlay>
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3711,7 +3710,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "CurrentValue") {
             return (
               <div className="cost-common-container">
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3722,26 +3721,26 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(rowData.CurrentValue, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCurrentValueHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                      className=""
-                    >
-                      {rowData.CurrentValue
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentValue.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="cost-common">
+                  <span
+                    onMouseEnter={() => {
+                      CostCurrentValueHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                    }}
+                    className=""
+                  >
+                    {rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3783,7 +3782,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3799,30 +3798,30 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainAmount !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainAmount < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.GainAmount
-                        ? CurrencyType(false) +
-                          tempDataHolder.toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  {rowData.GainAmount !== 0 ? (
+                    <Image
+                      className="mr-2"
+                      style={{
+                        height: "1.5rem",
+                        width: "1.5rem",
+                      }}
+                      src={
+                        rowData.GainAmount < 0
+                          ? ArrowDownLeftSmallIcon
+                          : ArrowUpRightSmallIcon
+                      }
+                    />
+                  ) : null}
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {rowData.GainAmount
+                      ? CurrencyType(false) +
+                        tempDataHolder.toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3866,7 +3865,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3877,15 +3876,15 @@ class Portfolio extends BaseReactComponent {
                       : "0.00%"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3925,7 +3924,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3936,16 +3935,16 @@ class Portfolio extends BaseReactComponent {
                         convertNtoNumber(rowData.AverageCostPrice)
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.AverageCostPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.AverageCostPrice
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.AverageCostPrice.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3985,7 +3984,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3996,16 +3995,16 @@ class Portfolio extends BaseReactComponent {
                         convertNtoNumber(rowData.CurrentPrice)
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.CurrentPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.CurrentPrice
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -4045,7 +4044,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4055,13 +4054,13 @@ class Portfolio extends BaseReactComponent {
                       ? convertNtoNumber(rowData.Amount)
                       : "0"
                   }
-                >
-                  <span className="table-data-font">
-                    {rowData.Amount
-                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
-                      : "0"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="table-data-font">
+                  {rowData.Amount
+                    ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                    : "0"}
+                </span>
+                {/* </CustomOverlay> */}
               </span>
             );
           }
@@ -4094,7 +4093,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "CostBasis") {
             return (
               <div className="cost-common-container">
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4105,26 +4104,26 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(rowData.CostBasis, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCostBasisHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                      className="table-data-font"
-                    >
-                      {rowData.CostBasis
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="cost-common">
+                  <span
+                    onMouseEnter={() => {
+                      CostCostBasisHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                    }}
+                    className="table-data-font"
+                  >
+                    {rowData.CostBasis
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CostBasis.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -4169,7 +4168,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4180,29 +4179,29 @@ class Portfolio extends BaseReactComponent {
                       : "0.00%"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  {rowData.GainLoss !== 0 ? (
+                    <Image
+                      className="mr-2"
+                      style={{
+                        height: "1.5rem",
+                        width: "1.5rem",
+                      }}
+                      src={
+                        rowData.GainLoss < 0
+                          ? ArrowDownLeftSmallIcon
+                          : ArrowUpRightSmallIcon
+                      }
+                    />
+                  ) : null}
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -4478,7 +4477,7 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
@@ -4895,7 +4894,7 @@ class Portfolio extends BaseReactComponent {
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
@@ -5088,7 +5087,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4.8}
+                              xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion

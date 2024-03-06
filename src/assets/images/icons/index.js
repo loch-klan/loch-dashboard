@@ -107,5 +107,6 @@ export { default as ProfileSidebarIcon } from "./ProfileSidebar.svg";
 export { default as LeaderboardSidebarIcon } from "./LeaderboardSidebar.svg";
 export { default as HomeSidebarIcon } from "./HomeSidebar.svg";
 export { default as DefaultNftTableIconIcon } from "./defaultNftTableIcon.png";
+export { default as FilterIcon } from "./filter.svg";
 export { default as CheckCopyTradeTransactionsIcon } from "./checkCopyTradeTransactions.svg";
 export { default as CrossCopyTradeTransactionsIcon } from "./crossCopyTradeTransactions.svg";

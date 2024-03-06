@@ -81,7 +81,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               fakeWatermark
               xAxisScrollable
               yAxisScrollable
-              xAxisScrollableColumnWidth={3}
+              xAxisScrollableColumnWidth={3.5}
             />
           </div>
         </div>
