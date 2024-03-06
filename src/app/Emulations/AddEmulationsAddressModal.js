@@ -387,11 +387,6 @@ class AddEmulationsAddressModal extends BaseReactComponent {
             canClickConnectWallet: false,
           });
           document.getElementById("topbar-connect-wallet-btn").click();
-          setTimeout(() => {
-            this.setState({
-              canClickConnectWallet: true,
-            });
-          }, 20000);
         }
       }
     }
@@ -434,6 +429,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        animation={false}
       >
         {this.state.addressesAdded ? (
           <div className="addWatchListWrapperAdded">
@@ -474,9 +470,14 @@ class AddEmulationsAddressModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           <div className="addWatchListWrapperParent addCopyTradeWrapperParent">
-            <div className="exit-overlay-body">
+            <div
+              style={{
+                marginBottom: "3.3rem",
+              }}
+              className="exit-overlay-body"
+            >
               <h6 className="inter-display-medium f-s-25">Copy Trade</h6>
-              <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
+              <p className="inter-display-medium f-s-16 grey-969 text-center">
                 Follow the smart-money. Copy trade anyone on-chain.
               </p>
             </div>
@@ -629,7 +630,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                   );
                 })}
 
-                <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-16">
+                <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-18">
                   Add your email address to get notifications
                 </div>
                 <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
@@ -658,7 +659,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                 </div>
                 {this.state.metamaskWalletConnected ? (
                   <>
-                    <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-16">
+                    <div className="inter-display-medium f-s-13 grey-313 m-b-12 m-t-18">
                       How much do you want to copy trade?
                     </div>
                     <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">

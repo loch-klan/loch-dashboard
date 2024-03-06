@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
 
@@ -11,10 +12,28 @@ export const getEmulations = (ctx) => {
             const tempResHolder = res?.data?.data?.result;
             if (tempResHolder && tempResHolder.length > 0) {
               const tempConvertedArr = tempResHolder.map((individualRes) => {
+                let tempCurrentBalance = 0;
+                let tempTradeDeposit = 0;
+                let tempUnrealizedPnL = 0;
+
+                if (individualRes.current_amount) {
+                  tempCurrentBalance = individualRes.current_amount;
+                }
+                if (individualRes.deposit) {
+                  tempTradeDeposit = individualRes.deposit;
+                }
+                if (
+                  (tempCurrentBalance || tempCurrentBalance === 0) &&
+                  (tempTradeDeposit || tempTradeDeposit === 0)
+                ) {
+                  tempUnrealizedPnL = tempCurrentBalance - tempTradeDeposit;
+                }
+
                 return {
-                  currentBalance: individualRes.current_amount,
-                  tradeDeposit: individualRes.deposit,
+                  currentBalance: tempCurrentBalance,
+                  tradeDeposit: tempTradeDeposit,
                   wallet: individualRes.copy_wallet,
+                  unrealizedPnL: tempUnrealizedPnL,
                 };
               });
               dispatch({
@@ -50,6 +69,8 @@ export const addEmulations = (data, hideModal, resetBtn) => {
               hideModal(true);
             }
           }
+        } else {
+          toast.error(res.data.message || "Something went wrong");
         }
       })
       .catch((err) => {
