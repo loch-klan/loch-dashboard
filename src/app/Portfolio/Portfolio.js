@@ -2306,29 +2306,29 @@ class Portfolio extends BaseReactComponent {
                 {this.state.isShowingAge ? "Age" : "Timestamp"}
               </span>
             ) : (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={
-              //     this.state.isShowingAge
-              //       ? "Click to view Timestamp"
-              //       : "Click to view Age"
-              //   }
-              // >
-              <span
-                onClick={() => {
-                  this.toggleAgeTimestamp();
-                }}
-                className="inter-display-medium f-s-13 lh-16 table-header-font"
-                style={{
-                  textDecoration: "underline",
-                }}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  this.state.isShowingAge
+                    ? "Click to view Timestamp"
+                    : "Click to view Age"
+                }
               >
-                {this.state.isShowingAge ? "Age" : "Timestamp"}
-              </span>
-              // </CustomOverlay>
+                <span
+                  onClick={() => {
+                    this.toggleAgeTimestamp();
+                  }}
+                  className="inter-display-medium f-s-13 lh-16 table-header-font"
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  {this.state.isShowingAge ? "Age" : "Timestamp"}
+                </span>
+              </CustomOverlay>
             )}
 
             <Image
@@ -2359,15 +2359,15 @@ class Portfolio extends BaseReactComponent {
               tempOpp = rowData.age;
             }
             return (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={tempOpp ? tempOpp : "-"}
-              // >
-              <span className="table-data-font">{tempVal}</span>
-              // </CustomOverlay>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={tempOpp ? tempOpp : "-"}
+              >
+                <span className="table-data-font">{tempVal}</span>
+              </CustomOverlay>
             );
           }
         },
@@ -5088,7 +5088,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4.9}
+                              xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion

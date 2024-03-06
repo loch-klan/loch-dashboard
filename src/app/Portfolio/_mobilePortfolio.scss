@@ -41,6 +41,27 @@
         position: static;
       }
     }
+
+    &.custom-dropdown-icon{
+      border: none;
+      min-height: auto;
+      margin-right: 10px !important;
+      background:none !important;
+    }
+
+    &:hover {
+      &.custom-dropdown-icon{
+        border: none;
+      }
+    }
+
+    &.custom-dropdown-icon{
+      .dropdown-content {
+        top: 3rem;
+        left: -2rem;
+      }
+    }
+
   }
 
   .padding-mb-2 {

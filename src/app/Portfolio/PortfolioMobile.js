@@ -1159,7 +1159,7 @@ class PortfolioMobile extends BaseReactComponent {
                       <TransactionTable
                         xAxisScrollable
                         yAxisScrollable
-                        xAxisScrollableColumnWidth={3.1}
+                        xAxisScrollableColumnWidth={3.15}
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
