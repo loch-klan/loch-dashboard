@@ -31,6 +31,7 @@ import Nft from "./app/nft/Nft";
 import NewWelcome from "./app/home/NewWelcome";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import Emulations from "./app/Emulations/Emulations";
+import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
 const routes = [
   {
     path: "/",
@@ -93,6 +94,12 @@ const routes = [
     name: "Emulations",
     type: PrivateRoute,
     component: Emulations,
+  },
+  {
+    path: "/copy-trade-transactions",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: EmulationTransactionsPage,
   },
   {
     path: "/nft",

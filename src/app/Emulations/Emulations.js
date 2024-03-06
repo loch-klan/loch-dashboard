@@ -418,8 +418,27 @@ class Emulations extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Transactions") {
+            const regex = /\.eth$/;
+            let holderValue = "-";
+            if (rowData.wallet) {
+              holderValue = rowData.wallet;
+            }
+            if (!regex.test(holderValue)) {
+              holderValue = TruncateText(rowData.wallet);
+            }
+            const goToTransactions = () => {
+              this.props.history.push({
+                pathname: "/copy-trade-transactions",
+                state: {
+                  passedAddress: holderValue,
+                },
+              });
+            };
             return (
-              <span className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address">
+              <span
+                onClick={goToTransactions}
+                className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
+              >
                 View
               </span>
             );
@@ -549,8 +568,6 @@ class Emulations extends Component {
                 />
               </div>
             </div>
-
-            <Footer />
           </div>
         </div>
       </>
