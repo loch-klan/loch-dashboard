@@ -89,7 +89,7 @@ const routes = [
     component: AssetsUnrealizedProfitAndLoss,
   },
   {
-    path: "/emulations",
+    path: "/copy-trade",
     name: "Emulations",
     type: PrivateRoute,
     component: Emulations,

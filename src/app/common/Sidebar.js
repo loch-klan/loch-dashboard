@@ -1032,7 +1032,7 @@ function Sidebar(props) {
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/emulations"
+                              to="/copy-trade"
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
@@ -1053,7 +1053,7 @@ function Sidebar(props) {
                               <Image
                                 src={EmultionSidebarIcon}
                                 style={
-                                  activeTab === "/emulations"
+                                  activeTab === "/copy-trade"
                                     ? {
                                         filter: "brightness(0)",
                                       }
@@ -1321,13 +1321,13 @@ function Sidebar(props) {
                                 }
                               }}
                               className="nav-link"
-                              to="/emulations"
+                              to="/copy-trade"
                               activeclassname="active"
                             >
                               <Image
                                 src={EmultionSidebarIcon}
                                 style={
-                                  activeTab === "/emulations"
+                                  activeTab === "/copy-trade"
                                     ? {
                                         filter: "brightness(0)",
                                       }
