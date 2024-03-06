@@ -3345,8 +3345,14 @@ input {
 .input-hover-states{
   input{
     border:1px solid var(--inputBorder) !important;
+    &::placeholder{
+      color: var(--inputBorder) !important;
+    }
     &:hover{
       border:1px solid var(--inputBorderHover) !important;
+      &::placeholder{
+        color: var(--inputBorder) !important;
+      }
     }
   }
 }
