@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  CopyTradeSignInPopupEmailVerified,
   FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
@@ -1007,6 +1008,11 @@ export const VerifyEmail = (data, ctx) => {
           });
         } else if (ctx.props.tracking === "Follow sign in popup") {
           FollowSignInPopupEmailVerified({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+          });
+        } else if (ctx.props.tracking === "Copy trade") {
+          CopyTradeSignInPopupEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });

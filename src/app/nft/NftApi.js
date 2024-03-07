@@ -14,6 +14,9 @@ export const getNFT = (data, ctx, isDefault) => {
             let tempTotalCount = res.data?.data?.total_count
               ? Math.ceil(res.data.data.total_count / API_LIMIT)
               : 0;
+            let currency = JSON.parse(
+              window.sessionStorage.getItem("currency")
+            );
             tempVar.forEach((resRes) => {
               tempNftHolder.push({
                 holding: resRes.amount ? resRes.amount : "",
@@ -22,6 +25,7 @@ export const getNFT = (data, ctx, isDefault) => {
                 total_spent: resRes.total_spent ? resRes.total_spent : "",
                 max_price: resRes.max_price ? resRes.max_price : "",
                 avg_price: resRes.avg_price ? resRes.avg_price : "",
+                floor_price: resRes.price ? resRes.price : 0,
                 volume: resRes.volume ? resRes.volume : "",
               });
             });

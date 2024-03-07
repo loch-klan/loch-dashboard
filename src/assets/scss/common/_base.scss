@@ -856,9 +856,9 @@ form {
     }
 
     .form-control.is-valid {
-      border: solid 1px #d4d4d4;      ;
+      border: solid 1px #d4d4d4;
       background-image: none;
-      &:hover{
+      &:hover {
         border-color: var(--black191);
       }
     }
@@ -1084,8 +1084,8 @@ form {
     border: 0.1rem solid var(--dropdownContentBorderColor);
     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
       0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-      background-color: var(--sameModeColor);
-      color: var(--primaryTextColor);
+    background-color: var(--sameModeColor);
+    color: var(--primaryTextColor);
     // border: 0;
 
     .dropdown-item {
@@ -1745,7 +1745,7 @@ form {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    img{
+    img {
       filter: var(--invertColor);
     }
 
@@ -1882,7 +1882,6 @@ form {
     border-top-left-radius: 0.55rem;
     border-bottom-left-radius: 0.55rem;
     filter: none !important;
-
   }
 
   .coin-percent {
@@ -1893,7 +1892,11 @@ form {
 
 .tableWatermarkOverlay {
   // background: url(../../images/graph-logo.svg) no-repeat center center !important;
-  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center !important;
+  background: linear-gradient(
+      var(--cardBackgroudWithOpacity),
+      var(--cardBackgroudWithOpacity)
+    ),
+    url(../../images/graph-logo.svg) no-repeat center center !important;
   background-size: 104px 39px;
   background-position-y: 55%;
 }
@@ -1903,7 +1906,12 @@ form {
 }
 .tableWatermarkOverlayCounterParty {
   // background: url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
-  background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center, var(--cardBackgroud) !important;
+  background: linear-gradient(
+      var(--cardBackgroudWithOpacity),
+      var(--cardBackgroudWithOpacity)
+    ),
+    url(../../images/graph-logo.svg) no-repeat center center,
+    var(--cardBackgroud) !important;
 }
 
 .transaction-table-section {
@@ -2014,7 +2022,11 @@ form {
     margin-top: 60px;
   }
   .tableWatermark {
-    background: linear-gradient(var(--cardBackgroudWithOpacity), var(--cardBackgroudWithOpacity)),url(../../images/graph-logo.svg) no-repeat center center;
+    background: linear-gradient(
+        var(--cardBackgroudWithOpacity),
+        var(--cardBackgroudWithOpacity)
+      ),
+      url(../../images/graph-logo.svg) no-repeat center center;
     background-size: 104px 39px;
     background-position-y: 48%;
   }
@@ -2130,9 +2142,8 @@ form {
               width: fit-content;
               background: var(--tableCostCommonBg);
               color: var(--tableDataColor) !important;
-              span{
+              span {
                 color: var(--tableDataColor) !important;
-              
               }
             }
           }
@@ -2174,14 +2185,14 @@ form {
 
           .gain {
             background: var(--badgeGreenBg);
-            span{
+            span {
               color: var(--badgeGreencolor) !important;
             }
           }
-          
+
           .loss {
             background: var(--badgeRedBg);
-            span{
+            span {
               color: var(--badgeRedcolor) !important;
             }
           }
@@ -2205,7 +2216,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .no-data{
+  .no-data {
     filter: var(--invertColor);
   }
 }
@@ -2620,7 +2631,7 @@ textarea {
     // border: 0.1rem solid rgba(229, 229, 230, 1);
     background: rgba(255, 255, 255, 0.001);
     border: 1px solid rgba(0, 113, 227, 0.2);
-    box-shadow: var(--custmCheckboxShadow)
+    box-shadow: var(--custmCheckboxShadow);
     // background-color: #fff !important;
   }
 }
@@ -2639,7 +2650,13 @@ textarea {
     width: 100%;
 
     input {
-      @include font(var(--primaryTextColor), "Inter-Regular", 1.3rem, normal, 1.5rem);
+      @include font(
+        var(--primaryTextColor),
+        "Inter-Regular",
+        1.3rem,
+        normal,
+        1.5rem
+      );
       // padding: 1rem !important;
       min-height: 3rem;
       width: 100%;
@@ -2683,15 +2700,13 @@ textarea {
 .highcharts-area {
   cursor: pointer;
 }
-.highcharts-xaxis-labels{
-
-  text{
+.highcharts-xaxis-labels {
+  text {
     color: var(--chartXAxis) !important;
     font-size: 11px !important;
     font-weight: 400 !important;
-    &:hover{
+    &:hover {
       color: var(--primaryTextColor) !important;
-      
     }
   }
 }
@@ -2732,81 +2747,82 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-.overlay-tool-tip-container{
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
+.overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
 }
 
-.main-button{
+.main-button {
   background-color: var(--mainButtonBg) !important;
   // box-shadow: var(--boxShadowMd) !important;
   border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
   color: var(--primaryTextColor) !important;
-  div{
+  div {
     color: var(--primaryTextColor) !important;
   }
-  img{
+  img {
     filter: var(--invertColor) !important;
   }
-  &:hover{
+  &:hover {
     background-color: var(--backColor) !important;
     color: var(--sameModeColor) !important;
-    
-    div{
+
+    div {
       color: var(--sameModeColor) !important;
     }
-    img{
+    img {
       filter: var(--invertColor) !important;
     }
   }
 }
 
-.main-button-invert{
+.main-button-invert {
   // border: 0.1rem solid var(--whiteTransparentBlackE5e5e6) !important;
   background-color: var(--backColor) !important;
   color: var(--sameModeColor) !important;
-  div{
+  div {
     color: var(--sameModeColor) !important;
-    
   }
-  img{
+  img {
     filter: var(--invertColor) !important;
   }
-  &:hover{
+  &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-    
-    div{
+
+    div {
       color: var(--primaryTextColor) !important;
     }
-    img{
+    img {
       filter: var(--invertColor) !important;
     }
   }
 }
 
-.input-noshadow-dark{
-  input{
+.input-noshadow-dark {
+  input {
     box-shadow: var(--inputShadow) !important;
     -webkit-box-shadow: var(--inputShadow) !important;
     background: transparent;
     color: var(--primaryTextColor) !important;
-    &:focus{
+    &:focus {
       background-color: transparent;
     }
   }
-
 }
 
-.highcharts-background{
+.highcharts-background {
   fill: var(--cardBackgroud);
 }
 
 // Calendar
-.react-calendar{
+.react-calendar {
   background-color: var(--cardBackgroud);
 }
-.react-calendar__navigation__label__labelText{
+.react-calendar__navigation__label__labelText {
   color: var(--primaryTextColor);
 }
 
@@ -2815,59 +2831,56 @@ input {
   color: var(--secondaryTextColor) !important;
 }
 
-.react-calendar__tile:disabled{
+.react-calendar__tile:disabled {
   background-color: var(--primaryFilter) !important;
 }
 
-.react-calendar__navigation__arrow{
-  
+.react-calendar__navigation__arrow {
   // color: var(--topbarAdressAddBorder) !important;
   color: var(--black191);
   background-color: transparent;
-  &:disabled{
+  &:disabled {
     // background-color: transparent;
     color: $black-191;
     // color: var(--sameModeColor) !important;
   }
-  &:focus{
+  &:focus {
     // color: var(--sameModeColor) !important;
     color: $black-191;
     background-color: var(--primaryFilter);
   }
-  &:hover{
+  &:hover {
     color: $black-191;
   }
 }
 
-
-.line-chart-tooltip-section{
+.line-chart-tooltip-section {
   background-color: var(--cardBackgroud) !important;
 }
 
-.modal-content{
+.modal-content {
   background-color: var(--cardBackgroud);
 }
 
 .connect-exchange {
-  .api-modal-header{
-    img{
+  .api-modal-header {
+    img {
       filter: var(--invertColor);
     }
   }
 }
-.top-l-r-3{
+.top-l-r-3 {
   border-top-left-radius: 12px;
 }
-.bottom-l-r-3{
+.bottom-l-r-3 {
 }
 
-.transaction-history-table-yield-opportunity{
-   .ReactVirtualized__Grid__innerScrollContainer{
-    .ReactVirtualized__Table__row{
-      &:nth-last-child(1){
-        .ReactVirtualized__Table__rowColumn{
-
-          &:nth-child(1){
+.transaction-history-table-yield-opportunity {
+  .ReactVirtualized__Grid__innerScrollContainer {
+    .ReactVirtualized__Table__row {
+      &:nth-last-child(1) {
+        .ReactVirtualized__Table__rowColumn {
+          &:nth-child(1) {
             border-bottom-left-radius: 12px;
           }
         }
@@ -3203,35 +3216,33 @@ input {
   }
 }
 
-.portfolio-profit-and-loss{
-  .highcharts-root{
-    img{
+.portfolio-profit-and-loss {
+  .highcharts-root {
+    img {
       opacity: 0.5 !important;
     }
   }
 }
 
-.export-timeline{
-    .date-picker-control{
-      
-        border-color: var(--topbarBackgroud) !important;
-        color: var(--primaryTextColor) !important;
-      
-    }
+.export-timeline {
+  .date-picker-control {
+    border-color: var(--topbarBackgroud) !important;
+    color: var(--primaryTextColor) !important;
+  }
 }
 
-.watermark-opacity{
+.watermark-opacity {
   opacity: var(--watermarkOpacity);
 }
 
-.highcharts-axis-line{
+.highcharts-axis-line {
   stroke: var(--sidebarSectionalBOrderNoOpacity);
 }
 
-.highcharts-yaxis-labels{
-  text{
+.highcharts-yaxis-labels {
+  text {
     color: var(--chartYAxis) !important;
-    fill:  var(--chartYAxis) !important;
+    fill: var(--chartYAxis) !important;
   }
 }
 .watchlist-mobile {
@@ -3277,14 +3288,13 @@ input {
   margin: 0 !important;
 }
 
-
-.table-header-font{
+.table-header-font {
   font-size: 12px;
   font-weight: 500;
   color: var(--tableHeading);
 }
 
-.table-data-font{
+.table-data-font {
   font-size: 13px;
   font-weight: 500;
   color: var(--tableData);
@@ -3357,11 +3367,10 @@ input {
   }
 }
 
-.slick-arrow{
+.slick-arrow {
   filter: brightness(0.5);
-  &:hover{
-
-    filter:var(--hoverBrightnessValue)
+  &:hover {
+    filter: var(--hoverBrightnessValue);
   }
 }
 
@@ -3408,6 +3417,7 @@ input {
   }
   
 }
+<<<<<<< HEAD
 
 .transaction-searchbar-full{
   .form-group{
@@ -3417,3 +3427,9 @@ input {
   input{
   }
 }
+=======
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
+>>>>>>> 10fa9e517fe441c29dd7e9e2d38175cdb82b9b69
