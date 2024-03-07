@@ -1973,23 +1973,23 @@ form {
             span {
               color: var(--primaryTextColor);
             }
-            img {
-              filter: var(--hoverBrightnessValue);
-            }
-            .filter-image{
-              filter: none;
-            }
-            .custom-dropdown{
-              img{
-                filter: var(--invertColor);
-              }
-            }
+            // img {
+            //   filter: var(--hoverBrightnessValue);
+            // }
+            // .filter-image{
+            //   filter: none;
+            // }
+            // .custom-dropdown{
+            //   img{
+            //     filter: var(--invertColor);
+            //   }
+            // }
           }
-          .filter-image{
-            &:hover{
-              filter: var(--hoverBrightnessValue);
-            }
-          }
+          // .filter-image{
+          //   &:hover{
+          //     filter: var(--invertColor);
+          //   }
+          // }
 
           &.no-hover {
             &:hover {
@@ -3279,9 +3279,32 @@ input {
 
 
 .table-header-font{
+  cursor: default;
   font-size: 12px;
   font-weight: 500;
-  color: var(--tableHeading);
+  color: var(--tableHeading) !important;
+  &:hover{
+    color: var(--tableHeading) !important;
+  }
+  img{
+    cursor: pointer;
+    &:hover{
+      filter: var(--hoverBrightnessValue) !important;
+    }
+  }
+
+  .filter-image-container{
+    cursor: pointer;
+    img{
+      filter: var(--invertColor);
+      transform: scale(1.15);
+    }
+    &:hover{
+      img{
+        filter: var(--hoverBrightnessValue);
+      }
+    }
+  }
 }
 
 .table-data-font{
@@ -3381,7 +3404,7 @@ input {
   .custom-control{
     transform: scale(1.45) translateX(0) ;
   }
-  .custom-control-label{
+  .form-check-label{
     color: var(--black191);
     cursor: pointer;
   }
@@ -3414,6 +3437,56 @@ input {
     flex-grow: 1;
 
   }
+}
+
+.transaction-custom-checkbox{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  input:checked ~ .checkmark::after {
+    background-color: var(--primaryTextColor);
+    border-color: var(--primaryTextColor);
+  }
   input{
+    padding: 0px;
+    margin-right: 10px;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
+  .form-check-label{
+    margin-left: 10px;
+    margin-top: 2px;
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: var(--cardBackgroud);
+    border: 2px black solid;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: var(--cardBackgroud);
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #002B4E;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
   }
 }
