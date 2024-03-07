@@ -1984,17 +1984,17 @@ form {
             img {
               filter: var(--hoverBrightnessValue);
             }
-            .filter-image{
+            .filter-image {
               filter: none;
             }
-            .custom-dropdown{
-              img{
+            .custom-dropdown {
+              img {
                 filter: var(--invertColor);
               }
             }
           }
-          .filter-image{
-            &:hover{
+          .filter-image {
+            &:hover {
               filter: var(--hoverBrightnessValue);
             }
           }
@@ -3352,15 +3352,15 @@ input {
   background: var(--yeildBottomBorder1) !important;
 }
 
-.input-hover-states{
-  input{
-    border:1px solid var(--inputBorder) !important;
-    &::placeholder{
+.input-hover-states {
+  input {
+    border: 1px solid var(--inputBorder) !important;
+    &::placeholder {
       color: var(--inputBorder) !important;
     }
-    &:hover{
-      border:1px solid var(--inputBorderHover) !important;
-      &::placeholder{
+    &:hover {
+      border: 1px solid var(--inputBorderHover) !important;
+      &::placeholder {
         color: var(--inputBorder) !important;
       }
     }
@@ -3374,62 +3374,57 @@ input {
   }
 }
 
-.overflow-table-header-visible{
-  .ReactVirtualized__Table__headerRow{
+.overflow-table-header-visible {
+  .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
   }
 }
 
-.new-dust-button{
+.new-dust-button {
   border-radius: 8px;
   border: 1px solid transparent;
   width: 230px;
   color: var(--black191);
   background-color: var(--primaryFilter);
   cursor: pointer;
-  .custom-control{
-    transform: scale(1.45) translateX(0) ;
+  .custom-control {
+    transform: scale(1.45) translateX(0);
   }
-  .custom-control-label{
+  .custom-control-label {
     color: var(--black191);
     cursor: pointer;
   }
-  &:hover{
+  &:hover {
     border: 1px solid var(--black191);
   }
 }
-.new-export-button{
+.new-export-button {
   background-color: var(--primaryFilter);
   border-radius: 8px;
   border: 1px solid transparent;
   cursor: pointer;
-  .pageHeaderShareBtn{
-    color: var(--black191)!important;
+  .pageHeaderShareBtn {
+    color: var(--black191) !important;
   }
-  &:hover{
+  &:hover {
     border: 1px solid var(--black191);
-    img{
+    img {
       filter: var(--hoverBrightnessValue) !important;
     }
   }
-  img{
+  img {
     filter: var(--hoverBrightnessValue);
   }
-  
 }
-<<<<<<< HEAD
 
-.transaction-searchbar-full{
-  .form-group{
+.transaction-searchbar-full {
+  .form-group {
     flex-grow: 1;
-
   }
-  input{
+  input {
   }
 }
-=======
 .buttonAttachedImageCutomBtn {
   margin-left: 1rem;
   transition-duration: 0ms;
 }
->>>>>>> 10fa9e517fe441c29dd7e9e2d38175cdb82b9b69
