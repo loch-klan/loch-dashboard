@@ -56,7 +56,10 @@ class DontLoseDataModal extends BaseReactComponent {
 
   handleAccountCreate = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this);
 
     GeneralPopupEmailAdded({

@@ -30,6 +30,8 @@ import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import Nft from "./app/nft/Nft";
 import NewWelcome from "./app/home/NewWelcome";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
+import Emulations from "./app/Emulations/Emulations";
+import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
 const routes = [
   {
     path: "/",
@@ -86,6 +88,18 @@ const routes = [
     name: "Assets",
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
+  },
+  {
+    path: "/copy-trade",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: Emulations,
+  },
+  {
+    path: "/copy-trade-transactions",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: EmulationTransactionsPage,
   },
   {
     path: "/nft",

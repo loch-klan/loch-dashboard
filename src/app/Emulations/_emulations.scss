@@ -1,0 +1,34 @@
+@import "../../../src/assets/scss/common/_variables.scss";
+.addCopyTradeWrapperParent {
+  .addWatchListWrapperContainer {
+    display: flex;
+    justify-content: center;
+    padding: 0rem;
+    .addCopyTraderWrapperContainer {
+      width: 33rem !important;
+      .addWalletWrapper {
+        margin-top: 0rem;
+      }
+    }
+  }
+  .copeTraderBtnContainer {
+    justify-content: flex-end;
+    .transparent-copy-trade-btn {
+      background-color: transparent !important;
+      color: var(--black191) !important;
+      &:disabled {
+        background-color: transparent !important;
+        color: var(--black191) !important;
+      }
+    }
+    .transparent-copy-trade-btn-active {
+      &:hover {
+        background-color: var(--black191) !important;
+        color: var(--cardBackgroud) !important;
+        .buttonAttachedImageCutomBtn {
+          filter: invert(1) !important;
+        }
+      }
+    }
+  }
+}
