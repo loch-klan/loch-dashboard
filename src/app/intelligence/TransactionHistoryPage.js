@@ -2358,7 +2358,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col> */}
                   {/* {fillter_tabs} */}
                   <div
-                    className="transactionHistoryCol input-noshadow-dark"
+                    className="transactionHistoryCol input-noshadow-dark transaction-searchbar-full"
                     style={{
                       flexGrow: 1,
                     }}
