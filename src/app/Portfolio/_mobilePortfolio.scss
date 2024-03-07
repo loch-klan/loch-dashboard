@@ -1,6 +1,7 @@
 @import "../../../src/assets/scss/common/_variables.scss";
 .mobilePortfolioContainer {
   // height: 100vh;
+  background-color: var(--primaryBackground);
   overflow: auto;
   width: 100vw;
   left: 0;
@@ -10,13 +11,13 @@
   .mobile-header-container {
     margin-bottom: 2.3rem;
     h4 {
-      color: #000;
+      color: var(--primaryTextColor);
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 0.2rem;
     }
     p {
-      color: #adadad;
+      color: var(--secondaryTextColor);
       font-size: 13px;
       font-weight: 500;
     }
@@ -66,8 +67,8 @@
     height: 40px;
     padding: 10px;
     gap: 10px;
-    border: 1px solid #d4d4d4;
-    background-color: white;
+    border: 1px solid var(--borderwhiteDarkLight);
+    background-color: var(--cardBackgroud);
     border-radius: 8px;
     .search-icon {
     }
@@ -90,6 +91,10 @@
         }
       }
     }
+
+    &:hover {
+      border-color: var(--primaryTextColor);
+    }
   }
 
   .mpLoadingContainer {
@@ -109,7 +114,7 @@
       display: flex;
       align-items: center;
       font-size: 13px;
-      color: #4f4f4f;
+      color: var(--seeMoreColor);
       font-weight: 500;
       // transition-duration: 300ms;
       .seeMoreBtnIcon {
@@ -119,9 +124,9 @@
         margin-left: 0.5rem;
       }
       &:hover {
-        color: #0d0d0d;
+        color: var(--seeMoreColor);
         .seeMoreBtnIcon {
-          filter: brightness(0);
+          filter: brightness(0.5);
         }
       }
     }
@@ -138,14 +143,14 @@
       justify-content: center;
       padding: 0rem 2rem;
       .mpcHomeFloatingElement {
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         width: 100%;
         border-radius: 1.2rem;
         padding: 2rem;
-        box-shadow: 0px 0 2rem 0.8rem rgba(24, 39, 75, 0.08),
-          0rem 0 2rem 0.8rem rgba(24, 39, 75, 0.08);
+        box-shadow: var(--floatingAppPopupShadow);
         display: flex;
         align-items: center;
+        border: 1px solid var(--borderwhiteDarkLight);
 
         .mpcHFMacIconContainer {
           background-color: #e5e5e680;
@@ -177,7 +182,7 @@
       }
     }
     .section-table {
-      background-color: white;
+      background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12),
         0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
@@ -185,7 +190,7 @@
     }
     .mobile-portfolio-blocks {
       margin-top: 3rem;
-      background-color: white;
+      background-color: var(--cardBackgroud);
       // padding: 1rem;
       border-radius: 1.2rem;
       min-height: 50rem;
@@ -235,9 +240,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
-        color: #4f4f4f;
+        color: var(--seeMoreColor);
         .bottomExtraInfoText {
           height: fit-content;
           white-space: nowrap !important;
@@ -245,9 +250,9 @@
           text-overflow: ellipsis !important;
           padding: 0rem 1rem;
           cursor: pointer;
-          &:hover {
-            color: #0d0d0d;
-          }
+          // &:hover {
+          //   color: #0d0d0d;
+          // }
         }
       }
       .newHomeTableContainer {
@@ -266,12 +271,14 @@
             border-radius: 0.9rem;
             width: 0rem;
             height: 0rem;
-            background-color: rgba(229, 229, 230, 0.5);
+            // background-color: rgba(229, 229, 230, 0.5);
+            background-color: transparent;
             margin-bottom: 0.2rem;
           }
           &::-webkit-scrollbar-thumb {
             border-radius: 0.8rem;
-            background-color: #cacbcc;
+            // background-color: #cacbcc;
+            background-color: transparent;
           }
         }
         .table-wrapper-mobile-y-scroll {
@@ -285,7 +292,7 @@
               position: sticky;
               position: -webkit-sticky; /* Safari */
               top: 0;
-              background-color: white;
+              background-color: var(--cardBackgroud);
               z-index: 100;
               border-top-left-radius: 1.2rem;
               border-top-right-radius: 1.2rem;
@@ -315,12 +322,13 @@
         }
       }
       .newHomeTableContainerMobile {
+        min-height: 42rem;
         .transaction-table-loading-wrapper {
           height: 44rem;
         }
       }
       .section-table-toggle-mobile {
-        background-color: #e5e5e680;
+        background-color: var(--tableSectionToggleBg);
         border-radius: 0.7rem;
         padding: 0.6rem;
         display: flex;
@@ -328,26 +336,27 @@
         margin: 1rem;
         margin-bottom: 0rem;
         .section-table-toggle-element {
-          font-size: 13px;
+          font-size: 12px;
+          font-weight: 500;
           flex: 1;
           padding: 0.5rem;
           white-space: nowrap;
           text-align: center;
-          color: #636467;
+          color: var(--InActiveToggleBg);
           border-radius: 0.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
           cursor: pointer;
-          transition-duration: 300ms;
+          // transition-duration: 300ms;
         }
         .section-table-toggle-element-selected {
-          background-color: white;
-          color: #19191a;
+          background-color: var(--cardBackgroud);
+          color: var(--black191);
           cursor: default;
           &:hover {
-            background-color: white;
+            background-color: var(--cardBackgroud);
           }
         }
       }
@@ -356,7 +365,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: white;
+      background-color: var(--cardBackgroud);
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
         0px 1px 1px rgba(0, 0, 0, 0.04);
 
@@ -377,7 +386,7 @@
           // transform: translateY(-31px);
           flex: 1;
           padding: 0rem;
-          background-color: white;
+          background-color: var(--cardBackgroud);
           padding-left: 0.5rem;
           padding-right: 2rem;
           font-size: 16px;
@@ -424,14 +433,14 @@
                   align-items: center;
 
                   .replaceAddressListMobileBtn {
-                    background-color: #19191a;
-                    color: #fff;
+                    background-color: var(--black191);
+                    color: var(--cardBackgroud);
                     padding: 0.6rem 1.2rem;
                     border-radius: 0.8rem;
                   }
                   .addToAddressListMobileBtn {
-                    background-color: #f2f2f2;
-                    color: #19191a;
+                    background-color: var(--primaryBackgroud);
+                    color: var(--black191);
                     padding: 0.6rem 1.2rem;
                     border-radius: 0.8rem;
                     margin-right: 1rem;
@@ -473,8 +482,18 @@
       flex: 1;
       padding: 2rem;
       padding-bottom: 0;
+      background-color: var(--primaryBackgroud);
       display: flex;
       flex-direction: column;
+      .mobile-dark-mode-toggle-button {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        background-color: var(--mobileModeToggleBg);
+      }
       .mobileFooterContainer {
         flex: 1;
         display: flex;
@@ -482,7 +501,7 @@
         justify-content: flex-end;
       }
       .accountsAmountContainer {
-        background-color: #e5e5e6;
+        background-color: var(--mobileWalletHeaderBg);
         padding: 1.6rem 2rem;
         border-radius: 12px;
         margin-bottom: 2.3rem;
@@ -499,8 +518,10 @@
             .eyeAndAccountImage {
               height: 1.6rem;
               margin-right: 0.5rem;
+              filter: var(--invertColor);
             }
             .eyeAndAccountArrow {
+              filter: var(--invertColor);
               height: 1.25rem;
               width: 1.25rem;
               height: 1.6rem;
@@ -508,12 +529,15 @@
             }
           }
         }
+        .inter-display-semi-bold {
+          color: var(--primaryTextColor);
+        }
         .accountsAmountRemaining {
           margin-top: 0.5rem;
         }
       }
       .balance-sheet-card {
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
           0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
         border-radius: 12px;
@@ -522,7 +546,7 @@
         user-select: none;
         position: relative;
         cursor: pointer;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         padding: 0;
         .balance-card-header {
           display: flex;
@@ -548,13 +572,14 @@
             justify-content: flex-start;
             &:hover {
               .defiMenu {
-                filter: opacity(1);
+                filter: var(--invertColor);
               }
+
               .balance-sheet-card-credit-title {
-                color: #000000;
+                color: var(--black191);
               }
               .balance-sheet-card-credit-amount {
-                color: #000000;
+                color: var(--black191);
               }
             }
           }
@@ -564,6 +589,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
+
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -583,13 +609,14 @@
             justify-content: flex-end;
             &:hover {
               .defiMenu {
-                filter: opacity(1);
+                filter: var(--invertColor);
               }
+
               .balance-sheet-card-credit-title {
-                color: #000000;
+                color: var(--black191);
               }
               .balance-sheet-card-credit-amount {
-                color: #000000;
+                color: var(--black191);
               }
             }
           }
@@ -599,6 +626,7 @@
               .defiMenu {
                 filter: opacity(0.5);
               }
+
               .balance-sheet-card-credit-title {
                 color: #636467;
               }
@@ -607,19 +635,21 @@
               }
             }
           }
+
           .balance-sheet-card-credit-title {
             margin-right: 0.8rem;
-            color: #636467;
+            color: var(--secondaryDarkTextColor);
           }
           .balance-sheet-card-credit-amount {
             margin-right: 0.8rem;
             color: #b0b1b3;
           }
+
           .balance-sheet-card-credit-title-selected {
-            color: #000000;
+            color: var(--black191);
           }
           .balance-sheet-card-credit-amount-selected {
-            color: #000000;
+            color: var(--black191);
           }
         }
 
@@ -679,11 +709,12 @@
             align-items: center;
             justify-content: space-between;
             padding: 1.15rem 0rem;
-            border-top: 1px solid rgba(229, 229, 230, 0.5);
+            border-top: 1px solid var(--deifSectionalBOrder);
             margin-right: 1.6rem;
 
             .balance-amt {
-              background-color: rgba(229, 229, 230, 0.5);
+              background: var(--tableCostCommonBg);
+              color: var(--tableDataColor) !important;
               border-radius: 4px;
               padding: 6px;
             }
@@ -698,10 +729,10 @@
           cursor: pointer;
           padding: 1.6rem 2rem;
           .portfolioNetworksText {
-            color: #636467;
+            color: var(--secondaryDarkTextColor);
           }
         }
-        background-color: #ffffff;
+        background-color: var(--cardBackgroud);
         box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
           0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
         border-radius: 12px;
@@ -712,14 +743,14 @@
         //   cursor: pointer;
         position: relative;
         cursor: pointer;
-        transition-duration: 300ms;
+        // transition-duration: 300ms;
         &:hover {
           .defiMenu {
-            filter: opacity(1);
+            filter: var(--invertColor);
           }
           .chain-card-child {
             .portfolioNetworksText {
-              color: #000000;
+              color: var(--primaryTextColor);
             }
           }
         }
@@ -728,7 +759,7 @@
           // margin-top: 1rem;
           position: absolute;
           top: 4.3rem;
-          background-color: #ffffff;
+          background-color: var(--cardBackgroud);
           left: 0;
           box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
             0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
@@ -765,16 +796,18 @@
             justify-content: space-between;
             padding: 1rem 0rem;
             margin-right: 1.6rem;
-            border-top: 1px solid rgba(229, 229, 230, 0.5);
+            border-top: 1px solid var(--borderwhiteDarkLight);
 
             span img {
               position: relative;
               margin-right: 1rem;
               z-index: 1;
+              // filter: var(--invertColor);
             }
 
             .chain-list-amt {
-              background-color: rgba(229, 229, 230, 0.5);
+              background: var(--tableCostCommonBg);
+              color: var(--tableDataColor) !important;
               border-radius: 4px;
               padding: 6px;
             }
@@ -792,7 +825,7 @@
           }
           .chain-card-child {
             .portfolioNetworksText {
-              color: #636467;
+              color: var(--sidebarTextColor);
             }
           }
         }
@@ -803,13 +836,13 @@
         }
         .chain-card-child {
           .portfolioNetworksText {
-            color: #000000;
+            color: var(--sidebarTextColor);
           }
         }
       }
       .fillter_tabs_section {
         .custom-dropdown {
-          background-color: rgba(229, 229, 230, 0.5);
+          background-color: var(--mobileTransactionFiltersBg);
 
           .dropdown-footer {
             .dropdown-btn {
@@ -862,13 +895,40 @@
 
   .mobileSeeMoreBtnTxt {
     font-size: 13px;
-    color: #4f4f4f;
     font-weight: 500;
+    color: var(--seeMoreColor);
   }
   .mobileSeeMoreBtnIcon {
     margin-left: 0.5rem;
     margin-right: 0.3rem;
     filter: brightness(0.5);
     height: 8px;
+  }
+}
+
+.hide-scrollbar {
+  &::-webkit-scrollbar {
+    width: 0rem !important;
+    height: 0rem !important;
+    background-color: transparent !important;
+    display: none !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 0rem !important;
+    width: 0rem !important;
+    background-color: transparent !important;
+    display: none !important;
+  }
+  div::-webkit-scrollbar {
+    width: 0rem !important;
+    height: 0rem !important;
+    background-color: transparent !important;
+    display: none !important;
+  }
+  div::-webkit-scrollbar-thumb {
+    height: 0rem !important;
+    width: 0rem !important;
+    background-color: transparent !important;
+    display: none !important;
   }
 }

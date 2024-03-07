@@ -26,7 +26,7 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
 
   render() {
     return (
-      <div className="mobileSmartMoneyPage">
+      <div className="mobileSmartMoneyPage smart-money-mobile-expanded">
         {this.props.signInModal ? (
           <SmartMoneyMobileModalContainer onHide={this.props.hideAllModals}>
             <SmartMoneyMobileSignInUp
@@ -157,7 +157,7 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70vh",
-              backgroundColor: "white",
+              backgroundColor: "var(--cardBackgroud)",
               borderRadius: "1rem",
               margin: "1.5rem 0rem",
             }}

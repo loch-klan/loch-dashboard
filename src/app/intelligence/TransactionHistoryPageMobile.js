@@ -142,7 +142,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
               alignItems: "center",
               justifyContent: "center",
               height: "70vh",
-              backgroundColor: "white",
+              backgroundColor: "var(--cardBackgroud)",
               borderRadius: "1rem",
               margin: "2rem 0rem",
             }}
@@ -153,7 +153,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
           <div>
             <div
               style={{
-                backgroundColor: "white",
+                backgroundColor: "var(--cardBackgroud)",
                 borderRadius: "1.2rem",
                 padding: "0rem",
               }}
@@ -164,7 +164,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   marginTop: "2rem",
                   paddingTop: "0.5rem",
                 }}
-                className={`freezeTheFirstColumn section-table section-table-mobile-scroll  ${
+                className={`freezeTheFirstColumn section-table section-table-mobile-scroll hide-scrollbar  ${
                   this.props.tableLoading || this.props.tableData < 1
                     ? ""
                     : "tableWatermarkOverlay"

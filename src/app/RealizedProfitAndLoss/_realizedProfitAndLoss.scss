@@ -26,9 +26,9 @@
     width: 100%;
     .timeCalendarBadgeWrapper {
       width: 100%;
-      border-color: #19191a;
+      border-color: var(--greyCardBackgroud);
       .timeCalBadge {
-        border-color: #19191a;
+        border-color: var(--greyCardBackgroud);
       }
     }
 

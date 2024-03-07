@@ -248,7 +248,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "10px",
-            backgroundColor: "white",
+            backgroundColor: "var(--cardBackgroud)",
           }}
         >
           <Loading />

@@ -487,7 +487,7 @@ class CustomDropdown extends Component {
         style={{ position: "relative" }}
       >
         <div
-          className={`placeholderPriceDropdown ${
+          className={`placeholderPriceDropdown  ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme
@@ -551,7 +551,7 @@ class CustomDropdown extends Component {
           )}
         </div>
         <div
-          className={`dropdown-content-price ${
+          className={`dropdown-content-price input-noshadow-dark ${
             this.state.showMenu ? "show" : ""
           }`}
           style={{
@@ -658,7 +658,7 @@ class CustomDropdown extends Component {
           {!this.props.singleSelect ? (
             <div className="dropdown-footer">
               <span
-                className="secondary-btn dropdown-btn"
+                className="secondary-btn dropdown-btn btn-bg-white-outline-black hover-bg-black"
                 onClick={this.ClearAll}
                 onMouseEnter={() => {
                   this.setState({
@@ -683,7 +683,7 @@ class CustomDropdown extends Component {
                 )}
               </span>
               <span
-                className="primary-btn dropdown-btn"
+                className="primary-btn dropdown-btn btn-bg-black hover-bg-white-outline-black"
                 onClick={this.Apply}
                 onMouseEnter={() => {
                   this.setState({

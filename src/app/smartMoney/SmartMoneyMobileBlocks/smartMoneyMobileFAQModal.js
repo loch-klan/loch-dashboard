@@ -101,7 +101,7 @@ class smartMoneyMobileFAQModal extends BaseReactComponent {
             />
           </div>
         </div>
-        <div className="msmpModalMainIconWhiteContainer">
+        <div className="msmpModalMainIconWhiteContainer popup-main-icon-with-border-mobile">
           <Image
             src={SmartMoneyFaqModalIcon}
             onLoad={() => {

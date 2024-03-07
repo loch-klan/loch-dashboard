@@ -9,7 +9,7 @@ class AddSmartMoneyAddressesModalMessagesBox extends BaseReactComponent {
     return (
       <div className="addCommunityTopAccountsWrapperAdded">
         <Modal.Header className="addCommunityTopAccountsAddedHeader">
-          <div className="api-modal-header">
+          <div className="api-modal-header popup-main-icon-with-border">
             <Image src={TrophyIcon} />
           </div>
           {!this.props.hideCrossBtn ? (

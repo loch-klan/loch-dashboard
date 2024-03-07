@@ -414,13 +414,17 @@ export const getAssetProfitLoss = (
             dispatch({
               type: PORTFOLIO_ASSET,
               payload: {
-                ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
+                ProfitLossAsset: getProfitLossAsset(
+                  res.data.data?.profit_loss,
+                  ctx
+                ),
+                ProfitLossAssetData: res.data.data?.profit_loss,
               },
             });
           }
           if (ctx.setProfitLossAssetLocal) {
             ctx.setProfitLossAssetLocal(
-              getProfitLossAsset(res.data.data?.profit_loss)
+              getProfitLossAsset(res.data.data?.profit_loss, ctx)
             );
           }
           const shouldRecallApis =
@@ -452,6 +456,20 @@ export const getAssetProfitLoss = (
       .catch((err) => {
         // console.log("err ", err)
       });
+  };
+};
+export const updateAssetProfitLoss = (passedData, ctx) => {
+  return async function (dispatch, getState) {
+    dispatch({
+      type: PORTFOLIO_ASSET,
+      payload: {
+        ProfitLossAsset: getProfitLossAsset(passedData, ctx),
+        ProfitLossAssetData: passedData,
+      },
+    });
+    if (ctx.setProfitLossAssetLocal) {
+      ctx.setProfitLossAssetLocal(getProfitLossAsset(passedData, ctx));
+    }
   };
 };
 

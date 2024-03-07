@@ -9,6 +9,8 @@ import {
   NewWelcomeTrashIcon,
   TrendingFireIcon,
   TrendingWalletIcon,
+  darkModeIcon,
+  lightModeIcon,
 } from "../../assets/images/icons";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import personRounded from "../../assets/images/icons/person-rounded.svg";
@@ -1454,7 +1456,32 @@ class NewWelcomeMobile extends BaseReactComponent {
         ) : null}
         <div className="new-homepage__header new-homepage__header-mobile">
           <div className="new-homepage__header-container new-homepage__header-container-mobile">
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-between">
+              {this.props.isDarkMode ? (
+                <button
+                  onClick={() => this.props.handleDarkMode("light")}
+                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode new-homepage-btn--blur--nover"
+                >
+                  <img
+                    style={{ height: "14px", width: "14px" }}
+                    src={lightModeIcon}
+                    alt=""
+                  />
+                  {/* Light Mode */}
+                </button>
+              ) : (
+                <button
+                  onClick={() => this.props.handleDarkMode("dark")}
+                  className="new-homepage-btn new-homepage-btn--blur new-homepage-btn--mode new-homepage-btn--blur--nover"
+                >
+                  <img
+                    style={{ height: "14px", width: "14px" }}
+                    src={darkModeIcon}
+                    alt=""
+                  />
+                  {/* Dark Mode */}
+                </button>
+              )}
               {this.state.lochUser &&
               (this.state.lochUser.email ||
                 this.state.lochUser.first_name ||
@@ -1608,10 +1635,14 @@ class NewWelcomeMobile extends BaseReactComponent {
                       gap: "8px",
                     }}
                   >
-                    <img src={TrendingFireIcon} alt="" />
+                    <img
+                      src={TrendingFireIcon}
+                      alt=""
+                      className="new-homepage__body-trending-address-icon"
+                    />
                     <div
                       style={{
-                        color: "#19191A",
+                        color: "var(--black191)",
                         fontSize: "16px",
                         fontWeight: "500",
                       }}
@@ -1684,7 +1715,7 @@ class NewWelcomeMobile extends BaseReactComponent {
                 {this.props.tableLoading ? (
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--cardBackgroud)",
                       height: "100%",
                       width: "100%",
                       display: "flex",

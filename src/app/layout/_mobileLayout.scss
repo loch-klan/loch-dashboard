@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: white;
+    background-color: var(--cardBackgroud);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
       0px 1px 1px rgba(0, 0, 0, 0.04);
     position: fixed;
@@ -41,7 +41,7 @@
         // transform: translateY(-31px);
         flex: 1;
         padding: 0rem;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         padding-left: 0.5rem;
         padding-right: 2rem;
         font-size: 16px;
@@ -88,14 +88,16 @@
                 align-items: center;
 
                 .replaceAddressListMobileBtn {
-                  background-color: #19191a;
-                  color: #fff;
+                  background: #19191a;
+                  border: 1px solid var(--topbarAdressAddBorder);
+                  color: #ffffff;
                   padding: 0.6rem 1.2rem;
                   border-radius: 0.8rem;
                 }
                 .addToAddressListMobileBtn {
-                  background-color: #f2f2f2;
-                  color: #19191a;
+                  background-color: var(--primaryFilter);
+                  border: 0.1rem solid var(--primaryFilter);
+                  color: var(--primaryTextColor);
                   padding: 0.6rem 1.2rem;
                   border-radius: 0.8rem;
                   margin-right: 1rem;
@@ -144,7 +146,7 @@
     left: 0;
     height: 64px;
     width: 100%;
-    background-color: white;
+    background-color: var(--cardBackgroud);
     box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.04),
       0px -4px 10px 0px rgba(0, 0, 0, 0.04);
     border-top: 1px solid var(rgba(229, 229, 230, 0.5));
@@ -167,18 +169,18 @@
           height: 24px;
           width: 24px;
         }
-        .portfolio-mobile-layout-nav-footer-inner-item-icon-active {
-          filter: brightness(0);
+        .portfolio-mobile-layout-nav-footer-inner-item-image-active {
+          filter: var(--invertColor);
         }
         .portfolio-mobile-layout-nav-footer-inner-item-text {
           font-size: 10px;
           font-weight: 600;
           line-height: 120%;
-          color: #b0b1b3;
+          color: var(--greyb0b);
         }
         &.portfolio-mobile-layout-nav-footer-inner-item-active {
           .portfolio-mobile-layout-nav-footer-inner-item-text {
-            color: #19191a;
+            color: var(--black191);
           }
         }
       }

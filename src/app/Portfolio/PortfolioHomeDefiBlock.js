@@ -279,7 +279,7 @@ class PortfolioHomeDefiBlock extends Component {
                   }}
                 >
                   <span
-                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-title-selected"
@@ -290,7 +290,7 @@ class PortfolioHomeDefiBlock extends Component {
                     Credit
                   </span>
                   <span
-                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isYeildToggle
                                 ? "balance-sheet-card-credit-amount-selected"
@@ -309,7 +309,7 @@ class PortfolioHomeDefiBlock extends Component {
                     style={
                       this.state.isYeildToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                           }
                         : { transform: "rotate(180deg)" }
                     }
@@ -331,7 +331,7 @@ class PortfolioHomeDefiBlock extends Component {
                   }}
                 >
                   <span
-                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-title inter-display-semi-bold f-s-13 secondaryDarkText
                              ${
                                this.state.isDebtToggle
                                  ? "balance-sheet-card-credit-title-selected"
@@ -342,7 +342,7 @@ class PortfolioHomeDefiBlock extends Component {
                     Debt
                   </span>
                   <span
-                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13
+                    className={`balance-sheet-card-credit-amount inter-display-semi-bold f-s-13 secondaryDarkText
                             ${
                               this.state.isDebtToggle
                                 ? "balance-sheet-card-credit-amount-selected"
@@ -361,7 +361,7 @@ class PortfolioHomeDefiBlock extends Component {
                     style={
                       this.state.isDebtToggle
                         ? {
-                            filter: "opacity(1)",
+                            filter: "var(--invertColor)",
                           }
                         : { transform: "rotate(180deg)" }
                     }
@@ -514,14 +514,14 @@ class PortfolioHomeDefiBlock extends Component {
                               <Row key={`carItem-${i}`} className="table-head">
                                 <Col md={3}>
                                   <div className="header-col">
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Asset
                                     </span>
                                   </div>
                                 </Col>
                                 <Col md={3}>
                                   <div className="header-col">
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Type
                                     </span>
                                   </div>
@@ -533,7 +533,7 @@ class PortfolioHomeDefiBlock extends Component {
                                     }}
                                     className="header-col"
                                   >
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       Balance
                                     </span>
                                   </div>
@@ -545,7 +545,7 @@ class PortfolioHomeDefiBlock extends Component {
                                     }}
                                     className="header-col"
                                   >
-                                    <span className="inter-display-medium f-s-12 lh-15 grey-4F4">
+                                    <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
                                       USD Value
                                     </span>
                                   </div>
