@@ -3352,11 +3352,17 @@ input {
   background: var(--yeildBottomBorder1) !important;
 }
 
-.input-hover-states {
-  input {
-    border: 1px solid var(--inputBorder) !important;
-    &:hover {
-      border: 1px solid var(--inputBorderHover) !important;
+.input-hover-states{
+  input{
+    border:1px solid var(--inputBorder) !important;
+    &::placeholder{
+      color: var(--inputBorder) !important;
+    }
+    &:hover{
+      border:1px solid var(--inputBorderHover) !important;
+      &::placeholder{
+        color: var(--inputBorder) !important;
+      }
     }
   }
 }
@@ -3386,6 +3392,7 @@ input {
   }
   .custom-control-label{
     color: var(--black191);
+    cursor: pointer;
   }
   &:hover{
     border: 1px solid var(--black191);
@@ -3410,7 +3417,19 @@ input {
   }
   
 }
+<<<<<<< HEAD
+
+.transaction-searchbar-full{
+  .form-group{
+    flex-grow: 1;
+
+  }
+  input{
+  }
+}
+=======
 .buttonAttachedImageCutomBtn {
   margin-left: 1rem;
   transition-duration: 0ms;
 }
+>>>>>>> 10fa9e517fe441c29dd7e9e2d38175cdb82b9b69
