@@ -175,7 +175,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   columnList={this.props.columnData}
                   message="No transactions found"
                   xAxisScrollable
-                  xAxisScrollableColumnWidth={3}
+                  xAxisScrollableColumnWidth={3.15}
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion

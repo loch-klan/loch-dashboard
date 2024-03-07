@@ -156,7 +156,7 @@ class PortfolioHomeNetworksBlock extends Component {
                           />
                           {chain?.name}
                         </span>
-                        <CustomOverlay
+                        {/* <CustomOverlay
                           text={
                             chain?.total
                               ? CurrencyType(false) +
@@ -172,14 +172,13 @@ class PortfolioHomeNetworksBlock extends Component {
                           isText={true}
                           position="top"
                           className={"fix-width"}
-                        >
-                          <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
-                            {chain?.total
-                              ? CurrencyType(false) +
-                                numToCurrency(chain?.total)
-                              : CurrencyType(false) + "0.00"}
-                          </span>
-                        </CustomOverlay>
+                        > */}
+                        <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                          {chain?.total
+                            ? CurrencyType(false) + numToCurrency(chain?.total)
+                            : CurrencyType(false) + "0.00"}
+                        </span>
+                        {/* </CustomOverlay> */}
                       </div>
                     );
                   })
