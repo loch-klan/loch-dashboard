@@ -66,13 +66,13 @@ class Emulations extends Component {
     };
   }
   history = this.props;
-  showAddCopyTradeAddress = () => {
+  showAddCopyTradeAddress = (isMobilePassed) => {
     CopyTradeAddCopyTrade({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
+    if ((userDetails && userDetails.email) || isMobilePassed) {
       this.setState({
         isAddCopyTradeAddress: true,
       });
@@ -459,6 +459,10 @@ class Emulations extends Component {
             emulationsLoading={this.state.emulationsLoading}
             showHideDustFun={this.handleDust}
             showHideDustVal={this.state.showDust}
+            emulationsUpdated={this.state.emulationsUpdated}
+            isAddCopyTradeAddress={this.state.isAddCopyTradeAddress}
+            hideAddCopyTradeAddress={this.hideAddCopyTradeAddress}
+            showAddCopyTradeAddress={this.showAddCopyTradeAddress}
           />
         </MobileLayout>
       );

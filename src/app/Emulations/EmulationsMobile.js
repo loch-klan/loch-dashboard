@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import TransactionTable from "../intelligence/TransactionTable";
+import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -10,12 +11,30 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
   render() {
     return (
-      <div className="assets-expanded-mobile">
-        <div className="mobile-header-container">
-          <h4>Portfolio Emulation</h4>
-          <p>All the trades you have copied</p>
+      <div className="assets-expanded-mobile copyTradeExpandedMobile">
+        <div className="mobile-header-container-parent">
+          <div className="mobile-header-container">
+            <h4>Copy Trade</h4>
+            <p>All the wallet addresses you have copied</p>
+          </div>
+          <div
+            onClick={() => {
+              this.props.showAddCopyTradeAddress(true);
+            }}
+            className="mobile-add-copy-trade-button"
+          >
+            Add copy trade
+          </div>
         </div>
 
+        {this.props.isAddCopyTradeAddress ? (
+          <AddEmulationsAddressModal
+            show={this.props.isAddCopyTradeAddress}
+            onHide={this.props.hideAddCopyTradeAddress}
+            emulationsUpdated={this.props.emulationsUpdated}
+            isMobile
+          />
+        ) : null}
         <div
           style={{
             backgroundColor: "var(--cardBackgroud",
