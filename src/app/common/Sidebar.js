@@ -1064,7 +1064,7 @@ function Sidebar(props) {
                           className="tool-tip-container-bottom-arrow"
                         > */}
                         <h3
-                          style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                          style={{ whiteSpace: "nowrap" }}
                           className="space-grotesk-medium wallet-amount"
                         >
                           {CurrencyType(false)}
