@@ -30,6 +30,7 @@
   --invertColor: invert(0);
   --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(1);
@@ -206,6 +207,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: invert(1);
@@ -372,6 +374,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;
