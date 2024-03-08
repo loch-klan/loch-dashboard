@@ -452,6 +452,8 @@ class Emulations extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          hideAddresses
+          hideFooter
         >
           <EmulationsMobile
             columnData={columnData}
