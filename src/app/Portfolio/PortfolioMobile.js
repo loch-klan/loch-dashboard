@@ -778,7 +778,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockOneItem(1);
+                    if (this.props.blockOneSelectedItem === 1)
+                      this.props.goToAssetsPage();
+                    else this.props.changeBlockOneItem(1);
                   }}
                 >
                   Assets
@@ -792,8 +794,12 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockOneItem(4);
-                    this.props.changeBlockThreeItem(2);
+                    if (this.props.blockThreeSelectedItem === 2)
+                      this.props.goToYieldOppPage();
+                    else {
+                      this.props.changeBlockOneItem(4);
+                      this.props.changeBlockThreeItem(2);
+                    }
                   }}
                 >
                   Yield opportunities
@@ -927,7 +933,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(1);
+                    if (this.props.blockTwoSelectedItem === 1) {
+                      this.props.goToRealizedGainsPage();
+                    } else this.props.changeBlockTwoItem(1);
                   }}
                 >
                   Flows
@@ -939,7 +947,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(2);
+                    if (this.props.blockTwoSelectedItem === 2) {
+                      this.props.goToGasFeesSpentPage();
+                    } else this.props.changeBlockTwoItem(2);
                   }}
                 >
                   Gas fees
@@ -954,8 +964,12 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockThreeItem(1);
-                    this.props.changeBlockTwoItem(4);
+                    if (this.props.blockThreeSelectedItem === 1) {
+                      this.props.goToCounterPartyVolumePage();
+                    } else {
+                      this.props.changeBlockThreeItem(1);
+                      this.props.changeBlockTwoItem(4);
+                    }
                   }}
                 >
                   Counterparties
@@ -1098,7 +1112,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(1);
+                    if (this.props.blockFourSelectedItem === 1) {
+                      this.props.goToPriceGaugePage();
+                    } else this.props.changeBlockFourItem(1);
                   }}
                 >
                   Price gauge
@@ -1110,7 +1126,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(2);
+                    if (this.props.blockFourSelectedItem === 2) {
+                      this.props.goToTransactionHistoryPage();
+                    } else this.props.changeBlockFourItem(2);
                   }}
                 >
                   Transactions
@@ -1122,7 +1140,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(3);
+                    if (this.props.blockFourSelectedItem === 3) {
+                      this.props.goToInsightsPage();
+                    } else this.props.changeBlockFourItem(3);
                   }}
                 >
                   Insights
