@@ -2,23 +2,143 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import TransactionTable from "../intelligence/TransactionTable";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
+import LoginMobile from "../home/NewAuth/LoginMobile";
+import SignUpMobile from "../home/NewAuth/SignUpMobile";
+import VerifyMobile from "../home/NewAuth/VerifyMobile";
+import { signIn, signUpWelcome, verifyUser } from "../onboarding/Api";
+import RedirectMobile from "../home/NewAuth/RedirectMobile";
+import { SendOtp, VerifyEmail } from "../common/Api";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      authmodal: "",
+      email: "",
+      emailSignup: "",
+      otp: "",
+    };
   }
   openCopyTradeModal = () => {
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.props.showAddCopyTradeAddress();
     } else {
-      // <Login sign up modal
+      this.setState({
+        authmodal: "login",
+      });
     }
   };
+  toggleAuthModal = (val = "") => {
+    this.setState({
+      authmodal: val,
+    });
+  };
+  handleChangeEmail = (val) => {
+    this.setState({
+      email: val,
+    });
+  };
+
+  handleSubmitEmail = (val = false) => {
+    if (this.state.email) {
+      const data = new URLSearchParams();
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
+      // EmailAddressAdded({ email_address: this.state.email, session_id: "" });
+      SendOtp(data, this, false, true);
+      // this.toggleAuthModal('verify');
+    }
+  };
+  handleSubmitOTP = () => {
+    if (this.state.otp && this.state.otp.length > 5) {
+      const data = new URLSearchParams();
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
+      data.append("otp_token", this.state.otp);
+      data.append("signed_up_from", "Copy trade");
+      VerifyEmail(data, this, true);
+    }
+  };
+  onHide = () => {
+    this.setState({
+      authmodal: "",
+    });
+  };
+  handleSubmitEmailSignup = (val = false) => {
+    if (this.state.emailSignup) {
+      const data = new URLSearchParams();
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
+      data.append("signed_up_from", "Copy trade");
+      // EmailAddressAddedSignUp({
+      //   email_address: this.state.emailSignup,
+      //   session_id: "",
+      //   isMobile: true,
+      // });
+      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+    }
+  };
+
   render() {
     return (
       <div className="assets-expanded-mobile copyTradeExpandedMobile">
+        {this.state.authmodal == "login" ? (
+          // <SmartMoneyMobileModalContainer
+          // onHide={this.toggleAuthModal}
+          // >
+          <LoginMobile
+            toggleModal={this.toggleAuthModal}
+            isMobile
+            email={this.state.email}
+            handleChangeEmail={(val) => {
+              this.setState({
+                email: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmail}
+            show={this.state.authmodal == "login"}
+          />
+        ) : // </SmartMoneyMobileModalContainer>
+        this.state.authmodal == "verify" ? (
+          <VerifyMobile
+            isMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "verify"}
+            handleSubmitEmail={this.handleSubmitEmail}
+            otp={this.state.otp}
+            handleChangeOTP={(val) => {
+              this.setState({
+                otp: val,
+              });
+            }}
+            handleSubmitOTP={this.handleSubmitOTP}
+          />
+        ) : this.state.authmodal == "signup" ? (
+          <SignUpMobile
+            toggleModal={this.toggleAuthModal}
+            isMobile
+            email={this.state.emailSignup}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            show={this.state.authmodal == "signup"}
+          />
+        ) : this.state.authmodal == "redirect" ? (
+          <RedirectMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal == "redirect"}
+          />
+        ) : null}
         <div className="mobile-header-container-parent">
           <div className="mobile-header-container">
             <h4>Copy Trade</h4>
@@ -83,7 +203,10 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  signUpWelcome,
+  verifyUser,
+};
 
 export default connect(
   mapStateToProps,
