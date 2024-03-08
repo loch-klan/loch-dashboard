@@ -399,10 +399,10 @@ class AddEmulationsAddressModal extends BaseReactComponent {
     if (this.state.metamaskWalletConnected || this.props.isMobile) {
       let data = new URLSearchParams();
       let tempAdd = "";
-      if (this.state.walletInput[0].address) {
-        tempAdd = this.state.walletInput[0].address;
-      } else if (this.state.walletInput[0].apiAddress) {
-        tempAdd = this.state.walletInput[0].apiAddress;
+      if (this.state.walletInput[1].address) {
+        tempAdd = this.state.walletInput[1].address;
+      } else if (this.state.walletInput[1].apiAddress) {
+        tempAdd = this.state.walletInput[1].apiAddress;
       }
       data.append("deposit", this.state.copyTradeAmount);
       data.append(
@@ -412,7 +412,15 @@ class AddEmulationsAddressModal extends BaseReactComponent {
           : ""
       );
       data.append("copy_address", tempAdd);
-      data.append("user_address", this.state.metamaskWalletConnected);
+      if (this.props.isMobile) {
+        if (this.state.walletInput[0].address) {
+          data.append("user_address", this.state.walletInput[0].address);
+        } else if (this.state.walletInput[0].apiAddress) {
+          data.append("user_address", this.state.walletInput[0].apiAddress);
+        }
+      } else {
+        data.append("user_address", this.state.metamaskWalletConnected);
+      }
       this.setState({
         loadAddBtn: true,
       });
