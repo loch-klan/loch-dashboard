@@ -28,7 +28,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             onClick={this.openCopyTradeModal}
             className="mobile-add-copy-trade-button"
           >
-            Add copy trade
+            Add
           </div>
         </div>
 

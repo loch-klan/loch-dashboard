@@ -32,12 +32,19 @@ import NewWelcome from "./app/home/NewWelcome";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import Emulations from "./app/Emulations/Emulations";
 import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
+import AutoLogin from "./app/AutoLogin/AutoLogin";
 const routes = [
   {
     path: "/",
     name: "Login",
     type: Route,
     component: Login,
+  },
+  {
+    path: "/auto-login",
+    name: "Auto Login",
+    type: Route,
+    component: AutoLogin,
   },
 
   {
