@@ -608,7 +608,7 @@ class MobileLayout extends BaseReactComponent {
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div id="mobileLayoutScrollContainer" className="mpcHomePage">
-                    <MobileDarkModeWrapper>
+                    <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (

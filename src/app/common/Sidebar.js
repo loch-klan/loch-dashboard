@@ -138,7 +138,16 @@ function Sidebar(props) {
   // submenu
 
   const [isSubmenu, setSubmenu] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+    window.sessionStorage.getItem("isSubmenu")
+      ? JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+      : {
+          me: true,
+          discover: false,
+          intelligence: false,
+          defi: true,
+          topAccount: false,
+          topAccountintelligence: false,
+        }
   );
 
   // preview address
@@ -1135,7 +1144,7 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isSubmenu.me && (
+                      {isSubmenu && isSubmenu.me && (
                         <>
                           <li>
                             <NavLink
@@ -1402,7 +1411,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content-closed">
-                    {!isSubmenu.discover && (
+                    {isSubmenu && !isSubmenu.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1498,7 +1507,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content">
-                    {!isSubmenu.discover && (
+                    {isSubmenu && !isSubmenu.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||

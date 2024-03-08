@@ -8,7 +8,14 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
     super(props);
     this.state = {};
   }
-
+  openCopyTradeModal = () => {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      this.props.showAddCopyTradeAddress();
+    } else {
+      // <Login sign up modal
+    }
+  };
   render() {
     return (
       <div className="assets-expanded-mobile copyTradeExpandedMobile">
@@ -18,12 +25,10 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             <p>All the wallet addresses you have copied</p>
           </div>
           <div
-            onClick={() => {
-              this.props.showAddCopyTradeAddress(true);
-            }}
+            onClick={this.openCopyTradeModal}
             className="mobile-add-copy-trade-button"
           >
-            Add copy trade
+            Add
           </div>
         </div>
 
