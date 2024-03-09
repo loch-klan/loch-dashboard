@@ -19,12 +19,18 @@ import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
 
 // add wallet
-import { ExportIconWhite } from "../../assets/images/icons/index.js";
+import {
+  EmultionSidebarIcon,
+  ExportIconWhite,
+  UserCreditScrollLeftArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -39,22 +45,69 @@ import {
   updateWalletListFlag,
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
-import Footer from "../common/footer.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
 import { getEmulations } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import "./_emulations.scss";
+import { Image } from "react-bootstrap";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLeftArrowDisabled: true,
+      isRightArrowDisabled: false,
+      currentCirclePosition: 0,
+      availableCopyTrades: [
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 10000000,
+          swapFrom: "UDSC",
+          swapToAmount: 20,
+          swapTo: "BTC",
+        },
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 600000,
+          swapFrom: "UDSC",
+          swapToAmount: 200,
+          swapTo: "ETH",
+        },
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 10000000,
+          swapFrom: "UDSC",
+          swapToAmount: 20,
+          swapTo: "BTC",
+        },
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 600000,
+          swapFrom: "UDSC",
+          swapToAmount: 200,
+          swapTo: "ETH",
+        },
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 10000000,
+          swapFrom: "UDSC",
+          swapToAmount: 20,
+          swapTo: "BTC",
+        },
+        {
+          wallet: "0x189129398172387129",
+          swapAmount: 600000,
+          swapFrom: "UDSC",
+          swapToAmount: 200,
+          swapTo: "ETH",
+        },
+      ],
       emulationsUpdated: false,
       isAddCopyTradeAddress: false,
       emulationsLocal: [],
       startTime: "",
-      emulationsLoading: true,
+      emulationsLoading: false,
       showDust: true,
       connectModal: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
@@ -130,16 +183,16 @@ class Emulations extends Component {
   }
 
   callEmulationsApi = (updatedAddress) => {
-    if (updatedAddress) {
-      this.setState({
-        emulationsUpdated: !this.state.emulationsUpdated,
-      });
-    }
-    this.setState({
-      emulationsLoading: true,
-    });
-    this.props.updateWalletListFlag("emulationsPage", true);
-    this.props.getEmulations(this);
+    // if (updatedAddress) {
+    //   this.setState({
+    //     emulationsUpdated: !this.state.emulationsUpdated,
+    //   });
+    // }
+    // this.setState({
+    //   emulationsLoading: true,
+    // });
+    // this.props.updateWalletListFlag("emulationsPage", true);
+    // this.props.getEmulations(this);
   };
   setLocalEmulationList = () => {
     if (this.props.emulationsState) {
@@ -446,7 +499,120 @@ class Emulations extends Component {
         },
       },
     ];
+    const newPosBase = () => {
+      if (this.state.availableCopyTrades) {
+        return this.state.availableCopyTrades.length;
+      }
+      return 1;
+      // return this.state.tasksList.length;
+    };
+    const scrollRight = () => {
+      if (this.state.isRightArrowDisabled) {
+        return;
+      }
+      // UserCreditRightScrollClickedMP({
+      //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+      // });
+      var myElement = document.getElementById("availableCopyTradeScrollBody");
+      var myElementWidth = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).clientWidth;
+      var myElementCurrentScrollPos = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).scrollLeft;
 
+      const newPos = myElementCurrentScrollPos + myElementWidth;
+      myElement.scroll({
+        left: newPos,
+        behavior: "smooth",
+      });
+      let currentCirPos = newPos / myElementWidth;
+      this.setState({
+        currentCirclePosition: currentCirPos,
+      });
+      if (newPos === (newPosBase() - 1) * myElementWidth) {
+        this.setState({
+          isRightArrowDisabled: true,
+          isLeftArrowDisabled: false,
+        });
+      } else {
+        this.setState({
+          isRightArrowDisabled: false,
+          isLeftArrowDisabled: false,
+        });
+      }
+    };
+    const scrollLeft = () => {
+      if (this.state.isLeftArrowDisabled) {
+        return;
+      }
+      // UserCreditLeftScrollClickedMP({
+      //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+      // });
+      var myElement = document.getElementById("availableCopyTradeScrollBody");
+      var myElementWidth = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).clientWidth;
+      var myElementCurrentScrollPos = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).scrollLeft;
+      const newPos = myElementCurrentScrollPos - myElementWidth;
+
+      myElement.scroll({
+        left: newPos,
+        behavior: "smooth",
+      });
+      let currentCirPos = newPos / myElementWidth;
+      this.setState({
+        currentCirclePosition: currentCirPos,
+      });
+      if (newPos <= 0) {
+        this.setState({
+          isLeftArrowDisabled: true,
+          isRightArrowDisabled: false,
+        });
+      } else {
+        this.setState({
+          isLeftArrowDisabled: false,
+          isRightArrowDisabled: false,
+        });
+      }
+    };
+    const handleAvailableTradeScroll = () => {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      this.timeout = setTimeout(() => {
+        var myElementWidth = document.getElementById(
+          "availableCopyTradeScrollBody"
+        ).clientWidth;
+        var newPos = document.getElementById(
+          "availableCopyTradeScrollBody"
+        ).scrollLeft;
+        let currentCirPos = newPos / myElementWidth;
+        this.setState({
+          currentCirclePosition: currentCirPos,
+        });
+        if (newPos === 0) {
+          this.setState({
+            isLeftArrowDisabled: true,
+            isRightArrowDisabled: false,
+          });
+        } else if (newPos === (newPosBase() - 1) * myElementWidth) {
+          this.setState({
+            isLeftArrowDisabled: false,
+            isRightArrowDisabled: true,
+          });
+        } else {
+          this.setState({
+            isLeftArrowDisabled: false,
+            isRightArrowDisabled: false,
+          });
+        }
+      }, 150);
+    };
     if (mobileCheck()) {
       return (
         <MobileLayout
@@ -554,6 +720,98 @@ class Emulations extends Component {
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
             />
+            {this.state.availableCopyTrades &&
+            this.state.availableCopyTrades.length > 0 ? (
+              <div className="available-copy-trades-container">
+                <div
+                  id="availableCopyTradeScrollBody"
+                  className="availableCopyTradeScrollBodyClass"
+                  onScroll={handleAvailableTradeScroll}
+                >
+                  {this.state.availableCopyTrades.map((curTradeData, index) => {
+                    return (
+                      <div className="available-copy-trades">
+                        <div className="available-copy-trades-content-container">
+                          <Image
+                            src={EmultionSidebarIcon}
+                            className="available-copy-trades-icon"
+                          />
+                          <div className="inter-display-medium f-s-16">
+                            Available Copy Trades
+                          </div>
+                          <div className="inter-display-medium f-s-16 available-copy-trades-address">
+                            {TruncateText(curTradeData.wallet)}
+                          </div>
+                        </div>
+                        <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
+                          Swap {numToCurrency(curTradeData.swapAmount)}{" "}
+                          {curTradeData.swapFrom} for{" "}
+                          {curTradeData.swapToAmount} {curTradeData.swapTo}? 
+                        </div>
+                        <div className="available-copy-trades-button-container">
+                          <div
+                            ref={this.props.buttonRef}
+                            className={`topbar-btn`}
+                            id="address-button-two"
+                          >
+                            <span className="dotDotText">Reject</span>
+                          </div>
+                          <div
+                            ref={this.props.buttonRef}
+                            className={`topbar-btn ml-2 topbar-btn-dark`}
+                            id="address-button-two"
+                          >
+                            <span className="dotDotText">Confirm</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {this.state.availableCopyTrades.length > 1 ? (
+                  <div className="available-copy-trades-navigator">
+                    <div className="available-copy-trades-navigator-circles-container">
+                      {this.state.availableCopyTrades.map(
+                        (resCircle, resCircleIndex) => {
+                          return (
+                            <div
+                              style={{
+                                opacity:
+                                  resCircleIndex ===
+                                  this.state.currentCirclePosition
+                                    ? 1
+                                    : 0.2,
+                                marginLeft: resCircleIndex === 0 ? 0 : "0.5rem",
+                              }}
+                              className="available-copy-trades-navigator-circle"
+                            />
+                          );
+                        }
+                      )}
+                    </div>
+                    <div className="available-copy-trades-navigator-arrows">
+                      <Image
+                        style={{
+                          marginRight: "1rem",
+                          opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
+                        }}
+                        onClick={scrollLeft}
+                        className="availableCopyTradesArrowIcon"
+                        src={UserCreditScrollLeftArrowIcon}
+                      />
+                      <Image
+                        style={{
+                          opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
+                        }}
+                        onClick={scrollRight}
+                        className="availableCopyTradesArrowIcon"
+                        src={UserCreditScrollRightArrowIcon}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
             <div
               style={{ marginBottom: "2.8rem" }}
               className="cost-table-section"

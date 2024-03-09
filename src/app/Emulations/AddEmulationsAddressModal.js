@@ -1,25 +1,21 @@
 import React from "react";
-import { Button, Image, Modal } from "react-bootstrap";
+import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 
 import {
-  CheckIcon,
   CloseIcon,
   EmultionSidebarIcon,
-  UserCreditScrollRightArrowIcon,
+  UserCreditScrollRightArrowIcon
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 // import { addAddressToWatchList } from "./redux/WatchListApi";
-import validator from "validator";
-import { WatchlistAddAddress } from "../../utils/AnalyticsFunctions";
-import { START_INDEX } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
-import { addEmulations } from "./EmulationsApi";
 import { toast } from "react-toastify";
+import validator from "validator";
+import { addEmulations } from "./EmulationsApi";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {

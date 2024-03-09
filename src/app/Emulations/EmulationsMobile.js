@@ -1,13 +1,13 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import TransactionTable from "../intelligence/TransactionTable";
-import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
+import { SendOtp, VerifyEmail } from "../common/Api";
 import LoginMobile from "../home/NewAuth/LoginMobile";
+import RedirectMobile from "../home/NewAuth/RedirectMobile";
 import SignUpMobile from "../home/NewAuth/SignUpMobile";
 import VerifyMobile from "../home/NewAuth/VerifyMobile";
-import { signIn, signUpWelcome, verifyUser } from "../onboarding/Api";
-import RedirectMobile from "../home/NewAuth/RedirectMobile";
-import { SendOtp, VerifyEmail } from "../common/Api";
+import TransactionTable from "../intelligence/TransactionTable";
+import { signUpWelcome, verifyUser } from "../onboarding/Api";
+import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
