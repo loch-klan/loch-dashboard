@@ -2061,6 +2061,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
               />
             )}
             <PageHeader
+              showpath
               title={
                 this.state.passedAddress
                   ? `Transactions for ${this.state.passedAddress}`
@@ -2072,7 +2073,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
                     this.state.passedAddress
                   : ""
               }
-              currentPage={"transaction-history"}
+              currentPage={"transactions"}
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

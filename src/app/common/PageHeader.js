@@ -108,7 +108,13 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      {props.showpath ? breadCrumb : ""}
+      <div
+        style={{
+          zIndex: 1000,
+        }}
+      >
+        {props.showpath ? breadCrumb : ""}
+      </div>
 
       <div className="header">
         <div className="header-left">
