@@ -103,7 +103,7 @@ const routes = [
     component: Emulations,
   },
   {
-    path: "/copy-trade-transactions",
+    path: "/copy-trade/transactions",
     name: "Emulations",
     type: PrivateRoute,
     component: EmulationTransactionsPage,

@@ -481,7 +481,7 @@ class Emulations extends Component {
             }
             const goToTransactions = () => {
               this.props.history.push({
-                pathname: "/copy-trade-transactions",
+                pathname: "/copy-trade/transactions",
                 state: {
                   passedAddress: holderValue,
                 },
@@ -714,11 +714,12 @@ class Emulations extends Component {
               subTitle="All the wallet addresses you have copied"
               btnText="Add copy trade"
               mainThemeBtn
-              currentPage={"emulations"}
+              currentPage={"copy-trade"}
               ShareBtn={true}
               exportBtnTxt="Click to export costs"
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
+              showpath
             />
             {this.state.availableCopyTrades &&
             this.state.availableCopyTrades.length > 0 ? (

@@ -826,9 +826,9 @@ function Sidebar(props) {
             </div>
 
             <div
-              className={
+              className={`${
                 props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
-              }
+              } ${props.isSidebarClosed ? "sidebar-body-closed" : ""}`}
             >
               {props.isSidebarClosed ? (
                 <div className="scroll-menu-wrapper-closed-container">

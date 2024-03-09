@@ -9,10 +9,11 @@
   nav {
     ol {
       align-items: center;
-      background-color: $grey-F2F;
+      background-color: transparent;
       border: none;
       padding: 0rem;
       margin-bottom: 2.4rem;
+      filter: var(--invertColor);
       // .breadcrumb{
       // }
       .breadcrumb-item + .breadcrumb-item::before {
@@ -110,7 +111,7 @@
           }
         }
 
-        &:hover{
+        &:hover {
           .custom-control {
             .custom-control-label {
               &::before {
