@@ -107,7 +107,7 @@ class Emulations extends Component {
       isAddCopyTradeAddress: false,
       emulationsLocal: [],
       startTime: "",
-      emulationsLoading: false,
+      emulationsLoading: true,
       showDust: true,
       connectModal: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
@@ -183,16 +183,16 @@ class Emulations extends Component {
   }
 
   callEmulationsApi = (updatedAddress) => {
-    // if (updatedAddress) {
-    //   this.setState({
-    //     emulationsUpdated: !this.state.emulationsUpdated,
-    //   });
-    // }
-    // this.setState({
-    //   emulationsLoading: true,
-    // });
-    // this.props.updateWalletListFlag("emulationsPage", true);
-    // this.props.getEmulations(this);
+    if (updatedAddress) {
+      this.setState({
+        emulationsUpdated: !this.state.emulationsUpdated,
+      });
+    }
+    this.setState({
+      emulationsLoading: true,
+    });
+    this.props.updateWalletListFlag("emulationsPage", true);
+    this.props.getEmulations(this);
   };
   setLocalEmulationList = () => {
     if (this.props.emulationsState) {
