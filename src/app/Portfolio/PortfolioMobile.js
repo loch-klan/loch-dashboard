@@ -798,6 +798,22 @@ class PortfolioMobile extends BaseReactComponent {
                 >
                   Yield opportunities
                 </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ${
+                    this.props.blockTwoSelectedItem === 3 &&
+                    this.props.blockOneSelectedItem !== 1 &&
+                    this.props.blockThreeSelectedItem !== 2
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockOneItem(4);
+                    this.props.changeBlockThreeItem(4);
+                    this.props.changeBlockTwoItem(3);
+                  }}
+                >
+                  NFT
+                </div>
               </div>
               <div className="mobile-portfolio-blocks-content">
                 {this.props.blockOneSelectedItem === 1 ? (
@@ -909,6 +925,50 @@ class PortfolioMobile extends BaseReactComponent {
                                 this.props.yieldOpportunitiesTotalCount - 10 > 1
                                   ? "opportunities"
                                   : "opportunity"
+                              }`
+                            : "See more"}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : this.props.blockTwoSelectedItem === 3 ? (
+                  <div>
+                    <div
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
+                        this.props.NFTData?.length < 1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${this.props.NFTData?.length?.length <= 10 ? "" : ""}`}
+                    >
+                      <TransactionTable
+                        message={"No yield opportunities found"}
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        tableData={this.props.NFTData}
+                        showDataAtBottom
+                        columnList={this.props.NFTColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={false}
+                        fakeWatermark
+                        xAxisScrollable
+                        yAxisScrollable
+                        xAxisScrollableColumnWidth={3}
+                      />
+                    </div>
+                    {true ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          // onClick={this.props.goToYieldOppPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.props.NFTData && this.props.NFTData?.length > 10
+                            ? `See ${numToCurrency(
+                                this.props.NFTData?.length - 10,
+                                true
+                              ).toLocaleString("en-US")}+ NFT ${
+                                this.props.NFTData?.length - 10 > 1 ? "s" : ""
                               }`
                             : "See more"}
                         </div>
