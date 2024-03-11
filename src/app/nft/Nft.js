@@ -42,6 +42,7 @@ import { getAllWalletListApi } from "../wallet/Api";
 import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
