@@ -856,7 +856,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                 {!this.props.isMobile || this.state.mobileStep === 2 ? (
                   <>
                     <div
-                      className={`inter-display-medium grey-313 m-b-12 m-t-18 ${
+                      className={`inter-display-medium grey-313 m-b-12 m-t-20 ${
                         this.props.isMobile ? "f-s-15" : "f-s-13"
                       }`}
                     >
@@ -892,7 +892,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                 this.state.mobileStep === 1 ? (
                   <>
                     <div
-                      className={`inter-display-medium grey-313 m-b-12 m-t-18 ${
+                      className={`inter-display-medium grey-313 m-b-12 m-t-20 ${
                         this.props.isMobile ? "f-s-15" : "f-s-13"
                       }`}
                     >
