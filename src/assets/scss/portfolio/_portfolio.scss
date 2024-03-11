@@ -1298,7 +1298,7 @@
             color: var(--black191);
             cursor: pointer;
             &:hover {
-              background-color: var(--cardBackgroud);
+              background-color: var(--activeToggleBg);
             }
           }
         }

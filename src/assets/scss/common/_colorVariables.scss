@@ -175,6 +175,8 @@
 
   --inputBorder: #d4d4d4;
   --inputBorderHover: #0d0d0d;
+
+  --activeToggleBg: rgba(255, 255, 255, 0.7);
 }
 [data-theme="dark"] {
   // UPDATED
@@ -346,6 +348,8 @@
 
   --inputBorder: #313233;
   --inputBorderHover: #cacbcc;
+
+  --activeToggleBg: #1a1a1ad3;
 }
 [data-theme="dark2"] {
   // UPDATED

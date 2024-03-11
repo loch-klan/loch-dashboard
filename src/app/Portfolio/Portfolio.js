@@ -4816,7 +4816,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(3);
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToNftPage();
+                              else this.changeBlockTwoItem(3);
                             }}
                           >
                             NFT
