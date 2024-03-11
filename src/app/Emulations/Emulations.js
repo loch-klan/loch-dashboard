@@ -641,6 +641,15 @@ class Emulations extends Component {
             isAddCopyTradeAddress={this.state.isAddCopyTradeAddress}
             hideAddCopyTradeAddress={this.hideAddCopyTradeAddress}
             showAddCopyTradeAddress={this.showAddCopyTradeAddress}
+            scrollLeft={scrollLeft}
+            scrollRight={scrollRight}
+            isRightArrowDisabled={this.state.isRightArrowDisabled}
+            isLeftArrowDisabled={this.state.isLeftArrowDisabled}
+            goToScrollPosition={goToScrollPosition}
+            currentCirclePosition={this.state.currentCirclePosition}
+            availableCopyTrades={this.state.availableCopyTrades}
+            buttonRef={this.props.buttonRef}
+            handleAvailableTradeScroll={handleAvailableTradeScroll}
           />
         </MobileLayout>
       );
