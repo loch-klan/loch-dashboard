@@ -340,7 +340,6 @@ class MobileLayout extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
     }
-    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {

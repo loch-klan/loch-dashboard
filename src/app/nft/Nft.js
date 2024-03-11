@@ -23,7 +23,6 @@ import {
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
