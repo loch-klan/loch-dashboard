@@ -748,7 +748,7 @@ class Emulations extends Component {
                             className="available-copy-trades-icon"
                           />
                           <div className="inter-display-medium f-s-16">
-                            Available Copy Trades
+                            Available Copy Trade
                           </div>
                           <div className="inter-display-medium f-s-16 available-copy-trades-address">
                             {TruncateText(curTradeData.wallet)}
