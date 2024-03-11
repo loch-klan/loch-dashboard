@@ -95,7 +95,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
   render() {
     return (
-      <div className="assets-expanded-mobile copyTradeExpandedMobile">
+      <div
+        style={{
+          paddingBottom: "2rem",
+        }}
+        className="assets-expanded-mobile copyTradeExpandedMobile"
+      >
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -185,19 +190,21 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       gap: "2rem",
                     }}
                   >
-                    <div className="available-copy-trades-content-container">
-                      <Image
-                        src={EmultionSidebarIcon}
-                        className="available-copy-trades-icon"
-                      />
-                      <div className="inter-display-medium f-s-16">
-                        Available Copy Trade
+                    <div className="available-copy-trades-content-container available-copy-trades-content-container-mobile">
+                      <div className="available-copy-trades-content-child">
+                        <Image
+                          src={EmultionSidebarIcon}
+                          className="available-copy-trades-icon"
+                        />
+                        <div className="inter-display-medium f-s-16">
+                          Available Copy Trade
+                        </div>
                       </div>
                       <div className="inter-display-medium f-s-16 available-copy-trades-address">
                         {TruncateText(curTradeData.wallet)}
                       </div>
                     </div>
-                    <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
+                    <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container available-copy-trades-transaction-container-mobile">
                       Swap {numToCurrency(curTradeData.swapAmount)}{" "}
                       {curTradeData.swapFrom} for {curTradeData.swapToAmount}{" "}
                       {curTradeData.swapTo}? 
@@ -282,7 +289,6 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               overflowX: "scroll",
               padding: "0rem 0.5rem",
               paddingTop: "0.5rem",
-              minHeight: "300px",
             }}
             className={`freezeTheFirstColumn newHomeTableContainer  ${
               this.props.emulationsLoading || this.props.tableData < 1
@@ -301,7 +307,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               isArrow={true}
               isLoading={this.props.emulationsLoading}
               isAnalytics="average cost basis"
-              fakeWatermark
+              // fakeWatermark
               xAxisScrollable
               yAxisScrollable
               xAxisScrollableColumnWidth={3}
