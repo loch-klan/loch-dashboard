@@ -8,6 +8,13 @@ import VerifyMobile from "../home/NewAuth/VerifyMobile";
 import TransactionTable from "../intelligence/TransactionTable";
 import { signUpWelcome, verifyUser } from "../onboarding/Api";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
+import { Image } from "react-bootstrap";
+import {
+  EmultionSidebarIcon,
+  UserCreditScrollLeftArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
+import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -160,9 +167,111 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             isMobile
           />
         ) : null}
+        {this.props.availableCopyTrades &&
+        this.props.availableCopyTrades.length > 0 ? (
+          <div className="available-copy-trades-container">
+            <div
+              id="availableCopyTradeScrollBody"
+              className="availableCopyTradeScrollBodyClass"
+              onScroll={this.props.handleAvailableTradeScroll}
+            >
+              {this.props.availableCopyTrades.map((curTradeData, index) => {
+                return (
+                  <div
+                    className="available-copy-trades"
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      gap: "2rem",
+                    }}
+                  >
+                    <div className="available-copy-trades-content-container">
+                      <Image
+                        src={EmultionSidebarIcon}
+                        className="available-copy-trades-icon"
+                      />
+                      <div className="inter-display-medium f-s-16">
+                        Available Copy Trade
+                      </div>
+                      <div className="inter-display-medium f-s-16 available-copy-trades-address">
+                        {TruncateText(curTradeData.wallet)}
+                      </div>
+                    </div>
+                    <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
+                      Swap {numToCurrency(curTradeData.swapAmount)}{" "}
+                      {curTradeData.swapFrom} for {curTradeData.swapToAmount}{" "}
+                      {curTradeData.swapTo}? 
+                    </div>
+                    <div className="available-copy-trades-button-container available-copy-trades-button-container--mobile">
+                      <div
+                        ref={this.props.buttonRef}
+                        className={`topbar-btn`}
+                        id="address-button-two"
+                      >
+                        <span className="dotDotText">Reject</span>
+                      </div>
+                      <div
+                        ref={this.props.buttonRef}
+                        className={`topbar-btn ml-2 topbar-btn-dark`}
+                        id="address-button-two"
+                      >
+                        <span className="dotDotText">Confirm</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {this.props.availableCopyTrades.length > 1 ? (
+              <div className="available-copy-trades-navigator">
+                <div className="available-copy-trades-navigator-circles-container">
+                  {this.props.availableCopyTrades.map(
+                    (resCircle, resCircleIndex) => {
+                      return (
+                        <div
+                          style={{
+                            opacity:
+                              resCircleIndex ===
+                              this.props.currentCirclePosition
+                                ? 1
+                                : 0.2,
+                            marginLeft: resCircleIndex === 0 ? 0 : "0.5rem",
+                          }}
+                          onClick={() => {
+                            this.props.goToScrollPosition(resCircleIndex);
+                          }}
+                          className="available-copy-trades-navigator-circle"
+                        />
+                      );
+                    }
+                  )}
+                </div>
+                <div className="available-copy-trades-navigator-arrows">
+                  <Image
+                    style={{
+                      marginRight: "1rem",
+                      opacity: this.props.isLeftArrowDisabled ? 0.5 : 1,
+                    }}
+                    onClick={this.props.scrollLeft}
+                    className="availableCopyTradesArrowIcon"
+                    src={UserCreditScrollLeftArrowIcon}
+                  />
+                  <Image
+                    style={{
+                      opacity: this.props.isRightArrowDisabled ? 0.5 : 1,
+                    }}
+                    onClick={this.props.scrollRight}
+                    className="availableCopyTradesArrowIcon"
+                    src={UserCreditScrollRightArrowIcon}
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         <div
           style={{
-            backgroundColor: "var(--cardBackgroud",
+            backgroundColor: "var(--cardBackgroud)",
             borderRadius: "1.2rem",
             padding: "0rem",
             paddingBottom: "0.5rem",
@@ -173,6 +282,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               overflowX: "scroll",
               padding: "0rem 0.5rem",
               paddingTop: "0.5rem",
+              minHeight: "300px",
             }}
             className={`freezeTheFirstColumn newHomeTableContainer  ${
               this.props.emulationsLoading || this.props.tableData < 1
