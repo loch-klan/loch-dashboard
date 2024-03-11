@@ -580,6 +580,16 @@ class Emulations extends Component {
         });
       }
     };
+    const goToScrollPosition = (blockPos) => {
+      var myElement = document.getElementById("availableCopyTradeScrollBody");
+      var myElementWidth = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).clientWidth;
+      myElement.scroll({
+        left: myElementWidth * blockPos,
+        behavior: "smooth",
+      });
+    };
     const handleAvailableTradeScroll = () => {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -783,6 +793,9 @@ class Emulations extends Component {
                                     ? 1
                                     : 0.2,
                                 marginLeft: resCircleIndex === 0 ? 0 : "0.5rem",
+                              }}
+                              onClick={() => {
+                                goToScrollPosition(resCircleIndex);
                               }}
                               className="available-copy-trades-navigator-circle"
                             />
