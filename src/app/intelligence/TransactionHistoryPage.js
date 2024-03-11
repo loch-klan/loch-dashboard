@@ -2441,7 +2441,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                     onClick={this.showDust}
                     className="pageHeaderShareContainer new-dust-button"
                   >
-                    <div className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
+                    <div
+                      className={`smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn ${
+                        this.state.showDust ? "pageHeaderShareBtnSelected" : ""
+                      }`}
+                    >
                       <CheckboxCustomTable
                         handleOnClick={() => {}}
                         noMargin
