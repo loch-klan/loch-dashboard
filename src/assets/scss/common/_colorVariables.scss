@@ -176,6 +176,8 @@
   --inputBorder:#d4d4d4;
   --inputBorderHover:#0d0d0d;
 
+  --whiteOnlyInvert: invert(1);
+
 }
 [data-theme="dark"] {
   // UPDATED
@@ -346,6 +348,8 @@
 
   --inputBorder:#313233;
   --inputBorderHover:#cacbcc;
+
+  --whiteOnlyInvert: invert(0);
 }
 [data-theme="dark2"] {
   // UPDATED

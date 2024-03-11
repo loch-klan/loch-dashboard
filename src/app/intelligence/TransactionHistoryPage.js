@@ -108,6 +108,7 @@ import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { isEqual } from "lodash";
 import MobileLayout from "../layout/MobileLayout.js";
 import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
+import CheckboxCustomTable from "../common/customCheckboxTable.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -2441,17 +2442,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                     className="pageHeaderShareContainer new-dust-button"
                   >
                     <div className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn">
-                      <BootstrapForm.Check
-                        type="checkbox"
-                        className="transaction-custom-checkbox"
-                        checked={this.state.showDust ? true : false}
-                        label={
-                          this.state.showDust
-                            ? "Reveal dust (less than $1)"
-                            : "Hide dust (less than $1)"
-                        }
+                      <CheckboxCustomTable
+                        handleOnClick={() => {}}
+                        noMargin
+                        isChecked={this.state.showDust}
+                        isDustCheckbox
                       />
-                      <span class="checkmark"></span>
+                      <span>
+                        {this.state.showDust
+                          ? "Reveal dust (less than $1)"
+                          : "Hide dust (less than $1)"}
+                      </span>
                     </div>
                   </div>
                   <div sm={1}>
