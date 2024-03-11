@@ -36,7 +36,7 @@
   .mobile-header-container-parent {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
     .mobile-header-container {
       padding-right: 1rem;
     }
@@ -145,6 +145,16 @@
         }
       }
     }
+    .available-copy-trades-content-container-mobile {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .available-copy-trades-content-child {
+        display: flex;
+        align-items: center;
+      }
+    }
     .available-copy-trades-transaction-container {
       background-color: var(--swapContainer);
       flex: 1;
@@ -155,6 +165,9 @@
       align-items: center;
       justify-content: center;
       font-weight: 600;
+    }
+    .available-copy-trades-transaction-container-mobile {
+      width: 100%;
     }
     .available-copy-trades-button-container {
       display: flex;
@@ -201,6 +214,19 @@
           color: var(--topbarAdressAddColorHover);
           background-color: var(--topbarAdressAddBg);
           border: 1px solid #f2f2f3;
+        }
+      }
+
+      &.available-copy-trades-button-container--mobile {
+        width: 100%;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-left: 0px;
+        #address-button-two {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }
