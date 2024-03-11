@@ -1070,7 +1070,7 @@ class TopWalletAddressList extends Component {
                   </span>
                 </h2>
               ) : null}
-              {this.state.showFollowingAddress ? (
+              {this.state.showFollowingAddress && !this.props.hideFollow ? (
                 <div
                   ref={this.props.buttonRef}
                   className="ml-3 topWalletAddressListFollowShareBtn"

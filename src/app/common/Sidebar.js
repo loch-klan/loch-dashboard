@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
@@ -33,6 +34,7 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import logo from "../../image/Loch.svg";
 import {
+  MenuCopyTradelist,
   ExportMenu,
   FeedbackMenu,
   FeedbackSidebar,
@@ -104,6 +106,8 @@ function Sidebar(props) {
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
   const [shareModal, setShareModal] = React.useState(false);
+  const [isCopyTraderPopUpModal, setIsCopyTraderPopUpModal] =
+    React.useState(false);
   const [isAutoPopUpModal, setIsAutoPopUpModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
   const [signupModal, setSignupModal] = React.useState(false);
@@ -134,7 +138,16 @@ function Sidebar(props) {
   // submenu
 
   const [isSubmenu, setSubmenu] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+    window.sessionStorage.getItem("isSubmenu")
+      ? JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+      : {
+          me: true,
+          discover: false,
+          intelligence: false,
+          defi: true,
+          topAccount: false,
+          topAccountintelligence: false,
+        }
   );
 
   // preview address
@@ -385,7 +398,11 @@ function Sidebar(props) {
   const openLochTwitter = () => {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
-  const openSigninModal = () => {
+  const openSigninModal = (isFromCopyTrader) => {
+    if (isFromCopyTrader === true) {
+      setIsCopyTraderPopUpModal(true);
+    }
+
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
       return null;
@@ -400,6 +417,7 @@ function Sidebar(props) {
     });
   };
   const onCloseModal = () => {
+    setIsCopyTraderPopUpModal(false);
     setIsAutoPopUpModal(false);
     setComingDirectly(true);
     setSignUpModalAnimation(true);
@@ -539,33 +557,37 @@ function Sidebar(props) {
     let isPopup = JSON.parse(window.sessionStorage.getItem("isPopup"));
 
     setTimeout(() => {
-      // if isPopupActive = true then do not open this popup bcoz any other popup still open
-      let isPopupActive = JSON.parse(
-        window.sessionStorage.getItem("isPopupActive")
-      );
-      lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-      if (!isPopupActive) {
-        // console.log("inactive popup", isPopupActive);
-        if (!lochUser) {
-          // GeneralPopup({
-          //   session_id: getCurrentUser().id,
-          //   from: history.location.pathname.substring(1),
-          // });
-          // isPopup && handleSiginPopup();
-          // window.sessionStorage.setItem("isPopup", false);
-          if (isPopup) {
-            handleSiginPopup();
-            window.sessionStorage.setItem("isPopup", false);
-            GeneralPopup({
-              session_id: getCurrentUser().id,
-              from: history.location.pathname.substring(1),
-            });
+      const isCopyTradeModalOpen =
+        window.sessionStorage.getItem("copyTradeModalOpen");
+      if (!isCopyTradeModalOpen) {
+        // if isPopupActive = true then do not open this popup bcoz any other popup still open
+        let isPopupActive = JSON.parse(
+          window.sessionStorage.getItem("isPopupActive")
+        );
+        lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        if (!isPopupActive) {
+          // console.log("inactive popup", isPopupActive);
+          if (!lochUser) {
+            // GeneralPopup({
+            //   session_id: getCurrentUser().id,
+            //   from: history.location.pathname.substring(1),
+            // });
+            // isPopup && handleSiginPopup();
+            // window.sessionStorage.setItem("isPopup", false);
+            if (isPopup) {
+              handleSiginPopup();
+              window.sessionStorage.setItem("isPopup", false);
+              GeneralPopup({
+                session_id: getCurrentUser().id,
+                from: history.location.pathname.substring(1),
+              });
+            }
           }
+        } else {
+          //  if popup active then run same function
+          // console.log("active popup");
+          SiginModal();
         }
-      } else {
-        //  if popup active then run same function
-        // console.log("active popup");
-        SiginModal();
       }
     }, 15000);
   };
@@ -807,9 +829,9 @@ function Sidebar(props) {
             </div>
 
             <div
-              className={
+              className={`${
                 props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
-              }
+              } ${props.isSidebarClosed ? "sidebar-body-closed" : ""}`}
             >
               {props.isSidebarClosed ? (
                 <div className="scroll-menu-wrapper-closed-container">
@@ -1018,6 +1040,48 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
+                            text={"Copy Trade"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/copy-trade"
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
                             text={"Feedback"}
                           >
                             <div
@@ -1080,7 +1144,7 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isSubmenu.me && (
+                      {isSubmenu && isSubmenu.me && (
                         <>
                           <li>
                             <NavLink
@@ -1254,6 +1318,37 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/copy-trade"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
+                            </NavLink>
+                          </li>
                         </>
                       )}
                       <li>
@@ -1316,7 +1411,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content-closed">
-                    {!isSubmenu.discover && (
+                    {isSubmenu && !isSubmenu.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1340,24 +1435,35 @@ function Sidebar(props) {
                             </div>
                           </CustomOverlay>
                         ) : (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Sign in / up"}
-                          >
+                          <>
                             <div
-                              onClick={openSigninModal}
-                              className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
-                              id="sidebar-closed-sign-in-btn"
+                              onClick={() => {
+                                openSigninModal(true);
+                              }}
+                              id="sidebar-closed-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={"Sign in / up"}
                             >
-                              <Image
-                                className="sideBarFooterSignInIcon"
-                                src={PersonRoundedSigninIcon}
-                              />
-                            </div>
-                          </CustomOverlay>
+                              <div
+                                onClick={openSigninModal}
+                                className="sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                                id="sidebar-closed-sign-in-btn"
+                              >
+                                <Image
+                                  className="sideBarFooterSignInIcon"
+                                  src={PersonRoundedSigninIcon}
+                                />
+                              </div>
+                            </CustomOverlay>
+                          </>
                         )}
                       </ul>
                     )}
@@ -1401,7 +1507,7 @@ function Sidebar(props) {
                     </div>
                   </div>
                   <div className="sidebar-footer-content">
-                    {!isSubmenu.discover && (
+                    {isSubmenu && !isSubmenu.discover && (
                       <ul>
                         {lochUser &&
                         (lochUser.email ||
@@ -1450,23 +1556,35 @@ function Sidebar(props) {
                             </span>
                           </div>
                         ) : (
-                          <div
-                            onClick={openSigninModal}
-                            className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
-                            id="sidebar-open-sign-in-btn"
-                          >
-                            <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
-                              <Image
-                                style={{
-                                  height: "12px",
-                                  width: "12px",
-                                }}
-                                className="sideBarFooterSignInIcon"
-                                src={PersonRoundedSigninIcon}
-                              />
+                          <>
+                            <div
+                              onClick={() => {
+                                openSigninModal(true);
+                              }}
+                              id="sidebar-open-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+
+                            <div
+                              onClick={openSigninModal}
+                              className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                              id="sidebar-open-sign-in-btn"
+                            >
+                              <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerClosed">
+                                <Image
+                                  style={{
+                                    height: "12px",
+                                    width: "12px",
+                                  }}
+                                  className="sideBarFooterSignInIcon"
+                                  src={PersonRoundedSigninIcon}
+                                />
+                              </div>
+                              <div>Sign in / up</div>
                             </div>
-                            <div>Sign in / up</div>
-                          </div>
+                          </>
                         )}
                       </ul>
                     )}
@@ -1660,12 +1778,14 @@ function Sidebar(props) {
           hideSkip={true}
           title={isAutoPopUpModal ? "Sign in now" : "Sign in"}
           description={
-            isAutoPopUpModal
+            isCopyTraderPopUpModal
+              ? "Easily copy trade with other address"
+              : isAutoPopUpModal
               ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
               : "Get right back into your account"
           }
           stopUpdate={true}
-          tracking="Sign in button"
+          tracking={isCopyTraderPopUpModal ? "Copy trade" : "Sign in button"}
           goToSignUp={openSignUpModal}
         />
       ) : (
@@ -1673,6 +1793,10 @@ function Sidebar(props) {
       )}
       {signupModal ? (
         <ExitOverlay
+          customDesc={
+            isCopyTraderPopUpModal ? "Easily copy trade with other address" : ""
+          }
+          tracking={isCopyTraderPopUpModal ? "Copy trade" : ""}
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError

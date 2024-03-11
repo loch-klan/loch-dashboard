@@ -2,6 +2,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
   MobileNavFollow,
   MobileNavFollowActive,
   MobileNavHome,
@@ -79,6 +80,12 @@ class MobileLayout extends BaseReactComponent {
           path: "/watchlist",
         },
         {
+          activeIcon: EmultionSidebarIcon,
+          inactiveIcon: EmultionSidebarIcon,
+          text: "Copy Trade",
+          path: "/copy-trade",
+        },
+        {
           activeIcon: MobileNavLeaderboardActive,
           inactiveIcon: MobileNavLeaderboard,
           text: "Leaderboard",
@@ -89,12 +96,6 @@ class MobileLayout extends BaseReactComponent {
           inactiveIcon: MobileNavNFT,
           text: "NFT",
           path: "/nft",
-        },
-        {
-          activeIcon: MobileNavProfile,
-          inactiveIcon: MobileNavProfile,
-          text: "Sign Out",
-          path: "/",
         },
       ],
       userWalletList: [],
@@ -530,6 +531,7 @@ class MobileLayout extends BaseReactComponent {
     this.props.history.push("/welcome");
   };
   render() {
+    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -608,7 +610,7 @@ class MobileLayout extends BaseReactComponent {
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div id="mobileLayoutScrollContainer" className="mpcHomePage">
-                    <MobileDarkModeWrapper>
+                    <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (
@@ -691,6 +693,16 @@ class MobileLayout extends BaseReactComponent {
                         item.path === this.props.history.location.pathname
                           ? item.activeIcon
                           : item.inactiveIcon
+                      }
+                      style={
+                        item.path === "/copy-trade"
+                          ? {
+                              filter:
+                                activeTab === item.path
+                                  ? "brightness(0)"
+                                  : "brightness(1.5)",
+                            }
+                          : {}
                       }
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
