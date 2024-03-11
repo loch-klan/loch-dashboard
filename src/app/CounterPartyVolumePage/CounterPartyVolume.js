@@ -569,6 +569,8 @@ class CounterPartyVolume extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"counterparty-volume"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

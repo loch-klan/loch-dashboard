@@ -2,6 +2,12 @@ import React from "react";
 import "./_nft.scss";
 import HandleBrokenImages from "../common/HandleBrokenImages";
 import { DefaultNftTableIconIcon } from "../../assets/images/icons";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import {
+  CurrencyType,
+  convertNtoNumber,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 
 const NftMobileBlock = ({ data, style }) => {
   return (
@@ -35,8 +41,9 @@ const NftMobileBlock = ({ data, style }) => {
             justifyContent: "center",
           }}
         >
-          {data.imgs && data.imgs.length > 0
-            ? data.imgs?.slice(0, 3).map((item, index) => {
+          {data.imgs && data.imgs.length > 0 ? (
+            data.imgs?.slice(0, 3).map((item, index) => {
+              if (item) {
                 return (
                   <HandleBrokenImages
                     src={item}
@@ -45,8 +52,20 @@ const NftMobileBlock = ({ data, style }) => {
                     imageOnError={DefaultNftTableIconIcon}
                   />
                 );
-              })
-            : null}
+              }
+              return (
+                <HandleBrokenImages
+                  className="nftImageIcon"
+                  imageOnError={DefaultNftTableIconIcon}
+                />
+              );
+            })
+          ) : (
+            <HandleBrokenImages
+              className="nftImageIcon"
+              imageOnError={DefaultNftTableIconIcon}
+            />
+          )}
           {data.imgs && data.imgs.length > 3 ? (
             <span
               style={{
@@ -61,8 +80,32 @@ const NftMobileBlock = ({ data, style }) => {
           ) : null}
         </div>
       </div>
-      {/* <div className="msmbBody">
+      <div className="msmbBody">
         <div className="msmbBodyItem">
+          <div className="inter-display-medium msmbBITitle">Floor Price</div>
+          <div className={`inter-display-medium msmbBIAmount`}>
+            <CustomOverlay
+              position="top"
+              isIcon={false}
+              isInfo={true}
+              isText={true}
+              text={
+                data?.floor_price
+                  ? convertNtoNumber(data?.floor_price) + " ETH"
+                  : "0.00 ETH"
+              }
+            >
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {data?.floor_price
+                  ? numToCurrency(data?.floor_price.toFixed(2)).toLocaleString(
+                      "en-US"
+                    ) + " ETH"
+                  : "0.00 ETH"}
+              </span>
+            </CustomOverlay>
+          </div>
+        </div>
+        {/* <div className="msmbBodyItem">
           <div className="inter-display-medium msmbBITitle">
             Total Spent (ETH)
           </div>
@@ -91,8 +134,8 @@ const NftMobileBlock = ({ data, style }) => {
           <div className={`inter-display-medium msmbBIAmount`}>
             <span>{data?.volume}</span>
           </div>
-        </div>
-      </div> */}
+        </div> */}
+      </div>
     </div>
   );
 };

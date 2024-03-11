@@ -5,7 +5,7 @@ export default function HandleBrokenImages(props) {
     setHideImage(true);
   };
 
-  if (hideImage) {
+  if (hideImage || !props.src) {
     if (props.imageOnError) {
       return (
         <img
