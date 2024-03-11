@@ -65,6 +65,7 @@ export const addEmulations = (data, hideModal, resetBtn) => {
         }
         if (!res.data.error) {
           if (res.data.data) {
+            toast.success("Copy Trade Added");
             if (hideModal) {
               hideModal(true);
             }

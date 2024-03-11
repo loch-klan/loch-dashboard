@@ -6,7 +6,7 @@ import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 import {
   CloseIcon,
   EmultionSidebarIcon,
-  UserCreditScrollRightArrowIcon
+  UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
@@ -21,6 +21,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      mobileStep: props.isMobile ? 1 : 0,
       show: props.show,
       onHide: this.props.onHide,
       loadAddBtn: false,
@@ -343,23 +344,50 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       return true;
     }
     if (this.props.isMobile) {
-      let isDisableFlag = 0;
-      this.state.walletInput?.forEach((e) => {
-        let isDisableFlagChild = true;
-        if (e.address) {
-          e.coins.forEach((a) => {
-            if (a.chain_detected === true) {
-              isDisableFlagChild = false;
-            }
-          });
+      if (this.state.mobileStep === 1) {
+        let isDisableFlag = true;
+        this.state.walletInput.slice(1, 2)?.forEach((e) => {
+          if (e.address) {
+            e.coins.forEach((a) => {
+              if (a.chain_detected === true) {
+                isDisableFlag = false;
+              }
+            });
+          }
+        });
+
+        if (isDisableFlag) {
+          return true;
         }
-        if (!isDisableFlagChild) {
-          isDisableFlag = isDisableFlag + 1;
+        if (
+          (this.state.copyTradeAmount.length === 0 ||
+            isNaN(this.state.copyTradeAmount) ||
+            Number(this.state.copyTradeAmount) < 1) &&
+          (this.state.metamaskWalletConnected || this.props.isMobile)
+        ) {
+          return true;
         }
-      });
-      if (isDisableFlag < 2) {
-        return true;
+      } else if (this.state.mobileStep === 2) {
+        let isDisableFlag = true;
+        this.state.walletInput.slice(0, 1)?.forEach((e) => {
+          if (e.address) {
+            e.coins.forEach((a) => {
+              if (a.chain_detected === true) {
+                isDisableFlag = false;
+              }
+            });
+          }
+        });
+
+        if (isDisableFlag) {
+          return true;
+        }
+        if (!validator.isEmail(this.state.notificationEmailAddress)) {
+          return true;
+        }
       }
+
+      return false;
     } else {
       let isDisableFlag = true;
       this.state.walletInput?.forEach((e) => {
@@ -393,34 +421,43 @@ class AddEmulationsAddressModal extends BaseReactComponent {
 
   btnClickFunctionPass = () => {
     if (this.state.metamaskWalletConnected || this.props.isMobile) {
-      let data = new URLSearchParams();
-      let tempAdd = "";
-      if (this.state.walletInput[1].address) {
-        tempAdd = this.state.walletInput[1].address;
-      } else if (this.state.walletInput[1].apiAddress) {
-        tempAdd = this.state.walletInput[1].apiAddress;
-      }
-      data.append("deposit", this.state.copyTradeAmount);
-      data.append(
-        "email",
-        this.state.notificationEmailAddress
-          ? this.state.notificationEmailAddress.toLowerCase()
-          : ""
-      );
-      data.append("copy_address", tempAdd);
-      if (this.props.isMobile) {
-        if (this.state.walletInput[0].address) {
-          data.append("user_address", this.state.walletInput[0].address);
-        } else if (this.state.walletInput[0].apiAddress) {
-          data.append("user_address", this.state.walletInput[0].apiAddress);
+      if (
+        this.state.mobileStep === 2 ||
+        (this.state.metamaskWalletConnected && !this.props.isMobile)
+      ) {
+        let data = new URLSearchParams();
+        let tempAdd = "";
+        if (this.state.walletInput[1].address) {
+          tempAdd = this.state.walletInput[1].address;
+        } else if (this.state.walletInput[1].apiAddress) {
+          tempAdd = this.state.walletInput[1].apiAddress;
         }
-      } else {
-        data.append("user_address", this.state.metamaskWalletConnected);
+        data.append("deposit", this.state.copyTradeAmount);
+        data.append(
+          "email",
+          this.state.notificationEmailAddress
+            ? this.state.notificationEmailAddress.toLowerCase()
+            : ""
+        );
+        data.append("copy_address", tempAdd);
+        if (this.props.isMobile) {
+          if (this.state.walletInput[0].address) {
+            data.append("user_address", this.state.walletInput[0].address);
+          } else if (this.state.walletInput[0].apiAddress) {
+            data.append("user_address", this.state.walletInput[0].apiAddress);
+          }
+        } else {
+          data.append("user_address", this.state.metamaskWalletConnected);
+        }
+        this.setState({
+          loadAddBtn: true,
+        });
+        this.props.addEmulations(data, this.hideModal, this.resetBtn);
+      } else if (this.state.mobileStep === 1) {
+        this.setState({
+          mobileStep: 2,
+        });
       }
-      this.setState({
-        loadAddBtn: true,
-      });
-      this.props.addEmulations(data, this.hideModal, this.resetBtn);
     } else {
       if (document.getElementById("topbar-connect-wallet-btn")) {
         if (this.state.canClickConnectWallet) {
@@ -507,7 +544,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
             </div>
             <div className="addWatchListWrapperContainer">
               <div className="addCopyTraderWrapperContainer">
-                {this.props.isMobile ? (
+                {this.state.mobileStep === 2 ? (
                   <>
                     <div
                       className={`inter-display-medium grey-313 m-b-12 ${
@@ -661,190 +698,201 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     })}
                   </>
                 ) : null}
-                <div
-                  className={`inter-display-medium grey-313 m-b-12 ${
-                    this.props.isMobile ? "f-s-15 m-t-18" : "f-s-13"
-                  }`}
-                >
-                  Who do you want to copy?
-                </div>
-                {this.state.walletInput?.slice(1, 2).map((elem, index) => {
-                  return (
-                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
-                      <div
-                        className={`awInputWrapper awInputWrapperCopyTrader ${
-                          elem.address ? "isAwInputWrapperValid" : ""
-                        }`}
-                      >
-                        {elem.showAddress && (
-                          <div className="awTopInputWrapper input-noshadow-dark">
-                            <div className="awInputContainer">
-                              <input
-                                name={`wallet2`}
-                                value={
-                                  elem.displayAddress || elem.address || ""
-                                }
-                                placeholder="Paste any wallet address or ENS here"
-                                // className='inter-display-regular f-s-16 lh-20'
-                                className={`inter-display-regular f-s-16 lh-20 awInput`}
-                                onChange={(e) => this.handleOnchange(e)}
-                                id={elem.id}
-                                style={{
-                                  paddingRight: "0.5rem",
-                                }}
-                                autoComplete="off"
-                                onKeyDown={this.handleKeyDown}
-                                onFocus={(e) => {
-                                  this.FocusInInput(e);
-                                }}
-                              />
-                            </div>
-                            {this.state.walletInput?.map((e, i) => {
-                              if (
-                                this.state.walletInput[1].address &&
-                                e.id === `wallet2`
-                              ) {
-                                // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                if (e.coinFound && e.coins.length > 0) {
-                                  return (
-                                    <CustomCoin
-                                      isStatic
-                                      coins={e.coins.filter(
-                                        (c) => c.chain_detected
-                                      )}
-                                      key={i}
-                                      isLoaded={true}
-                                    />
-                                  );
-                                } else {
-                                  if (
-                                    e.coins.length ===
-                                    this.props.OnboardingState.coinsList.length
-                                  ) {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={true}
-                                      />
-                                    );
-                                  } else {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={null}
-                                        key={i}
-                                        isLoaded={false}
-                                      />
-                                    );
-                                  }
-                                }
-                              } else {
-                                return "";
-                              }
-                            })}
-                          </div>
-                        )}
-
-                        {elem.coinFound && elem.showNickname && (
+                {!this.props.isMobile || this.state.mobileStep === 1 ? (
+                  <>
+                    <div
+                      className={`inter-display-medium grey-313 m-b-12 ${
+                        this.props.isMobile ? "f-s-15" : "f-s-13"
+                      }`}
+                    >
+                      Who do you want to copy?
+                    </div>
+                    {this.state.walletInput?.slice(1, 2).map((elem, index) => {
+                      return (
+                        <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
                           <div
-                            className={`awBottomInputWrapper ${
-                              elem.showAddress &&
-                              ((elem.showNameTag && elem.nameTag) ||
-                                elem.loadingNameTag)
-                                ? "mt-2"
-                                : ""
+                            className={`awInputWrapper awInputWrapperCopyTrader ${
+                              elem.address ? "isAwInputWrapperValid" : ""
                             }`}
                           >
-                            {!elem.showAddress &&
-                              this.state.walletInput?.map((e, i) => {
-                                if (
-                                  this.state.walletInput[1].address &&
-                                  e.id === `wallet2`
-                                ) {
-                                  // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                  if (e.coinFound && e.coins.length > 0) {
-                                    return (
-                                      <CustomCoin
-                                        isStatic
-                                        coins={e.coins.filter(
-                                          (c) => c.chain_detected
-                                        )}
-                                        key={i}
-                                        isLoaded={true}
-                                      />
-                                    );
-                                  } else {
-                                    if (
-                                      e.coins.length ===
-                                      this.props.OnboardingState.coinsList
-                                        .length
-                                    ) {
+                            {elem.showAddress && (
+                              <div className="awTopInputWrapper input-noshadow-dark">
+                                <div className="awInputContainer">
+                                  <input
+                                    name={`wallet2`}
+                                    value={
+                                      elem.displayAddress || elem.address || ""
+                                    }
+                                    placeholder="Paste any wallet address or ENS here"
+                                    // className='inter-display-regular f-s-16 lh-20'
+                                    className={`inter-display-regular f-s-16 lh-20 awInput`}
+                                    onChange={(e) => this.handleOnchange(e)}
+                                    id={elem.id}
+                                    style={{
+                                      paddingRight: "0.5rem",
+                                    }}
+                                    autoComplete="off"
+                                    onKeyDown={this.handleKeyDown}
+                                    onFocus={(e) => {
+                                      this.FocusInInput(e);
+                                    }}
+                                  />
+                                </div>
+                                {this.state.walletInput?.map((e, i) => {
+                                  if (
+                                    this.state.walletInput[1].address &&
+                                    e.id === `wallet2`
+                                  ) {
+                                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                    if (e.coinFound && e.coins.length > 0) {
                                       return (
                                         <CustomCoin
                                           isStatic
-                                          coins={null}
+                                          coins={e.coins.filter(
+                                            (c) => c.chain_detected
+                                          )}
                                           key={i}
                                           isLoaded={true}
                                         />
                                       );
                                     } else {
-                                      return (
-                                        <CustomCoin
-                                          isStatic
-                                          coins={null}
-                                          key={i}
-                                          isLoaded={false}
-                                        />
-                                      );
+                                      if (
+                                        e.coins.length ===
+                                        this.props.OnboardingState.coinsList
+                                          .length
+                                      ) {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={true}
+                                          />
+                                        );
+                                      } else {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={false}
+                                          />
+                                        );
+                                      }
                                     }
+                                  } else {
+                                    return "";
                                   }
-                                } else {
-                                  return "";
-                                }
-                              })}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                                })}
+                              </div>
+                            )}
 
-                <div
-                  className={`inter-display-medium grey-313 m-b-12 m-t-18 ${
-                    this.props.isMobile ? "f-s-15" : "f-s-13"
-                  }`}
-                >
-                  Add your email address to get notifications
-                </div>
-                <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
-                  <div
-                    className={`awInputWrapper awInputWrapperCopyTrader ${
-                      this.state.notificationEmailAddress &&
-                      this.state.notificationEmailAddress.length > 0
-                        ? "isAwInputWrapperValid"
-                        : ""
-                    }`}
-                  >
-                    <div className="awTopInputWrapper input-noshadow-dark">
-                      <div className="awInputContainer">
-                        <input
-                          value={this.state.notificationEmailAddress}
-                          placeholder="Your email address"
-                          className={`inter-display-regular f-s-16 lh-20 awInput`}
-                          onChange={this.handleOnEmailChange}
-                          autoComplete="off"
-                          onKeyDown={this.handleKeyDown}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {this.props.isMobile || this.state.metamaskWalletConnected ? (
+                            {elem.coinFound && elem.showNickname && (
+                              <div
+                                className={`awBottomInputWrapper ${
+                                  elem.showAddress &&
+                                  ((elem.showNameTag && elem.nameTag) ||
+                                    elem.loadingNameTag)
+                                    ? "mt-2"
+                                    : ""
+                                }`}
+                              >
+                                {!elem.showAddress &&
+                                  this.state.walletInput?.map((e, i) => {
+                                    if (
+                                      this.state.walletInput[1].address &&
+                                      e.id === `wallet2`
+                                    ) {
+                                      // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                      if (e.coinFound && e.coins.length > 0) {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={e.coins.filter(
+                                              (c) => c.chain_detected
+                                            )}
+                                            key={i}
+                                            isLoaded={true}
+                                          />
+                                        );
+                                      } else {
+                                        if (
+                                          e.coins.length ===
+                                          this.props.OnboardingState.coinsList
+                                            .length
+                                        ) {
+                                          return (
+                                            <CustomCoin
+                                              isStatic
+                                              coins={null}
+                                              key={i}
+                                              isLoaded={true}
+                                            />
+                                          );
+                                        } else {
+                                          return (
+                                            <CustomCoin
+                                              isStatic
+                                              coins={null}
+                                              key={i}
+                                              isLoaded={false}
+                                            />
+                                          );
+                                        }
+                                      }
+                                    } else {
+                                      return "";
+                                    }
+                                  })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </>
+                ) : null}
+
+                {!this.props.isMobile || this.state.mobileStep === 2 ? (
                   <>
                     <div
-                      className={`inter-display-medium grey-313 m-b-12 m-t-18 ${
+                      className={`inter-display-medium grey-313 m-b-12 m-t-20 ${
+                        this.props.isMobile ? "f-s-15" : "f-s-13"
+                      }`}
+                    >
+                      Add your email address to get notifications
+                    </div>
+                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                      <div
+                        className={`awInputWrapper awInputWrapperCopyTrader ${
+                          this.state.notificationEmailAddress &&
+                          this.state.notificationEmailAddress.length > 0
+                            ? "isAwInputWrapperValid"
+                            : ""
+                        }`}
+                      >
+                        <div className="awTopInputWrapper input-noshadow-dark">
+                          <div className="awInputContainer">
+                            <input
+                              value={this.state.notificationEmailAddress}
+                              placeholder="Your email address"
+                              className={`inter-display-regular f-s-16 lh-20 awInput`}
+                              onChange={this.handleOnEmailChange}
+                              autoComplete="off"
+                              onKeyDown={this.handleKeyDown}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+                {(this.state.mobileStep === 0 &&
+                  this.state.metamaskWalletConnected) ||
+                this.state.mobileStep === 1 ? (
+                  <>
+                    <div
+                      className={`inter-display-medium grey-313 m-b-12 m-t-20 ${
                         this.props.isMobile ? "f-s-15" : "f-s-13"
                       }`}
                     >
@@ -892,7 +940,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                   }`}
                   type="submit"
                   isDisabled={this.isDisabled()}
-                  buttonText="Add"
+                  buttonText={this.state.mobileStep === 1 ? "Next" : "Add"}
                   handleClick={this.btnClickFunctionPass}
                   isLoading={this.state.loadAddBtn}
                 />

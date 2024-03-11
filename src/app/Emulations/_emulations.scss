@@ -216,10 +216,11 @@
       align-items: center;
       justify-content: center;
       .available-copy-trades-navigator-circle {
-        height: 8px;
-        width: 8px;
-        border-radius: 8px;
+        height: 6px;
+        width: 6px;
+        border-radius: 6px;
         background-color: var(--backColor);
+        cursor: pointer;
       }
     }
     .available-copy-trades-navigator-arrows {
