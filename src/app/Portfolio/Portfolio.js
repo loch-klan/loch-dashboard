@@ -88,8 +88,10 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  InsightsEV,
   ManageWallets,
   NetflowSwitchHome,
+  NftExpandediew,
   PriceGaugeEV,
   ProfitLossEV,
   SortByCurrentValue,
@@ -154,6 +156,7 @@ import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
+  DefaultNftTableIconIcon,
   InfoIconI,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
@@ -164,6 +167,8 @@ import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 import MobileLayout from "../layout/MobileLayout.js";
+import { getNFT } from "../nft/NftApi.js";
+import HandleBrokenImages from "../common/HandleBrokenImages.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -187,6 +192,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      localNftData: [],
+      nftTableLoading: false,
       shouldAvgCostLoading: false,
       shouldNetFlowLoading: false,
       switchPriceGaugeLoader: false,
@@ -749,7 +756,20 @@ class Portfolio extends BaseReactComponent {
     if (listOfAddresses) {
       this.props.updateWalletListFlag("yieldOpportunities", true);
       this.props.getYieldOpportunities(data, 0);
+      this.props.getNFT(data, this, true);
     }
+  };
+  callNFTApi = () => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      nftTableLoading: true,
+    });
+    let data = new URLSearchParams();
+    data.append("start", 0);
+    data.append("conditions", JSON.stringify([]));
+    data.append("limit", API_LIMIT);
+    data.append("sorts", JSON.stringify([]));
+    this.props.getNFT(data, this, true);
   };
   callAllApisTwice = () => {
     setTimeout(() => {
@@ -801,6 +821,13 @@ class Portfolio extends BaseReactComponent {
           this
         );
       }
+    }
+    if (this.props.NFTState?.nfts && this.props.NFTState?.nfts.length > 0) {
+      this.props.updateWalletListFlag("nftPage", true);
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
     }
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
@@ -1012,7 +1039,6 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
   }
   trimGasFees = () => {
-    console.log("calling trim gas fees");
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.graphfeeValue &&
@@ -1055,6 +1081,15 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts !== prevProps.NFTState?.nfts
+    ) {
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
+    }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
       if (sessionStorage.getItem("replacedOrAddedAddress")) {
@@ -1120,6 +1155,12 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
+      } else if (
+        this.state.blockTwoSelectedItem === 3 &&
+        ((this.state.localNftData && this.state.localNftData.length === 0) ||
+          !this.props.commonState.nftPage)
+      ) {
+        this.callNFTApi();
       }
     }
     // Block Three
@@ -1418,6 +1459,13 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
+      }
+      if (
+        (this.state.blockTwoSelectedItem === 3 ||
+          this.state.blockOneSelectedItem === 5) &&
+        (!this.props.commonState.nftPage || !this.props.NFTState?.nfts)
+      ) {
+        this.callNFTApi();
       }
 
       // Counterparty volume api call
@@ -2176,10 +2224,28 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  goToNftPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/nft");
+      NftExpandediew({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
   goToAssetsPage = () => {
     if (this.state.lochToken) {
       this.props.history.push("/assets");
       AverageCostBasisEView({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  goToInsightsPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/intelligence/insights");
+      InsightsEV({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
@@ -4183,6 +4249,129 @@ class Portfolio extends BaseReactComponent {
         },
       },
     ];
+    const NFTColumnData = [
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Holdings
+            </span>
+            {/* <Image
+              onClick={() =>
+                this.handleTableSort(this.state.tableSortOpt[0].title)
+              }
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "holding",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "holding") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {rowData.holding}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Collection
+            </span>
+
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "collection",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "collection") {
+            return (
+              <div
+                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div nowrap-div"
+                style={{
+                  lineHeight: "120%",
+                }}
+              >
+                {rowData.collection}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Image
+            </span>
+          </div>
+        ),
+        dataKey: "imgs",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "imgs") {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  justifyContent: "center",
+                }}
+              >
+                {rowData.imgs && rowData.imgs.length > 0
+                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                      if (item) {
+                        return (
+                          <HandleBrokenImages
+                            src={item}
+                            key={index}
+                            className="nftImageIcon"
+                            imageOnError={DefaultNftTableIconIcon}
+                          />
+                        );
+                      }
+                      return null;
+                    })
+                  : null}
+                {rowData.imgs && rowData.imgs.length > 4 ? (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      lineHeight: "120%",
+                      color: "#96979A",
+                      fontWeight: "500",
+                    }}
+                    className="table-data-font"
+                  >
+                    {rowData.imgs.length - 4}+
+                  </span>
+                ) : null}
+              </div>
+            );
+          }
+        },
+      },
+    ];
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -4231,6 +4420,9 @@ class Portfolio extends BaseReactComponent {
             YieldOppColumnData={YieldOppColumnData}
             columnList={columnList}
             totalCount={totalCount}
+            NFTColumnData={NFTColumnData}
+            NFTData={this.state.localNftData}
+            nftTableLoading={this.state.nftTableLoading}
             tableData={tableData}
             //States
             yieldOpportunitiesTableLoading={
@@ -4263,6 +4455,7 @@ class Portfolio extends BaseReactComponent {
             changeBlockThreeItem={this.changeBlockThreeItem}
             //Go to pages
             goToGasFeesSpentPage={this.goToGasFeesSpentPage}
+            goToNftPage={this.goToNftPage}
             goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
@@ -4270,6 +4463,7 @@ class Portfolio extends BaseReactComponent {
             goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
             goToPriceGaugePage={this.goToPriceGaugePage}
+            goToInsightsPage={this.goToInsightsPage}
           />
         </MobileLayout>
       );
@@ -4373,7 +4567,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(1);
+                              if (this.state.blockOneSelectedItem === 1)
+                                this.goToAssetsPage();
+                              else this.changeBlockOneItem(1);
                             }}
                           >
                             Assets
@@ -4407,7 +4603,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(2);
+                              if (this.state.blockOneSelectedItem === 2)
+                                this.goToDefiPage();
+                              else this.changeBlockOneItem(2);
                             }}
                           >
                             DeFi
@@ -4524,7 +4722,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(1);
+                              if (this.state.blockTwoSelectedItem === 1)
+                                this.goToRealizedGainsPage();
+                              else this.changeBlockTwoItem(1);
                             }}
                           >
                             Flows
@@ -4556,7 +4756,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(2);
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToGasFeesSpentPage();
+                              else this.changeBlockTwoItem(2);
                             }}
                           >
                             Gas fees
@@ -4567,6 +4769,40 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={"Understand your gas costs"}
+                            >
+                              {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockTwoSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToNftPage();
+                              else this.changeBlockTwoItem(3);
+                            }}
+                          >
+                            NFT
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={"Understand your portfolio's net flows"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -4675,6 +4911,58 @@ class Portfolio extends BaseReactComponent {
                               floatingWatermark
                             />
                           </div>
+                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                          <div>
+                            {/* 
+                            Things remaining Add Loading conditions */}
+                            <div
+                              className={`newHomeTableContainer freezeTheFirstColumn ${
+                                this.state.localNftData?.length < 1
+                                  ? ""
+                                  : "tableWatermarkOverlay"
+                              }`}
+                            >
+                              <TransactionTable
+                                message={"No NFT's found"}
+                                xAxisScrollable
+                                xAxisScrollableColumnWidth={3}
+                                noSubtitleBottomPadding
+                                disableOnLoading
+                                isMiniversion
+                                tableData={this.state.localNftData}
+                                showDataAtBottom
+                                columnList={NFTColumnData}
+                                headerHeight={60}
+                                isArrow={true}
+                                isLoading={this.state.nftTableLoading}
+                                fakeWatermark
+                                yAxisScrollable
+                              />
+                            </div>
+                            {/* Add Loading conditino here and add goto nft page */}
+                            {!this.state.nftTableLoading ? (
+                              <div className="inter-display-medium bottomExtraInfo">
+                                <div
+                                  onClick={this.goToNftPage}
+                                  className="bottomExtraInfoText"
+                                >
+                                  {this.state.localNftData &&
+                                  this.state.localNftData?.length > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.state.localNftData?.length - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ NFT ${
+                                        this.state.localNftData?.length - 10 > 1
+                                          ? "s"
+                                          : ""
+                                      }`
+                                    : this.state.localNftData?.length === 0
+                                    ? ""
+                                    : "Click here to see more"}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
                         ) : null}
                       </div>
                     </div>
@@ -4708,7 +4996,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(1);
+                              if (this.state.blockThreeSelectedItem === 1)
+                                this.goToCounterPartyVolumePage();
+                              else this.changeBlockThreeItem(1);
                             }}
                           >
                             Counterparties
@@ -4739,7 +5029,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(2);
+                              if (this.state.blockThreeSelectedItem === 2)
+                                this.goToYieldOppPage();
+                              else this.changeBlockThreeItem(2);
                             }}
                           >
                             Yield opportunities
@@ -4939,7 +5231,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(1);
+                              if (this.state.blockFourSelectedItem === 1)
+                                this.goToPriceGaugePage();
+                              else this.changeBlockFourItem(1);
                             }}
                           >
                             Price gauge
@@ -4973,7 +5267,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(2);
+                              if (this.state.blockFourSelectedItem === 2)
+                                this.goToTransactionHistoryPage();
+                              else this.changeBlockFourItem(2);
                             }}
                           >
                             Transactions
@@ -5008,7 +5304,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(3);
+                              if (this.state.blockFourSelectedItem === 3) {
+                                this.goToInsightsPage();
+                              } else this.changeBlockFourItem(3);
                             }}
                           >
                             Insights
@@ -5175,6 +5473,7 @@ const mapStateToProps = (state) => ({
   walletState: state.walletState,
   inflowsOutflowsList: state.inflowsOutflowsList,
   darkModeState: state.darkModeState,
+  NFTState: state.NFTState,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -5211,6 +5510,7 @@ const mapDispatchToProps = {
   updateFeeGraph,
   updateCounterParty,
   updateAssetProfitLoss,
+  getNFT,
 };
 Portfolio.propTypes = {};
 

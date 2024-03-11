@@ -618,6 +618,8 @@ class PriceGauge extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"price-gauge"}
             />
             {this.state.upgradeModal && (
               <UpgradeModal

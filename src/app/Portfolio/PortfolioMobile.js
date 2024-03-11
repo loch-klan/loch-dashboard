@@ -778,25 +778,42 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockOneItem(1);
+                    if (this.props.blockOneSelectedItem === 1)
+                      this.props.goToAssetsPage();
+                    else this.props.changeBlockOneItem(1);
                   }}
                 >
                   Assets
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    (this.props.blockThreeSelectedItem === 2 ||
-                      this.props.blockThreeSelectedItem === 1) &&
-                    this.props.blockOneSelectedItem !== 1
+                    this.props.blockOneSelectedItem === 4
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockOneItem(4);
-                    this.props.changeBlockThreeItem(2);
+                    if (this.props.blockThreeSelectedItem === 2)
+                      this.props.goToYieldOppPage();
+                    else {
+                      this.props.changeBlockOneItem(4);
+                      this.props.changeBlockThreeItem(2);
+                    }
                   }}
                 >
                   Yield opportunities
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ${
+                    this.props.blockOneSelectedItem === 5
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockOneItem(5);
+                    this.props.changeBlockTwoItem(3);
+                  }}
+                >
+                  NFT
                 </div>
               </div>
               <div className="mobile-portfolio-blocks-content">
@@ -862,8 +879,7 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockThreeSelectedItem === 2 ||
-                  this.props.blockThreeSelectedItem === 1 ? (
+                ) : this.props.blockOneSelectedItem === 4 ? (
                   <div>
                     <div
                       className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
@@ -915,6 +931,52 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
+                ) : this.props.blockOneSelectedItem === 5 ? (
+                  <div>
+                    <div
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
+                        this.props.NFTData?.length < 1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${this.props.NFTData?.length?.length <= 10 ? "" : ""}`}
+                    >
+                      <TransactionTable
+                        message={"No NFT's found"}
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        tableData={this.props.NFTData}
+                        showDataAtBottom
+                        columnList={this.props.NFTColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.props.nftTableLoading}
+                        fakeWatermark
+                        xAxisScrollable
+                        yAxisScrollable
+                        xAxisScrollableColumnWidth={3}
+                      />
+                    </div>
+                    {!this.props.nftTableLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.props.goToNftPage}
+                          className="bottomExtraInfoText"
+                        >
+                          {this.props.NFTData && this.props.NFTData?.length > 10
+                            ? `See ${numToCurrency(
+                                this.props.NFTData?.length - 10,
+                                true
+                              ).toLocaleString("en-US")}+ NFT ${
+                                this.props.NFTData?.length - 10 > 1 ? "s" : ""
+                              }`
+                            : this.props.NFTData?.length === 0
+                            ? ""
+                            : "See more"}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
                 ) : null}
               </div>
             </div>
@@ -927,7 +989,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(1);
+                    if (this.props.blockTwoSelectedItem === 1) {
+                      this.props.goToRealizedGainsPage();
+                    } else this.props.changeBlockTwoItem(1);
                   }}
                 >
                   Flows
@@ -939,7 +1003,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockTwoItem(2);
+                    if (this.props.blockTwoSelectedItem === 2) {
+                      this.props.goToGasFeesSpentPage();
+                    } else this.props.changeBlockTwoItem(2);
                   }}
                 >
                   Gas fees
@@ -954,8 +1020,12 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockThreeItem(1);
-                    this.props.changeBlockTwoItem(4);
+                    if (this.props.blockThreeSelectedItem === 1) {
+                      this.props.goToCounterPartyVolumePage();
+                    } else {
+                      this.props.changeBlockThreeItem(1);
+                      this.props.changeBlockTwoItem(4);
+                    }
                   }}
                 >
                   Counterparties
@@ -1098,7 +1168,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(1);
+                    if (this.props.blockFourSelectedItem === 1) {
+                      this.props.goToPriceGaugePage();
+                    } else this.props.changeBlockFourItem(1);
                   }}
                 >
                   Price gauge
@@ -1110,7 +1182,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(2);
+                    if (this.props.blockFourSelectedItem === 2) {
+                      this.props.goToTransactionHistoryPage();
+                    } else this.props.changeBlockFourItem(2);
                   }}
                 >
                   Transactions
@@ -1122,7 +1196,9 @@ class PortfolioMobile extends BaseReactComponent {
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(3);
+                    if (this.props.blockFourSelectedItem === 3) {
+                      this.props.goToInsightsPage();
+                    } else this.props.changeBlockFourItem(3);
                   }}
                 >
                   Insights

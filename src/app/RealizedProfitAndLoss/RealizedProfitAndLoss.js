@@ -727,6 +727,8 @@ class RealizedProfitAndLoss extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"realized-profit-and-loss"}
             />
             {this.state.upgradeModal && (
               <UpgradeModal

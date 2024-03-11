@@ -2758,6 +2758,9 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
@@ -3425,93 +3428,151 @@ input {
   }
   span {
     white-space: nowrap;
-    color: var(--black191);
-  }
-  &:hover {
-    span {
+    .custom-control {
+      transform: scale(1.45) translateX(0);
+    }
+    .custom-control-label {
       color: var(--black191);
     }
-    border: 1px solid var(--black191);
-  }
-  .custom-checkbox {
     &:hover {
-      border: 1px solid var(--cardBorder);
+      span {
+        color: var(--black191);
+      }
+      border: 1px solid var(--black191);
+    }
+    .custom-checkbox {
+      &:hover {
+        border: 1px solid var(--cardBorder);
+      }
     }
   }
-}
-.new-export-button {
-  background-color: var(--primaryFilter);
-  border-radius: 8px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  .pageHeaderShareBtn {
-    color: var(--black191) !important;
-  }
-  &:hover {
-    border: 1px solid var(--black191);
+  .new-export-button {
+    background-color: var(--primaryFilter);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    .pageHeaderShareBtn {
+      color: var(--black191) !important;
+    }
+    &:hover {
+      border: 1px solid var(--black191);
+      img {
+        filter: var(--hoverBrightnessValue) !important;
+      }
+    }
     img {
-      filter: var(--hoverBrightnessValue) !important;
+      filter: var(--hoverBrightnessValue);
     }
   }
-  img {
-    filter: var(--hoverBrightnessValue);
-  }
-}
 
-.transaction-searchbar-full {
-  .form-group {
-    flex-grow: 1;
+  .transaction-searchbar-full {
+    .form-group {
+      flex-grow: 1;
+    }
   }
-}
 
-.transaction-custom-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  input:checked ~ .checkmark::after {
-    background-color: var(--primaryTextColor);
-    border-color: var(--primaryTextColor);
+  .transaction-custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    input:checked ~ .checkmark::after {
+      background-color: var(--primaryTextColor);
+      border-color: var(--primaryTextColor);
+    }
+    input {
+      padding: 0px;
+      margin-right: 10px;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+    }
+    .form-check-label {
+      margin-left: 10px;
+      margin-top: 2px;
+    }
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: var(--cardBackgroud);
+      border: 2px black solid;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+      background-color: var(--cardBackgroud);
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+      background-color: #002b4e;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+      display: block;
+    }
   }
   input {
-    padding: 0px;
-    margin-right: 10px;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
   }
-  .form-check-label {
-    margin-left: 10px;
-    margin-top: 2px;
-  }
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: var(--cardBackgroud);
-    border: 2px black solid;
-  }
+}
 
-  /* On mouse-over, add a grey background color */
-  .container:hover input ~ .checkmark {
-    background-color: var(--cardBackgroud);
-  }
+.breadcrumsBlock {
+  min-width: 85rem;
+  nav {
+    ol {
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      padding: 0rem;
+      margin-bottom: 2.4rem;
+      filter: var(--invertColor);
+      // .breadcrumb{
+      // }
+      .breadcrumb-item + .breadcrumb-item::before {
+        content: url("../../images/icons/ChevronArrowRight.svg");
+        position: relative;
+        top: 0.1rem;
+        padding-right: 1.4rem;
+      }
+      .breadcrumb-item {
+        padding-left: 1.4rem;
+        cursor: pointer;
+        &:first-letter {
+          text-transform: capitalize;
+        }
+        a {
+          color: $grey-ADA;
 
-  /* When the checkbox is checked, add a blue background */
-  .container input:checked ~ .checkmark {
-    background-color: #002b4e;
-  }
+          &:hover {
+            color: $primary;
 
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
+            img {
+              filter: brightness(0.5);
+            }
+          }
+        }
+      }
+      .active {
+        color: $grey-636;
+      }
+      .breadcrumb-item:nth-child(1) {
+        padding: 0rem;
+      }
+    }
   }
+}
 
-  /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
-    display: block;
-  }
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
 }

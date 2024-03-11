@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import { DefaultNftTableIconIcon } from "../../assets/images/icons";
 import {
   NFTPage,
   NFTShare,
@@ -15,11 +17,12 @@ import {
 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
+  convertNtoNumber,
   mobileCheck,
+  numToCurrency,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
@@ -28,20 +31,18 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
+import HandleBrokenImages from "../common/HandleBrokenImages";
 import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 import TransactionTable from "../intelligence/TransactionTable";
+import MobileLayout from "../layout/MobileLayout";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
 import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
-import HandleBrokenImages from "../common/HandleBrokenImages";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
-import MobileLayout from "../layout/MobileLayout";
-import { DefaultNftTableIconIcon } from "../../assets/images/icons";
-import TopWalletAddressList from "../header/TopWalletAddressList";
-import { toast } from "react-toastify";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -53,25 +54,7 @@ class NFT extends BaseReactComponent {
       goToBottom: false,
       apiResponse: false,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
-      tableData: [
-        // {
-        //   holding: "3",
-        //   collection: "Bored Apes",
-        //   imgs: [
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //     NftDummy,
-        //   ],
-        //   total_spent: 10,
-        //   max_price: 12,
-        //   avg_price: 10,
-        //   volume: 100,
-        // },
-      ],
+      tableData: [],
       tableSortOpt: [
         {
           title: "holdings",
@@ -393,7 +376,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "holding",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "holding") {
@@ -422,7 +405,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "collection",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "collection") {
@@ -449,7 +432,7 @@ class NFT extends BaseReactComponent {
         ),
         dataKey: "imgs",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "imgs") {
@@ -462,21 +445,31 @@ class NFT extends BaseReactComponent {
                   justifyContent: "center",
                 }}
               >
-                {rowData.imgs && rowData.imgs.length > 0
-                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
-                      if (item) {
-                        return (
-                          <HandleBrokenImages
-                            src={item}
-                            key={index}
-                            className="nftImageIcon"
-                            imageOnError={DefaultNftTableIconIcon}
-                          />
-                        );
-                      }
-                      return null;
-                    })
-                  : null}
+                {rowData.imgs && rowData.imgs.length > 0 ? (
+                  rowData.imgs?.slice(0, 4).map((item, index) => {
+                    if (item) {
+                      return (
+                        <HandleBrokenImages
+                          src={item}
+                          key={index}
+                          className="nftImageIcon"
+                          imageOnError={DefaultNftTableIconIcon}
+                        />
+                      );
+                    }
+                    return (
+                      <HandleBrokenImages
+                        className="nftImageIcon"
+                        imageOnError={DefaultNftTableIconIcon}
+                      />
+                    );
+                  })
+                ) : (
+                  <HandleBrokenImages
+                    className="nftImageIcon"
+                    imageOnError={DefaultNftTableIconIcon}
+                  />
+                )}
                 {rowData.imgs && rowData.imgs.length > 4 ? (
                   <span
                     style={{
@@ -491,6 +484,44 @@ class NFT extends BaseReactComponent {
                   </span>
                 ) : null}
               </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Floor Price
+            </span>
+          </div>
+        ),
+        dataKey: "floorPrice",
+
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "floorPrice") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.floor_price
+                    ? convertNtoNumber(rowData.floor_price) + " ETH"
+                    : "0.00 ETH"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.floor_price
+                    ? numToCurrency(
+                        rowData.floor_price.toFixed(2)
+                      ).toLocaleString("en-US") + " ETH"
+                    : "0.00 ETH"}
+                </span>
+              </CustomOverlay>
             );
           }
         },
@@ -533,6 +564,8 @@ class NFT extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"nft"}
             />
             <PageHeader
               title={"NFT Collection"}

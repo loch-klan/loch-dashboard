@@ -1151,6 +1151,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              currentPage={"assets"}
+              showpath
             />
             {this.state.exportModal ? (
               <ExitOverlay
@@ -1186,7 +1188,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              currentPage={"costs"}
+              currentPage={"assets"}
               ShareBtn={true}
               ExportBtn
               exportBtnTxt="Click to export costs"

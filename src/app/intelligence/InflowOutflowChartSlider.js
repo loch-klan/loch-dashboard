@@ -78,7 +78,6 @@ class InflowOutflowChartSlider extends BaseReactComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log("updating");
     if (prevState.formattedXAxis !== this.state.formattedXAxis) {
       let diff = Math.round(
         this.state.formattedXAxis && this.state.formattedXAxis.length - 0.5

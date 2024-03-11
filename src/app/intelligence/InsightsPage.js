@@ -504,6 +504,8 @@ class InsightsPage extends Component {
               <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
+                showpath
+                currentPage={"insights"}
               />
               {this.state.addModal && (
                 <FixAddModal

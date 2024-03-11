@@ -583,6 +583,8 @@ class GasFeesPage extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"gas-fees"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

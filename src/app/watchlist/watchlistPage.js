@@ -765,6 +765,7 @@ class WatchListPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideFooter
+          hideAddresses
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}
@@ -852,8 +853,8 @@ class WatchListPage extends BaseReactComponent {
             <PageHeader
               title={"Following"}
               subTitle={"Addresses you follow"}
-              //
-              // currentPage={"transaction-history"}
+              showpath
+              currentPage={"watchlist"}
               history={this.props.history}
               topaccount={true}
               ShareBtn={false}
