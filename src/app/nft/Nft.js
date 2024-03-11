@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import { DefaultNftTableIconIcon } from "../../assets/images/icons";
 import {
   NFTPage,
   NFTShare,
@@ -19,7 +21,6 @@ import {
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
@@ -28,20 +29,17 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
+import HandleBrokenImages from "../common/HandleBrokenImages";
 import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 import TransactionTable from "../intelligence/TransactionTable";
+import MobileLayout from "../layout/MobileLayout";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
 import { getNFT } from "./NftApi";
 import NftMobile from "./NftMobile";
 import "./_nft.scss";
-import HandleBrokenImages from "../common/HandleBrokenImages";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
-import MobileLayout from "../layout/MobileLayout";
-import { DefaultNftTableIconIcon } from "../../assets/images/icons";
-import TopWalletAddressList from "../header/TopWalletAddressList";
-import { toast } from "react-toastify";
 
 class NFT extends BaseReactComponent {
   constructor(props) {

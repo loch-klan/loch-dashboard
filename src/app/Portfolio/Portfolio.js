@@ -90,6 +90,7 @@ import {
   HomeSortByGainLoss,
   ManageWallets,
   NetflowSwitchHome,
+  NftExpandediew,
   PriceGaugeEV,
   ProfitLossEV,
   SortByCurrentValue,
@@ -190,6 +191,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      localNftData: [],
+      nftTableLoading: false,
       shouldAvgCostLoading: false,
       shouldNetFlowLoading: false,
       switchPriceGaugeLoader: false,
@@ -756,6 +759,10 @@ class Portfolio extends BaseReactComponent {
     }
   };
   callNFTApi = () => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      nftTableLoading: true,
+    });
     let data = new URLSearchParams();
     data.append("start", 0);
     data.append("conditions", JSON.stringify([]));
@@ -813,6 +820,13 @@ class Portfolio extends BaseReactComponent {
           this
         );
       }
+    }
+    if (this.props.NFTState?.nfts && this.props.NFTState?.nfts.length > 0) {
+      this.props.updateWalletListFlag("nftPage", true);
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
     }
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
@@ -1024,7 +1038,6 @@ class Portfolio extends BaseReactComponent {
     // reset all sort average cost
   }
   trimGasFees = () => {
-    console.log("calling trim gas fees");
     if (
       this.props.intelligenceState &&
       this.props.intelligenceState.graphfeeValue &&
@@ -1067,6 +1080,15 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts !== prevProps.NFTState?.nfts
+    ) {
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
+    }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
       if (sessionStorage.getItem("replacedOrAddedAddress")) {
@@ -1132,7 +1154,11 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
-      } else if (this.state.blockTwoSelectedItem === 3) {
+      } else if (
+        this.state.blockTwoSelectedItem === 3 &&
+        ((this.state.localNftData && this.state.localNftData.length === 0) ||
+          !this.props.commonState.nftPage)
+      ) {
         this.callNFTApi();
       }
     }
@@ -1432,6 +1458,13 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
+      }
+      if (
+        (this.state.blockTwoSelectedItem === 3 ||
+          this.state.blockOneSelectedItem === 5) &&
+        (!this.props.commonState.nftPage || !this.props.NFTState?.nfts)
+      ) {
+        this.callNFTApi();
       }
 
       // Counterparty volume api call
@@ -2185,6 +2218,15 @@ class Portfolio extends BaseReactComponent {
         this.props.history.push("/yield-opportunities");
       }
       YieldOppurtunitiesExpandediew({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  goToNftPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/nft");
+      NftExpandediew({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
@@ -4395,7 +4437,8 @@ class Portfolio extends BaseReactComponent {
             columnList={columnList}
             totalCount={totalCount}
             NFTColumnData={NFTColumnData}
-            NFTData={this.props.NFTState?.nfts}
+            NFTData={this.state.localNftData}
+            nftTableLoading={this.state.nftTableLoading}
             tableData={tableData}
             //States
             yieldOpportunitiesTableLoading={
@@ -4428,6 +4471,7 @@ class Portfolio extends BaseReactComponent {
             changeBlockThreeItem={this.changeBlockThreeItem}
             //Go to pages
             goToGasFeesSpentPage={this.goToGasFeesSpentPage}
+            goToNftPage={this.goToNftPage}
             goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
@@ -4878,7 +4922,7 @@ class Portfolio extends BaseReactComponent {
                             Things remaining Add Loading conditions */}
                             <div
                               className={`newHomeTableContainer freezeTheFirstColumn ${
-                                this.props.NFTState?.nfts?.length < 1
+                                this.state.localNftData?.length < 1
                                   ? ""
                                   : "tableWatermarkOverlay"
                               }`}
@@ -4890,34 +4934,35 @@ class Portfolio extends BaseReactComponent {
                                 noSubtitleBottomPadding
                                 disableOnLoading
                                 isMiniversion
-                                tableData={this.props.NFTState?.nfts}
+                                tableData={this.state.localNftData}
                                 showDataAtBottom
                                 columnList={NFTColumnData}
                                 headerHeight={60}
                                 isArrow={true}
-                                isLoading={false}
+                                isLoading={this.state.nftTableLoading}
                                 fakeWatermark
                                 yAxisScrollable
                               />
                             </div>
                             {/* Add Loading conditino here and add goto nft page */}
-                            {true ? (
+                            {!this.state.nftTableLoading ? (
                               <div className="inter-display-medium bottomExtraInfo">
                                 <div
-                                  // onClick={this.goToYieldOppPage}
+                                  onClick={this.goToNftPage}
                                   className="bottomExtraInfoText"
                                 >
-                                  {this.props.NFTState?.nfts &&
-                                  this.props.NFTState?.nfts?.length > 10
+                                  {this.state.localNftData &&
+                                  this.state.localNftData?.length > 10
                                     ? `Click here to see ${numToCurrency(
-                                        this.props.NFTState?.nfts?.length - 10,
+                                        this.state.localNftData?.length - 10,
                                         true
                                       ).toLocaleString("en-US")}+ NFT ${
-                                        this.props.NFTState?.nfts?.length - 10 >
-                                        1
+                                        this.state.localNftData?.length - 10 > 1
                                           ? "s"
                                           : ""
                                       }`
+                                    : this.state.localNftData?.length === 0
+                                    ? ""
                                     : "Click here to see more"}
                                 </div>
                               </div>

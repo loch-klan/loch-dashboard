@@ -785,9 +785,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    (this.props.blockThreeSelectedItem === 2 ||
-                      this.props.blockThreeSelectedItem === 1) &&
-                    this.props.blockOneSelectedItem !== 1
+                    this.props.blockOneSelectedItem === 4
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
@@ -800,15 +798,12 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    this.props.blockTwoSelectedItem === 3 &&
-                    this.props.blockOneSelectedItem !== 1 &&
-                    this.props.blockThreeSelectedItem !== 2
+                    this.props.blockOneSelectedItem === 5
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockOneItem(4);
-                    this.props.changeBlockThreeItem(4);
+                    this.props.changeBlockOneItem(5);
                     this.props.changeBlockTwoItem(3);
                   }}
                 >
@@ -878,8 +873,7 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockThreeSelectedItem === 2 ||
-                  this.props.blockThreeSelectedItem === 1 ? (
+                ) : this.props.blockOneSelectedItem === 4 ? (
                   <div>
                     <div
                       className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
@@ -931,7 +925,7 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockTwoSelectedItem === 3 ? (
+                ) : this.props.blockOneSelectedItem === 5 ? (
                   <div>
                     <div
                       className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
@@ -941,7 +935,7 @@ class PortfolioMobile extends BaseReactComponent {
                       } ${this.props.NFTData?.length?.length <= 10 ? "" : ""}`}
                     >
                       <TransactionTable
-                        message={"No yield opportunities found"}
+                        message={"No NFT's found"}
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
@@ -950,17 +944,17 @@ class PortfolioMobile extends BaseReactComponent {
                         columnList={this.props.NFTColumnData}
                         headerHeight={60}
                         isArrow={true}
-                        isLoading={false}
+                        isLoading={this.props.nftTableLoading}
                         fakeWatermark
                         xAxisScrollable
                         yAxisScrollable
                         xAxisScrollableColumnWidth={3}
                       />
                     </div>
-                    {true ? (
+                    {!this.props.nftTableLoading ? (
                       <div className="inter-display-medium bottomExtraInfo">
                         <div
-                          // onClick={this.props.goToYieldOppPage}
+                          onClick={this.props.goToNftPage}
                           className="bottomExtraInfoText"
                         >
                           {this.props.NFTData && this.props.NFTData?.length > 10
@@ -970,6 +964,8 @@ class PortfolioMobile extends BaseReactComponent {
                               ).toLocaleString("en-US")}+ NFT ${
                                 this.props.NFTData?.length - 10 > 1 ? "s" : ""
                               }`
+                            : this.props.NFTData?.length === 0
+                            ? ""
                             : "See more"}
                         </div>
                       </div>
