@@ -856,8 +856,8 @@ class WatchListPage extends BaseReactComponent {
             <PageHeader
               title={"Following"}
               subTitle={"Addresses you follow"}
-              //
-              // currentPage={"transaction-history"}
+              showpath
+              currentPage={"watchlist"}
               history={this.props.history}
               topaccount={true}
               ShareBtn={false}

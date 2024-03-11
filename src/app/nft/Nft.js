@@ -533,6 +533,8 @@ class NFT extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"nft"}
             />
             <PageHeader
               title={"NFT Collection"}

@@ -1034,6 +1034,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"yield-opportunities"}
             />
             {this.state.addModal && (
               <FixAddModal

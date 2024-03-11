@@ -287,11 +287,8 @@ class Profile extends Component {
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              // // connect exchange btn
-              // SecondaryBtn={true}
-              // handleUpdate={this.handleUpdateWallet}
+              showpath
+              currentPage={"profile"}
             />
             <div style={{ marginBottom: "5rem" }}>
               <Row>

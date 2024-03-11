@@ -1361,6 +1361,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                     subTitle="Sorted by net worth, pnl, and flows"
                     currentPage={"home-leaderboard"}
                     updateTimer={this.updateTimer}
+                    showpath
                   />
                 </div>
                 <HomeSmartMoneyHeader

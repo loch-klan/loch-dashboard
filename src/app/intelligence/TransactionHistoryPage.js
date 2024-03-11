@@ -2172,6 +2172,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"transaction-history"}
             />
             {this.state.exportModal ? (
               <ExitOverlay
