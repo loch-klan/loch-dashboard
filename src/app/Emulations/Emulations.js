@@ -51,6 +51,7 @@ import { getEmulations } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import "./_emulations.scss";
 import { Image } from "react-bootstrap";
+import EmulationsTradeModal from "./EmulationsTradeModal.js";
 
 class Emulations extends Component {
   constructor(props) {
@@ -733,6 +734,15 @@ class Emulations extends Component {
             ""
           )}
           <div className="cost-section page">
+            <EmulationsTradeModal
+              show
+              onHide={this.handleConnectModal}
+              history={this.props.history}
+              headerTitle={"Connect exchanges"}
+              modalType={"connectModal"}
+              iconImage={LinkIcon}
+              updateTimer={this.updateTimer}
+            />
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
