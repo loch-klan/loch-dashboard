@@ -103,7 +103,7 @@ class UserFeedbackModal extends BaseReactComponent {
               position={
                 this.props.dragPosition
                   ? this.props.dragPosition
-                  : { x: 0, y: 0 }
+                  : { x: 0, y: -100 }
               }
               bounds="parent"
               handle="#draggableHandle"

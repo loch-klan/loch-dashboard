@@ -392,7 +392,7 @@ class PortfolioHomeDefiBlock extends Component {
                               <span className="inter-display-medium f-s-12">
                                 {item.name}
                               </span>
-                              <CustomOverlay
+                              {/* <CustomOverlay
                                 position="top"
                                 isIcon={false}
                                 isInfo={true}
@@ -406,16 +406,16 @@ class PortfolioHomeDefiBlock extends Component {
                                     "USD"
                                   )
                                 }
-                              >
-                                <span className="inter-display-medium f-s-12 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {numToCurrency(
-                                    item.totalPrice.toFixed(2),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </CustomOverlay>
+                              > */}
+                              <span className="inter-display-medium f-s-12 grey-233 balance-amt">
+                                {CurrencyType(false)}
+                                {numToCurrency(
+                                  item.totalPrice.toFixed(2),
+                                  "en-US",
+                                  "USD"
+                                )}
+                              </span>
+                              {/* </CustomOverlay> */}
                             </div>
                           );
                         })}
@@ -437,7 +437,7 @@ class PortfolioHomeDefiBlock extends Component {
                               <span className="inter-display-medium f-s-12">
                                 {item.name}
                               </span>
-                              <CustomOverlay
+                              {/* <CustomOverlay
                                 position="top"
                                 isIcon={false}
                                 isInfo={true}
@@ -451,16 +451,16 @@ class PortfolioHomeDefiBlock extends Component {
                                     "USD"
                                   )
                                 }
-                              >
-                                <span className="inter-display-medium f-s-12 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {numToCurrency(
-                                    item.totalPrice.toFixed(2),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </CustomOverlay>
+                              > */}
+                              <span className="inter-display-medium f-s-12 grey-233 balance-amt">
+                                {CurrencyType(false)}
+                                {numToCurrency(
+                                  item.totalPrice.toFixed(2),
+                                  "en-US",
+                                  "USD"
+                                )}
+                              </span>
+                              {/* </CustomOverlay> */}
                             </div>
                           );
                         })}
@@ -587,17 +587,17 @@ class PortfolioHomeDefiBlock extends Component {
 
                                           <Col md={3}>
                                             <div className="d-flex flex-column align-items-center justify-content-center h-100 ">
-                                              <CustomOverlay
+                                              {/* <CustomOverlay
                                                 position="top"
                                                 isIcon={false}
                                                 isInfo={true}
                                                 isText={true}
                                                 text={groupComp.type}
-                                              >
-                                                <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
-                                                  {groupComp.type}
-                                                </h3>
-                                              </CustomOverlay>
+                                              > */}
+                                              <h3 className="overflowValueContainer inter-display-medium f-s-13 lh-13 ml-2">
+                                                {groupComp.type}
+                                              </h3>
+                                              {/* </CustomOverlay> */}
                                             </div>
                                           </Col>
                                           <Col md={3}>
@@ -606,36 +606,35 @@ class PortfolioHomeDefiBlock extends Component {
                                                 ? rowData.balance.map(
                                                     (e, indexFour) => {
                                                       return (
-                                                        <CustomOverlay
-                                                          position="top"
-                                                          isIcon={false}
-                                                          isInfo={true}
-                                                          isText={true}
-                                                          text={
-                                                            e
-                                                              ? convertNtoNumber(
+                                                        // <CustomOverlay
+                                                        //   position="top"
+                                                        //   isIcon={false}
+                                                        //   isInfo={true}
+                                                        //   isText={true}
+                                                        //   text={
+                                                        //     e
+                                                        //       ? convertNtoNumber(
+                                                        //           e
+                                                        //         )
+                                                        //       : "0.00"
+                                                        //   }
+                                                        // >
+                                                        <div
+                                                          className={`${
+                                                            indexFour > 0
+                                                              ? "mt-3"
+                                                              : ""
+                                                          } inter-display-medium f-s-13 lh-15`}
+                                                          key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
+                                                        >
+                                                          {e
+                                                            ? isNaN(e)
+                                                              ? e
+                                                              : this.curToNumToTwoDec(
                                                                   e
                                                                 )
-                                                              : "0.00"
-                                                          }
-                                                        >
-                                                          <div
-                                                            className={`${
-                                                              indexFour > 0
-                                                                ? "mt-3"
-                                                                : ""
-                                                            } inter-display-medium f-s-13 lh-15`}
-                                                            key={`balance-${i}-${index}-${indexTwo}-${indexFour}`}
-                                                          >
-                                                            {e
-                                                              ? isNaN(e)
-                                                                ? e
-                                                                : this.curToNumToTwoDec(
-                                                                    e
-                                                                  )
-                                                              : "0.00"}
-                                                          </div>
-                                                        </CustomOverlay>
+                                                            : "0.00"}
+                                                        </div>
                                                       );
                                                     }
                                                   )
@@ -645,7 +644,7 @@ class PortfolioHomeDefiBlock extends Component {
                                           <Col md={3}>
                                             {rowData.usdValue ? (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <CustomOverlay
+                                                {/* <CustomOverlay
                                                   position="top"
                                                   isIcon={false}
                                                   isInfo={true}
@@ -660,32 +659,30 @@ class PortfolioHomeDefiBlock extends Component {
                                                       "USD"
                                                     )
                                                   }
-                                                >
-                                                  <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
-                                                    {CurrencyType(false)}
-                                                    {numToCurrency(
-                                                      rowData.usdValue.toFixed(
-                                                        2
-                                                      ),
-                                                      "en-US",
-                                                      "USD"
-                                                    )}
-                                                  </div>
-                                                </CustomOverlay>
+                                                > */}
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
+                                                  {CurrencyType(false)}
+                                                  {numToCurrency(
+                                                    rowData.usdValue.toFixed(2),
+                                                    "en-US",
+                                                    "USD"
+                                                  )}
+                                                </div>
+                                                {/* </CustomOverlay> */}
                                               </div>
                                             ) : (
                                               <div className="d-flex align-items-center justify-content-end h-100">
-                                                <CustomOverlay
+                                                {/* <CustomOverlay
                                                   position="top"
                                                   isIcon={false}
                                                   isInfo={true}
                                                   isText={true}
                                                   text={"$0.00"}
-                                                >
-                                                  <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
-                                                    $0.00
-                                                  </div>
-                                                </CustomOverlay>
+                                                > */}
+                                                <div className="overflowValueContainer inter-display-medium f-s-13 lh-15">
+                                                  $0.00
+                                                </div>
+                                                {/* </CustomOverlay> */}
                                               </div>
                                             )}
                                           </Col>

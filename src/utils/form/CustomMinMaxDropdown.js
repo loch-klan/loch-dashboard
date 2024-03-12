@@ -286,7 +286,7 @@ class CustomMinMaxDropdown extends Component {
             : this.props.isTopaccount
             ? "top-account-dropdown"
             : ""
-        }`}
+        } ${this.props.isIcon ? "custom-dropdown-icon" : ""}`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
       >
@@ -311,6 +311,8 @@ class CustomMinMaxDropdown extends Component {
               : ""
             : this.getSelected()?.length === 0
             ? this.state.name
+            : this.props.isIcon
+            ? this.state.name
             : this.props.isLineChart
             ? this.getSelected()?.length + "/4 Selected"
             : this.props.isChain
@@ -325,7 +327,8 @@ class CustomMinMaxDropdown extends Component {
 
           {!this.props.isLineChart &&
             !this.props.isChain &&
-            !this.props.LightTheme && (
+            !this.props.LightTheme &&
+            !this.props.isIcon && (
               <span>
                 <svg
                   height="20"
@@ -372,6 +375,7 @@ class CustomMinMaxDropdown extends Component {
               placeholder="Min"
               onChange={this.handleMinChange}
               className={`dropdown-min-max-input ${
+                !this.props.isIcon &&
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "dropdown-search-input-smaller"
                   : ""
@@ -384,6 +388,7 @@ class CustomMinMaxDropdown extends Component {
               placeholder="Max"
               onChange={this.handleMaxChange}
               className={`dropdown-min-max-input ${
+                !this.props.isIcon &&
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "dropdown-search-input-smaller"
                   : ""
