@@ -88,6 +88,7 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  InsightsEV,
   ManageWallets,
   NetflowSwitchHome,
   PriceGaugeEV,
@@ -2185,6 +2186,15 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  goToInsightsPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/intelligence/insights");
+      InsightsEV({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
   render() {
     const { table, assetPriceList_home, totalCount } =
       this.props.intelligenceState;
@@ -4270,6 +4280,7 @@ class Portfolio extends BaseReactComponent {
             goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
             goToPriceGaugePage={this.goToPriceGaugePage}
+            goToInsightsPage={this.goToInsightsPage}
           />
         </MobileLayout>
       );
@@ -4373,7 +4384,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(1);
+                              if (this.state.blockOneSelectedItem === 1)
+                                this.goToAssetsPage();
+                              else this.changeBlockOneItem(1);
                             }}
                           >
                             Assets
@@ -4407,7 +4420,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(2);
+                              if (this.state.blockOneSelectedItem === 2)
+                                this.goToDefiPage();
+                              else this.changeBlockOneItem(2);
                             }}
                           >
                             DeFi
@@ -4524,7 +4539,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(1);
+                              if (this.state.blockTwoSelectedItem === 1)
+                                this.goToRealizedGainsPage();
+                              else this.changeBlockTwoItem(1);
                             }}
                           >
                             Flows
@@ -4556,7 +4573,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(2);
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToGasFeesSpentPage();
+                              else this.changeBlockTwoItem(2);
                             }}
                           >
                             Gas fees
@@ -4708,7 +4727,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(1);
+                              if (this.state.blockThreeSelectedItem === 1)
+                                this.goToCounterPartyVolumePage();
+                              else this.changeBlockThreeItem(1);
                             }}
                           >
                             Counterparties
@@ -4739,7 +4760,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(2);
+                              if (this.state.blockThreeSelectedItem === 2)
+                                this.goToYieldOppPage();
+                              else this.changeBlockThreeItem(2);
                             }}
                           >
                             Yield opportunities
@@ -4769,7 +4792,7 @@ class Portfolio extends BaseReactComponent {
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
                               this.state.blockThreeSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
+                                ? "section-table-toggle-element-selected section-table-toggle-element-selected-no-hover"
                                 : ""
                             }`}
                             onClick={() => {
@@ -4939,7 +4962,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(1);
+                              if (this.state.blockFourSelectedItem === 1)
+                                this.goToPriceGaugePage();
+                              else this.changeBlockFourItem(1);
                             }}
                           >
                             Price gauge
@@ -4973,7 +4998,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(2);
+                              if (this.state.blockFourSelectedItem === 2)
+                                this.goToTransactionHistoryPage();
+                              else this.changeBlockFourItem(2);
                             }}
                           >
                             Transactions
@@ -5008,7 +5035,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(3);
+                              if (this.state.blockFourSelectedItem === 3) {
+                                this.goToInsightsPage();
+                              } else this.changeBlockFourItem(3);
                             }}
                           >
                             Insights
