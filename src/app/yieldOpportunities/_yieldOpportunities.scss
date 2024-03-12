@@ -7,6 +7,9 @@
   background-color: var(--yieldOppYourPortfolioContainerBg);
 }
 .yield-opp-page-mobile {
+  .custom-dropdown {
+    background-color: var(--mobileTransactionFiltersBg);
+  }
 }
 .yeildOppTitleContainer {
   display: flex;
@@ -27,6 +30,6 @@
   }
   .yeildOppTitleRight {
     width: 68%;
-    border-color:  var(--yeildBottomBorder2);
+    border-color: var(--yeildBottomBorder2);
   }
 }

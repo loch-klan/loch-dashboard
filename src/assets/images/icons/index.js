@@ -109,3 +109,4 @@ export { default as HomeSidebarIcon } from "./HomeSidebar.svg";
 export { default as DefaultNftTableIconIcon } from "./defaultNftTableIcon.png";
 export { default as CheckCopyTradeTransactionsIcon } from "./checkCopyTradeTransactions.svg";
 export { default as CrossCopyTradeTransactionsIcon } from "./crossCopyTradeTransactions.svg";
+export { default as FilterIcon } from "./filter.svg";

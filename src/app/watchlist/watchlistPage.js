@@ -620,20 +620,18 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className={`cp history-table-header-col goToCenter ${
+            className={`cp history-table-header-col goToCenter table-header-font ${
               this.state.tableData.length === 0 ? "no-hover" : ""
             }`}
             id="Accounts"
-            onClick={() => {
-              if (this.state.tableData.length > 0) {
-                this.handleSort(this.state.tableSortOpt[0].title);
-              }
-            }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Nametag</span>
             <Image
+              onClick={() => {
+                if (this.state.tableData.length > 0) {
+                  this.handleSort(this.state.tableSortOpt[0].title);
+                }
+              }}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
@@ -678,20 +676,18 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className={`cp history-table-header-col goToCenter ${
+            className={`cp history-table-header-col goToCenter table-header-font ${
               this.state.tableData.length === 0 ? "no-hover" : ""
             }`}
             id="remark"
-            onClick={() => {
-              if (this.state.tableData.length > 0) {
-                this.handleSort(this.state.tableSortOpt[2].title);
-              }
-            }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Remarks
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Remarks</span>
             <Image
+              onClick={() => {
+                if (this.state.tableData.length > 0) {
+                  this.handleSort(this.state.tableSortOpt[2].title);
+                }
+              }}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
