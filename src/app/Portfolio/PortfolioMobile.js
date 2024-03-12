@@ -1012,7 +1012,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockTwoItem(3);
                   }}
                 >
-                  NFT
+                  NFTs
                 </div>
               </div>
               <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
