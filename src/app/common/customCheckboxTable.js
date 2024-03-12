@@ -44,7 +44,15 @@ class CheckboxCustomTable extends Component {
         <div
           style={{
             margin: !this.props.noMargin ? "10px" : "",
-            background: this.state.isChecked ? "#0071E3" : "transparent",
+            background: this.state.isChecked
+              ? this.props.isDustCheckbox
+                ? "var(--cardBackgroud)"
+                : "#0071E3"
+              : "transparent",
+            border:
+              !this.state.isChecked && this.props.isDustCheckbox
+                ? "1px solid #E0E0E0"
+                : "",
           }}
           className="custom-checkbox"
           onClick={this.handleChecked}
@@ -53,6 +61,10 @@ class CheckboxCustomTable extends Component {
             src={checkIcon}
             style={{
               opacity: this.state.isChecked ? "1" : "0",
+              filter:
+                this.state.isChecked && this.props.isDustCheckbox
+                  ? "var(--whiteOnlyInvert)"
+                  : "invert(0)",
             }}
           />
         </div>
