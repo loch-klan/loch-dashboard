@@ -374,10 +374,19 @@ class CustomMinMaxDropdown extends Component {
                 position: "relative",
               }}
             >
-              <span style={{ position: "absolute", left: 10, top: 14 }}>$</span>
+              <span
+                style={{
+                  position: "absolute",
+                  left: 10,
+                  top: 14,
+                  fontSize: "1.3rem",
+                }}
+              >
+                $
+              </span>
               <input
                 value={this.state.minAmount}
-                style={{ paddingLeft: "20px" }}
+                style={{ paddingLeft: "18px" }}
                 type="text"
                 placeholder="Min"
                 onChange={this.handleMinChange}
@@ -395,10 +404,19 @@ class CustomMinMaxDropdown extends Component {
                 position: "relative",
               }}
             >
-              <span style={{ position: "absolute", left: 10, top: 14 }}>$</span>
+              <span
+                style={{
+                  position: "absolute",
+                  left: 10,
+                  top: 14,
+                  fontSize: "1.3rem",
+                }}
+              >
+                $
+              </span>
               <input
                 value={this.state.maxAmount}
-                style={{ paddingLeft: "20px" }}
+                style={{ paddingLeft: "18px" }}
                 type="text"
                 placeholder="Max"
                 onChange={this.handleMaxChange}
