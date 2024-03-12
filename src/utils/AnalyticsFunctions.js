@@ -4505,6 +4505,14 @@ export const YieldOppurtunitiesExpandediew = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const NftExpandediew = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Nft expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const DefiBlockExpandediew = ({ session_id, email_address }) => {
   const event_name = "Home Page: Defi expanded view";
   const eventProperties = {
