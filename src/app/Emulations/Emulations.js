@@ -59,6 +59,7 @@ class Emulations extends Component {
       isLeftArrowDisabled: true,
       isRightArrowDisabled: false,
       currentCirclePosition: 0,
+      userDetailsState: undefined,
       availableCopyTrades: [
         {
           wallet: "0x189129398172387129",
@@ -124,17 +125,19 @@ class Emulations extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
+    if (this.state.userDetailsState && this.state.userDetailsState.email) {
+      this.removeCopyTradeBtnClickedLocal();
       this.setState({
         isAddCopyTradeAddress: true,
       });
     } else {
       if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
         document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
+        this.addCopyTradeBtnClickedLocal();
       } else if (
         document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
       ) {
+        this.addCopyTradeBtnClickedLocal();
         document
           .getElementById("sidebar-closed-sign-in-btn-copy-trader")
           .click();
@@ -142,6 +145,7 @@ class Emulations extends Component {
     }
   };
   hideAddCopyTradeAddress = (isRecall) => {
+    this.removeCopyTradeBtnClickedLocal();
     this.setState({
       isAddCopyTradeAddress: false,
     });
@@ -173,6 +177,26 @@ class Emulations extends Component {
       this.props.updateWalletListFlag("emulationsPage", true);
       this.setLocalEmulationList();
     }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+
+    if (userDetails) {
+      this.setState(
+        {
+          userDetailsState: userDetails,
+        },
+        () => {
+          const isLoginAttmepted = window.sessionStorage.getItem(
+            "copyTradeLoginClicked"
+          );
+
+          if (isLoginAttmepted && isLoginAttmepted === "true") {
+            setTimeout(() => {
+              this.showAddCopyTradeAddress();
+            }, 1500);
+          }
+        }
+      );
+    }
 
     this.startPageView();
     this.updateTimer(true);
@@ -181,7 +205,17 @@ class Emulations extends Component {
       clearInterval(window.checkEmulationsTimer);
     };
   }
-
+  addCopyTradeBtnClickedLocal = () => {
+    window.sessionStorage.setItem("copyTradeLoginClicked", true);
+  };
+  removeCopyTradeBtnClickedLocal = () => {
+    let isLoginClickedStored = window.sessionStorage.getItem(
+      "copyTradeLoginClicked"
+    );
+    if (isLoginClickedStored) {
+      window.sessionStorage.removeItem("copyTradeLoginClicked");
+    }
+  };
   callEmulationsApi = (updatedAddress) => {
     if (updatedAddress) {
       this.setState({
@@ -225,6 +259,12 @@ class Emulations extends Component {
       });
     }
     if (!this.props.commonState.emulationsPage) {
+      const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (userDetails) {
+        this.setState({
+          userDetailsState: userDetails,
+        });
+      }
       this.callEmulationsApi(true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
@@ -274,6 +314,7 @@ class Emulations extends Component {
     }
   };
   componentWillUnmount() {
+    this.removeCopyTradeBtnClickedLocal();
     const tempExpiryTime = window.sessionStorage.getItem(
       "emulationsPageExpiryTime"
     );
@@ -632,6 +673,8 @@ class Emulations extends Component {
           hideFooter
         >
           <EmulationsMobile
+            addCopyTradeBtnClickedLocal={this.addCopyTradeBtnClickedLocal}
+            userDetailsState={this.state.userDetailsState}
             columnData={columnData}
             tableData={this.state.emulationsLocal}
             emulationsLoading={this.state.emulationsLoading}
@@ -648,7 +691,6 @@ class Emulations extends Component {
             goToScrollPosition={goToScrollPosition}
             currentCirclePosition={this.state.currentCirclePosition}
             availableCopyTrades={this.state.availableCopyTrades}
-            buttonRef={this.props.buttonRef}
             handleAvailableTradeScroll={handleAvailableTradeScroll}
           />
         </MobileLayout>
@@ -740,7 +782,9 @@ class Emulations extends Component {
               handleBtn={this.showAddCopyTradeAddress}
               showpath
             />
-            {this.state.availableCopyTrades &&
+            {this.state.userDetailsState &&
+            this.state.userDetailsState.email &&
+            this.state.availableCopyTrades &&
             this.state.availableCopyTrades.length > 0 ? (
               <div className="available-copy-trades-container">
                 <div
@@ -769,15 +813,10 @@ class Emulations extends Component {
                           {curTradeData.swapToAmount} {curTradeData.swapTo}? 
                         </div>
                         <div className="available-copy-trades-button-container">
-                          <div
-                            ref={this.props.buttonRef}
-                            className={`topbar-btn`}
-                            id="address-button-two"
-                          >
+                          <div className={`topbar-btn`} id="address-button-two">
                             <span className="dotDotText">Reject</span>
                           </div>
                           <div
-                            ref={this.props.buttonRef}
                             className={`topbar-btn ml-2 topbar-btn-dark`}
                             id="address-button-two"
                           >

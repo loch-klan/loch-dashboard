@@ -65,7 +65,7 @@ export const addEmulations = (data, hideModal, resetBtn) => {
         }
         if (!res.data.error) {
           if (res.data.data) {
-            toast.success("Copy Trade Added");
+            toast.success("Congrats! You’ll receive email notifications");
             if (hideModal) {
               hideModal(true);
             }

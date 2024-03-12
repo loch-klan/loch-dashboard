@@ -916,7 +916,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                                   ? `$${this.state.copyTradeAmount}`
                                   : ""
                               }
-                              placeholder="$1000.00"
+                              placeholder="$0"
                               className={`inter-display-regular f-s-16 lh-20 awInput`}
                               onChange={this.handleOnAmountChange}
                               autoComplete="off"

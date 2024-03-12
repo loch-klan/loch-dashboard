@@ -15,6 +15,7 @@ import {
   UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
 import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
+import { toast } from "react-toastify";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -31,6 +32,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
     if (userDetails && userDetails.email) {
       this.props.showAddCopyTradeAddress();
     } else {
+      if (this.props.addCopyTradeBtnClickedLocal) {
+        this.props.addCopyTradeBtnClickedLocal();
+      }
       this.setState({
         authmodal: "login",
       });
@@ -172,7 +176,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             isMobile
           />
         ) : null}
-        {this.props.availableCopyTrades &&
+        {this.props.userDetailsState &&
+        this.props.userDetailsState.email &&
+        this.props.availableCopyTrades &&
         this.props.availableCopyTrades.length > 0 ? (
           <div className="available-copy-trades-container">
             <div
@@ -210,15 +216,10 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       {curTradeData.swapTo}? 
                     </div>
                     <div className="available-copy-trades-button-container available-copy-trades-button-container--mobile">
-                      <div
-                        ref={this.props.buttonRef}
-                        className={`topbar-btn`}
-                        id="address-button-two"
-                      >
+                      <div className={`topbar-btn`} id="address-button-two">
                         <span className="dotDotText">Reject</span>
                       </div>
                       <div
-                        ref={this.props.buttonRef}
                         className={`topbar-btn ml-2 topbar-btn-dark`}
                         id="address-button-two"
                       >
