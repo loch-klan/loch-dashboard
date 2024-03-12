@@ -4790,7 +4790,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(3);
+                              if (this.state.blockTwoSelectedItem === 3)
+                                this.goToNftPage();
+                              else this.changeBlockTwoItem(3);
                             }}
                           >
                             NFT
@@ -4800,7 +4802,7 @@ class Portfolio extends BaseReactComponent {
                               isInfo={true}
                               isText={true}
                               className={"fix-width"}
-                              text={"Understand your portfolio's net flows"}
+                              text={"Browse the NFTs held by this wallet"}
                             >
                               {/* <div className="info-icon-i">
                                   i

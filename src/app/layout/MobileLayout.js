@@ -85,12 +85,6 @@ class MobileLayout extends BaseReactComponent {
           path: "/home-leaderboard",
         },
         {
-          activeIcon: NFTIcon,
-          inactiveIcon: MobileNavNFT,
-          text: "NFT",
-          path: "/nft",
-        },
-        {
           activeIcon: MobileNavProfile,
           inactiveIcon: MobileNavProfile,
           text: "Sign Out",
