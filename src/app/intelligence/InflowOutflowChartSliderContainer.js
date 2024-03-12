@@ -747,7 +747,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         isLeftText
                         className={"fix-width tool-tip-container-bottom-arrow"}
                         heading="These are all the tokens ever owned by this wallet."
-                        subHeading="Red coordinates represent outflows / sells and and green coordinates represent inflows / sells."
+                        subHeading="Red coordinates represent outflows / sells and green coordinates represent inflows / buys."
                       >
                         <Image
                           src={InfoIcon}

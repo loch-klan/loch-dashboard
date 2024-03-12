@@ -1301,6 +1301,12 @@
               background-color: var(--activeToggleBg);
             }
           }
+          .section-table-toggle-element-selected-no-hover {
+            cursor: default;
+            &:hover {
+              background-color: var(--cardBackgroud);
+            }
+          }
         }
       }
       .newHomeTableContainer {
