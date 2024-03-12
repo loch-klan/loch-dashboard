@@ -19,6 +19,7 @@ import ConnectModal from "../common/ConnectModal.js";
 import FixAddModal from "../common/FixAddModal.js";
 
 // add wallet
+import { Image } from "react-bootstrap";
 import {
   EmultionSidebarIcon,
   ExportIconWhite,
@@ -30,7 +31,6 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   TruncateText,
-  amountFormat,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -49,14 +49,14 @@ import MobileLayout from "../layout/MobileLayout.js";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
 import { getEmulations } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
-import "./_emulations.scss";
-import { Image } from "react-bootstrap";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
+import "./_emulations.scss";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isExecuteCopyTrade: false,
       isLeftArrowDisabled: true,
       isRightArrowDisabled: false,
       currentCirclePosition: 0,
@@ -326,6 +326,16 @@ class Emulations extends Component {
 
   handleConnectModal = () => {
     this.setState({ connectModal: !this.state.connectModal });
+  };
+  hideExecuteCopyTrade = () => {
+    this.setState({
+      isExecuteCopyTrade: false,
+    });
+  };
+  showExecuteCopyTrade = () => {
+    this.setState({
+      isExecuteCopyTrade: true,
+    });
   };
 
   render() {
@@ -734,15 +744,15 @@ class Emulations extends Component {
             ""
           )}
           <div className="cost-section page">
-            <EmulationsTradeModal
-              show
-              onHide={this.handleConnectModal}
-              history={this.props.history}
-              headerTitle={"Connect exchanges"}
-              modalType={"connectModal"}
-              iconImage={LinkIcon}
-              updateTimer={this.updateTimer}
-            />
+            {this.state.isExecuteCopyTrade ? (
+              <EmulationsTradeModal
+                show={this.state.isExecuteCopyTrade}
+                onHide={this.hideExecuteCopyTrade}
+                history={this.props.history}
+                modalType={"connectModal"}
+                updateTimer={this.updateTimer}
+              />
+            ) : null}
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -828,6 +838,7 @@ class Emulations extends Component {
                           </div>
                           <div
                             className={`topbar-btn ml-2 topbar-btn-dark`}
+                            onClick={this.showExecuteCopyTrade}
                             id="address-button-two"
                           >
                             <span className="dotDotText">Confirm</span>

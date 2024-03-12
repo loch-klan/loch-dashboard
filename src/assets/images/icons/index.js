@@ -110,3 +110,7 @@ export { default as DefaultNftTableIconIcon } from "./defaultNftTableIcon.png";
 export { default as CheckCopyTradeTransactionsIcon } from "./checkCopyTradeTransactions.svg";
 export { default as CrossCopyTradeTransactionsIcon } from "./crossCopyTradeTransactions.svg";
 export { default as FilterIcon } from "./filter.svg";
+export { default as UniswapLogoIcon } from "./uniswapLogo.svg";
+export { default as OneInchLogoIcon } from "./oneInchLogo.svg";
+export { default as KyberSwapLogoIcon } from "./kyberSwapLogo.svg";
+export { default as CowSwapLogoIcon } from "./cowSwapLogo.svg";

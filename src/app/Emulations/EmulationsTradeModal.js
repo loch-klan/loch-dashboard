@@ -1,19 +1,16 @@
 import React from "react";
 import { Col, Image, Modal, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import BinanceIcon from "../../assets/images/icons/Binance.svg";
-import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import { BaseReactComponent } from "../../utils/form";
 
-import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
-import krakanIcon from "../../assets/images/icons/krakan.svg";
-import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
-import OkxIcon from "../../assets/images/icons/okx.jpg";
-
-import { EmultionSidebarIcon } from "../../assets/images/icons";
-import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
-import CustomButton from "../../utils/form/CustomButton";
+import {
+  CowSwapLogoIcon,
+  EmultionSidebarIcon,
+  KyberSwapLogoIcon,
+  OneInchLogoIcon,
+  UniswapLogoIcon,
+} from "../../assets/images/icons";
 
 class EmulationsTradeModal extends BaseReactComponent {
   constructor(props) {
@@ -24,65 +21,25 @@ class EmulationsTradeModal extends BaseReactComponent {
       onHide: props.onHide,
       connectExchangesList: [
         {
-          name: "Binance",
-          code: "BINANCE",
-          icon: BinanceIcon,
-          isActive: false,
-          isOAuth: false,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
+          name: "Uniswap",
+          code: "UNISWAP",
+          icon: UniswapLogoIcon,
         },
         {
-          name: "Coinbase",
-          code: "COINBASE",
-          icon: CoinbaseIcon,
-          isActive: false,
-          isOAuth: true,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
-        },
-        {
-          name: "Kraken",
-          code: "KRAKEN",
-          icon: krakanIcon,
-          isActive: false,
-          isOAuth: false,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
-        },
-        {
-          name: "Kucoin",
-          code: "KUCOIN",
-          icon: KuCoinIcon,
-          isActive: false,
-          isOAuth: false,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
-        },
-        {
-          name: "OKX",
-          code: "OKX",
-          icon: OkxIcon,
-          isActive: false,
-          isOAuth: false,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
+          name: "1inch",
+          code: "ONEINCH",
+          icon: OneInchLogoIcon,
         },
 
         {
-          name: "Bitstamp",
-          code: "BITSTAMP",
-          icon: BitstampIcon,
-          isActive: false,
-          isOAuth: false,
-          apiKey: "",
-          apiSecretKey: "",
-          connectionName: "",
+          name: "Cow Swap",
+          code: "COWSWAP",
+          icon: CowSwapLogoIcon,
+        },
+        {
+          name: "Kyberswap",
+          code: "KYBERSWAP",
+          icon: KyberSwapLogoIcon,
         },
       ],
     };
@@ -142,10 +99,7 @@ class EmulationsTradeModal extends BaseReactComponent {
                 {this.state.connectExchangesList.map((item) => {
                   return (
                     <Col md={4}>
-                      <div
-                        className="connect-div"
-                        onClick={() => this.handleSelect(item)}
-                      >
+                      <div className="connect-div">
                         <div className="img-wrapper">
                           <Image src={item.icon} />
                         </div>
