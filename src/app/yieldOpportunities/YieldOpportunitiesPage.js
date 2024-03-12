@@ -725,14 +725,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="asset"
-            onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleTableSort("asset")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
@@ -765,14 +763,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="usdValue"
-            onClick={() => this.handleTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Value
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Value</span>
             <Image
+              onClick={() => this.handleTableSort("usdValue")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
@@ -824,15 +820,13 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="project"
-            onClick={() => this.handleTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Project
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Project</span>
             <Image
               src={sortByIcon}
+              onClick={() => this.handleTableSort("project")}
               className={
                 this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
@@ -855,14 +849,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="pool"
-            onClick={() => this.handleTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Pool
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Pool</span>
             <Image
+              onClick={() => this.handleTableSort("pool")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
@@ -886,15 +878,13 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="tvl"
-            onClick={() => this.handleTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              TVL
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">TVL</span>
             <Image
               src={sortByIcon}
+              onClick={() => this.handleTableSort("tvl")}
               className={
                 this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
               }
@@ -938,14 +928,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="apy"
-            onClick={() => this.handleTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              APY
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">APY</span>
             <Image
+              onClick={() => this.handleTableSort("apy")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"

@@ -42,26 +42,25 @@
       }
     }
 
-    &.custom-dropdown-icon{
+    &.custom-dropdown-icon {
       border: none;
       min-height: auto;
-      margin-right: 10px !important;
-      background:none !important;
+      margin-right: 1.5rem !important;
+      background: none !important;
     }
 
     &:hover {
-      &.custom-dropdown-icon{
+      &.custom-dropdown-icon {
         border: none;
       }
     }
 
-    &.custom-dropdown-icon{
+    &.custom-dropdown-icon {
       .dropdown-content {
         top: 3rem;
         left: -2rem;
       }
     }
-
   }
 
   .padding-mb-2 {

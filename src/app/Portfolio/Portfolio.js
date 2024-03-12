@@ -88,6 +88,7 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  InsightsEV,
   ManageWallets,
   NetflowSwitchHome,
   NftExpandediew,
@@ -2241,6 +2242,15 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  goToInsightsPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/intelligence/insights");
+      InsightsEV({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
   render() {
     const { table, assetPriceList_home, totalCount } =
       this.props.intelligenceState;
@@ -2348,7 +2358,10 @@ class Portfolio extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div
+            className="cp history-table-header-col table-header-font"
+            id="time"
+          >
             {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
@@ -2377,9 +2390,10 @@ class Portfolio extends BaseReactComponent {
                   onClick={() => {
                     this.toggleAgeTimestamp();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 table-header-font"
+                  className="inter-display-medium f-s-13 lh-16"
                   style={{
                     textDecoration: "underline",
+                    cursor: "pointer",
                   }}
                 >
                   {this.state.isShowingAge ? "Age" : "Timestamp"}
@@ -2431,14 +2445,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="from"
-            onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              From
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">From</span>
             <Image
+              onClick={() => this.handleTableSort("from")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
@@ -2728,14 +2740,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="to"
-            onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              To
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">To</span>
             <Image
+              onClick={() => this.handleTableSort("to")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
@@ -3021,15 +3031,13 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="asset"
-            onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
               src={sortByIcon}
+              onClick={() => this.handleTableSort("asset")}
               className={
                 this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
@@ -3070,14 +3078,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="amount"
-            onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Amount
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Amount</span>
             <Image
+              onClick={() => this.handleTableSort("amount")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
@@ -3115,14 +3121,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="usdValueThen"
-            onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
+              onClick={() => this.handleTableSort("usdThen")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
@@ -3208,14 +3214,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="method"
-            onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Method
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Method</span>
             <Image
+              onClick={() => this.handleTableSort("method")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
@@ -3258,10 +3262,11 @@ class Portfolio extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Network
-            </span>
+          <div
+            className="cp history-table-header-col  table-header-font"
+            id="network"
+          >
+            <span className="inter-display-medium f-s-13 lh-16">Network</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -3301,13 +3306,11 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Hash
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Hash</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -3403,14 +3406,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="asset"
-            onClick={() => this.handleYieldOppTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("asset")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[0].up
@@ -3442,14 +3443,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="project"
-            onClick={() => this.handleYieldOppTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Project
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Project</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("project")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[3].up
@@ -3478,14 +3477,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="tvl"
-            onClick={() => this.handleYieldOppTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              TVL
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">TVL</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("tvl")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[5].up
@@ -3535,14 +3532,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="apy"
-            onClick={() => this.handleYieldOppTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              APY
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">APY</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("apy")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[6].up
@@ -3583,14 +3578,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="usdValue"
-            onClick={() => this.handleYieldOppTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Value
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Value</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("usdValue")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[2].up
@@ -3636,18 +3629,15 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="pool"
-            onClick={() => this.handleYieldOppTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Pool
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Pool</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("pool")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[4].up
@@ -3678,14 +3668,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Asset"
-            onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
               className={!this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
             />
@@ -3743,14 +3731,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Current value
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[5])}
               src={sortByIcon}
               className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
@@ -3806,14 +3794,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gainamount"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Unrealized gain
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[6])}
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
             />
@@ -3887,14 +3875,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Portfolio perc"
-            onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Portfolio (%)
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[8])}
               src={sortByIcon}
               className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
             />
@@ -3950,14 +3938,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Average Cost Price"
-            onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Avg cost price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[1])}
               src={sortByIcon}
               className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
@@ -4010,14 +3998,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Current Price"
-            onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Current price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[2])}
               src={sortByIcon}
               className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
@@ -4070,14 +4058,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Amount"
-            onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Amount
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Amount</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[3])}
               src={sortByIcon}
               className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
             />
@@ -4126,14 +4112,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Cost basis
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[4])}
               src={sortByIcon}
               className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
@@ -4190,14 +4176,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Return
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Return</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[7])}
               src={sortByIcon}
               className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
             />
@@ -4479,6 +4463,7 @@ class Portfolio extends BaseReactComponent {
             goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
             goToPriceGaugePage={this.goToPriceGaugePage}
+            goToInsightsPage={this.goToInsightsPage}
           />
         </MobileLayout>
       );
@@ -4582,7 +4567,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(1);
+                              if (this.state.blockOneSelectedItem === 1)
+                                this.goToAssetsPage();
+                              else this.changeBlockOneItem(1);
                             }}
                           >
                             Assets
@@ -4616,7 +4603,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(2);
+                              if (this.state.blockOneSelectedItem === 2)
+                                this.goToDefiPage();
+                              else this.changeBlockOneItem(2);
                             }}
                           >
                             DeFi
@@ -4733,7 +4722,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(1);
+                              if (this.state.blockTwoSelectedItem === 1)
+                                this.goToRealizedGainsPage();
+                              else this.changeBlockTwoItem(1);
                             }}
                           >
                             Flows
@@ -4765,7 +4756,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(2);
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToGasFeesSpentPage();
+                              else this.changeBlockTwoItem(2);
                             }}
                           >
                             Gas fees
@@ -5001,7 +4994,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(1);
+                              if (this.state.blockThreeSelectedItem === 1)
+                                this.goToCounterPartyVolumePage();
+                              else this.changeBlockThreeItem(1);
                             }}
                           >
                             Counterparties
@@ -5032,7 +5027,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(2);
+                              if (this.state.blockThreeSelectedItem === 2)
+                                this.goToYieldOppPage();
+                              else this.changeBlockThreeItem(2);
                             }}
                           >
                             Yield opportunities
@@ -5062,7 +5059,7 @@ class Portfolio extends BaseReactComponent {
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
                               this.state.blockThreeSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
+                                ? "section-table-toggle-element-selected section-table-toggle-element-selected-no-hover"
                                 : ""
                             }`}
                             onClick={() => {
@@ -5232,7 +5229,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(1);
+                              if (this.state.blockFourSelectedItem === 1)
+                                this.goToPriceGaugePage();
+                              else this.changeBlockFourItem(1);
                             }}
                           >
                             Price gauge
@@ -5266,7 +5265,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(2);
+                              if (this.state.blockFourSelectedItem === 2)
+                                this.goToTransactionHistoryPage();
+                              else this.changeBlockFourItem(2);
                             }}
                           >
                             Transactions
@@ -5301,7 +5302,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(3);
+                              if (this.state.blockFourSelectedItem === 3) {
+                                this.goToInsightsPage();
+                              } else this.changeBlockFourItem(3);
                             }}
                           >
                             Insights

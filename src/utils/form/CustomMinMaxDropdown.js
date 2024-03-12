@@ -361,7 +361,7 @@ class CustomMinMaxDropdown extends Component {
           className={`dropdown-content ${this.state.showMenu ? "show" : ""}`}
           style={{
             minWidth: `${
-              this.props.isLineChart || this.props.isChain ? "100%" : "130px"
+              this.props.isLineChart || this.props.isChain ? "100%" : "135px"
             }`,
           }}
         >
@@ -369,32 +369,66 @@ class CustomMinMaxDropdown extends Component {
             Token Transfer Amount ($)
           </div>
           <div className="dropdown-search-wrapper dropdown-search-wrapper-min-max">
-            <input
-              value={this.state.minAmount}
-              type="text"
-              placeholder="Min"
-              onChange={this.handleMinChange}
-              className={`dropdown-min-max-input ${
-                !this.props.isIcon &&
-                this.props.filtername.toLowerCase() === "tokens"
-                  ? "dropdown-search-input-smaller"
-                  : ""
-              }`}
-              onKeyDown={this.checkForEnter}
-            />
-            <input
-              value={this.state.maxAmount}
-              type="text"
-              placeholder="Max"
-              onChange={this.handleMaxChange}
-              className={`dropdown-min-max-input ${
-                !this.props.isIcon &&
-                this.props.filtername.toLowerCase() === "tokens"
-                  ? "dropdown-search-input-smaller"
-                  : ""
-              }`}
-              onKeyDown={this.checkForEnter}
-            />
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <span
+                style={{
+                  position: "absolute",
+                  left: 10,
+                  top: 14,
+                  fontSize: "1.3rem",
+                }}
+              >
+                $
+              </span>
+              <input
+                value={this.state.minAmount}
+                style={{ paddingLeft: "18px" }}
+                type="text"
+                placeholder="Min"
+                onChange={this.handleMinChange}
+                className={`dropdown-min-max-input ${
+                  !this.props.isIcon &&
+                  this.props.filtername.toLowerCase() === "tokens"
+                    ? "dropdown-search-input-smaller"
+                    : ""
+                }`}
+                onKeyDown={this.checkForEnter}
+              />
+            </div>
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <span
+                style={{
+                  position: "absolute",
+                  left: 10,
+                  top: 14,
+                  fontSize: "1.3rem",
+                }}
+              >
+                $
+              </span>
+              <input
+                value={this.state.maxAmount}
+                style={{ paddingLeft: "18px" }}
+                type="text"
+                placeholder="Max"
+                onChange={this.handleMaxChange}
+                className={`dropdown-min-max-input ${
+                  !this.props.isIcon &&
+                  this.props.filtername.toLowerCase() === "tokens"
+                    ? "dropdown-search-input-smaller"
+                    : ""
+                }`}
+                onKeyDown={this.checkForEnter}
+              />
+            </div>
           </div>
 
           <div className="dropdown-footer">
