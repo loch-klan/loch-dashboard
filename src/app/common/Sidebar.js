@@ -52,6 +52,7 @@ import {
   SignupMenu,
   ToggleDarkModeAnalytics,
   resetUser,
+  MenuLeaderboard,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   getCurrentUser,
@@ -944,7 +945,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuWatchlist({
+                                  MenuLeaderboard({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1194,7 +1195,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  ProfileMenu({
+                                  MenuLeaderboard({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });

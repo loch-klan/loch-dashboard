@@ -5801,6 +5801,15 @@ export const MenuCopyTradelist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
+export const MenuLeaderboard = ({ session_id, email_address }) => {
+  const event_name = "Menu: Leaderboard";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
 
 //Menu:export hide dust - done
 export const MenuExportHideDust = ({ session_id, email_address }) => {

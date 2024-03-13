@@ -16,13 +16,17 @@ import {
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
+  HomeMenu,
+  MenuCopyTradelist,
+  MenuLeaderboard,
+  MenuWatchlist,
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -667,7 +671,34 @@ class MobileLayout extends BaseReactComponent {
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
-                        this.props.history.push(item.path);
+                        let tempToken = getToken();
+                        if (!tempToken || tempToken === "jsk") {
+                          return null;
+                        } else {
+                          if (index === 0) {
+                            HomeMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 1) {
+                            MenuWatchlist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 2) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 3) {
+                            MenuLeaderboard({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+
+                          this.props.history.push(item.path);
+                        }
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${
