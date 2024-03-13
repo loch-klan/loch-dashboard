@@ -151,7 +151,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 columnList={this.props.columnList}
                 message={"No yield opportunities found"}
                 xAxisScrollable
-                xAxisScrollableColumnWidth={3}
+                xAxisScrollableColumnWidth={3.4}
                 noSubtitleBottomPadding
                 disableOnLoading
                 isMiniversion

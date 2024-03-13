@@ -241,6 +241,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 1000 !important;
       .available-copy-trades-navigator-circle {
         height: 6px;
         width: 6px;

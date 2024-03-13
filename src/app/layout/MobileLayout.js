@@ -91,12 +91,6 @@ class MobileLayout extends BaseReactComponent {
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
-        {
-          activeIcon: NFTIcon,
-          inactiveIcon: MobileNavNFT,
-          text: "NFT",
-          path: "/nft",
-        },
       ],
       userWalletList: [],
       isUpdate: 0,
@@ -340,7 +334,6 @@ class MobileLayout extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
     }
-    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {
@@ -699,8 +692,8 @@ class MobileLayout extends BaseReactComponent {
                           ? {
                               filter:
                                 activeTab === item.path
-                                  ? "brightness(0)"
-                                  : "brightness(1.5)",
+                                  ? "brightness(0) var(--invertColor)"
+                                  : "brightness(1.5) var(--invertColor)",
                             }
                           : {}
                       }

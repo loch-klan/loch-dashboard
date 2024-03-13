@@ -594,7 +594,7 @@ class CustomDropdown extends Component {
             : this.props.isTopaccount
             ? "top-account-dropdown"
             : ""
-        }`}
+        } ${this.props.isIcon ? "custom-dropdown-icon" : ""}`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
       >
@@ -619,6 +619,8 @@ class CustomDropdown extends Component {
               : ""
             : this.getSelected()?.length === 0
             ? this.state.name
+            : this.props.isIcon
+            ? this.state.name
             : this.props.isLineChart
             ? this.getSelected()?.length + "/4 Selected"
             : this.props.isChain
@@ -633,7 +635,8 @@ class CustomDropdown extends Component {
 
           {!this.props.isLineChart &&
             !this.props.isChain &&
-            !this.props.LightTheme && (
+            !this.props.LightTheme &&
+            !this.props.isIcon && (
               <span>
                 <svg
                   height="20"
@@ -673,6 +676,7 @@ class CustomDropdown extends Component {
           <div className="dropdown-search-wrapper">
             <Image
               className={
+                !this.props.isIcon &&
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "dropdown-search-wrapper-image-small"
                   : ""
@@ -684,13 +688,17 @@ class CustomDropdown extends Component {
               type="text"
               placeholder={
                 // this.props.filtername.toLowerCase() === "all assets" ||
-                this.props.filtername.toLowerCase() === "all assets selected" ||
-                this.props.filtername.toLowerCase() === "tokens"
+                (!this.props.isIcon &&
+                  this.props.filtername.toLowerCase() ===
+                    "all assets selected") ||
+                (!this.props.isIcon &&
+                  this.props.filtername.toLowerCase() === "tokens")
                   ? "Name or symbol"
                   : "Search"
               }
               onChange={this.handleSearch}
               className={`dropdown-search-input ${
+                !this.props.isIcon &&
                 this.props.filtername.toLowerCase() === "tokens"
                   ? "dropdown-search-input-smaller"
                   : ""

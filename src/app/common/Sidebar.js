@@ -98,7 +98,10 @@ function Sidebar(props) {
   // console.log("active", activeTab);
   const history = useHistory();
   const [showAmountsAtTop, setShowAmountsAtTop] = useState(false);
-  const [dragPosition, setDragPosition] = React.useState({ x: 0, y: 0 });
+  const [dragPosition, setDragPosition] = React.useState({
+    x: 0,
+    y: -(window.innerHeight / 2 - 90),
+  });
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -658,20 +661,20 @@ function Sidebar(props) {
     if (data) {
       setDragPosition({ x: data.x, y: data.y });
 
-      window.sessionStorage.setItem(
-        "floatingModalPosition",
-        JSON.stringify({ x: data.x, y: data.y })
-      );
+      // window.sessionStorage.setItem(
+      //   "floatingModalPosition",
+      //   JSON.stringify({ x: data.x, y: data.y })
+      // );
     }
   };
-  useEffect(() => {
-    let floatingModalPosition = window.sessionStorage.getItem(
-      "floatingModalPosition"
-    );
-    if (floatingModalPosition) {
-      setDragPosition(JSON.parse(floatingModalPosition));
-    }
-  }, []);
+  // useEffect(() => {
+  //   let floatingModalPosition = window.sessionStorage.getItem(
+  //     "floatingModalPosition"
+  //   );
+  //   if (floatingModalPosition) {
+  //     setDragPosition(JSON.parse(floatingModalPosition));
+  //   }
+  // }, []);
   const getTotalAssetValue = () => {
     if (props.portfolioState) {
       const tempWallet = props.portfolioState.walletTotal
@@ -953,42 +956,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"NFT"}
-                          >
-                            <NavLink
-                              className={`nav-link nav-link-closed`}
-                              to="/nft"
-                              onClick={(e) => {
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuWatchlist({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={NFTIcon}
-                                style={
-                                  activeTab === "/nft"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
+
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1104,7 +1072,7 @@ function Sidebar(props) {
                   {showAmountsAtTop ? (
                     <div className="sideBarAmountsContainer">
                       <div className="sideBarAmountsNetworth">
-                        <CustomOverlay
+                        {/* <CustomOverlay
                           position="bottom"
                           isIcon={false}
                           isInfo={true}
@@ -1123,20 +1091,19 @@ function Sidebar(props) {
                             CurrencyType(true)
                           }
                           className="tool-tip-container-bottom-arrow"
+                        > */}
+                        <h3
+                          style={{ whiteSpace: "nowrap" }}
+                          className="space-grotesk-medium wallet-amount"
                         >
-                          <h3
-                            style={{ whiteSpace: "nowrap", cursor: "pointer" }}
-                            className="space-grotesk-medium wallet-amount"
-                          >
-                            {CurrencyType(false)}
-                            {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                            {window.sessionStorage.getItem(
-                              "shouldRecallApis"
-                            ) === "true"
-                              ? "0.00"
-                              : numToCurrency(getTotalAssetValue())}
-                          </h3>
-                        </CustomOverlay>
+                          {CurrencyType(false)}
+                          {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                          {window.sessionStorage.getItem("shouldRecallApis") ===
+                          "true"
+                            ? "0.00"
+                            : numToCurrency(getTotalAssetValue())}
+                        </h3>
+                        {/* </CustomOverlay> */}
                       </div>
                     </div>
                   ) : null}
@@ -1250,41 +1217,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              className="nav-link"
-                              to="/nft"
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={NFTIcon}
-                                style={
-                                  activeTab === "/nft"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              NFT
-                            </NavLink>
-                          </li>
+
                           <li>
                             <NavLink
                               exact={true}

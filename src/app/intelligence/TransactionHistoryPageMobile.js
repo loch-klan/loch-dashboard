@@ -32,6 +32,9 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
           <p>Sort, filter, and dissect all your transactions from one place</p>
         </div>
         <div
+          style={{
+            marginTop: "1.5rem",
+          }}
           onClick={this.props.showHideDustFun}
           className="smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn"
         >
@@ -55,32 +58,9 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
         </div>
         <div className="mt-4">
           <div className="fillter_tabs_section transaction-history-page-filters">
-            <Form onValidSubmit={this.props.onValidSubmit}>
+            {/* <Form onValidSubmit={this.props.onValidSubmit}>
               <Row className="transaction-history-page-filters-row">
                 <Col className="transactionHistoryCol">
-                  {/* <DropDown
-                      class="cohort-dropdown"
-                      list={[
-                        // "All time",
-                        "$10K or less",
-                        "$10K - $100K",
-                        "$100K - $1M",
-                        "$1M - $10M",
-                        "$10M - $100M",
-                        "$100M or more",
-                      ]}
-                      onSelect={this.handleAmount}
-                      title={this.state.amountFilter}
-                      activetab={
-                        this.state.amountFilter === "Size"
-                          ? ""
-                          : this.state.amountFilter
-                      }
-                      showChecked={true}
-                      customArrow={true}
-                      relative={true}
-                      arrowClassName="singleArrowClassName"
-                    /> */}
                   <CustomMinMaxDropdown
                     filtername="Size"
                     handleClick={(min, max) =>
@@ -132,7 +112,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   />
                 </Col>
               </Row>
-            </Form>
+            </Form> */}
           </div>
         </div>
         {this.props.tableLoading ? (
@@ -144,7 +124,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
               height: "70vh",
               backgroundColor: "var(--cardBackgroud)",
               borderRadius: "1rem",
-              margin: "2rem 0rem",
+              margin: "1.5rem 0rem",
             }}
           >
             <Loading />
@@ -175,7 +155,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   columnList={this.props.columnData}
                   message="No transactions found"
                   xAxisScrollable
-                  xAxisScrollableColumnWidth={3}
+                  xAxisScrollableColumnWidth={3.15}
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion

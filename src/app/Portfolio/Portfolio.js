@@ -88,8 +88,10 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  InsightsEV,
   ManageWallets,
   NetflowSwitchHome,
+  NftExpandediew,
   PriceGaugeEV,
   ProfitLossEV,
   SortByCurrentValue,
@@ -154,6 +156,7 @@ import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
+  DefaultNftTableIconIcon,
   InfoIconI,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
@@ -164,6 +167,8 @@ import PortfolioHomeNetworksBlock from "./PortfolioHomeNetworksBlock.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 import MobileLayout from "../layout/MobileLayout.js";
+import { getNFT } from "../nft/NftApi.js";
+import HandleBrokenImages from "../common/HandleBrokenImages.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -187,6 +192,8 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      localNftData: [],
+      nftTableLoading: false,
       shouldAvgCostLoading: false,
       shouldNetFlowLoading: false,
       switchPriceGaugeLoader: false,
@@ -749,7 +756,20 @@ class Portfolio extends BaseReactComponent {
     if (listOfAddresses) {
       this.props.updateWalletListFlag("yieldOpportunities", true);
       this.props.getYieldOpportunities(data, 0);
+      this.props.getNFT(data, this, true);
     }
+  };
+  callNFTApi = () => {
+    this.props.updateWalletListFlag("nftPage", true);
+    this.setState({
+      nftTableLoading: true,
+    });
+    let data = new URLSearchParams();
+    data.append("start", 0);
+    data.append("conditions", JSON.stringify([]));
+    data.append("limit", API_LIMIT);
+    data.append("sorts", JSON.stringify([]));
+    this.props.getNFT(data, this, true);
   };
   callAllApisTwice = () => {
     setTimeout(() => {
@@ -801,6 +821,13 @@ class Portfolio extends BaseReactComponent {
           this
         );
       }
+    }
+    if (this.props.NFTState?.nfts && this.props.NFTState?.nfts.length > 0) {
+      this.props.updateWalletListFlag("nftPage", true);
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
     }
     const passedAddress = window.sessionStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
@@ -1054,6 +1081,15 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.NFTState?.nfts &&
+      this.props.NFTState?.nfts !== prevProps.NFTState?.nfts
+    ) {
+      this.setState({
+        localNftData: this.props.NFTState?.nfts,
+        nftTableLoading: false,
+      });
+    }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
       if (sessionStorage.getItem("replacedOrAddedAddress")) {
@@ -1119,6 +1155,12 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
+      } else if (
+        this.state.blockTwoSelectedItem === 3 &&
+        ((this.state.localNftData && this.state.localNftData.length === 0) ||
+          !this.props.commonState.nftPage)
+      ) {
+        this.callNFTApi();
       }
     }
     // Block Three
@@ -1417,6 +1459,13 @@ class Portfolio extends BaseReactComponent {
         });
         this.props.updateWalletListFlag("gasFeesPage", true);
         this.props.getAllFeeApi(this, false, false);
+      }
+      if (
+        (this.state.blockTwoSelectedItem === 3 ||
+          this.state.blockOneSelectedItem === 5) &&
+        (!this.props.commonState.nftPage || !this.props.NFTState?.nfts)
+      ) {
+        this.callNFTApi();
       }
 
       // Counterparty volume api call
@@ -2175,10 +2224,28 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  goToNftPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/nft");
+      NftExpandediew({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
   goToAssetsPage = () => {
     if (this.state.lochToken) {
       this.props.history.push("/assets");
       AverageCostBasisEView({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  goToInsightsPage = () => {
+    if (this.state.lochToken) {
+      this.props.history.push("/intelligence/insights");
+      InsightsEV({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
@@ -2291,7 +2358,10 @@ class Portfolio extends BaseReactComponent {
     const columnList = [
       {
         labelName: (
-          <div className="cp history-table-header-col" id="time">
+          <div
+            className="cp history-table-header-col table-header-font"
+            id="time"
+          >
             {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
@@ -2320,9 +2390,10 @@ class Portfolio extends BaseReactComponent {
                   onClick={() => {
                     this.toggleAgeTimestamp();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 table-header-font"
+                  className="inter-display-medium f-s-13 lh-16"
                   style={{
                     textDecoration: "underline",
+                    cursor: "pointer",
                   }}
                 >
                   {this.state.isShowingAge ? "Age" : "Timestamp"}
@@ -2374,14 +2445,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="from"
-            onClick={() => this.handleTableSort("from")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              From
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">From</span>
             <Image
+              onClick={() => this.handleTableSort("from")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
@@ -2423,26 +2492,27 @@ class Portfolio extends BaseReactComponent {
               }
             };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                // text={rowData.from.address}
-                text={
-                  (rowData.from.metaData?.nickname
-                    ? rowData.from.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.from.wallet_metaData?.text
-                    ? rowData.from.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.from.metaData?.displayAddress &&
-                  rowData.from.metaData?.displayAddress !== rowData.from.address
-                    ? rowData.from.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.from.address
-                }
-              >
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   // text={rowData.from.address}
+              //   text={
+              //     (rowData.from.metaData?.nickname
+              //       ? rowData.from.metaData?.nickname + ": "
+              //       : "") +
+              //     (rowData.from.wallet_metaData?.text
+              //       ? rowData.from.wallet_metaData?.text + ": "
+              //       : "") +
+              //     (rowData.from.metaData?.displayAddress &&
+              //     rowData.from.metaData?.displayAddress !== rowData.from.address
+              //       ? rowData.from.metaData?.displayAddress + ": "
+              //       : "") +
+              //     rowData.from.address
+              //   }
+              // >
+              <>
                 {rowData.from.metaData?.wallet_metaData ? (
                   <span
                     onMouseEnter={() => {
@@ -2661,7 +2731,8 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 )}
-              </CustomOverlay>
+              </>
+              // </CustomOverlay>
             );
           }
         },
@@ -2669,14 +2740,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="to"
-            onClick={() => this.handleTableSort("to")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              To
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">To</span>
             <Image
+              onClick={() => this.handleTableSort("to")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
@@ -2718,25 +2787,26 @@ class Portfolio extends BaseReactComponent {
               }
             };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  (rowData.to.metaData?.nickname
-                    ? rowData.to.metaData?.nickname + ": "
-                    : "") +
-                  (rowData.to.wallet_metaData?.text
-                    ? rowData.to.wallet_metaData?.text + ": "
-                    : "") +
-                  (rowData.to.metaData?.displayAddress &&
-                  rowData.to.metaData?.displayAddress !== rowData.to.address
-                    ? rowData.to.metaData?.displayAddress + ": "
-                    : "") +
-                  rowData.to.address
-                }
-              >
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     (rowData.to.metaData?.nickname
+              //       ? rowData.to.metaData?.nickname + ": "
+              //       : "") +
+              //     (rowData.to.wallet_metaData?.text
+              //       ? rowData.to.wallet_metaData?.text + ": "
+              //       : "") +
+              //     (rowData.to.metaData?.displayAddress &&
+              //     rowData.to.metaData?.displayAddress !== rowData.to.address
+              //       ? rowData.to.metaData?.displayAddress + ": "
+              //       : "") +
+              //     rowData.to.address
+              //   }
+              // >
+              <>
                 {rowData.to.metaData?.wallet_metaData ? (
                   <span
                     onMouseEnter={() => {
@@ -2952,7 +3022,8 @@ class Portfolio extends BaseReactComponent {
                     />
                   </span>
                 )}
-              </CustomOverlay>
+                {/* </CustomOverlay> */}
+              </>
             );
           }
         },
@@ -2960,15 +3031,13 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="asset"
-            onClick={() => this.handleTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
               src={sortByIcon}
+              onClick={() => this.handleTableSort("asset")}
               className={
                 this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
               }
@@ -3009,14 +3078,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="amount"
-            onClick={() => this.handleTableSort("amount")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Amount
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Amount</span>
             <Image
+              onClick={() => this.handleTableSort("amount")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
@@ -3036,17 +3103,17 @@ class Portfolio extends BaseReactComponent {
             // return rowData.amount.value?.toFixed(2)
             const tempAmountVal = convertNtoNumber(rowData.amount.value);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={tempAmountVal ? tempAmountVal : "0.00"}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                  {numToCurrency(tempAmountVal).toLocaleString("en-US")}
-                </div>
-              </CustomOverlay>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={tempAmountVal ? tempAmountVal : "0.00"}
+              // >
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {numToCurrency(tempAmountVal).toLocaleString("en-US")}
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3054,14 +3121,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="usdValueThen"
-            onClick={() => this.handleTableSort("usdThen")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">{`${CurrencyType(
+            <span className="inter-display-medium f-s-13 lh-16">{`${CurrencyType(
               true
             )} amount (then)`}</span>
             <Image
+              onClick={() => this.handleTableSort("usdThen")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
@@ -3102,7 +3169,7 @@ class Portfolio extends BaseReactComponent {
             const tempValueThen = convertNtoNumber(valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3113,14 +3180,14 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(tempValueToday, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                    {CurrencyType(false) +
-                      numToCurrency(tempValueToday).toLocaleString("en-US")}
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {CurrencyType(false) +
+                    numToCurrency(tempValueToday).toLocaleString("en-US")}
+                </div>
+                {/* </CustomOverlay> */}
                 <span style={{ padding: "2px" }}></span>(
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3131,15 +3198,14 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(tempValueThen, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                    {tempValueThen
-                      ? CurrencyType(false) +
-                        numToCurrency(tempValueThen).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </div>
-                </CustomOverlay>
-                )
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {tempValueThen
+                    ? CurrencyType(false) +
+                      numToCurrency(tempValueThen).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </div>
+                {/* </CustomOverlay> */})
               </div>
             );
           }
@@ -3148,14 +3214,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="method"
-            onClick={() => this.handleTableSort("method")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Method
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Method</span>
             <Image
+              onClick={() => this.handleTableSort("method")}
               src={sortByIcon}
               className={
                 this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
@@ -3198,10 +3262,11 @@ class Portfolio extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className="cp history-table-header-col" id="network">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Network
-            </span>
+          <div
+            className="cp history-table-header-col  table-header-font"
+            id="network"
+          >
+            <span className="inter-display-medium f-s-13 lh-16">Network</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -3222,17 +3287,17 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "network") {
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
                   isText={true}
                   text={rowData.network}
-                >
-                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div dotDotText">
-                    {rowData.network}
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div dotDotText">
+                  {rowData.network}
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3241,13 +3306,11 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Hash
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Hash</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -3268,41 +3331,41 @@ class Portfolio extends BaseReactComponent {
             // return rowData.hash.value?.toFixed(2)
             const tempHashVal = TruncateText(rowData.hash);
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.hash ? rowData.hash : ""}
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={rowData.hash ? rowData.hash : ""}
+              // >
+              <div
+                onMouseEnter={() => {
+                  TransactionHistoryHashHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    hash_hovered: rowData.hash,
+                  });
+                  this.updateTimer();
+                }}
+                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div"
               >
-                <div
-                  onMouseEnter={() => {
-                    TransactionHistoryHashHover({
+                {tempHashVal}
+                <Image
+                  src={CopyClipboardIcon}
+                  onClick={() => {
+                    this.copyContent(rowData.hash);
+                    TransactionHistoryHashCopied({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
-                      hash_hovered: rowData.hash,
+                      hash_copied: rowData.hash,
                     });
                     this.updateTimer();
                   }}
-                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div"
-                >
-                  {tempHashVal}
-                  <Image
-                    src={CopyClipboardIcon}
-                    onClick={() => {
-                      this.copyContent(rowData.hash);
-                      TransactionHistoryHashCopied({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        hash_copied: rowData.hash,
-                      });
-                      this.updateTimer();
-                    }}
-                    className="m-l-10 cp copy-icon"
-                    style={{ width: "1rem" }}
-                  />
-                </div>
-              </CustomOverlay>
+                  className="m-l-10 cp copy-icon"
+                  style={{ width: "1rem" }}
+                />
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3343,14 +3406,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="asset"
-            onClick={() => this.handleYieldOppTableSort("asset")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("asset")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[0].up
@@ -3382,14 +3443,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="project"
-            onClick={() => this.handleYieldOppTableSort("project")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Project
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Project</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("project")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[3].up
@@ -3418,14 +3477,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="tvl"
-            onClick={() => this.handleYieldOppTableSort("tvl")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              TVL
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">TVL</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("tvl")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[5].up
@@ -3445,31 +3502,29 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "tvl") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.tvlUsd * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.tvlUsd * this.state.currency?.rate
-                        )}
-                    </span>
-                  </div>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     CurrencyType(false) +
+              //     amountFormat(
+              //       rowData.tvlUsd * this.state.currency?.rate,
+              //       "en-US",
+              //       "USD"
+              //     )
+              //   }
+              // >
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.tvlUsd * this.state.currency?.rate)}
+                  </span>
                 </div>
-              </CustomOverlay>
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3477,14 +3532,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="apy"
-            onClick={() => this.handleYieldOppTableSort("apy")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              APY
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">APY</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("apy")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[6].up
@@ -3504,20 +3557,20 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "apy") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.apy ? rowData.apy + "%" : "-"}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                  {rowData.apy
-                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
-                      "%"
-                    : "-"}
-                </div>
-              </CustomOverlay>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={rowData.apy ? rowData.apy + "%" : "-"}
+              // >
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {rowData.apy
+                  ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                    "%"
+                  : "-"}
+              </div>
+              // </CustomOverlay>
             );
           }
         },
@@ -3525,14 +3578,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="usdValue"
-            onClick={() => this.handleYieldOppTableSort("usdValue")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Value
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Value</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("usdValue")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[2].up
@@ -3551,47 +3602,42 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "usdValue") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.value * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.value * this.state.currency?.rate
-                        )}
-                    </span>
-                  </div>
+              // <CustomOverlay
+              //   position="top"
+              //   isIcon={false}
+              //   isInfo={true}
+              //   isText={true}
+              //   text={
+              //     CurrencyType(false) +
+              //     amountFormat(
+              //       rowData.value * this.state.currency?.rate,
+              //       "en-US",
+              //       "USD"
+              //     )
+              //   }
+              // >
+              <div className="cost-common-container">
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.value * this.state.currency?.rate)}
+                  </span>
                 </div>
-              </CustomOverlay>
+              </div>
+              // </CustomOverlay>
             );
           }
         },
       },
-
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="pool"
-            onClick={() => this.handleYieldOppTableSort("pool")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Pool
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Pool</span>
             <Image
+              onClick={() => this.handleYieldOppTableSort("pool")}
               src={sortByIcon}
               className={
                 this.state.yieldOppTableSortOpt[4].up
@@ -3622,14 +3668,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Asset"
-            onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
               className={!this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
             />
@@ -3687,14 +3731,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Current value
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[5])}
               src={sortByIcon}
               className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
@@ -3711,7 +3755,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "CurrentValue") {
             return (
               <div className="cost-common-container">
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3722,26 +3766,26 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(rowData.CurrentValue, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCurrentValueHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                      className=""
-                    >
-                      {rowData.CurrentValue
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentValue.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="cost-common">
+                  <span
+                    onMouseEnter={() => {
+                      CostCurrentValueHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                    }}
+                    className=""
+                  >
+                    {rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CurrentValue.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3750,14 +3794,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gainamount"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Unrealized gain
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[6])}
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
             />
@@ -3783,7 +3827,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3799,30 +3843,30 @@ class Portfolio extends BaseReactComponent {
                       : CurrencyType(false) + "0.00"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainAmount !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainAmount < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.GainAmount
-                        ? CurrencyType(false) +
-                          tempDataHolder.toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  {rowData.GainAmount !== 0 ? (
+                    <Image
+                      className="mr-2"
+                      style={{
+                        height: "1.5rem",
+                        width: "1.5rem",
+                      }}
+                      src={
+                        rowData.GainAmount < 0
+                          ? ArrowDownLeftSmallIcon
+                          : ArrowUpRightSmallIcon
+                      }
+                    />
+                  ) : null}
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {rowData.GainAmount
+                      ? CurrencyType(false) +
+                        tempDataHolder.toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3831,14 +3875,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Portfolio perc"
-            onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Portfolio (%)
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[8])}
               src={sortByIcon}
               className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
             />
@@ -3866,7 +3910,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3877,15 +3921,15 @@ class Portfolio extends BaseReactComponent {
                       : "0.00%"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3894,14 +3938,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Average Cost Price"
-            onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Avg cost price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[1])}
               src={sortByIcon}
               className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
@@ -3925,7 +3969,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3936,16 +3980,16 @@ class Portfolio extends BaseReactComponent {
                         convertNtoNumber(rowData.AverageCostPrice)
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.AverageCostPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.AverageCostPrice
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.AverageCostPrice.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -3954,14 +3998,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Current Price"
-            onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Current price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[2])}
               src={sortByIcon}
               className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
@@ -3985,7 +4029,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -3996,16 +4040,16 @@ class Portfolio extends BaseReactComponent {
                         convertNtoNumber(rowData.CurrentPrice)
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.CurrentPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CurrentPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.CurrentPrice
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.CurrentPrice.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -4014,14 +4058,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Amount"
-            onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Amount
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Amount</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[3])}
               src={sortByIcon}
               className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
             />
@@ -4045,7 +4087,7 @@ class Portfolio extends BaseReactComponent {
                   });
                 }}
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4055,13 +4097,13 @@ class Portfolio extends BaseReactComponent {
                       ? convertNtoNumber(rowData.Amount)
                       : "0"
                   }
-                >
-                  <span className="table-data-font">
-                    {rowData.Amount
-                      ? numToCurrency(rowData.Amount).toLocaleString("en-US")
-                      : "0"}
-                  </span>
-                </CustomOverlay>
+                > */}
+                <span className="table-data-font">
+                  {rowData.Amount
+                    ? numToCurrency(rowData.Amount).toLocaleString("en-US")
+                    : "0"}
+                </span>
+                {/* </CustomOverlay> */}
               </span>
             );
           }
@@ -4070,14 +4112,14 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col  table-header-font"
             id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Cost basis
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[4])}
               src={sortByIcon}
               className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
@@ -4094,7 +4136,7 @@ class Portfolio extends BaseReactComponent {
           if (dataKey === "CostBasis") {
             return (
               <div className="cost-common-container">
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4105,26 +4147,26 @@ class Portfolio extends BaseReactComponent {
                         amountFormat(rowData.CostBasis, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCostBasisHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                      className="table-data-font"
-                    >
-                      {rowData.CostBasis
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className="cost-common">
+                  <span
+                    onMouseEnter={() => {
+                      CostCostBasisHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                    }}
+                    className="table-data-font"
+                  >
+                    {rowData.CostBasis
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.CostBasis.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -4134,14 +4176,12 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Return
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Return</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[7])}
               src={sortByIcon}
               className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
             />
@@ -4169,7 +4209,7 @@ class Portfolio extends BaseReactComponent {
                 }}
                 className="gainLossContainer"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -4180,29 +4220,152 @@ class Portfolio extends BaseReactComponent {
                       : "0.00%"
                   }
                   colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
+                > */}
+                <div className={`gainLoss`}>
+                  {rowData.GainLoss !== 0 ? (
+                    <Image
+                      className="mr-2"
+                      style={{
+                        height: "1.5rem",
+                        width: "1.5rem",
+                      }}
+                      src={
+                        rowData.GainLoss < 0
+                          ? ArrowDownLeftSmallIcon
+                          : ArrowUpRightSmallIcon
+                      }
+                    />
+                  ) : null}
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"}
+                  </span>
+                </div>
+                {/* </CustomOverlay> */}
+              </div>
+            );
+          }
+        },
+      },
+    ];
+    const NFTColumnData = [
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Holdings
+            </span>
+            {/* <Image
+              onClick={() =>
+                this.handleTableSort(this.state.tableSortOpt[0].title)
+              }
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "holding",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "holding") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                {rowData.holding}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Collection
+            </span>
+
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "collection",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "collection") {
+            return (
+              <div
+                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div nowrap-div"
+                style={{
+                  lineHeight: "120%",
+                }}
+              >
+                {rowData.collection}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Image
+            </span>
+          </div>
+        ),
+        dataKey: "imgs",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "imgs") {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  justifyContent: "center",
+                }}
+              >
+                {rowData.imgs && rowData.imgs.length > 0
+                  ? rowData.imgs?.slice(0, 4).map((item, index) => {
+                      if (item) {
+                        return (
+                          <HandleBrokenImages
+                            src={item}
+                            key={index}
+                            className="nftImageIcon"
+                            imageOnError={DefaultNftTableIconIcon}
+                          />
+                        );
+                      }
+                      return null;
+                    })
+                  : null}
+                {rowData.imgs && rowData.imgs.length > 4 ? (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      lineHeight: "120%",
+                      color: "#96979A",
+                      fontWeight: "500",
+                    }}
+                    className="table-data-font"
+                  >
+                    {rowData.imgs.length - 4}+
+                  </span>
+                ) : null}
               </div>
             );
           }
@@ -4257,6 +4420,9 @@ class Portfolio extends BaseReactComponent {
             YieldOppColumnData={YieldOppColumnData}
             columnList={columnList}
             totalCount={totalCount}
+            NFTColumnData={NFTColumnData}
+            NFTData={this.state.localNftData}
+            nftTableLoading={this.state.nftTableLoading}
             tableData={tableData}
             //States
             yieldOpportunitiesTableLoading={
@@ -4289,6 +4455,7 @@ class Portfolio extends BaseReactComponent {
             changeBlockThreeItem={this.changeBlockThreeItem}
             //Go to pages
             goToGasFeesSpentPage={this.goToGasFeesSpentPage}
+            goToNftPage={this.goToNftPage}
             goToCounterPartyVolumePage={this.goToCounterPartyVolumePage}
             goToYieldOppPage={this.goToYieldOppPage}
             goToAssetsPage={this.goToAssetsPage}
@@ -4296,6 +4463,7 @@ class Portfolio extends BaseReactComponent {
             goToRealizedGainsPage={this.goToRealizedGainsPage}
             openDefiPage={this.goToDefiPage}
             goToPriceGaugePage={this.goToPriceGaugePage}
+            goToInsightsPage={this.goToInsightsPage}
           />
         </MobileLayout>
       );
@@ -4399,7 +4567,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(1);
+                              if (this.state.blockOneSelectedItem === 1)
+                                this.goToAssetsPage();
+                              else this.changeBlockOneItem(1);
                             }}
                           >
                             Assets
@@ -4433,7 +4603,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockOneItem(2);
+                              if (this.state.blockOneSelectedItem === 2)
+                                this.goToDefiPage();
+                              else this.changeBlockOneItem(2);
                             }}
                           >
                             DeFi
@@ -4478,7 +4650,7 @@ class Portfolio extends BaseReactComponent {
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
                                   ? tableDataCostBasis.slice(0, 10)
@@ -4550,7 +4722,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(1);
+                              if (this.state.blockTwoSelectedItem === 1)
+                                this.goToRealizedGainsPage();
+                              else this.changeBlockTwoItem(1);
                             }}
                           >
                             Flows
@@ -4582,7 +4756,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockTwoItem(2);
+                              if (this.state.blockTwoSelectedItem === 2)
+                                this.goToGasFeesSpentPage();
+                              else this.changeBlockTwoItem(2);
                             }}
                           >
                             Gas fees
@@ -4593,6 +4769,40 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={"Understand your gas costs"}
+                            >
+                              {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                          </div>
+                          <div
+                            className={`inter-display-medium section-table-toggle-element mr-1 ${
+                              this.state.blockTwoSelectedItem === 3
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              if (this.state.blockTwoSelectedItem === 3)
+                                this.goToNftPage();
+                              else this.changeBlockTwoItem(3);
+                            }}
+                          >
+                            NFT
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={"Browse the NFTs held by this wallet"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -4701,6 +4911,58 @@ class Portfolio extends BaseReactComponent {
                               floatingWatermark
                             />
                           </div>
+                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                          <div>
+                            {/* 
+                            Things remaining Add Loading conditions */}
+                            <div
+                              className={`newHomeTableContainer freezeTheFirstColumn ${
+                                this.state.localNftData?.length < 1
+                                  ? ""
+                                  : "tableWatermarkOverlay"
+                              }`}
+                            >
+                              <TransactionTable
+                                message={"No NFT's found"}
+                                xAxisScrollable
+                                xAxisScrollableColumnWidth={3}
+                                noSubtitleBottomPadding
+                                disableOnLoading
+                                isMiniversion
+                                tableData={this.state.localNftData}
+                                showDataAtBottom
+                                columnList={NFTColumnData}
+                                headerHeight={60}
+                                isArrow={true}
+                                isLoading={this.state.nftTableLoading}
+                                fakeWatermark
+                                yAxisScrollable
+                              />
+                            </div>
+                            {/* Add Loading conditino here and add goto nft page */}
+                            {!this.state.nftTableLoading ? (
+                              <div className="inter-display-medium bottomExtraInfo">
+                                <div
+                                  onClick={this.goToNftPage}
+                                  className="bottomExtraInfoText"
+                                >
+                                  {this.state.localNftData &&
+                                  this.state.localNftData?.length > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.state.localNftData?.length - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ NFT ${
+                                        this.state.localNftData?.length - 10 > 1
+                                          ? "s"
+                                          : ""
+                                      }`
+                                    : this.state.localNftData?.length === 0
+                                    ? ""
+                                    : "Click here to see more"}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
                         ) : null}
                       </div>
                     </div>
@@ -4734,7 +4996,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(1);
+                              if (this.state.blockThreeSelectedItem === 1)
+                                this.goToCounterPartyVolumePage();
+                              else this.changeBlockThreeItem(1);
                             }}
                           >
                             Counterparties
@@ -4765,7 +5029,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockThreeItem(2);
+                              if (this.state.blockThreeSelectedItem === 2)
+                                this.goToYieldOppPage();
+                              else this.changeBlockThreeItem(2);
                             }}
                           >
                             Yield opportunities
@@ -4795,7 +5061,7 @@ class Portfolio extends BaseReactComponent {
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
                               this.state.blockThreeSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
+                                ? "section-table-toggle-element-selected section-table-toggle-element-selected-no-hover"
                                 : ""
                             }`}
                             onClick={() => {
@@ -4895,7 +5161,7 @@ class Portfolio extends BaseReactComponent {
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4}
+                              xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
@@ -4965,7 +5231,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(1);
+                              if (this.state.blockFourSelectedItem === 1)
+                                this.goToPriceGaugePage();
+                              else this.changeBlockFourItem(1);
                             }}
                           >
                             Price gauge
@@ -4999,7 +5267,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(2);
+                              if (this.state.blockFourSelectedItem === 2)
+                                this.goToTransactionHistoryPage();
+                              else this.changeBlockFourItem(2);
                             }}
                           >
                             Transactions
@@ -5034,7 +5304,9 @@ class Portfolio extends BaseReactComponent {
                                 : ""
                             }`}
                             onClick={() => {
-                              this.changeBlockFourItem(3);
+                              if (this.state.blockFourSelectedItem === 3) {
+                                this.goToInsightsPage();
+                              } else this.changeBlockFourItem(3);
                             }}
                           >
                             Insights
@@ -5088,7 +5360,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               xAxisScrollable
-                              xAxisScrollableColumnWidth={4.8}
+                              xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion
@@ -5201,6 +5473,7 @@ const mapStateToProps = (state) => ({
   walletState: state.walletState,
   inflowsOutflowsList: state.inflowsOutflowsList,
   darkModeState: state.darkModeState,
+  NFTState: state.NFTState,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -5237,6 +5510,7 @@ const mapDispatchToProps = {
   updateFeeGraph,
   updateCounterParty,
   updateAssetProfitLoss,
+  getNFT,
 };
 Portfolio.propTypes = {};
 
