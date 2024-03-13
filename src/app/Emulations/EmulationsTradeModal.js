@@ -76,7 +76,7 @@ class EmulationsTradeModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form ${
-          this.props.isMobile ? "mobile-execute-copy-trade-modal" : ""
+          this.props.isMobile ? "mobile-execute-copy-trade-modal-mobile" : ""
         }`}
         onHide={this.state.onHide}
         size="lg"
@@ -88,12 +88,7 @@ class EmulationsTradeModal extends BaseReactComponent {
       >
         <Modal.Header>
           <div className="api-modal-header popup-main-icon-with-border">
-            <Image
-              src={EmultionSidebarIcon}
-              style={{
-                filter: "var(--invertColor) var(--darkerBrightness)",
-              }}
-            />
+            <Image src={EmultionSidebarIcon} className="imageDarker" />
           </div>
           <div
             className="closebtn"
@@ -123,7 +118,10 @@ class EmulationsTradeModal extends BaseReactComponent {
                   return (
                     <Col
                       style={{
-                        marginTop: indexIndex > 1 ? "30px" : "0px",
+                        marginTop:
+                          indexIndex > 1 && this.props.isMobile
+                            ? "30px"
+                            : "0px",
                       }}
                       md={4}
                     >

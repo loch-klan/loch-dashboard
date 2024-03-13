@@ -3,17 +3,12 @@ import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 
-import {
-  CloseIcon,
-  EmultionSidebarIcon,
-  UserCreditScrollRightArrowIcon,
-} from "../../assets/images/icons";
+import { CloseIcon, EmultionSidebarIcon } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 // import { addAddressToWatchList } from "./redux/WatchListApi";
-import { toast } from "react-toastify";
 import validator from "validator";
 import { addEmulations } from "./EmulationsApi";
 

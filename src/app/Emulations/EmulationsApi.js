@@ -10,35 +10,81 @@ export const getEmulations = (ctx) => {
         if (!res.data.error) {
           if (res.data.data) {
             const tempResHolder = res?.data?.data?.result;
-            if (tempResHolder && tempResHolder.length > 0) {
-              const tempConvertedArr = tempResHolder.map((individualRes) => {
-                let tempCurrentBalance = 0;
-                let tempTradeDeposit = 0;
-                let tempUnrealizedPnL = 0;
+            const tempCopyTradeResHolder = tempResHolder.copy_trades;
+            const tempAvailableCopyTradeResHolder =
+              tempResHolder.available_trades;
+            if (tempCopyTradeResHolder && tempCopyTradeResHolder.length > 0) {
+              const tempConvertedArr = tempCopyTradeResHolder.map(
+                (individualRes) => {
+                  let tempCurrentBalance = 0;
+                  let tempTradeDeposit = 0;
+                  let tempUnrealizedPnL = 0;
 
-                if (individualRes.current_amount) {
-                  tempCurrentBalance = individualRes.current_amount;
-                }
-                if (individualRes.deposit) {
-                  tempTradeDeposit = individualRes.deposit;
-                }
-                if (
-                  (tempCurrentBalance || tempCurrentBalance === 0) &&
-                  (tempTradeDeposit || tempTradeDeposit === 0)
-                ) {
-                  tempUnrealizedPnL = tempCurrentBalance - tempTradeDeposit;
-                }
+                  if (individualRes.current_amount) {
+                    tempCurrentBalance = individualRes.current_amount;
+                  }
+                  if (individualRes.deposit) {
+                    tempTradeDeposit = individualRes.deposit;
+                  }
+                  if (
+                    (tempCurrentBalance || tempCurrentBalance === 0) &&
+                    (tempTradeDeposit || tempTradeDeposit === 0)
+                  ) {
+                    tempUnrealizedPnL = tempCurrentBalance - tempTradeDeposit;
+                  }
 
-                return {
-                  currentBalance: tempCurrentBalance,
-                  tradeDeposit: tempTradeDeposit,
-                  wallet: individualRes.copy_wallet,
-                  unrealizedPnL: tempUnrealizedPnL,
-                };
-              });
+                  return {
+                    currentBalance: tempCurrentBalance,
+                    tradeDeposit: tempTradeDeposit,
+                    wallet: individualRes.copy_wallet,
+                    unrealizedPnL: tempUnrealizedPnL,
+                  };
+                }
+              );
+              let tempAvailableCopyTradesArr = [];
+              if (
+                tempAvailableCopyTradeResHolder &&
+                tempAvailableCopyTradeResHolder.length > 0
+              ) {
+                tempAvailableCopyTradesArr =
+                  tempAvailableCopyTradeResHolder.map((indiRes) => {
+                    let valueOne = 0;
+                    let valueTwo = 0;
+                    let assetOne = "";
+                    let assetTwo = "";
+                    let copyAddress = "";
+
+                    if (indiRes.value1) {
+                      valueOne = indiRes.value1;
+                    }
+                    if (indiRes.value2) {
+                      valueTwo = indiRes.value2;
+                    }
+                    if (indiRes.asset1) {
+                      assetOne = indiRes.asset1;
+                    }
+                    if (indiRes.asset2) {
+                      assetTwo = indiRes.asset2;
+                    }
+                    if (indiRes.copy_address) {
+                      copyAddress = indiRes.copy_address;
+                    }
+
+                    return {
+                      assetFrom: assetOne,
+                      assetTo: assetTwo,
+                      valueFrom: valueOne,
+                      valueTo: valueTwo,
+                      copyAddress: copyAddress,
+                    };
+                  });
+              }
               dispatch({
                 type: GET_EMULATION_DATA,
-                payload: tempConvertedArr,
+                payload: {
+                  copyTrades: tempConvertedArr,
+                  availableCopyTrades: tempAvailableCopyTradesArr,
+                },
               });
             } else {
               ctx.setState({

@@ -1,5 +1,12 @@
 import { Component } from "react";
+import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
+import {
+  EmultionSidebarIcon,
+  UserCreditScrollLeftArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
+import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
 import { SendOtp, VerifyEmail } from "../common/Api";
 import LoginMobile from "../home/NewAuth/LoginMobile";
 import RedirectMobile from "../home/NewAuth/RedirectMobile";
@@ -8,14 +15,6 @@ import VerifyMobile from "../home/NewAuth/VerifyMobile";
 import TransactionTable from "../intelligence/TransactionTable";
 import { signUpWelcome, verifyUser } from "../onboarding/Api";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
-import { Image } from "react-bootstrap";
-import {
-  EmultionSidebarIcon,
-  UserCreditScrollLeftArrowIcon,
-  UserCreditScrollRightArrowIcon,
-} from "../../assets/images/icons";
-import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
-import { toast } from "react-toastify";
 import EmulationsTradeModal from "./EmulationsTradeModal";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
@@ -222,9 +221,11 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       </div>
                     </div>
                     <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container available-copy-trades-transaction-container-mobile">
-                      Swap {numToCurrency(curTradeData.swapAmount)}{" "}
-                      {curTradeData.swapFrom} for {curTradeData.swapToAmount}{" "}
-                      {curTradeData.swapTo}? 
+                      Swap {numToCurrency(curTradeData.valueFrom)}{" "}
+                      {curTradeData.assetFrom} for{" "}
+                      {numToCurrency(curTradeData.valueTo)}{" "}
+                      {curTradeData.assetTo}
+                      ? 
                     </div>
                     <div className="available-copy-trades-button-container available-copy-trades-button-container--mobile">
                       <div className={`topbar-btn`} id="address-button-two">
