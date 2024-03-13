@@ -114,6 +114,42 @@
     }
   }
 }
+.mobile-execute-copy-trade-modal {
+  .modal-content {
+    min-width: 90vw !important;
+    width: 90vw !important;
+    .modal-body {
+      .connect-head {
+        width: 100%;
+        padding: 0rem 2rem !important;
+      }
+      .connect-wrapper {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        .row {
+          .col-md-4 {
+            padding: 0rem 1rem !important;
+            width: 50% !important;
+            .connect-div {
+              width: 100% !important;
+              flex-direction: column;
+
+              padding: 1rem;
+              .img-wrapper {
+                img {
+                  margin-right: 0rem;
+                }
+              }
+              .connect-div-text {
+                margin-top: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 .available-copy-trades-container {
   min-width: 85rem;
   background-color: var(--cardBackgroud);
@@ -261,6 +297,9 @@
       }
     }
   }
+}
+.available-copy-trades-container-mobile {
+  min-width: unset;
 }
 .availableCopyTradeScrollBodyClass {
   display: flex;

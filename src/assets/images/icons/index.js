@@ -114,3 +114,5 @@ export { default as UniswapLogoIcon } from "./uniswapLogo.svg";
 export { default as OneInchLogoIcon } from "./oneInchLogo.svg";
 export { default as KyberSwapLogoIcon } from "./kyberSwapLogo.svg";
 export { default as CowSwapLogoIcon } from "./cowSwapLogo.svg";
+export { default as ParaswapLogoIcon } from "./paraswapLogo.svg";
+export { default as CurveLogoIcon } from "./curveLogo.svg";

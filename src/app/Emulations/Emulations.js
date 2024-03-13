@@ -703,6 +703,11 @@ class Emulations extends Component {
             currentCirclePosition={this.state.currentCirclePosition}
             availableCopyTrades={this.state.availableCopyTrades}
             handleAvailableTradeScroll={handleAvailableTradeScroll}
+            history={this.props.history}
+            updateTimer={this.updateTimer}
+            isExecuteCopyTrade={this.state.isExecuteCopyTrade}
+            showExecuteCopyTrade={this.showExecuteCopyTrade}
+            hideExecuteCopyTrade={this.hideExecuteCopyTrade}
           />
         </MobileLayout>
       );

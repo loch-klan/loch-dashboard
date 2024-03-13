@@ -16,6 +16,7 @@ import {
 } from "../../assets/images/icons";
 import { TruncateText, numToCurrency } from "../../utils/ReusableFunctions";
 import { toast } from "react-toastify";
+import EmulationsTradeModal from "./EmulationsTradeModal";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -105,6 +106,16 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         }}
         className="assets-expanded-mobile copyTradeExpandedMobile"
       >
+        {this.props.isExecuteCopyTrade ? (
+          <EmulationsTradeModal
+            show={this.props.isExecuteCopyTrade}
+            onHide={this.props.hideExecuteCopyTrade}
+            history={this.props.history}
+            modalType={"connectModal"}
+            updateTimer={this.props.updateTimer}
+            isMobile
+          />
+        ) : null}
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -180,7 +191,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         this.props.userDetailsState.email &&
         this.props.availableCopyTrades &&
         this.props.availableCopyTrades.length > 0 ? (
-          <div className="available-copy-trades-container">
+          <div className="available-copy-trades-container available-copy-trades-container-mobile">
             <div
               id="availableCopyTradeScrollBody"
               className="availableCopyTradeScrollBodyClass"
@@ -222,6 +233,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       <div
                         className={`topbar-btn ml-2 topbar-btn-dark`}
                         id="address-button-two"
+                        onClick={this.props.showExecuteCopyTrade}
                       >
                         <span className="dotDotText">Confirm</span>
                       </div>
