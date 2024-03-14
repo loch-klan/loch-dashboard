@@ -113,6 +113,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             modalType={"connectModal"}
             updateTimer={this.props.updateTimer}
             isMobile
+            confirmOrRejectCopyTrade={this.props.confirmOrRejectCopyTrade}
+            executeCopyTradeId={this.props.executeCopyTradeId}
           />
         ) : null}
         {this.state.authmodal == "login" ? (
@@ -217,7 +219,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                           Available Copy Trade
                         </div>
                       </div>
-                      <div className="inter-display-medium f-s-16 available-copy-trades-address">
+                      <div
+                        onClick={() => {
+                          this.props.goToNewAddress(curTradeData.copyAddress);
+                        }}
+                        className="inter-display-medium f-s-16 available-copy-trades-address"
+                      >
                         {TruncateText(curTradeData.wallet)}
                       </div>
                     </div>
@@ -229,13 +236,24 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       ? 
                     </div>
                     <div className="available-copy-trades-button-container available-copy-trades-button-container--mobile">
-                      <div className={`topbar-btn`} id="address-button-two">
+                      <div
+                        onClick={() => {
+                          this.props.confirmOrRejectCopyTrade(
+                            curTradeData.id,
+                            false
+                          );
+                        }}
+                        className={`topbar-btn`}
+                        id="address-button-two"
+                      >
                         <span className="dotDotText">Reject</span>
                       </div>
                       <div
                         className={`topbar-btn ml-2 topbar-btn-dark`}
                         id="address-button-two"
-                        onClick={this.props.showExecuteCopyTrade}
+                        onClick={() => {
+                          this.props.showExecuteCopyTrade(curTradeData.id);
+                        }}
                       >
                         <span className="dotDotText">Confirm</span>
                       </div>

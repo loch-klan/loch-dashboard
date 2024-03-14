@@ -56,6 +56,7 @@ class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      executeCopyTradeId: undefined,
       isExecuteCopyTrade: false,
       isLeftArrowDisabled: true,
       isRightArrowDisabled: false,
@@ -304,12 +305,23 @@ class Emulations extends Component {
       isExecuteCopyTrade: false,
     });
   };
-  showExecuteCopyTrade = () => {
+  showExecuteCopyTrade = (passedTradeId) => {
+    console.log("Passed id ", passedTradeId);
     this.setState({
       isExecuteCopyTrade: true,
+      executeCopyTradeId: passedTradeId,
     });
   };
-
+  confirmOrRejectCopyTrade = (tradeId, isConfirm) => {
+    let conRejData = new URLSearchParams();
+    if (isConfirm) {
+      conRejData.append("status", "CONFIRM");
+    } else {
+      conRejData.append("status", "REJECT");
+    }
+    conRejData.append("trade_id", tradeId);
+    this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
+  };
   render() {
     const columnData = [
       {
@@ -530,16 +542,7 @@ class Emulations extends Component {
       return 1;
       // return this.state.tasksList.length;
     };
-    const confirmOrRejectCopyTrade = (tradeId, isConfirm) => {
-      let conRejData = new URLSearchParams();
-      if (isConfirm) {
-        conRejData.append("status", "CONFIRM");
-      } else {
-        conRejData.append("status", "REJECT");
-      }
-      conRejData.append("trade_id", tradeId);
-      this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
-    };
+
     const scrollRight = () => {
       if (this.state.isRightArrowDisabled) {
         return;
@@ -657,6 +660,12 @@ class Emulations extends Component {
         }
       }, 150);
     };
+    const goToNewAddress = (passedAddress) => {
+      let slink = passedAddress;
+      let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+      window.open(shareLink, "_blank", "noreferrer");
+    };
     if (mobileCheck()) {
       return (
         <MobileLayout
@@ -690,6 +699,9 @@ class Emulations extends Component {
             isExecuteCopyTrade={this.state.isExecuteCopyTrade}
             showExecuteCopyTrade={this.showExecuteCopyTrade}
             hideExecuteCopyTrade={this.hideExecuteCopyTrade}
+            confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
+            goToNewAddress={this.goToNewAddress}
+            executeCopyTradeId={this.state.executeCopyTradeId}
           />
         </MobileLayout>
       );
@@ -734,6 +746,8 @@ class Emulations extends Component {
             {this.state.isExecuteCopyTrade ? (
               <EmulationsTradeModal
                 show={this.state.isExecuteCopyTrade}
+                executeCopyTradeId={this.state.executeCopyTradeId}
+                confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
                 onHide={this.hideExecuteCopyTrade}
                 history={this.props.history}
                 modalType={"connectModal"}
@@ -812,7 +826,12 @@ class Emulations extends Component {
                             <div className="inter-display-medium f-s-16">
                               Available Copy Trade
                             </div>
-                            <div className="inter-display-medium f-s-16 available-copy-trades-address">
+                            <div
+                              onClick={() => {
+                                goToNewAddress(curTradeData.copyAddress);
+                              }}
+                              className="inter-display-medium f-s-16 available-copy-trades-address"
+                            >
                               {TruncateText(curTradeData.copyAddress)}
                             </div>
                           </div>
@@ -828,7 +847,7 @@ class Emulations extends Component {
                               className={`topbar-btn`}
                               id="address-button-two"
                               onClick={() => {
-                                confirmOrRejectCopyTrade(
+                                this.confirmOrRejectCopyTrade(
                                   curTradeData.id,
                                   false
                                 );
@@ -838,7 +857,9 @@ class Emulations extends Component {
                             </div>
                             <div
                               className={`topbar-btn ml-2 topbar-btn-dark`}
-                              onClick={this.showExecuteCopyTrade}
+                              onClick={() => {
+                                this.showExecuteCopyTrade(curTradeData.id);
+                              }}
                               id="address-button-two"
                             >
                               <span className="dotDotText">Confirm</span>

@@ -663,9 +663,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
               <div className="watchListAddressBtnContainer copeTraderBtnContainer">
                 <CustomButton
                   className={`primary-btn go-btn main-button-invert ${
-                    !this.isDisabled()
-                      ? "transparent-copy-trade-btn-active"
-                      : ""
+                    this.isDisabled() ? "transparent-copy-trade-btn-active" : ""
                   }`}
                   type="submit"
                   isDisabled={this.isDisabled()}

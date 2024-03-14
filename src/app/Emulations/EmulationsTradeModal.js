@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Image, Modal, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import { BaseReactComponent } from "../../utils/form";
+import { BaseReactComponent, CustomButton } from "../../utils/form";
 
 import {
   CowSwapLogoIcon,
@@ -70,13 +70,23 @@ class EmulationsTradeModal extends BaseReactComponent {
   componentDidMount() {
     window.sessionStorage.setItem("isPopupActive", true);
   }
-
+  confirmOrRejectCopyTradePass = () => {
+    console.log(
+      "confirmOrRejectCopyTrade ",
+      this.props.confirmOrRejectCopyTrade
+    );
+    console.log("executeCopyTradeId ", this.props.executeCopyTradeId);
+    if (this.props.confirmOrRejectCopyTrade && this.props.executeCopyTradeId) {
+      this.props.confirmOrRejectCopyTrade(this.props.executeCopyTradeId, true);
+      this.state.onHide();
+    }
+  };
   render() {
     return (
       <Modal
         show={this.state.show}
-        className={`exit-overlay-form ${
-          this.props.isMobile ? "mobile-execute-copy-trade-modal-mobile" : ""
+        className={`exit-overlay-form execute-copy-trade-modal ${
+          this.props.isMobile ? "execute-copy-trade-modal-mobile" : ""
         }`}
         onHide={this.state.onHide}
         size="lg"
@@ -139,6 +149,14 @@ class EmulationsTradeModal extends BaseReactComponent {
                   );
                 })}
               </Row>
+            </div>
+            <div className="watchListAddressBtnContainer copeTraderBtnContainer">
+              <CustomButton
+                className={`primary-btn go-btn main-button-invert `}
+                type="submit"
+                buttonText={"Done"}
+                handleClick={this.confirmOrRejectCopyTradePass}
+              />
             </div>
           </div>
         </Modal.Body>
