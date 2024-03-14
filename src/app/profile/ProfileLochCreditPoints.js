@@ -188,10 +188,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   }
   returnWhichBlock = (whichBlock, whichBlockIndex) => {
     const openAddressModal = () => {
-      if (document.getElementById("address-button-two")) {
-        document.getElementById("address-button-two").click();
-      } else if (document.getElementById("address-button-one")) {
-        document.getElementById("address-button-one").click();
+      if (
+        document.getElementById("topBarContainerInputBlockInputId") &&
+        document.getElementById("topBarContainerInputBlockInputId").focus
+      ) {
+        document.getElementById("topBarContainerInputBlockInputId").focus();
       }
     };
 
