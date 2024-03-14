@@ -63,7 +63,12 @@ class NFTMobile extends BaseReactComponent {
         ) : (
           <div>
             {this.props.tableData && this.props.tableData.length > 0 ? (
-              <div className="mobileSmartMoneyListContainer">
+              <div
+                style={{
+                  paddingTop: "0rem",
+                }}
+                className="mobileSmartMoneyListContainer"
+              >
                 {this.props.tableData.map((mapData) => {
                   return <NftMobileBlock data={mapData} />;
                 })}

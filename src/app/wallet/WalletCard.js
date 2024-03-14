@@ -225,7 +225,7 @@ export default function WalletCard(props) {
               {props.wallet_coins.length > 0 ? (
                 <>
                   <div className="chips-section">{chips}</div>
-                  <Image src={EditIcon} className="cp" onClick={handleShow} />
+                  {/* <Image src={EditIcon} className="cp" onClick={handleShow} /> */}
                 </>
               ) : (
                 <>

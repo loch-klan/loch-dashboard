@@ -785,9 +785,7 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    (this.props.blockThreeSelectedItem === 2 ||
-                      this.props.blockThreeSelectedItem === 1) &&
-                    this.props.blockOneSelectedItem !== 1
+                    this.props.blockOneSelectedItem === 4
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
@@ -797,6 +795,19 @@ class PortfolioMobile extends BaseReactComponent {
                   }}
                 >
                   Yield opportunities
+                </div>
+                <div
+                  className={`inter-display-medium section-table-toggle-element ${
+                    this.props.blockOneSelectedItem === 5
+                      ? "section-table-toggle-element-selected"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    this.props.changeBlockOneItem(5);
+                    this.props.changeBlockThreeItem(1);
+                  }}
+                >
+                  Counterparties
                 </div>
               </div>
               <div className="mobile-portfolio-blocks-content">
@@ -862,8 +873,7 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                ) : this.props.blockThreeSelectedItem === 2 ||
-                  this.props.blockThreeSelectedItem === 1 ? (
+                ) : this.props.blockOneSelectedItem === 4 ? (
                   <div>
                     <div
                       className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
@@ -915,6 +925,54 @@ class PortfolioMobile extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
+                ) : this.props.blockOneSelectedItem === 5 ? (
+                  <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
+                    <div
+                      className="section-table section-table-mobile"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        boxShadow: "none",
+                      }}
+                    >
+                      <div className="profit-chart profit-chart-mobile">
+                        <div
+                          style={{
+                            position: "absolute",
+                            opacity: 0,
+                          }}
+                        >
+                          Loch
+                        </div>
+                        <BarGraphSection
+                          digit={this.props.counterGraphDigit}
+                          isFromHome
+                          openChartPage={this.props.goToCounterPartyVolumePage}
+                          data={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[0]
+                          }
+                          options={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[1]
+                          }
+                          options2={
+                            this.props.homeCounterpartyVolumeData &&
+                            this.props.homeCounterpartyVolumeData[2]
+                          }
+                          isScrollVisible={false}
+                          isScroll={true}
+                          isLoading={this.props.counterGraphLoading}
+                          oldBar
+                          noSubtitleBottomPadding
+                          newHomeSetup
+                          noSubtitleTopPadding
+                          floatingWatermark
+                          isMobileGraph
+                        />
+                      </div>
+                    </div>
+                  </div>
                 ) : null}
               </div>
             </div>
@@ -946,19 +1004,15 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
-                    (this.props.blockThreeSelectedItem === 1 ||
-                      this.props.blockThreeSelectedItem === 2) &&
-                    this.props.blockTwoSelectedItem !== 1 &&
-                    this.props.blockTwoSelectedItem !== 2
+                    this.props.blockTwoSelectedItem === 3
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockThreeItem(1);
-                    this.props.changeBlockTwoItem(4);
+                    this.props.changeBlockTwoItem(3);
                   }}
                 >
-                  Counterparties
+                  NFTs
                 </div>
               </div>
               <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
@@ -1044,44 +1098,57 @@ class PortfolioMobile extends BaseReactComponent {
                           isMobileGraph
                         />
                       </div>
-                    ) : this.props.blockThreeSelectedItem === 1 ||
-                      this.props.blockThreeSelectedItem === 2 ? (
-                      <>
+                    ) : this.props.blockTwoSelectedItem === 3 ? (
+                      <div>
                         <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
+                          className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
+                            this.props.NFTData?.length < 1
+                              ? ""
+                              : "tableWatermarkOverlay"
+                          } ${
+                            this.props.NFTData?.length?.length <= 10 ? "" : ""
+                          }`}
                         >
-                          Loch
+                          <TransactionTable
+                            message={"No NFT's found"}
+                            noSubtitleBottomPadding
+                            disableOnLoading
+                            isMiniversion
+                            tableData={this.props.NFTData}
+                            showDataAtBottom
+                            columnList={this.props.NFTColumnData}
+                            headerHeight={60}
+                            isArrow={true}
+                            isLoading={this.props.nftTableLoading}
+                            fakeWatermark
+                            xAxisScrollable
+                            yAxisScrollable
+                            xAxisScrollableColumnWidth={3}
+                          />
                         </div>
-                        <BarGraphSection
-                          digit={this.props.counterGraphDigit}
-                          isFromHome
-                          openChartPage={this.props.goToCounterPartyVolumePage}
-                          data={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[0]
-                          }
-                          options={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[1]
-                          }
-                          options2={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[2]
-                          }
-                          isScrollVisible={false}
-                          isScroll={true}
-                          isLoading={this.props.counterGraphLoading}
-                          oldBar
-                          noSubtitleBottomPadding
-                          newHomeSetup
-                          noSubtitleTopPadding
-                          floatingWatermark
-                          isMobileGraph
-                        />
-                      </>
+                        {!this.props.nftTableLoading ? (
+                          <div className="inter-display-medium bottomExtraInfo">
+                            <div
+                              onClick={this.props.goToNftPage}
+                              className="bottomExtraInfoText"
+                            >
+                              {this.props.NFTData &&
+                              this.props.NFTData?.length > 10
+                                ? `See ${numToCurrency(
+                                    this.props.NFTData?.length - 10,
+                                    true
+                                  ).toLocaleString("en-US")}+ NFT ${
+                                    this.props.NFTData?.length - 10 > 1
+                                      ? "s"
+                                      : ""
+                                  }`
+                                : this.props.NFTData?.length === 0
+                                ? ""
+                                : "See more"}
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
                     ) : null}
                   </div>
                 </div>

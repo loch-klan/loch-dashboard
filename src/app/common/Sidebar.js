@@ -934,42 +934,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"NFT"}
-                          >
-                            <NavLink
-                              className={`nav-link nav-link-closed`}
-                              to="/nft"
-                              onClick={(e) => {
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuWatchlist({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={NFTIcon}
-                                style={
-                                  activeTab === "/nft"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
+
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1188,41 +1153,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              className="nav-link"
-                              to="/nft"
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={NFTIcon}
-                                style={
-                                  activeTab === "/nft"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              NFT
-                            </NavLink>
-                          </li>
+
                           <li>
                             <NavLink
                               exact={true}

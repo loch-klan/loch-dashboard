@@ -538,14 +538,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Asset"
-            onClick={() => this.handleSort(this.state.sortBy[0])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Asset
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
               className={!this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
             />
@@ -600,14 +598,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Average Cost Price"
-            onClick={() => this.handleSort(this.state.sortBy[1])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Avg cost price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[1])}
               src={sortByIcon}
               className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
@@ -657,14 +655,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Current Price"
-            onClick={() => this.handleSort(this.state.sortBy[2])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Current price
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[2])}
               src={sortByIcon}
               className={!this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
@@ -714,14 +712,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Amount"
-            onClick={() => this.handleSort(this.state.sortBy[3])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Amount
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Amount</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[3])}
               src={sortByIcon}
               className={!this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
             />
@@ -767,14 +763,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Cost basis
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[4])}
               src={sortByIcon}
               className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
             />
@@ -827,14 +823,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Current value
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[5])}
               src={sortByIcon}
               className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
@@ -887,14 +883,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gainamount"
-            onClick={() => this.handleSort(this.state.sortBy[6])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized gain
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[6])}
               src={sortByIcon}
               className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
             />
@@ -965,14 +961,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Gain loss"
-            onClick={() => this.handleSort(this.state.sortBy[7])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Return
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Return</span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[7])}
               src={sortByIcon}
               className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
             />
@@ -1039,14 +1033,14 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="Portfolio perc"
-            onClick={() => this.handleSort(this.state.sortBy[8])}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16">
               Portfolio (%)
             </span>
             <Image
+              onClick={() => this.handleSort(this.state.sortBy[8])}
               src={sortByIcon}
               className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
             />
