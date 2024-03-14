@@ -1578,6 +1578,7 @@ class TopWalletExchangeBar extends Component {
                 name={`wallet${1}`}
                 placeholder="Paste any wallet address or ENS here"
                 className="topBarContainerInputBlockInput"
+                id="topBarContainerInputBlockInputId"
                 value={this.state.walletInput[0].address || ""}
                 title={this.state.walletInput[0].address || ""}
                 onChange={(e) => this.handleOnLocalChange(e)}
@@ -1665,6 +1666,7 @@ class TopWalletExchangeBar extends Component {
                 className={`topbar-btn ml-2 ${
                   this.state.walletList.length > 0 ? "maxWidth50" : ""
                 }`}
+                id="topbar-connect-exchange-btn"
               >
                 {this.state.exchangeList.length > 0 ? (
                   <>
