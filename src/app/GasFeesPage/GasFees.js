@@ -526,6 +526,8 @@ class GasFeesPage extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"gas-fees"}
         >
           <GasFeesMobile
             counterGraphDigit={this.state.GraphDigit}
@@ -583,6 +585,8 @@ class GasFeesPage extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"gas-fees"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

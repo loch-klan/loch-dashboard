@@ -284,15 +284,7 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <PageHeader
-              title="Profile"
-              subTitle="Manage your profile here"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              // // connect exchange btn
-              // SecondaryBtn={true}
-              // handleUpdate={this.handleUpdateWallet}
-            />
+            <PageHeader title="Profile" subTitle="Manage your profile here" />
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>
