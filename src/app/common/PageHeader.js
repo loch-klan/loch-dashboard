@@ -1,8 +1,7 @@
 import React from "react";
-import { Breadcrumb, Button, Form, Image } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Button, Form, Image } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { ExportIcon } from "../../assets/images/icons";
-import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import {
@@ -13,10 +12,10 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import Breadcrums from "./Breadcrums";
 import ConnectModal from "./ConnectModal";
 
 export default function PageHeader(props) {
-  const nav_list = window.location.pathname.split("/");
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
 
@@ -56,47 +55,6 @@ export default function PageHeader(props) {
     }, 200);
   };
 
-  const breads = nav_list.map((e, key) => {
-    // console.log(e, props?.topaccount, key);
-    let linkName = e;
-    if (linkName === "intelligence") {
-      return null;
-    } else if (linkName === "transaction-history") {
-      linkName = "transactions";
-    } else if (linkName === "asset-value") {
-      linkName = "historic performance";
-    } else if (linkName === "top-accounts") {
-      linkName = "leaderboard";
-    }
-    return (
-      e && (
-        <>
-          <Breadcrumb.Item
-            linkAs={Link}
-            linkProps={{
-              to:
-                props?.topaccount && key === 2
-                  ? `/${nav_list[1]}/${e}`
-                  : `/${e}`,
-            }}
-            className="inter-display-medium f-s-13 lh-16"
-            active={e === props.currentPage}
-            key={key}
-          >
-            {linkName ? linkName.replace(/-/g, " ") : e.replace(/-/g, " ")}
-          </Breadcrumb.Item>
-        </>
-      )
-    );
-  });
-  const breadCrumb = (
-    <Breadcrumb>
-      <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
-        <Image src={InActiveHomeSmallIcon} />
-      </Breadcrumb.Item>
-      {breads}
-    </Breadcrumb>
-  );
   return (
     <div
       className={`page-header ${
@@ -108,7 +66,7 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      <div>{props.showpath ? breadCrumb : ""}</div>
+      <Breadcrums showpath={props.showpath} currentPage={props.currentPage} />
 
       <div className="header">
         <div className="header-left">

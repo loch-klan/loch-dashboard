@@ -538,6 +538,8 @@ class Defi extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"decentralized-finance"}
             />
             {this.state.addModal && (
               <FixAddModal
