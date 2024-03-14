@@ -5923,12 +5923,11 @@ export const CopyTradeWalletClicked = ({
   wallet,
   isWelcome = false,
 }) => {
-  const event_name = "Copy Trade: wallet open";
+  const event_name = "Copy Trade: copied wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
-    isWelcome: isWelcome,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
