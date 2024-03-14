@@ -345,7 +345,7 @@ class Emulations extends Component {
         ),
         dataKey: "Copiedwallet",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Copiedwallet") {
@@ -394,7 +394,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycopytradedeposit",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
@@ -434,7 +434,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycurrentbalance",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
@@ -474,7 +474,7 @@ class Emulations extends Component {
         ),
         dataKey: "MyunrealizedPnL",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "MyunrealizedPnL") {
@@ -500,47 +500,6 @@ class Emulations extends Component {
                     : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div className="history-table-header-col" id="Transactions">
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Transactions
-            </span>
-          </div>
-        ),
-        dataKey: "Transactions",
-
-        coumnWidth: 0.2,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "Transactions") {
-            const regex = /\.eth$/;
-            let holderValue = "-";
-            if (rowData.wallet) {
-              holderValue = rowData.wallet;
-            }
-            if (!regex.test(holderValue)) {
-              holderValue = TruncateText(rowData.wallet);
-            }
-            const goToTransactions = () => {
-              this.props.history.push({
-                pathname: "/copy-trade/transactions",
-                state: {
-                  passedAddress: holderValue,
-                },
-              });
-            };
-            return (
-              <span
-                onClick={goToTransactions}
-                className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
-              >
-                View
-              </span>
             );
           }
         },
