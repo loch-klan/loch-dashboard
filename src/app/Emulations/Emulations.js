@@ -776,7 +776,6 @@ class Emulations extends Component {
               exportBtnTxt="Click to export costs"
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
-              showpath
             />
             {this.state.userDetailsState &&
             this.state.userDetailsState.email &&
