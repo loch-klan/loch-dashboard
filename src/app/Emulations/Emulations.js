@@ -8,9 +8,12 @@ import { getAllWalletListApi } from "../wallet/Api.js";
 
 import {
   CopyTradeAddCopyTrade,
+  CopyTradeAvailableCopiedWalletClicked,
+  CopyTradeCopiedWalletClicked,
+  CopyTradeExecuteTradeModalOpen,
+  CopyTradeExecuteTradeRejected,
   CopyTradePageView,
   CopyTradeTimeSpent,
-  CopyTradeWalletClicked,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
@@ -306,7 +309,10 @@ class Emulations extends Component {
     });
   };
   showExecuteCopyTrade = (passedTradeId) => {
-    console.log("Passed id ", passedTradeId);
+    CopyTradeExecuteTradeModalOpen({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState({
       isExecuteCopyTrade: true,
       executeCopyTradeId: passedTradeId,
@@ -317,6 +323,11 @@ class Emulations extends Component {
     if (isConfirm) {
       conRejData.append("status", "CONFIRM");
     } else {
+      CopyTradeExecuteTradeRejected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        swapAddress: tradeId,
+      });
       conRejData.append("status", "REJECT");
     }
     conRejData.append("trade_id", tradeId);
@@ -354,7 +365,7 @@ class Emulations extends Component {
                     let shareLink =
                       BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-                    CopyTradeWalletClicked({
+                    CopyTradeCopiedWalletClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
@@ -661,6 +672,11 @@ class Emulations extends Component {
       }, 150);
     };
     const goToNewAddress = (passedAddress) => {
+      CopyTradeAvailableCopiedWalletClicked({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet: passedAddress,
+      });
       let slink = passedAddress;
       let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 

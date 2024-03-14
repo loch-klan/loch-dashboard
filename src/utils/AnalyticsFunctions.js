@@ -5917,6 +5917,102 @@ export const CopyTradeSignUpPopupEmailAdded = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeAdded = ({
+  session_id,
+  email_address,
+  copied_wallet,
+  amount,
+  notification_email,
+}) => {
+  const event_name = "Copy Trade: copy trade added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "copied wallet": copied_wallet,
+    amount: amount,
+    "notification email": notification_email,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeCopiedWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: copied wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeAvailableCopiedWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: available copy trade: wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeModalOpen = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Copy Trade: available copy trade: execute trade modal open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeSwapClicked = ({
+  session_id,
+  email_address,
+  swap,
+  address,
+}) => {
+  const event_name = "Copy Trade: available copy trade: swap clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    swap: swap,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeRejected = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: trade rejected";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeConfirmed = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: trade confirmed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeWalletClicked = ({
   session_id,
   email_address,

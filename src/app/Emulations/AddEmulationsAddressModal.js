@@ -11,6 +11,8 @@ import { detectNameTag } from "../common/Api";
 // import { addAddressToWatchList } from "./redux/WatchListApi";
 import validator from "validator";
 import { addCopyTrade } from "./EmulationsApi";
+import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -342,6 +344,15 @@ class AddEmulationsAddressModal extends BaseReactComponent {
 
     this.setState({
       loadAddBtn: true,
+    });
+    CopyTradeAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      copied_wallet: tempAdd,
+      amount: this.state.copyTradeAmount,
+      notification_email: this.state.notificationEmailAddress
+        ? this.state.notificationEmailAddress.toLowerCase()
+        : "",
     });
     this.props.addCopyTrade(data, this.hideModal, this.resetBtn);
   };

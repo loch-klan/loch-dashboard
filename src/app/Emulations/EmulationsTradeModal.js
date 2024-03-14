@@ -13,6 +13,11 @@ import {
   ParaswapLogoIcon,
   UniswapLogoIcon,
 } from "../../assets/images/icons";
+import {
+  CopyTradeExecuteTradeConfirmed,
+  CopyTradeExecuteTradeSwapClicked,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class EmulationsTradeModal extends BaseReactComponent {
   constructor(props) {
@@ -71,12 +76,12 @@ class EmulationsTradeModal extends BaseReactComponent {
     window.sessionStorage.setItem("isPopupActive", true);
   }
   confirmOrRejectCopyTradePass = () => {
-    console.log(
-      "confirmOrRejectCopyTrade ",
-      this.props.confirmOrRejectCopyTrade
-    );
-    console.log("executeCopyTradeId ", this.props.executeCopyTradeId);
     if (this.props.confirmOrRejectCopyTrade && this.props.executeCopyTradeId) {
+      CopyTradeExecuteTradeConfirmed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        swapAddress: this.props.executeCopyTradeId,
+      });
       this.props.confirmOrRejectCopyTrade(this.props.executeCopyTradeId, true);
       this.state.onHide();
     }
@@ -123,6 +128,12 @@ class EmulationsTradeModal extends BaseReactComponent {
               <Row>
                 {this.state.connectExchangesList.map((item, indexIndex) => {
                   const goToSwapLink = () => {
+                    CopyTradeExecuteTradeSwapClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      swap: item.name,
+                      address: this.props.executeCopyTradeId,
+                    });
                     window.open(item.goToLink, "_blank");
                   };
                   return (
