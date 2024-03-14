@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
 
-export const getEmulations = (ctx) => {
+export const getCopyTrade = (ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-copy-trade")
@@ -53,6 +53,7 @@ export const getEmulations = (ctx) => {
                     let assetOne = "";
                     let assetTwo = "";
                     let copyAddress = "";
+                    let tempId = "";
 
                     if (indiRes.value1) {
                       valueOne = indiRes.value1;
@@ -69,6 +70,9 @@ export const getEmulations = (ctx) => {
                     if (indiRes.copy_address) {
                       copyAddress = indiRes.copy_address;
                     }
+                    if (indiRes.id) {
+                      tempId = indiRes.id;
+                    }
 
                     return {
                       assetFrom: assetOne,
@@ -76,6 +80,7 @@ export const getEmulations = (ctx) => {
                       valueFrom: valueOne,
                       valueTo: valueTwo,
                       copyAddress: copyAddress,
+                      id: tempId,
                     };
                   });
               }
@@ -101,7 +106,7 @@ export const getEmulations = (ctx) => {
       });
   };
 };
-export const addEmulations = (data, hideModal, resetBtn) => {
+export const addCopyTrade = (data, hideModal, resetBtn) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-copy-trade", data)
@@ -125,5 +130,24 @@ export const addEmulations = (data, hideModal, resetBtn) => {
           resetBtn();
         }
       });
+  };
+};
+export const updaetAvailableCopyTraes = (data, recallCopyTrader) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+
+      .post("wallet/transaction/update-copy-trade-transaction", data)
+      .then((res) => {
+        if (!res.data.error) {
+          if (res.data.data) {
+            if (recallCopyTrader) {
+              recallCopyTrader();
+            }
+          }
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {});
   };
 };

@@ -10,7 +10,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 // import { addAddressToWatchList } from "./redux/WatchListApi";
 import validator from "validator";
-import { addEmulations } from "./EmulationsApi";
+import { addCopyTrade } from "./EmulationsApi";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -343,7 +343,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
     this.setState({
       loadAddBtn: true,
     });
-    this.props.addEmulations(data, this.hideModal, this.resetBtn);
+    this.props.addCopyTrade(data, this.hideModal, this.resetBtn);
   };
   resetBtn = () => {
     this.setState({
@@ -690,7 +690,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   detectCoin,
   detectNameTag,
-  addEmulations,
+  addCopyTrade,
 };
 
 AddEmulationsAddressModal.propTypes = {};

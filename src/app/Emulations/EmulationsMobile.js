@@ -189,7 +189,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         {this.props.userDetailsState &&
         this.props.userDetailsState.email &&
         this.props.availableCopyTrades &&
-        this.props.availableCopyTrades.length > 0 ? (
+        this.props.availableCopyTrades.length > 0 &&
+        !this.props.emulationsLoading ? (
           <div className="available-copy-trades-container available-copy-trades-container-mobile">
             <div
               id="availableCopyTradeScrollBody"

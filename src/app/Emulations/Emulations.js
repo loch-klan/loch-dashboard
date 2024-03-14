@@ -47,7 +47,7 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
-import { getEmulations } from "./EmulationsApi.js";
+import { getCopyTrade, updaetAvailableCopyTraes } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
@@ -187,7 +187,7 @@ class Emulations extends Component {
       emulationsLoading: true,
     });
     this.props.updateWalletListFlag("emulationsPage", true);
-    this.props.getEmulations(this);
+    this.props.getCopyTrade(this);
   };
   setLocalEmulationList = () => {
     if (this.props.emulationsState) {
@@ -530,6 +530,16 @@ class Emulations extends Component {
       return 1;
       // return this.state.tasksList.length;
     };
+    const confirmOrRejectCopyTrade = (tradeId, isConfirm) => {
+      let conRejData = new URLSearchParams();
+      if (isConfirm) {
+        conRejData.append("status", "CONFIRM");
+      } else {
+        conRejData.append("status", "REJECT");
+      }
+      conRejData.append("trade_id", tradeId);
+      this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
+    };
     const scrollRight = () => {
       if (this.state.isRightArrowDisabled) {
         return;
@@ -782,7 +792,8 @@ class Emulations extends Component {
             {this.state.userDetailsState &&
             this.state.userDetailsState.email &&
             this.state.copyTradesAvailableLocal &&
-            this.state.copyTradesAvailableLocal.length > 0 ? (
+            this.state.copyTradesAvailableLocal.length > 0 &&
+            !this.state.emulationsLoading ? (
               <div className="available-copy-trades-container">
                 <div
                   id="availableCopyTradeScrollBody"
@@ -816,6 +827,12 @@ class Emulations extends Component {
                             <div
                               className={`topbar-btn`}
                               id="address-button-two"
+                              onClick={() => {
+                                confirmOrRejectCopyTrade(
+                                  curTradeData.id,
+                                  false
+                                );
+                              }}
                             >
                               <span className="dotDotText">Reject</span>
                             </div>
@@ -928,7 +945,8 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   getUser,
   GetAllPlan,
-  getEmulations,
+  getCopyTrade,
+  updaetAvailableCopyTraes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emulations);
