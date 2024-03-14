@@ -4795,7 +4795,7 @@ class Portfolio extends BaseReactComponent {
                               else this.changeBlockTwoItem(3);
                             }}
                           >
-                            NFT
+                            NFTs
                             <CustomOverlay
                               position="top"
                               isIcon={false}
