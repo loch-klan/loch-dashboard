@@ -2758,6 +2758,9 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
@@ -3404,7 +3407,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
