@@ -197,9 +197,16 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     };
 
     const openEmailModal = () => {
-      if (document.getElementById("sidebar-open-sign-in-btn")) {
+      const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (
+        document.getElementById("sidebar-open-sign-in-btn") &&
+        !(userDetails && userDetails.email)
+      ) {
         document.getElementById("sidebar-open-sign-in-btn").click();
-      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+      } else if (
+        document.getElementById("sidebar-closed-sign-in-btn") &&
+        !(userDetails && userDetails.email)
+      ) {
         document.getElementById("sidebar-closed-sign-in-btn").click();
       }
     };
@@ -312,7 +319,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added one address"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Added one address"
+              : "Add one address"
+          }
           earnPoints={1}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -323,7 +334,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "ens_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added one ENS"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Added one ENS"
+              : "Add one ENS"
+          }
           earnPoints={2}
           imageIcon={UserCreditDiamondIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -334,7 +349,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "email_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Verified email"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Verified email"
+              : "Verify email"
+          }
           earnPoints={3}
           imageIcon={UserCreditMailIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -345,7 +364,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "wallet_connected") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Connected wallet"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Connected wallet"
+              : "Connect wallet"
+          }
           earnPoints={4}
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -356,7 +379,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "multiple_address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Added two or more addresses"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Added two or more addresses"
+              : "Add two or more addresses"
+          }
           earnPoints={3}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -367,7 +394,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "exchange_connected") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Connected exchange"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Connected exchange"
+              : "Connect exchange"
+          }
           earnPoints={3}
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -378,7 +409,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "following") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Following an Address"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Following an Address"
+              : "Follow an Address"
+          }
           earnPoints={2}
           imageIcon={UserCreditWalletIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -389,7 +424,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "twitter_spaces") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Attended Twitter Spaces"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Attended Twitter Spaces"
+              : "Attend Twitter Spaces"
+          }
           earnPoints={1}
           imageIcon={XFormallyTwitterLogoIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -400,7 +439,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "x_follower") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Followed @loch_chain"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Followed @loch_chain"
+              : "Follow @loch_chain"
+          }
           earnPoints={2}
           imageIcon={XFormallyTwitterLogoIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -411,7 +454,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "joined_telegram") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Joined Telegram chat"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Joined Telegram chat"
+              : "Join Telegram chat"
+          }
           earnPoints={2}
           imageIcon={UserCreditTelegramIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -422,7 +469,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "feedbacks_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Provided feedback"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Provided feedback"
+              : "Provide feedback"
+          }
           earnPoints={2}
           imageIcon={FeedbackCreditIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
@@ -433,7 +484,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "use_referral_code") {
       return (
         <ProfileLochCreditPointsBlock
-          title="Referral code used"
+          title={
+            this.state.tasksDone.includes(whichBlock)
+              ? "Referral code used"
+              : "Use referral code"
+          }
           earnPoints={1}
           imageIcon={UserCreditLinkIcon}
           isDone={this.state.tasksDone.includes(whichBlock)}
