@@ -2110,6 +2110,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={this.CheckApiResponse}
+          showpath
+          currentPage={"transaction-history"}
         >
           <TransactionHistoryPageMobile
             showHideDustFun={this.showDust}

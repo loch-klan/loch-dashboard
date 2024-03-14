@@ -518,6 +518,8 @@ class CounterPartyVolume extends Component {
         <MobileLayout
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
+          showpath
+          currentPage={"counterparty-volume"}
         >
           <CounterPartyVolumeMobile
             counterGraphDigit={this.state.counterGraphDigit}

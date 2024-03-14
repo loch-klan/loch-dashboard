@@ -665,6 +665,8 @@ class RealizedProfitAndLoss extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"realized-profit-and-loss"}
         >
           <RealizedProfitAndLossMobile
             showToCalendar={this.showToCalendar}

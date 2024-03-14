@@ -982,7 +982,11 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
     if (this.state.isMobileDevice) {
       return (
-        <MobileLayout history={this.props.history}>
+        <MobileLayout
+          showpath
+          currentPage={"yield-opportunities"}
+          history={this.props.history}
+        >
           <YieldOpportunitiesMobilePage
             tableData={tableData}
             columnList={columnList}

@@ -466,6 +466,8 @@ class InsightsPage extends Component {
         <MobileLayout
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
+          showpath
+          currentPage={"insights"}
         >
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}

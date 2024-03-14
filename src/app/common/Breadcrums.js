@@ -23,6 +23,8 @@ export default function Breadcrums(props) {
       linkName = "following";
     } else if (linkName === "home-leaderboard") {
       linkName = "Loch’s Leaderboard";
+    } else if (linkName === "nft") {
+      linkName = "NFT";
     }
     return (
       e && (
@@ -54,6 +56,12 @@ export default function Breadcrums(props) {
     </Breadcrumb>
   );
   return (
-    <div className="breadcrumsBlock">{props.showpath ? breadCrumb : ""}</div>
+    <div
+      className={`breadcrumsBlock ${
+        props.isMobile ? "breadcrumsBlockMobile" : ""
+      }`}
+    >
+      {props.showpath ? breadCrumb : ""}
+    </div>
   );
 }

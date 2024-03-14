@@ -526,6 +526,8 @@ class GasFeesPage extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"gas-fees"}
         >
           <GasFeesMobile
             counterGraphDigit={this.state.GraphDigit}

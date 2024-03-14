@@ -3430,7 +3430,8 @@ input {
       background-color: transparent;
       border: none;
       padding: 0rem;
-      margin-bottom: 2.4rem;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
       filter: var(--invertColor);
       // .breadcrumb{
       // }
@@ -3464,6 +3465,13 @@ input {
       .breadcrumb-item:nth-child(1) {
         padding: 0rem;
       }
+    }
+  }
+}
+.breadcrumsBlockMobile {
+  nav {
+    ol {
+      margin-top: 0rem;
     }
   }
 }

@@ -1103,6 +1103,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"assets"}
         >
           <AssetUnrealizedProfitAndLossMobile
             columnData={columnData}

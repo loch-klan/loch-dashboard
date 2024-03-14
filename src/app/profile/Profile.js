@@ -284,12 +284,7 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <PageHeader
-              title="Profile"
-              subTitle="Manage your profile here"
-              showpath
-              currentPage={"profile"}
-            />
+            <PageHeader title="Profile" subTitle="Manage your profile here" />
             <div style={{ marginBottom: "5rem" }}>
               <Row>
                 <Col md={12}>

@@ -498,7 +498,12 @@ class NFT extends BaseReactComponent {
     ];
     if (this.state.isMobileDevice) {
       return (
-        <MobileLayout hideFooter history={this.props.history}>
+        <MobileLayout
+          showpath
+          currentPage={"nft"}
+          hideFooter
+          history={this.props.history}
+        >
           <NftMobile
             isLoading={this.state.isLoading}
             tableData={this.state.tableData}
