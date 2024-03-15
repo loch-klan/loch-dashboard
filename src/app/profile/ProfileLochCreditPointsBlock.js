@@ -12,12 +12,7 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
 
   render() {
     return (
-      <div
-        style={{
-          marginRight: !this.props.lastEle ? "3rem" : "",
-        }}
-        className="profileLochCreditPointsBlock"
-      >
+      <div className="profileLochCreditPointsBlock">
         <div className="profileLochCreditPointsBlockIconContainer">
           <Image
             src={this.props.imageIcon}
