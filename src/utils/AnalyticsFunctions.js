@@ -6005,7 +6005,20 @@ export const CopyTradeExecuteTradeConfirmed = ({
   email_address,
   swapAddress,
 }) => {
-  const event_name = "Copy Trade: available copy trade: trade confirmed";
+  const event_name = "Copy Trade: available copy trade: modal done";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteModalBack = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: modal back";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

@@ -3583,3 +3583,20 @@ input {
     display: block;
   }
 }
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}

@@ -54,11 +54,13 @@ import { getCopyTrade, updaetAvailableCopyTraes } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
+import BasicConfirmModal from "../common/BasicConfirmModal.js";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isRejectModal: false,
       executeCopyTradeId: undefined,
       isExecuteCopyTrade: false,
       isLeftArrowDisabled: true,
@@ -128,20 +130,10 @@ class Emulations extends Component {
   };
   componentDidMount() {
     scrollToTop();
-    if (
-      !this.props.commonState.emulationsPage ||
-      !(
-        this.props.emulationsState &&
-        this.props.emulationsState.copyTrades?.length > 0
-      )
-    ) {
-      this.props.getAllCoins();
-      this.props.GetAllPlan();
-      this.props.getUser();
-    } else {
-      this.props.updateWalletListFlag("emulationsPage", true);
-      this.setLocalEmulationList();
-    }
+    this.props.getAllCoins();
+    this.props.GetAllPlan();
+    this.props.getUser();
+    this.callEmulationsApi();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
 
     if (userDetails) {
@@ -318,6 +310,22 @@ class Emulations extends Component {
       executeCopyTradeId: passedTradeId,
     });
   };
+  openRejectModal = (tradeId) => {
+    this.setState({
+      isRejectModal: true,
+      executeCopyTradeId: tradeId,
+    });
+  };
+  closeRejectModal = () => {
+    this.setState({
+      isRejectModal: false,
+      executeCopyTradeId: undefined,
+    });
+  };
+  executeRejectModal = () => {
+    this.closeRejectModal();
+    this.confirmOrRejectCopyTrade(this.state.executeCopyTradeId, false);
+  };
   confirmOrRejectCopyTrade = (tradeId, isConfirm) => {
     let conRejData = new URLSearchParams();
     if (isConfirm) {
@@ -332,6 +340,17 @@ class Emulations extends Component {
     }
     conRejData.append("trade_id", tradeId);
     this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
+  };
+  goToNewAddress = (passedAddress) => {
+    CopyTradeAvailableCopiedWalletClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      wallet: passedAddress,
+    });
+    let slink = passedAddress;
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+    window.open(shareLink, "_blank", "noreferrer");
   };
   render() {
     const columnData = [
@@ -630,17 +649,7 @@ class Emulations extends Component {
         }
       }, 150);
     };
-    const goToNewAddress = (passedAddress) => {
-      CopyTradeAvailableCopiedWalletClicked({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        wallet: passedAddress,
-      });
-      let slink = passedAddress;
-      let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-      window.open(shareLink, "_blank", "noreferrer");
-    };
     if (mobileCheck()) {
       return (
         <MobileLayout
@@ -677,6 +686,10 @@ class Emulations extends Component {
             confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
             goToNewAddress={this.goToNewAddress}
             executeCopyTradeId={this.state.executeCopyTradeId}
+            isRejectModal={this.state.isRejectModal}
+            closeRejectModal={this.closeRejectModal}
+            openRejectModal={this.openRejectModal}
+            executeRejectModal={this.executeRejectModal}
           />
         </MobileLayout>
       );
@@ -749,6 +762,15 @@ class Emulations extends Component {
                 emulationsUpdated={this.state.emulationsUpdated}
               />
             ) : null}
+            {this.state.isRejectModal ? (
+              <BasicConfirmModal
+                show={this.state.isRejectModal}
+                history={this.props.history}
+                handleClose={this.closeRejectModal}
+                handleYes={this.executeRejectModal}
+                title="Are you sure you want to reject this trade?"
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -802,7 +824,7 @@ class Emulations extends Component {
                             </div>
                             <div
                               onClick={() => {
-                                goToNewAddress(curTradeData.copyAddress);
+                                this.goToNewAddress(curTradeData.copyAddress);
                               }}
                               className="inter-display-medium f-s-16 available-copy-trades-address"
                             >
@@ -821,10 +843,7 @@ class Emulations extends Component {
                               className={`topbar-btn`}
                               id="address-button-two"
                               onClick={() => {
-                                this.confirmOrRejectCopyTrade(
-                                  curTradeData.id,
-                                  false
-                                );
+                                this.openRejectModal(curTradeData.id);
                               }}
                             >
                               <span className="dotDotText">Reject</span>

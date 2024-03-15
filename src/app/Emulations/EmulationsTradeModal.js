@@ -14,6 +14,7 @@ import {
   UniswapLogoIcon,
 } from "../../assets/images/icons";
 import {
+  CopyTradeExecuteModalBack,
   CopyTradeExecuteTradeConfirmed,
   CopyTradeExecuteTradeSwapClicked,
 } from "../../utils/AnalyticsFunctions";
@@ -108,6 +109,11 @@ class EmulationsTradeModal extends BaseReactComponent {
           <div
             className="closebtn"
             onClick={() => {
+              CopyTradeExecuteModalBack({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                swapAddress: this.props.executeCopyTradeId,
+              });
               this.state.onHide();
             }}
           >
